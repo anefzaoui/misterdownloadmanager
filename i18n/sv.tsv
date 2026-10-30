@@ -1,0 +1,2552 @@
+# Mister Download Manager in Swedish (Svenska): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Svenska
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ta även bort den {n} filen från disken|Ta även bort de {n} filerna från disken
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Är du säker på att du vill ta bort {n} nedladdning från Mister Download Managers lista över nedladdningar?|Är du säker på att du vill ta bort dessa {n} nedladdningar från Mister Download Managers lista över nedladdningar?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} tillåter {n} anslutning|{host} tillåter {n} anslutningar
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} byte|{n} byte
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} fil|{n} filer
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&Verkställ
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Stäng
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Ta bort
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Hjälp
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Ny kö
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Starta nu
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(separera namn med mellanslag)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-timmars (21:41)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-timmars (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Dölj information
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Om Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Lägg till en nedladdning (Lägg till URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Lägg till batchnedladdning
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Lägg till webbläsare...
+#. text in categories.rs
+#, machine
+	Add category	Lägg till kategori
+#. text in the tray icon's menu
+#, machine
+	Add new download	Lägg till ny nedladdning
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Lägg till dubbletten och skriv över den befintliga filen
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Lägg till dubbletten med ett numrerat filnamn
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Lägg till i kö
+#. text in a dialog box
+#, machine
+	Add to queue:	Lägg till i kö:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Lägg till torrent
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	Tillagd {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Adress
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Adress ändrad till {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Adress:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Avancerat/Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Alla nedladdningar
+#. message or event log entry in the main window
+#, machine
+	All files	Alla filer
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	laddas redan ned: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Ta även bort filen från disken
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Aktivera alltid hastighetsbegränsaren vid start av Mister Download Manager
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	FM
+#. text in the Scheduler window
+#, machine
+	April	April
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Är du säker på att du vill ta bort "{name}" från Mister Download Managers lista över nedladdningar?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Som systemets region skriver dem
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Begär filista från peers. Magnetlänkar kan ta en minut eller två.
+#. text in the Scheduler window
+#, machine
+	August	Augusti
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Placera automatiskt följande filtyper i kategorin "{category}":
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Starta automatiskt nedladdning av följande filtyper:
+#. window title in the Batch download window
+#, machine
+	Batch download	Batchnedladdning
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Bläddra
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Bläddra...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Webbläsar-/systemintegrering
+#. message or event log entry in the main window
+#, machine
+	by batch download	via batchnedladdning
+#. message or event log entry in the main window
+#, machine
+	by import	via import
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Avbryt
+#. text in errors.rs
+#, machine
+	cancelled	avbruten
+#. text in errors.rs
+#, machine
+	cannot connect to the server	kan inte ansluta till servern
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	Kan inte hitta "{text}"
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Kan inte läsa filen: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	kan inte återupptas: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Fånga nedladdningar från följande webbläsare:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Kategorier
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Kategorier, filtyper, mappar
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Kategori
+#. text in categories.rs
+#, machine
+	Category properties	Kategoriegenskaper
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Ändra mapp för kategorin "{category}" till senast valda
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Sök efter uppdateringar
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Sök efter uppdateringar en gång i veckan
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Söker efter uppdateringar...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Kontrollerar...
+#. text in langpick.rs
+#, machine
+	Choose a language	Välj språk
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Välj vilket språk Mister Download Manager ska visa sina fönster på:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Rensa
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Klient
+#. text in the Options window
+#, machine
+	Clock:	Klocka:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Stäng
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Stäng en meny eller dialogruta
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Slutförd
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Komprimerad
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Bekräfta innan du tar bort nedladdningar
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Bekräfta borttagning av nedladdningar
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Ansluter...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Anslutning
+#. page title in the Options window
+#, machine
+	Connections and Limits	Anslutningar och gränser
+#. text in the Options window
+#, machine
+	Connections:	Anslutningar:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Kopierat till Urklipp.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Kopiera
+#. window title in a dialog box
+#, machine
+	Create folder	Skapa mapp
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Anpassa dialogrutan "Nedladdningsförlopp"
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Anpassa tangenter för att förhindra eller tvinga nedladdning med MDM
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Anpassa MDM-nedladdningspaneler i webbläsare
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Anpassa MDM-menyobjekt i webbläsarnas snabbmeny
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Dagligen
+#. text in the Options window
+#, machine
+	Date order:	Datumordning:
+#. page title in the Options window
+#, machine
+	Dates and times	Datum och tider
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Dag, månad, år
+#. text in the Scheduler window
+#, machine
+	December	December
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Standard
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Standardnedladdningskatalog för kategorin "{category}"
+#. page title in the Options window
+#, machine
+	Default download settings	Standardinställningar för nedladdning
+#. text in the Options window
+#, machine
+	Default max. conn. number	Standard max. antal anslutningar
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Ta bort
+#. message or event log entry in the main window
+#, machine
+	Delete category	Ta bort kategori
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Ta bort kö
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Vill du ta bort kategorin "{category}"? Dess nedladdningar blir Allmänt; deras filer stannar där de är.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Vill du ta bort kön "{queue}"? Dess nedladdningar stannar i listan.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Ta bort de valda nedladdningarna (frågar först)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Ta bort de valda nedladdningarna och deras filer (frågar först)
+#. text in a dialog box
+#, machine
+	Description	Beskrivning
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Beskrivning eller del av beskrivningen
+#. text in a download's Properties window
+#, machine
+	Description:	Beskrivning:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	diskfel: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	visas i listan över köer
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Börja inte ladda ned, lägg bara till filer i kön
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Vill du skapa den?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Dokument
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Visa inte den här dialogrutan igen
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Börja inte ladda ned automatiskt från följande adresser:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Börja inte ladda ned automatiskt från följande webbplatser:
+#. text in a download's progress window
+#, machine
+	Done	Klar
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Ladda ned
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Ladda ned "{name}" igen från början? En färdig fil ersätts när den nya nedladdningen är klar.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Nedladdning klar
+#. text in the Options window
+#, machine
+	Download failed	Nedladdning misslyckades
+#. window title in a dialog box
+#, machine
+	Download File Info	Information om nedladdningsfil
+#. button in a dialog box
+#, machine
+	Download Later	Ladda ned senare
+#. window title in a dialog box
+#, machine
+	Download later	Ladda ned senare
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Nedladdningsgränser
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Ladda ned högst {mb} MB\nvar {hours} timme
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Ladda ned nu
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Hämtningspaneler
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Nedladdningsstatus
+#. window title in the Download video window
+#, machine
+	Download video from a page	Ladda ned video från en sida
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Ladda ned {files} filer samtidigt
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Nedladdat
+#. page title in the Options window
+#, machine
+	Downloaded file types	Nedladdade filtyper
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	Nedladdat {size} ({bytes} byte)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Laddar ned
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Laddar ned igen från början
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	Laddar ned och verifierar ffmpeg (cirka 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	Laddar ned och verifierar yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Nedladdningar
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Nedladdningarna har stoppats och återupptas automatiskt kl. {time}.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Dra länkar hit för att ladda ned dem
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Dubblettlänk för nedladdning
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Redigera
+#. text in the Options window
+#, machine
+	Edit exception	Redigera undantag
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Redigera lista ...
+#. text in the Options window
+#, machine
+	Edit login	Redigera inloggning
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Redigera...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	E-post
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Ange en magnetlänk eller välj en .torrent-fil
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Ange ett namn för den nya kön som kommer att vara
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Ange ny adress för nedladdning
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Ange könamn
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Fel
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Fel: {error}
+#. text in the Options window
+#, machine
+	Event	Händelse
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Exempel:
+#. text in the Options window
+#, machine
+	Exceptions:	Undantag:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Avsluta
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Avsluta Mister Download Manager när du är klar
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Förväntad kontrollsumma (MD5, SHA-1, SHA-256, SHA-512 eller CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Förväntad kontrollsumma angiven ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Exportera
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Utöka tillgängligheten för Manifest 2 Chrome-tillägg
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Tillägg avgränsade med blanksteg, till exempel MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Februari
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Fil
+#. text in the Scheduler window
+#, machine
+	File Name	Filnamn
+#. text in the Download video window
+#, machine
+	File name	Filnamn
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Filnamn eller del av namnet
+#. window title in a download's Properties window
+#, machine
+	File Properties	Filegenskaper
+#. text in a download's progress window
+#, machine
+	File size	Filstorlek
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Filtyper
+#. text in categories.rs
+#, machine
+	File types:	Filtyper:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Filer
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Filer sparas i: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Filer i kön
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Sök
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Hitta en nedladdning
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Hitta fil
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Hitta nästa matchning
+#. text in the Find window
+#, machine
+	Find:	Sök:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Färdiga
+#. text in the Options window
+#, machine
+	First day of the week:	Veckans första dag:
+#. text in the Batch download window
+#, machine
+	First file:	Första fil:
+#. text in categories.rs
+#, machine
+	Folder:	Mapp:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Till exempel: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Endast för ditt Windows-konto. En annan app som valts i "Öppna med" förblir först.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Tvinga processer att avslutas
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Fr
+#. text in the Scheduler window
+#, machine
+	Friday	Fredag
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	från en magnetlänk
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	från en sida (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	från en torrentfil
+#. message or event log entry in the main window
+#, machine
+	from the browser	från webbläsaren
+#. message or event log entry in the main window
+#, machine
+	from the command line	från kommandoraden
+#. text in the Batch download window
+#, machine
+	From:	Från:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Allmänt
+#. button in the Options window
+#, machine
+	Get System	Hämta system
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Hämtar fillistan från peers... {n} s
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Lägg på modem när klart
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Har
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Hjälp
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Viloläge
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Dölj &kategorier
+#. button in a download's progress window
+#, machine
+	Hide tab	Dölj flik
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Hemsida
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Jag laddar ner med Mister Download Manager: snabbt, gratis och det ser ut som den nedladdningshanterare du redan känner till. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Om en dubblett av nedladdningslänken läggs till:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Om befintlig fil är komplett, visa dialogrutan för nedladdning klar; annars återuppta den.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Ignorera ändringar av filens ändringstid när en nedladdning återupptas
+#. message or event log entry in the main window
+#, machine
+	Import	Importera
+#. window title in transfer.rs
+#, machine
+	Import downloads	Importera nedladdningar
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	I en kö
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Info
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Info-hash
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	Installera ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	Installera yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	Ogiltig adress
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Det är möjligt att lägga till en grupp sekventiella filnamn som img001.jpg, img002.jpg, etc.,\nimg100.jpg till MDM:s nedladdningskö. Använd asterisk-jokertecknet för filnamnsmönstret.
+#. text in the Scheduler window
+#, machine
+	January	Januari
+#. text in the Scheduler window
+#, machine
+	July	Juli
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Hoppa till nedladdningen vars namn börjar med det
+#. text in the Scheduler window
+#, machine
+	June	Juni
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KByte/sek
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Fortsätt dela torrenter när de är klara
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Kortkommandon
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Nycklar...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Språk
+#. text in the Batch download window
+#, machine
+	Last file:	Sista filen:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Senaste försöket {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Senare
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Starta Mister Download Manager vid start
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Bokstäver
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Licenser och erkännanden
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Begränsa alla nedladdningar tillsammans till
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Inloggning
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Sök
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Söker upp sidan...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Huvudnedladdningskö
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Gör markeringen längre eller kortare
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Manuell proxy-/SOCKS-konfiguration
+#. text in the Scheduler window
+#, machine
+	March	Mars
+#. checkbox in the Find window
+#, machine
+	Match case	Matcha skiftläge
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Matcha endast hela strängen
+#. group box title in the Options window
+#, machine
+	Max. connections number	Max. antal anslutningar
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Maximal nedladdningshastighet för en fil {kb} KByte/sek
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Maximal nedladdningshastighet:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Maj
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Saknas
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager-konfiguration
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager skriver varje anslutning direkt till den slutliga\nfilen (en gles delfil bredvid den), så ingen temporär katalog och inget\nmonteringssteg behövs.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} är tillgänglig (släpptes {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	Må
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Måndag
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Månad, dag, år
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Flytta
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Flytta en sida upp/ned
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Flytta eller byt namn på den valda nedladdningen
+#. text in a download's Properties window
+#, machine
+	Move to folder	Flytta till mapp
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Flytta till kö
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Flytta utan att ändra markeringen
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Flytta/byt namn
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	mycket långsammare än de andra anslutningarna; återansluter
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Musik
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Mitt eget sätt:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	Nr.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Namn
+#. text in categories.rs
+#, machine
+	Name:	Namn:
+#. text in errors.rs
+#, machine
+	network error	nätverksfel
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Visa aldrig på dessa webbplatser:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Ny
+#. text in the Options window
+#, machine
+	New exception	Nytt undantag
+#. text in the Options window
+#, machine
+	New login	Ny inloggning
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Nej
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	ingen datamapp
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	ingen datamapp för torrenter
+#. text in langpick.rs
+#, machine
+	No language matches.	Inget språk matchar.
+#. text in the Options window
+#, machine
+	No proxy/socks	Ingen proxy/SOCKS
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Ingen video som kan laddas ned på den sidan
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Inga webbadresser hittades i {file}.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Inga: peer-datorer kommer från DHT och andra peer-datorer
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Ingen kontrollsumma som kan läsas
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	inte tillräckligt med diskutrymme: {needed} behövs, {free} ledigt
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Inte i en kö
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Används inte: fildelar skrivs bredvid filen
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Obs! Internetservrar kan bryta anslutningen när hastigheten är för begränsad! Därför rekommenderas det inte att använda hastighetsbegränsare för att ladda ned från servrar som inte stöder funktionen "återuppta".
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Obs! Dessa inställningar relaterar inte till köbearbetning
+#. text in the Scheduler window
+#, machine
+	November	November
+#. text in the Options window
+#, machine
+	Number	Antal
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Antal återförsök för varje fil om nedladdningen misslyckades:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Tal
+#. text in the Scheduler window
+#, machine
+	October	Oktober
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Av: en färdig torrent stoppas, som alla nedladdningar.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Erbjud att ladda ned länkar som kopierats till Urklipp
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	OK
+#. text in a download's progress window
+#, machine
+	on download stop/resume	vid nedladdningsstopp/återuppta
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	En gång vid
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Engångsnedladdning
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Endast när jag använder datorn
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Öppna
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Öppna magnetlänkar och .torrent-filer med Mister Download Manager
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Öppna Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Öppna följande fil när den är klar
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Öppna följande fil när det är klart:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Öppna den valda nedladdningen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Öppna menyn för den valda nedladdningen
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Öppna torrentfil
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Alternativ
+#. text in a download's progress window
+#, machine
+	Options on completion	Alternativ vid slutförande
+#. text in the Download video window
+#, machine
+	Page address	Sidans adress
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Lösenord
+#. text in the Options window
+#, machine
+	Password:	Lösenord:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Klistra in en magnetlänk eller välj en .torrent-fil och klicka sedan på Sök.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Pausa
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Pausad
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Peers
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Periodisk synkronisering
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Delar
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Spela upp
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	EM
+#. label in the Options window
+#, machine
+	Port	Port
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Förhandsgranska
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Program
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Egenskaper för den valda nedladdningen
+#. text in a download's progress window
+#, machine
+	Property	Egenskap
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Proxy/Socks
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Proxy-/Socks-konfiguration
+#. label in the Options window
+#, machine
+	Proxy server address	Proxy-serveradress
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Kö nr {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Kökörning startad
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Kökörning stoppad/slutförd
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Köer
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Läser fillistan...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Läser torrenten...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Mottaget
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Tar emot data...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Ladda ned igen
+#. text in a download's Properties window
+#, machine
+	Referer:	Refererare:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Regionala inställningar
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Kom ihåg inställningar för hastighetsbegränsare för den här filen
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Kom ihåg den här sökvägen för kategorin "{category}"
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Ta bort
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Ersätt asterisk med
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Resultat: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Återuppta
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Återupptagningskapacitet
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Återupptogs
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Försöker igen: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	S&toppa
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	Lö
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Lördag
+#. text in a dialog box
+#, machine
+	Save As	Spara som
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Spara till
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Spara till...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Spara till:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Sparad i
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Schema
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Schemaläggare
+#. text in langpick.rs
+#, machine
+	Search:	Sök:
+#. text in the Batch download window
+#, machine
+	Second file:	Andra filen:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Markera alla
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Markera alla nedladdningar
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Markera varje nedladdning upp till denna
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Markera ingen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Markera eller avmarkera ytterligare en nedladdning
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Markera eller avmarkera nedladdningen med den prickade konturen
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Välj ljud för Mister Download Manager-händelser
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Markera nedladdningarna i rutan
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Markera första/sista nedladdningen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Markera föregående/nästa nedladdning
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Valt: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Skicka detta till en vän:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Skickat
+#. text in the Scheduler window
+#, machine
+	September	September
+#. text in the Options window
+#, machine
+	Server	Server
+#. text in the Options window
+#, machine
+	Server:	Server:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Ange filens skapandedatum som tillhandahålls av servern
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Delningskvot
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Delar
+#. text in the download list
+#, machine
+	Show	Visa
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Visa &kategorier
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Visa en dialogruta och fråga vad som ska göras.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Visa en hämtningsknapp över videor i webbläsare
+#. button in the download list
+#, machine
+	Show all	Visa alla
+#. text in a download's progress window
+#, machine
+	Show details >>	Visa detaljer >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Visa dialogrutan för slutförd nedladdning
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Visa panelen för köval vid stängning av dialogrutor för batchnedladdning
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Visa panelen för köval när du trycker på knappen "Ladda ned senare"
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Visa dialogrutan för starta nedladdning
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Visa varning innan nedladdningar stoppas
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Visas medan torrenten laddas ned.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Stäng av
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Webbplatsnamn/Nedladdningslänk/Överordnad webbsida/Referer
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Webbplats/sökväg
+#. text in the Options window
+#, machine
+	Site/path:	Webbplats/sökväg:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Webbplatsinloggningar
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Storlek
+#. text in the Download video window
+#, machine
+	size unknown	storlek okänd
+#. text in a download's Properties window
+#, machine
+	Size:	Storlek:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Överhoppad
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Viloläge
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Vissa
+#. text in the Options window
+#, machine
+	Sound file	Ljudfil
+#. page title in the Options window
+#, machine
+	Sound settings	Ljudinställningar
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Ljud
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Källkod
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Hastighetsbegränsare
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Inställningar för hastighetsbegränsare
+#. button in a dialog box
+#, machine
+	Start Download	Starta nedladdning
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Starta nedladdning vid
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Starta nedladdning vid start av Mister Download Manager
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Starta nedladdning omedelbart medan dialogrutan "Ladda ned filinformation" visas
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Starta huvudnedladdningskön
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Startpositioner och nedladdningsförlopp per anslutning
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Starta kön nu
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Starta {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Startad
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	Startade med yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Status
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Status:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Stoppa nedladdning vid
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Stoppa huvudnedladdningskön
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Stoppa {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Stoppad
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Stoppas när nedladdningen är klar
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	Sö
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Söndag
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Synkroniseringskö
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Berätta för en vän
+#. group box title in the Options window
+#, machine
+	Temporary directory	Tillfällig katalog
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	To
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	den sparade .torrent-filen för den är borta
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Adressen måste vara en http(s)- eller ftp(s)-adress
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	De bästa kvaliteterna kräver ffmpeg för att slå samman video och ljud (cirka 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Datorn går i viloläge om {n} sekunder.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Datorn går i strömsparläge om {n} sekunder.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Datorn stängs av om {n} sekunder.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	anslutningen stängdes innan delen var klar
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	anslutningen förlorades vid mottagning av data
+#. text in errors.rs
+#, machine
+	the disk is full	disken är full
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Nedladdningsgränsen ({mb} MB varje {hours} timmar) har uppnåtts.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	nedladdningslänken har upphört att gälla (uppdatera nedladdningsadressen)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Nedladdningshanteraren du redan känner till, ombyggd för att vara snabbare. Gratis och öppen källkod under GNU GPL, version 3 eller senare. Videor hittas av yt-dlp; torrents körs på librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Nedladdningskön är klar.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	enheten eller nätverksresursen är inte längre tillgänglig
+#. text in errors.rs
+#, machine
+	the file changed on the server	filen ändrades på servern
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Filen kunde inte flyttas
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Filen kunde inte läsas: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Filen matchar INTE ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Filen matchar ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Filen sparades som
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Filtyperna som inte finns med i någon annan kategori
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	filens {algorithm}-kontrollsumma matchar inte (data behålls; ladda ned igen)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Mappen kunde inte skapas: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	mappen {path} är inte tillgänglig (enhet borttagen eller nätverksresurs offline?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP-servern svarade {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Listan kunde inte sparas: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	sökvägen är för lång för Windows: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	versionen har inget versionsnummer
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	Den säkra anslutningen misslyckades
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Den valda nedladdningen är inte klar. Är du säker på att du vill ta bort\nden från Mister Download Managers lista över nedladdningar?
+#. text in errors.rs
+#, machine
+	the server answered {status}	servern svarade {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	servern kan inte skicka delar av filen, så den kan inte återupptas
+#. text in errors.rs
+#, machine
+	the server did not answer in time	servern svarade inte i tid
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	servern skickade inte den begärda delen
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	servern är upptagen ({status}); försök igen senare
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	servern skickade en webbsida istället för filen (inloggning krävs eller länken har upphört att gälla?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	servern skickade en oväntad del av filen ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Torrenten kunde inte sparas: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	torrenten finns inte längre
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Webbsidan från vilken den här filen hämtades:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Det finns redan en kategori med det här namnet
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Dessa inställningar är inte tillgängliga när "Visa dialogruta för slutförd nedladdning" är aktiverad
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Denna adress finns redan i nedladdningslistan:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Denna mapp finns inte:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Denna torrent finns redan i nedladdningslistan
+#. text in the Scheduler window
+#, machine
+	Thursday	Torsdag
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Återstående tid
+#. text in the Batch download window
+#, machine
+	To:	Till:
+#. text in errors.rs
+#, machine
+	too many redirects	för många omdirigeringar
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Torrentnedladdningar (magnetlänkar och .torrent-filer)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Torrentfiler
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Torrentinställningar
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrents
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	Torrentar kunde inte startas: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Spårare
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Spårare
+#. text in a download's progress window
+#, machine
+	Transfer rate	Överföringshastighet
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	Ti
+#. text in the Scheduler window
+#, machine
+	Tuesday	Tisdag
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Stäng av
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Stäng av datorn när klar
+#. button in a dialog box
+#, machine
+	Turn off now	Stäng av nu
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Slå på
+#. text in a download's Properties window
+#, machine
+	Type:	Typ:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Oavslutade
+#. text in a download's Properties window
+#, machine
+	Unknown	Okänd
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	okänd
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Det gick inte att söka efter uppdateringar: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Använd avancerad webbläsarintegrering
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Använd auktorisering
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Använd automatiskt konfigurationsskript
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	Använd FTP i PASV-läge
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Använd proxy/socks från en webbläsarförfrågan om det finns nedladdningsfel /\nför nedladdningar som avlyssnas från webbläsaren
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Använd hastighetsbegränsare
+#. text in the Options window
+#, machine
+	Use system settings	Använd systeminställningar
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Använd denna proxy för följande protokoll:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Används av listan över nedladdningar och Schemaläggaren.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Användare
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Användarnamn och lösenord för servrar/webbplatser
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	User-Agent för manuellt tillagda nedladdningar:
+#. text in the Options window
+#, machine
+	User:	Användare:
+#. label in the Options window
+#, machine
+	UserName	Användarnamn
+#. text in a download's progress window
+#, machine
+	Value	Värde
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Verifiera
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Verifiera kontrollsumma
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Verifierar...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Version {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Video
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videosökningar använder yt-dlp (cirka 23 MB, kontrolleras mot dess signatur).
+#. text in the Options window
+#, machine
+	Virus checking settings	Inställningar för virussökning
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Väntar
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Väntar: nedladdningsgränsen har nåtts (Schemaläggaren)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	On
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Webb
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Webbadresser som hittades i {file}:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Onsdag
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	Nyheter:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Jokerteckenstorlek
+#. text in langpick.rs
+#, machine
+	Windows' language	Windows-språk
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windows-språk ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	med Lägg till URL
+#. group box title in the Options window
+#, machine
+	Write dates and times	Skriv datum och tider
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	År, månad, dag
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Ja
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Du har den senaste versionen av Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Du har version {version}.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp är inte installerat (Uppgifter → Ladda ned video från en sida installerar det)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} kontrollsumma
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: kontrolleras när nedladdningen är klar
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} innehåller
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} fil
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} av {total} ({size} vardera)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} av {total} delar ({size} vardera)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} tim {m} min
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} anslutna, {known} kända
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} min {s} sek
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (auto)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} av {total} valda
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} byte)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} är för stor för den här {file_system}-enheten (filer upp till 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} sek
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} kunde inte installeras: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Tillagd
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Beskrivning
+#. column title in the download list in the download list
+#, machine
+column	File Name	Filnamn
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Senaste försöksdatum
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	Kö
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Storlek
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Källa
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Status
+#. column title in the download list in the download list
+#, machine
+column	Time left	Återstående tid
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Överföringshastighet
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Knappinställningar...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Hämta video
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Ladda ned med Mister Download Manager
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Dra för att flytta den längs videons kant
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Överför nedladdningar från webbläsaren till Mister Download Manager.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Dölj på den här videon
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager svarade inte
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager-integrationsmodul
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Fler alternativ
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Aldrig på {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Skickades till Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+klick
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Mellanslag
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Upp / Ctrl+Ned
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Dra på tom yta
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Retur
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Skift+klick
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Skift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Skift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Skift+Upp / Skift+Ned
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Skriv ett namn
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Upp / Ned
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	&Om Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	&Lägg till ny nedladdning
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	&Ta bort alla slutförda
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	&Ladda ned nu
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Avsluta
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Importera
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Kortkommandon
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Språk...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Alternativ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	&Pausa alla
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Ta bort
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	&Rapportera ett problem
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Schemaläggare och köer
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&Stoppa alla
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	&Stoppa nedladdning
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&Meddelandefältsikon
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Självstudier
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&Videonedladdningar
+#. menu command in the main window
+#, machine
+menu	3D Style	3D-stil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Lägg till &batchnedladdning
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Lägg till &magnetlänk...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Lägg till grupphämtning från urklipp(&C)
+#. menu command in the main window
+#, machine
+menu	Add category	Lägg till kategori
+#. menu command in the main window
+#, machine
+menu	Arrange files	Ordna filer
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Bläddra
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	Efter beskrivning(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	Efter filnamn(&F)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	Efter senaste försöksdatum(&L)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	Efter tilläggsordning(&O)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	Efter storlek(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	Efter återstående tid(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Efter tilläggsdatum(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Efter överordnad webbsida(&W)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	Efter referer(&E)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Efter sökväg för sparning(&P)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Efter status(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	Efter överföringshastighet(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	Anpassa URL-&lista...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Sök efter uppdateringar(&U)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Rensa alla filter(&F)
+#. menu command in the main window
+#, machine
+menu	Create new queue	Skapa ny kö
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Anpassa...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Stöd för mörkt läge
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Ta bort
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Ta bort från kö
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	Hämta video från en sida(&V)...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	Exportera(&X)
+#. menu command in the main window
+#, machine
+menu	Edit queue	Redigera kö
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Sök (Ctrl+F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Sök nästa (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Teckensnitt
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	Från IDM-exportfil(&I)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	Från textfil(&T)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	Hjälpinnehåll(&H)
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Dölj släppmål
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Stora knappar
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Sök efter nya verktygsfält
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager startsida(&H)
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Flytta/byt namn (Ctrl+M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neon
+#. menu command in the main window
+#, machine
+menu	On Double click	Vid dubbelklick
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Öppna
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Öppna &torrentfil...
+#. menu command in the main window
+#, machine
+menu	Open folder	Öppna mapp
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Öppna med...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Egenskaper
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Ladda &ned igen
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Ladda ned igen
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Uppdatera nedladdningsadress
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Ta bort
+#. menu command in the main window
+#, machine
+menu	Resume Download	Återuppta nedladdning
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	S&chemaläggare
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&Inställningar...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	Stoppa &kö
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Schema
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Visa &släppmål
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Visa Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Små knappar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Hastighets&begränsare
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	Starta &kö
+#. menu command in the main window
+#, machine
+menu	Start now	Starta nu
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Stoppa
+#. menu command in the main window
+#, machine
+menu	Stop Download	Stoppa nedladdning
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Berätta för en &vän
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	Till &IDM-exportfil...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	Till &textfil...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Verktygsfält
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Torrentinställni&ngar...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	Slå &på
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Slå a&v
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Verifiera kontrollsumma...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Nedladdningar
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Arkiv
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Hjälp
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Uppgifter
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Visa
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Lägg till torrent
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	Lägg till URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Ta bort
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Ta bort slutförda
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Alternativ
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Återuppta
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Schemaläggare
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Starta kö
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Stoppa
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Stoppa alla
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Stoppa kö
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/sek
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/sek

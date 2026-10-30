@@ -1,0 +1,2552 @@
+# Mister Download Manager in Estonian (Eesti): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Eesti
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Kustuta ka {n} fail kettalt|Kustuta ka {n} faili kettalt
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Kas olete kindel, et soovite kustutada {n} allalaadimise Mister Download Manageri allalaadimiste loendist?|Kas olete kindel, et soovite kustutada need {n} allalaadimist Mister Download Manageri allalaadimiste loendist?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} lubab {n} ühenduse|{host} lubab {n} ühendust
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} bait|{n} baiti
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} fail|{n} faili
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&Rakenda
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Sule
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Kustuta
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Spikker
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Uus järjekord
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Alusta kohe
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(eraldage nimed tühikutega)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-tunnine (21:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-tunnine (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Peida üksikasjad
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Teave Mister Download Manageri kohta
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Lisa allalaadimine (Lisa URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Lisa pakettallalaadimine
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Lisa brauser...
+#. text in categories.rs
+#, machine
+	Add category	Lisa kategooria
+#. text in the tray icon's menu
+#, machine
+	Add new download	Lisa uus allalaadimine
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Lisa duplikaat ja kirjuta olemasolev fail üle
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Lisa duplikaat nummerdatud failinimega
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Lisa järjekorda
+#. text in a dialog box
+#, machine
+	Add to queue:	Lisa järjekorda:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Lisa torrent
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	Lisatud {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Aadress
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Aadress muudetud: {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Aadress:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Täpsemad / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Kõik allalaadimised
+#. message or event log entry in the main window
+#, machine
+	All files	Kõik failid
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	juba allalaadimisel: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Kustuta ka fail kettalt
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Lülita kiirusepiiraja Mister Download Manageri käivitamisel alati sisse
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	Aprill
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Kas olete kindel, et soovite kustutada „{name}“ Mister Download Manageri allalaadimiste loendist?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Nagu süsteemi piirkond need kirjutab
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Küsin kaaslastelt faililoendit. Magnetlingid võivad võtta minuti või kaks.
+#. text in the Scheduler window
+#, machine
+	August	August
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Paiguta failitüübid automaatselt kategooriasse „{category}“:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Alusta automaatselt järgmiste failitüüpide allalaadimist:
+#. window title in the Batch download window
+#, machine
+	Batch download	Pakettallalaadimine
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Sirvi
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Sirvi...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Brauseri/süsteemi integreerimine
+#. message or event log entry in the main window
+#, machine
+	by batch download	pakettallalaadimise kaudu
+#. message or event log entry in the main window
+#, machine
+	by import	impordi kaudu
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Loobu
+#. text in errors.rs
+#, machine
+	cancelled	tühistatud
+#. text in errors.rs
+#, machine
+	cannot connect to the server	serveriga ei saa ühendust luua
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	Ei leia „{text}”
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Faili ei saa lugeda: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	ei saa jätkata: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Jäädvusta allalaadimised järgmistest brauseritest:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Kategooriad
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Kategooriad, failitüübid, kaustad
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Kategooria
+#. text in categories.rs
+#, machine
+	Category properties	Kategooria atribuudid
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Muuda kausta kategooria „{category}” jaoks viimati valitud asukohas
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Otsi värskendusi
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Otsi värskendusi kord nädalas
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Värskenduste otsimine...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Kontrollin...
+#. text in langpick.rs
+#, machine
+	Choose a language	Vali keel
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Valige keel, milles Mister Download Manager oma aknaid näitab:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Puhasta
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Klient
+#. text in the Options window
+#, machine
+	Clock:	Kell:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Sulge
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Sulge menüü või dialoog
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Valmis
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Tihendatud
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Küsi kinnitust enne allalaadimiste kustutamist
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Kinnita allalaadimiste kustutamine
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Ühendan...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Ühendus
+#. page title in the Options window
+#, machine
+	Connections and Limits	Ühendused ja piirangud
+#. text in the Options window
+#, machine
+	Connections:	Ühendused:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Kopeeritud lõikelauale.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Kopeeri
+#. window title in a dialog box
+#, machine
+	Create folder	Loo kaust
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Kohanda dialoogi „Allalaadimise edenemine”
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Kohanda klahve allalaadimise vältimiseks või sundimiseks MDM-iga
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Kohanda MDM-i allalaadimispaneele brauserites
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Kohanda MDM-i menüüelemente brauserite kontekstimenüüs
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Iga päev
+#. text in the Options window
+#, machine
+	Date order:	Kuupäeva järjekord:
+#. page title in the Options window
+#, machine
+	Dates and times	Kuupäevad ja kellaajad
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Päev, kuu, aasta
+#. text in the Scheduler window
+#, machine
+	December	Detsember
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Vaikesäte
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Kategooria „{category}” allalaadimiste vaikekaust
+#. page title in the Options window
+#, machine
+	Default download settings	Allalaadimise vaikesätted
+#. text in the Options window
+#, machine
+	Default max. conn. number	Ühenduste vaike maksimumarv
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Kustuta
+#. message or event log entry in the main window
+#, machine
+	Delete category	Kustuta kategooria
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Kustuta järjekord
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Kas kustutada kategooria „{category}”? Selle allalaadimised muutuvad üldiseks; nende failid jäävad oma kohale.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Kas kustutada järjekord „{queue}”? Selle allalaadimised jäävad loendisse.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Kustuta valitud allalaadimised (küsimisega)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Kustuta valitud allalaadimised ja nende failid (küsimisega)
+#. text in a dialog box
+#, machine
+	Description	Kirjeldus
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Kirjeldus või osa kirjeldusest
+#. text in a download's Properties window
+#, machine
+	Description:	Kirjeldus:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	kettaviga: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	kuvatakse järjekordade loendis
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Ära alusta allalaadimist, vaid lisa failid järjekorda
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Kas soovite selle luua?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Dokumendid
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Ära seda dialoogi enam näita
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Ära alusta allalaadimist automaatselt järgmistelt aadressidelt:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Ära alusta allalaadimist automaatselt järgmistelt saitidelt:
+#. text in a download's progress window
+#, machine
+	Done	Valmis
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Laadi alla
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Kas laadida „{name}” uuesti algusest peale? Valmis fail asendatakse, kui uus allalaadimine on lõpule viidud.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Allalaadimine lõpetatud
+#. text in the Options window
+#, machine
+	Download failed	Allalaadimine nurjus
+#. window title in a dialog box
+#, machine
+	Download File Info	Allalaaditava faili teave
+#. button in a dialog box
+#, machine
+	Download Later	Laadi alla hiljem
+#. window title in a dialog box
+#, machine
+	Download later	Laadi alla hiljem
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Allalaadimise piirangud
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Laadi alla mitte rohkem kui {mb} MB\niga {hours} tunni järel
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Laadi alla kohe
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Allalaadimispaneelid
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Allalaadimise olek
+#. window title in the Download video window
+#, machine
+	Download video from a page	Laadi video lehelt alla
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Laadi alla {files} faili korraga
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Allalaaditud
+#. page title in the Options window
+#, machine
+	Downloaded file types	Allalaaditud failitüübid
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	Allalaaditud {size} ({bytes} baiti)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Allalaadimine
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Uuesti allalaadimine algusest peale
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	Allalaadimine ja ffmpeg-i kontrollimine (umbes 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	Allalaadimine ja yt-dlp kontrollimine...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Allalaadimised
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Allalaadimised peatati ja jätkuvad automaatselt kell {time}.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Lohistage lingid siia allalaadimiseks
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Korduv allalaadimislink
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Redigeeri
+#. text in the Options window
+#, machine
+	Edit exception	Redigeeri erandit
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Redigeeri loendit...
+#. text in the Options window
+#, machine
+	Edit login	Redigeeri sisselogimist
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Redigeeri...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	E-post
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Sisestage magnetlink või valige .torrent-fail
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Sisestage uue järjekorra nimi, mis on
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Sisestage uus allalaadimisaadress
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Sisestage järjekorra nimi
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Viga
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Viga: {error}
+#. text in the Options window
+#, machine
+	Event	Sündmus
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Näide:
+#. text in the Options window
+#, machine
+	Exceptions:	Erandid:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Välju
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Välju Mister Download Managerist, kui valmis
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Eeldatav kontrollsumma (MD5, SHA-1, SHA-256, SHA-512 või CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Eeldatav kontrollsumma määratud ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Ekspordi
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Laiendage Manifest 2 Chrome'i laienduste kättesaadavust
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Laiendid eraldatud tühikutega, näiteks MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Veebruar
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Fail
+#. text in the Scheduler window
+#, machine
+	File Name	Faili nimi
+#. text in the Download video window
+#, machine
+	File name	Faili nimi
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Faili nimi või osa nimest
+#. window title in a download's Properties window
+#, machine
+	File Properties	Faili atribuudid
+#. text in a download's progress window
+#, machine
+	File size	Faili suurus
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Failitüübid
+#. text in categories.rs
+#, machine
+	File types:	Failitüübid:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Failid
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Failid lähevad kausta: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Failid järjekorras
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Otsi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Otsi allalaadimist
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Otsi faili
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Otsi järgmist vastet
+#. text in the Find window
+#, machine
+	Find:	Otsi:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Lõpetatud
+#. text in the Options window
+#, machine
+	First day of the week:	Nädala esimene päev:
+#. text in the Batch download window
+#, machine
+	First file:	Esimene fail:
+#. text in categories.rs
+#, machine
+	Folder:	Kaust:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Näiteks: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Ainult teie Windowsi konto jaoks. Teine rakendus, mis on valitud jaotises „Ava koos”, jääb esimeseks.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Sunni protsessid lõppema
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Re
+#. text in the Scheduler window
+#, machine
+	Friday	Reede
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	magnetlingilt
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	lehelt (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	torrenti failist
+#. message or event log entry in the main window
+#, machine
+	from the browser	brauserist
+#. message or event log entry in the main window
+#, machine
+	from the command line	käsurealt
+#. text in the Batch download window
+#, machine
+	From:	Alates:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Üldine
+#. button in the Options window
+#, machine
+	Get System	Hangi süsteem
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Faililoendi hankimine kaaslastelt... {n} s
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Katkesta modemiühendus, kui valmis
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	On
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Abi
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Talveunne
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Peida &kategooriad
+#. button in a download's progress window
+#, machine
+	Hide tab	Peida vahekaart
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Koduleht
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Laadin alla Mister Download Manageriga: kiire, tasuta ja näeb välja nagu allalaadimishaldur, mida juba tunnete. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Kui lisatakse duplikaat allalaadimislink:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Kui olemasolev fail on täielik, näita allalaadimise lõpetamise dialoogi; vastasel juhul jätka seda.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Ignoreeri faili muutmise aja muutusi allalaadimise jätkamisel
+#. message or event log entry in the main window
+#, machine
+	Import	Impordi
+#. window title in transfer.rs
+#, machine
+	Import downloads	Impordi allalaadimised
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	Järjekorras
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Teave
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Info räsi
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	Install ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	Install yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	Sobivatu aadress
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	MDM-i allalaadimisjärjekorda on võimalik lisada järjestikuste failinimede rühm, nt img001.jpg, img002.jpg jne,\nimg100.jpg. Kasutage failinime mustri jaoks tärni asendusmärki.
+#. text in the Scheduler window
+#, machine
+	January	Jaanuar
+#. text in the Scheduler window
+#, machine
+	July	Juuli
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Hüppa allalaadimise juurde, mille nimi sellega algab
+#. text in the Scheduler window
+#, machine
+	June	Juuni
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KB/sek
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Jaga torrenteid pärast nende lõppemist
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Kiirklahvid
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Klahvid...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Keel
+#. text in the Batch download window
+#, machine
+	Last file:	Viimane fail:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Viimane katse {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Hiljem
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Käivita Mister Download Manager käivitamisel
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Tähed
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Litsentsid ja autorid
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Piira kõiki allalaadimisi kokku
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Sisselogimine
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Otsi
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Lehte otsitakse...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Peamine allalaadimisjärjekord
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Muuda valikut pikemaks või lühemaks
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Käsitsi puhverserveri/SOCKS-i konfiguratsioon
+#. text in the Scheduler window
+#, machine
+	March	Märts
+#. checkbox in the Find window
+#, machine
+	Match case	Erista suurt ja väikest tähte
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Vasta ainult tervele stringile
+#. group box title in the Options window
+#, machine
+	Max. connections number	Maks. ühenduste arv
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Maksimaalne allalaadimiskiirus ühe faili kohta {kb} KB/sek
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Maksimaalne allalaadimiskiirus:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Mai
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Puudub
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manageri konfiguratsioon
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager kirjutab iga ühenduse otse lõplikku\nfaili (hõre osafail selle kõrval), seega pole vaja ajutist kataloogi ega\nkokkupanekut.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} on saadaval (välja antud {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	E
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Esmaspäev
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Kuu, päev, aasta
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Teisalda
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Liiguta lehte üles/alla
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Teisalda või nimeta valitud allalaadimine ümber
+#. text in a download's Properties window
+#, machine
+	Move to folder	Teisalda kausta
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Teisalda järjekorda
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Teisalda valikut muutmata
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Teisalda/nimeta ümber
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	palju aeglasem kui teised ühendused; ühendatakse uuesti
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Muusika
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Minu enda viis:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	Nr.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Nimi
+#. text in categories.rs
+#, machine
+	Name:	Nimi:
+#. text in errors.rs
+#, machine
+	network error	võrguviga
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Ära kunagi näita seda nendel saitidel:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Uus
+#. text in the Options window
+#, machine
+	New exception	Uus erand
+#. text in the Options window
+#, machine
+	New login	Uus sisselogimine
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Ei
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	andmekausta pole
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	torrentide jaoks andmekausta pole
+#. text in langpick.rs
+#, machine
+	No language matches.	Ükski keel ei sobi.
+#. text in the Options window
+#, machine
+	No proxy/socks	Proxyt/SOCKS-i pole
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Sellel lehel pole videot, mida saaks alla laadida
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Failist {file} ei leitud veebiaadresse.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Puudub: kaaslased tulevad DHT-st ja teistelt kaaslastelt
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	See pole kontrollsumma, mida saab lugeda
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	ebapiisavalt kettaruumi: vaja {needed}, vaba {free}
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Pole järjekorras
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Kasutamata: failiosad kirjutatakse faili kõrvale
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Märkus: Interneti-serverid võivad ühenduse katkestada, kui kiirus on liiga piiratud! Seega ei ole\nsoovitatav kasutada kiirusepiirajat allalaadimiseks serveritest, mis ei toeta\njätkamise funktsiooni.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Märkus: Need sätted ei ole seotud järjekorra töötlemisega
+#. text in the Scheduler window
+#, machine
+	November	November
+#. text in the Options window
+#, machine
+	Number	Number
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Iga faili uuesti proovimiste arv, kui allalaadimine ebaõnnestus:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Numbrid
+#. text in the Scheduler window
+#, machine
+	October	Oktoober
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Väljas: lõpetatud torrent peatub nagu iga allalaadimine.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Paku allalaadimiseks lõikelauale kopeeritud linke
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	OK
+#. text in a download's progress window
+#, machine
+	on download stop/resume	allalaadimise peatamisel/jätkamisel
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Üks kord kell
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Ühekordne allalaadimine
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Ainult siis, kui kasutan arvutit
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Ava
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Ava magnetlingid ja .torrent-failid Mister Download Manageriga
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Ava Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Ava järgmine fail, kui valmis
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Ava pärast valmimist järgmine fail:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Ava valitud allalaadimine
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Ava valitud allalaadimise menüü
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Ava torrentifail
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Suvandid
+#. text in a download's progress window
+#, machine
+	Options on completion	Suvandid valmimisel
+#. text in the Download video window
+#, machine
+	Page address	Lehe aadress
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Parool
+#. text in the Options window
+#, machine
+	Password:	Parool:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Kleepige magnetlink või valige .torrent-fail, seejärel otsige.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Peata
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Peatatud
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Kaaslased
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Perioodiline sünkroonimine
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Tükid
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Esita
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	Port
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Eelvaade
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Programmid
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Valitud allalaadimise atribuudid
+#. text in a download's progress window
+#, machine
+	Property	Atribuut
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Puhverserver / Socks
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Puhverserveri / Socks-i konfiguratsioon
+#. label in the Options window
+#, machine
+	Proxy server address	Puhverserveri aadress
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Järjekord nr {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Järjekorra töötlemine algas
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Järjekorra töötlemine peatatud/lõpetatud
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Järjekorrad
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Faililoendi lugemine...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Torrenti lugemine...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Vastu võetud
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Andmete vastuvõtmine...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Laadi uuesti alla
+#. text in a download's Properties window
+#, machine
+	Referer:	Viitaja:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Piirkondlik
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Jäta selle faili kiirusepiiraja sätted meelde
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Jäta see tee meelde kategooria „{category}” jaoks
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Eemalda
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Asenda tärn
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Tulemus: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Jätka
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Jätkamise võimalus
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Jätkati
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Uuesti proovimine: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	P&eata
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	L
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Laupäev
+#. text in a dialog box
+#, machine
+	Save As	Salvesta nimega
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Salvesta asukohta
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Salvesta asukohta...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Salvesta asukohta:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Salvestatud asukohta
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Ajakava
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Ajastaja
+#. text in langpick.rs
+#, machine
+	Search:	Otsi:
+#. text in the Batch download window
+#, machine
+	Second file:	Teine fail:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Vali kõik
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Vali kõik allalaadimised
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Vali kõik allalaadimised kuni selle allalaadimiseni
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Ära vali ühtegi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Vali või tühista ühe allalaadimise valik
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Vali või tühista punktjoonega allalaadimise valik
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Vali helid Mister Download Manageri sündmuste jaoks
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Vali kastis olevad allalaadimised
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Vali esimene / viimane allalaadimine
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Vali eelmine / järgmine allalaadimine
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Valitud: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Saada see sõbrale:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Saadetud
+#. text in the Scheduler window
+#, machine
+	September	September
+#. text in the Options window
+#, machine
+	Server	Server
+#. text in the Options window
+#, machine
+	Server:	Server:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Määra faili loomise kuupäev serveri antud kuupäevaks
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Jagatud suhe
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Jagamine
+#. text in the download list
+#, machine
+	Show	Näita
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Näita &kategooriaid
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Kuva dialoog ja küsi, mida teha.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Kuva brauserites videote kohal allalaadimisnupp
+#. button in the download list
+#, machine
+	Show all	Näita kõiki
+#. text in a download's progress window
+#, machine
+	Show details >>	Näita üksikasju >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Kuva allalaadimise lõpetamise dialoog
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Kuva järjekorra valikupaneel pakettallalaadimise dialoogide sulgemisel
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Kuva järjekorra valikupaneel nupu „Laadi hiljem alla” vajutamisel
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Kuva allalaadimise alustamise dialoog
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Kuva hoiatus enne allalaadimiste peatamist
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Kuvatakse torrenti allalaadimise ajal.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Lülita välja
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Saidi nimi/allalaadimislink/vanem veebileht/viitaja
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Sait/tee
+#. text in the Options window
+#, machine
+	Site/path:	Sait/tee:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Saitide sisselogimised
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Suurus
+#. text in the Download video window
+#, machine
+	size unknown	suurus teadmata
+#. text in a download's Properties window
+#, machine
+	Size:	Suurus:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Vahele jäetud
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Unerežiim
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Mõned
+#. text in the Options window
+#, machine
+	Sound file	Helifail
+#. page title in the Options window
+#, machine
+	Sound settings	Helisätted
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Helid
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Lähtekood
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Kiirusepiiraja
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Kiirusepiiraja sätted
+#. button in a dialog box
+#, machine
+	Start Download	Alusta allalaadimist
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Alusta allalaadimist kell
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Alusta allalaadimist Mister Download Manageri käivitamisel
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Alusta allalaadimist kohe, kuvades samal ajal dialoogi „Allalaadimise failiteave”
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Käivita peamine allalaadimisjärjekord
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Alguspositsioonid ja allalaadimise edenemine ühenduste kaupa
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Käivita järjekord kohe
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Käivita {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Käivitatud
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	Käivitati yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Olek
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Olek:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Peata allalaadimine kell
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Peata peamine allalaadimisjärjekord
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Peata {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Peatatud
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Peatub allalaadimise lõppemisel
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	P
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Pühapäev
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Sünkroonimisjärjekord
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Räägi sõbrale
+#. group box title in the Options window
+#, machine
+	Temporary directory	Ajutine kaust
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	Ne
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	selle jaoks hoitud .torrent-fail on kadunud
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Aadress peab olema http(s)- või ftp(s)-aadress
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Parimad kvaliteedid vajavad video ja heli ühendamiseks ffmpeg-i (umbes 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Arvuti läheb unerežiimi {n} sekundi pärast.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Arvuti läheb talveunne {n} sekundi pärast.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Arvuti lülitub välja {n} sekundi pärast.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	ühendus suleti enne osa valmimist
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	ühendus katkes andmete vastuvõtmisel
+#. text in errors.rs
+#, machine
+	the disk is full	ketas on täis
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Allalaadimise piirang ({mb} MB iga {hours} tunni järel) on saavutatud.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	allalaadimislink on aegunud (värskendage allalaadimisaadressi)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Allalaadimishaldur, mida te juba tunnete, on uuesti ehitatud kiiremaks. Tasuta ja avatud lähtekoodiga GNU GPL versiooni 3 või uuema alusel. Videod leitakse yt-dlp abil; torrenteid käitab librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Allalaadimisjärjekord on valmis.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	draiv või võrgujagamine pole enam saadaval
+#. text in errors.rs
+#, machine
+	the file changed on the server	fail muutus serveris
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Faili ei saanud teisaldada
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Faili ei saanud lugeda: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Fail EI vasta ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Fail vastab ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Fail salvestati nimega
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Failitüübid, mida pole üheski teises kategoorias loetletud
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	faili {algorithm} kontrollsumma ei ühti (andmed on alles; laadige uuesti alla)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Kausta ei saanud luua: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	kaust {path} pole saadaval (draiv eemaldatud või võrgujagamine võrguühenduseta?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP-server vastas {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Loendit ei saanud salvestada: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	tee on Windowsi jaoks liiga pikk: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	väljaandel pole versiooni
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	Turvaline ühendus nurjus
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Valitud allalaadimine pole lõpule viidud. Kas olete kindel, et soovite selle\nMister Download Manageri allalaadimiste loendist kustutada?
+#. text in errors.rs
+#, machine
+	the server answered {status}	server vastas {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	server ei saa faili osi saata, seega ei saa seda jätkata
+#. text in errors.rs
+#, machine
+	the server did not answer in time	server ei vastanud õigeaegselt
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	server ei saatnud soovitud osa
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	server on hõivatud ({status}); proovige hiljem uuesti
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	server saatis faili asemel veebilehe (vajalik sisselogimine või link aegunud?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	server saatis faili ootamatu osa ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Torrentit ei saanud salvestada: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	torrentit pole enam olemas
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Veebileht, kust see fail saadi:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Selle nimega kategooria on juba olemas
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Need sätted pole saadaval, kui „Kuva allalaadimise lõpetamise dialoog” on sisse lülitatud
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	See aadress on juba allalaadimiste loendis:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Seda kausta ei eksisteeri:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	See torrent on juba allalaadimiste loendis
+#. text in the Scheduler window
+#, machine
+	Thursday	Neljapäev
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Aega jäänud
+#. text in the Batch download window
+#, machine
+	To:	Kuni:
+#. text in errors.rs
+#, machine
+	too many redirects	liiga palju ümbersuunamisi
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Torrenti allalaadimised (magnetlingid ja .torrent-failid)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Torrenti failid
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Torrenti sätted
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrendid
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	torrente ei saanud käivituda: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Jälgija
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Jälgijad
+#. text in a download's progress window
+#, machine
+	Transfer rate	Edastuskiirus
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	Te
+#. text in the Scheduler window
+#, machine
+	Tuesday	Teisipäev
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Lülita välja
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Lülita arvuti pärast lõpetamist välja
+#. button in a dialog box
+#, machine
+	Turn off now	Lülita kohe välja
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Lülita sisse
+#. text in a download's Properties window
+#, machine
+	Type:	Tüüp:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Lõpetamata
+#. text in a download's Properties window
+#, machine
+	Unknown	Tundmatu
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	tundmatu
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Uuendusi ei saanud kontrollida: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Kasuta täiustatud brauseri integreerimist
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Kasuta autoriseerimist
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Kasuta automaatset konfiguratsiooniskripti
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	Kasuta FTP-d PASV-režiimis
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Kasuta puhverserverit/SOCKS-i brauseri päringust, kui esineb allalaadimisvigu /\nbrauserist pealt võetud allalaadimiste jaoks
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Kasuta kiirusepiirajat
+#. text in the Options window
+#, machine
+	Use system settings	Kasuta süsteemi sätteid
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Kasuta seda puhverserverit järgmiste protokollide jaoks:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Kasutatakse allalaadimiste loendis ja ajastajas.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Kasutaja
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Kasutajanimed ja paroolid serverite/saitide jaoks
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	Kasutaja-agent käsitsi lisatud allalaadimiste jaoks:
+#. text in the Options window
+#, machine
+	User:	Kasutaja:
+#. label in the Options window
+#, machine
+	UserName	Kasutajanimi
+#. text in a download's progress window
+#, machine
+	Value	Väärtus
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Kontrolli
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Kontrolli kontrollsummat
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Kontrollin...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Versioon {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Video
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videootsingud kasutavad yt-dlp-d (umbes 23 MB, kontrollitud signatuuri alusel).
+#. text in the Options window
+#, machine
+	Virus checking settings	Viirusekontrolli sätted
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Ootel
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Ootel: allalaadimise piirang on saavutatud (ajakava)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Ko
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Veeb
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Failist {file} leitud veebiaadressid:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Kolmapäev
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	Mis on uut:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Metamärgi suurus
+#. text in langpick.rs
+#, machine
+	Windows' language	Windowsi keel
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windowsi keel ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	URL-i lisamisega
+#. group box title in the Options window
+#, machine
+	Write dates and times	Kuupäevade ja kellaaegade kirjutamine
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	Aasta, kuu, päev
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Jah
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Teil on Mister Download Manageri uusim versioon ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Teil on versioon {version}.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp pole installitud (Ülesanded → Laadi video lehelt alla installib selle)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm}i kontrollsumma
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: kontrollitakse allalaadimise lõppedes
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} sisaldab
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} fail
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} {total}st ({size} igaüks)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} {total}st osast ({size} igaüks)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} tund(i) {m} min
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} ühendatud, {known} teada
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} min {s} sek
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (auto)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} {total}st valitud
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} baiti)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} on selle {file_system} draivi jaoks liiga suur (failid kuni 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} sek
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what}i ei saanud installida: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Lisatud
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Kirjeldus
+#. column title in the download list in the download list
+#, machine
+column	File Name	Failinimi
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Viimase proovimise kuupäev
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	J
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Suurus
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Allikas
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Olek
+#. column title in the download list in the download list
+#, machine
+column	Time left	Aega jäänud
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Edastuskiirus
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Nupu sätted...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Laadi video alla
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Laadi alla rakendusega Mister Download Manager
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Liigutamiseks lohistage video serva mööda
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Annab allalaadimised brauserist rakendusele Mister Download Manager.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Peida sellel videol
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager ei vastanud
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager-i integreerimismoodul
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Rohkem valikuid
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Mitte kunagi saidil {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Saadetud rakendusse Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+klõps
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Üles / Ctrl+Alla
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Kustuta
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Lohista tühjale kohale
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+klõps
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Kustuta
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+Üles / Shift+Alla
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Sisesta nimi
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Üles / Alla
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Teave Mister Download Manageri &kohta
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	&Lisa uus allalaadimine
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	&Kustuta kõik lõpetatud
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	&Laadi kohe alla
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Välju
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Impordi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Kiirklahvid
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Keel...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Suvandid
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	&Peata kõik
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Eemalda
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	&Teata probleemist
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Ajasti ja järjekorrad
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&Peata kõik
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	&Peata allalaadimine
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&Salvesümbol
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Õpetused
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&Video allalaadimised
+#. menu command in the main window
+#, machine
+menu	3D Style	3D-stiil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Lisa &pakettallalaadimine
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Lisa &magnetlink...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Lisa pakktõmbamine &lõikelaualt
+#. menu command in the main window
+#, machine
+menu	Add category	Lisa kategooria
+#. menu command in the main window
+#, machine
+menu	Arrange files	Korralda faile
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Sirvi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	&Kirjelduse järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	&Failinime järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	&Viimase proovimise kuupäeva järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	&Lisamise järjekorra järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	&Suuruse järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	&Järelejäänud aja järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Lisamise &kuupäeva järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Ema&veebilehe järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	R&efereri järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Salvestamise &tee järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Olek&u järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	&Ülekandekiiruse järgi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	&Kohanda URL-i loendit...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Otsi &värskendusi...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Puhasta kõik &filtrid
+#. menu command in the main window
+#, machine
+menu	Create new queue	Loo uus järjekord
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Kohanda...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Tume režiimi tugi
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Kustuta
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Kustuta järjekorrast
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	Laadi &video lehelt alla...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	E&kspordi
+#. menu command in the main window
+#, machine
+menu	Edit queue	Muuda järjekorda
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Otsi (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Otsi järgmine (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Font
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	&IDM-i ekspordifailist...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	&Tekstifailist...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&Spikri sisu
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Peida sihtmärk
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Suured nupud
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Otsi uusi tööriistaribasid
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manageri &koduleht
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Teisalda/nimeta ümber (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neoon
+#. menu command in the main window
+#, machine
+menu	On Double click	Topeltklõpsul
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Ava
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Ava &torrendifail...
+#. menu command in the main window
+#, machine
+menu	Open folder	Ava kaust
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Ava rakendusega...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Atribuudid
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Laadi &uuesti alla
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Laadi uuesti alla
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Värskenda allalaadimisaadress
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Eemalda
+#. menu command in the main window
+#, machine
+menu	Resume Download	Jätka allalaadimist
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&Ajasti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&Sätted...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	&Peata järjekord
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Ajasta
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Kuva &sihtkoht
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Kuva Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Väikesed nupud
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Kiiruse &piiraja
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	&Käivita järjekord
+#. menu command in the main window
+#, machine
+menu	Start now	Alusta kohe
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Peata
+#. menu command in the main window
+#, machine
+menu	Stop Download	Peata allalaadimine
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Räägi &sõbrale
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	Ekspordi &IDM-i faili...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	&Tekstifaili...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Tööriistariba
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Torrendi &sätted...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	Lülita &sisse
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Lülita &välja
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Kontrolli kontrollsummat...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Allalaadimised
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Fail
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Spikker
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Ülesanded
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Vaade
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Lisa torrent
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	Lisa URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Kustuta
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Kustuta lõpetatud
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Suvandid
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Jätka
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Ajasti
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Käivita järjekord
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Peata
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Peata kõik
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Peata järjekord
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/s
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/s

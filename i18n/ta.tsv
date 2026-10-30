@@ -1,0 +1,2552 @@
+# Mister Download Manager in Tamil (தமிழ்): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	தமிழ்
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	வட்டில் இருந்து {n} கோப்பையும் நீக்கவும்|வட்டில் இருந்து {n} கோப்புகளையும் நீக்கவும்
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து {n} பதிவிறக்கத்தை நீக்க விரும்புகிறீர்களா?|Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து இந்த {n} பதிவிறக்கங்களை நீக்க விரும்புகிறீர்களா?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} {n} இணைப்பு அனுமதிக்கிறது|{host} {n} இணைப்புகளை அனுமதிக்கிறது
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} பைட்|{n} பைட்டுகள்
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} கோப்பு|{n} கோப்புகள்
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&பயன்படுத்து
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&மூடு
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&நீக்கு
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&உதவி
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&புதிய வரிசை
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&இப்போது தொடங்கு
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(பெயர்களை இடைவெளிகளால் பிரிக்கவும்)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-மணிநேரம் (9:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-மணிநேரம் (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< விவரங்களை மறை
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Mister Download Manager பற்றி
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	பதிவிறக்கத்தைச் சேர் (URL சேர்)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	தொகுப்புப் பதிவிறக்கத்தைச் சேர்
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	உலாவி சேர்...
+#. text in categories.rs
+#, machine
+	Add category	வகை சேர்
+#. text in the tray icon's menu
+#, machine
+	Add new download	புதிய பதிவிறக்கத்தைச் சேர்
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	நகலைச் சேர்த்து, ஏற்கனவே உள்ள கோப்பை மேலெழுதவும்
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	எண்ணிடப்பட்ட கோப்புப் பெயருடன் நகலைச் சேர்
+#. message or event log entry in the main window
+#, machine
+	Add to queue	வரிசையில் சேர்
+#. text in a dialog box
+#, machine
+	Add to queue:	வரிசையில் சேர்:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	டாரண்ட்டைச் சேர்
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	{source} சேர்க்கப்பட்டது
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	முகவரி
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	முகவரி {host} என மாற்றப்பட்டது
+#. text in a download's Properties window
+#, machine
+	Address:	முகவரி:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	மேம்பட்ட / SOCKS...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	அனைத்து பதிவிறக்கங்களும்
+#. message or event log entry in the main window
+#, machine
+	All files	அனைத்து கோப்புகள்
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	ஏற்கனவே பதிவிறக்கப்பட்டு வருகிறது: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	வட்டில் இருந்து கோப்பையும் நீக்கவும்
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager தொடங்கும் போது எப்போதும் வேகக் கட்டுப்படுத்தியை இயக்கவும்
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	ஏப்ரல்
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து "{name}" என்பதை நீக்க விரும்புகிறீர்களா?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	கணினியின் பிராந்தியம் எழுதுவது போல
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	கோப்புப் பட்டியலுக்காக பியர்களைக் கேட்கிறது. மேக்னட் இணைப்புகள் ஒன்று அல்லது இரண்டு நிமிடங்கள் ஆகலாம்.
+#. text in the Scheduler window
+#, machine
+	August	ஆகஸ்ட்
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	பின்வரும் கோப்பு வகைகளை "{category}" வகைக்கு தானாகவே சேர்க்கவும்:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	பின்வரும் கோப்பு வகைகளை தானாகவே பதிவிறக்கத் தொடங்கு:
+#. window title in the Batch download window
+#, machine
+	Batch download	மொத்தப் பதிவிறக்கம்
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	உலாவுக
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	உலாவுக...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	உலாவி/சிஸ்டம் ஒருங்கிணைப்பு
+#. message or event log entry in the main window
+#, machine
+	by batch download	மொத்தப் பதிவிறக்கம் மூலம்
+#. message or event log entry in the main window
+#, machine
+	by import	இறக்குமதி மூலம்
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	ரத்துசெய்
+#. text in errors.rs
+#, machine
+	cancelled	ரத்து செய்யப்பட்டது
+#. text in errors.rs
+#, machine
+	cannot connect to the server	சேவையகத்துடன் இணைக்க முடியவில்லை
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	"{text}" ஐக் கண்டறிய முடியவில்லை
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	கோப்பைப் படிக்க முடியவில்லை: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	மீண்டும் தொடங்க முடியவில்லை: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	பின்வரும் உலாவிகளில் இருந்து பதிவிறக்கங்களைப் பிடிக்கவும்:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	வகைகள்
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	வகைகள், கோப்பு வகைகள், கோப்புறைகள்
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	வகை
+#. text in categories.rs
+#, machine
+	Category properties	வகை பண்புகள்
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	கடைசியாகத் தேர்ந்தெடுக்கப்பட்டதில் "{category}" வகையின் கோப்புறையை மாற்றவும்
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	புதுப்பிப்புகளைச் சரிபார்க்கவும்
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	வாரத்திற்கு ஒருமுறை புதுப்பிப்புகளைச் சரிபார்க்கவும்
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	புதுப்பிப்புகளைச் சரிபார்க்கிறது...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	சரிபார்க்கிறது...
+#. text in langpick.rs
+#, machine
+	Choose a language	ஒரு மொழியைத் தேர்வுசெய்யவும்
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager அதன் சாளரங்களைக் காட்டும் மொழியைத் தேர்வுசெய்யவும்:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	அழி
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	கிளையன்ட்
+#. text in the Options window
+#, machine
+	Clock:	கடிகாரம்:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	மூடு
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	ஒரு மெனு அல்லது உரையாடலை மூடு
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	முடிந்தது
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	சுருக்கப்பட்டது
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	பதிவிறக்கங்களை நீக்கும் முன் உறுதிப்படுத்து
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	பதிவிறக்கங்களை நீக்குவதை உறுதிப்படுத்தவும்
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	இணைக்கிறது...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	இணைப்பு
+#. page title in the Options window
+#, machine
+	Connections and Limits	இணைப்புகள் மற்றும் வரம்புகள்
+#. text in the Options window
+#, machine
+	Connections:	இணைப்புகள்:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	நகலெடு
+#. window title in a dialog box
+#, machine
+	Create folder	கோப்புறையை உருவாக்கு
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	"பதிவிறக்க முன்னேற்றம்" உரையாடலைத் தனிப்பயனாக்கு
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	MDM உடன் பதிவிறக்குவதைத் தடுக்க அல்லது கட்டாயப்படுத்த விசைகளைத் தனிப்பயனாக்கு
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	உலாவிகளில் MDM பதிவிறக்கப் பேனல்களைத் தனிப்பயனாக்கு
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	உலாவிகளின் சூழல் மெனுவில் MDM மெனு உருப்படிகளைத் தனிப்பயனாக்கு
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	தினசரி
+#. text in the Options window
+#, machine
+	Date order:	தேதி வரிசை:
+#. page title in the Options window
+#, machine
+	Dates and times	தேதிகளும் நேரங்களும்
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	நாள், மாதம், வருடம்
+#. text in the Scheduler window
+#, machine
+	December	டிசம்பர்
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	இயல்புநிலை
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	"{category}" வகைக்கு இயல்புநிலை பதிவிறக்க அடைவு
+#. page title in the Options window
+#, machine
+	Default download settings	இயல்புநிலை பதிவிறக்க அமைப்புகள்
+#. text in the Options window
+#, machine
+	Default max. conn. number	இயல்புநிலை அதிகபட்ச இணைப்பு எண்
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	நீக்கு
+#. message or event log entry in the main window
+#, machine
+	Delete category	வகை நீக்கப்பட்டது
+#. message or event log entry in the main window
+#, machine
+	Delete queue	வரிசை நீக்கப்பட்டது
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" வகையை நீக்கவா? அதன் பதிவிறக்கங்கள் பொதுவானதாக மாறும்; அவற்றின் கோப்புகள் இருக்கும் இடத்திலேயே இருக்கும்.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" வரிசையை நீக்கவா? அதன் பதிவிறக்கங்கள் பட்டியலில் இருக்கும்.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	தேர்ந்தெடுத்த பதிவிறக்கங்களை நீக்கு (முதலில் கேட்கும்)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	தேர்ந்தெடுத்த பதிவிறக்கங்களையும் அவற்றின் கோப்புகளையும் நீக்கு (முதலில் கேட்கும்)
+#. text in a dialog box
+#, machine
+	Description	விளக்கம்
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	விளக்கம் அல்லது விளக்கத்தின் ஒரு பகுதி
+#. text in a download's Properties window
+#, machine
+	Description:	விளக்கம்:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	வட்டுப் பிழை: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	வரிசைகளின் பட்டியலில் காட்டப்படும்
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	பதிவிறக்கத்தைத் தொடங்க வேண்டாம், கோப்புகளை வரிசையில் மட்டும் சேர்க்கவும்
+#. text in a dialog box
+#, machine
+	Do you want to create it?	அதை உருவாக்க விரும்புகிறீர்களா?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	ஆவணங்கள்
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	இந்த உரையாடலை மீண்டும் காட்டாதே
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	பின்வரும் முகவரிகளிலிருந்து தானாகவே பதிவிறக்கத்தைத் தொடங்க வேண்டாம்:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	பின்வரும் தளங்களிலிருந்து தானாகவே பதிவிறக்கத்தைத் தொடங்க வேண்டாம்:
+#. text in a download's progress window
+#, machine
+	Done	முடிந்தது
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	பதிவிறக்கு
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" என்பதை மீண்டும் முதலில் இருந்து பதிவிறக்கவா? புதிய பதிவிறக்கம் முடிந்ததும் முடிக்கப்பட்ட கோப்பு மாற்றப்படும்.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	பதிவிறக்கம் முடிந்தது
+#. text in the Options window
+#, machine
+	Download failed	பதிவிறக்கம் தோல்வியடைந்தது
+#. window title in a dialog box
+#, machine
+	Download File Info	கோப்புத் தகவலைப் பதிவிறக்கு
+#. button in a dialog box
+#, machine
+	Download Later	பின்னர் பதிவிறக்கு
+#. window title in a dialog box
+#, machine
+	Download later	பின்னர் பதிவிறக்கு
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	பதிவிறக்க வரம்புகள்
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB-க்கு மேல் பதிவிறக்க வேண்டாம்\nஒவ்வொரு {hours} மணிநேரத்திற்கும்
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	இப்போது பதிவிறக்கு
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	பதிவிறக்கப் பேனல்கள்
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	பதிவிறக்க நிலை
+#. window title in the Download video window
+#, machine
+	Download video from a page	ஒரு பக்கத்திலிருந்து வீடியோவைப் பதிவிறக்கு
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	ஒரே நேரத்தில் {files} கோப்புகளைப் பதிவிறக்கு
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	பதிவிறக்கப்பட்டது
+#. page title in the Options window
+#, machine
+	Downloaded file types	பதிவிறக்கப்பட்ட கோப்பு வகைகள்
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} பைட்டுகள்) பதிவிறக்கப்பட்டது
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	பதிவிறக்கப்படுகிறது
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	மீண்டும் முதலில் இருந்து பதிவிறக்கப்படுகிறது
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (சுமார் 80 MB) பதிவிறக்கி சரிபார்க்கிறது...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	yt-dlp பதிவிறக்கி சரிபார்க்கிறது...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	பதிவிறக்கங்கள்
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	பதிவிறக்கங்கள் நிறுத்தப்பட்டு, {time} மணிக்கு தானாகவே மீண்டும் தொடங்கும்.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	பதிவிறக்க இணைப்புகளை இங்கே இழுத்து விடுங்கள்
+#. window title in a dialog box
+#, machine
+	Duplicate download link	நகல் பதிவிறக்க இணைப்பு
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	திருத்து
+#. text in the Options window
+#, machine
+	Edit exception	விதிவிலக்கைத் திருத்து
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	பட்டியலைத் திருத்து...
+#. text in the Options window
+#, machine
+	Edit login	உள்நுழைவைத் திருத்து
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	திருத்து...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	மின்னஞ்சல்
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	ஒரு மேக்னட் இணைப்பை உள்ளிடவும் அல்லது .torrent கோப்பைத் தேர்ந்தெடுக்கவும்
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	புதிய வரிசைக்கான பெயரை உள்ளிடவும்
+#. window title in a dialog box
+#, machine
+	Enter new address to download	பதிவிறக்க புதிய முகவரியை உள்ளிடவும்
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	வரிசை பெயரை உள்ளிடவும்
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	பிழை
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	பிழை: {error}
+#. text in the Options window
+#, machine
+	Event	நிகழ்வு
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	எடுத்துக்காட்டு:
+#. text in the Options window
+#, machine
+	Exceptions:	விதிவிலக்குகள்:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	வெளியேறு
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	முடிந்ததும் Mister Download Manager-ஐ விட்டு வெளியேறு
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	எதிர்பார்க்கப்படும் செக்சம் (MD5, SHA-1, SHA-256, SHA-512 அல்லது CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	எதிர்பார்க்கப்படும் செக்சம் அமைக்கப்பட்டது ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	ஏற்றுமதி
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome நீட்டிப்புகளின் இருப்பை நீட்டிக்கவும்
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	இடைவெளிகளால் பிரிக்கப்பட்ட நீட்டிப்புகள், எடுத்துக்காட்டாக MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	பிப்ரவரி
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	கோப்பு
+#. text in the Scheduler window
+#, machine
+	File Name	கோப்பு பெயர்
+#. text in the Download video window
+#, machine
+	File name	கோப்பு பெயர்
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	கோப்பு பெயர் அல்லது பெயரின் ஒரு பகுதி
+#. window title in a download's Properties window
+#, machine
+	File Properties	கோப்பு பண்புகள்
+#. text in a download's progress window
+#, machine
+	File size	கோப்பு அளவு
+#. text in the Options window
+#. tab title
+#, machine
+	File types	கோப்பு வகைகள்
+#. text in categories.rs
+#, machine
+	File types:	கோப்பு வகைகள்:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	கோப்புகள்
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	கோப்புகள் செல்லும் இடம்: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	வரிசையில் உள்ள கோப்புகள்
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	கண்டுபிடி
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	பதிவிறக்கத்தைக் கண்டறி
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	கோப்பைக் கண்டறி
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	அடுத்த பொருத்தத்தைக் கண்டறி
+#. text in the Find window
+#, machine
+	Find:	கண்டறி:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	முடிந்தது
+#. text in the Options window
+#, machine
+	First day of the week:	வாரத்தின் முதல் நாள்:
+#. text in the Batch download window
+#, machine
+	First file:	முதல் கோப்பு:
+#. text in categories.rs
+#, machine
+	Folder:	கோப்புறை:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	எடுத்துக்காட்டாக: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	உங்கள் Windows கணக்கிற்கு மட்டும். "இதனுடன் திற" என்பதில் தேர்ந்தெடுக்கப்பட்ட மற்றொரு பயன்பாடு முதலில் இருக்கும்.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	செயல்முறைகளை நிறுத்தும்படி கட்டாயப்படுத்து
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	வெ
+#. text in the Scheduler window
+#, machine
+	Friday	வெள்ளி
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	காந்த இணைப்பிலிருந்து
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	ஒரு பக்கத்திலிருந்து (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	ஒரு டோரண்ட் கோப்பிலிருந்து
+#. message or event log entry in the main window
+#, machine
+	from the browser	உலாவி மூலம்
+#. message or event log entry in the main window
+#, machine
+	from the command line	கட்டளை வரியிலிருந்து
+#. text in the Batch download window
+#, machine
+	From:	இருந்து:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	பொது
+#. button in the Options window
+#, machine
+	Get System	கணினியைப் பெறு
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	பியர்களிடமிருந்து கோப்புப் பட்டியலைப் பெறுகிறது... {n} வி
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	முடிந்ததும் மோடமைத் துண்டி
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	உள்ளது
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	உதவி
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	உறக்கநிலை
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	வகைப்பாடுகளை &மறை
+#. button in a download's progress window
+#, machine
+	Hide tab	தாவலை மறை
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	முகப்புப் பக்கம்
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	நான் Mister Download Manager மூலம் பதிவிறக்குகிறேன்: வேகமானது, இலவசமானது, மேலும் உங்களுக்கு ஏற்கனவே தெரிந்த பதிவிறக்க மேலாளரைப் போலவே இதுவும் இருக்கும். {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	நகல் பதிவிறக்க இணைப்பு சேர்க்கப்பட்டால்:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	ஏற்கனவே உள்ள கோப்பு முழுமையடைந்தால், பதிவிறக்கம் நிறைவுற்றது உரையாடலைக் காட்டு; இல்லையெனில் அதை மீண்டும் தொடங்கு.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	பதிவிறக்கத்தை மீண்டும் தொடரும்போது கோப்பு மாற்ற நேர மாற்றங்களைப் புறக்கணி
+#. message or event log entry in the main window
+#, machine
+	Import	இறக்குமதி
+#. window title in transfer.rs
+#, machine
+	Import downloads	பதிவிறக்கங்களை இறக்குமதி செய்
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	வரிசையில்
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	தகவல்
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	தகவல் ஹாஷ்
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	ffmpeg ஐ நிறுவவும்
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	yt-dlp ஐ நிறுவவும்
+#. text in a dialog box
+#, machine
+	Invalid address	தவறான முகவரி
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg போன்ற தொடர்ச்சியான கோப்புப் பெயர்களின் குழுவை,\nimg100.jpg ஐ MDM பதிவிறக்க வரிசையில் சேர்க்க முடியும். கோப்புப் பெயர் வடிவத்திற்கு நட்சத்திர வைல்ட்கார்டைப் பயன்படுத்தவும்.
+#. text in the Scheduler window
+#, machine
+	January	ஜனவரி
+#. text in the Scheduler window
+#, machine
+	July	ஜூலை
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	அதன் பெயரில் தொடங்கும் பதிவிறக்கத்திற்குச் செல்லவும்
+#. text in the Scheduler window
+#, machine
+	June	ஜூன்
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KB/வி
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	டாரண்டுகள் முடிந்த பிறகு தொடர்ந்து பகிரவும்
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	விசைப்பலகை குறுக்குவழிகள்
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	விசைகள்...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	மொழி
+#. text in the Batch download window
+#, machine
+	Last file:	கடைசி கோப்பு:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	கடைசி முயற்சி {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	பிறகு
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	தொடங்கும் போது Mister Download Manager ஐத் தொடங்கவும்
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	எழுத்துக்கள்
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	உரிமங்கள் மற்றும் வரவுகள்
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	அனைத்து பதிவிறக்கங்களையும் ஒன்றாக வரம்பிடவும்
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	உள்நுழைவு
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	தேடு
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	பக்கத்தைத் தேடுகிறது...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	முக்கிய பதிவிறக்க வரிசை
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	தேர்வை நீளமாக்கு அல்லது சுருக்கு
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	கையேடு ப்ராக்ஸி/SOCKS உள்ளமைவு
+#. text in the Scheduler window
+#, machine
+	March	மார்ச்
+#. checkbox in the Find window
+#, machine
+	Match case	வழக்கை பொருத்து
+#. checkbox in the Find window
+#, machine
+	Match whole string only	முழு சரம் மட்டும் பொருத்து
+#. group box title in the Options window
+#, machine
+	Max. connections number	அதிகபட்ச இணைப்புகள் எண்ணிக்கை
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	ஒரு கோப்பிற்கான அதிகபட்ச பதிவிறக்க வேகம் {kb} KB/வி
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	அதிகபட்ச பதிவிறக்க வேகம்:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	மே
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	காணவில்லை
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager கட்டமைப்பு
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager ஒவ்வொரு இணைப்பையும் நேரடியாக இறுதி\nகோப்பில் (அதன் அருகில் ஒரு ஸ்பார்ஸ் பகுதி கோப்பு) எழுதுகிறது, எனவே தற்காலிக அடைவு மற்றும்\nஒன்றிணைக்கும் படி தேவையில்லை.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} கிடைக்கிறது ({date} அன்று வெளியிடப்பட்டது).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	தி
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	திங்கட்கிழமை
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	மாதம், நாள், வருடம்
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	நகர்த்து
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	பக்கத்தை மேலே/கீழே நகர்த்து
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	தேர்ந்தெடுத்த பதிவிறக்கத்தை நகர்த்து அல்லது மறுபெயரிடு
+#. text in a download's Properties window
+#, machine
+	Move to folder	கோப்புறைக்கு நகர்த்து
+#. message or event log entry in the main window
+#, machine
+	Move to queue	வரிசைக்கு நகர்த்து
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	தேர்வை மாற்றாமல் நகர்த்து
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	நகர்த்து/மறுபெயரிடு
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	மற்ற இணைப்புகளை விட மிக மெதுவாக உள்ளது; மீண்டும் இணைக்கிறது
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	இசை
+#. option (radio button) in the Options window
+#, machine
+	My own way:	எனது சொந்த வழி:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	எண்.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	பெயர்
+#. text in categories.rs
+#, machine
+	Name:	பெயர்:
+#. text in errors.rs
+#, machine
+	network error	நெட்வொர்க் பிழை
+#. text in the Options window
+#, machine
+	Never show it on these sites:	இந்தத் தளங்களில் ஒருபோதும் காட்ட வேண்டாம்:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	புதிது
+#. text in the Options window
+#, machine
+	New exception	புதிய விதிவிலக்கு
+#. text in the Options window
+#, machine
+	New login	புதிய உள்நுழைவு
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	இல்லை
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	தரவு கோப்புறை இல்லை
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	டாரன்ட்களுக்கான தரவு கோப்புறை இல்லை
+#. text in langpick.rs
+#, machine
+	No language matches.	எந்த மொழியும் பொருந்தவில்லை.
+#. text in the Options window
+#, machine
+	No proxy/socks	ப்ராக்ஸி/SOCKS இல்லை
+#. text in the Download video window
+#, machine
+	No video this can download on that page	இந்த பக்கத்தில் பதிவிறக்கக்கூடிய வீடியோ எதுவும் இல்லை
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	{file} இல் எந்த வலை முகவரிகளும் கண்டறியப்படவில்லை.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	ஏதுமில்லை: பியர்கள் DHT மற்றும் பிற பியர்களிடமிருந்து வருகின்றன
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	இது படிக்க முடியாத சரிபார்ப்புச் சுருக்கம்
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	போதுமான வட்டு இடம் இல்லை: {needed} தேவை, {free} இலவசம்
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	வரிசையில் இல்லை
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	பயன்படுத்தப்படவில்லை: கோப்பு பாகங்கள் கோப்புக்கு அடுத்ததாக எழுதப்படுகின்றன
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	குறிப்பு: வேகம் மிகக் குறைவாக இருக்கும்போது இணைய சேவையகங்கள் இணைப்பைத் துண்டிக்கலாம்! எனவே, "மீண்டும் தொடங்கு" அம்சத்தை ஆதரிக்காத சேவையகங்களிலிருந்து பதிவிறக்க ஸ்பீட் லிமிட்டரைப் பயன்படுத்துவது பரிந்துரைக்கப்படவில்லை.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	குறிப்பு: இந்த அமைப்புகள் வரிசைச் செயலாக்கத்துடன் தொடர்புடையவை அல்ல
+#. text in the Scheduler window
+#, machine
+	November	நவம்பர்
+#. text in the Options window
+#, machine
+	Number	எண்
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	பதிவிறக்கம் தோல்வியுற்றால் ஒவ்வொரு கோப்பிற்கும் மீண்டும் முயற்சிக்கும் எண்ணிக்கை:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	எண்கள்
+#. text in the Scheduler window
+#, machine
+	October	அக்டோபர்
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	முடக்கு: முடிந்த டாரன்ட், எந்த பதிவிறக்கத்தையும் போல நின்றுவிடும்.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	கிளிப்போர்டுக்கு நகலெடுக்கப்பட்ட இணைப்புகளைப் பதிவிறக்க வழங்கவும்
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	சரி
+#. text in a download's progress window
+#, machine
+	on download stop/resume	பதிவிறக்கம் நிறுத்தப்படும்/மீண்டும் தொடங்கும் போது
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	ஒருமுறை
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	ஒருமுறை பதிவிறக்கம்
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	நான் கணினியைப் பயன்படுத்தும் போது மட்டும்
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	திற
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager உடன் மேக்னட் இணைப்புகள் மற்றும் .torrent கோப்புகளைத் திற
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Mister Download Manager ஐத் திற
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	முடிந்ததும் பின்வரும் கோப்பைத் திற
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	முடிந்ததும் பின்வரும் கோப்பைத் திறக்கவும்:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	தேர்ந்தெடுத்த பதிவிறக்கத்தைத் திறக்கவும்
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	தேர்ந்தெடுத்த பதிவிறக்கத்தின் மெனுவைத் திறக்கவும்
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	டாரன்ட் கோப்பைத் திறக்கவும்
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	விருப்பங்கள்
+#. text in a download's progress window
+#, machine
+	Options on completion	முடிந்ததும் விருப்பங்கள்
+#. text in the Download video window
+#, machine
+	Page address	பக்க முகவரி
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	கடவுச்சொல்
+#. text in the Options window
+#, machine
+	Password:	கடவுச்சொல்:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	ஒரு மேக்னட் இணைப்பை ஒட்டவும் அல்லது ஒரு .torrent கோப்பைத் தேர்ந்தெடுத்து, பின்னர் தேடவும்.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	இடைநிறுத்து
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	இடைநிறுத்தப்பட்டது
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	பியர்கள்
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	காலமுறை ஒத்திசைவு
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	துண்டுகள்
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	இயக்கு
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	போர்ட்
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	முன்னோட்டம்
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	நிரல்கள்
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	தேர்ந்தெடுத்த பதிவிறக்கத்தின் பண்புகள்
+#. text in a download's progress window
+#, machine
+	Property	பண்பு
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	ப்ராக்ஸி / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	ப்ராக்ஸி / SOCKS கட்டமைப்பு
+#. label in the Options window
+#, machine
+	Proxy server address	ப்ராக்ஸி சேவையக முகவரி
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	வரிசை # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	வரிசை செயலாக்கம் தொடங்கப்பட்டது
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	வரிசை செயலாக்கம் நிறுத்தப்பட்டது/முடிந்தது
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	வரிசைகள்
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	கோப்புப் பட்டியலைப் படிக்கிறது...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	டாரன்ட்டைப் படிக்கிறது...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	பெறப்பட்டது
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	தரவைப் பெறுகிறது...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	மீண்டும் பதிவிறக்கு
+#. text in a download's Properties window
+#, machine
+	Referer:	பரிந்துரையாளர்:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	பிராந்திய
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	இந்தக் கோப்பிற்கான வேக வரம்பு அமைப்புகளை நினைவில் கொள்ளவும்
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	"{category}" வகைக்கு இந்தப் பாதையை நினைவில் கொள்ளவும்
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	அகற்று
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	நட்சத்திரத்தை இதற்கு மாற்றவும்
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	முடிவு: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	மீண்டும் தொடங்கு
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	மீண்டும் தொடங்கும் திறன்
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	மீண்டும் தொடங்கப்பட்டது
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	மீண்டும் முயற்சிக்கிறது: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	நிறு&த்து
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	சனி
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	சனிக்கிழமை
+#. text in a dialog box
+#, machine
+	Save As	இவ்வாறு சேமி
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	சேமிக்க வேண்டிய இடம்
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	சேமிக்க வேண்டிய இடம்...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	சேமிக்க வேண்டிய இடம்:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	சேமிக்கப்பட்ட இடம்
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	அட்டவணை
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	அட்டவணையாளர்
+#. text in langpick.rs
+#, machine
+	Search:	தேடு:
+#. text in the Batch download window
+#, machine
+	Second file:	இரண்டாவது கோப்பு:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	அனைத்தையும் தேர்ந்தெடு
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	அனைத்து பதிவிறக்கங்களையும் தேர்ந்தெடு
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	இதுவரை உள்ள அனைத்து பதிவிறக்கங்களையும் தேர்ந்தெடு
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	எதையும் தேர்ந்தெடுக்காதே
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	இன்னும் ஒரு பதிவிறக்கத்தைத் தேர்ந்தெடு அல்லது தேர்ந்தெடுக்காதே
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	புள்ளியிட்ட அவுட்லைன் கொண்ட பதிவிறக்கத்தைத் தேர்ந்தெடு அல்லது தேர்ந்தெடுக்காதே
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Mister Download Manager நிகழ்வுகளுக்கான ஒலிகளைத் தேர்ந்தெடு
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	பெட்டியில் உள்ள பதிவிறக்கங்களைத் தேர்ந்தெடு
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	முதல் / கடைசி பதிவிறக்கத்தைத் தேர்ந்தெடு
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	முந்தைய / அடுத்த பதிவிறக்கத்தைத் தேர்ந்தெடு
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	தேர்ந்தெடுக்கப்பட்டது: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	இதை ஒரு நண்பருக்கு அனுப்பு:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	அனுப்பப்பட்டது
+#. text in the Scheduler window
+#, machine
+	September	செப்டம்பர்
+#. text in the Options window
+#, machine
+	Server	சேவையகம்
+#. text in the Options window
+#, machine
+	Server:	சேவையகம்:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	சேவையகத்தால் வழங்கப்பட்ட கோப்பு உருவாக்கப்பட்ட தேதியை அமை
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	பகிர்வு விகிதம்
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	பகிர்வு
+#. text in the download list
+#, machine
+	Show	காட்டு
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	&வகைகளைக் காட்டு
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	ஒரு உரையாடலைக் காட்டி என்ன செய்ய வேண்டும் என்று கேள்.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	உலாவிகளில் வீடியோக்களின் மேல் பதிவிறக்க பொத்தானைக் காட்டு
+#. button in the download list
+#, machine
+	Show all	அனைத்தையும் காட்டு
+#. text in a download's progress window
+#, machine
+	Show details >>	விவரங்களைக் காட்டு >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	பதிவிறக்கம் முடிந்த உரையாடலைக் காட்டு
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	தொகுப்புப் பதிவிறக்க உரையாடல்களை மூடும்போது வரிசைத் தேர்வுப் பலகத்தைக் காட்டு
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	"பின்னர் பதிவிறக்கு" பொத்தானை அழுத்தும்போது வரிசைத் தேர்வுப் பலகத்தைக் காட்டு
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	பதிவிறக்கத் தொடக்க உரையாடலைக் காட்டு
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	பதிவிறக்கங்களை நிறுத்துவதற்கு முன் எச்சரிக்கையைக் காட்டு
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	டாரன்ட் பதிவிறக்கப்படும்போது காட்டப்படும்.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	மூடு
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	தளப் பெயர்/பதிவிறக்க இணைப்பு/பெற்றோர் வலைப்பக்கம்/பரிந்துரையாளர்
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	தளம்/பாதை
+#. text in the Options window
+#, machine
+	Site/path:	தளம்/பாதை:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	தள உள்நுழைவுகள்
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	அளவு
+#. text in the Download video window
+#, machine
+	size unknown	அளவு தெரியவில்லை
+#. text in a download's Properties window
+#, machine
+	Size:	அளவு:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	தவிர்க்கப்பட்டது
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	உறங்கு
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	சில
+#. text in the Options window
+#, machine
+	Sound file	ஒலி கோப்பு
+#. page title in the Options window
+#, machine
+	Sound settings	ஒலி அமைப்புகள்
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	ஒலிகள்
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	மூலக் குறியீடு
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	வேகக் கட்டுப்படுத்தி
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	வேகக் கட்டுப்படுத்தி அமைப்புகள்
+#. button in a dialog box
+#, machine
+	Start Download	பதிவிறக்கத்தைத் தொடங்கு
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	பதிவிறக்கத்தைத் தொடங்கும் நேரம்
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Mister Download Manager தொடங்கும் போது பதிவிறக்கத்தைத் தொடங்கு
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	"கோப்புத் தகவலைப் பதிவிறக்கு" உரையாடலைக் காட்டும்போது உடனடியாகப் பதிவிறக்கத்தைத் தொடங்கு
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	முக்கிய பதிவிறக்க வரிசையைத் தொடங்கு
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	இணைப்புகள் மூலம் தொடக்க நிலைகள் மற்றும் பதிவிறக்க முன்னேற்றம்
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	வரிசையை இப்போதே தொடங்கு
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	{queue} ஐத் தொடங்கு
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	தொடங்கப்பட்டது
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) உடன் தொடங்கப்பட்டது
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	நிலை
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	நிலை:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	பதிவிறக்கத்தை நிறுத்தும் நேரம்
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	முக்கிய பதிவிறக்க வரிசையை நிறுத்து
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	{queue} ஐ நிறுத்து
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	நிறுத்தப்பட்டது
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	பதிவிறக்கம் முடிந்ததும் நிற்கும்
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	ஞா
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	ஞாயிறு
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	ஒத்திசைவு வரிசை
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	நண்பருக்குத் தெரிவிக்கவும்
+#. group box title in the Options window
+#, machine
+	Temporary directory	தற்காலிக அடைவு
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	வியா
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	அதற்காக வைக்கப்பட்ட .torrent கோப்பு இல்லை
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	முகவரி http(s) அல்லது ftp(s) முகவரியாக இருக்க வேண்டும்
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	சிறந்த தரங்களுக்கு வீடியோ மற்றும் ஆடியோவை ஒன்றிணைக்க ffmpeg தேவை (சுமார் 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	{n} வினாடிகளில் கணினி தூக்க நிலைக்குச் செல்லும்.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	{n} வினாடிகளில் கணினி உறக்கநிலைக்குச் செல்லும்.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	{n} வினாடிகளில் கணினி அணைக்கப்படும்.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	பகுதி நிறைவடைவதற்கு முன்பே இணைப்பு மூடப்பட்டது
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	தரவைப் பெறும்போது இணைப்பு துண்டிக்கப்பட்டது
+#. text in errors.rs
+#, machine
+	the disk is full	வட்டு நிரம்பியுள்ளது
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	பதிவிறக்க வரம்பு ({hours} மணிநேரத்திற்கு {mb} MB) எட்டப்பட்டுள்ளது.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	பதிவிறக்க இணைப்பு காலாவதியாகிவிட்டது (பதிவிறக்க முகவரியைப் புதுப்பிக்கவும்)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	உங்களுக்கு ஏற்கனவே தெரிந்த பதிவிறக்க மேலாளர், வேகமாக இருக்க மீண்டும் உருவாக்கப்பட்டது. GNU GPL, பதிப்பு 3 அல்லது அதற்குப் பிந்தைய பதிப்பின் கீழ் இலவச மற்றும் திறந்த மூல மென்பொருள். வீடியோக்கள் yt-dlp மூலம் கண்டறியப்படுகின்றன; டோரண்ட்கள் librqbit இல் இயங்குகின்றன.
+#. text in a dialog box
+#, machine
+	The download queue is done.	பதிவிறக்க வரிசை முடிந்தது.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	இயக்கி அல்லது நெட்வொர்க் பகிர்வு இனி கிடைக்கவில்லை
+#. text in errors.rs
+#, machine
+	the file changed on the server	சேவையகத்தில் கோப்பு மாறியது
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	கோப்பை நகர்த்த முடியவில்லை
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	கோப்பை படிக்க முடியவில்லை: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	கோப்பு பொருந்தவில்லை ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	கோப்பு பொருந்துகிறது ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	கோப்பு சேமிக்கப்பட்டது
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	மற்ற எந்த வகையிலும் பட்டியலிடப்படாத கோப்பு வகைகள்
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	கோப்பின் {algorithm} சரிபார்ப்புத் தொகை பொருந்தவில்லை (தரவு வைக்கப்பட்டுள்ளது; அதை மீண்டும் பதிவிறக்கவும்)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	அடைவை உருவாக்க முடியவில்லை: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	{path} கோப்புறை கிடைக்கவில்லை (இயக்கி அகற்றப்பட்டதா அல்லது நெட்வொர்க் பகிர்வு ஆஃப்லைனில் உள்ளதா?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP சேவையகம் {code} {reply} எனப் பதிலளித்தது
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	பட்டியலைச் சேமிக்க முடியவில்லை: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	Windows-க்கு பாதை மிக நீளமானது: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	வெளியீட்டில் பதிப்பு இல்லை
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	பாதுகாப்பான இணைப்பு தோல்வியடைந்தது
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	தேர்ந்தெடுக்கப்பட்ட பதிவிறக்கம் முழுமையடையவில்லை. Mister Download Manager பதிவிறக்கப் பட்டியலிலிருந்து\nஅதை நீக்க விரும்புகிறீர்களா?
+#. text in errors.rs
+#, machine
+	the server answered {status}	சேவையகம் {status} எனப் பதிலளித்தது
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	சேவையகத்தால் கோப்பின் பகுதிகளை அனுப்ப முடியாது, எனவே அதை மீண்டும் தொடங்க முடியாது
+#. text in errors.rs
+#, machine
+	the server did not answer in time	சேவையகம் சரியான நேரத்தில் பதிலளிக்கவில்லை
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	சேவையகம் கோரப்பட்ட பகுதியை அனுப்பவில்லை
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	சேவையகம் பிஸியாக உள்ளது ({status}); பின்னர் மீண்டும் முயற்சிக்கவும்
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	சேவையகம் கோப்புக்குப் பதிலாக ஒரு வலைப்பக்கத்தை அனுப்பியது (உள்நுழைவு தேவையா அல்லது இணைப்பு காலாவதியானதா?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	சேவையகம் கோப்பின் எதிர்பாராத பகுதியை அனுப்பியது ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	டோரண்ட்டைச் சேமிக்க முடியவில்லை: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	டோரண்ட் இனி இல்லை
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	இந்தக் கோப்பு பெறப்பட்ட வலைப்பக்கம்:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	இந்த பெயரில் ஒரு வகை ஏற்கனவே உள்ளது
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	"பதிவிறக்கம் முடிந்தது உரையாடலைக் காட்டு" இயக்கத்தில் இருக்கும்போது இந்த அமைப்புகள் கிடைக்காது
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	இந்த முகவரி ஏற்கனவே பதிவிறக்கப் பட்டியலில் உள்ளது:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	இந்த அடைவு இல்லை:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	இந்த டோரண்ட் ஏற்கனவே பதிவிறக்கப் பட்டியலில் உள்ளது
+#. text in the Scheduler window
+#, machine
+	Thursday	வியாழன்
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	மீதமுள்ள நேரம்
+#. text in the Batch download window
+#, machine
+	To:	க்கு:
+#. text in errors.rs
+#, machine
+	too many redirects	அதிகமான வழிமாற்றுகள்
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	டோரண்ட்
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	டோரண்ட் பதிவிறக்கங்கள் (காந்த இணைப்புகள் மற்றும் .torrent கோப்புகள்)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	டோரண்ட் கோப்புகள்
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	டோரண்ட் அமைப்புகள்
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	டோரண்ட்கள்
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	டாரண்டுகள் தொடங்க முடியவில்லை: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	டிராக்கர்
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	டிராக்கர்கள்
+#. text in a download's progress window
+#, machine
+	Transfer rate	பரிமாற்ற விகிதம்
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	செ
+#. text in the Scheduler window
+#, machine
+	Tuesday	செவ்வாய்க்கிழமை
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	முடக்கு
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	முடிந்ததும் கணினியை அணைக்கவும்
+#. button in a dialog box
+#, machine
+	Turn off now	இப்போது அணைக்கவும்
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	இயக்கு
+#. text in a download's Properties window
+#, machine
+	Type:	வகை:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	முடிக்கப்படாதவை
+#. text in a download's Properties window
+#, machine
+	Unknown	அறியப்படாதது
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	அறியப்படாதது
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	புதுப்பிப்புகளைச் சரிபார்க்க முடியவில்லை: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	மேம்பட்ட உலாவி ஒருங்கிணைப்பைப் பயன்படுத்து
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	அங்கீகாரத்தைப் பயன்படுத்து
+#. text in the Options window
+#, machine
+	Use automatic configuration script	தானியங்கு உள்ளமைவு ஸ்கிரிப்டைப் பயன்படுத்து
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	PASV பயன்முறையில் FTP ஐப் பயன்படுத்து
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	உலாவி கோரிக்கையிலிருந்து ப்ராக்ஸி/SOCKS ஐப் பயன்படுத்தவும், பதிவிறக்கப் பிழைகள் இருந்தால் / உலாவியிலிருந்து இடைமறிக்கப்பட்ட பதிவிறக்கங்களுக்கு
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	வேகக் கட்டுப்படுத்தியைப் பயன்படுத்து
+#. text in the Options window
+#, machine
+	Use system settings	கணினி அமைப்புகளைப் பயன்படுத்து
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	பின்வரும் நெறிமுறைகளுக்கு இந்த ப்ராக்ஸியைப் பயன்படுத்து:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	பதிவிறக்கப் பட்டியலிலும் திட்டமிடுபவரிலும் பயன்படுத்தப்படுகிறது.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	பயனர்
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	சேவையகங்கள்/தளங்களுக்கான பயனர் பெயர்கள் மற்றும் கடவுச்சொற்கள்
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	கைமுறையாகச் சேர்க்கப்பட்ட பதிவிறக்கங்களுக்கான பயனர்-முகவர்:
+#. text in the Options window
+#, machine
+	User:	பயனர்:
+#. label in the Options window
+#, machine
+	UserName	பயனர் பெயர்
+#. text in a download's progress window
+#, machine
+	Value	மதிப்பு
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	சரிபார்
+#. window title in the Checksum window
+#, machine
+	Verify checksum	சரிபார்ப்புச் சுருக்கத்தைச் சரிபார்
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	சரிபார்க்கிறது...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	பதிப்பு {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	வீடியோ
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	வீடியோ தேடல்கள் yt-dlp ஐப் பயன்படுத்துகின்றன (சுமார் 23 MB, அதன் கையொப்பத்திற்கு எதிராகச் சரிபார்க்கப்பட்டது).
+#. text in the Options window
+#, machine
+	Virus checking settings	வைரஸ் சரிபார்ப்பு அமைப்புகள்
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	காத்திருக்கிறது
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	காத்திருக்கிறது: பதிவிறக்க வரம்பு எட்டப்பட்டது (திட்டமிடுபவர்)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	பு
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	வலை
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	{file} இல் கண்டறியப்பட்ட வலை முகவரிகள்:
+#. text in the Scheduler window
+#, machine
+	Wednesday	புதன்
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	புதியது என்ன:
+#. text in the Batch download window
+#, machine
+	Wildcard size	வைல்ட்கார்டு அளவு
+#. text in langpick.rs
+#, machine
+	Windows' language	Windows மொழி
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windows மொழி ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	URL சேர் உடன்
+#. group box title in the Options window
+#, machine
+	Write dates and times	தேதிகளையும் நேரங்களையும் எழுது
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	வருடம், மாதம், நாள்
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	ஆம்
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Mister Download Manager இன் சமீபத்திய பதிப்பு ({version}) உங்களிடம் உள்ளது.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	உங்களிடம் பதிப்பு {version} உள்ளது.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp நிறுவப்படவில்லை (பணிகள் → ஒரு பக்கத்திலிருந்து வீடியோவைப் பதிவிறக்கு என்பதை நிறுவவும்)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} சரிபார்ப்புச் சுருக்கம்
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: பதிவிறக்கம் முடிந்ததும் சரிபார்க்கப்பட்டது
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} கொண்டுள்ளது
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} கோப்பு
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{total} இல் {have} ({size} ஒவ்வொன்றும்)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{total} துண்டுகளில் {have} ({size} ஒவ்வொன்றும்)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} மணிநேரம் {m} நிமிடம்
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} இணைக்கப்பட்டது, {known} அறியப்பட்டது
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} நிமிடம் {s} வினாடி
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (தானியங்கு)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{total} இல் {n} தேர்ந்தெடுக்கப்பட்டது
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} பைட்டுகள்)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	இந்த {file_system} இயக்கிக்கு {size} மிக பெரியது (4 GB வரை கோப்புகள்)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} வினாடி
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} நிறுவ முடியவில்லை: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	சேர்க்கப்பட்டது
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	விளக்கம்
+#. column title in the download list in the download list
+#, machine
+column	File Name	கோப்புப் பெயர்
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	கடைசி முயற்சி தேதி
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	Q
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	அளவு
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	மூலம்
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	நிலை
+#. column title in the download list in the download list
+#, machine
+column	Time left	மீதமுள்ள நேரம்
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	பரிமாற்ற விகிதம்
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	பொத்தான் அமைப்புகள்...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	வீடியோவைப் பதிவிறக்கு
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Mister Download Manager மூலம் பதிவிறக்கு
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	வீடியோவின் விளிம்பில் நகர்த்த இழுக்கவும்
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	உலாவியில் இருந்து Mister Download Managerக்கு பதிவிறக்கங்களை அனுப்புகிறது.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	இந்த வீடியோவில் மறை
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager பதிலளிக்கவில்லை
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager ஒருங்கிணைப்பு தொகுதி
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	மேலும் விருப்பங்கள்
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	{site} தளத்தில் ஒருபோதும் காட்ட வேண்டாம்
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Mister Download Manager என்பதற்கு அனுப்பப்பட்டது
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+கிளிக்
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+மேல் / Ctrl+கீழ்
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	வெற்று இடத்தில் இழுக்கவும்
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+கிளிக்
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+மேல் / Shift+கீழ்
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	ஒரு பெயரைத் தட்டச்சு செய்யவும்
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	மேல் / கீழ்
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Mister Download Manager பற்றி(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	புதிய பதிவிறக்கத்தைச் சேர்(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	முடிந்த அனைத்தையும் நீக்கு(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	இப்போது பதிவிறக்கு(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	வெளியேறு(&E)
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	இறக்குமதி(&I)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	விசைப்பலகை குறுக்குவழிகள்(&K)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&மொழி...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	விருப்பங்கள்(&O)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	அனைத்தையும் இடைநிறுத்து(&P)
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	அகற்று(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	சிக்கலைப் புகாரளி(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	திட்டமிடுபவர் மற்றும் வரிசைகள்(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	அனைத்தையும் நிறுத்து(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	பதிவிறக்கத்தை நிறுத்து(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	ட்ரே ஐகான்(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	பயிற்சிகள்(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	வீடியோ பதிவிறக்கங்கள்(&V)
+#. menu command in the main window
+#, machine
+menu	3D Style	3D ஸ்டைல்
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	தொகுப்பு பதிவிறக்கத்தைச் சேர்(&b)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	காந்த இணைப்பைச் சேர்...(&m)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	கிளிப்போர்டிலிருந்து தொகுதி பதிவிறக்கத்தைச் &சேர்
+#. menu command in the main window
+#, machine
+menu	Add category	வகை சேர்
+#. menu command in the main window
+#, machine
+menu	Arrange files	கோப்புகளை ஒழுங்கமை
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	உலாவு
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	&விளக்கத்தின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	&கோப்புப் பெயரின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	&கடைசி முயற்சி தேதியின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	&சேர்த்த வரிசையின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	&அளவின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	&மீதமுள்ள நேரத்தின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	&சேர்க்கப்பட்ட தேதியின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	பெற்றோர் &வலைப்பக்கத்தின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	R&eferer-இன் படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	&சேமிக்கும் பாதையின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	நி&லையின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	&பரிமாற்ற வீதத்தின்படி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	URL பட்டியலைத் &தனிப்பயனாக்கு...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	&புதுப்பிப்புகளைச் சரிபார்க்கவும்...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	அனைத்து &வடிப்பான்களையும் அழி
+#. menu command in the main window
+#, machine
+menu	Create new queue	புதிய வரிசையை உருவாக்கு
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	தனிப்பயனாக்கு...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	டார்க் பயன்முறை ஆதரவு
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	நீக்கு
+#. menu command in the main window
+#, machine
+menu	Delete from queue	வரிசையிலிருந்து நீக்கு
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	ஒரு பக்கத்திலிருந்து &வீடியோவைப் பதிவிறக்கு...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&ஏற்றுமதி
+#. menu command in the main window
+#, machine
+menu	Edit queue	வரிசையைத் திருத்து
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	கண்டுபிடி (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	அடுத்ததைக் கண்டுபிடி (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	எழுத்துரு
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	&IDM ஏற்றுமதி கோப்பிலிருந்து...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	&உரை கோப்பிலிருந்து...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&உதவி உள்ளடக்கங்கள்
+#. menu command in the main window
+#, machine
+menu	Hide drop target	இழுத்துவிடும் இலக்கை மறை
+#. menu command in the main window
+#, machine
+menu	Large Buttons	பெரிய பொத்தான்கள்
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	புதிய கருவிப்பட்டிகளைத் தேடு
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager &முகப்புப் பக்கம்
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	நகர்த்து/மறுபெயரிடு (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	நியான்
+#. menu command in the main window
+#, machine
+menu	On Double click	இருமுறை கிளிக் செய்யும்போது
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	திற
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	டொரண்ட் கோப்பைத் &திற...
+#. menu command in the main window
+#, machine
+menu	Open folder	கோப்புறையைத் திற
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	இதனுடன் திற...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	பண்புகள்
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	மீண்டும் &பதிவிறக்கு
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	மீண்டும் பதிவிறக்கு
+#. menu command in the main window
+#, machine
+menu	Refresh download address	பதிவிறக்க முகவரியைப் புதுப்பி
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	அகற்று
+#. menu command in the main window
+#, machine
+menu	Resume Download	பதிவிறக்கத்தைத் தொடங்கு
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&திட்டமிடுபவர்
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&அமைப்புகள்...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	&வரிசையை நிறுத்து
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	திட்டமிடு
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	&இலக்கைக் காட்டு
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Mister Download Managerஐக் காட்டு
+#. menu command in the main window
+#, machine
+menu	Small Buttons	சிறிய பொத்தான்கள்
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	வேக &வரம்பு
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	&வரிசையைத் தொடங்கு
+#. menu command in the main window
+#, machine
+menu	Start now	இப்போது தொடங்கு
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	நிறுத்து
+#. menu command in the main window
+#, machine
+menu	Stop Download	பதிவிறக்கத்தை நிறுத்து
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	ஒரு &நண்பருக்குத் தெரிவி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	&IDM ஏற்றுமதி கோப்பிற்கு...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	&உரை கோப்பிற்கு...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	கருவிப்பட்டி
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	டொரண்ட் அமைப்&புகள்...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	ஆன் செய்(&n)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	ஆ&ஃப் செய்
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	சரிபார்ப்புத் தொகையைச் சரிபார்க்கவும்...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	பதிவிறக்கங்கள்
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	கோப்பு
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	உதவி
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	பணிகள்
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	காட்சி
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	டொரண்ட்டைச் சேர்
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	URL ஐச் சேர்
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	நீக்கு
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	முடிக்கப்பட்டதை நீக்கு
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	விருப்பங்கள்
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	மீண்டும் தொடங்கு
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	திட்டமிடுபவர்
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	வரிசையைத் தொடங்கு
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	நிறுத்து
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	அனைத்தையும் நிறுத்து
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	வரிசையை நிறுத்து
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/வி
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/வி

@@ -1,0 +1,2552 @@
+# Mister Download Manager in Persian (فارسی): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	فارسی
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	همچنین {n} فایل را از دیسک حذف کنید|همچنین {n} فایل را از دیسک حذف کنید
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	آیا مطمئن هستید که می‌خواهید {n} دانلود را از لیست دانلودهای Mister Download Manager حذف کنید؟|آیا مطمئن هستید که می‌خواهید این {n} دانلود را از لیست دانلودهای Mister Download Manager حذف کنید؟
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} اجازه {n} اتصال را می‌دهد|{host} اجازه {n} اتصال را می‌دهد
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} بایت|{n} بایت
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} فایل|{n} فایل
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&اعمال
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&بستن
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&حذف
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&راهنما
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	صف &جدید
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&اکنون شروع شود
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(نام‌ها را با فاصله جدا کنید)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12 ساعته (9:41 ب.ظ)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24 ساعته (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< مخفی کردن جزئیات
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	درباره Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	افزودن دانلود (افزودن URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	افزودن دانلود دسته‌ای
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	افزودن مرورگر...
+#. text in categories.rs
+#, machine
+	Add category	افزودن دسته
+#. text in the tray icon's menu
+#, machine
+	Add new download	افزودن دانلود جدید
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	افزودن نسخه تکراری و بازنویسی فایل موجود
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	افزودن نسخه تکراری با نام فایل شماره‌گذاری شده
+#. message or event log entry in the main window
+#, machine
+	Add to queue	افزودن به صف
+#. text in a dialog box
+#, machine
+	Add to queue:	افزودن به صف:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	افزودن تورنت
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	{source} اضافه شد
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	آدرس
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	آدرس به {host} تغییر یافت
+#. text in a download's Properties window
+#, machine
+	Address:	آدرس:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	پیشرفته / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	همه دانلودها
+#. message or event log entry in the main window
+#, machine
+	All files	همه فایل‌ها
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	در حال دانلود: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	همچنین فایل را از دیسک حذف کنید
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	همیشه محدودکننده سرعت را هنگام راه‌اندازی Mister Download Manager روشن کنید
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	ق.ظ
+#. text in the Scheduler window
+#, machine
+	April	آوریل
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	آیا مطمئن هستید که می‌خواهید «{name}» را از لیست دانلودهای Mister Download Manager حذف کنید؟
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	همان‌طور که منطقه سیستم می‌نویسد
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	در حال درخواست لیست فایل از همتایان. لینک‌های مگنت ممکن است یک یا دو دقیقه طول بکشند.
+#. text in the Scheduler window
+#, machine
+	August	اوت
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	به‌طور خودکار انواع فایل‌های زیر را در دسته «{category}» قرار دهید:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	شروع خودکار دانلود انواع فایل‌های زیر:
+#. window title in the Batch download window
+#, machine
+	Batch download	دانلود دسته‌ای
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	مرور
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	مرور...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	یکپارچه‌سازی مرورگر/سیستم
+#. message or event log entry in the main window
+#, machine
+	by batch download	با دانلود دسته‌ای
+#. message or event log entry in the main window
+#, machine
+	by import	با وارد کردن
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	لغو
+#. text in errors.rs
+#, machine
+	cancelled	لغو شد
+#. text in errors.rs
+#, machine
+	cannot connect to the server	امکان اتصال به سرور وجود ندارد
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	«{text}» یافت نشد
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	فایل قابل خواندن نیست: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	امکان ازسرگیری وجود ندارد: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	گرفتن دانلودها از مرورگرهای زیر:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	دسته‌ها
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	دسته‌ها، انواع فایل، پوشه‌ها
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	دسته
+#. text in categories.rs
+#, machine
+	Category properties	ویژگی‌های دسته
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	تغییر پوشه برای دسته «{category}» در آخرین انتخاب
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	بررسی به‌روزرسانی‌ها
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	بررسی به‌روزرسانی‌ها هفته‌ای یک بار
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	در حال بررسی به‌روزرسانی‌ها...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	در حال بررسی...
+#. text in langpick.rs
+#, machine
+	Choose a language	انتخاب زبان
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	زبانی را انتخاب کنید که Mister Download Manager پنجره‌های خود را در آن نمایش دهد:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	پاک کردن
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	کلاینت
+#. text in the Options window
+#, machine
+	Clock:	ساعت:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	بستن
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	بستن یک منو یا کادر محاوره‌ای
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	کامل
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	فشرده
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	تأیید قبل از حذف دانلودها
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	تأیید حذف دانلودها
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	در حال اتصال...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	اتصال
+#. page title in the Options window
+#, machine
+	Connections and Limits	اتصالات و محدودیت‌ها
+#. text in the Options window
+#, machine
+	Connections:	اتصالات:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	در کلیپ‌بورد کپی شد.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	کپی
+#. window title in a dialog box
+#, machine
+	Create folder	ایجاد پوشه
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود»
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	سفارشی‌سازی کلیدها برای جلوگیری یا اجبار دانلود با MDM
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	سفارشی‌سازی پنل‌های دانلود MDM در مرورگرها
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	سفارشی‌سازی موارد منوی MDM در منوی زمینه مرورگرها
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	روزانه
+#. text in the Options window
+#, machine
+	Date order:	ترتیب تاریخ:
+#. page title in the Options window
+#, machine
+	Dates and times	تاریخ و زمان
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	روز، ماه، سال
+#. text in the Scheduler window
+#, machine
+	December	دسامبر
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	پیش‌فرض
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	پوشه بارگیری پیش‌فرض برای رده «{category}»
+#. page title in the Options window
+#, machine
+	Default download settings	تنظیمات بارگیری پیش‌فرض
+#. text in the Options window
+#, machine
+	Default max. conn. number	حداکثر تعداد اتصال پیش‌فرض
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	حذف
+#. message or event log entry in the main window
+#, machine
+	Delete category	حذف رده
+#. message or event log entry in the main window
+#, machine
+	Delete queue	حذف صف
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	رده «{category}» حذف شود؟ بارگیری‌های آن عمومی می‌شوند؛ فایل‌های آن‌ها در جای خود باقی می‌مانند.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	صف «{queue}» حذف شود؟ بارگیری‌های آن در لیست باقی می‌مانند.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	بارگیری‌های انتخاب‌شده را حذف می‌کند (ابتدا می‌پرسد)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	بارگیری‌های انتخاب‌شده و فایل‌های آن‌ها را حذف می‌کند (ابتدا می‌پرسد)
+#. text in a dialog box
+#, machine
+	Description	توضیحات
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	توضیحات یا بخشی از توضیحات
+#. text in a download's Properties window
+#, machine
+	Description:	توضیحات:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	خطای دیسک: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	نمایش داده شده در لیست صف‌ها
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	شروع به بارگیری نکند، فقط فایل‌ها را به صف اضافه کند
+#. text in a dialog box
+#, machine
+	Do you want to create it?	آیا می‌خواهید آن را ایجاد کنید؟
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	اسناد
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	این گفتگو را دوباره نشان نده
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	از آدرس‌های زیر به صورت خودکار بارگیری را شروع نکن:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	از سایت‌های زیر به صورت خودکار بارگیری را شروع نکن:
+#. text in a download's progress window
+#, machine
+	Done	انجام شد
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	بارگیری
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	«{name}» دوباره از ابتدا بارگیری شود؟ یک فایل تکمیل‌شده زمانی که بارگیری جدید کامل شود، جایگزین می‌شود.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	بارگیری کامل شد
+#. text in the Options window
+#, machine
+	Download failed	بارگیری ناموفق بود
+#. window title in a dialog box
+#, machine
+	Download File Info	اطلاعات فایل بارگیری
+#. button in a dialog box
+#, machine
+	Download Later	بارگیری بعدا
+#. window title in a dialog box
+#, machine
+	Download later	بارگیری بعدا
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	محدودیت‌های بارگیری
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	بیش از {mb} مگابایت\nهر {hours} ساعت بارگیری نکن
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	اکنون بارگیری کن
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	پنل‌های دانلود
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	وضعیت بارگیری
+#. window title in the Download video window
+#, machine
+	Download video from a page	بارگیری ویدئو از یک صفحه
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	{files} فایل را همزمان بارگیری کن
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	بارگیری شده
+#. page title in the Options window
+#, machine
+	Downloaded file types	انواع فایل‌های بارگیری شده
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} بایت) بارگیری شد
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	در حال بارگیری
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	دوباره از ابتدا در حال بارگیری
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	در حال بارگیری و تأیید ffmpeg (حدود 80 مگابایت)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	در حال بارگیری و تأیید yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	بارگیری‌ها
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	بارگیری‌ها متوقف شدند و به‌طور خودکار در ساعت {time} از سر گرفته خواهند شد.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	پیوندها را برای بارگیری به اینجا بکشید
+#. window title in a dialog box
+#, machine
+	Duplicate download link	پیوند بارگیری تکراری
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	ویرایش
+#. text in the Options window
+#, machine
+	Edit exception	ویرایش استثنا
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	ویرایش فهرست...
+#. text in the Options window
+#, machine
+	Edit login	ویرایش ورود
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	ویرایش...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	ایمیل
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	یک پیوند مگنت را وارد کنید یا یک فایل .torrent را انتخاب کنید
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	یک نام برای صف جدید وارد کنید که خواهد بود
+#. window title in a dialog box
+#, machine
+	Enter new address to download	آدرس جدید برای بارگیری را وارد کنید
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	نام صف را وارد کنید
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	خطا
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	خطا: {error}
+#. text in the Options window
+#, machine
+	Event	رویداد
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	مثال:
+#. text in the Options window
+#, machine
+	Exceptions:	استثناها:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	خروج
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	پس از اتمام، Mister Download Manager را ببندید
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	چک‌سام مورد انتظار (MD5، SHA-1، SHA-256، SHA-512 یا CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	چک‌سام مورد انتظار تنظیم شد ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	صادر کردن
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	افزایش دسترسی به افزونه‌های Manifest 2 Chrome
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	پسوندها با فاصله از هم جدا می‌شوند، برای مثال MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	فوریه
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	فایل
+#. text in the Scheduler window
+#, machine
+	File Name	نام فایل
+#. text in the Download video window
+#, machine
+	File name	نام فایل
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	نام فایل یا بخشی از نام
+#. window title in a download's Properties window
+#, machine
+	File Properties	ویژگی‌های فایل
+#. text in a download's progress window
+#, machine
+	File size	اندازه فایل
+#. text in the Options window
+#. tab title
+#, machine
+	File types	انواع فایل
+#. text in categories.rs
+#, machine
+	File types:	انواع فایل:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	فایل‌ها
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	فایل‌ها به: {folder} می‌روند
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	فایل‌ها در صف
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	یافتن
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	یافتن یک دانلود
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	یافتن فایل
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	یافتن مورد بعدی
+#. text in the Find window
+#, machine
+	Find:	یافتن:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	تکمیل‌شده
+#. text in the Options window
+#, machine
+	First day of the week:	اولین روز هفته:
+#. text in the Batch download window
+#, machine
+	First file:	اولین فایل:
+#. text in categories.rs
+#, machine
+	Folder:	پوشه:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	برای مثال: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	فقط برای حساب Windows شما. برنامه دیگری که در «باز کردن با» انتخاب شده است، اولویت دارد.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	اجبار به خاتمه فرآیندها
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	جمعه
+#. text in the Scheduler window
+#, machine
+	Friday	جمعه
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	از یک لینک مگنت
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	از یک صفحه (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	از یک فایل تورنت
+#. message or event log entry in the main window
+#, machine
+	from the browser	از مرورگر
+#. message or event log entry in the main window
+#, machine
+	from the command line	از خط فرمان
+#. text in the Batch download window
+#, machine
+	From:	از:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	عمومی
+#. button in the Options window
+#, machine
+	Get System	دریافت سیستم
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	در حال دریافت لیست فایل از همتایان... {n} ثانیه
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	قطع مودم پس از اتمام
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	دارد
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	راهنما
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	هایبرنیت
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	پنهان کردن &دسته‌ها
+#. button in a download's progress window
+#, machine
+	Hide tab	پنهان کردن برگه
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	صفحه اصلی
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	من با Mister Download Manager دانلود می‌کنم: سریع، رایگان و شبیه به مدیر دانلودی است که از قبل می‌شناسید. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	اگر یک لینک دانلود تکراری اضافه شود:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	اگر فایل موجود کامل است، کادر گفتگوی تکمیل دانلود را نمایش بده؛ در غیر این صورت آن را از سر بگیر.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	نادیده گرفتن تغییرات زمان اصلاح فایل هنگام از سرگیری دانلود
+#. message or event log entry in the main window
+#, machine
+	Import	وارد کردن
+#. window title in transfer.rs
+#, machine
+	Import downloads	وارد کردن دانلودها
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	در صف
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	اطلاعات
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	هش اطلاعات
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	نصب ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	نصب yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	آدرس نامعتبر است
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	امکان افزودن گروهی از نام فایل‌های متوالی مانند img001.jpg، img002.jpg و غیره،\nimg100.jpg به صف دانلود MDM وجود دارد. از کاراکتر ستاره برای الگوی نام فایل استفاده کنید.
+#. text in the Scheduler window
+#, machine
+	January	ژانویه
+#. text in the Scheduler window
+#, machine
+	July	ژوئیه
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	پرش به دانلودی که نام آن با آن شروع می‌شود
+#. text in the Scheduler window
+#, machine
+	June	ژوئن
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	کیلوبایت/ثانیه
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	پس از اتمام، تورنت‌ها را به اشتراک‌گذاری ادامه بده
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	میانبرهای صفحه‌کلید
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	کلیدها...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	زبان
+#. text in the Batch download window
+#, machine
+	Last file:	آخرین فایل:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	آخرین تلاش {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	بعدا
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	اجرای Mister Download Manager هنگام راه‌اندازی
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	حروف
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	مجوزها و اعتبارات
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	محدود کردن همه دانلودها با هم به
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	ورود
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	جستجو
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	در حال جستجوی صفحه...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	صف اصلی دانلود
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	انتخاب را طولانی‌تر یا کوتاه‌تر کنید
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	پیکربندی دستی پراکسی/SOCKS
+#. text in the Scheduler window
+#, machine
+	March	مارس
+#. checkbox in the Find window
+#, machine
+	Match case	مطابقت با حروف بزرگ و کوچک
+#. checkbox in the Find window
+#, machine
+	Match whole string only	فقط مطابقت با کل رشته
+#. group box title in the Options window
+#, machine
+	Max. connections number	حداکثر تعداد اتصالات
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	حداکثر سرعت دانلود برای یک فایل {kb} کیلوبایت/ثانیه
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	حداکثر سرعت دانلود:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	مه
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	گمشده
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	پیکربندی Mister Download Manager
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager هر اتصال را مستقیما در فایل نهایی\n(یک فایل بخش پراکنده در کنار آن) می‌نویسد، بنابراین نیازی به دایرکتوری موقت و مرحله مونتاژ نیست.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} در دسترس است (منتشر شده در {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	دو
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	دوشنبه
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	ماه، روز، سال
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	انتقال
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	حرکت به بالا/پایین صفحه
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	انتقال یا تغییر نام دانلود انتخاب‌شده
+#. text in a download's Properties window
+#, machine
+	Move to folder	انتقال به پوشه
+#. message or event log entry in the main window
+#, machine
+	Move to queue	انتقال به صف
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	انتقال بدون تغییر انتخاب
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	انتقال/تغییر نام
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	خیلی کندتر از سایر اتصالات؛ در حال اتصال مجدد
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	موسیقی
+#. option (radio button) in the Options window
+#, machine
+	My own way:	روش خودم:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	ش.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	نام
+#. text in categories.rs
+#, machine
+	Name:	نام:
+#. text in errors.rs
+#, machine
+	network error	خطای شبکه
+#. text in the Options window
+#, machine
+	Never show it on these sites:	هرگز در این سایت‌ها نمایش داده نشود:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	جدید
+#. text in the Options window
+#, machine
+	New exception	استثنای جدید
+#. text in the Options window
+#, machine
+	New login	ورود جدید
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	خیر
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	پوشه داده‌ای وجود ندارد
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	پوشه داده‌ای برای تورنت‌ها وجود ندارد
+#. text in langpick.rs
+#, machine
+	No language matches.	هیچ زبانی مطابقت ندارد.
+#. text in the Options window
+#, machine
+	No proxy/socks	بدون پراکسی/SOCKS
+#. text in the Download video window
+#, machine
+	No video this can download on that page	ویدیویی برای دانلود در این صفحه وجود ندارد
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	هیچ آدرس وبی در {file} یافت نشد.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	هیچ‌کدام: همتایان از DHT و سایر همتایان می‌آیند
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	این یک جمع کنترلی نیست که قابل خواندن باشد
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	فضای دیسک کافی نیست: {needed} مورد نیاز، {free} آزاد
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	در صف نیست
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	استفاده نشده: بخش‌های فایل در کنار فایل نوشته می‌شوند
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	توجه: سرورهای اینترنت ممکن است اتصال را هنگام محدودیت سرعت قطع کنند! بنابراین توصیه نمی‌شود از محدودکننده سرعت برای دانلود از سرورهایی که از قابلیت «ادامه» پشتیبانی نمی‌کنند، استفاده کنید.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	توجه: این تنظیمات به پردازش صف مربوط نمی‌شوند
+#. text in the Scheduler window
+#, machine
+	November	نوامبر
+#. text in the Options window
+#, machine
+	Number	تعداد
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	تعداد تلاش‌های مجدد برای هر فایل در صورت عدم موفقیت دانلود:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	اعداد
+#. text in the Scheduler window
+#, machine
+	October	اکتبر
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	خاموش: یک تورنت تمام‌شده متوقف می‌شود، مانند هر دانلود دیگر.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	پیشنهاد دانلود پیوندهای کپی‌شده در کلیپ‌بورد
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	تأیید
+#. text in a download's progress window
+#, machine
+	on download stop/resume	در توقف/ادامه دانلود
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	یک بار در
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	دانلود یک‌باره
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	فقط زمانی که از رایانه استفاده می‌کنم
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	باز کردن
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	باز کردن لینک‌های مگنت و فایل‌های .torrent با Mister Download Manager
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	باز کردن Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	باز کردن فایل زیر پس از اتمام
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	پس از اتمام، فایل زیر را باز کن:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	باز کردن دانلود انتخاب‌شده
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	باز کردن منوی دانلود انتخاب‌شده
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	باز کردن فایل تورنت
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	گزینه‌ها
+#. text in a download's progress window
+#, machine
+	Options on completion	گزینه‌ها پس از تکمیل
+#. text in the Download video window
+#, machine
+	Page address	نشانی صفحه
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	گذرواژه
+#. text in the Options window
+#, machine
+	Password:	گذرواژه:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	یک پیوند مگنت را جای‌گذاری کنید یا یک فایل تورنت را انتخاب کنید، سپس جستجو کنید.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	مکث
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	متوقف شد
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	همتایان
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	همگام‌سازی دوره‌ای
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	قطعات
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	پخش
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	ب.ظ
+#. label in the Options window
+#, machine
+	Port	درگاه
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	پیش‌نمایش
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	برنامه‌ها
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	ویژگی‌های دانلود انتخاب‌شده
+#. text in a download's progress window
+#, machine
+	Property	ویژگی
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	پروکسی / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	پیکربندی پروکسی / SOCKS
+#. label in the Options window
+#, machine
+	Proxy server address	نشانی سرور پراکسی
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	صف {n}
+#. text in the Options window
+#, machine
+	Queue processing started	پردازش صف شروع شد
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	پردازش صف متوقف/تمام شد
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	صف‌ها
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	در حال خواندن فهرست فایل...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	در حال خواندن تورنت...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	دریافت شده
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	در حال دریافت داده...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	بارگیری مجدد
+#. text in a download's Properties window
+#, machine
+	Referer:	ارجاع‌دهنده:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	منطقه‌ای
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	تنظیمات محدودکننده سرعت را برای این فایل به خاطر بسپار
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	این مسیر را برای دسته «{category}» به خاطر بسپار
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	حذف
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	جایگزینی ستاره با
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	نتیجه: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	ادامه
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	قابلیت ادامه
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	ادامه یافت
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	تلاش مجدد: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	توقف(&T)
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	شن
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	شنبه
+#. text in a dialog box
+#, machine
+	Save As	ذخیره با نام
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	ذخیره در
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	ذخیره در...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	ذخیره در:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	ذخیره شده در
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	زمان‌بندی
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	زمان‌بند
+#. text in langpick.rs
+#, machine
+	Search:	جستجو:
+#. text in the Batch download window
+#, machine
+	Second file:	فایل دوم:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	انتخاب همه
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	انتخاب همه دانلودها
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	انتخاب همه دانلودها تا این مورد
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	هیچ‌کدام را انتخاب نکن
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	انتخاب یا لغو انتخاب یک دانلود دیگر
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	انتخاب یا لغو انتخاب دانلود با طرح کلی نقطه‌چین
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	انتخاب صداها برای رویدادهای Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	انتخاب دانلودها در کادر
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	انتخاب اولین / آخرین دانلود
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	انتخاب دانلود قبلی / بعدی
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	انتخاب شده: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	این را برای یک دوست بفرستید:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	ارسال شده
+#. text in the Scheduler window
+#, machine
+	September	سپتامبر
+#. text in the Options window
+#, machine
+	Server	سرور
+#. text in the Options window
+#, machine
+	Server:	سرور:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	تنظیم تاریخ ایجاد فایل مطابق با سرور
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	نسبت اشتراک
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	اشتراک‌گذاری
+#. text in the download list
+#, machine
+	Show	نمایش
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	نمایش &دسته‌ها
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	نمایش یک کادر محاوره‌ای و پرسش برای انجام کار.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	نمایش دکمه دانلود روی ویدیوها در مرورگرها
+#. button in the download list
+#, machine
+	Show all	نمایش همه
+#. text in a download's progress window
+#, machine
+	Show details >>	نمایش جزئیات >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	نمایش کادر محاوره‌ای تکمیل دانلود
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	نمایش پنل انتخاب صف هنگام بستن کادرهای گفتگوی دانلود دسته‌ای
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	نمایش پنل انتخاب صف هنگام فشار دادن دکمه «بعدا دانلود شود»
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	نمایش کادر گفتگوی شروع دانلود
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	نمایش هشدار قبل از توقف دانلودها
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	هنگام دانلود تورنت نمایش داده می‌شود.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	خاموش کردن
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	نام سایت/لینک دانلود/صفحه وب والد/ارجاع‌دهنده
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	سایت/مسیر
+#. text in the Options window
+#, machine
+	Site/path:	سایت/مسیر:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	ورود به سایت‌ها
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	اندازه
+#. text in the Download video window
+#, machine
+	size unknown	اندازه نامعلوم
+#. text in a download's Properties window
+#, machine
+	Size:	اندازه:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	رد شده
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	خواب
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	برخی
+#. text in the Options window
+#, machine
+	Sound file	فایل صوتی
+#. page title in the Options window
+#, machine
+	Sound settings	تنظیمات صدا
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	صداها
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	کد منبع
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	محدودکننده سرعت
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	تنظیمات محدودکننده سرعت
+#. button in a dialog box
+#, machine
+	Start Download	شروع دانلود
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	شروع دانلود در
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	شروع دانلود هنگام راه‌اندازی Mister Download Manager
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	شروع دانلود بلافاصله هنگام نمایش کادر گفتگوی «اطلاعات فایل دانلود»
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	شروع صف دانلود اصلی
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	موقعیت‌های شروع و پیشرفت دانلود بر اساس اتصالات
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	اکنون صف را شروع کن
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	شروع {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	شروع شد
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	با yt-dlp {version} ({format}) شروع شد
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	وضعیت
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	وضعیت:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	توقف دانلود در
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	توقف صف دانلود اصلی
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	توقف {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	متوقف شد
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	هنگام اتمام دانلود متوقف می‌شود
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	یک
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	یکشنبه
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	همگام‌سازی صف
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	معرفی به دوستان
+#. group box title in the Options window
+#, machine
+	Temporary directory	پوشه موقت
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	پ
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	فایل .torrent ذخیره‌شده برای آن از بین رفته است
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	آدرس باید یک آدرس http(s) یا ftp(s) باشد
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	بهترین کیفیت‌ها برای ادغام ویدئو و صدا به ffmpeg نیاز دارند (حدود 80 مگابایت).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	رایانه در {n} ثانیه به حالت خواب می‌رود.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	رایانه در {n} ثانیه به حالت خواب زمستانی می‌رود.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	رایانه در {n} ثانیه خاموش می‌شود.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	اتصال قبل از تکمیل بخش بسته شد
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	اتصال هنگام دریافت داده قطع شد
+#. text in errors.rs
+#, machine
+	the disk is full	دیسک پر است
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	محدودیت دانلود ({mb} مگابایت در هر {hours} ساعت) به پایان رسیده است.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	پیوند دانلود منقضی شده است (آدرس دانلود را به‌روز کنید)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	مدیر دانلودی که از قبل می‌شناسید، بازسازی شده تا سریع‌تر باشد. رایگان و متن‌باز تحت مجوز GNU GPL، نسخه 3 یا بالاتر. ویدئوها توسط yt-dlp پیدا می‌شوند؛ تورنت‌ها روی librqbit اجرا می‌شوند.
+#. text in a dialog box
+#, machine
+	The download queue is done.	صف دانلود به پایان رسید.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	درایو یا اشتراک شبکه دیگر در دسترس نیست
+#. text in errors.rs
+#, machine
+	the file changed on the server	فایل در سرور تغییر کرده است
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	فایل منتقل نشد
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	فایل قابل خواندن نبود: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	فایل مطابقت ندارد ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	فایل مطابقت دارد ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	فایل ذخیره شد با نام
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	انواع فایل‌هایی که در هیچ دسته‌بندی دیگری فهرست نشده‌اند
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	چک‌سام {algorithm} فایل مطابقت ندارد (داده‌ها حفظ شده‌اند؛ دوباره دانلود کنید)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	پوشه ایجاد نشد: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	پوشه {path} در دسترس نیست (درایو حذف شده یا اشتراک شبکه آفلاین است؟)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	سرور FTP پاسخ داد {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	فهرست ذخیره نشد: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	مسیر برای Windows خیلی طولانی است: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	نسخه، شماره‌ای ندارد
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	اتصال امن انجام نشد
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	دانلود انتخاب‌شده کامل نیست. آیا مطمئن هستید که می‌خواهید آن را از فهرست دانلودهای Mister Download Manager حذف کنید؟
+#. text in errors.rs
+#, machine
+	the server answered {status}	سرور پاسخ داد {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	سرور نمی‌تواند بخش‌هایی از فایل را ارسال کند، بنابراین نمی‌توان آن را از سر گرفت
+#. text in errors.rs
+#, machine
+	the server did not answer in time	سرور به موقع پاسخ نداد
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	سرور بخش درخواستی را ارسال نکرد
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	سرور مشغول است ({status})؛ بعدا دوباره امتحان کنید
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	سرور به جای فایل، یک صفحه وب ارسال کرد (نیاز به ورود یا انقضای پیوند؟)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	سرور بخش غیرمنتظره‌ای از فایل را ارسال کرد ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	تورنت ذخیره نشد: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	تورنت دیگر وجود ندارد
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	صفحه وبی که این فایل از آن به دست آمده است:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	دسته‌بندی با این نام از قبل وجود دارد
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	این تنظیمات زمانی که «نمایش گفتگوی تکمیل دانلود» روشن است، در دسترس نیستند
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	این آدرس از قبل در فهرست دانلودها موجود است:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	این پوشه وجود ندارد:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	این تورنت از قبل در فهرست دانلود موجود است
+#. text in the Scheduler window
+#, machine
+	Thursday	پنجشنبه
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	زمان باقی‌مانده
+#. text in the Batch download window
+#, machine
+	To:	به:
+#. text in errors.rs
+#, machine
+	too many redirects	تعداد تغییر مسیرها زیاد است
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	تورنت
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	دانلودهای تورنت (لینک‌های مگنت و فایل‌های .torrent)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	فایل‌های تورنت
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	تنظیمات تورنت
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	تورنت‌ها
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	تورنت‌ها شروع نشدند: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	ردیاب
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	ردیاب‌ها
+#. text in a download's progress window
+#, machine
+	Transfer rate	نرخ انتقال
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	سه‌
+#. text in the Scheduler window
+#, machine
+	Tuesday	سه‌شنبه
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	خاموش کردن
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	پس از اتمام، رایانه را خاموش کن
+#. button in a dialog box
+#, machine
+	Turn off now	اکنون خاموش کن
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	روشن کردن
+#. text in a download's Properties window
+#, machine
+	Type:	نوع:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	ناتمام
+#. text in a download's Properties window
+#, machine
+	Unknown	ناشناخته
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	ناشناخته
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	به‌روزرسانی‌ها بررسی نشدند: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	استفاده از یکپارچه‌سازی پیشرفته مرورگر
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	استفاده از مجوز
+#. text in the Options window
+#, machine
+	Use automatic configuration script	استفاده از اسکریپت پیکربندی خودکار
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	استفاده از FTP در حالت PASV
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	در صورت وجود خطاهای دانلود / برای دانلودهای رهگیری شده از مرورگر، از پراکسی/SOCKS درخواست مرورگر استفاده شود
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	استفاده از محدودکننده سرعت
+#. text in the Options window
+#, machine
+	Use system settings	استفاده از تنظیمات سیستم
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	استفاده از این پراکسی برای پروتکل‌های زیر:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	توسط لیست دانلودها و زمان‌بندی استفاده می‌شود.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	کاربر
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	نام‌های کاربری و گذرواژه‌ها برای سرورها/سایت‌ها
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	User-Agent برای دانلودهای اضافه شده دستی:
+#. text in the Options window
+#, machine
+	User:	کاربر:
+#. label in the Options window
+#, machine
+	UserName	نام کاربری
+#. text in a download's progress window
+#, machine
+	Value	مقدار
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	تأیید
+#. window title in the Checksum window
+#, machine
+	Verify checksum	تأیید جمع کنترلی
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	در حال تأیید...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	نسخه {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	ویدئو
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	جستجوهای ویدئو از yt-dlp استفاده می‌کنند (حدود 23 مگابایت، با امضای آن بررسی شده است).
+#. text in the Options window
+#, machine
+	Virus checking settings	تنظیمات بررسی ویروس
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	در انتظار
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	در انتظار: محدودیت دانلود رسیده است (زمان‌بندی)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	چها
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	وب
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	آدرس‌های وب یافت‌شده در {file}:
+#. text in the Scheduler window
+#, machine
+	Wednesday	چهارشنبه
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	موارد جدید:
+#. text in the Batch download window
+#, machine
+	Wildcard size	اندازه نویسه عام
+#. text in langpick.rs
+#, machine
+	Windows' language	زبان Windows
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	زبان Windows ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	با افزودن URL
+#. group box title in the Options window
+#, machine
+	Write dates and times	نوشتن تاریخ و زمان
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	سال، ماه، روز
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	بله
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	شما آخرین نسخه Mister Download Manager ({version}) را دارید.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	شما نسخه {version} را دارید.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp نصب نشده است (وظایف ← دانلود ویدیو از یک صفحه آن را نصب می‌کند)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	مجموع بررسی {algorithm}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: پس از اتمام دانلود بررسی شد
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} شامل
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	فایل {ext}
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} از {total} (هر کدام {size})
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} از {total} قطعه (هر کدام {size})
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} ساعت {m} دقیقه
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} متصل، {known} شناخته‌شده
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} دقیقه {s} ثانیه
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (خودکار)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} از {total} انتخاب شده
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} بایت)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} برای این درایو {file_system} خیلی بزرگ است (فایل‌ها تا 4 گیگابایت)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} ثانیه
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} قابل نصب نبود: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	اضافه شده
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	توضیحات
+#. column title in the download list in the download list
+#, machine
+column	File Name	نام فایل
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	تاریخ آخرین تلاش
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	صف
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	اندازه
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	منبع
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	وضعیت
+#. column title in the download list in the download list
+#, machine
+column	Time left	زمان باقی‌مانده
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	نرخ انتقال
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	تنظیمات دکمه...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	دانلود ویدیو
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	دانلود با Mister Download Manager
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	برای جابجایی در لبه ویدیو بکشید
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	دانلودها را از مرورگر به Mister Download Manager منتقل می‌کند.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	پنهان کردن در این ویدیو
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager پاسخ نداد
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	ماژول یکپارچه‌سازی Mister Download Manager
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	گزینه‌های بیشتر
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	هرگز در {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	به Mister Download Manager ارسال شد
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+کلیک
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+بالا / Ctrl+پایین
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	کشیدن روی فضای خالی
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+کلیک
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+بالا / Shift+پایین
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	تایپ یک نام
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	بالا / پایین
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	درباره &Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	ا&فزودن دانلود جدید
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	حذف همه &تکمیل‌شده‌ها
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	اکنون &دانلود کن
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&خروج
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&وارد کردن
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	میانبرهای &صفحه‌کلید
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	ز&بان...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&گزینه‌ها
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	مکث &همه
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&حذف
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	گزارش یک &مشکل
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&زمان‌بندی و صف‌ها
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&توقف همه
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	توقف &دانلود
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	نماد &سینی
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&آموزش‌ها
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	دانلودهای &ویدئو
+#. menu command in the main window
+#, machine
+menu	3D Style	سبک سه‌بعدی
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	افزودن دانلود &دسته‌ای
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	افزودن پیوند &مگنت...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	افزودن دانلود دسته‌ای از &کلیپ‌بورد
+#. menu command in the main window
+#, machine
+menu	Add category	افزودن دسته
+#. menu command in the main window
+#, machine
+menu	Arrange files	مرتب‌سازی فایل‌ها
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	مرور
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	بر اساس &توضیحات
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	بر اساس &نام فایل
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	بر اساس تاریخ &آخرین تلاش
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	بر اساس &ترتیب افزودن
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	بر اساس &اندازه
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	بر اساس &زمان باقی‌مانده
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	بر اساس تاریخ &افزودن
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	بر اساس &صفحه وب والد
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	بر اساس &ارجاع‌دهنده
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	بر اساس &مسیر ذخیره
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	بر اساس &وضعیت
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	بر اساس &نرخ انتقال
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	سفارشی‌سازی لیست &URL...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	بررسی برای &به‌روزرسانی‌ها...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	پاک کردن همه &فیلترها
+#. menu command in the main window
+#, machine
+menu	Create new queue	ایجاد صف جدید
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	سفارشی‌سازی...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	پشتیبانی از حالت تاریک
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	حذف
+#. menu command in the main window
+#, machine
+menu	Delete from queue	حذف از صف
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	دانلود &ویدئو از یک صفحه...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&خروجی گرفتن
+#. menu command in the main window
+#, machine
+menu	Edit queue	ویرایش صف
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	یافتن (Ctrl+F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	یافتن بعدی (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	فونت
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	از فایل خروجی &IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	از فایل &متنی...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&محتویات راهنما
+#. menu command in the main window
+#, machine
+menu	Hide drop target	پنهان کردن هدف رها کردن
+#. menu command in the main window
+#, machine
+menu	Large Buttons	دکمه‌های بزرگ
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	جستجو برای نوارابزارهای جدید
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	&صفحه اصلی Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	انتقال/تغییر نام (Ctrl+M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	نئون
+#. menu command in the main window
+#, machine
+menu	On Double click	با دوبار کلیک
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	باز کردن
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	باز کردن فایل &تورنت...
+#. menu command in the main window
+#, machine
+menu	Open folder	باز کردن پوشه
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	باز کردن با...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	ویژگی‌ها
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	&بارگیری مجدد
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	بارگیری مجدد
+#. menu command in the main window
+#, machine
+menu	Refresh download address	تازه‌سازی نشانی بارگیری
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	حذف
+#. menu command in the main window
+#, machine
+menu	Resume Download	ادامه بارگیری
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&زمان‌بندی
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&تنظیمات...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	توقف &صف
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	زمان‌بندی
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	نمایش هدف &رها کردن
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	نمایش Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	دکمه‌های کوچک
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	&محدودکننده سرعت
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	شروع &صف
+#. menu command in the main window
+#, machine
+menu	Start now	اکنون شروع شود
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	توقف
+#. menu command in the main window
+#, machine
+menu	Stop Download	توقف بارگیری
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	به یک &دوست بگویید
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	به فایل صادراتی &IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	به فایل &متنی...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	نوار ابزار
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	تنظیمات &تورنت...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	&روشن کردن
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	&خاموش کردن
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	بررسی جمع کنترلی...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	بارگیری‌ها
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	فایل
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	راهنما
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	وظایف
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	نما
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	افزودن تورنت
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	افزودن URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	حذف
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	حذف تکمیل‌شده‌ها
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	گزینه‌ها
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	ادامه
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	زمان‌بندی
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	شروع صف
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	توقف
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	توقف همه
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	توقف صف
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} گیگابایت
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} کیلوبایت
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} کیلوبایت/ثانیه
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} مگابایت
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} مگابایت/ثانیه

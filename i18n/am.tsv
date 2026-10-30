@@ -1,0 +1,2552 @@
+# Mister Download Manager in Amharic (አማርኛ): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	አማርኛ
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	እንዲሁም {n} ፋይሉን ከዲስክ ይሰርዙ|እንዲሁም {n} ፋይሎችን ከዲስክ ይሰርዙ
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	{n} ማውረድን ከMister Download Manager የማውረዶች ዝርዝር ውስጥ መሰረዝ ይፈልጋሉ?|እነዚህን {n} ማውረዶች ከMister Download Manager የማውረዶች ዝርዝር ውስጥ መሰረዝ ይፈልጋሉ?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} {n} ግንኙነት ይፈቅዳል|{host} {n} ግንኙነቶችን ይፈቅዳል
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} ባይት|{n} ባይት
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} ፋይል|{n} ፋይሎች
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	ተ&ግብር
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&ዝጋ
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&ሰርዝ
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&እርዳታ
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&አዲስ ወረፋ
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&አሁን ጀምር
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(ስሞችን በቦታዎች ይለያዩ)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-ሰዓት (9:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-ሰዓት (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< ዝርዝሮችን ደብቅ
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	ስለ Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	ማውረድ አክል (URL አክል)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	የቡድን ማውረድ አክል
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	አሳሽ አክል...
+#. text in categories.rs
+#, machine
+	Add category	ምድብ አክል
+#. text in the tray icon's menu
+#, machine
+	Add new download	አዲስ ማውረድ አክል
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	ተደጋጋሚውን ያክሉ እና ያለውን ፋይል ይፃፉ
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	ተደጋጋሚውን በቁጥር ፋይል ስም ያክሉ
+#. message or event log entry in the main window
+#, machine
+	Add to queue	ወደ ወረፋ አክል
+#. text in a dialog box
+#, machine
+	Add to queue:	ወደ ወረፋ አክል:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	ቶረንት አክል
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	{source} ታክሏል
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	አድራሻ
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	አድራሻ ወደ {host} ተቀይሯል
+#. text in a download's Properties window
+#, machine
+	Address:	አድራሻ:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	የላቀ / SOCKS...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	ሁሉም ማውረዶች
+#. message or event log entry in the main window
+#, machine
+	All files	ሁሉም ፋይሎች
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	በመውረድ ላይ ነው: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	እንዲሁም ፋይሉን ከዲስክ ይሰርዙ
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ሲጀመር የፍጥነት ገደብን ሁልጊዜ ያብሩ
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	ጥዋት
+#. text in the Scheduler window
+#, machine
+	April	ሚያዝያ
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	“{name}”ን ከMister Download Manager የማውረዶች ዝርዝር ውስጥ መሰረዝ ይፈልጋሉ?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	የስርዓቱ ክልል እንደጻፋቸው
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	ፋይል ዝርዝሩን ከፒርስ እየጠየቀ ነው። ማግኔት አገናኞች አንድ ወይም ሁለት ደቂቃ ሊወስዱ ይችላሉ።
+#. text in the Scheduler window
+#, machine
+	August	ነሐሴ
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	የሚከተሉትን የፋይል አይነቶች በራስ-ሰር ወደ “{category}” ምድብ ያስገቡ:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	የሚከተሉትን የፋይል አይነቶች ማውረድ በራስ-ሰር ይጀምሩ:
+#. window title in the Batch download window
+#, machine
+	Batch download	የቡድን ማውረድ
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	አስስ
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	አስስ...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	አሳሽ/ስርዓት ውህደት
+#. message or event log entry in the main window
+#, machine
+	by batch download	በቡድን ማውረድ
+#. message or event log entry in the main window
+#, machine
+	by import	በማስመጣት
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	ይቅር
+#. text in errors.rs
+#, machine
+	cancelled	ተሰርዟል
+#. text in errors.rs
+#, machine
+	cannot connect to the server	ከአገልጋዩ ጋር መገናኘት አልተቻለም
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	"{text}" አልተገኘም
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	ፋይሉን ማንበብ አልተቻለም፦ {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	መቀጠል አይቻልም: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	ከሚከተሉት አሳሾች ውርዶችን ያንሱ:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	ምድቦች
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	ምድቦች፣ የፋይል አይነቶች፣ ማህደሮች
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	ምድብ
+#. text in categories.rs
+#, machine
+	Category properties	የምድብ ባህሪያት
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	ለመጨረሻ ጊዜ ለተመረጠው "{category}" ምድብ ማህደር ይቀይሩ
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	ዝማኔዎችን ያረጋግጡ
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	በሳምንት አንድ ጊዜ ዝማኔዎችን ያረጋግጡ
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	ዝማኔዎችን በመፈተሽ ላይ...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	በመፈተሽ ላይ...
+#. text in langpick.rs
+#, machine
+	Choose a language	ቋንቋ ይምረጡ
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager መስኮቶቹን የሚያሳይበትን ቋንቋ ይምረጡ:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	አጽዳ
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	ደንበኛ
+#. text in the Options window
+#, machine
+	Clock:	ሰዓት:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	ዝጋ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	ምናሌ ወይም መገናኛ ዝጋ
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	ተጠናቋል
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	የተጨመቁ
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	ማውረዶችን ከመሰረዝዎ በፊት ያረጋግጡ
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	የማውረዶችን መሰረዝ ያረጋግጡ
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	በመገናኘት ላይ...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	ግንኙነት
+#. page title in the Options window
+#, machine
+	Connections and Limits	ግንኙነቶች እና ገደቦች
+#. text in the Options window
+#, machine
+	Connections:	ግንኙነቶች:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	ወደ ቅንጥብ ሰሌዳ ተቀድቷል።
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	ቅዳ
+#. window title in a dialog box
+#, machine
+	Create folder	ማህደር ፍጠር
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	"የማውረድ ሂደት" መገናኛን ያብጁ
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	በMDM ማውረድን ለመከላከል ወይም ለማስገደድ ቁልፎችን ያብጁ
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	በአሳሾች ውስጥ የMDM ማውረድ ፓነሎችን ያብጁ
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	በአሳሾች የአውድ ምናሌ ውስጥ የMDM ምናሌ ንጥሎችን ያብጁ
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	በየቀኑ
+#. text in the Options window
+#, machine
+	Date order:	የቀን ቅደም ተከተል:
+#. page title in the Options window
+#, machine
+	Dates and times	ቀኖች እና ሰዓቶች
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	ቀን፣ ወር፣ ዓመት
+#. text in the Scheduler window
+#, machine
+	December	ታህሳስ
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	ነባሪ
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	"{category}" ምድብ ነባሪ የማውረጃ ማውጫ
+#. page title in the Options window
+#, machine
+	Default download settings	ነባሪ የማውረድ ቅንብሮች
+#. text in the Options window
+#, machine
+	Default max. conn. number	ነባሪ ከፍተኛ የግንኙነት ቁጥር
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	ሰርዝ
+#. message or event log entry in the main window
+#, machine
+	Delete category	ምድብ ሰርዝ
+#. message or event log entry in the main window
+#, machine
+	Delete queue	ወረፋ ሰርዝ
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" ምድብ ይሰረዝ? የወረዱት ፋይሎች ወደ አጠቃላይ ይቀየራሉ፤ ፋይሎቻቸው ባሉበት ይቆያሉ።
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" ወረፋ ይሰረዝ? የወረዱት ፋይሎች በዝርዝሩ ውስጥ ይቆያሉ።
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	የተመረጡትን የወረዱ ፋይሎች ይሰርዙ (በመጀመሪያ ይጠይቃል)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	የተመረጡትን የወረዱ ፋይሎች እና ፋይሎቻቸውን ይሰርዙ (በመጀመሪያ ይጠይቃል)
+#. text in a dialog box
+#, machine
+	Description	መግለጫ
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	መግለጫ ወይም የመግለጫው ክፍል
+#. text in a download's Properties window
+#, machine
+	Description:	መግለጫ:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	የዲስክ ስህተት: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	በወረፋዎች ዝርዝር ውስጥ ይታያል
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	ማውረድ አይጀምሩ፣ ፋይሎችን ወደ ወረፋው ብቻ ያክሉ
+#. text in a dialog box
+#, machine
+	Do you want to create it?	መፍጠር ይፈልጋሉ?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	ሰነዶች
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	ይህን መገናኛ እንደገና አታሳይ
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	ከሚከተሉት አድራሻዎች በራስ-ሰር ማውረድ አይጀምሩ:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	ከሚከተሉት ጣቢያዎች በራስ-ሰር ማውረድ አይጀምሩ:
+#. text in a download's progress window
+#, machine
+	Done	ተከናውኗል
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	አውርድ
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" እንደገና ከመጀመሪያው ይወርድ? አዲስ ማውረድ ሲጠናቀቅ የተጠናቀቀ ፋይል ይተካል።
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	ማውረድ ተጠናቋል
+#. text in the Options window
+#, machine
+	Download failed	ማውረድ አልተሳካም
+#. window title in a dialog box
+#, machine
+	Download File Info	የወረደ ፋይል መረጃ
+#. button in a dialog box
+#, machine
+	Download Later	በኋላ አውርድ
+#. window title in a dialog box
+#, machine
+	Download later	በኋላ አውርድ
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	የማውረድ ገደቦች
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	ከ {mb} ሜባ በላይ አታውርድ\nበየ {hours} ሰዓቱ
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	አሁን አውርድ
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	የማውረጃ ፓነሎች
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	የማውረድ ሁኔታ
+#. window title in the Download video window
+#, machine
+	Download video from a page	ቪዲዮን ከገጽ አውርድ
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	በተመሳሳይ ጊዜ {files} ፋይሎችን አውርድ
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	ወርዷል
+#. page title in the Options window
+#, machine
+	Downloaded file types	የወረዱ የፋይል አይነቶች
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} ባይት) ወርዷል
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	በማውረድ ላይ
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	እንደገና ከመጀመሪያው በማውረድ ላይ
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (80 ሜባ ገደማ) በመውረድ ላይ እና በመረጋገጥ ላይ ነው...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	yt-dlp በመውረድ ላይ እና በመረጋገጥ ላይ ነው...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	ውርዶች
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	ውርዶች ቆመዋል እና በ{time} በራስ-ሰር ይቀጥላሉ።
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	ለማውረድ አገናኞችን እዚህ ይጎትቱ
+#. window title in a dialog box
+#, machine
+	Duplicate download link	የተባዛ የማውረጃ አገናኝ
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	አርትዕ
+#. text in the Options window
+#, machine
+	Edit exception	ልዩ ሁኔታን አርትዕ
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	ዝርዝር አርትዕ...
+#. text in the Options window
+#, machine
+	Edit login	መግቢያን አርትዕ
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	አርትዕ...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	ኢሜይል
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	መግነጢሳዊ አገናኝ ያስገቡ ወይም .torrent ፋይል ይምረጡ
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	ለአዲሱ ወረፋ ስም ያስገቡ
+#. window title in a dialog box
+#, machine
+	Enter new address to download	ለማውረድ አዲስ አድራሻ ያስገቡ
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	የወረፋ ስም ያስገቡ
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	ስህተት
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	ስህተት: {error}
+#. text in the Options window
+#, machine
+	Event	ክስተት
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	ምሳሌ:
+#. text in the Options window
+#, machine
+	Exceptions:	ልዩ ሁኔታዎች:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	ውጣ
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	ሲጠናቀቅ Mister Download Managerን ዝጋ
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	የሚጠበቀው የቼክሰም (MD5, SHA-1, SHA-256, SHA-512 ወይም CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	የሚጠበቀው ቼክሰም ተቀናብሯል ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	ላክ
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	የማኒፌስት 2 Chrome ቅጥያዎችን ተገኝነት ያራዝሙ
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	በቦታዎች የተለዩ ቅጥያዎች፣ ለምሳሌ MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	የካቲት
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	ፋይል
+#. text in the Scheduler window
+#, machine
+	File Name	የፋይል ስም
+#. text in the Download video window
+#, machine
+	File name	የፋይል ስም
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	የፋይል ስም ወይም የስሙ ክፍል
+#. window title in a download's Properties window
+#, machine
+	File Properties	የፋይል ባህሪያት
+#. text in a download's progress window
+#, machine
+	File size	የፋይል መጠን
+#. text in the Options window
+#. tab title
+#, machine
+	File types	የፋይል አይነቶች
+#. text in categories.rs
+#, machine
+	File types:	የፋይል አይነቶች:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	ፋይሎች
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	ፋይሎች ወደ: {folder} ይሄዳሉ
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	በወረፋ ውስጥ ያሉ ፋይሎች
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	ፈልግ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	ማውረድ ፈልግ
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	ፋይል ፈልግ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	ቀጣዩን ተዛማጅ ፈልግ
+#. text in the Find window
+#, machine
+	Find:	ፈልግ:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	ተጠናቋል
+#. text in the Options window
+#, machine
+	First day of the week:	የሳምንቱ የመጀመሪያ ቀን:
+#. text in the Batch download window
+#, machine
+	First file:	የመጀመሪያ ፋይል:
+#. text in categories.rs
+#, machine
+	Folder:	አቃፊ:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	ለምሳሌ: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	ለእርስዎ የWindows መለያ ብቻ። በ"ክፈት በ" ውስጥ የተመረጠ ሌላ መተግበሪያ መጀመሪያ ላይ ይቆያል።
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	ሂደቶችን እንዲያቋርጡ አስገድድ
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	ዓርብ
+#. text in the Scheduler window
+#, machine
+	Friday	ዓርብ
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	ከማግኔት አገናኝ
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	ከገጽ (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	ከቶረንት ፋይል
+#. message or event log entry in the main window
+#, machine
+	from the browser	ከአሳሽ
+#. message or event log entry in the main window
+#, machine
+	from the command line	ከትዕዛዝ መስመር
+#. text in the Batch download window
+#, machine
+	From:	ከ:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	አጠቃላይ
+#. button in the Options window
+#, machine
+	Get System	ሲስተም አግኝ
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	የፋይል ዝርዝር ከፒርስ እየተገኘ ነው... {n} ሰ
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	ሲጠናቀቅ ሞደምን ዝጋ
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	አለኝ
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	እገዛ
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	እንቅልፍ
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	ምድቦችን &ደብቅ
+#. button in a download's progress window
+#, machine
+	Hide tab	ትር ደብቅ
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	መነሻ ገጽ
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	በMister Download Manager አወርዳለሁ: ፈጣን፣ ነፃ እና እርስዎ አስቀድመው የሚያውቁትን የማውረጃ አስተዳዳሪ ይመስላል። {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	የተባዛ የማውረጃ አገናኝ ከተጨመረ:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	ነባር ፋይል ከተጠናቀቀ፣ የማውረድ ማጠናቀቂያ መገናኛን አሳይ፤ ካልሆነ ይቀጥሉት።
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	ማውረድ ሲቀጥል የፋይል ማሻሻያ ጊዜ ለውጦችን ችላ በል
+#. message or event log entry in the main window
+#, machine
+	Import	አስመጣ
+#. window title in transfer.rs
+#, machine
+	Import downloads	ማውረዶችን አስመጣ
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	በወረፋ ውስጥ
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	መረጃ
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	የመረጃ ሃሽ
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	ffmpeg ጫን
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	yt-dlp ጫን
+#. text in a dialog box
+#, machine
+	Invalid address	ልክ ያልሆነ አድራሻ
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	ተከታታይ የፋይል ስሞችን እንደ img001.jpg፣ img002.jpg፣ ወዘተ፣\nimg100.jpg ወደ MDM ማውረጃ ወረፋ ማከል ይቻላል። ለፋይል ስም ስርዓተ-ጥለት የኮከብ ምልክት የዱር ካርድ ይጠቀሙ።
+#. text in the Scheduler window
+#, machine
+	January	ጥር
+#. text in the Scheduler window
+#, machine
+	July	ሐምሌ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	ስሙ በሚጀምርበት ማውረጃ ላይ ይዝለሉ
+#. text in the Scheduler window
+#, machine
+	June	ሰኔ
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	ኪባ/ሰከንድ
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	ቶረንቶች ከተጠናቀቁ በኋላ ማጋራቱን ይቀጥሉ
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	የቁልፍ ሰሌዳ አቋራጮች
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	ቁልፎች...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	ቋንቋ
+#. text in the Batch download window
+#, machine
+	Last file:	የመጨረሻ ፋይል:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	የመጨረሻ ሙከራ {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	በኋላ
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Mister Download Manager ሲጀመር አስጀምር
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	ፊደላት
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	ፈቃዶች እና ምስጋናዎች
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	ሁሉንም ማውረዶች በአንድ ላይ ይገድቡ
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	መግቢያ
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	ፈልግ
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	ገጹን በመፈለግ ላይ...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	ዋና ማውረጃ ወረፋ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	ምርጫውን ያራዝሙ ወይም ያሳጥሩ
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	በእጅ የፕሮክሲ/SOCKS ውቅር
+#. text in the Scheduler window
+#, machine
+	March	መጋቢት
+#. checkbox in the Find window
+#, machine
+	Match case	የፊደል መጠን አዛምድ
+#. checkbox in the Find window
+#, machine
+	Match whole string only	ሙሉውን ሕብረቁምፊ ብቻ አዛምድ
+#. group box title in the Options window
+#, machine
+	Max. connections number	ከፍተኛ የግንኙነቶች ብዛት
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	ለአንድ ፋይል ከፍተኛ የማውረድ ፍጥነት {kb} ኪባ/ሰከንድ
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	ከፍተኛ የማውረድ ፍጥነት:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	ግንቦት
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	የጠፉ
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager ውቅር
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager እያንዳንዱን ግንኙነት በቀጥታ ወደ መጨረሻው\nፋይል (ከጎኑ ያለ ቀጭን ክፍል ፋይል) ይጽፋል፣ ስለዚህ ምንም ጊዜያዊ ማውጫ እና\nየመገጣጠም ደረጃ አያስፈልግም።
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} ይገኛል (በ{date} ተለቋል)።
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	ሰኞ
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	ሰኞ
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	ወር፣ ቀን፣ ዓመት
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	አንቀሳቅስ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	ገጽ ወደ ላይ/ወደ ታች ያንቀሳቅሱ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	የተመረጠውን ማውረድ ያንቀሳቅሱ ወይም ዳግም ይሰይሙ
+#. text in a download's Properties window
+#, machine
+	Move to folder	ወደ አቃፊ ያንቀሳቅሱ
+#. message or event log entry in the main window
+#, machine
+	Move to queue	ወደ ወረፋ ያንቀሳቅሱ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	ምርጫውን ሳይቀይሩ ያንቀሳቅሱ
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	ያንቀሳቅሱ/ዳግም ይሰይሙ
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	ከሌሎች ግንኙነቶች በጣም ቀርፋፋ ነው፤ እንደገና በመገናኘት ላይ
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	ሙዚቃ
+#. option (radio button) in the Options window
+#, machine
+	My own way:	የራሴ መንገድ:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	ቁ.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	ስም
+#. text in categories.rs
+#, machine
+	Name:	ስም:
+#. text in errors.rs
+#, machine
+	network error	የአውታረ መረብ ስህተት
+#. text in the Options window
+#, machine
+	Never show it on these sites:	በእነዚህ ጣቢያዎች ላይ በጭራሽ አያሳዩት፦
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	አዲስ
+#. text in the Options window
+#, machine
+	New exception	አዲስ ልዩ ሁኔታ
+#. text in the Options window
+#, machine
+	New login	አዲስ መግቢያ
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	አይ
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	የውሂብ አቃፊ የለም
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	ለቶረንቶች የውሂብ አቃፊ የለም
+#. text in langpick.rs
+#, machine
+	No language matches.	ምንም ቋንቋ አይዛመድም።
+#. text in the Options window
+#, machine
+	No proxy/socks	ምንም ፕሮክሲ/SOCKS የለም
+#. text in the Download video window
+#, machine
+	No video this can download on that page	በዚህ ገጽ ላይ ሊወርድ የሚችል ቪዲዮ የለም
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	በ{file} ውስጥ ምንም የድር አድራሻዎች አልተገኙም።
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	ምንም የለም: እኩዮች ከDHT እና ከሌሎች እኩዮች ይመጣሉ
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	ይህ ሊያነበው የሚችል የቼክሰም አይነት አይደለም
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	በቂ የዲስክ ቦታ የለም: {needed} ያስፈልጋል, {free} ነፃ
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	በወረፋ ውስጥ የለም
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	አልተጠቀመም: የፋይል ክፍሎች ከፋይሉ አጠገብ ይጻፋሉ
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	ማስታወሻ: የበይነመረብ አገልጋዮች ፍጥነቱ በጣም ሲገደብ ግንኙነት ሊያቋርጡ ይችላሉ! ስለዚህ "እንደገና ማስጀመር" ባህሪን ከማይደግፉ አገልጋዮች ለማውረድ የፍጥነት ገደብን መጠቀም አይመከርም።
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	ማስታወሻ: እነዚህ ቅንብሮች ከወረፋ ሂደት ጋር አይዛመዱም
+#. text in the Scheduler window
+#, machine
+	November	ህዳር
+#. text in the Options window
+#, machine
+	Number	ቁጥር
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	ማውረድ ካልተሳካ ለእያንዳንዱ ፋይል የሚደረጉ ሙከራዎች ብዛት:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	ቁጥሮች
+#. text in the Scheduler window
+#, machine
+	October	ጥቅምት
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	ጠፍቷል: የተጠናቀቀ ቶረንት እንደማንኛውም ማውረድ ይቆማል።
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	ወደ ቅንጥብ ሰሌዳ የተገለበጡ አገናኞችን ለማውረድ ያቅርቡ
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	እሺ
+#. text in a download's progress window
+#, machine
+	on download stop/resume	ማውረድ ሲቆም/ሲቀጥል
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	አንድ ጊዜ በ
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	አንድ ጊዜ ማውረድ
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	ኮምፒውተሩን ስጠቀም ብቻ
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	ክፈት
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	መግነጢሳዊ አገናኞችን እና .torrent ፋይሎችን በMister Download Manager ይክፈቱ
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Mister Download Managerን ክፈት
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	ሲጠናቀቅ የሚከተለውን ፋይል ክፈት
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	ሲጠናቀቅ የሚከተለውን ፋይል ይክፈቱ:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	የተመረጠውን ማውረድ ይክፈቱ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	የተመረጠውን ማውረድ ምናሌ ይክፈቱ
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	የቶረንት ፋይል ክፈት
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	አማራጮች
+#. text in a download's progress window
+#, machine
+	Options on completion	ሲጠናቀቅ አማራጮች
+#. text in the Download video window
+#, machine
+	Page address	የገጽ አድራሻ
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	የይለፍ ቃል
+#. text in the Options window
+#, machine
+	Password:	የይለፍ ቃል:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	የማግኔት አገናኝ ይለጥፉ ወይም የ.torrent ፋይል ይምረጡ፣ ከዚያ ይፈልጉ።
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	ለአፍታ አቁም
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	ለአፍታ ቆሟል
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	እኩዮች
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	የጊዜያዊ ማመሳሰል
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	ክፍሎች
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	አጫውት
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	ከሰዓት
+#. label in the Options window
+#, machine
+	Port	ወደብ
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	ቅድመ እይታ
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	ፕሮግራሞች
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	የተመረጠው ማውረድ ባህሪያት
+#. text in a download's progress window
+#, machine
+	Property	ንብረት
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	ፕሮክሲ / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	የፕሮክሲ / SOCKS ውቅር
+#. label in the Options window
+#, machine
+	Proxy server address	የፕሮክሲ አገልጋይ አድራሻ
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	ወረፋ # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	የወረፋ ሂደት ተጀምሯል
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	የወረፋ ሂደት ቆሟል/ተጠናቋል
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	ወረፋዎች
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	የፋይል ዝርዝርን በማንበብ ላይ...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	ቶረንቱን በማንበብ ላይ...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	ተቀብሏል
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	ውሂብ በመቀበል ላይ...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	እንደገና አውርድ
+#. text in a download's Properties window
+#, machine
+	Referer:	ሪፈረር:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	ክልላዊ
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	ለዚህ ፋይል የፍጥነት ገደብ ቅንብሮችን አስታውስ
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	ይህን መንገድ ለ"{category}" ምድብ አስታውስ
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	አስወግድ
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	ኮከቢትን ወደ
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	ውጤት: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	ከቆመበት ቀጥል
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	ከቆመበት የመቀጠል ችሎታ
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	ከቆመበት ቀጥሏል
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	እንደገና በመሞከር ላይ: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	አ&ቁም
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	ቅዳ
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	ቅዳሜ
+#. text in a dialog box
+#, machine
+	Save As	አስቀምጥ እንደ
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	ወደዚህ አስቀምጥ
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	ወደዚህ አስቀምጥ...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	ወደዚህ አስቀምጥ:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	የተቀመጠበት
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	መርሐግብር
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	መርሐግብር አውጪ
+#. text in langpick.rs
+#, machine
+	Search:	ይፈልጉ:
+#. text in the Batch download window
+#, machine
+	Second file:	ሁለተኛ ፋይል:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	ሁሉንም ምረጥ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	ሁሉንም ውርዶች ምረጥ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	እስከዚህ ድረስ ያሉትን ሁሉንም ውርዶች ምረጥ
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	ምንም አትምረጥ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	አንድ ተጨማሪ ውርድ ምረጥ ወይም ምረጣውን አንሳ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	ነጥብ ያለው ዝርዝር ያለው ውርድ ምረጥ ወይም ምረጣውን አንሳ
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	ለMister Download Manager ክስተቶች ድምጾችን ምረጥ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	በሳጥኑ ውስጥ ያሉትን ውርዶች ምረጥ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	የመጀመሪያውን / የመጨረሻውን ውርድ ምረጥ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	የቀደመውን / ቀጣዩን ውርድ ምረጥ
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	የተመረጡ: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	ይህን ለጓደኛ ላክ:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	የተላከ
+#. text in the Scheduler window
+#, machine
+	September	መስከረም
+#. text in the Options window
+#, machine
+	Server	አገልጋይ
+#. text in the Options window
+#, machine
+	Server:	አገልጋይ:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	በአገልጋዩ የቀረበውን የፋይል መፍጠሪያ ቀን አዘጋጅ
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	የማጋራት ጥምርታ
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	ማጋራት
+#. text in the download list
+#, machine
+	Show	አሳይ
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	ምድቦችን &አሳይ
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	የንግግር ሳጥን አሳይ እና ምን ማድረግ እንዳለብህ ጠይቅ።
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	በአሳሾች ውስጥ በቪዲዮዎች ላይ የማውረጃ ቁልፍ አሳይ
+#. button in the download list
+#, machine
+	Show all	ሁሉንም አሳይ
+#. text in a download's progress window
+#, machine
+	Show details >>	ዝርዝሮችን አሳይ >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	የውርድ ማጠናቀቂያ የንግግር ሳጥን አሳይ
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	የቡድን ማውረድ መገናኛዎችን ሲዘጉ የሰልፍ ምርጫ ፓነልን አሳይ
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	"በኋላ አውርድ" የሚለውን ቁልፍ ሲጫኑ የሰልፍ ምርጫ ፓነልን አሳይ
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	የማውረድ መገናኛን አሳይ
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	ማውረዶችን ከማቆምዎ በፊት ማስጠንቀቂያ አሳይ
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	ቶረንቱ እየወረደ እያለ ይታያል።
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	ዝጋ
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	የጣቢያ ስም/የማውረጃ አገናኝ/የወላጅ ድረ-ገጽ/ሪፈረር
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	ጣቢያ/መንገድ
+#. text in the Options window
+#, machine
+	Site/path:	ጣቢያ/መንገድ:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	የጣቢያ መግቢያዎች
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	መጠን
+#. text in the Download video window
+#, machine
+	size unknown	መጠኑ አይታወቅም
+#. text in a download's Properties window
+#, machine
+	Size:	መጠን:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	ተዘሏል
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	እንቅልፍ
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	አንዳንድ
+#. text in the Options window
+#, machine
+	Sound file	የድምጽ ፋይል
+#. page title in the Options window
+#, machine
+	Sound settings	የድምጽ ቅንብሮች
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	ድምጾች
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	ምንጭ ኮድ
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	የፍጥነት ገደብ
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	የፍጥነት ገደብ ቅንብሮች
+#. button in a dialog box
+#, machine
+	Start Download	ማውረድ ጀምር
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	ማውረድ የሚጀምርበት ሰዓት
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Mister Download Manager ሲጀመር ማውረድ ጀምር
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	"የፋይል መረጃ አውርድ" መገናኛን እያሳየ ወዲያውኑ ማውረድ ጀምር
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	ዋናውን የማውረድ ሰልፍ ጀምር
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	የመነሻ ቦታዎች እና የማውረድ ሂደት በግንኙነቶች
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	ሰልፉን አሁን ጀምር
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	{queue} ጀምር
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	ተጀምሯል
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	በyt-dlp {version} ({format}) ተጀምሯል
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	ሁኔታ
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	ሁኔታ:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	ማውረድ የሚቆምበት ሰዓት
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	ዋናውን የማውረድ ሰልፍ አቁም
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	{queue} አቁም
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	ቆሟል
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	ማውረዱ ሲጠናቀቅ ይቆማል
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	እሁ
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	እሑድ
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	የማመሳሰል ወረፋ
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	ለጓደኛ ይንገሩ
+#. group box title in the Options window
+#, machine
+	Temporary directory	ጊዜያዊ ማውጫ
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	ሐሙ
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	ለእሱ የተቀመጠው የ.torrent ፋይል ጠፍቷል
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	አድራሻው የhttp(s) ወይም ftp(s) አድራሻ መሆን አለበት
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	ምርጥ ጥራቶች ቪዲዮ እና ኦዲዮን ለማዋሃድ ffmpeg ያስፈልጋቸዋል (ወደ 80 ሜባ ገደማ)።
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	ኮምፒዩተሩ በ{n} ሰከንዶች ውስጥ ይተኛል።
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	ኮምፒዩተሩ በ{n} ሰከንዶች ውስጥ ይተኛል።
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	ኮምፒዩተሩ በ{n} ሰከንዶች ውስጥ ይዘጋል።
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	ክፍሉ ከመጠናቀቁ በፊት ግንኙነቱ ተቋርጧል
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	ውሂብ በሚቀበልበት ጊዜ ግንኙነቱ ጠፍቷል
+#. text in errors.rs
+#, machine
+	the disk is full	ዲስኩ ሞልቷል
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	የማውረድ ገደቡ ({mb} ሜባ በየ{hours} ሰዓቱ) ደርሷል።
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	የማውረጃው አገናኝ ጊዜው አልፎበታል (የማውረጃውን አድራሻ ያድሱ)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	ቀድሞውንም የሚያውቁት የማውረድ አስተዳዳሪ፣ በፍጥነት እንዲሰራ ተደርጎ እንደገና የተሰራ። በGNU GPL፣ ስሪት 3 ወይም ከዚያ በኋላ ነፃ እና ክፍት ምንጭ። ቪዲዮዎች በyt-dlp ይገኛሉ፤ ቶረንቶች በlibrqbit ላይ ይሰራሉ።
+#. text in a dialog box
+#, machine
+	The download queue is done.	የማውረድ ወረፋው ተጠናቅቋል።
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	ድራይቭ ወይም የአውታረ መረብ መጋሪያ ከአሁን በኋላ አይገኝም
+#. text in errors.rs
+#, machine
+	the file changed on the server	ፋይሉ በአገልጋዩ ላይ ተቀይሯል
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	ፋይሉ ሊንቀሳቀስ አልቻለም
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	ፋይሉ ሊነበብ አልቻለም: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	ፋይሉ አይዛመድም ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	ፋይሉ ይዛመዳል ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	ፋይሉ እንደ ተቀምጧል
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	በሌላ በማንኛውም ምድብ ውስጥ ያልተዘረዘሩ የፋይል አይነቶች
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	የፋይሉ {algorithm} ቼክሰም አይዛመድም (ውሂቡ ተቀምጧል፤ እንደገና ያውርዱት)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	አቃፊው ሊፈጠር አልቻለም: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	የ{path} አቃፊ አይገኝም (ድራይቭ ተወግዷል ወይስ የአውታረ መረብ መጋሪያ ከመስመር ውጭ ነው?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	የFTP አገልጋይ {code} {reply} ብሎ መለሰ
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	ዝርዝሩ ሊቀመጥ አልቻለም: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	መንገዱ ለWindows በጣም ረጅም ነው: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	እትሙ ምንም ስሪት የለውም
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	ደህንነቱ የተጠበቀ ግንኙነት አልተሳካም
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	የተመረጠው ማውረድ አልተጠናቀቀም። ከMister Download Manager የማውረዶች ዝርዝር ውስጥ\nለመሰረዝ እርግጠኛ ነዎት?
+#. text in errors.rs
+#, machine
+	the server answered {status}	አገልጋዩ {status} ብሎ መለሰ
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	አገልጋዩ የፋይሉን ክፍሎች መላክ አይችልም, ስለዚህ መቀጠል አይቻልም
+#. text in errors.rs
+#, machine
+	the server did not answer in time	አገልጋዩ በሰዓቱ አልመለሰም
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	አገልጋዩ የተጠየቀውን ክፍል አልላከም
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	አገልጋዩ ስራ በዝቶበታል ({status}); በኋላ እንደገና ይሞክሩ
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	አገልጋዩ ከፋይሉ ይልቅ የድር ገጽ ልኳል (መግባት ያስፈልጋል ወይስ አገናኙ ጊዜው አልፎበታል?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	አገልጋዩ ያልተጠበቀ የፋይሉን ክፍል ልኳል ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	ቶረንቱ ሊቀመጥ አልቻለም: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	ቶረንቱ እዚያ የለም
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	ይህ ፋይል የተገኘበት የድር ገጽ:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	በዚህ ስም ምድብ አስቀድሞ አለ
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	"ማውረድ ተጠናቋል የሚለውን መገናኛ አሳይ" ሲበራ እነዚህ ቅንብሮች አይገኙም።
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	ይህ አድራሻ አስቀድሞ በማውረዶች ዝርዝር ውስጥ አለ:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	ይህ አቃፊ የለም:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	ይህ ቶረንት አስቀድሞ በማውረድ ዝርዝር ውስጥ አለ
+#. text in the Scheduler window
+#, machine
+	Thursday	ሐሙስ
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	የቀረው ጊዜ
+#. text in the Batch download window
+#, machine
+	To:	ወደ:
+#. text in errors.rs
+#, machine
+	too many redirects	በጣም ብዙ ማዞሪያዎች
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	ቶረንት
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	ቶረንት ማውረዶች (ማግኔት አገናኞች እና .torrent ፋይሎች)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	ቶረንት ፋይሎች
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	የቶረንት ቅንብሮች
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	ቶረንቶች
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	ቶረንቶች ሊጀመሩ አልቻሉም፦ {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	መከታተያ
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	መከታተያዎች
+#. text in a download's progress window
+#, machine
+	Transfer rate	የማስተላለፊያ ፍጥነት
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	ማ
+#. text in the Scheduler window
+#, machine
+	Tuesday	ማክሰኞ
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	አጥፋ
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	ሲጠናቀቅ ኮምፒውተሩን አጥፋ
+#. button in a dialog box
+#, machine
+	Turn off now	አሁን አጥፋ
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	አብራ
+#. text in a download's Properties window
+#, machine
+	Type:	ዓይነት:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	ያልተጠናቀቀ
+#. text in a download's Properties window
+#, machine
+	Unknown	ያልታወቀ
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	ያልታወቀ
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	ዝመናዎች ሊረጋገጡ አልቻሉም፦ {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	የላቀ የብሮውዘር ውህደትን ተጠቀም
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	ፈቃድ ተጠቀም
+#. text in the Options window
+#, machine
+	Use automatic configuration script	ራስ-ሰር የማዋቀሪያ ስክሪፕት ተጠቀም
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	FTPን በPASV ሁነታ ተጠቀም
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	የማውረድ ስህተቶች ካሉ/ከአሳሹ ለተጠለፉ ማውረዶች ከአሳሽ ጥያቄ ፕሮክሲ/SOCKS ይጠቀሙ
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	የፍጥነት ገደብ ተጠቀም
+#. text in the Options window
+#, machine
+	Use system settings	የስርዓት ቅንብሮችን ተጠቀም
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	ይህን ፕሮክሲ ለሚከተሉት ፕሮቶኮሎች ይጠቀሙ:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	በማውረዶች ዝርዝር እና በጊዜ መርሐግብር አውጪው ጥቅም ላይ ይውላል።
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	ተጠቃሚ
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	የተጠቃሚ ስሞች እና የይለፍ ቃሎች ለአገልጋዮች/ጣቢያዎች
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	በእጅ ለተጨመሩ ማውረዶች የተጠቃሚ-ወኪል:
+#. text in the Options window
+#, machine
+	User:	ተጠቃሚ:
+#. label in the Options window
+#, machine
+	UserName	የተጠቃሚ ስም
+#. text in a download's progress window
+#, machine
+	Value	ዋጋ
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	አረጋግጥ
+#. window title in the Checksum window
+#, machine
+	Verify checksum	የቼክሰም ማረጋገጫ
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	በማረጋገጥ ላይ...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	ስሪት {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	ቪዲዮ
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	የቪዲዮ ፍለጋዎች yt-dlpን ይጠቀማሉ (ወደ 23 ሜባ፣ ከፊርማው ጋር ተረጋግጧል)።
+#. text in the Options window
+#, machine
+	Virus checking settings	የቫይረስ መፈተሻ ቅንብሮች
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	በመጠበቅ ላይ
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	በመጠበቅ ላይ፦ የማውረድ ገደቡ ደርሷል (መርሐግብር አውጪ)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	ረ
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	ድር
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	በ{file} ውስጥ የተገኙ የድር አድራሻዎች:
+#. text in the Scheduler window
+#, machine
+	Wednesday	ረቡዕ
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	አዲስ ነገር:
+#. text in the Batch download window
+#, machine
+	Wildcard size	የዱር ካርድ መጠን
+#. text in langpick.rs
+#, machine
+	Windows' language	የWindows ቋንቋ
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	የWindows ቋንቋ ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	URL አክል ጋር
+#. group box title in the Options window
+#, machine
+	Write dates and times	ቀኖችን እና ሰዓቶችን ይጻፉ
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	ዓመት፣ ወር፣ ቀን
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	አዎ
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	የMister Download Manager ({version}) የቅርብ ጊዜ ስሪት አለዎት።
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	ስሪት {version} አለዎት።
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp አልተጫነም (ተግባራት → ቪዲዮ ከገጽ አውርድ ይጭነዋል)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} ቼክሰም
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: ማውረዱ ሲጠናቀቅ ተረጋግጧል
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} ይዟል
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} ፋይል
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	ከ{total} {have} ({size} እያንዳንዳቸው)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	ከ{total} {have} ቁርጥራጮች ({size} እያንዳንዳቸው)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} ሰዓት(ቶች) {m} ደቂቃ
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} ተገናኝቷል፣ {known} ይታወቃል
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} ደቂቃ {s} ሰከንድ
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (ራስ-ሰር)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	ከ{total} {n} ተመርጧል
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} ባይት)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} ለዚህ {file_system} ድራይቭ በጣም ትልቅ ነው (ፋይሎች እስከ 4 ጊባ)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} ሰከንድ
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} መጫን አልተቻለም: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	የተጨመረበት
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	መግለጫ
+#. column title in the download list in the download list
+#, machine
+column	File Name	የፋይል ስም
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	የመጨረሻ ሙከራ ቀን
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	Q
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	መጠን
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	ምንጭ
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	ሁኔታ
+#. column title in the download list in the download list
+#, machine
+column	Time left	የቀረው ጊዜ
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	የማስተላለፊያ ፍጥነት
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	የአዝራር ቅንብሮች...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	ቪዲዮ አውርድ
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	በMister Download Manager ያውርዱ
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	በቪዲዮው ጠርዝ ላይ ለማንቀሳቀስ ይጎትቱ
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	ማውረዶችን ከብሮውዘር ወደ Mister Download Manager ያስተላልፋል።
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	በዚህ ቪዲዮ ላይ ደብቅ
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager ምላሽ አልሰጠም
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager ውህደት ሞጁል
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	ተጨማሪ አማራጮች
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	በ{site} ላይ በጭራሽ
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	ወደ Mister Download Manager ተልኳል
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+ጠቅ ያድርጉ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+ወደ ላይ / Ctrl+ወደ ታች
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	በባዶ ቦታ ላይ ይጎትቱ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+ጠቅ ያድርጉ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+ወደ ላይ / Shift+ወደ ታች
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	ስም ይተይቡ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	ወደ ላይ / ወደ ታች
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	ስለ &Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	አዲስ &ማውረድ አክል
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	ሁሉንም የተጠናቀቁ &ሰርዝ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	አሁን &አውርድ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&ውጣ
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&አስመጣ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&የቁልፍ ሰሌዳ አቋራጮች
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&ቋንቋ...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&አማራጮች
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	ሁሉንም &አቁም
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&አስወግድ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	ችግር &ሪፖርት አድርግ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&መርሐግብር አውጪ እና ወረፋዎች
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	ሁሉንም &አቁም
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	ማውረድ &አቁም
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&ትሬይ አዶ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&መማሪያዎች
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&የቪዲዮ ማውረዶች
+#. menu command in the main window
+#, machine
+menu	3D Style	3D ቅጥ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	የ&ቡድን ማውረድ አክል
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	የ&ማግኔት አገናኝ አክል...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	የቡድን ማውረድ ከ&ቅንጥብ ሰሌዳ አክል
+#. menu command in the main window
+#, machine
+menu	Add category	ምድብ አክል
+#. menu command in the main window
+#, machine
+menu	Arrange files	ፋይሎችን አስተካክል
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	አስስ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	በ&መግለጫ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	በ&ፋይል ስም
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	በ&መጨረሻው ሙከራ ቀን
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	በ&መደመር ቅደም ተከተል
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	በ&መጠን
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	በ&ቀሪ ጊዜ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	በተጨመረ &ቀን
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	በወላጅ &ድር ገጽ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	በ&ሪፈረር
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	በማስቀመጫ &መንገድ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	በ&ሁኔታ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	በማስተላለፊያ &ፍጥነት
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	የ&URL ዝርዝርን ያብጁ...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	ለ&ዝማኔዎች ፈትሽ...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	ሁሉንም &ማጣሪያዎች አጽዳ
+#. menu command in the main window
+#, machine
+menu	Create new queue	አዲስ ወረፋ ፍጠር
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	አብጅ...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	የጨለማ ሁነታ ድጋፍ
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	ሰርዝ
+#. menu command in the main window
+#, machine
+menu	Delete from queue	ከወረፋ ሰርዝ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	ቪዲዮ ከገጽ &አውርድ...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&ላክ
+#. menu command in the main window
+#, machine
+menu	Edit queue	ወረፋ አርትዕ
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	ፈልግ (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	ቀጣይ ፈልግ (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	ቅርጸ-ቁምፊ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	ከ&IDM ወደ ውጪ መላኪያ ፋይል...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	ከ&ጽሑፍ ፋይል...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&የእገዛ ይዘቶች
+#. menu command in the main window
+#, machine
+menu	Hide drop target	የመጣል ኢላማ ደብቅ
+#. menu command in the main window
+#, machine
+menu	Large Buttons	ትላልቅ አዝራሮች
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	አዲስ የመሳሪያ አሞሌዎችን ፈልግ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager &መነሻ ገጽ
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	አንቀሳቅስ/ዳግም ሰይም (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	ኒዮን
+#. menu command in the main window
+#, machine
+menu	On Double click	በሁለት ጊዜ ጠቅ ሲደረግ
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	ክፈት
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	የቶረንት ፋይል &ክፈት...
+#. menu command in the main window
+#, machine
+menu	Open folder	አቃፊ ክፈት
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	ክፈት በ...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	ባሕሪያት
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	እንደገና &አውርድ
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	እንደገና አውርድ
+#. menu command in the main window
+#, machine
+menu	Refresh download address	የማውረጃ አድራሻ አድስ
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	አስወግድ
+#. menu command in the main window
+#, machine
+menu	Resume Download	ማውረድ ቀጥል
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&መርሐግብር አውጪ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&ቅንብሮች...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	ወረፋ &አቁም
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	መርሐግብር
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	የመጣል &ዒላማ አሳይ
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Mister Download Manager አሳይ
+#. menu command in the main window
+#, machine
+menu	Small Buttons	ትንንሽ አዝራሮች
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	የፍጥነት &ገደብ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	ወረፋ &ጀምር
+#. menu command in the main window
+#, machine
+menu	Start now	አሁን ጀምር
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	አቁም
+#. menu command in the main window
+#, machine
+menu	Stop Download	ማውረድ አቁም
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	ለ&ጓደኛ ንገር
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	ወደ &IDM ወደ ውጪ መላኪያ ፋይል...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	ወደ &ጽሑፍ ፋይል...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	የመሳሪያ አሞሌ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	የቶረንት ቅንብ&ሮች...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	&አብራ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	&አጥፋ
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	ቼክሰም አረጋግጥ...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	ውርዶች
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	ፋይል
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	እገዛ
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	ተግባራት
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	እይታ
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	ቶረንት አክል
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	URL አክል
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	ሰርዝ
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	የተጠናቀቁትን ሰርዝ
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	አማራጮች
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	ቀጥል
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	መርሐግብር አውጪ
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	ወረፋ ጀምር
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	አቁም
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	ሁሉንም አቁም
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	ወረፋ አቁም
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} ጊባ
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} ኪባ
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} ኪባ/ሰከንድ
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} ሜባ
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} ሜባ/ሰከንድ

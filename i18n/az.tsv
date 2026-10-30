@@ -1,0 +1,2552 @@
+# Mister Download Manager in Azerbaijani (Azərbaycan): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Azərbaycan
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Həmçinin {n} faylı diskdən silin|Həmçinin {n} faylı diskdən silin
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager-in yükləmələr siyahısından {n} yükləməni silmək istədiyinizə əminsiniz?|Mister Download Manager-in yükləmələr siyahısından bu {n} yükləməni silmək istədiyinizə əminsiniz?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} {n} əlaqəyə icazə verir|{host} {n} əlaqəyə icazə verir
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} bayt|{n} bayt
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} fayl|{n} fayl
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	Tə&tbiq et
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Bağla
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Sil
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Kömək
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Yeni növbə
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&İndi başla
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(adları boşluqlarla ayırın)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-saatlıq (9:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-saatlıq (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Təfərrüatları gizlət
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Mister Download Manager haqqında
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Yükləmə əlavə et (URL əlavə et)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Toplu yükləmə əlavə et
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Brauzer əlavə et...
+#. text in categories.rs
+#, machine
+	Add category	Kateqoriya əlavə et
+#. text in the tray icon's menu
+#, machine
+	Add new download	Yeni yükləmə əlavə et
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Dublikatı əlavə et və mövcud faylın üzərinə yaz
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Nömrələnmiş fayl adı ilə dublikatı əlavə et
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Növbəyə əlavə et
+#. text in a dialog box
+#, machine
+	Add to queue:	Növbəyə əlavə et:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Torrent əlavə et
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	{source} əlavə edildi
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Ünvan
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Ünvan {host} olaraq dəyişdirildi
+#. text in a download's Properties window
+#, machine
+	Address:	Ünvan:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Qabaqcıl / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Bütün Yükləmələr
+#. message or event log entry in the main window
+#, machine
+	All files	Bütün fayllar
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	artıq yüklənir: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Faylı diskdən də sil
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager işə düşəndə Sürət Məhdudlaşdırıcısını həmişə yandır
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	Aprel
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	"{name}" faylını Mister Download Manager-in yükləmələr siyahısından silmək istədiyinizə əminsiniz?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Sistemin regionu yazdığı kimi
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Fayl siyahısı üçün digər istifadəçilərdən soruşulur. Maqnit linkləri bir-iki dəqiqə çəkə bilər.
+#. text in the Scheduler window
+#, machine
+	August	Avqust
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Aşağıdakı fayl növlərini avtomatik olaraq "{category}" kateqoriyasına yerləşdir:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Aşağıdakı fayl növlərinin yüklənməsini avtomatik başla:
+#. window title in the Batch download window
+#, machine
+	Batch download	Toplu yükləmə
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Gözat
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Gözat...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Brauzer/Sistem İnteqrasiyası
+#. message or event log entry in the main window
+#, machine
+	by batch download	toplu yükləmə ilə
+#. message or event log entry in the main window
+#, machine
+	by import	idxal ilə
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Ləğv et
+#. text in errors.rs
+#, machine
+	cancelled	ləğv edildi
+#. text in errors.rs
+#, machine
+	cannot connect to the server	serverə qoşula bilmir
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	"{text}" tapılmadı
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Fayl oxuna bilmir: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	davam etdirmək olmur: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Aşağıdakı brauzerlərdən yükləmələri tutun:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Kateqoriyalar
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Kateqoriyalar, fayl növləri, qovluqlar
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Kateqoriya
+#. text in categories.rs
+#, machine
+	Category properties	Kateqoriya xüsusiyyətləri
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Son seçilənə görə "{category}" kateqoriyası üçün qovluğu dəyişdirin
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Yeniləmələri yoxla
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Həftədə bir dəfə yeniləmələri yoxla
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Yeniləmələr yoxlanılır...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Yoxlanılır...
+#. text in langpick.rs
+#, machine
+	Choose a language	Dil seçin
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager-in pəncərələrini göstərdiyi dili seçin:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Təmizlə
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Müştəri
+#. text in the Options window
+#, machine
+	Clock:	Saat:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Bağla
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Menyu və ya dialoqu bağla
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Tamamlandı
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Sıxılmış
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Yükləmələri silməzdən əvvəl təsdiqləyin
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Yükləmələrin silinməsini təsdiqləyin
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Qoşulur...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Qoşulma
+#. page title in the Options window
+#, machine
+	Connections and Limits	Qoşulmalar və Limitlər
+#. text in the Options window
+#, machine
+	Connections:	Qoşulmalar:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Mübadilə buferinə kopyalandı.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Kopyala
+#. window title in a dialog box
+#, machine
+	Create folder	Qovluq yarat
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	"Yükləmənin gedişi" dialoqunu fərdiləşdirin
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	MDM ilə yükləmənin qarşısını almaq və ya məcbur etmək üçün düymələri fərdiləşdirin
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Brauzerlərdə MDM Yükləmə panellərini fərdiləşdirin
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Brauzerlərin kontekst menyusunda MDM menyu elementlərini fərdiləşdirin
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Gündəlik
+#. text in the Options window
+#, machine
+	Date order:	Tarix sırası:
+#. page title in the Options window
+#, machine
+	Dates and times	Tarixlər və vaxtlar
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Gün, ay, il
+#. text in the Scheduler window
+#, machine
+	December	Dekabr
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Defolt
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	"{category}" kateqoriyası üçün defolt yükləmə qovluğu
+#. page title in the Options window
+#, machine
+	Default download settings	Defolt yükləmə parametrləri
+#. text in the Options window
+#, machine
+	Default max. conn. number	Defolt maks. qoşulma sayı
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Sil
+#. message or event log entry in the main window
+#, machine
+	Delete category	Kateqoriyanı sil
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Növbəni sil
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" kateqoriyasını silmək istəyirsiniz? Yükləmələri Ümumi kateqoriyasına keçəcək; faylları yerində qalacaq.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" növbəsini silmək istəyirsiniz? Yükləmələri siyahıda qalacaq.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Seçilmiş yükləmələri sil (əvvəlcə soruşur)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Seçilmiş yükləmələri və fayllarını sil (əvvəlcə soruşur)
+#. text in a dialog box
+#, machine
+	Description	Təsvir
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Təsvir və ya təsvirin bir hissəsi
+#. text in a download's Properties window
+#, machine
+	Description:	Təsvir:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	disk xətası: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	növbələr siyahısında göstərilir
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Yükləməyə başlamayın, yalnız faylları növbəyə əlavə edin
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Yaratmaq istəyirsiniz?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Sənədlər
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Bu dialoq qutusunu bir daha göstərmə
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Aşağıdakı ünvanlardan avtomatik yükləməyə başlamayın:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Aşağıdakı saytlardan avtomatik yükləməyə başlamayın:
+#. text in a download's progress window
+#, machine
+	Done	Hazırdır
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Yüklə
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" faylını yenidən əvvəldən yükləmək istəyirsiniz? Yeni yükləmə tamamlandıqda bitmiş fayl əvəz olunur.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Yükləmə tamamlandı
+#. text in the Options window
+#, machine
+	Download failed	Yükləmə uğursuz oldu
+#. window title in a dialog box
+#, machine
+	Download File Info	Fayl məlumatını yüklə
+#. button in a dialog box
+#, machine
+	Download Later	Sonra yüklə
+#. window title in a dialog box
+#, machine
+	Download later	Sonra yüklə
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Yükləmə limitləri
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB-dan çox yükləməyin\nhər {hours} saatda
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	İndi yüklə
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Yükləmə panelləri
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Yükləmə statusu
+#. window title in the Download video window
+#, machine
+	Download video from a page	Səhifədən video yüklə
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Eyni anda {files} fayl yüklə
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Yüklənib
+#. page title in the Options window
+#, machine
+	Downloaded file types	Yüklənmiş fayl növləri
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} Bayt) yüklənib
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Yüklənir
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Yenidən əvvəldən yüklənir
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg yoxlanılır və endirilir (təxminən 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	yt-dlp yoxlanılır və endirilir...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Endirmələr
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Endirmələr dayandırıldı və {time} tarixində avtomatik olaraq davam etdiriləcək.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Endirmək üçün keçidləri bura sürüşdürün
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Dublikat endirmə keçidi
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Düzəliş et
+#. text in the Options window
+#, machine
+	Edit exception	İstisnaya düzəliş et
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Siyahıya düzəliş et...
+#. text in the Options window
+#, machine
+	Edit login	Girişə düzəliş et
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Düzəliş et...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	E-poçt
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Maqnit keçidi daxil edin və ya .torrent faylı seçin
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Yeni növbə üçün ad daxil edin
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Endirmək üçün yeni ünvan daxil edin
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Növbə adını daxil edin
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Xəta
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Xəta: {error}
+#. text in the Options window
+#, machine
+	Event	Hadisə
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Nümunə:
+#. text in the Options window
+#, machine
+	Exceptions:	İstisnalar:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Çıxış
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Bitirdikdə Mister Download Manager-dən çıxın
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Gözlənilən nəzarət cəmi (MD5, SHA-1, SHA-256, SHA-512 və ya CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Gözlənilən nəzarət cəmi təyin edildi ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	İxrac et
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome genişləndirmələrinin mövcudluğunu genişləndirin
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Genişləndirmələr boşluqlarla ayrılmışdır, məsələn MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Fevral
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Fayl
+#. text in the Scheduler window
+#, machine
+	File Name	Fayl adı
+#. text in the Download video window
+#, machine
+	File name	Fayl adı
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Fayl adı və ya adın bir hissəsi
+#. window title in a download's Properties window
+#, machine
+	File Properties	Fayl xüsusiyyətləri
+#. text in a download's progress window
+#, machine
+	File size	Fayl ölçüsü
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Fayl növləri
+#. text in categories.rs
+#, machine
+	File types:	Fayl növləri:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Fayllar
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Fayllar {folder} qovluğuna gedir
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Növbədəki fayllar
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Tap
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Yükləməni tap
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Faylı tap
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Növbəti uyğunluğu tap
+#. text in the Find window
+#, machine
+	Find:	Tap:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Bitdi
+#. text in the Options window
+#, machine
+	First day of the week:	Həftənin ilk günü:
+#. text in the Batch download window
+#, machine
+	First file:	İlk fayl:
+#. text in categories.rs
+#, machine
+	Folder:	Qovluq:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Məsələn: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Yalnız Windows hesabınız üçün. "Birlikdə aç"da seçilmiş başqa proqram birinci qalır.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Prosesləri məcburi dayandır
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	C.
+#. text in the Scheduler window
+#, machine
+	Friday	Cümə
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	maqnit linkindən
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	səhifədən (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	torrent faylından
+#. message or event log entry in the main window
+#, machine
+	from the browser	brauzerdən
+#. message or event log entry in the main window
+#, machine
+	from the command line	əmrlər sətrindən
+#. text in the Batch download window
+#, machine
+	From:	Kimdən:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Ümumi
+#. button in the Options window
+#, machine
+	Get System	Sistem əldə et
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Fayl siyahısı peerlərdən alınır... {n} s
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Bitdikdə modemi ayır
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Var
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Yardım
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Yuxu rejiminə keçir
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Kateqoriyaları gizlət(&C)
+#. button in a download's progress window
+#, machine
+	Hide tab	Nişanı gizlət
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Ana səhifə
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Mən Mister Download Manager ilə yükləyirəm: sürətli, pulsuz və artıq bildiyiniz yükləmə menecerinə bənzəyir. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Dublikat yükləmə linki əlavə edilərsə:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Mövcud fayl tamamlanıbsa, yükləmə tamamlandı dialoqunu göstər; əks halda davam etdir.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Yükləməni davam etdirərkən faylın dəyişdirilmə vaxtı dəyişikliklərinə məhəl qoyma
+#. message or event log entry in the main window
+#, machine
+	Import	İdxal
+#. window title in transfer.rs
+#, machine
+	Import downloads	Yükləmələri idxal et
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	Növbədə
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Məlumat
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Məlumat heşi
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	ffmpeg quraşdırın
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	yt-dlp quraşdırın
+#. text in a dialog box
+#, machine
+	Invalid address	Yanlış ünvan
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg və s. kimi ardıcıl fayl adları qrupunu,\nimg100.jpg-ni MDM yükləmə növbəsinə əlavə etmək mümkündür. Fayl adı şablonu üçün ulduz işarəsindən istifadə edin.
+#. text in the Scheduler window
+#, machine
+	January	Yanvar
+#. text in the Scheduler window
+#, machine
+	July	İyul
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Adı onunla başlayan yükləməyə keçin
+#. text in the Scheduler window
+#, machine
+	June	İyun
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KBayt/san
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Bitmiş torrentləri paylaşmağa davam edin
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Klaviatura qısa yolları
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Açarlar...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Dil
+#. text in the Batch download window
+#, machine
+	Last file:	Son fayl:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Son cəhd {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Sonra
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Başlanğıcda Mister Download Manager-i işə salın
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Hərflər
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Lisenziyalar və kreditlər
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Bütün yükləmələri birlikdə məhdudlaşdırın
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Giriş
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Axtar
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Səhifə axtarılır...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Əsas yükləmə növbəsi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Seçimi uzadın və ya qısaldın
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Əl ilə proksi/socks konfiqurasiyası
+#. text in the Scheduler window
+#, machine
+	March	Mart
+#. checkbox in the Find window
+#, machine
+	Match case	Böyük/kiçik hərflərə həssasdır
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Yalnız tam sətirlə uyğunlaşdırın
+#. group box title in the Options window
+#, machine
+	Max. connections number	Maks. əlaqə sayı
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Bir fayl üçün maksimum yükləmə sürəti {kb} KBayt/san
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Maksimum yükləmə sürəti:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	May
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Çatışmayan
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager Konfiqurasiyası
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager hər bir bağlantını birbaşa son fayla\nyazır (onun yanında seyrək hissə faylı), buna görə də müvəqqəti qovluq və\nyığma addımı tələb olunmur.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} mövcuddur ({date} tarixində buraxılıb).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	B.e.
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Bazar ertəsi
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Ay, gün, il
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Köçür
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Səhifəni yuxarı/aşağı hərəkət etdirin
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Seçilmiş yükləməni köçürün və ya adını dəyişdirin
+#. text in a download's Properties window
+#, machine
+	Move to folder	Qovluğa köçürün
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Növbəyə köçürün
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Seçimi dəyişdirmədən köçürün
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Köçür/Adını dəyişdir
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	digər bağlantılardan daha yavaşdır; yenidən qoşulur
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Musiqi
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Mənim öz üsulum:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	N.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Ad
+#. text in categories.rs
+#, machine
+	Name:	Ad:
+#. text in errors.rs
+#, machine
+	network error	şəbəkə xətası
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Bu saytlarda heç vaxt göstərmə:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Yeni
+#. text in the Options window
+#, machine
+	New exception	Yeni istisna
+#. text in the Options window
+#, machine
+	New login	Yeni giriş
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Xeyr
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	məlumat qovluğu yoxdur
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	torrentlər üçün məlumat qovluğu yoxdur
+#. text in langpick.rs
+#, machine
+	No language matches.	Heç bir dil uyğun gəlmir.
+#. text in the Options window
+#, machine
+	No proxy/socks	Proksi/SOCKS yoxdur
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Bu səhifədə yüklənə biləcək video yoxdur
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	{file} faylında heç bir veb ünvan tapılmadı.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Heç biri: Pirlər DHT-dən və digər pirlərdən gəlir
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Bu oxuya biləcəyi bir nəzarət cəmi deyil
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	diskdə kifayət qədər yer yoxdur: {needed} lazımdır, {free} boşdur
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Növbədə deyil
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	İstifadə edilmir: fayl hissələri faylın yanında yazılır
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Qeyd: İnternet serverləri sürət həddən artıq məhdudlaşdırıldıqda əlaqəni kəsə bilər! Buna görə də "davam et" funksiyasını dəstəkləməyən serverlərdən yükləmək üçün Sürət Məhdudlaşdırıcısından istifadə etmək tövsiyə edilmir.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Qeyd: Bu parametrlər növbə emalı ilə əlaqəli deyil
+#. text in the Scheduler window
+#, machine
+	November	Noyabr
+#. text in the Options window
+#, machine
+	Number	Nömrə
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Yükləmə uğursuz olarsa, hər fayl üçün yenidən cəhdlərin sayı:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Nömrələr
+#. text in the Scheduler window
+#, machine
+	October	Oktyabr
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Söndür: tamamlanmış torrent istənilən yükləmə kimi dayanır.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Panoya kopyalanmış keçidləri yükləməyi təklif et
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	OK
+#. text in a download's progress window
+#, machine
+	on download stop/resume	yükləmə dayandırıldıqda/davam etdirildikdə
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Bir dəfə saat
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Birdəfəlik yükləmə
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Yalnız kompüterdən istifadə etdiyim müddətdə
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Aç
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Maqnit linklərini və .torrent fayllarını Mister Download Manager ilə açın
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Mister Download Manager-i açın
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Bitdikdə aşağıdakı faylı açın
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Bitdikdə aşağıdakı faylı açın:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Seçilmiş yükləməni açın
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Seçilmiş yükləmənin menyusunu açın
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Torrent faylını açın
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Seçimlər
+#. text in a download's progress window
+#, machine
+	Options on completion	Tamamlandıqda seçimlər
+#. text in the Download video window
+#, machine
+	Page address	Səhifə ünvanı
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Parol
+#. text in the Options window
+#, machine
+	Password:	Parol:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Maqnit keçidini yapışdırın və ya .torrent faylını seçin, sonra Axtarın.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Fasilə
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Fasilə verildi
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Həmkarlar
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Dövri sinxronizasiya
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Hissələr
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Oxut
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	Port
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Önizləmə
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Proqramlar
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Seçilmiş yükləmənin xüsusiyyətləri
+#. text in a download's progress window
+#, machine
+	Property	Xüsusiyyət
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Proksi / Socks
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Proksi / socks konfiqurasiyası
+#. label in the Options window
+#, machine
+	Proxy server address	Proksi server ünvanı
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Növbə # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Növbənin işlənməsi başladı
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Növbənin işlənməsi dayandırıldı/bitdi
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Növbələr
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Fayl siyahısı oxunur...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Torrent oxunur...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Qəbul edildi
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Məlumat alınır...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Yenidən yükləyin
+#. text in a download's Properties window
+#, machine
+	Referer:	Referer:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Regional
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Bu fayl üçün Sürət Məhdudlaşdırıcısı parametrlərini yadda saxla
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	"{category}" kateqoriyası üçün bu yolu yadda saxla
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Sil
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Ulduzu əvəz edin
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Nəticə: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Davam et
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Davam etmə imkanı
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Davam etdirildi
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Yenidən cəhd edilir: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	Da&yandır
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	Şə
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Şənbə
+#. text in a dialog box
+#, machine
+	Save As	Fərqli Saxla
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Saxlama yeri
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Saxlama yeri...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Saxlama yeri:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Saxlanıldığı yer
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Cədvəl
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Cədvəl
+#. text in langpick.rs
+#, machine
+	Search:	Axtar:
+#. text in the Batch download window
+#, machine
+	Second file:	İkinci fayl:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Hamısını seç
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Bütün yükləmələri seç
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Bu yükləməyə qədər hər yükləməni seç
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Heç birini seçmə
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Bir yükləməni daha seç və ya seçimi ləğv et
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Nöqtəli konturlu yükləməni seç və ya seçimi ləğv et
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Mister Download Manager hadisələri üçün səsləri seçin
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Qutudakı yükləmələri seç
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	İlk / son yükləməni seç
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Əvvəlki / növbəti yükləməni seç
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Seçildi: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Bunu bir dosta göndər:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Göndərildi
+#. text in the Scheduler window
+#, machine
+	September	Sentyabr
+#. text in the Options window
+#, machine
+	Server	Server
+#. text in the Options window
+#, machine
+	Server:	Server:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Faylın yaradılma tarixini server tərəfindən təqdim edildiyi kimi təyin et
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Paylaşma nisbəti
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Paylaşılır
+#. text in the download list
+#, machine
+	Show	Göstər
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Kateqoriyaları &göstər
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Dialoq qutusunu göstər və nə edəcəyini soruş.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Brauzerlərdə videoların üzərində yükləmə düyməsini göstər
+#. button in the download list
+#, machine
+	Show all	Hamısını göstər
+#. text in a download's progress window
+#, machine
+	Show details >>	Ətraflı göstər >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Yükləmə tamamlandı dialoqunu göstər
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Toplu yükləmə dialoqlarını bağlayarkən növbə seçimi panelini göstər
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	"Sonra yüklə" düyməsini basarkən növbə seçimi panelini göstər
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Yükləməyə başlama dialoqunu göstər
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Yükləmələri dayandırmadan əvvəl xəbərdarlıq göstər
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Torrent yüklənərkən göstərilir.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Söndür
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Sayt adı/Yükləmə keçidi/Ana veb səhifə/Referer
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Sayt/yol
+#. text in the Options window
+#, machine
+	Site/path:	Sayt/yol:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Sayt Girişləri
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Ölçü
+#. text in the Download video window
+#, machine
+	size unknown	ölçü naməlum
+#. text in a download's Properties window
+#, machine
+	Size:	Ölçü:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Buraxıldı
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Yuxu rejiminə keçir
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Bəzi
+#. text in the Options window
+#, machine
+	Sound file	Səs faylı
+#. page title in the Options window
+#, machine
+	Sound settings	Səs parametrləri
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Səslər
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Mənbə kodu
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Sürət Məhdudlaşdırıcısı
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Sürət Məhdudlaşdırıcısı parametrləri
+#. button in a dialog box
+#, machine
+	Start Download	Yükləməyə Başla
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Yükləməyə başla
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Mister Download Manager işə düşəndə yükləməyə başla
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	"Fayl Məlumatını Yüklə" dialoqunu göstərərkən dərhal yükləməyə başla
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Əsas yükləmə növbəsini başlat
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Bağlantılara görə başlanğıc mövqeləri və yükləmə tərəqqisi
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Növbəni indi başlat
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	{queue} başlat
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Başladı
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) ilə başladı
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Status
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Status:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Yükləməni dayandır
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Əsas yükləmə növbəsini dayandır
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	{queue} dayandır
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Dayandırıldı
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Yükləmə bitdikdə dayanır
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	B.
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Bazar
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Sinxronizasiya növbəsi
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Dosta tövsiyə et
+#. group box title in the Options window
+#, machine
+	Temporary directory	Müvəqqəti qovluq
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	C.
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	saxlanılan .torrent faylı yoxdur
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Ünvan http(s) və ya ftp(s) ünvanı olmalıdır
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Ən yaxşı keyfiyyətlər video və səsi birləşdirmək üçün ffmpeg tələb edir (təxminən 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Kompyuter {n} saniyə ərzində yuxu rejiminə keçəcək.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Kompyuter {n} saniyə ərzində yuxu rejiminə keçəcək.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Kompyuter {n} saniyə ərzində bağlanacaq.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	hissə tamamlanmadan əlaqə kəsildi
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	məlumat qəbul edilərkən əlaqə kəsildi
+#. text in errors.rs
+#, machine
+	the disk is full	disk doludur
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Yükləmə limiti ({mb} MB hər {hours} saat) çatdı.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	yükləmə linkinin müddəti bitib (yükləmə ünvanını yeniləyin)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Artıq tanıdığınız yükləmə meneceri, daha sürətli olmaq üçün yenidən qurulub. GNU GPL, versiya 3 və ya daha yeni altında pulsuz və açıq mənbə. Videolar yt-dlp tərəfindən tapılır; torrentlər librqbit üzərində işləyir.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Yükləmə növbəsi tamamlandı.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	disk və ya şəbəkə paylaşımı artıq mövcud deyil
+#. text in errors.rs
+#, machine
+	the file changed on the server	fayl serverdə dəyişdirildi
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Fayl köçürülə bilmədi
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Fayl oxuna bilmədi: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Fayl uyğun gəlmir ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Fayl uyğun gəlir ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Fayl kimi saxlanıldı
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Başqa heç bir kateqoriyada olmayan fayl növləri
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	faylın {algorithm} yoxlama cəmi uyğun gəlmir (məlumat saxlanılır; yenidən yükləyin)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Qovluq yaradıla bilmədi: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	{path} qovluğu mövcud deyil (disk çıxarılıb və ya şəbəkə paylaşımı oflayndır?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP serveri {code} {reply} cavabını verdi
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Siyahı saxlanıla bilmədi: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	yol Windows üçün çox uzundur: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	buraxılışın versiyası yoxdur
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	Təhlükəsiz əlaqə uğursuz oldu
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Seçilmiş yükləmə tamamlanmayıb. Mister Download Manager yükləmələr siyahısından\nonu silmək istədiyinizə əminsiniz?
+#. text in errors.rs
+#, machine
+	the server answered {status}	server {status} cavab verdi
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	server faylın hissələrini göndərə bilmir, buna görə də davam etdirilə bilməz
+#. text in errors.rs
+#, machine
+	the server did not answer in time	server vaxtında cavab vermədi
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	server tələb olunan hissəni göndərmədi
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	server məşğuldur ({status}); daha sonra yenidən cəhd edin
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	server fayl əvəzinə veb səhifə göndərdi (daxil olmaq lazımdır və ya linkin müddəti bitib?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	server faylın gözlənilməz hissəsini göndərdi ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Torrent saxlanıla bilmədi: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	torrent artıq orada deyil
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Bu faylın əldə edildiyi veb səhifə:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Bu adla artıq bir kateqoriya var
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	"Yükləmə tamamlandı dialoqunu göstər" aktiv olduqda bu parametrlər mövcud deyil
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Bu ünvan artıq yükləmələr siyahısındadır:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Bu qovluq mövcud deyil:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Bu torrent artıq yükləmə siyahısındadır
+#. text in the Scheduler window
+#, machine
+	Thursday	Cümə axşamı
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Qalan vaxt
+#. text in the Batch download window
+#, machine
+	To:	Kimə:
+#. text in errors.rs
+#, machine
+	too many redirects	çoxlu yönləndirmələr
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Torrent yükləmələri (maqnit bağlantıları və .torrent faylları)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Torrent faylları
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Torrent parametrləri
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrentlər
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	torrentlər başlaya bilmədi: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	İzləyici
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	İzləyicilər
+#. text in a download's progress window
+#, machine
+	Transfer rate	Transfer sürəti
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	Çə
+#. text in the Scheduler window
+#, machine
+	Tuesday	Çərşənbə axşamı
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Söndür
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Bitirdikdə kompüteri söndür
+#. button in a dialog box
+#, machine
+	Turn off now	İndi söndür
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Yandır
+#. text in a download's Properties window
+#, machine
+	Type:	Növ:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Bitməmiş
+#. text in a download's Properties window
+#, machine
+	Unknown	Naməlum
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	naməlum
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Yeniləmələr yoxlanıla bilmədi: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Qabaqcıl brauzer inteqrasiyasından istifadə edin
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Avtorizasiyadan istifadə et
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Avtomatik konfiqurasiya skriptindən istifadə et
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	FTP-dən PASV rejimində istifadə et
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Yükləmə xətaları olarsa brauzer sorğusundan proksi/socks istifadə et /\nbrauzerdən ələ keçirilmiş yükləmələr üçün
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Sürət Məhdudlaşdırıcısından istifadə et
+#. text in the Options window
+#, machine
+	Use system settings	Sistem parametrlərindən istifadə et
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Aşağıdakı protokollar üçün bu proksidən istifadə edin:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Yükləmələr siyahısı və Cədvəl tərəfindən istifadə olunur.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	İstifadəçi
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Serverlər/saytlar üçün istifadəçi adları və parollar
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	Əl ilə əlavə edilmiş yükləmələr üçün User-Agent:
+#. text in the Options window
+#, machine
+	User:	İstifadəçi:
+#. label in the Options window
+#, machine
+	UserName	İstifadəçi adı
+#. text in a download's progress window
+#, machine
+	Value	Dəyər
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Yoxla
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Nəzarət cəmini yoxla
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Yoxlanılır...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Versiya {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Video
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video axtarışları yt-dlp istifadə edir (təxminən 23 MB, imzası ilə yoxlanılıb).
+#. text in the Options window
+#, machine
+	Virus checking settings	Virus yoxlama parametrləri
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Gözləyir
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Gözləyir: yükləmə limiti çatdı (Cədvəl)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Çə
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Veb
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	{file} faylında tapılan veb ünvanlar:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Çərşənbə
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	Yeniliklər:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Joker simvol ölçüsü
+#. text in langpick.rs
+#, machine
+	Windows' language	Windows dili
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windows dili ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	URL əlavə etməklə
+#. group box title in the Options window
+#, machine
+	Write dates and times	Tarixləri və vaxtları yazın
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	İl, ay, gün
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Bəli
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Siz Mister Download Manager-in ən son versiyasına ({version}) sahibsiniz.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Siz {version} versiyasına sahibsiniz.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp quraşdırılmayıb (Tapşırıqlar → Səhifədən video yükləyin quraşdırır)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} nəzarət cəmi
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: yükləmə bitdikdə yoxlanılır
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} ehtiva edir
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} Faylı
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{total} ({size} hər biri) hissədən {have}
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{total} hissədən {have} ({size} hər biri)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} saat {m} dəq
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} qoşulub, {known} məlumdur
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} dəq {s} san
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (avto)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{total} seçiləndən {n}
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} Bayt)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} bu {file_system} diski üçün çox böyükdür (fayllar 4 GB-a qədər)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} san
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} quraşdırıla bilmədi: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Əlavə edilib
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Təsvir
+#. column title in the download list in the download list
+#, machine
+column	File Name	Fayl adı
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Son cəhd tarixi
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	N
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Ölçü
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Mənbə
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Status
+#. column title in the download list in the download list
+#, machine
+column	Time left	Qalan vaxt
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Transfer sürəti
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Düymə parametrləri...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Videonu yüklə
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Mister Download Manager ilə yükləyin
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Videonu kənarı boyunca hərəkət etdirmək üçün sürüşdürün
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Yükləmələri brauzerdən Mister Download Manager proqramına ötürür.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Bu videoda gizlət
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager cavab vermədi
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager İnteqrasiya Modulu
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Daha çox seçim
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	{site} saytında heç vaxt
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Mister Download Manager proqramına göndərildi
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+klik
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Yuxarı / Ctrl+Aşağı
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Sil
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Boş sahəni sürüşdürün
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+klik
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Sil
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+Yuxarı / Shift+Aşağı
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Ad yazın
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Yuxarı / Aşağı
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Mister Download Manager haqqı&nda
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	Yeni yükləmə ə&lavə et
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	Bütün tamamlanmışları &sil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	İndi &yüklə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Çıxış
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&İdxal
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Klaviatura qısayolları
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Dil...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Seçimlər
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	Hamısını &dayandır
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Sil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	Problemi &bildir
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Cədvəl və növbələr
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	Hamısını &saxla
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	Yükləməni &saxla
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&Sistem tepsisi nişanı
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Dərsliklər
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&Video yükləmələr
+#. menu command in the main window
+#, machine
+menu	3D Style	3D Tərzi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Toplu yükləmə ə&lavə et
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Maqnit &linki əlavə et...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Mü&badilə buferindən toplu yükləmə əlavə et
+#. menu command in the main window
+#, machine
+menu	Add category	Kateqoriya əlavə et
+#. menu command in the main window
+#, machine
+menu	Arrange files	Faylları təşkil et
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Gözdən keçir
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	&Təsvirə görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	&Fayl adına görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	&Son cəhd tarixinə görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	&Əlavə edilmə ardıcıllığına görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	&Ölçüyə görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	&Qalan vaxta görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	&Əlavə edilmə tarixinə görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Ana &veb səhifəyə görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	&Refererə görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	&Saxlama yoluna görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	St&atusa görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	&Transfer sürətinə görə
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	URL siyahısını &fərdiləşdir...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	&Yeniləmələri yoxla...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Bütün &filtrləri təmizlə
+#. menu command in the main window
+#, machine
+menu	Create new queue	Yeni növbə yarat
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Fərdiləşdir...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Tünd rejim dəstəyi
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Sil
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Növbədən sil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	Səhifədən &video yüklə...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&İxrac et
+#. menu command in the main window
+#, machine
+menu	Edit queue	Növbəni redaktə et
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Tap (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Növbətini tap (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Şrift
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	&IDM ixrac faylından...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	&Mətn faylından...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&Yardım məzmunu
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Hədəfi gizlət
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Böyük düymələr
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Yeni alət panelləri axtar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager &Ana Səhifəsi
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Köçür/Adını dəyiş (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neon
+#. menu command in the main window
+#, machine
+menu	On Double click	İkiqat klikdə
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Aç
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Torrent faylını a&ç...
+#. menu command in the main window
+#, machine
+menu	Open folder	Qovluğu aç
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Bununla aç...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Xüsusiyyətlər
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Yenidən e&ndir
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Yenidən yüklə
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Yükləmə ünvanını yenilə
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Sil
+#. menu command in the main window
+#, machine
+menu	Resume Download	Yükləməyə davam et
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&Cədvəl
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&Tənzimləmələr...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	Növbəni da&yandır
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Cədvəl
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Sürük&ləmə hədəfini göstər
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Mister Download Manager-i göstər
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Kiçik Düymələr
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Sürət &məhdudlaşdırıcısı
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	&Növbəni başlat
+#. menu command in the main window
+#, machine
+menu	Start now	İndi başla
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Dayandır
+#. menu command in the main window
+#, machine
+menu	Stop Download	Yükləməni dayandır
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Dosta &de
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	&IDM ixrac faylına...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	&Mətn faylına...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Alətlər paneli
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Torrent tənzimləmələ&ri...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	&Yandır
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	&Söndür
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Nəzarət cəmini yoxla...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Yükləmələr
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Fayl
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Kömək
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Tapşırıqlar
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Baxış
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Torrent əlavə et
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	URL əlavə et
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Sil
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Tamamlanmışları sil
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Seçimlər
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Davam et
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Cədvəl
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Növbəni Başlat
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Dayandır
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Hamısını Dayandır
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Növbəni Dayandır
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/san
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/san

@@ -1,0 +1,2552 @@
+# Mister Download Manager in Lithuanian (Lietuvių): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Lietuvių
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Taip pat ištrinti {n} failą iš disko|Taip pat ištrinti {n} failus iš disko|Taip pat ištrinti {n} failų iš disko
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Ar tikrai norite ištrinti {n} atsisiuntimą iš „Mister Download Manager“ atsisiuntimų sąrašo?|Ar tikrai norite ištrinate šiuos {n} atsisiuntimus iš „Mister Download Manager“ atsisiuntimų sąrašo?|Ar tikrai norite ištrinate šiuos {n} atsisiuntimus iš „Mister Download Manager“ atsisiuntimų sąrašo?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} leidžia {n} ryšį|{host} leidžia {n} ryšius|{host} leidžia {n} ryšių
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} baitas|{n} baitai|{n} baitų
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} failas|{n} failai|{n} failų
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&Taikyti
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Uždaryti
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Naikinti
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Žinynas
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Nauja eilė
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Pradėti dabar
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(pavadinimus atskirkite tarpais)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12 val. (21:41 val.)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24 val. (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Slėpti išsamią informaciją
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Apie „Mister Download Manager“
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Pridėti atsisiuntimą (pridėti URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Pridėti paketinį atsisiuntimą
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Pridėti naršyklę...
+#. text in categories.rs
+#, machine
+	Add category	Pridėti kategoriją
+#. text in the tray icon's menu
+#, machine
+	Add new download	Pridėti naują atsisiuntimą
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Pridėti dublikatą ir perrašyti esamą failą
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Pridėti dublikatą su numeruotu failo pavadinimu
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Pridėti į eilę
+#. text in a dialog box
+#, machine
+	Add to queue:	Pridėti į eilę:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Pridėti torrentą
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	Pridėta {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Adresas
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Adresas pakeistas į {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Adresas:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Išplėstiniai / „Socks“...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Visi atsisiuntimai
+#. message or event log entry in the main window
+#, machine
+	All files	Visi failai
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	jau atsisiunčiama: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Taip pat ištrinti failą iš disko
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Visada įjungti greičio ribotuvą paleidus „Mister Download Manager“
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	Priešpiet
+#. text in the Scheduler window
+#, machine
+	April	Balandis
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Ar tikrai norite ištrinti „{name}“ iš „Mister Download Manager“ atsisiuntimų sąrašo?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Kaip nurodyta sistemos regione
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Prašoma bendraamžių failų sąrašo. Magnetinės nuorodos gali užtrukti minutę ar dvi.
+#. text in the Scheduler window
+#, machine
+	August	Rugpjūtis
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Automatiškai įdėti į „{category}“ kategoriją šiuos failų tipus:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Automatiškai pradėti atsisiųsti šiuos failų tipus:
+#. window title in the Batch download window
+#, machine
+	Batch download	Paketinis atsisiuntimas
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Naršyti
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Naršyti...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Naršyklės / sistemos integravimas
+#. message or event log entry in the main window
+#, machine
+	by batch download	pagal paketinius atsisiuntimus
+#. message or event log entry in the main window
+#, machine
+	by import	pagal importavimą
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Atšaukti
+#. text in errors.rs
+#, machine
+	cancelled	atšaukta
+#. text in errors.rs
+#, machine
+	cannot connect to the server	nepavyko prisijungti prie serverio
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	Nepavyko rasti „{text}“
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Nepavyko nuskaityti failo: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	nepavyko atnaujinti: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Atsisiųsti iš šių naršyklių:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Kategorijos
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Kategorijos, failų tipai, aplankai
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Kategorija
+#. text in categories.rs
+#, machine
+	Category properties	Kategorijos ypatybės
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Pakeisti kategorijos „{category}“ aplanką pagal paskutinį pasirinkimą
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Tikrinti, ar yra naujinimų
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Tikrinti, ar yra naujinimų kartą per savaitę
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Tikrinama, ar yra naujinimų...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Tikrinama...
+#. text in langpick.rs
+#, machine
+	Choose a language	Pasirinkite kalbą
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Pasirinkite kalbą, kuria „Mister Download Manager“ rodys savo langus:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Valyti
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Klientas
+#. text in the Options window
+#, machine
+	Clock:	Laikrodis:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Uždaryti
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Uždaryti meniu arba dialogo langą
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Baigta
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Suglaudinti
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Patvirtinti prieš ištrinant atsisiuntimus
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Patvirtinti atsisiuntimų naikinimą
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Jungiamasi...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Ryšys
+#. page title in the Options window
+#, machine
+	Connections and Limits	Ryšiai ir apribojimai
+#. text in the Options window
+#, machine
+	Connections:	Ryšiai:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Nukopijuota į mainų sritį.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Kopijuoti
+#. window title in a dialog box
+#, machine
+	Create folder	Kurti aplanką
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Tinkinti dialogo langą „Atsisiuntimo eiga“
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Tinkinti klavišus, kad būtų užkirstas kelias atsisiuntimui naudojant MDM arba jis būtų priverstinai atliktas
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Tinkinti MDM atsisiuntimo skydelius naršyklėse
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Tinkinti MDM meniu elementus naršyklių kontekstiniame meniu
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Kasdien
+#. text in the Options window
+#, machine
+	Date order:	Datos tvarka:
+#. page title in the Options window
+#, machine
+	Dates and times	Datos ir laikas
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Diena, mėnuo, metai
+#. text in the Scheduler window
+#, machine
+	December	Gruodis
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Numatytasis
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Numatytoji atsisiuntimo vieta kategorijai „{category}“
+#. page title in the Options window
+#, machine
+	Default download settings	Numatytieji atsisiuntimo parametrai
+#. text in the Options window
+#, machine
+	Default max. conn. number	Numatytasis maks. jungčių skaičius
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Naikinti
+#. message or event log entry in the main window
+#, machine
+	Delete category	Naikinti kategoriją
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Naikinti eilę
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Naikinti kategoriją „{category}“? Jos atsisiuntimai taps bendri; jų failai liks ten, kur yra.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Naikinti eilę „{queue}“? Jos atsisiuntimai liks sąraše.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Naikinti pasirinktus atsisiuntimus (pirmiausia paklaus)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Naikinti pasirinktus atsisiuntimus ir jų failus (pirmiausia paklaus)
+#. text in a dialog box
+#, machine
+	Description	Aprašas
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Aprašas arba aprašo dalis
+#. text in a download's Properties window
+#, machine
+	Description:	Aprašas:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	disko klaida: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	rodoma eilių sąraše
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Nepradėti atsisiuntimo, tik pridėti failus į eilę
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Ar norite jį sukurti?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Dokumentai
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Daugiau neberodyti šio dialogo lango
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Nepradėti atsisiuntimo automatiškai iš šių adresų:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Nepradėti atsisiuntimo automatiškai iš šių svetainių:
+#. text in a download's progress window
+#, machine
+	Done	Atlikta
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Atsisiųsti
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Atsisiųsti „{name}“ iš naujo nuo pradžių? Baigtas failas pakeičiamas, kai naujas atsisiuntimas baigiamas.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Atsisiuntimas baigtas
+#. text in the Options window
+#, machine
+	Download failed	Atsisiuntimas nepavyko
+#. window title in a dialog box
+#, machine
+	Download File Info	Atsisiųsto failo informacija
+#. button in a dialog box
+#, machine
+	Download Later	Atsisiųsti vėliau
+#. window title in a dialog box
+#, machine
+	Download later	Atsisiųsti vėliau
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Atsisiuntimo limitai
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Atsisiųsti ne daugiau kaip {mb} MB\nkas {hours} valandas
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Atsisiųsti dabar
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Atsisiuntimo skydeliai
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Atsisiuntimo būsena
+#. window title in the Download video window
+#, machine
+	Download video from a page	Atsisiųsti vaizdo įrašą iš puslapio
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Atsisiųsti {files} failus vienu metu
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Atsisiųsta
+#. page title in the Options window
+#, machine
+	Downloaded file types	Atsisiųstų failų tipai
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	Atsisiųsta {size} ({bytes} baitų)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Atsisiunčiama
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Atsisiunčiama iš naujo nuo pradžių
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	Atsisiunčiamas ir tikrinamas ffmpeg (apie 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	Atsisiunčiamas ir tikrinamas yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Atsisiuntimai
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Atsisiuntimai sustabdyti ir bus automatiškai atnaujinti {time}.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Nuvilkite nuorodas čia, kad jas atsisiųstumėte
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Dublikato atsisiuntimo nuoroda
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Redaguoti
+#. text in the Options window
+#, machine
+	Edit exception	Redaguoti išimtį
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Redaguoti sąrašą...
+#. text in the Options window
+#, machine
+	Edit login	Redaguoti prisijungimą
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Redaguoti...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	El. paštas
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Įveskite magnetinę nuorodą arba pasirinkite .torrent failą
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Įveskite naujos eilės pavadinimą, kuris bus
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Įveskite naują adresą atsisiuntimui
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Įveskite eilės pavadinimą
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Klaida
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Klaida: {error}
+#. text in the Options window
+#, machine
+	Event	Įvykis
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Pavyzdys:
+#. text in the Options window
+#, machine
+	Exceptions:	Išimtys:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Išeiti
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Baigus išeiti iš „Mister Download Manager“
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Numatoma kontrolinė suma (MD5, SHA-1, SHA-256, SHA-512 arba CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Nustatyta numatoma kontrolinė suma ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Eksportuoti
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Išplėsti „Manifest 2 Chrome“ plėtinių prieinamumą
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Plėtiniai atskirti tarpais, pvz., MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Vasaris
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Failas
+#. text in the Scheduler window
+#, machine
+	File Name	Failo pavadinimas
+#. text in the Download video window
+#, machine
+	File name	Failo pavadinimas
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Failo pavadinimas arba dalis pavadinimo
+#. window title in a download's Properties window
+#, machine
+	File Properties	Failo ypatybės
+#. text in a download's progress window
+#, machine
+	File size	Failo dydis
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Failų tipai
+#. text in categories.rs
+#, machine
+	File types:	Failų tipai:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Failai
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Failai keliauja į: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Failai eilėje
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Rasti
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Rasti atsisiuntimą
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Rasti failą
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Rasti kitą atitiktį
+#. text in the Find window
+#, machine
+	Find:	Rasti:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Baigta
+#. text in the Options window
+#, machine
+	First day of the week:	Pirma savaitės diena:
+#. text in the Batch download window
+#, machine
+	First file:	Pirmas failas:
+#. text in categories.rs
+#, machine
+	Folder:	Aplankas:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Pavyzdžiui: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Tik jūsų „Windows“ paskyrai. Kita programa, pasirinkta „Atidaryti naudojant“, lieka pirma.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Priverstinai nutraukti procesus
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Pn
+#. text in the Scheduler window
+#, machine
+	Friday	Penktadienis
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	iš magnetinės nuorodos
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	iš puslapio (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	iš „torrent“ failo
+#. message or event log entry in the main window
+#, machine
+	from the browser	iš naršyklės
+#. message or event log entry in the main window
+#, machine
+	from the command line	iš komandų eilutės
+#. text in the Batch download window
+#, machine
+	From:	Nuo:
+#. checkbox in the Options window
+#, machine
+	ftp	FTP
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Bendra
+#. button in the Options window
+#, machine
+	Get System	Gauti sistemą
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Gaunamas failų sąrašas iš bendraautorių... {n} s
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Baigus atsijungti nuo modemo
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Turi
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Žinynas
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Užmigdyti
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Slėpti &kategorijas
+#. button in a download's progress window
+#, machine
+	Hide tab	Slėpti skirtuką
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Pagrindinis puslapis
+#. checkbox in the Options window
+#, machine
+	http	HTTP
+#. checkbox in the Options window
+#, machine
+	https	HTTPS
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Atsisiunčiu naudodamas „Mister Download Manager“: greita, nemokama ir atrodo kaip jau žinoma atsisiuntimų tvarkyklė. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Jei pridedama pasikartojanti atsisiuntimo nuoroda:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Jei esamas failas yra baigtas, rodyti atsisiuntimo baigimo dialogo langą; kitu atveju tęsti jį.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Ignoruoti failo modifikavimo laiko pakeitimus tęsiant atsisiuntimą
+#. message or event log entry in the main window
+#, machine
+	Import	Importuoti
+#. window title in transfer.rs
+#, machine
+	Import downloads	Importuoti atsisiuntimus
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	Eilėje
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Informacija
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Informacijos maiša
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	Įdiegti „ffmpeg“
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	Įdiegti „yt-dlp“
+#. text in a dialog box
+#, machine
+	Invalid address	Neteisingas adresas
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Į MDM atsisiuntimų eilę galima įtraukti nuoseklių failų pavadinimų grupę, pvz., img001.jpg, img002.jpg ir t. t.,\nimg100.jpg. Failo pavadinimo šablonui naudokite žvaigždutės pakaitos simbolį.
+#. text in the Scheduler window
+#, machine
+	January	Sausis
+#. text in the Scheduler window
+#, machine
+	July	Liepa
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Pereiti prie atsisiuntimo, kurio pavadinimas prasideda ja
+#. text in the Scheduler window
+#, machine
+	June	Birželis
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KB/sek.
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Baigus atsisiųsti toliau bendrinti torrentus
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Spartieji klavišai
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Raktai...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Kalba
+#. text in the Batch download window
+#, machine
+	Last file:	Paskutinis failas:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Paskutinis bandymas  {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Vėliau
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Paleisti „Mister Download Manager“ paleidus sistemą
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Raidės
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Licencijos ir padėkos
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Apriboti visus atsisiuntimus iki
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Prisijungimas
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Ieškoti
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Ieškoma puslapio...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Pagrindinė atsisiuntimų eilė
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Pailginti arba sutrumpinti pasirinkimą
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Rankinė tarpinio serverio / „socks“ konfigūracija
+#. text in the Scheduler window
+#, machine
+	March	Kovas
+#. checkbox in the Find window
+#, machine
+	Match case	Skirti didžiąsias ir mažąsias raides
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Tiksliai atitikti visą eilutę
+#. group box title in the Options window
+#, machine
+	Max. connections number	Maks. jungčių skaičius
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Maksimalus vieno failo atsisiuntimo greitis {kb} KB/sek.
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Maksimalus atsisiuntimo greitis:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Gegužė
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Trūksta
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	„Mister Download Manager“
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	„Mister Download Manager“ konfigūracija
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	„Mister Download Manager“ kiekvieną jungtį rašo tiesiai į galutinį\nfailą (šalia jo esantį retą dalies failą), todėl nereikia jokio laikinojo katalogo ir\njokio surinkimo veiksmo.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Yra „Mister Download Manager“ {version} (išleista {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	Pr
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Pirmadienis
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Mėnuo, diena, metai
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Perkelti
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Perkelti puslapį aukštyn / žemyn
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Perkelti arba pervardyti pasirinktą atsisiuntimą
+#. text in a download's Properties window
+#, machine
+	Move to folder	Perkelti į aplanką
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Perkelti į eilę
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Perkelti nekeičiant pasirinkimo
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Perkelti / pervardyti
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	daug lėčiau nei kiti ryšiai; vėl jungiamasi
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Muzika
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Mano pasirinkimu:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	Nr.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Pavadinimas
+#. text in categories.rs
+#, machine
+	Name:	Pavadinimas:
+#. text in errors.rs
+#, machine
+	network error	tinklo klaida
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Niekada nerodyti šiose svetainėse:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Naujas
+#. text in the Options window
+#, machine
+	New exception	Nauja išimtis
+#. text in the Options window
+#, machine
+	New login	Naujas prisijungimas
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Ne
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	nėra duomenų aplanko
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	nėra duomenų aplanko torrentams
+#. text in langpick.rs
+#, machine
+	No language matches.	Nėra atitinkančios kalbos.
+#. text in the Options window
+#, machine
+	No proxy/socks	Nėra tarpinio serverio / SOCKS
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Šiame puslapyje nėra vaizdo įrašo, kurį būtų galima atsisiųsti
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Faile „{file}“ nerasta jokių žiniatinklio adresų.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Nėra: bendraamžiai gaunami iš DHT ir kitų bendraamžių
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Nėra kontrolinės sumos, kurią būtų galima perskaityti
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	nepakanka vietos diske: reikia {needed}, laisva {free}
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Ne eilėje
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Nenaudojama: failo dalys įrašomos šalia failo
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Pastaba: interneto serveriai gali nutraukti ryšį, kai greitis yra per daug apribotas! Todėl nerekomenduojama naudoti greičio ribotuvo atsisiunčiant iš serverių, kurie nepalaiko „tęsti“ funkcijos.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Pastaba: šie nustatymai nesusiję su eilių apdorojimu
+#. text in the Scheduler window
+#, machine
+	November	Lapkritis
+#. text in the Options window
+#, machine
+	Number	Skaičius
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Pakartotinių bandymų skaičius kiekvienam failui, jei atsisiuntimas nepavyko:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Skaičiai
+#. text in the Scheduler window
+#, machine
+	October	Spalis
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Išjungta: baigtas torrentas sustoja, kaip ir bet kuris atsisiuntimas.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Siūlyti atsisiųsti nuorodas, nukopijuotas į mainų sritį
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	Gerai
+#. text in a download's progress window
+#, machine
+	on download stop/resume	sustabdžius / tęsiant atsisiuntimą
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Vieną kartą
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Vienkartinis atsisiuntimas
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Tik kai naudojuosi kompiuteriu
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Atidaryti
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Atidaryti magnetinius saitus ir .torrent failus naudojant „Mister Download Manager“
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Atidaryti „Mister Download Manager“
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Atidaryti šį failą, kai baigta
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Atlikus atsisiuntimą, atidaryti šį failą:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Atidaryti pasirinktą atsisiuntimą
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Atidaryti pasirinkto atsisiuntimo meniu
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Atidaryti „torrent“ failą
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Parinktys
+#. text in a download's progress window
+#, machine
+	Options on completion	Parinktys baigus
+#. text in the Download video window
+#, machine
+	Page address	Puslapio adresas
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Slaptažodis
+#. text in the Options window
+#, machine
+	Password:	Slaptažodis:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Įklijuokite magnetinę nuorodą arba pasirinkite .torrent failą, tada ieškokite.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Pauzė
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Pristabdyta
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Dalyviai
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Periodinis sinchronizavimas
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Dalys
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Leisti
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	Popiet
+#. label in the Options window
+#, machine
+	Port	Prievadas
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Peržiūra
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Programos
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Pasirinkto atsisiuntimo ypatybės
+#. text in a download's progress window
+#, machine
+	Property	Ypatybė
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Tarpinis serveris / „Socks“
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Tarpinio serverio / „Socks“ konfigūracija
+#. label in the Options window
+#, machine
+	Proxy server address	Tarpinio serverio adresas
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Eilė Nr. {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Eilės apdorojimas pradėtas
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Eilės apdorojimas sustabdytas / baigtas
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Eilės
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Nuskaitomas failų sąrašas...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Nuskaitomas „torrent“...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Gauta
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Gaunami duomenys...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Atsisiųsti iš naujo
+#. text in a download's Properties window
+#, machine
+	Referer:	Nukreipėjas:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Regioniniai
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Prisiminti šio failo spartos ribotuvo parametrus
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Prisiminti šį kelią kategorijai „{category}“
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Šalinti
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Pakeisti žvaigždutę į
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Rezultatas: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Tęsti
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Tęsimo galimybė
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Atnaujinta
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Bandoma iš naujo: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	S&tabdyti
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	Še
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Šeštadienis
+#. text in a dialog box
+#, machine
+	Save As	Įrašyti kaip
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Įrašyti į
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Įrašyti į...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Įrašyti į:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Įrašyta į
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Tvarkaraštis
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Tvarkaraštis
+#. text in langpick.rs
+#, machine
+	Search:	Ieškoti:
+#. text in the Batch download window
+#, machine
+	Second file:	Antras failas:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Pasirinkti visus
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Pasirinkti visus atsisiuntimus
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Pasirinkti visus atsisiuntimus iki šio
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Nepasirinkti nė vieno
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Pasirinkti arba atšaukti dar vieną atsisiuntimą
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Pasirinkti arba atšaukti atsisiuntimą su punktyrine linija
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Pasirinkti garsus „Mister Download Manager“ įvykiams
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Pasirinkti atsisiuntimus laukelyje
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Pasirinkti pirmą / paskutinį atsisiuntimą
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Pasirinkti ankstesnį / kitą atsisiuntimą
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Pasirinkta: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Siųsti draugui:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Išsiųsta
+#. text in the Scheduler window
+#, machine
+	September	Rugsėjis
+#. text in the Options window
+#, machine
+	Server	Serveris
+#. text in the Options window
+#, machine
+	Server:	Serveris:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Nustatyti failo sukūrimo datą, kurią pateikė serveris
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Bendrinimo santykis
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Bendrinimas
+#. text in the download list
+#, machine
+	Show	Rodyti
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Rodyti &kategorijas
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Rodyti dialogo langą ir paklausti, ką daryti.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Rodyti atsisiuntimo mygtuką virš vaizdo įrašų naršyklėse
+#. button in the download list
+#, machine
+	Show all	Rodyti visus
+#. text in a download's progress window
+#, machine
+	Show details >>	Rodyti išsamią informaciją >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Rodyti atsisiuntimo užbaigimo dialogo langą
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Rodyti eilių pasirinkimo skydelį uždarant paketinio atsisiuntimo dialogo langus
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Rodyti eilių pasirinkimo skydelį paspaudus mygtuką „Atsisiųsti vėliau“
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Rodyti atsisiuntimo pradžios dialogo langą
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Rodyti įspėjimą prieš sustabdant atsisiuntimus
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Rodoma, kol siunčiamas torrentas.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Išjungti
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Svetainės pavadinimas / Atsisiuntimo nuoroda / Pirminis tinklalapis / Nuoroda
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Svetainė / kelias
+#. text in the Options window
+#, machine
+	Site/path:	Svetainė / kelias:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Svetainių prisijungimai
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Dydis
+#. text in the Download video window
+#, machine
+	size unknown	dydis nežinomas
+#. text in a download's Properties window
+#, machine
+	Size:	Dydis:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Praleista
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Užmigdyti
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Kai kurie
+#. text in the Options window
+#, machine
+	Sound file	Garso failas
+#. page title in the Options window
+#, machine
+	Sound settings	Garso nustatymai
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Garsai
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Šaltinio kodas
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Greičio ribotuvas
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Greičio ribotuvo nustatymai
+#. button in a dialog box
+#, machine
+	Start Download	Pradėti atsisiuntimą
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Pradėti atsisiuntimą
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Pradėti atsisiuntimą paleidus „Mister Download Manager“
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Pradėti atsisiuntimą iškart rodant dialogo langą „Atsisiųsti failo informaciją“
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Pradėti pagrindinę atsisiuntimų eilę
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Pradžios pozicijos ir atsisiuntimo eiga pagal ryšius
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Pradėti eilę dabar
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Pradėti {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Pradėta
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	Pradėta su yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Būsena
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Būsena:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Stabdyti atsisiuntimą
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Stabdyti pagrindinę atsisiuntimų eilę
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Stabdyti {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Sustabdyta
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Sustabdoma, kai atsisiuntimas baigiamas
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	Sk
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Sekmadienis
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Sinchronizavimo eilė
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Papasakoti draugui
+#. group box title in the Options window
+#, machine
+	Temporary directory	Laikinasis katalogas
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	Kt
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	jam skirtas .torrent failas dingo
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Adresas turi būti http(s) arba ftp(s) adresas
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Geriausioms kokybėms reikia ffmpeg, kad sujungtų vaizdą ir garsą (apie 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Kompiuteris užmigs po {n} sekundžių.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Kompiuteris pereis į miego režimą po {n} sekundžių.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Kompiuteris išsijungs po {n} sekundžių.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	ryšys nutrūko prieš užbaigiant dalį
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	ryšys nutrūko gaunant duomenis
+#. text in errors.rs
+#, machine
+	the disk is full	diskas pilnas
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Pasiekta atsisiuntimo riba ({mb} MB kas {hours} valandas).
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	atsisiuntimo nuoroda pasibaigė (atnaujinkite atsisiuntimo adresą)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Jums jau pažįstama atsisiuntimų tvarkyklė, perkurta, kad būtų greitesnė. Nemokama ir atvirojo kodo pagal GNU GPL, 3 versiją ar naujesnę. Vaizdo įrašai randami naudojant yt-dlp; torrentai veikia su librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Atsisiuntimo eilė baigta.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	diskas arba tinklo bendrinimas nebeprieinamas
+#. text in errors.rs
+#, machine
+	the file changed on the server	failas serveryje pasikeitė
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Failo nepavyko perkelti
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Failo nepavyko perskaityti: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Failas NESUTAMPA ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Failas sutampa ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Failas išsaugotas kaip
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Failų tipai, kurie nėra nurodyti jokioje kitoje kategorijoje
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	failo {algorithm} kontrolinė suma nesutampa (duomenys išsaugoti; atsisiųskite iš naujo)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Nepavyko sukurti aplanko: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	aplankas {path} nepasiekiamas (diskas pašalintas arba tinklo bendrinimas neprisijungęs?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP serveris atsakė {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Sąrašo nepavyko išsaugoti: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	kelias per ilgas, skirtas „Windows“: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	leidimas neturi versijos
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	Saugaus ryšio nepavyko užmegzti
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Pasirinktas atsisiuntimas nebaigtas. Ar tikrai norite jį ištrinti\niš „Mister Download Manager“ atsisiuntimų sąrašo?
+#. text in errors.rs
+#, machine
+	the server answered {status}	serveris atsakė {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	serveris negali siųsti failo dalių, todėl jo negalima atnaujinti
+#. text in errors.rs
+#, machine
+	the server did not answer in time	serveris neatsakė laiku
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	serveris neatsiuntė prašomos dalies
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	serveris užimtas ({status}); bandykite dar kartą vėliau
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	serveris atsiuntė tinklalapį, o ne failą (reikia prisijungti arba nuoroda pasibaigė?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	serveris atsiuntė netikėtą failo dalį ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Torrento nepavyko išsaugoti: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	torrento nebeliko
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Tinklalapis, iš kurio gautas šis failas:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Jau yra kategorija tokiu pavadinimu
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Šie nustatymai nepasiekiami, kai įjungtas „Rodyti atsisiuntimo užbaigimo dialogo langą“
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Šis adresas jau yra atsisiuntimų sąraše:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Šis aplankas neegzistuoja:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Šis torrentas jau yra atsisiuntimų sąraše
+#. text in the Scheduler window
+#, machine
+	Thursday	Ketvirtadienis
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Liko laiko
+#. text in the Batch download window
+#, machine
+	To:	Kam:
+#. text in errors.rs
+#, machine
+	too many redirects	per daug peradresavimų
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrentas
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Torrentų atsisiuntimai (magnetinės nuorodos ir .torrent failai)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Torrentų failai
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Torrento nustatymai
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrentai
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	torrentų nepavyko paleisti: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Seklys
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Sekliai
+#. text in a download's progress window
+#, machine
+	Transfer rate	Perdavimo sparta
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	An
+#. text in the Scheduler window
+#, machine
+	Tuesday	Antradienis
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Išjungti
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Baigus išjungti kompiuterį
+#. button in a dialog box
+#, machine
+	Turn off now	Išjungti dabar
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Įjungti
+#. text in a download's Properties window
+#, machine
+	Type:	Tipas:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Nebaigti
+#. text in a download's Properties window
+#, machine
+	Unknown	Nežinomas
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	nežinoma
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Nepavyko patikrinti naujinių: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Naudoti išplėstinę naršyklės integravimą
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Naudoti autorizavimą
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Naudoti automatinio konfigūravimo scenarijų
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	Naudoti FTP PASV režimu
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Naudoti tarpinį serverį / SOCKS iš naršyklės užklausos, jei yra atsisiuntimo klaidų /\narba atsisiuntimams, perimtiems iš naršyklės
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Naudoti spartos ribotuvą
+#. text in the Options window
+#, machine
+	Use system settings	Naudoti sistemos nustatymus
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Naudoti šį tarpinį serverį šiems protokolams:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Naudojama atsisiuntimų sąraše ir planuoklyje.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Vartotojas
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Vartotojų vardai ir slaptažodžiai serveriams / svetainėms
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	„User-Agent“ rankiniu būdu pridėtiems atsisiuntimams:
+#. text in the Options window
+#, machine
+	User:	Vartotojas:
+#. label in the Options window
+#, machine
+	UserName	Vartotojo vardas
+#. text in a download's progress window
+#, machine
+	Value	Reikšmė
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Tikrinti
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Tikrinti kontrolinę sumą
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Tikrinama...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Versija {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Vaizdo įrašai
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Vaizdo įrašų paieškos naudoja yt-dlp (apie 23 MB, patikrinta pagal parašą).
+#. text in the Options window
+#, machine
+	Virus checking settings	Virusų tikrinimo nustatymai
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Laukiama
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Laukiama: pasiekta atsisiuntimo riba (planuoklis)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Tr
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Žiniatinklis
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Žiniatinklio adresai, rasti {file}:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Trečiadienis
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	Kas naujo:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Pakaitos simbolio dydis
+#. text in langpick.rs
+#, machine
+	Windows' language	„Windows“ kalba
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	„Windows“ kalba ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	su „Pridėti URL“
+#. group box title in the Options window
+#, machine
+	Write dates and times	Datos ir laiko rašymas
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	Metai, mėnuo, diena
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Taip
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Turite naujausią „Mister Download Manager“ versiją ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Turite {version} versiją.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	„yt-dlp“ neįdiegta (užduotys → atsisiųsti vaizdo įrašą iš puslapio įdiegia ją)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} kontrolinė suma
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: patikrinta, kai atsisiuntimas baigiamas
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} yra
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} failas
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} iš {total} (po {size})
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} iš {total} dalių (po {size})
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} val. {m} min.
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} prijungta, {known} žinoma
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} min. {s} sek.
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (automatinis)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} iš {total} pasirinkta
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} baitų)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} per didelis šiam {file_system} diskui (failai iki 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} sek.
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} nepavyko įdiegti: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Pridėta
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Aprašas
+#. column title in the download list in the download list
+#, machine
+column	File Name	Failo pavadinimas
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Paskutinio bandymo data
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	E
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Dydis
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Šaltinis
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Būsena
+#. column title in the download list in the download list
+#, machine
+column	Time left	Liko laiko
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Perdavimo sparta
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Mygtuko parametrai...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Atsisiųsti vaizdo įrašą
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Atsisiųsti naudojant „Mister Download Manager“
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Vilkite, kad perkeltumėte jį palei vaizdo įrašo kraštą
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Perduoda atsisiuntimus iš naršyklės į „Mister Download Manager“.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Slėpti šiame vaizdo įraše
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager neatsakė
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager integravimo modulis
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Daugiau parinkčių
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Niekada {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Išsiųsta į Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+spustelėjimas
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Aukštyn / Ctrl+Žemyn
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Vilkite tuščioje vietoje
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+spustelėjimas
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+Aukštyn / Shift+Žemyn
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Įveskite pavadinimą
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Aukštyn / Žemyn
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	&Apie „Mister Download Manager“
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	&Pridėti naują atsisiuntimą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	&Naikinti visus baigtus
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	&Atsisiųsti dabar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Išeiti
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Importuoti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Spartieji klavišai
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Kalba...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Parinktys
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	&Pristabdyti visus
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Šalinti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	&Pranešti apie problemą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Planuoklis ir eilės
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&Stabdyti visus
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	&Stabdyti atsisiuntimą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&Dėklo piktograma
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Mokomosios programos
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&Vaizdo įrašų atsisiuntimai
+#. menu command in the main window
+#, machine
+menu	3D Style	3D stilius
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Pridėti &paketinių atsisiuntimų
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Pridėti &magnetinę nuorodą...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Pridėti paketinį atsisiuntimą iš išk&arptinės
+#. menu command in the main window
+#, machine
+menu	Add category	Pridėti kategoriją
+#. menu command in the main window
+#, machine
+menu	Arrange files	Išdėstyti failus
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Naršyti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	Pagal &aprašą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	Pagal &failo pavadinimą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	Pagal &paskutinio bandymo datą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	Pagal &pridėjimo tvarką
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	Pagal &dydį
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	Pagal &likusį laiką
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Pagal pridėjimo &datą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Pagal &pirminį tinklalapį
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	Pagal n&uorodą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Pagal į&rašymo kelią
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Pagal b&ūseną
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	Pagal p&erkėlimo spartą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	Tinkinti URL są&rašą...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Tikrinti, ar yra nauji&nių...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Išvalyti visus &filtrus
+#. menu command in the main window
+#, machine
+menu	Create new queue	Sukurti naują eilę
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Tinkinti...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Tamsiojo režimo palaikymas
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Naikinti
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Naikinti iš eilės
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	Atsisiųsti &vaizdo įrašą iš puslapio...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&Eksportuoti
+#. menu command in the main window
+#, machine
+menu	Edit queue	Redaguoti eilę
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Rasti (Ctrl+F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Rasti kitą (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Šriftas
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	Iš &IDM eksporto failo...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	Iš &teksto failo...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&Žinyno turinys
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Slėpti vilkimo tikslą
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Dideli mygtukai
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Ieškoti naujų įrankių juostų
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager &pagrindinis puslapis
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Perkelti / pervardyti (Ctrl+M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neonas
+#. menu command in the main window
+#, machine
+menu	On Double click	Dukart spustelėjus
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Atidaryti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Atidaryti &torrent failą...
+#. menu command in the main window
+#, machine
+menu	Open folder	Atidaryti aplanką
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Atidaryti naudojant...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Ypatybės
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Atsisiųsti &iš naujo
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Atsisiųsti iš naujo
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Atnaujinti atsisiuntimo adresą
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Šalinti
+#. menu command in the main window
+#, machine
+menu	Resume Download	Tęsti atsisiuntimą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&Planuoklis
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&Parametrai...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	S&tabdyti eilę
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Tvarkaraštis
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Rodyti &vilkimo tikslą
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Rodyti „Mister Download Manager“
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Maži mygtukai
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Greičio &ribotuvas
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	P&aleisti eilę
+#. menu command in the main window
+#, machine
+menu	Start now	Pradėti dabar
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Stabdyti
+#. menu command in the main window
+#, machine
+menu	Stop Download	Stabdyti atsisiuntimą
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Papasakoti &draugui
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	Į &IDM eksportavimo failą...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	Į &teksto failą...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Įrankių juosta
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Torrent pa&rametrai...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	&Įjungti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Išj&ungti
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Patikrinti kontrolinę sumą...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Atsisiuntimai
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Failas
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Žinynas
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Užduotys
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Rodymas
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Pridėti torrentą
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	Pridėti URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Naikinti
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Naikinti užbaigtus
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Parinktys
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Tęsti
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Planuoklis
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Paleisti eilę
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Stabdyti
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Stabdyti visus
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Stabdyti eilę
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/sek.
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/sek.

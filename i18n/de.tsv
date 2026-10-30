@@ -1,0 +1,2552 @@
+# Mister Download Manager in German (Deutsch): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Deutsch
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Auch die {n} Datei von der Festplatte löschen|Auch die {n} Dateien von der Festplatte löschen
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Möchten Sie den {n} Download wirklich aus der Mister Download Manager-Downloadliste löschen?|Möchten Sie diese {n} Downloads wirklich aus der Mister Download Manager-Downloadliste löschen?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} erlaubt {n} Verbindung|{host} erlaubt {n} Verbindungen
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} Byte|{n} Bytes
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} Datei|{n} Dateien
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&Übernehmen
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Schließen
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Löschen
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Hilfe
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Neue Warteschlange
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Jetzt starten
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(Namen durch Leerzeichen trennen)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-Stunden (21:41 Uhr)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-Stunden (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Details ausblenden
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Über Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Download hinzufügen (URL hinzufügen)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Batch-Download hinzufügen
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Browser hinzufügen...
+#. text in categories.rs
+#, machine
+	Add category	Kategorie hinzufügen
+#. text in the tray icon's menu
+#, machine
+	Add new download	Neuen Download hinzufügen
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Duplikat hinzufügen und vorhandene Datei überschreiben
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Duplikat mit nummeriertem Dateinamen hinzufügen
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Zur Warteschlange hinzufügen
+#. text in a dialog box
+#, machine
+	Add to queue:	Zur Warteschlange hinzufügen:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Torrent hinzufügen
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	{source} hinzugefügt
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Adresse
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Adresse geändert zu {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Adresse:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Erweitert / SOCKS...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Alle Downloads
+#. message or event log entry in the main window
+#, machine
+	All files	Alle Dateien
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	wird bereits heruntergeladen: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Auch die Datei von der Festplatte löschen
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Geschwindigkeitsbegrenzer beim Start von Mister Download Manager immer einschalten
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	April
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Möchten Sie „{name}“ wirklich aus der Mister Download Manager-Liste löschen?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Wie in den Systemeinstellungen festgelegt
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Dateiliste von Peers anfordern. Magnet-Links können ein bis zwei Minuten dauern.
+#. text in the Scheduler window
+#, machine
+	August	August
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Folgende Dateitypen automatisch der Kategorie „{category}“ zuordnen:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Folgende Dateitypen automatisch herunterladen:
+#. window title in the Batch download window
+#, machine
+	Batch download	Batch-Download
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Durchsuchen
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Durchsuchen...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Browser-/Systemintegration
+#. message or event log entry in the main window
+#, machine
+	by batch download	per Batch-Download
+#. message or event log entry in the main window
+#, machine
+	by import	per Import
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Abbrechen
+#. text in errors.rs
+#, machine
+	cancelled	abgebrochen
+#. text in errors.rs
+#, machine
+	cannot connect to the server	Serververbindung fehlgeschlagen
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	„{text}“ nicht gefunden
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Datei kann nicht gelesen werden: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	Fortsetzung nicht möglich: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Downloads von folgenden Browsern erfassen:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Kategorien
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Kategorien, Dateitypen, Ordner
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Kategorie
+#. text in categories.rs
+#, machine
+	Category properties	Kategorieeigenschaften
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Ordner für Kategorie „{category}“ auf zuletzt ausgewählt ändern
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Nach Updates suchen
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Einmal pro Woche nach Updates suchen
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Suche nach Updates läuft...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Überprüfe...
+#. text in langpick.rs
+#, machine
+	Choose a language	Sprache auswählen
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Wählen Sie die Sprache aus, in der Mister Download Manager seine Fenster anzeigt:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Löschen
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Client
+#. text in the Options window
+#, machine
+	Clock:	Uhr:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Schließen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Menü oder Dialog schließen
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Abgeschlossen
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Komprimiert
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Löschen von Downloads bestätigen
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Löschen von Downloads bestätigen
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Verbinden...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Verbindung
+#. page title in the Options window
+#, machine
+	Connections and Limits	Verbindungen und Limits
+#. text in the Options window
+#, machine
+	Connections:	Verbindungen:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	In die Zwischenablage kopiert.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Kopieren
+#. window title in a dialog box
+#, machine
+	Create folder	Ordner erstellen
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Dialogfeld „Download-Fortschritt“ anpassen
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Tasten anpassen, um das Herunterladen mit MDM zu verhindern oder zu erzwingen
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	MDM-Download-Bedienfelder in Browsern anpassen
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	MDM-Menüelemente im Kontextmenü der Browser anpassen
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Täglich
+#. text in the Options window
+#, machine
+	Date order:	Datumsreihenfolge:
+#. page title in the Options window
+#, machine
+	Dates and times	Datums- und Uhrzeitformate
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Tag, Monat, Jahr
+#. text in the Scheduler window
+#, machine
+	December	Dezember
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Standard
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Standard-Downloadverzeichnis für Kategorie „{category}“
+#. page title in the Options window
+#, machine
+	Default download settings	Standard-Downloadeinstellungen
+#. text in the Options window
+#, machine
+	Default max. conn. number	Standard max. Verbindungsanzahl
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Löschen
+#. message or event log entry in the main window
+#, machine
+	Delete category	Kategorie löschen
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Warteschlange löschen
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Kategorie „{category}“ löschen? Die Downloads werden zu „Allgemein“; ihre Dateien bleiben, wo sie sind.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Warteschlange „{queue}“ löschen? Die Downloads bleiben in der Liste.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Ausgewählte Downloads löschen (fragt zuerst)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Ausgewählte Downloads und ihre Dateien löschen (fragt zuerst)
+#. text in a dialog box
+#, machine
+	Description	Beschreibung
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Beschreibung oder Teil der Beschreibung
+#. text in a download's Properties window
+#, machine
+	Description:	Beschreibung:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	Datenträgerfehler: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	in der Warteschlangenliste angezeigt
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Download nicht starten, nur Dateien zur Warteschlange hinzufügen
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Möchten Sie ihn erstellen?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Dokumente
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Diesen Dialog nicht wieder anzeigen
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Downloads von den folgenden Adressen nicht automatisch starten:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Downloads von den folgenden Websites nicht automatisch starten:
+#. text in a download's progress window
+#, machine
+	Done	Fertig
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Herunterladen
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	„{name}“ erneut von vorne herunterladen? Eine fertige Datei wird ersetzt, wenn der neue Download abgeschlossen ist.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Download abgeschlossen
+#. text in the Options window
+#, machine
+	Download failed	Download fehlgeschlagen
+#. window title in a dialog box
+#, machine
+	Download File Info	Dateiinformationen herunterladen
+#. button in a dialog box
+#, machine
+	Download Later	Später herunterladen
+#. window title in a dialog box
+#, machine
+	Download later	Später herunterladen
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Download-Limits
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Nicht mehr als {mb} MByte herunterladen\nalle {hours} Stunden
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Jetzt herunterladen
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Download-Bedienfelder
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Downloadstatus
+#. window title in the Download video window
+#, machine
+	Download video from a page	Video von einer Seite herunterladen
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Gleichzeitig {files} Dateien herunterladen
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Heruntergeladen
+#. page title in the Options window
+#, machine
+	Downloaded file types	Heruntergeladene Dateitypen
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} Bytes) heruntergeladen
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Wird heruntergeladen
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Erneut von vorne herunterladen
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg wird heruntergeladen und überprüft (ca. 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	yt-dlp wird heruntergeladen und überprüft...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Downloads
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Downloads wurden angehalten und werden automatisch um {time} fortgesetzt.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Links hierher ziehen, um sie herunterzuladen
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Doppelter Download-Link
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Bearbeiten
+#. text in the Options window
+#, machine
+	Edit exception	Ausnahme bearbeiten
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Liste bearbeiten ...
+#. text in the Options window
+#, machine
+	Edit login	Anmeldung bearbeiten
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Bearbeiten...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	E-Mail
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Magnet-Link eingeben oder .torrent-Datei auswählen
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Geben Sie einen Namen für die neue Warteschlange ein, die erstellt wird
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Neue Adresse zum Herunterladen eingeben
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Warteschlangennamen eingeben
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Fehler
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Fehler: {error}
+#. text in the Options window
+#, machine
+	Event	Ereignis
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Beispiel:
+#. text in the Options window
+#, machine
+	Exceptions:	Ausnahmen:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Beenden
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Mister Download Manager nach Abschluss beenden
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Erwartete Prüfsumme (MD5, SHA-1, SHA-256, SHA-512 oder CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Erwartete Prüfsumme festgelegt ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Exportieren
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Verfügbarkeit von Manifest 2 Chrome-Erweiterungen verlängern
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Erweiterungen durch Leerzeichen getrennt, z. B. MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Februar
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Datei
+#. text in the Scheduler window
+#, machine
+	File Name	Dateiname
+#. text in the Download video window
+#, machine
+	File name	Dateiname
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Dateiname oder Teil des Namens
+#. window title in a download's Properties window
+#, machine
+	File Properties	Dateieigenschaften
+#. text in a download's progress window
+#, machine
+	File size	Dateigröße
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Dateitypen
+#. text in categories.rs
+#, machine
+	File types:	Dateitypen:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Dateien
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Dateien gehen nach: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Dateien in der Warteschlange
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Suchen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Einen Download suchen
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Datei suchen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Nächste Übereinstimmung suchen
+#. text in the Find window
+#, machine
+	Find:	Suchen:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Abgeschlossen
+#. text in the Options window
+#, machine
+	First day of the week:	Erster Wochentag:
+#. text in the Batch download window
+#, machine
+	First file:	Erste Datei:
+#. text in categories.rs
+#, machine
+	Folder:	Ordner:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Zum Beispiel: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Nur für Ihr Windows-Konto. Eine andere in „Öffnen mit“ gewählte App bleibt an erster Stelle.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Prozesse zum Beenden zwingen
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Fr
+#. text in the Scheduler window
+#, machine
+	Friday	Freitag
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	von einem Magnet-Link
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	von einer Seite (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	von einer Torrent-Datei
+#. message or event log entry in the main window
+#, machine
+	from the browser	aus dem Browser
+#. message or event log entry in the main window
+#, machine
+	from the command line	von der Befehlszeile
+#. text in the Batch download window
+#, machine
+	From:	Von:
+#. checkbox in the Options window
+#, machine
+	ftp	FTP
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Allgemein
+#. button in the Options window
+#, machine
+	Get System	System abrufen
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Dateiliste von Peers abrufen... {n} s
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Modem nach Abschluss auflegen
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Vorhanden
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Hilfe
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Ruhezustand
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	&Kategorien ausblenden
+#. button in a download's progress window
+#, machine
+	Hide tab	Registerkarte ausblenden
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Startseite
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Ich lade mit Mister Download Manager herunter: schnell, kostenlos und es sieht aus wie der Download-Manager, den Sie bereits kennen. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Wenn ein doppelter Download-Link hinzugefügt wird:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Wenn die vorhandene Datei vollständig ist, Dialog „Download abgeschlossen“ anzeigen; andernfalls fortsetzen.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Änderungen der Dateimodifikationszeit beim Fortsetzen eines Downloads ignorieren
+#. message or event log entry in the main window
+#, machine
+	Import	Importieren
+#. window title in transfer.rs
+#, machine
+	Import downloads	Downloads importieren
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	In einer Warteschlange
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Info
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Info-Hash
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	ffmpeg installieren
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	yt-dlp installieren
+#. text in a dialog box
+#, machine
+	Invalid address	Ungültige Adresse
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Es ist möglich, eine Gruppe sequenzieller Dateinamen wie img001.jpg, img002.jpg usw.,\nimg100.jpg zur MDM-Download-Warteschlange hinzuzufügen. Verwenden Sie den Asterisk-Platzhalter für das Dateinamensmuster.
+#. text in the Scheduler window
+#, machine
+	January	Januar
+#. text in the Scheduler window
+#, machine
+	July	Juli
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Zum Download springen, dessen Name damit beginnt
+#. text in the Scheduler window
+#, machine
+	June	Juni
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KByte/Sek.
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Torrents nach Abschluss weitergeben
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Tastenkombinationen
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Tasten...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Sprache
+#. text in the Batch download window
+#, machine
+	Last file:	Letzte Datei:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Letzter Versuch {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Später
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Mister Download Manager beim Start ausführen
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Buchstaben
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Lizenzen und Danksagungen
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Alle Downloads zusammen begrenzen auf
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Anmeldung
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Suchen
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Seite wird gesucht...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Haupt-Downloadwarteschlange
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Auswahl verlängern oder verkürzen
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Manuelle Proxy-/SOCKS-Konfiguration
+#. text in the Scheduler window
+#, machine
+	March	März
+#. checkbox in the Find window
+#, machine
+	Match case	Groß-/Kleinschreibung beachten
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Nur ganze Zeichenfolge abgleichen
+#. group box title in the Options window
+#, machine
+	Max. connections number	Max. Anzahl Verbindungen
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Maximale Downloadgeschwindigkeit für eine Datei {kb} KByte/Sek.
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Maximale Download-Geschwindigkeit:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Mai
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Fehlend
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager Konfiguration
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager schreibt jede Verbindung direkt in die endgültige\nDatei (eine Sparse-Part-Datei daneben), sodass kein temporäres Verzeichnis\nund kein Zusammenfügungsschritt erforderlich sind.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} ist verfügbar (veröffentlicht am {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	Mo
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Montag
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Monat, Tag, Jahr
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Verschieben
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Eine Seite nach oben/unten verschieben
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Ausgewählten Download verschieben oder umbenennen
+#. text in a download's Properties window
+#, machine
+	Move to folder	In Ordner verschieben
+#. message or event log entry in the main window
+#, machine
+	Move to queue	In Warteschlange verschieben
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Auswahl verschieben, ohne sie zu ändern
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Verschieben/Umbenennen
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	viel langsamer als die anderen Verbindungen; erneute Verbindung wird hergestellt
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Musik
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Meine eigene Art:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	Nr.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Name
+#. text in categories.rs
+#, machine
+	Name:	Name:
+#. text in errors.rs
+#, machine
+	network error	Netzwerkfehler
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Nie auf diesen Websites anzeigen:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Neu
+#. text in the Options window
+#, machine
+	New exception	Neue Ausnahme
+#. text in the Options window
+#, machine
+	New login	Neue Anmeldung
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Nein
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	kein Datenordner
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	kein Datenordner für Torrents
+#. text in langpick.rs
+#, machine
+	No language matches.	Keine Sprache stimmt überein.
+#. text in the Options window
+#, machine
+	No proxy/socks	Kein Proxy/SOCKS
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Kein Video auf dieser Seite zum Herunterladen verfügbar
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Es wurden keine Webadressen in {file} gefunden.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Keine: Peers stammen aus DHT und anderen Peers
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Keine Prüfsumme, die gelesen werden kann
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	nicht genügend Speicherplatz: {needed} benötigt, {free} verfügbar
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Nicht in einer Warteschlange
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Nicht verwendet: Dateiteile werden neben die Datei geschrieben
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Hinweis: Internetservicer können die Verbindung trennen, wenn die Geschwindigkeit zu stark begrenzt ist! Daher wird die Verwendung des\nSpeed Limiters für Downloads von Servern, die die „Wiederaufnahme“-Funktion nicht unterstützen, nicht empfohlen.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Hinweis: Diese Einstellungen beziehen sich nicht auf die Warteschlangenverarbeitung
+#. text in the Scheduler window
+#, machine
+	November	November
+#. text in the Options window
+#, machine
+	Number	Nummer
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Anzahl der Wiederholungsversuche für jede Datei, wenn der Download fehlgeschlagen ist:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Zahlen
+#. text in the Scheduler window
+#, machine
+	October	Oktober
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Aus: Ein abgeschlossener Torrent stoppt wie jeder andere Download.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Anbieten, in die Zwischenablage kopierte Links herunterzuladen
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	OK
+#. text in a download's progress window
+#, machine
+	on download stop/resume	beim Stoppen/Fortsetzen des Downloads
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Einmal um
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Einmaliger Download
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Nur wenn ich den Computer benutze
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Öffnen
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Magnet-Links und .torrent-Dateien mit Mister Download Manager öffnen
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Mister Download Manager öffnen
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Folgende Datei nach Abschluss öffnen
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Folgende Datei nach Abschluss öffnen:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Ausgewählten Download öffnen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Menü des ausgewählten Downloads öffnen
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Torrent-Datei öffnen
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Optionen
+#. text in a download's progress window
+#, machine
+	Options on completion	Optionen nach Abschluss
+#. text in the Download video window
+#, machine
+	Page address	Seitenadresse
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Passwort
+#. text in the Options window
+#, machine
+	Password:	Passwort:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Magnet-Link einfügen oder .torrent-Datei auswählen, dann Suchen.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Anhalten
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Angehalten
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Peers
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Regelmäßige Synchronisierung
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Teile
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Wiedergeben
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	Port
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Vorschau
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Programme
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Eigenschaften des ausgewählten Downloads
+#. text in a download's progress window
+#, machine
+	Property	Eigenschaft
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Proxy / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Proxy-/SOCKS-Konfiguration
+#. label in the Options window
+#, machine
+	Proxy server address	Proxy-Server-Adresse
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Warteschlange Nr. {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Warteschlangenverarbeitung gestartet
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Warteschlangenverarbeitung beendet/abgeschlossen
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Warteschlangen
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Dateiliste wird gelesen...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Torrent wird gelesen...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Empfangen
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Daten werden empfangen...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Erneut herunterladen
+#. text in a download's Properties window
+#, machine
+	Referer:	Referer:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Regional
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Speed Limiter-Einstellungen für diese Datei merken
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Diesen Pfad für die Kategorie „{category}“ merken
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Entfernen
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Sternchen ersetzen durch
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Ergebnis: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Fortsetzen
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Fortsetzungsfähigkeit
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Fortgesetzt
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Wiederholung: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	S&topp
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	Sa
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Samstag
+#. text in a dialog box
+#, machine
+	Save As	Speichern unter
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Speichern unter
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Speichern unter...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Speichern unter:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Gespeichert in
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Zeitplan
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Zeitplaner
+#. text in langpick.rs
+#, machine
+	Search:	Suchen:
+#. text in the Batch download window
+#, machine
+	Second file:	Zweite Datei:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Alle auswählen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Alle Downloads auswählen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Alle Downloads bis zu diesem auswählen
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Nichts auswählen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Einen weiteren Download auswählen oder abwählen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Den Download mit der gepunkteten Umrandung auswählen oder abwählen
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Sounds für Mister Download Manager-Ereignisse auswählen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Downloads im Feld auswählen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Ersten/letzten Download auswählen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Vorherigen/nächsten Download auswählen
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Ausgewählt: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Dies an einen Freund senden:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Gesendet
+#. text in the Scheduler window
+#, machine
+	September	September
+#. text in the Options window
+#, machine
+	Server	Server
+#. text in the Options window
+#, machine
+	Server:	Server:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Dateierstellungsdatum vom Server übernehmen
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Share-Verhältnis
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Freigabe
+#. text in the download list
+#, machine
+	Show	Anzeigen
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	&Kategorien anzeigen
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Dialog anzeigen und fragen, was zu tun ist.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Download-Schaltfläche über Videos in Browsern anzeigen
+#. button in the download list
+#, machine
+	Show all	Alle anzeigen
+#. text in a download's progress window
+#, machine
+	Show details >>	Details anzeigen >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Dialogfeld „Download abgeschlossen“ anzeigen
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Warteschlangen-Auswahlbereich beim Schließen von Batch-Download-Dialogfeldern anzeigen
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Warteschlangen-Auswahlbereich beim Drücken der Schaltfläche „Später herunterladen“ anzeigen
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Dialogfeld „Download starten“ anzeigen
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Warnung vor dem Stoppen von Downloads anzeigen
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Wird angezeigt, während der Torrent heruntergeladen wird.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Herunterfahren
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Seitenname/Download-Link/Übergeordnete Webseite/Referrer
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Site/Pfad
+#. text in the Options window
+#, machine
+	Site/path:	Seite/Pfad:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Site-Anmeldungen
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Größe
+#. text in the Download video window
+#, machine
+	size unknown	Größe unbekannt
+#. text in a download's Properties window
+#, machine
+	Size:	Größe:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Übersprungen
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Ruhezustand
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Einige
+#. text in the Options window
+#, machine
+	Sound file	Sounddatei
+#. page title in the Options window
+#, machine
+	Sound settings	Soundeinstellungen
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Sounds
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Quellcode
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Geschwindigkeitsbegrenzer
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Einstellungen des Geschwindigkeitsbegrenzers
+#. button in a dialog box
+#, machine
+	Start Download	Download starten
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Download starten um
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Download beim Start von Mister Download Manager starten
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Sofort mit dem Herunterladen beginnen, während das Dialogfeld „Dateiinformationen herunterladen“ angezeigt wird
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Haupt-Download-Warteschlange starten
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Startpositionen und Download-Fortschritt nach Verbindungen
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Warteschlange jetzt starten
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Warteschlange „{queue}“ starten
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Gestartet
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	Gestartet mit yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Status
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Status:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Download beenden um
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Haupt-Downloadwarteschlange stoppen
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Warteschlange „{queue}“ beenden
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Beendet
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Stoppt, wenn der Download abgeschlossen ist
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	So
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Sonntag
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Synchronisierungswarteschlange
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Einem Freund erzählen
+#. group box title in the Options window
+#, machine
+	Temporary directory	Temporäres Verzeichnis
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	Do
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	Die dafür gespeicherte .torrent-Datei ist nicht mehr vorhanden
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Die Adresse muss eine HTTP(S)- oder FTP(S)-Adresse sein
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Die besten Qualitäten erfordern ffmpeg zum Zusammenführen von Video und Audio (ca. 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Der Computer wechselt in {n} Sekunden in den Energiesparmodus.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Der Computer wechselt in {n} Sekunden in den Ruhezustand.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Der Computer wird in {n} Sekunden heruntergefahren.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	Die Verbindung wurde geschlossen, bevor der Teil vollständig war.
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	Die Verbindung ging beim Empfangen von Daten verloren.
+#. text in errors.rs
+#, machine
+	the disk is full	Der Datenträger ist voll.
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Das Downloadlimit ({mb} MB alle {hours} Stunden) wurde erreicht.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	Der Download-Link ist abgelaufen (Download-Adresse aktualisieren).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Der Download-Manager, den Sie bereits kennen, neu aufgebaut, um schneller zu sein. Kostenlos und Open Source unter der GNU GPL, Version 3 oder höher. Videos werden von yt-dlp gefunden; Torrents laufen auf librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Die Download-Warteschlange ist fertig.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	Das Laufwerk oder die Netzwerkfreigabe ist nicht mehr verfügbar.
+#. text in errors.rs
+#, machine
+	the file changed on the server	Die Datei auf dem Server wurde geändert.
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Die Datei konnte nicht verschoben werden
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Die Datei konnte nicht gelesen werden: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Die Datei stimmt NICHT überein ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Die Datei stimmt überein ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Die Datei wurde gespeichert als
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Die Dateitypen, die in keiner anderen Kategorie aufgeführt sind
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	Die {algorithm}-Prüfsumme der Datei stimmt nicht überein (die Daten werden beibehalten; erneut herunterladen).
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Der Ordner konnte nicht erstellt werden: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	Der Ordner {path} ist nicht verfügbar (Laufwerk entfernt oder Netzwerkfreigabe offline?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	Der FTP-Server antwortete mit {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Die Liste konnte nicht gespeichert werden: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	Der Pfad ist für Windows zu lang: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	Die Version der Veröffentlichung fehlt
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	Die sichere Verbindung ist fehlgeschlagen
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Der ausgewählte Download ist nicht abgeschlossen. Möchten Sie ihn wirklich\naus der Mister Download Manager-Downloadliste löschen?
+#. text in errors.rs
+#, machine
+	the server answered {status}	Der Server hat {status} geantwortet.
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	Der Server kann keine Dateiteile senden, daher kann der Download nicht fortgesetzt werden.
+#. text in errors.rs
+#, machine
+	the server did not answer in time	Der Server hat nicht rechtzeitig geantwortet.
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	Der Server hat den angeforderten Teil nicht gesendet.
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	Der Server ist ausgelastet ({status}); versuchen Sie es später erneut.
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	Der Server hat eine Webseite anstelle der Datei gesendet (Anmeldung erforderlich oder Link abgelaufen?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	Der Server hat einen unerwarteten Teil der Datei gesendet ({detail}).
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Der Torrent konnte nicht gespeichert werden: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	Der Torrent ist nicht mehr vorhanden
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Die Webseite, von der diese Datei bezogen wurde:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Es existiert bereits eine Kategorie mit diesem Namen
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Diese Einstellungen sind nicht verfügbar, wenn „Dialog „Download abgeschlossen“ anzeigen“ aktiviert ist
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Diese Adresse ist bereits in der Downloadliste enthalten:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Dieser Ordner existiert nicht:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Dieser Torrent ist bereits in der Downloadliste
+#. text in the Scheduler window
+#, machine
+	Thursday	Donnerstag
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Verbleibende Zeit
+#. text in the Batch download window
+#, machine
+	To:	An:
+#. text in errors.rs
+#, machine
+	too many redirects	Zu viele Weiterleitungen
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Torrent-Downloads (Magnet-Links und .torrent-Dateien)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Torrent-Dateien
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Torrent-Einstellungen
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrents
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	Torrents konnten nicht gestartet werden: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Tracker
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Tracker
+#. text in a download's progress window
+#, machine
+	Transfer rate	Übertragungsrate
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	Di
+#. text in the Scheduler window
+#, machine
+	Tuesday	Dienstag
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Deaktivieren
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Computer nach Abschluss ausschalten
+#. button in a dialog box
+#, machine
+	Turn off now	Jetzt ausschalten
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Aktivieren
+#. text in a download's Properties window
+#, machine
+	Type:	Typ:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Unvollendet
+#. text in a download's Properties window
+#, machine
+	Unknown	Unbekannt
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	unbekannt
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Es konnten keine Updates überprüft werden: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Erweiterte Browserintegration verwenden
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Autorisierung verwenden
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Automatisches Konfigurationsskript verwenden
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	FTP im PASV-Modus verwenden
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Proxy/Socks aus einer Browseranfrage verwenden, wenn Downloadfehler auftreten /\nfür die aus dem Browser abgefangenen Downloads
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Geschwindigkeitsbegrenzer verwenden
+#. text in the Options window
+#, machine
+	Use system settings	Systemeinstellungen verwenden
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Diesen Proxy für die folgenden Protokolle verwenden:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Wird von der Downloadliste und dem Zeitplaner verwendet.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Benutzer
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Benutzernamen und Passwörter für Server/Websites
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	User-Agent für manuell hinzugefügte Downloads:
+#. text in the Options window
+#, machine
+	User:	Benutzer:
+#. label in the Options window
+#, machine
+	UserName	Benutzername
+#. text in a download's progress window
+#, machine
+	Value	Wert
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Überprüfen
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Prüfsumme überprüfen
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Überprüfen...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Version {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Video
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videosuchen verwenden yt-dlp (ca. 23 MB, anhand der Signatur überprüft).
+#. text in the Options window
+#, machine
+	Virus checking settings	Einstellungen der Virenprüfung
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Wartend
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Wartend: Das Downloadlimit ist erreicht (Planer)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Mi
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Web
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Webadressen gefunden in {file}:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Mittwoch
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	Was ist neu:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Platzhaltergröße
+#. text in langpick.rs
+#, machine
+	Windows' language	Windows-Sprache
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windows-Sprache ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	mit URL hinzufügen
+#. group box title in the Options window
+#, machine
+	Write dates and times	Datums- und Uhrzeitformate
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	Jahr, Monat, Tag
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Ja
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Sie haben die neueste Version von Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Sie haben Version {version}.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ist nicht installiert (Aufgaben → Video von einer Seite herunterladen installiert es)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm}-Prüfsumme
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: wird nach Abschluss des Downloads geprüft
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} enthält
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext}-Datei
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} von {total} ({size} je)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} von {total} Teilen ({size} je)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} Std. {m} Min.
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} verbunden, {known} bekannt
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} Min {s} Sek
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (Auto)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} von {total} ausgewählt
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} ist zu groß für dieses {file_system}-Laufwerk (Dateien bis zu 4 GB).
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} Sek
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} konnte nicht installiert werden: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Hinzugefügt
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Beschreibung
+#. column title in the download list in the download list
+#, machine
+column	File Name	Dateiname
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Datum des letzten Versuchs
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	W
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Größe
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Quelle
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Status
+#. column title in the download list in the download list
+#, machine
+column	Time left	Verbleibende Zeit
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Übertragungsrate
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Schaltflächeneinstellungen...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Video herunterladen
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Mit Mister Download Manager herunterladen
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Ziehen, um es am Videorand zu verschieben
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Übergibt Downloads vom Browser an Mister Download Manager.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Auf diesem Video ausblenden
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager hat nicht geantwortet
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager-Integrationsmodul
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Weitere Optionen
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Nie auf {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	An Mister Download Manager gesendet
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Eingabe
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Strg+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Strg+Klick
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Strg+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Strg+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Strg+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Strg+Leertaste
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Strg+Auf / Strg+Ab
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Entf
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Auf leeren Bereich ziehen
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Eingabe
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Pos1 / Ende
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Bild auf / Bild ab
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Umschalt+Klick
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Umschalt+Entf
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Umschalt+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Umschalt+Auf / Umschalt+Ab
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Namen eingeben
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Auf / Ab
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Ü&ber Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	Neue&n Download hinzufügen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	Alle &abgeschlossenen löschen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	Jetzt &herunterladen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Beenden
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Importieren
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Tastenkombinationen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Sprache...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Optionen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	Alle &anhalten
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Entfernen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	Ein Problem &melden
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Planer und Warteschlangen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	Alle &stoppen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	Download &stoppen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&Taskleistensymbol
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Tutorials
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&Video-Downloads
+#. menu command in the main window
+#, machine
+menu	3D Style	3D-Stil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	&Batch-Download hinzufügen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	&Magnet-Link hinzufügen...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Batch-Download aus der &Zwischenablage hinzufügen
+#. menu command in the main window
+#, machine
+menu	Add category	Kategorie hinzufügen
+#. menu command in the main window
+#, machine
+menu	Arrange files	Dateien anordnen
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Durchsuchen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	Nach &Beschreibung
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	Nach &Dateiname
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	Nach &Datum des letzten Versuchs
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	Nach &Reihenfolge der Hinzufügung
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	Nach &Größe
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	Nach &verbleibender Zeit
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Nach &Hinzufügungsdatum
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Nach übergeordneter &Webseite
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	Nach R&eferer
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Nach Speicher&pfad
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Nach St&atus
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	Nach Übertragungs&rate
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	URL-Liste an&passen...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Nach &Updates suchen...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Alle &Filter löschen
+#. menu command in the main window
+#, machine
+menu	Create new queue	Neue Warteschlange erstellen
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Anpassen...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Dark Mode-Unterstützung
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Löschen
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Aus Warteschlange löschen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	&Video von einer Seite herunterladen...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	E&xportieren
+#. menu command in the main window
+#, machine
+menu	Edit queue	Warteschlange bearbeiten
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Suchen (Strg+F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Weitersuchen (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Schriftart
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	Aus &IDM-Exportdatei...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	Aus &Textdatei...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&Hilfeinhalte
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Ablageziel ausblenden
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Große Schaltflächen
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Nach neuen Symbolleisten suchen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager &Homepage
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Verschieben/Umbenennen (Strg+M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neon
+#. menu command in the main window
+#, machine
+menu	On Double click	Bei Doppelklick
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Öffnen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Torrent-Datei &öffnen...
+#. menu command in the main window
+#, machine
+menu	Open folder	Ordner öffnen
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Öffnen mit...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Eigenschaften
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Erneut &herunterladen
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Erneut herunterladen
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Downloadadresse aktualisieren
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Entfernen
+#. menu command in the main window
+#, machine
+menu	Resume Download	Download fortsetzen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&Zeitplaner
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	E&instellungen...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	Warteschlange &stoppen
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Zeitplan
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	&Ablegeziel anzeigen
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Mister Download Manager anzeigen
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Kleine Schaltflächen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Geschwindigkeits&begrenzer
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	Warteschlange &starten
+#. menu command in the main window
+#, machine
+menu	Start now	Jetzt starten
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Stoppen
+#. menu command in the main window
+#, machine
+menu	Stop Download	Download stoppen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Einem &Freund erzählen
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	In &IDM-Exportdatei...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	In &Textdatei...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Symbolleiste
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Torrent-Einstellu&ngen...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	Einschalte&n
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Ausschalte&n
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Prüfsumme überprüfen...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Downloads
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Datei
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Hilfe
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Aufgaben
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Ansicht
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Torrent hinzufügen
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	URL hinzufügen
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Löschen
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Abgeschlossene löschen
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Optionen
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Fortsetzen
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Zeitplaner
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Warteschlange starten
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Stoppen
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Alle anhalten
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Warteschlange anhalten
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/s
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/s

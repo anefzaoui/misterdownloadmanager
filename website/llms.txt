@@ -1,0 +1,24 @@
+# Mister Download Manager
+
+> Mister Download Manager (MDM) is a free, open-source (GPL-3.0) download manager for Windows 10 and 11, with experimental builds for macOS and Linux. It is laid out like Internet Download Manager (IDM) — toolbar, categories, download list, progress window with every connection, queues and scheduler — and is not affiliated with Tonec Inc. In its published benchmark against IDM 6.42 on the same computer and server it was faster in all seven scenarios (5.4× on a 1 GiB file, 106× on a 256 KiB file).
+
+Key facts:
+- Price: free, no ads, no trial, no paid edition. Licence: GNU GPL 3.0. Source: https://github.com/anefzaoui/misterdownloadmanager
+- Downloads: HTTP, HTTPS, FTP, FTPS (explicit and implicit TLS), BitTorrent and magnet links, and videos from web pages via yt-dlp. Proxies, SOCKS and PAC scripts.
+- Engine: up to 32 connections per file (8 by default), dynamic re-splitting, crash-safe resume, checksum verification, refresh of expired download links, per-server connection limits learned automatically.
+- Browser extension for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): hands downloads over with cookies and referrer, right-click "Download with Mister Download Manager", a draggable "Download video" button over videos. Without the extension, copying a link to a file opens the download window.
+- 86 interface languages (every Windows 11 display language), right-to-left layouts for Arabic, Hebrew, Persian, Urdu and Uyghur.
+- Imports IDM's export files (.ef2). Accepts IDM's command-line switches (/d /p /f /a /n /s). Has a CLI (misterdownloadmanager-cli) and a local token-protected automation API.
+- Privacy: no accounts, no analytics, no telemetry; a weekly update check against GitHub that can be turned off.
+- Written in Rust with egui. Made by Ahmed Nefzaoui and contributors.
+
+## Pages
+
+- [Download](https://misterdownloadmanager.com/download.html): Windows installer and portable zip, macOS .dmg, Linux AppImage/.deb/.rpm/.tar.gz, browser extension, checksums
+- [MDM vs IDM](https://misterdownloadmanager.com/idm-alternative.html): a free alternative to Internet Download Manager, compared side by side
+- [Questions and answers](https://misterdownloadmanager.com/faq/)
+- [Help and tutorials](https://misterdownloadmanager.com/help/)
+- [What's new](https://misterdownloadmanager.com/news.html)
+- [Languages](https://misterdownloadmanager.com/languages.html)
+- [Privacy policy](https://misterdownloadmanager.com/privacy.html)
+- [Benchmark report with raw data](https://github.com/anefzaoui/misterdownloadmanager/blob/main/docs/bench/run5/REPORT.md)

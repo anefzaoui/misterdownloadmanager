@@ -1,0 +1,49 @@
+[package]
+name = "mdm-engine"
+description = "MDM download engine: dynamic segmentation, workers, resume"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[dependencies]
+bytes.workspace = true
+content_disposition.workspace = true
+craft-atomic.workspace = true
+serde_json.workspace = true
+futures.workspace = true
+percent-encoding.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+url.workspace = true
+httpdate.workspace = true
+sysinfo.workspace = true
+sha2.workspace = true
+md-5.workspace = true
+sha1.workspace = true
+crc32fast.workspace = true
+base64.workspace = true
+hex.workspace = true
+boa_engine = { version = "0.22.0", default-features = false }
+suppaftp.workspace = true
+rustls.workspace = true
+rustls-platform-verifier.workspace = true
+tokio-rustls.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+# Sparse part files only (src/sparse.rs, D-008 amendment).
+windows-sys.workspace = true
+
+[dev-dependencies]
+mdm-labserver.workspace = true
+proptest.workspace = true
+serde_json.workspace = true
+tempfile.workspace = true
+
+[lints]
+workspace = true

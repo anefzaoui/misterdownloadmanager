@@ -1,0 +1,2552 @@
+# Mister Download Manager in Chinese (Traditional) (繁體中文): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	繁體中文
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	同時從磁碟刪除 {n} 個檔案
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	您確定要從 Mister Download Manager 下載清單中刪除這 {n} 個下載項目嗎？
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} 允許 {n} 個連線
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} 位元組
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} 個檔案
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	套&用
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	關&閉
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	刪&除
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	說&明
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	新增佇&列
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	立&即開始
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(以空格分隔名稱)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12 小時制 (下午 9:41)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24 小時制 (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< 隱藏詳細資料
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	關於 Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	新增下載 (新增 URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	新增批次下載
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	新增瀏覽器...
+#. text in categories.rs
+#, machine
+	Add category	新增類別
+#. text in the tray icon's menu
+#, machine
+	Add new download	新增下載
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	新增重複項目並覆寫現有檔案
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	新增帶有編號檔案名稱的重複項目
+#. message or event log entry in the main window
+#, machine
+	Add to queue	新增至佇列
+#. text in a dialog box
+#, machine
+	Add to queue:	新增至佇列:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	新增 torrent
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	已新增 {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	位址
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	位址已變更為 {host}
+#. text in a download's Properties window
+#, machine
+	Address:	位址:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	進階 / SOCKS...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	所有下載
+#. message or event log entry in the main window
+#, machine
+	All files	所有檔案
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	已在下載中: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	同時從磁碟刪除檔案
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	在 Mister Download Manager 啟動時一律開啟速度限制器
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	上午
+#. text in the Scheduler window
+#, machine
+	April	四月
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	您確定要從 Mister Download Manager 下載清單中刪除「{name}」嗎？
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	依系統地區設定寫入
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	正在向對等點請求檔案清單。Magnet 連結可能需要一到兩分鐘。
+#. text in the Scheduler window
+#, machine
+	August	八月
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	自動將以下檔案類型放入「{category}」類別：
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	自動開始下載以下檔案類型:
+#. window title in the Batch download window
+#, machine
+	Batch download	批次下載
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	瀏覽
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	瀏覽...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	瀏覽器/系統整合
+#. message or event log entry in the main window
+#, machine
+	by batch download	透過批次下載
+#. message or event log entry in the main window
+#, machine
+	by import	透過匯入
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	取消
+#. text in errors.rs
+#, machine
+	cancelled	已取消
+#. text in errors.rs
+#, machine
+	cannot connect to the server	無法連線到伺服器
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	找不到「{text}」
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	無法讀取檔案: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	無法繼續: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	從下列瀏覽器擷取下載：
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	類別
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	類別、檔案類型、資料夾
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	類別
+#. text in categories.rs
+#, machine
+	Category properties	類別屬性
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	變更「{category}」類別的資料夾 (依上次選取)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	檢查更新
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	每週檢查更新一次
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	正在檢查更新...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	正在檢查...
+#. text in langpick.rs
+#, machine
+	Choose a language	選擇語言
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	選擇 Mister Download Manager 顯示視窗的語言：
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	清除
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	用戶端
+#. text in the Options window
+#, machine
+	Clock:	時鐘：
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	關閉
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	關閉功能表或對話方塊
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	完成
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	壓縮檔
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	刪除下載前確認
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	確認刪除下載
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	正在連線...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	連線
+#. page title in the Options window
+#, machine
+	Connections and Limits	連線與限制
+#. text in the Options window
+#, machine
+	Connections:	連線：
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	已複製到剪貼簿。
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	複製
+#. window title in a dialog box
+#, machine
+	Create folder	建立資料夾
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	自訂「下載進度」對話方塊
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	自訂按鍵以防止或強制使用 MDM 下載
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	自訂瀏覽器中的 MDM 下載面板
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	自訂瀏覽器內容功能表中的 MDM 功能表項目
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	每日
+#. text in the Options window
+#, machine
+	Date order:	日期順序：
+#. page title in the Options window
+#, machine
+	Dates and times	日期和時間
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	日、月、年
+#. text in the Scheduler window
+#, machine
+	December	十二月
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	預設
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	「{category}」類別的預設下載目錄
+#. page title in the Options window
+#, machine
+	Default download settings	預設下載設定
+#. text in the Options window
+#, machine
+	Default max. conn. number	預設最大連線數
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	刪除
+#. message or event log entry in the main window
+#, machine
+	Delete category	刪除類別
+#. message or event log entry in the main window
+#, machine
+	Delete queue	刪除佇列
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	刪除類別「{category}」？其下載項目將變為「一般」；其檔案仍保留在原處。
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	刪除佇列「{queue}」？其下載項目仍保留在清單中。
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	刪除選取的下載項目 (先詢問)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	刪除選取的下載項目及其檔案 (先詢問)
+#. text in a dialog box
+#, machine
+	Description	描述
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	描述或描述的一部分
+#. text in a download's Properties window
+#, machine
+	Description:	描述:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	磁碟錯誤: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	顯示在佇列清單中
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	不要開始下載，只將檔案新增至佇列
+#. text in a dialog box
+#, machine
+	Do you want to create it?	您要建立它嗎？
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	文件
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	不要再顯示此對話方塊
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	不要從以下位址自動開始下載:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	不要從以下網站自動開始下載:
+#. text in a download's progress window
+#, machine
+	Done	完成
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	下載
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	要從頭開始再次下載「{name}」嗎？當新的下載完成時，已完成的檔案將被取代。
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	下載完成
+#. text in the Options window
+#, machine
+	Download failed	下載失敗
+#. window title in a dialog box
+#, machine
+	Download File Info	下載檔案資訊
+#. button in a dialog box
+#, machine
+	Download Later	稍後下載
+#. window title in a dialog box
+#, machine
+	Download later	稍後下載
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	下載限制
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	下載不超過 {mb} MB\n每 {hours} 小時
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	立即下載
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	下載面板
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	下載狀態
+#. window title in the Download video window
+#, machine
+	Download video from a page	從頁面下載影片
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	同時下載 {files} 個檔案
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	已下載
+#. page title in the Options window
+#, machine
+	Downloaded file types	已下載的檔案類型
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	已下載 {size} ({bytes} 位元組)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	正在下載
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	正在從頭開始再次下載
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	正在下載並驗證 ffmpeg (約 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	正在下載並驗證 yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	下載
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	下載已停止，將於 {time} 自動恢復。
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	將連結拖曳至此處以下載
+#. window title in a dialog box
+#, machine
+	Duplicate download link	重複的下載連結
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	編輯
+#. text in the Options window
+#, machine
+	Edit exception	編輯例外狀況
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	編輯清單 ...
+#. text in the Options window
+#, machine
+	Edit login	編輯登入
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	編輯...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	電子郵件
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	輸入磁力連結或選擇 .torrent 檔案
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	輸入新佇列的名稱，它將會是
+#. window title in a dialog box
+#, machine
+	Enter new address to download	輸入要下載的新位址
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	輸入佇列名稱
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	錯誤
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	錯誤: {error}
+#. text in the Options window
+#, machine
+	Event	事件
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	範例：
+#. text in the Options window
+#, machine
+	Exceptions:	例外狀況:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	結束
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	完成後結束 Mister Download Manager
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	預期檢查碼 (MD5、SHA-1、SHA-256、SHA-512 或 CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	已設定預期檢查碼 ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	匯出
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	延長 Manifest 2 Chrome 擴充功能的可用性
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	副檔名以空格分隔，例如 MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	二月
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	檔案
+#. text in the Scheduler window
+#, machine
+	File Name	檔案名稱
+#. text in the Download video window
+#, machine
+	File name	檔案名稱
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	檔案名稱或名稱的一部分
+#. window title in a download's Properties window
+#, machine
+	File Properties	檔案屬性
+#. text in a download's progress window
+#, machine
+	File size	檔案大小
+#. text in the Options window
+#. tab title
+#, machine
+	File types	檔案類型
+#. text in categories.rs
+#, machine
+	File types:	檔案類型:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	檔案
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	檔案儲存至: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	佇列中的檔案
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	尋找
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	尋找下載
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	尋找檔案
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	尋找下一個符合項目
+#. text in the Find window
+#, machine
+	Find:	尋找:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	已完成
+#. text in the Options window
+#, machine
+	First day of the week:	一週的第一天：
+#. text in the Batch download window
+#, machine
+	First file:	第一個檔案:
+#. text in categories.rs
+#, machine
+	Folder:	資料夾:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	例如: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	僅限您的 Windows 帳戶。在「開啟方式」中選擇的其他應用程式仍會是第一個。
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	強制終止處理程序
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	週五
+#. text in the Scheduler window
+#, machine
+	Friday	星期五
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	來自磁力連結
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	來自頁面 (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	來自 torrent 檔案
+#. message or event log entry in the main window
+#, machine
+	from the browser	來自瀏覽器
+#. message or event log entry in the main window
+#, machine
+	from the command line	來自命令列
+#. text in the Batch download window
+#, machine
+	From:	從:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	一般
+#. button in the Options window
+#, machine
+	Get System	取得系統
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	正在從同儕取得檔案清單... {n} 秒
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	完成時掛斷數據機
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	擁有
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	說明
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	休眠
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	隱藏&類別
+#. button in a download's progress window
+#, machine
+	Hide tab	隱藏索引標籤
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	首頁
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	我使用 Mister Download Manager 下載：快速、免費，而且它看起來就像您已經知道的下載管理員。{link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	如果新增重複的下載連結:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	如果現有檔案已完成，則顯示下載完成對話方塊；否則繼續下載。
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	繼續下載時忽略檔案修改時間變更
+#. message or event log entry in the main window
+#, machine
+	Import	匯入
+#. window title in transfer.rs
+#, machine
+	Import downloads	匯入下載
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	在佇列中
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	資訊
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	資訊雜湊
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	安裝 ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	安裝 yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	無效位址
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	您可以將 img001.jpg、img002.jpg 等一系列檔案名稱新增至\nMDM 下載佇列。檔案名稱模式請使用星號萬用字元。
+#. text in the Scheduler window
+#, machine
+	January	一月
+#. text in the Scheduler window
+#, machine
+	July	七月
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	跳至名稱以此開頭的下載
+#. text in the Scheduler window
+#, machine
+	June	六月
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KB/秒
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	完成後繼續分享 torrent
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	鍵盤快速鍵
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	金鑰...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	語言
+#. text in the Batch download window
+#, machine
+	Last file:	最後一個檔案:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	上次嘗試 {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	稍後
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	啟動時執行 Mister Download Manager
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	字母
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	授權與鳴謝
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	將所有下載限制為
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	登入
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	查詢
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	正在查詢頁面...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	主要下載佇列
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	增加或縮短選取範圍
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	手動 Proxy/SOCKS 設定
+#. text in the Scheduler window
+#, machine
+	March	三月
+#. checkbox in the Find window
+#, machine
+	Match case	大小寫須相符
+#. checkbox in the Find window
+#, machine
+	Match whole string only	僅符合整個字串
+#. group box title in the Options window
+#, machine
+	Max. connections number	最大連線數
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	單一檔案最大下載速度 {kb} KB/秒
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	最大下載速度:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	五月
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	遺失
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager 設定
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager 會將每個連線直接寫入最終檔案\n(旁邊的疏鬆部分檔案)，因此不需要暫存目錄和組裝步驟。
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} 可用 (發行於 {date})。
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	週一
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	星期一
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	月、日、年
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	移動
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	上/下移動頁面
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	移動或重新命名選取的下載
+#. text in a download's Properties window
+#, machine
+	Move to folder	移至資料夾
+#. message or event log entry in the main window
+#, machine
+	Move to queue	移至佇列
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	移動而不變更選取範圍
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	移動/重新命名
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	比其他連線慢很多；正在重新連線
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	音樂
+#. option (radio button) in the Options window
+#, machine
+	My own way:	我的方式：
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	否
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	名稱
+#. text in categories.rs
+#, machine
+	Name:	名稱:
+#. text in errors.rs
+#, machine
+	network error	網路錯誤
+#. text in the Options window
+#, machine
+	Never show it on these sites:	不要在這些網站上顯示：
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	新增
+#. text in the Options window
+#, machine
+	New exception	新增例外
+#. text in the Options window
+#, machine
+	New login	新增登入
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	否
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	無資料夾
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	無 torrent 資料夾
+#. text in langpick.rs
+#, machine
+	No language matches.	沒有符合的語言。
+#. text in the Options window
+#, machine
+	No proxy/socks	無 Proxy/SOCKS
+#. text in the Download video window
+#, machine
+	No video this can download on that page	此頁面無可下載的影片
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	在 {file} 中找不到任何網址。
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	無：對等點來自 DHT 和其他對等點
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	這不是可讀取的總和檢查碼
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	磁碟空間不足: 需要 {needed}，可用 {free}
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	不在佇列中
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	未使用：檔案部分寫入檔案旁
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	注意：當速度限制過高時，網際網路伺服器可能會中斷連線！因此，不建議使用速度限制器從不支援「繼續」功能的伺服器下載。
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	注意：這些設定與佇列處理無關
+#. text in the Scheduler window
+#, machine
+	November	十一月
+#. text in the Options window
+#, machine
+	Number	數字
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	如果下載失敗，每個檔案的重試次數：
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	數字
+#. text in the Scheduler window
+#, machine
+	October	十月
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	關閉：完成的 torrent 會停止，就像任何下載一樣。
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	提供下載複製到剪貼簿的連結
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	確定
+#. text in a download's progress window
+#, machine
+	on download stop/resume	在下載停止/繼續時
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	一次在
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	一次性下載
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	僅在我使用電腦時
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	開啟
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	使用 Mister Download Manager 開啟磁力連結和 .torrent 檔案
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	開啟 Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	完成時開啟以下檔案
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	完成時開啟下列檔案：
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	開啟選取的下載
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	開啟選取的下載功能表
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	開啟 torrent 檔案
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	選項
+#. text in a download's progress window
+#, machine
+	Options on completion	完成時的選項
+#. text in the Download video window
+#, machine
+	Page address	頁面位址
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	密碼
+#. text in the Options window
+#, machine
+	Password:	密碼：
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	貼上磁力連結或選擇 .torrent 檔案，然後查詢。
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	暫停
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	已暫停
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	同儕
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	定期同步處理
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	區塊
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	播放
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	下午
+#. label in the Options window
+#, machine
+	Port	連接埠
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	預覽
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	程式
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	選取下載的屬性
+#. text in a download's progress window
+#, machine
+	Property	屬性
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	代理 / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Proxy / socks 設定
+#. label in the Options window
+#, machine
+	Proxy server address	Proxy 伺服器位址
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	佇列 #{n}
+#. text in the Options window
+#, machine
+	Queue processing started	佇列處理已啟動
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	佇列處理已停止/完成
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	佇列
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	正在讀取檔案清單...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	正在讀取 torrent...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	已接收
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	正在接收資料...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	重新下載
+#. text in a download's Properties window
+#, machine
+	Referer:	參照位址：
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	地區
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	記住此檔案的速度限制器設定
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	記住「{category}」類別的路徑
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	移除
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	將星號取代為
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	結果：{result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	繼續
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	繼續功能
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	已繼續
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	正在重試: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	停&止
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	週六
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	星期六
+#. text in a dialog box
+#, machine
+	Save As	另存新檔
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	儲存至
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	儲存至...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	儲存至:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	儲存於
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	排程
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	排程器
+#. text in langpick.rs
+#, machine
+	Search:	搜尋：
+#. text in the Batch download window
+#, machine
+	Second file:	第二個檔案:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	全選
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	選取所有下載
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	選取所有下載直到此項
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	取消全選
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	選取或取消選取一個下載
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	選取或取消選取虛線框的下載
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	選取 Mister Download Manager 事件的音效
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	選取方塊中的下載
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	選取第一個/最後一個下載
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	選取上一個/下一個下載
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	已選取: {files}，{size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	傳送給朋友:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	已傳送
+#. text in the Scheduler window
+#, machine
+	September	九月
+#. text in the Options window
+#, machine
+	Server	伺服器
+#. text in the Options window
+#, machine
+	Server:	伺服器:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	設定檔案建立日期為伺服器提供
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	分享比例
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	分享中
+#. text in the download list
+#, machine
+	Show	顯示
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	顯示&類別
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	顯示對話方塊並詢問如何處理。
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	在瀏覽器中的影片上顯示下載按鈕
+#. button in the download list
+#, machine
+	Show all	顯示全部
+#. text in a download's progress window
+#, machine
+	Show details >>	顯示詳細資料 >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	顯示下載完成對話方塊
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	關閉批次下載對話方塊時顯示佇列選取面板
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	按下「稍後下載」按鈕時顯示佇列選取面板
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	顯示開始下載對話方塊
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	停止下載前顯示警告
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	在 torrent 下載時顯示。
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	關機
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	網站名稱/下載連結/父網頁/參照位址
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	網站/路徑
+#. text in the Options window
+#, machine
+	Site/path:	網站/路徑:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	網站登入
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	大小
+#. text in the Download video window
+#, machine
+	size unknown	大小未知
+#. text in a download's Properties window
+#, machine
+	Size:	大小:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	已跳過
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	睡眠
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	部分
+#. text in the Options window
+#, machine
+	Sound file	音效檔
+#. page title in the Options window
+#, machine
+	Sound settings	音效設定
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	音效
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	原始碼
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	速度限制器
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	速度限制器設定
+#. button in a dialog box
+#, machine
+	Start Download	開始下載
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	在以下時間開始下載
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	在 Mister Download Manager 啟動時開始下載
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	顯示「下載檔案資訊」對話方塊時立即開始下載
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	開始主要下載佇列
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	依連線的起始位置和下載進度
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	立即開始佇列
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	開始 {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	已開始
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	已使用 yt-dlp {version} ({format}) 開始
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	狀態
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	狀態:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	在以下時間停止下載
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	停止主要下載佇列
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	停止 {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	已停止
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	下載完成時停止
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	日
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	星期日
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	同步佇列
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	告訴朋友
+#. group box title in the Options window
+#, machine
+	Temporary directory	暫存目錄
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	週四
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	為其保留的 .torrent 檔案已遺失
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	位址必須是 http(s) 或 ftp(s) 位址
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	最佳品質需要 ffmpeg 合併視訊和音訊 (約 80 MB)。
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	電腦將在 {n} 秒後進入睡眠狀態。
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	電腦將在 {n} 秒後休眠。
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	電腦將在 {n} 秒後關機。
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	部分完成前連線已關閉
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	接收資料時連線中斷
+#. text in errors.rs
+#, machine
+	the disk is full	磁碟已滿
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	已達到下載限制 (每 {hours} 小時 {mb} MB)。
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	下載連結已過期 (請重新整理下載位址)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	您已熟悉的下載管理員，經過重新建構以提供更快的速度。依據 GNU GPL 第 3 版或更新版本，免費且開放原始碼。視訊由 yt-dlp 尋找；Torrent 則在 librqbit 上執行。
+#. text in a dialog box
+#, machine
+	The download queue is done.	下載佇列已完成。
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	磁碟機或網路共用已無法使用
+#. text in errors.rs
+#, machine
+	the file changed on the server	伺服器上的檔案已變更
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	檔案無法移動
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	檔案無法讀取: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	檔案不符 ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	檔案相符 ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	檔案儲存為
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	未列在任何其他類別中的檔案類型
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	檔案的 {algorithm} 總和檢查碼不符 (資料已保留；請重新下載)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	無法建立資料夾: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	資料夾 {path} 無法使用 (磁碟機已移除或網路共用離線？)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP 伺服器回應 {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	無法儲存清單: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	路徑對 Windows 而言太長: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	發行版本沒有版本號
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	安全連線失敗
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	選取的下載尚未完成。您確定要從 Mister Download Manager 下載清單中刪除它嗎？
+#. text in errors.rs
+#, machine
+	the server answered {status}	伺服器回應 {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	伺服器無法傳送檔案的部分，因此無法繼續
+#. text in errors.rs
+#, machine
+	the server did not answer in time	伺服器未及時回應
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	伺服器未傳送請求的部分
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	伺服器忙碌中 ({status})；請稍後再試
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	伺服器傳送的是網頁而非檔案 (需要登入或連結已過期？)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	伺服器傳送了檔案的意外部分 ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	無法儲存 Torrent: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	Torrent 已不存在
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	取得此檔案的網頁:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	已有同名的類別
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	當「顯示下載完成對話方塊」開啟時，這些設定無法使用
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	此位址已在下載清單中:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	此資料夾不存在:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	此 Torrent 已在下載清單中
+#. text in the Scheduler window
+#, machine
+	Thursday	星期四
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	剩餘時間
+#. text in the Batch download window
+#, machine
+	To:	到:
+#. text in errors.rs
+#, machine
+	too many redirects	重新導向次數過多
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Torrent 下載 (磁力連結和 .torrent 檔案)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Torrent 檔案
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Torrent 設定
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrent
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	無法啟動 torrents: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	追蹤器
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	追蹤器
+#. text in a download's progress window
+#, machine
+	Transfer rate	傳輸速率
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	週二
+#. text in the Scheduler window
+#, machine
+	Tuesday	星期二
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	關閉
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	完成時關閉電腦
+#. button in a dialog box
+#, machine
+	Turn off now	立即關閉
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	開啟
+#. text in a download's Properties window
+#, machine
+	Type:	類型:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	未完成
+#. text in a download's Properties window
+#, machine
+	Unknown	未知
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	未知
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	無法檢查更新: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	使用進階瀏覽器整合
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	使用授權
+#. text in the Options window
+#, machine
+	Use automatic configuration script	使用自動設定指令碼
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	以 PASV 模式使用 FTP
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	如果發生下載錯誤，請使用瀏覽器要求的 Proxy/SOCKS\n用於從瀏覽器攔截的下載
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	使用速度限制器
+#. text in the Options window
+#, machine
+	Use system settings	使用系統設定
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	將此 Proxy 用於以下通訊協定:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	供下載清單和排程器使用。
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	使用者
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	伺服器/網站的使用者名稱和密碼
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	手動新增下載的使用者代理程式:
+#. text in the Options window
+#, machine
+	User:	使用者:
+#. label in the Options window
+#, machine
+	UserName	使用者名稱
+#. text in a download's progress window
+#, machine
+	Value	值
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	驗證
+#. window title in the Checksum window
+#, machine
+	Verify checksum	驗證總和檢查碼
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	正在驗證...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	版本 {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	視訊
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	視訊查詢使用 yt-dlp (約 23 MB，已根據其簽章檢查)。
+#. text in the Options window
+#, machine
+	Virus checking settings	病毒檢查設定
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	等待中
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	等待中: 已達到下載限制 (排程器)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	週三
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	網路
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	在 {file} 中找到的網址：
+#. text in the Scheduler window
+#, machine
+	Wednesday	星期三
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	新功能：
+#. text in the Batch download window
+#, machine
+	Wildcard size	萬用字元大小
+#. text in langpick.rs
+#, machine
+	Windows' language	Windows 語言
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windows 語言 ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	新增 URL
+#. group box title in the Options window
+#, machine
+	Write dates and times	寫入日期和時間
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	年、月、日
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	是
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	您已擁有最新版 Mister Download Manager ({version})。
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	您擁有版本 {version}。
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp 未安裝 (工作 → 從頁面下載視訊會安裝它)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} 總和檢查碼
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}：下載完成時檢查
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} 包含
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} 檔案
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{total} 個中的 {have} 個 (每個 {size})
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{total} 個中的 {have} 個片段 (每個 {size})
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} 小時 {m} 分
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} 個已連線，{known} 個已知
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} 分 {s} 秒
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}，{size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (自動)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	已選取 {total} 個中的 {n} 個
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} 位元組)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} 對此 {file_system} 磁碟機而言太大 (檔案最大 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} 秒
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} 無法安裝：{error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	新增時間
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	描述
+#. column title in the download list in the download list
+#, machine
+column	File Name	檔案名稱
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	上次嘗試日期
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	佇列
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	大小
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	來源
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	狀態
+#. column title in the download list in the download list
+#, machine
+column	Time left	剩餘時間
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	傳輸速率
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	按鈕設定...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	下載影片
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	使用 Mister Download Manager 下載
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	拖曳以沿著影片邊緣移動
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	將瀏覽器中的下載交給 Mister Download Manager。
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	在此影片上隱藏
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager 沒有回應
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager 整合模組
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	更多選項
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	永遠不要在 {site} 上顯示
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	已傳送至 Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+按一下
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+向上鍵 / Ctrl+向下鍵
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	拖曳空白處
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+點擊
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+向上鍵 / Shift+向下鍵
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	輸入名稱
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	向上鍵 / 向下鍵
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	關於 Mister Download Manager(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	新增下載(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	刪除所有已完成(&E)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	立即下載(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	結束(&X)
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	匯入(&I)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	鍵盤快速鍵(&K)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	語&言...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	選項(&O)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	全部暫停(&P)
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	移除(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	回報問題(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	排程器和佇列(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	全部停止(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	停止下載(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	系統匣圖示(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	教學課程(&U)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	影片下載(&V)
+#. menu command in the main window
+#, machine
+menu	3D Style	3D 樣式
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	新增批次下載(&B)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	新增磁力連結(&M)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	從剪貼簿新增批次下載(&C)
+#. menu command in the main window
+#, machine
+menu	Add category	新增類別
+#. menu command in the main window
+#, machine
+menu	Arrange files	整理檔案
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	瀏覽
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	依描述(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	依檔案名稱(&F)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	依上次嘗試日期(&L)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	依新增順序(&O)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	依大小(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	依剩餘時間(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	依新增日期(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	依父網頁(&W)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	依參照位址(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	依儲存路徑(&P)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	依狀態(&U)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	依傳輸速率(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	自訂 URL 清單(&U)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	檢查更新(&U)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	清除所有篩選器(&F)
+#. menu command in the main window
+#, machine
+menu	Create new queue	建立新佇列
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	自訂...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	深色模式支援
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	刪除
+#. menu command in the main window
+#, machine
+menu	Delete from queue	從佇列中刪除
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	從頁面下載影片(&V)...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	匯出(&X)
+#. menu command in the main window
+#, machine
+menu	Edit queue	編輯佇列
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	尋找 (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	尋找下一個 (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	字型
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	從 IDM 匯出檔案(&I)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	從文字檔案(&T)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	說明內容(&H)
+#. menu command in the main window
+#, machine
+menu	Hide drop target	隱藏拖放目標
+#. menu command in the main window
+#, machine
+menu	Large Buttons	大按鈕
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	尋找新工具列
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager 首頁(&H)
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	移動/重新命名 (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	霓虹
+#. menu command in the main window
+#, machine
+menu	On Double click	按兩下時
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	開啟
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	開啟&torrent 檔案...
+#. menu command in the main window
+#, machine
+menu	Open folder	開啟資料夾
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	開啟方式...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	內容
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	重新&下載
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	重新下載
+#. menu command in the main window
+#, machine
+menu	Refresh download address	重新整理下載位址
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	移除
+#. menu command in the main window
+#, machine
+menu	Resume Download	繼續下載
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	排程器(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	設定(&E)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	停止佇列(&P)
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	排程
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	顯示拖放目標(&D)
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	顯示 Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	小按鈕
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	速度限制器(&L)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	啟動佇列(&Q)
+#. menu command in the main window
+#, machine
+menu	Start now	立即開始
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	停止
+#. menu command in the main window
+#, machine
+menu	Stop Download	停止下載
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	告訴朋友(&F)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	匯出至 &IDM 檔案...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	匯出至文字檔案(&T)...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	工具列
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Torrent 設定(&N)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	開啟(&N)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	關閉(&F)
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	驗證總和檢查碼...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	下載
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	檔案
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	說明
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	工作
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	檢視
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	新增 Torrent
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	新增 URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	刪除
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	刪除已完成
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	選項
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	繼續
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	排程器
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	啟動佇列
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	停止
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	全部停止
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	停止佇列
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/秒
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/秒

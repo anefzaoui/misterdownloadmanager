@@ -1,0 +1,2552 @@
+# Mister Download Manager in Konkani (कोंकणी): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	कोंकणी
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	दाल्लेख {n} फायल डिस्केंतल्यान काडून उडोवचें|दाल्लेख {n} फायली डिस्केंतल्यान काडून उडोवच्यो
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager डावनलोड लिस्टींतल्यान {n} डावनलोड काडून उडोवंक तुमकां खात्री आसा?|Mister Download Manager डावनलोड लिस्टींतल्यान हे {n} डावनलोड काडून उडोवंक तुमकां खात्री आसा?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} {n} कनेक्शनांक परवानगी दिता|{host} {n} कनेक्शनांक परवानगी दिता
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} बायट|{n} बायट्स
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} फायल|{n} फायली
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&लागू करचें
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&बंद करचें
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&काडून उडोवचें
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&मदत
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&नवी रांग
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&आतां सुरू करचें
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(नांवां स्पेस दिवन वेगळीं करात)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-वर (9:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-वर (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< तपशील लिपयचें
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Mister Download Manager विशीं
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	एक डाउनलोड जोडचें (URL जोडचें)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	बॅच डाउनलोड जोडचें
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	ब्राउझर जोडचें...
+#. text in categories.rs
+#, machine
+	Add category	वर्गवारी जोडचें
+#. text in the tray icon's menu
+#, machine
+	Add new download	नवें डाउनलोड जोडचें
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	डुप्लिकेट जोडचें आनी पयलींच आशिल्ली फायल ओव्हररायट करचें
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	नंबर आशिल्ल्या फायल नांवासयत डुप्लिकेट जोडचें
+#. message or event log entry in the main window
+#, machine
+	Add to queue	रांगेंत जोडचें
+#. text in a dialog box
+#, machine
+	Add to queue:	रांगेंत जोडचें:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	टॉरेंट जोडचें
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	{source} जोडलां
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	पतो
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	पतो {host} हाका बदलला
+#. text in a download's Properties window
+#, machine
+	Address:	पतो:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	प्रगत / SOCKS...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	सगळीं डाउनलोड
+#. message or event log entry in the main window
+#, machine
+	All files	सगळीं फायली
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	पयलींच डाउनलोड जाता: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	फायल डिस्केंतल्यान काडून उडोवचें
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager सुरू करतना सदांच गती मर्यादीत करपी चालू करचें
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	एप्रिल
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager डावनलोडांचे वळेरेंतल्यान "{name}" काडून उडोवंक तुमी खात्रीन आसात?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	प्रणालीच्या प्रदेशा प्रमाणें बरयतात
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	फायल वळेरी खातीर पियर्स विचारप. मॅग्नेट लिंक्स एक वा दोन मिनटां घेवंक शकतात.
+#. text in the Scheduler window
+#, machine
+	August	ऑगस्ट
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	आपोआप "{category}" वर्गवारींत सकयल दिल्ल्या फायल प्रकारांक दवरचें:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	सकयल दिल्ल्या फायल प्रकारांचे डाउनलोड आपोआप सुरू करचें:
+#. window title in the Batch download window
+#, machine
+	Batch download	बॅच डाउनलोड
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	ब्राउज करा
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	ब्राउज करा...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	ब्राउजर/सिस्टम एकीकरण
+#. message or event log entry in the main window
+#, machine
+	by batch download	बॅच डाउनलोड करून
+#. message or event log entry in the main window
+#, machine
+	by import	आयात करून
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	रद्द करा
+#. text in errors.rs
+#, machine
+	cancelled	रद्द केलें
+#. text in errors.rs
+#, machine
+	cannot connect to the server	सर्वर कडेन जोडणी करूंक शकना
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	"{text}" मेळना
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	फायल वाचूंक शकना: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	परत सुरू करूंक शकना: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	सकयल्या ब्राउजरां कडल्यान डाउनलोड कॅप्चर करात:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	श्रेणी
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	श्रेणी, फायल प्रकार, फोल्डर
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	श्रेणी
+#. text in categories.rs
+#, machine
+	Category properties	श्रेणी गुणधर्म
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	निमण्या निवडलेल्याचेर "{category}" श्रेणी खातीर फोल्डर बदला
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	अद्यतनां खातीर तपासणी करात
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	हफ्त्यांतल्यान एक फावट अद्यतनां खातीर तपासणी करात
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	अद्यतनां खातीर तपासणी करता...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	तपासणी करता...
+#. text in langpick.rs
+#, machine
+	Choose a language	भास निवडात
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager जें भाशेंत आपलीं जनेलां दाखयता ती भास विंचून काडात:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	साफ करा
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	क्लायंट
+#. text in the Options window
+#, machine
+	Clock:	घड्याळ:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	बंद करा
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	एक मेनू वा संवाद बंद करा
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	पूर्ण
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	संकुचित
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	डावनलोड काडचे पयलीं खात्री करात
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	डाउनलोड रद्द करपाची पुष्टी करा
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	जोडणी करता...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	जोडणी
+#. page title in the Options window
+#, machine
+	Connections and Limits	जोडणी आनी मर्यादा
+#. text in the Options window
+#, machine
+	Connections:	जोडणी:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	क्लिपबोर्डाचेर कॉपी केला.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	कॉपी करा
+#. window title in a dialog box
+#, machine
+	Create folder	फोल्डर तयार करा
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	"डाउनलोड प्रगती" संवाद सानुकूल करा
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	MDM कडल्यान डाउनलोड करपाक आडमेळीं घालपाक वा सक्ती करपाक किल्ली सानुकूल करा
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	ब्राउजरां मदले MDM डाउनलोड पॅनल सानुकूल करा
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	ब्राउजरां च्या संदर्भ मेनूंतले MDM मेनू आयटम सानुकूल करा
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	दर दिसा
+#. text in the Options window
+#, machine
+	Date order:	तारखेचो क्रम:
+#. page title in the Options window
+#, machine
+	Dates and times	तारखा आनी वेळा
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	दीस, म्हयनो, वर्स
+#. text in the Scheduler window
+#, machine
+	December	डिसेंबर
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	डीफॉल्ट
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	"{category}" वर्ग खातीर पूर्वनिर्धारीत डाउनलोड डिरेक्टरी
+#. page title in the Options window
+#, machine
+	Default download settings	पूर्वनिर्धारीत डाउनलोड सेटिंग्स
+#. text in the Options window
+#, machine
+	Default max. conn. number	पूर्वनिर्धारीत चडांत चड जोडणी संख्या
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	काडून उडोव
+#. message or event log entry in the main window
+#, machine
+	Delete category	वर्ग काडून उडोवचो
+#. message or event log entry in the main window
+#, machine
+	Delete queue	रांग काडून उडोवची
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" वर्ग काडून उडोवचो? ताचे डाउनलोड सामान्य जातात; ताच्यो फायली थंयच रावतात.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" रांग काडून उडोवची? ताचे डाउनलोड वळेरींत रावतात.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	निवडलेले डाउनलोड काडून उडोवचे (पयलीं विचारता)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	निवडलेले डाउनलोड आनी तांच्यो फायली काडून उडोवच्यो (पयलीं विचारता)
+#. text in a dialog box
+#, machine
+	Description	वर्णन
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	वर्णन वा वर्णनाचो भाग
+#. text in a download's Properties window
+#, machine
+	Description:	वर्णन:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	डिस्क त्रुटी: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	रांगांचे वळेरींत दाखयलां
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	डाउनलोड करपाक सुरवात करूंक ना, फकत फायली रांगेत जोडच्यो
+#. text in a dialog box
+#, machine
+	Do you want to create it?	तुम्हांका तें तयार करपाक जाय?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	दस्तावेज
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	हो संवाद परतून दाखोवचो न्हय
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	सकयल दिल्ल्या पत्त्यांवयल्यान आपोआप डाउनलोड करपाक सुरवात करूंक न्हय:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	सकयल दिल्ल्या सायटींवयल्यान आपोआप डाउनलोड करपाक सुरवात करूंक न्हय:
+#. text in a download's progress window
+#, machine
+	Done	जालां
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	डाउनलोड कर
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" परतून सुरवाती पासून डाउनलोड करचें? नवो डाउनलोड पुराय जातकच पुराय जाल्ली फायल बदलता.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	डाउनलोड पुराय जालें
+#. text in the Options window
+#, machine
+	Download failed	डाउनलोड अपेशी जालें
+#. window title in a dialog box
+#, machine
+	Download File Info	फायल डाउनलोड करात म्हायती
+#. button in a dialog box
+#, machine
+	Download Later	उपरांत डाउनलोड करात
+#. window title in a dialog box
+#, machine
+	Download later	उपरांत डाउनलोड करात
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	डाउनलोड मर्यादा
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB परस चड डाउनलोड करूंक न्हय\nदर {hours} वरां
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	आतां डाउनलोड करात
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	डावनलोड पॅनलां
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	डाउनलोड स्थिती
+#. window title in the Download video window
+#, machine
+	Download video from a page	एका पाना वयल्यान व्हिडिओ डाउनलोड करात
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	एकाच वेळार {files} फायली डाउनलोड करात
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	डाउनलोड केलें
+#. page title in the Options window
+#, machine
+	Downloaded file types	डाउनलोड केल्ले फायल प्रकार
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	डाउनलोड केलें {size} ({bytes} बाइट्स)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	डाउनलोड करता
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	परतून सुरवाती पासून डाउनलोड करता
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (सुमारे 80 MB) डाउनलोड करता आनी तपासता...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	yt-dlp डाउनलोड करता आनी तपासता...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	डाउनलोड
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	डाउनलोड थांबयल्यात आनी {time} वरांचेर आपोआप परतून सुरू जातले.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	डाउनलोड करपाक हांगा दुवे ओडून हाडा
+#. window title in a dialog box
+#, machine
+	Duplicate download link	दुप्पट डाउनलोड दुवो
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	संपादित कर
+#. text in the Options window
+#, machine
+	Edit exception	अपवाद संपादीत कर
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	यादी संपादीत कर...
+#. text in the Options window
+#, machine
+	Edit login	लॉगिन संपादीत कर
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	संपादीत कर...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	ईमेल
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	मॅग्नेट दुवो घाल वा .torrent फायल निवडात
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	नव्या रांकेक नांव घाल जे जातले
+#. window title in a dialog box
+#, machine
+	Enter new address to download	डाउनलोड करपाक नवो पत्तो घाल
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	रांकेंत नांव घाल
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	चूक
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	चूक: {error}
+#. text in the Options window
+#, machine
+	Event	घडणूक
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	उदाहरण:
+#. text in the Options window
+#, machine
+	Exceptions:	अपवाद:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	भायर सर
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	काम सोंपतकच Mister Download Manager भायर सरचें
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	अपेक्षित चेकसम (MD5, SHA-1, SHA-256, SHA-512 वा CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	अपेक्षित चेकसम सेट केला ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	निर्यात कर
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome विस्तारांची उपलब्धताय वाडयात
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	विस्तार स्पेसानी वेगळे केल्ले, देखीक MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	फेब्रुवारी
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	फायल
+#. text in the Scheduler window
+#, machine
+	File Name	फायलीचें नांव
+#. text in the Download video window
+#, machine
+	File name	फायलीचें नांव
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	फायलीचें नांव वा नांवाचो भाग
+#. window title in a download's Properties window
+#, machine
+	File Properties	फायल गुणधर्म
+#. text in a download's progress window
+#, machine
+	File size	फायलीचो आकार
+#. text in the Options window
+#. tab title
+#, machine
+	File types	फायल प्रकार
+#. text in categories.rs
+#, machine
+	File types:	फायल प्रकार:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	फायलो
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	फायलो हांगा वतात: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	रांकेतल्या फायलो
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	सोद
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	डाउनलोड सोद
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	फायल सोद
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	फुडली जुळणी सोद
+#. text in the Find window
+#, machine
+	Find:	सोद:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	पूर्ण जालां
+#. text in the Options window
+#, machine
+	First day of the week:	आठवड्याचो पयलो दीस:
+#. text in the Batch download window
+#, machine
+	First file:	पयली फायल:
+#. text in categories.rs
+#, machine
+	Folder:	फोल्डर:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	देखीक: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	फकत तुमच्या Windows खात्या खातीर. "हाचे वांगडा उगड" हातूंत निवडिल्लो आनीक एक ऍप पयलो उरता.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	प्रक्रिया सक्तीन सोंपोवच्यो
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	शुक्र
+#. text in the Scheduler window
+#, machine
+	Friday	शुक्रार
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	मॅग्नेट लिंका वयल्यान
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	एका पाना वयल्यान (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	एका टॉरेंट फायली वयल्यान
+#. message or event log entry in the main window
+#, machine
+	from the browser	ब्राउझरा वयल्यान
+#. message or event log entry in the main window
+#, machine
+	from the command line	कमांड लायनी वयल्यान
+#. text in the Batch download window
+#, machine
+	From:	हांगाच्यान:
+#. checkbox in the Options window
+#, machine
+	ftp	FTP
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	सामान्य
+#. button in the Options window
+#, machine
+	Get System	प्रणाली मेळोवची
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	पियर्स कडल्यान फायल वळेरी मेळयता... {n} से
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	काम जातकच मोडेम बंद कर
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	आसा
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	मदत
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	हायबरनेट कर
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	&वर्ग लिपय
+#. button in a download's progress window
+#, machine
+	Hide tab	टॅब लिपय
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	मुखेल पान
+#. checkbox in the Options window
+#, machine
+	http	HTTP
+#. checkbox in the Options window
+#, machine
+	https	HTTPS
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	हांव Mister Download Manager वापरून डाउनलोड करतां: वेगान, फुकट आनी तें तुमी पयलींच वळखतात त्या डाउनलोड मॅनेजरा भशेन दिसता. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	जर डुप्लिकेट डाउनलोड लिंक जोडल्यार:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	जर सद्याची फायल पुराय जाल्यार, डाउनलोड पुराय जालां संवाद दाखय; ना जाल्यार ती परत सुरू कर.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	डाउनलोड परत सुरू करतना फायल बदलपाच्या वेळ बदलांक दुर्लक्ष कर
+#. message or event log entry in the main window
+#, machine
+	Import	आयात कर
+#. window title in transfer.rs
+#, machine
+	Import downloads	डाउनलोड आयात कर
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	एका रांकेत
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	माहिती
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	माहिती हॅश
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	ffmpeg स्थापीत कर
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	yt-dlp स्थापीत कर
+#. text in a dialog box
+#, machine
+	Invalid address	अवैध पत्तो
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, आदी, img100.jpg सारक्या क्रमवार फायल नांवांचो गट MDM डाउनलोड रांकेत जोडप शक्य आसा. फायल नांवाच्या नमुन्या खातीर तारांकित वाईल्डकार्ड वापरचो.
+#. text in the Scheduler window
+#, machine
+	January	जानेवारी
+#. text in the Scheduler window
+#, machine
+	July	जुलय
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	ज्या डाउनलोडाचें नांव ताचेर सुरू जाता थंय वच
+#. text in the Scheduler window
+#, machine
+	June	जून
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	केबी/सेकंद
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	टॉरेंट सोंपल्या उपरांतय शेअर करत राव
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	कीबोर्ड शॉर्टकट्स
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	कळ्ळ्यो...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	भास
+#. text in the Batch download window
+#, machine
+	Last file:	निमणी फायल:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	निमणो यत्न {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	मागीर
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	सुरू करतना Mister Download Manager सुरू करचें
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	अक्षरां
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	परवाने आनी श्रेय
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	सगले डाउनलोड एकठांय मर्यादीत कर
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	लॉगिन
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	सोद
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	पान सोदता...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	मुखेल डाउनलोड रांक
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	निवड लांब वा ल्हान कर
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	मॅन्युअल प्रॉक्सी/SOCKS कॉन्फिगुरेशन
+#. text in the Scheduler window
+#, machine
+	March	मार्च
+#. checkbox in the Find window
+#, machine
+	Match case	केस जुळोव
+#. checkbox in the Find window
+#, machine
+	Match whole string only	फकत पुराय स्ट्रिंग जुळोव
+#. group box title in the Options window
+#, machine
+	Max. connections number	जास्तीत जास्त जोडण्यांची संख्या
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	एका फायली खातीर जास्तीत जास्त डाउनलोड गती {kb} केबी/सेकंद
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	जास्तीत जास्त डाउनलोड गती:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	मे
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	उणे
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager संरूपण
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager दर एक जोडणी सिदो निमाण्या फायलींत बरयता\n(ताच्या लागसार एक विरळ भाग फायल), देखून खंयचीच तात्पुरती डिरेक्टरी आनी खंयचीच\nएकठांय करपाची पावंडो गरजेची ना.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} उपलब्ध आसा ({date} रिलीज जालां).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	सोम
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	सोमवार
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	म्हयनो, दीस, वर्स
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	हलव
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	एक पान वयर/सकयल व्हर
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	वेंचून काडिल्लें डाउनलोड व्हर वा ताचें नांव बदल
+#. text in a download's Properties window
+#, machine
+	Move to folder	फोल्डरांत व्हर
+#. message or event log entry in the main window
+#, machine
+	Move to queue	रांकेंत व्हर
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	वेंचणूक बदलिनासतना व्हर
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	व्हर/नांव बदल
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	हेर जोडण्यां परस खूब हळू; परत जोडणी करता
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	संगीत
+#. option (radio button) in the Options window
+#, machine
+	My own way:	म्हजो स्वताचो मार्ग:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	न.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	नांव
+#. text in categories.rs
+#, machine
+	Name:	नांव:
+#. text in errors.rs
+#, machine
+	network error	नेटवर्क त्रुटी
+#. text in the Options window
+#, machine
+	Never show it on these sites:	ह्या सायटींचेर तें केन्नाच दाखोवचें न्हय:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	नवें
+#. text in the Options window
+#, machine
+	New exception	नवो अपवाद
+#. text in the Options window
+#, machine
+	New login	नवें लॉगइन
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	ना
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	डेटा फोल्डर ना
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	टॉरेंटां खातीर डेटा फोल्डर ना
+#. text in langpick.rs
+#, machine
+	No language matches.	खंयचीच भास जुळना.
+#. text in the Options window
+#, machine
+	No proxy/socks	प्रॉक्सी/SOCKS ना
+#. text in the Download video window
+#, machine
+	No video this can download on that page	ह्या पानाचेर डाउनलोड करपाक व्हिडियो ना
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	{file} त खंयचीच वेब पत्ती मेळ्ळी ना.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	कांयच ना: पीअर डीएचटी आनी हेर पीअर कडल्यान येतात
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	हें वाचूंक शकना असो चेकसम न्हय
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	पुरेशी डिस्क सुवात ना: {needed} जाय, {free} फावो
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	रांकेंत ना
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	वापरना: फायलीचे भाग फायली भोंवतणी बरयल्यात
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	टीप: गती खूब मर्यादीत आसल्यार इंटरनेट सर्व्हर कनेक्शन तोडूंक शकतात! देखून, "परत सुरु कर" सुविधेक आदार दिना अशा सर्व्हर वयल्यान डाउनलोड करपाक स्पीड लिमिटर वापरपाची शिफारस करिना.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	टीप: ह्यो सेटिंग्स रांक प्रक्रिया करपा संबंदीत नात
+#. text in the Scheduler window
+#, machine
+	November	नोव्हेंबर
+#. text in the Options window
+#, machine
+	Number	संख्या
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	डाउनलोड अपेशी थारल्यार दर फायली खातीर परत प्रयत्न करपाची संख्या:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	संख्या
+#. text in the Scheduler window
+#, machine
+	October	ऑक्टोबर
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	बंद: पुराय जाल्लें टॉरेंट, खंयच्याय डाउनलोडा भशेन, थांबता.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	क्लिपबोर्डांत कॉपी केल्ले दुवे डाउनलोड करपाक दिवचें
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	ठीक आसा
+#. text in a download's progress window
+#, machine
+	on download stop/resume	डाउनलोड थांबयल्यार/परत सुरु केल्यार
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	एक फावट
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	एक फावट डाउनलोड करप
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	फकत हांव संगणक वापरतना
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	उघड
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager वापरून मॅग्नेट दुवे आनी .torrent फायली उगडात
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Mister Download Manager उगडात
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	पुराय जातकच सकयल दिल्लें फायल उगड
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	जातकच सकयल दिल्लें फायल उगड:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	वेंचून काडिल्लें डाउनलोड उगड
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	वेंचून काडिल्ल्या डाउनलोडाचें मेनू उगड
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	टॉरेंट फायल उगड
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	विकल्प
+#. text in a download's progress window
+#, machine
+	Options on completion	पुराय जातकच विकल्प
+#. text in the Download video window
+#, machine
+	Page address	पानाचो पत्तो
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	पासवर्ड
+#. text in the Options window
+#, machine
+	Password:	पासवर्ड:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	एक मॅग्नेट लिंक पेस्ट करात वा एक .torrent फायल वेंचून काडात, मागीर सोदात.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	थंबय
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	थंबयलां
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	पियर्स
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	काळा प्रमाणे जुळोवणी
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	कुडके
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	खेळय
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	पोर्ट
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	पळोव
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	प्रोग्रॅम्स
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	वेंचून काडिल्ल्या डाउनलोडाचीं गुणधर्मां
+#. text in a download's progress window
+#, machine
+	Property	गुणधर्म
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	प्रॉक्सी / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	प्रॉक्सी / SOCKS संरूपण
+#. label in the Options window
+#, machine
+	Proxy server address	प्रॉक्सी सर्व्हर पत्तो
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	रांग # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	रांग प्रक्रिया सुरू जाली
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	रांग प्रक्रिया थांबली/पुराय जाली
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	रांगो
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	फायल वळेरी वाचता...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	टॉरेंट वाचता...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	मेळ्ळें
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	डाटा मेळयता...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	परत डाउनलोड कर
+#. text in a download's Properties window
+#, machine
+	Referer:	संदर्भ:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	प्रादेशीक
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	ह्या फायला खातीर स्पीड लिमिटर सेटिंग्ज उगडास दवर
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	"{category}" वर्गणी खातीर हो मार्ग उगडास दवर
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	काडून उडय
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	एस्ट्रिस्क बदल
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	निकाल: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	परत सुरु करा
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	परत सुरु करपाची क्षमता
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	परत सुरु केलें
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	परत प्रयत्न करता: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	थां&बय
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	शं
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	शेनवार
+#. text in a dialog box
+#, machine
+	Save As	अशें सांबाळ
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	हांगा सांबाळ
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	हांगा सांबाळ...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	हांगा सांबाळ:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	हांगा सांबाळ्ळें
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	वेळापत्रक
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	वेळापत्रक
+#. text in langpick.rs
+#, machine
+	Search:	सोद:
+#. text in the Batch download window
+#, machine
+	Second file:	दुसरी फाइल:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	सगळें निवडात
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	सगळे डाउनलोड निवडात
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	ह्या डाउनलोड मेरेन सगळे डाउनलोड निवडात
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	कांयच निवडूंक ना
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	आनीक एक डाउनलोड निवडात वा निवड रद्द करात
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	टिंब आशिल्ल्या रुपरेषे सयत डाउनलोड निवडात वा निवड रद्द करात
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Mister Download Manager कार्यांखातीर आवाज निवडात
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	बॉक्सातले डाउनलोड निवडात
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	पयलो / निमाणो डाउनलोड निवडात
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	आदलो / फुडलो डाउनलोड निवडात
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	निवडिल्लें: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	हें एका इश्टाक धाडात:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	धाडलें
+#. text in the Scheduler window
+#, machine
+	September	सप्टेंबर
+#. text in the Options window
+#, machine
+	Server	सर्व्हर
+#. text in the Options window
+#, machine
+	Server:	सर्व्हर:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	सर्व्हरान दिल्ल्या प्रमाण फाइल तयार करपाची तारीख सेट करात
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	शेअर गुणोत्तर
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	शेअर करप
+#. text in the download list
+#, machine
+	Show	दाखय
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	श्रेणी &दाखय
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	एक संवाद दाखय आनी कितें करचें तें विचार.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	ब्रावजरांतील व्हिडियोंचेर डावनलोड बटण दाखोवचें
+#. button in the download list
+#, machine
+	Show all	सगळें दाखय
+#. text in a download's progress window
+#, machine
+	Show details >>	विस्तृत म्हायती दाखय >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	डाउनलोड पुराय जाल्लो संवाद दाखय
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	बॅच डाउनलोड संवाद बंद करताना रांग निवड पॅनेल दाखोवचें
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	"मागीर डाउनलोड कर" बटण दाबताना रांग निवड पॅनेल दाखोवचें
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	डाउनलोड सुरू करपाचो संवाद दाखोवचो
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	डाउनलोड थांबोवचे पयलीं चेतावणी दाखोवची
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	टॉरेंट डाउनलोड जातना दाखयलां.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	बंद कर
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	सायट नांव/डाउनलोड लिंक/पालक वेब पान/रेफरर
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	सायट/पंथ
+#. text in the Options window
+#, machine
+	Site/path:	सायट/पंथ:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	सायटींचे लॉगिन
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	आकार
+#. text in the Download video window
+#, machine
+	size unknown	आकार खबर ना
+#. text in a download's Properties window
+#, machine
+	Size:	आकार:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	वगळ्ळें
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	निद
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	कांय
+#. text in the Options window
+#, machine
+	Sound file	आवाज फाईल
+#. page title in the Options window
+#, machine
+	Sound settings	आवाज मांडावळ
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	आवाज
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	मूळ कोड
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	गती मर्यादीत करपी
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	गती मर्यादीत करपी मांडावळ
+#. button in a dialog box
+#, machine
+	Start Download	डाउनलोड सुरू कर
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	हांगा डाउनलोड सुरू कर
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Mister Download Manager सुरू जातना डाउनलोड सुरू कर
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	"फायल म्हायती डाउनलोड कर" संवाद दाखयतना ताबडतोब डाउनलोड सुरू कर
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	मुखेल डाउनलोड रांग सुरू कर
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	जोडण्यां प्रमाणें सुरू करपाची स्थिती आनी डाउनलोड प्रगती
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	आतां रांग सुरू कर
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	{queue} सुरू कर
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	सुरू केलें
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) वापरून सुरू केलें
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	स्थिती
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	स्थिती:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	हांगा डाउनलोड थांबोवचें
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	मुखेल डाउनलोड रांग थांबोव
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	{queue} थांबोव
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	थांबयलें
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	डाउनलोड सोंपता तेन्ना थांबता
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	रवि
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	आयतार
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	एकठांय करपाची रांग
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	एका इश्टाक सांग
+#. group box title in the Options window
+#, machine
+	Temporary directory	तात्पुरती डिरेक्टरी
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	गुरू
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	ताचे खातीर दवरिल्ली .torrent फाइल ना जाल्या
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	पतो http(s) वा ftp(s) पतो आसूंक जाय
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	व्हिडिओ आनी ऑडिओ एकठांय करपाक सगळ्यांत बऱ्या गुणवत्तेक ffmpeg (सुमार 80 MB) जाय पडटा.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	संगणक {n} सेकंदांनी न्हिदेंत वचतलो.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	संगणक {n} सेकंदांनी हायबरनेट जातलो.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	संगणक {n} सेकंदांनी बंद जातलो.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	भाग पुराय जावचे पयलीं जोडणी बंद जाली
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	डेटा मेळटना जोडणी सोंपली
+#. text in errors.rs
+#, machine
+	the disk is full	डिस्क भरल्या
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	डावनलोड मर्यादा ({mb} MBytes दर {hours} वरां) पावल्या.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	डाउनलोड लिंक सोंपला (डाउनलोड पत्तो रिफ्रेश करात)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	तुमकां पयलींच खबर आशिल्लो डावनलोड वेवस्थापक, चड वेगान तयार करपाक परतून बांदला. GNU GPL, आवृत्ती 3 वा उपरांतच्या खाला फुकट आनी उगडो स्त्रोत. yt-dlp वरवीं व्हिडिओ मेळटात; librqbit चेर टॉरेंट चलता.
+#. text in a dialog box
+#, machine
+	The download queue is done.	डावनलोड रांग पुराय जाल्या.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	ड्राइव्ह वा नेटवर्क शेअर आतां उपलब्ध ना
+#. text in errors.rs
+#, machine
+	the file changed on the server	सर्वर वयलें फायल बदललें
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	फाइल हालोवंक शकली ना
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	फाइल वाचूंक शकली ना: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	फाइल जुळना ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	फाइल जुळटा ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	फाइल अशी सांबाळ्ळी
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	हेर खंयच्याच वर्गांत नाशिल्ले फाइल प्रकार
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	फायलाचो {algorithm} चेकसम जुळना (डेटा दवरला; तो परत डाउनलोड करात)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	फोल्डर तयार करपाक शकलो ना: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	{path} फोल्डर उपलब्ध ना (ड्राइव्ह काडून उडयला वा नेटवर्क शेअर ऑफलायन आसा?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP सर्वरान {code} {reply} जाप दिली
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	यादी सांबाळपाक शकली ना: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	Windows खातीर मार्ग खूब लांब आसा: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	रिलीजाक आवृत्ती ना
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	सुरक्षित जोडणी अपेशी जाली
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	वेंचून काडिल्लें डाउनलोड पुराय जावंक ना. तुमी तें\nMister Download Manager डाउनलोडाचे वळेरींतल्यान काडून उडोवंक खात्री आसा?
+#. text in errors.rs
+#, machine
+	the server answered {status}	सर्वरान {status} जाप दिली
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	सर्वर फायलाचे भाग धाडूंक शकना, देखून तो परत सुरू करूंक शकना
+#. text in errors.rs
+#, machine
+	the server did not answer in time	सर्वरान वेळार जाप दिली ना
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	सर्वरान मागिल्लो भाग धाडलो ना
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	सर्वर व्यस्त आसा ({status}); उपरांत परत प्रयत्न करात
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	सर्वरान फायला बदला वेब पेज धाडलें (लॉग-इन जाय वा लिंक सोंपला?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	सर्वरान फायलाचो अनपेक्षित भाग धाडलो ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	टॉरेंट सांबाळपाक शकलो ना: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	टॉरेंट आतां थंय ना
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	ही फाइल मेळिल्ली वेब पेज:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	ह्या नांवाचो वर्ग पयलींच आसा
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	"डावनलोड पुराय जाल्लो संवाद दाखोव" चालू आसतना ह्यो सेटींग उपलब्ध नात
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	हो पतो पयलींच डावनलोड यादींत आसा:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	हो फोल्डर अस्तित्वांत ना:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	हो टॉरेंट पयलींच डावनलोड यादींत आसा
+#. text in the Scheduler window
+#, machine
+	Thursday	गुरूवार
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	वेळ उरला
+#. text in the Batch download window
+#, machine
+	To:	हाका:
+#. text in errors.rs
+#, machine
+	too many redirects	खूब रिडायरेक्ट
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	टॉरेंट
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	टॉरेंट डावनलोड (मॅग्नेट लिंक्स आनी .torrent फायली)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	टॉरेंट फायली
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	टॉरेंट सेटींग
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	टॉरेंट
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	टॉरेंट सुरू करूंक शकले ना: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	ट्रॅकर
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	ट्रॅकर्स
+#. text in a download's progress window
+#, machine
+	Transfer rate	हस्तांतरण दर
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	मंगळ
+#. text in the Scheduler window
+#, machine
+	Tuesday	मंगळार
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	बंद कर
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	काम जातकच संगणक बंद कर
+#. button in a dialog box
+#, machine
+	Turn off now	आता बंद कर
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	चालू कर
+#. text in a download's Properties window
+#, machine
+	Type:	प्रकार:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	अपूर्ण
+#. text in a download's Properties window
+#, machine
+	Unknown	अज्ञात
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	अज्ञात
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	अद्यतनां तपासूंक शकलीं ना: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	प्रगत ब्राउझर एकीकरण वापर
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	अधिकृतता वापर
+#. text in the Options window
+#, machine
+	Use automatic configuration script	स्वयंचलित कॉन्फिगरेशन स्क्रिप्ट वापर
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	PASV मोडात FTP वापर
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	डावनलोड त्रुटी आसल्यार / ब्राउझरांतल्यान आडायिल्ल्या डावनलोडां खातीर ब्राउझरच्या विनंतींतल्यान प्रॉक्सी/SOCKS वापरचो
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	वेग मर्यादक वापर
+#. text in the Options window
+#, machine
+	Use system settings	प्रणाली सेटींग वापर
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	फुडल्या प्रोटोकॉल खातीर हो प्रॉक्सी वापर:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	डावनलोड आनी शेड्यूलरचे वळेरी वरवीं वापरतात.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	वापरपी
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	सर्व्हर/सायटीं खातीर वापरपी नांवां आनी पासवर्ड
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	मॅन्युअल जोडिल्ल्या डावनलोडां खातीर वापरपी-एजंट:
+#. text in the Options window
+#, machine
+	User:	वापरपी:
+#. label in the Options window
+#, machine
+	UserName	वापरपी नांव
+#. text in a download's progress window
+#, machine
+	Value	मोल
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	पडताळणी कर
+#. window title in the Checksum window
+#, machine
+	Verify checksum	चेकसम पडताळणी कर
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	पडताळणी करता...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	आवृत्ती {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	व्हिडिओ
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	व्हिडिओ सोद yt-dlp वापरता (सुमार 23 MB, ताच्या स्वाक्षरीक तपासला).
+#. text in the Options window
+#, machine
+	Virus checking settings	व्हायरस तपासणी सेटींग
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	वाट पळयता
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	वाट पळयता: डावनलोड मर्यादा पावल्या (शेड्यूलर)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	बुध
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	वेब
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	{file} त मेळिल्ले वेब पत्तो:
+#. text in the Scheduler window
+#, machine
+	Wednesday	बुधवार
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	नवें कितें:
+#. text in the Batch download window
+#, machine
+	Wildcard size	वाइल्डकार्ड आकार
+#. text in langpick.rs
+#, machine
+	Windows' language	Windows ची भास
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windows ची भास ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	URL जोडात
+#. group box title in the Options window
+#, machine
+	Write dates and times	तारखा आनी वेळा बरयात
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	वर्स, म्हयनो, दीस
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	हय
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	तुमच्या कडेन Mister Download Manager ची निमाणी आवृत्ती आसा ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	तुमच्या कडेन आवृत्ती {version} आसा.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp इन्स्टॉल केल्लें ना (कार्यां → पाना वयल्यान व्हिडिओ डाउनलोड करात तें इन्स्टॉल करता)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} चेकसम
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: डाउनलोड सोंपतकच तपासलें
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} भितर आसा
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} फाइल
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{total} पैकीं {have} ({size} प्रत्येक)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{total} पैकीं {have} कुडके ({size} प्रत्येक)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} वरां {m} मिनटां
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} जोडिल्ले, {known} खबर
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} मिनटां {s} सेकंद
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (ऑटो)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{total} पैकीं {n} निवडले
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} बाइट्स)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	हो {file_system} ड्राइव्ह खातीर {size} खूब व्हड आसा (4 GB मेरेन फायली)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} सेकंद
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} इन्स्टॉल करूंक शकलो ना: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	जोडलें
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	वर्णन
+#. column title in the download list in the download list
+#, machine
+column	File Name	फाइल नांव
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	निमणी यत्न तारीख
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	Q
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	आकार
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	स्रोत
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	स्थिती
+#. column title in the download list in the download list
+#, machine
+column	Time left	वेळ उरला
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	हस्तांतरण दर
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	बटनाचीं सेटींग्स...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	व्हिडियो डावनलोड करचो
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Mister Download Manager वरवीं डाउनलोड करा
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	व्हिडियोच्या कडेन व्हरपाक ओडून हाडचें
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	ब्रावझरांतल्यान Mister Download Manager कडेन डावनलोड दिता.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	ह्या व्हिडियोचेर लिपयचें
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager न जाप दिली ना
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager एकठांय करपी मोड्यूल
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	आनीक पर्याय
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	{site} चेर केन्नाच न्हय
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Mister Download Manager कडेन धाडलें
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+क्लिक करात
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+वयर / Ctrl+सकयल
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	रिकामे सुवातेर ओडून हाडप
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+क्लिक करा
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+वयर / Shift+सकयल
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	नाव टायप करा
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	वयर / सकयल
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Mister Download Manager विशीं(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	नविन डाउनलोड जोडात (&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	सगळे पुराय जाल्ले वगळावप (&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	आता डाउनलोड करात (&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	भायर सरप (&E)
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	आयात (&I)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	किबोर्ड शॉर्टकट्स (&K)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&भास...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	पर्याय (&O)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	सगळे थांबोवप (&P)
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	काडून उडोवप (&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	एक समस्या कळोवप (&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	शेड्युलर आनी रांको (&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	सगळे थांबोवप (&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	डाउनलोड थांबोवप (&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	ट्रे आयकॉन (&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	ट्यूटोरियल्स (&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	व्हिडिओ डाउनलोड्स (&V)
+#. menu command in the main window
+#, machine
+menu	3D Style	3D शैली
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	बॅच डाउनलोड जोडात (&B)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	मॅग्नेट लिंक जोडात... (&M)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	क्लिपबोर्डांतल्यान बॅच डाउनलोड &जोडात
+#. menu command in the main window
+#, machine
+menu	Add category	वर्ग जोडात
+#. menu command in the main window
+#, machine
+menu	Arrange files	फायली मांडा
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	ब्राउज करात
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	वर्णना &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	फायल नांवा &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	निमाणे येत्न तारखे &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	जोडणी क्रमा &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	आकारा &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	उरिल्ल्या वेळा &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	जोडिल्ले तारखे &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	पालक वेब पाना &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	रेफररा &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	सांबाळपाच्या मार्गा &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	स्थिती &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	हस्तांतरण दरा &प्रमाण
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	URL वळेरी &सानुकूल करात...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	अद्यतनां खातीर &तपासात...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	सगळे &फिल्टर काडात
+#. menu command in the main window
+#, machine
+menu	Create new queue	नवी रांग तयार करात
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	सानुकूल करात...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	डार्क मोड आदार
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	काडात
+#. menu command in the main window
+#, machine
+menu	Delete from queue	रांगेंतल्यान काडात
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	एका पानांतल्यान &व्हिडिओ डाउनलोड करात...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&निर्यात करात
+#. menu command in the main window
+#, machine
+menu	Edit queue	रांग संपादीत करात
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	सोदात (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	फुडलें सोदात (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	फॉन्ट
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	&IDM निर्यात फायलींतल्यान...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	&मजकूर फायलींतल्यान...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&मदतीची सामग्री
+#. menu command in the main window
+#, machine
+menu	Hide drop target	ड्रॉप लक्ष्य लिपयात
+#. menu command in the main window
+#, machine
+menu	Large Buttons	व्हड बटणां
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	नवे टूलबार सोदात
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager मुखपृष्ठ (&H)
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	हलयात/परत नांव दिवयात (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	निऑन
+#. menu command in the main window
+#, machine
+menu	On Double click	दोनदा क्लिक केल्यार
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	उघड
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	टॉरेंट फायल उग&ड...
+#. menu command in the main window
+#, machine
+menu	Open folder	फोल्डर उघड
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	हाच्या वरवीं उघड...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	गुणधर्म
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	प&रतून डाउनलोड करा
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	परत डावनलोड कर
+#. menu command in the main window
+#, machine
+menu	Refresh download address	डावनलोड पत्तो रिफ्रेश कर
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	काडून उडोव
+#. menu command in the main window
+#, machine
+menu	Resume Download	डावनलोड चालू कर
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	वेळापत्रक (&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	सेटिंग्ज (&S)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	रांग थांब&य
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	वेळापत्रक
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	ड्रॉप टार्गेट दाख&य
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Mister Download Manager दाखय
+#. menu command in the main window
+#, machine
+menu	Small Buttons	ल्हान बटणां
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	गती मर्यादक (&L)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	रांग सुरू क&र
+#. menu command in the main window
+#, machine
+menu	Start now	आतां सुरू कर
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	थांबय
+#. menu command in the main window
+#, machine
+menu	Stop Download	डावनलोड थांबय
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	एका इश्टाक सांग (&F)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	IDM निर्यात फायलीक (&I)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	टेक्स्ट फायलीक (&T)...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	टूलबार
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	टॉरेंट सेट्टीं&ग्ज...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	चालू क&र
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	बंद क&र
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	चेकसम पडताळणी कर...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	डावनलोड
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	फायल
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	मदत
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	कार्यां
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	पळोवचें
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	टॉरेंट जोड
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	URL जोड
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	काडून उडोव
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	पूर्ण जाल्लें काडून उडोव
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	पर्याय
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	परत सुरु करा
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	वेळापत्रक
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	रांग सुरू करा
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	थांबोवचें
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	सगळें थांबोवचें
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	रांग थांबोवचें
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/सेकंद
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/सेकंद

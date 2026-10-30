@@ -1,0 +1,2552 @@
+# Mister Download Manager in Greek (Ελληνικά): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Ελληνικά
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Διαγραφή επίσης του {n} αρχείου από το δίσκο|Διαγραφή επίσης των {n} αρχείων από το δίσκο
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Είστε βέβαιοι ότι θέλετε να διαγράψετε τη {n} λήψη από τη λίστα λήψεων του Mister Download Manager;|Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτές τις {n} λήψεις από τη λίστα λήψεων του Mister Download Manager;
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	Ο {host} επιτρέπει {n} σύνδεση|Ο {host} επιτρέπει {n} συνδέσεις
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} byte|{n} bytes
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} αρχείο|{n} αρχεία
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	Εφαρ&μογή
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Κλείσιμο
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Διαγραφή
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Βοήθεια
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Νέα ουρά
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Έναρξη τώρα
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(διαχωρίστε τα ονόματα με κενά)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12ωρο (9:41 ΜΜ)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24ωρο (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Απόκρυψη λεπτομερειών
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Πληροφορίες για το Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Προσθήκη λήψης (Προσθήκη URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Προσθήκη ομαδικής λήψης
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Προσθήκη προγράμματος περιήγησης...
+#. text in categories.rs
+#, machine
+	Add category	Προσθήκη κατηγορίας
+#. text in the tray icon's menu
+#, machine
+	Add new download	Προσθήκη νέας λήψης
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Προσθήκη του διπλότυπου και αντικατάσταση του υπάρχοντος αρχείου
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Προσθήκη του διπλότυπου με αριθμημένο όνομα αρχείου
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Προσθήκη στην ουρά
+#. text in a dialog box
+#, machine
+	Add to queue:	Προσθήκη στην ουρά:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Προσθήκη torrent
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	Προστέθηκε {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Διεύθυνση
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Η διεύθυνση άλλαξε σε {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Διεύθυνση:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Για προχωρημένους / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Όλες οι λήψεις
+#. message or event log entry in the main window
+#, machine
+	All files	Όλα τα αρχεία
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	γίνεται ήδη λήψη: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Να διαγραφεί επίσης το αρχείο από το δίσκο
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Να ενεργοποιείται πάντα ο Περιοριστής Ταχύτητας κατά την εκκίνηση του Mister Download Manager
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	ΠΜ
+#. text in the Scheduler window
+#, machine
+	April	Απρίλιος
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Είστε βέβαιοι ότι θέλετε να διαγράψετε το "{name}" από τη λίστα λήψεων του Mister Download Manager;
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Όπως τα γράφει η περιοχή του συστήματος
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Ζητούνται από ομότιμους χρήστες η λίστα αρχείων. Οι σύνδεσμοι Magnet ενδέχεται να χρειαστούν ένα ή δύο λεπτά.
+#. text in the Scheduler window
+#, machine
+	August	Αύγουστος
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Να τοποθετούνται αυτόματα στην κατηγορία "{category}" οι ακόλουθοι τύποι αρχείων:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Αυτόματη έναρξη λήψης των ακόλουθων τύπων αρχείων:
+#. window title in the Batch download window
+#, machine
+	Batch download	Μαζική λήψη
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Αναζήτηση
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Αναζήτηση...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Ενσωμάτωση προγράμματος περιήγησης/συστήματος
+#. message or event log entry in the main window
+#, machine
+	by batch download	με μαζική λήψη
+#. message or event log entry in the main window
+#, machine
+	by import	με εισαγωγή
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Άκυρο
+#. text in errors.rs
+#, machine
+	cancelled	ακυρώθηκε
+#. text in errors.rs
+#, machine
+	cannot connect to the server	δεν είναι δυνατή η σύνδεση στον διακομιστή
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	Δεν είναι δυνατή η εύρεση "{text}"
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Δεν είναι δυνατή η ανάγνωση του αρχείου: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	δεν είναι δυνατή η συνέχιση: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Λήψη λήψεων από τα ακόλουθα προγράμματα περιήγησης:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Κατηγορίες
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Κατηγορίες, τύποι αρχείων, φάκελοι
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Κατηγορία
+#. text in categories.rs
+#, machine
+	Category properties	Ιδιότητες κατηγορίας
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Αλλαγή φακέλου για την κατηγορία "{category}" στην τελευταία επιλεγμένη
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Έλεγχος για ενημερώσεις
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Έλεγχος για ενημερώσεις μία φορά την εβδομάδα
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Έλεγχος για ενημερώσεις...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Έλεγχος...
+#. text in langpick.rs
+#, machine
+	Choose a language	Επιλέξτε γλώσσα
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Επιλέξτε τη γλώσσα στην οποία θα εμφανίζονται τα παράθυρα του Mister Download Manager:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Εκκαθάριση
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Πελάτης
+#. text in the Options window
+#, machine
+	Clock:	Ρολόι:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Κλείσιμο
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Κλείσιμο μενού ή παραθύρου διαλόγου
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Ολοκληρώθηκε
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Συμπιεσμένα
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Επιβεβαίωση πριν από τη διαγραφή λήψεων
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Επιβεβαίωση διαγραφής λήψεων
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Σύνδεση...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Σύνδεση
+#. page title in the Options window
+#, machine
+	Connections and Limits	Συνδέσεις και όρια
+#. text in the Options window
+#, machine
+	Connections:	Συνδέσεις:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Αντιγράφηκε στο πρόχειρο.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Αντιγραφή
+#. window title in a dialog box
+#, machine
+	Create folder	Δημιουργία φακέλου
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Προσαρμογή παραθύρου διαλόγου "Πρόοδος λήψης"
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Προσαρμογή πλήκτρων για αποτροπή ή αναγκαστική λήψη με το MDM
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Προσαρμογή πλαισίων λήψης MDM σε προγράμματα περιήγησης
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Προσαρμογή στοιχείων μενού MDM στο μενού περιβάλλοντος των προγραμμάτων περιήγησης
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Καθημερινά
+#. text in the Options window
+#, machine
+	Date order:	Σειρά ημερομηνίας:
+#. page title in the Options window
+#, machine
+	Dates and times	Ημερομηνίες και ώρες
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Ημέρα, μήνας, έτος
+#. text in the Scheduler window
+#, machine
+	December	Δεκέμβριος
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Προεπιλογή
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Προεπιλεγμένος κατάλογος λήψεων για την κατηγορία "{category}"
+#. page title in the Options window
+#, machine
+	Default download settings	Προεπιλεγμένες ρυθμίσεις λήψης
+#. text in the Options window
+#, machine
+	Default max. conn. number	Προεπιλεγμένος μέγ. αριθμός συνδέσεων
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Διαγραφή
+#. message or event log entry in the main window
+#, machine
+	Delete category	Διαγραφή κατηγορίας
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Διαγραφή ουράς
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Διαγραφή της κατηγορίας "{category}"; Οι λήψεις της γίνονται Γενικές. Τα αρχεία τους παραμένουν εκεί που είναι.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Διαγραφή της ουράς "{queue}"; Οι λήψεις της παραμένουν στη λίστα.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Διαγραφή των επιλεγμένων λήψεων (ζητά επιβεβαίωση)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Διαγραφή των επιλεγμένων λήψεων και των αρχείων τους (ζητά επιβεβαίωση)
+#. text in a dialog box
+#, machine
+	Description	Περιγραφή
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Περιγραφή ή μέρος της περιγραφής
+#. text in a download's Properties window
+#, machine
+	Description:	Περιγραφή:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	σφάλμα δίσκου: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	εμφανίζεται στη λίστα ουρών
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Να μην ξεκινά η λήψη, μόνο να προστίθενται αρχεία στην ουρά
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Θέλετε να τον δημιουργήσετε;
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Έγγραφα
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Να μην εμφανιστεί ξανά αυτό το παράθυρο διαλόγου
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Να μην ξεκινά αυτόματα η λήψη από τις ακόλουθες διευθύνσεις:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Να μην ξεκινά αυτόματα η λήψη από τους ακόλουθους ιστότοπους:
+#. text in a download's progress window
+#, machine
+	Done	Ολοκληρώθηκε
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Λήψη
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Επανάληψη λήψης "{name}" από την αρχή; Ένα ολοκληρωμένο αρχείο αντικαθίσταται όταν ολοκληρωθεί η νέα λήψη.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Ολοκληρώθηκε η λήψη
+#. text in the Options window
+#, machine
+	Download failed	Η λήψη απέτυχε
+#. window title in a dialog box
+#, machine
+	Download File Info	Πληροφορίες αρχείου λήψης
+#. button in a dialog box
+#, machine
+	Download Later	Λήψη αργότερα
+#. window title in a dialog box
+#, machine
+	Download later	Λήψη αργότερα
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Όρια λήψης
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Να μη γίνεται λήψη περισσότερων από {mb} MB\nκάθε {hours} ώρες
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Λήψη τώρα
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Πίνακες λήψης
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Κατάσταση λήψης
+#. window title in the Download video window
+#, machine
+	Download video from a page	Λήψη βίντεο από μια σελίδα
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Λήψη {files} αρχείων ταυτόχρονα
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Λήφθηκαν
+#. page title in the Options window
+#, machine
+	Downloaded file types	Τύποι αρχείων που έχουν ληφθεί
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	Λήφθηκαν {size} ({bytes} Bytes)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Λήψη
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Επανάληψη λήψης από την αρχή
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	Λήψη και επαλήθευση ffmpeg (περίπου 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	Λήψη και επαλήθευση yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Λήψεις
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Οι λήψεις σταμάτησαν και θα συνεχιστούν αυτόματα στις {time}.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Σύρετε συνδέσεις εδώ για να τις κατεβάσετε
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Διπλή σύνδεση λήψης
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Επεξεργασία
+#. text in the Options window
+#, machine
+	Edit exception	Επεξεργασία εξαίρεσης
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Επεξεργασία λίστας...
+#. text in the Options window
+#, machine
+	Edit login	Επεξεργασία σύνδεσης
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Επεξεργασία...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	Email
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Εισαγάγετε μια σύνδεση magnet ή επιλέξτε ένα αρχείο .torrent
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Εισαγάγετε ένα όνομα για τη νέα ουρά που θα είναι
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Εισαγάγετε νέα διεύθυνση για λήψη
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Εισαγάγετε όνομα ουράς
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Σφάλμα
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Σφάλμα: {error}
+#. text in the Options window
+#, machine
+	Event	Γεγονός
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Παράδειγμα:
+#. text in the Options window
+#, machine
+	Exceptions:	Εξαιρέσεις:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Έξοδος
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Έξοδος από το Mister Download Manager όταν ολοκληρωθεί
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Αναμενόμενο άθροισμα ελέγχου (MD5, SHA-1, SHA-256, SHA-512 ή CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Ορίστηκε αναμενόμενο άθροισμα ελέγχου ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Εξαγωγή
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Επέκταση της διαθεσιμότητας των επεκτάσεων Chrome Manifest 2
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Επεκτάσεις διαχωρισμένες με κενά, για παράδειγμα MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Φεβρουάριος
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Αρχείο
+#. text in the Scheduler window
+#, machine
+	File Name	Όνομα αρχείου
+#. text in the Download video window
+#, machine
+	File name	Όνομα αρχείου
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Όνομα αρχείου ή μέρος του ονόματος
+#. window title in a download's Properties window
+#, machine
+	File Properties	Ιδιότητες αρχείου
+#. text in a download's progress window
+#, machine
+	File size	Μέγεθος αρχείου
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Τύποι αρχείων
+#. text in categories.rs
+#, machine
+	File types:	Τύποι αρχείων:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Αρχεία
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Τα αρχεία πηγαίνουν σε: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Αρχεία στην ουρά
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Εύρεση
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Εύρεση λήψης
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Εύρεση αρχείου
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Εύρεση επόμενης αντιστοιχίας
+#. text in the Find window
+#, machine
+	Find:	Εύρεση:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Ολοκληρωμένα
+#. text in the Options window
+#, machine
+	First day of the week:	Πρώτη ημέρα της εβδομάδας:
+#. text in the Batch download window
+#, machine
+	First file:	Πρώτο αρχείο:
+#. text in categories.rs
+#, machine
+	Folder:	Φάκελος:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Για παράδειγμα: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Μόνο για τον λογαριασμό σας στα Windows. Μια άλλη εφαρμογή που επιλέχθηκε στο «Άνοιγμα με» παραμένει πρώτη.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Εξαναγκασμός τερματισμού διεργασιών
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Πα
+#. text in the Scheduler window
+#, machine
+	Friday	Παρασκευή
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	από σύνδεσμο magnet
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	από σελίδα (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	από αρχείο torrent
+#. message or event log entry in the main window
+#, machine
+	from the browser	από το πρόγραμμα περιήγησης
+#. message or event log entry in the main window
+#, machine
+	from the command line	από τη γραμμή εντολών
+#. text in the Batch download window
+#, machine
+	From:	Από:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Γενικά
+#. button in the Options window
+#, machine
+	Get System	Λήψη συστήματος
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Λήψη της λίστας αρχείων από ομότιμους... {n} δευτ.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Τερματισμός σύνδεσης μόντεμ όταν ολοκληρωθεί
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Έχουν ληφθεί
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Βοήθεια
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Αδρανοποίηση
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Απόκρυψη &κατηγοριών
+#. button in a download's progress window
+#, machine
+	Hide tab	Απόκρυψη καρτέλας
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Αρχική σελίδα
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Κάνω λήψεις με το Mister Download Manager: γρήγορα, δωρεάν και μοιάζει με τον διαχειριστή λήψεων που ήδη γνωρίζετε. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Εάν προστεθεί ένας διπλός σύνδεσμος λήψης:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Εάν το υπάρχον αρχείο είναι πλήρες, εμφάνιση παραθύρου διαλόγου ολοκλήρωσης λήψης. Διαφορετικά, συνέχιση.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Παράβλεψη αλλαγών ώρας τροποποίησης αρχείου κατά τη συνέχιση μιας λήψης
+#. message or event log entry in the main window
+#, machine
+	Import	Εισαγωγή
+#. window title in transfer.rs
+#, machine
+	Import downloads	Εισαγωγή λήψεων
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	Σε ουρά
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Πληροφορίες
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Κατακερματισμός πληροφοριών
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	Εγκατάσταση ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	Εγκατάσταση yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	Μη έγκυρη διεύθυνση
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Είναι δυνατό να προσθέσετε μια ομάδα διαδοχικών ονομάτων αρχείων όπως img001.jpg, img002.jpg, κ.λπ.,\nimg100.jpg στην ουρά λήψεων του MDM. Χρησιμοποιήστε τον χαρακτήρα μπαλαντέρ αστερίσκο για το μοτίβο ονόματος αρχείου.
+#. text in the Scheduler window
+#, machine
+	January	Ιανουάριος
+#. text in the Scheduler window
+#, machine
+	July	Ιούλιος
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Μετάβαση στη λήψη της οποίας το όνομα ξεκινά με αυτό
+#. text in the Scheduler window
+#, machine
+	June	Ιούνιος
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KBytes/δευτ.
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Συνέχιση κοινής χρήσης torrents μετά την ολοκλήρωσή τους
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Συντομεύσεις πληκτρολογίου
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Πλήκτρα...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Γλώσσα
+#. text in the Batch download window
+#, machine
+	Last file:	Τελευταίο αρχείο:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Τελευταία προσπάθεια {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Αργότερα
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Εκκίνηση του Mister Download Manager κατά την εκκίνηση
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Γράμματα
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Άδειες χρήσης και συντελεστές
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Περιορισμός όλων των λήψεων μαζί σε
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Σύνδεση
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Αναζήτηση
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Αναζήτηση σελίδας...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Κύρια ουρά λήψεων
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Επιμήκυνση ή συντόμευση της επιλογής
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Μη αυτόματη διαμόρφωση διακομιστή μεσολάβησης/socks
+#. text in the Scheduler window
+#, machine
+	March	Μάρτιος
+#. checkbox in the Find window
+#, machine
+	Match case	Διάκριση πεζών-κεφαλαίων
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Αντιστοίχιση μόνο ολόκληρης συμβολοσειράς
+#. group box title in the Options window
+#, machine
+	Max. connections number	Μέγ. αριθμός συνδέσεων
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Μέγιστη ταχύτητα λήψης για ένα αρχείο {kb} KBytes/δευτ.
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Μέγιστη ταχύτητα λήψης:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Μάιος
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Λείπουν
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Διαμόρφωση Mister Download Manager
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Το Mister Download Manager γράφει κάθε σύνδεση απευθείας στο τελικό\nαρχείο (ένα αραιό αρχείο τμήματος δίπλα του), οπότε δεν απαιτείται προσωρινός κατάλογος και\nκανένα βήμα συναρμολόγησης.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Το Mister Download Manager {version} είναι διαθέσιμο (κυκλοφόρησε {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	ΔΕ
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Δευτέρα
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Μήνας, ημέρα, έτος
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Μετακίνηση
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Μετακίνηση σελίδας πάνω/κάτω
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Μετακίνηση ή μετονομασία της επιλεγμένης λήψης
+#. text in a download's Properties window
+#, machine
+	Move to folder	Μετακίνηση σε φάκελο
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Μετακίνηση στην ουρά
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Μετακίνηση χωρίς αλλαγή της επιλογής
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Μετακίνηση/Μετονομασία
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	πολύ πιο αργή από τις άλλες συνδέσεις· επανασύνδεση
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Μουσική
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Ο δικός μου τρόπος:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	Αρ.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Όνομα
+#. text in categories.rs
+#, machine
+	Name:	Όνομα:
+#. text in errors.rs
+#, machine
+	network error	σφάλμα δικτύου
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Να μην εμφανίζεται ποτέ σε αυτές τις τοποθεσίες:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Νέο
+#. text in the Options window
+#, machine
+	New exception	Νέα εξαίρεση
+#. text in the Options window
+#, machine
+	New login	Νέα σύνδεση
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Όχι
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	δεν υπάρχει φάκελος δεδομένων
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	δεν υπάρχει φάκελος δεδομένων για torrents
+#. text in langpick.rs
+#, machine
+	No language matches.	Δεν βρέθηκε γλώσσα.
+#. text in the Options window
+#, machine
+	No proxy/socks	Χωρίς διακομιστή μεσολάβησης/socks
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Δεν υπάρχει βίντεο που να μπορεί να ληφθεί σε αυτήν τη σελίδα
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Δεν βρέθηκαν διευθύνσεις web στο {file}.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Κανένας: οι ομότιμοι προέρχονται από το DHT και άλλους ομότιμους
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Δεν είναι άθροισμα ελέγχου που μπορεί να διαβαστεί
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	δεν υπάρχει αρκετός χώρος στον δίσκο: απαιτούνται {needed}, διαθέσιμα {free}
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Όχι σε ουρά
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Δεν χρησιμοποιείται: τα μέρη του αρχείου γράφονται δίπλα στο αρχείο
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Σημείωση: Οι διακομιστές Internet ενδέχεται να διακόψουν τη σύνδεση όταν η ταχύτητα είναι πολύ περιορισμένη! Επομένως, δεν συνιστάται η χρήση του Περιοριστή Ταχύτητας για λήψη από διακομιστές που δεν υποστηρίζουν τη λειτουργία "συνέχισης".
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Σημείωση: Αυτές οι ρυθμίσεις δεν σχετίζονται με την επεξεργασία ουράς
+#. text in the Scheduler window
+#, machine
+	November	Νοέμβριος
+#. text in the Options window
+#, machine
+	Number	Αριθμός
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Αριθμός επαναλήψεων για κάθε αρχείο εάν η λήψη απέτυχε:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Αριθμοί
+#. text in the Scheduler window
+#, machine
+	October	Οκτώβριος
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Απενεργοποίηση: ένα ολοκληρωμένο torrent σταματά, όπως κάθε λήψη.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Προσφορά λήψης συνδέσεων που αντιγράφηκαν στο πρόχειρο
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	ΟΚ
+#. text in a download's progress window
+#, machine
+	on download stop/resume	κατά τη διακοπή/συνέχιση λήψης
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Μία φορά στις
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Εφάπαξ λήψη
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Μόνο όταν χρησιμοποιώ τον υπολογιστή
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Άνοιγμα
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Άνοιγμα συνδέσμων magnet και αρχείων .torrent με το Mister Download Manager
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Άνοιγμα του Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Άνοιγμα του ακόλουθου αρχείου όταν ολοκληρωθεί
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Άνοιγμα του ακόλουθου αρχείου μετά την ολοκλήρωση:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Άνοιγμα της επιλεγμένης λήψης
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Άνοιγμα του μενού της επιλεγμένης λήψης
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Άνοιγμα αρχείου torrent
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Επιλογές
+#. text in a download's progress window
+#, machine
+	Options on completion	Επιλογές κατά την ολοκλήρωση
+#. text in the Download video window
+#, machine
+	Page address	Διεύθυνση σελίδας
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Κωδικός πρόσβασης
+#. text in the Options window
+#, machine
+	Password:	Κωδικός πρόσβασης:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Επικολλήστε έναν σύνδεσμο magnet ή επιλέξτε ένα αρχείο .torrent και, στη συνέχεια, Αναζήτηση.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Παύση
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Σε παύση
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Ομότιμοι
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Περιοδικός συγχρονισμός
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Τμήματα
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Αναπαραγωγή
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	ΜΜ
+#. label in the Options window
+#, machine
+	Port	Θύρα
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Προεπισκόπηση
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Προγράμματα
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Ιδιότητες της επιλεγμένης λήψης
+#. text in a download's progress window
+#, machine
+	Property	Ιδιότητα
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Διακομιστής μεσολάβησης / Socks
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Ρύθμιση παραμέτρων διακομιστή μεσολάβησης / socks
+#. label in the Options window
+#, machine
+	Proxy server address	Διεύθυνση διακομιστή μεσολάβησης
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Ουρά # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Η επεξεργασία ουράς ξεκίνησε
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Η επεξεργασία ουράς σταμάτησε/ολοκληρώθηκε
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Ουρές
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Ανάγνωση της λίστας αρχείων...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Ανάγνωση του torrent...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Ελήφθη
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Λήψη δεδομένων...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Επανάληψη λήψης
+#. text in a download's Properties window
+#, machine
+	Referer:	Παραπομπέας:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Περιοχικές ρυθμίσεις
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Απομνημόνευση ρυθμίσεων περιοριστή ταχύτητας για αυτό το αρχείο
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Απομνημόνευση αυτής της διαδρομής για την κατηγορία "{category}"
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Κατάργηση
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Αντικατάσταση αστερίσκου με
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Αποτέλεσμα: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Συνέχιση
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Δυνατότητα συνέχισης
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Συνεχίστηκε
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Επανάληψη: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	Διακο&πή
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	Σα
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Σάββατο
+#. text in a dialog box
+#, machine
+	Save As	Αποθήκευση ως
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Αποθήκευση σε
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Αποθήκευση σε...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Αποθήκευση σε:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Αποθηκεύτηκε σε
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Πρόγραμμα
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Προγραμματιστής
+#. text in langpick.rs
+#, machine
+	Search:	Αναζήτηση:
+#. text in the Batch download window
+#, machine
+	Second file:	Δεύτερο αρχείο:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Επιλογή όλων
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Επιλογή όλων των λήψεων
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Επιλογή κάθε λήψης μέχρι αυτήν
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Κατάργηση επιλογής όλων
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Επιλογή ή κατάργηση επιλογής μίας ακόμη λήψης
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Επιλογή ή κατάργηση επιλογής της λήψης με το διακεκομμένο περίγραμμα
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Επιλογή ήχων για συμβάντα του Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Επιλογή των λήψεων στο πλαίσιο
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Επιλογή της πρώτης / τελευταίας λήψης
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Επιλογή της προηγούμενης / επόμενης λήψης
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Επιλεγμένα: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Στείλτε το σε ένα φίλο:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Στάλθηκαν
+#. text in the Scheduler window
+#, machine
+	September	Σεπτέμβριος
+#. text in the Options window
+#, machine
+	Server	Διακομιστής
+#. text in the Options window
+#, machine
+	Server:	Διακομιστής:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Ορισμός ημερομηνίας δημιουργίας αρχείου όπως παρέχεται από τον διακομιστή
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Αναλογία κοινής χρήσης
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Κοινή χρήση
+#. text in the download list
+#, machine
+	Show	Εμφάνιση
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Εμφάνιση &κατηγοριών
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Εμφάνιση διαλόγου και ερώτηση τι να γίνει.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Εμφάνιση κουμπιού λήψης πάνω από βίντεο στα προγράμματα περιήγησης
+#. button in the download list
+#, machine
+	Show all	Εμφάνιση όλων
+#. text in a download's progress window
+#, machine
+	Show details >>	Εμφάνιση λεπτομερειών >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Εμφάνιση διαλόγου ολοκλήρωσης λήψης
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Εμφάνιση πίνακα επιλογής ουράς κατά το κλείσιμο των διαλόγων ομαδικής λήψης
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Εμφάνιση πίνακα επιλογής ουράς κατά το πάτημα του κουμπιού "Λήψη αργότερα"
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Εμφάνιση διαλόγου έναρξης λήψης
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Εμφάνιση προειδοποίησης πριν από τη διακοπή των λήψεων
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Εμφανίζεται ενώ το torrent γίνεται λήψη.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Τερματισμός λειτουργίας
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Όνομα τοποθεσίας/Σύνδεσμος λήψης/Γονική ιστοσελίδα/Παραπομπή
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Τοποθεσία/διαδρομή
+#. text in the Options window
+#, machine
+	Site/path:	Τοποθεσία/διαδρομή:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Συνδέσεις τοποθεσιών
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Μέγεθος
+#. text in the Download video window
+#, machine
+	size unknown	άγνωστο μέγεθος
+#. text in a download's Properties window
+#, machine
+	Size:	Μέγεθος:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Παραλείφθηκε
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Αναστολή λειτουργίας
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Μερικά
+#. text in the Options window
+#, machine
+	Sound file	Αρχείο ήχου
+#. page title in the Options window
+#, machine
+	Sound settings	Ρυθμίσεις ήχου
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Ήχοι
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Πηγαίος κώδικας
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Περιοριστής ταχύτητας
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Ρυθμίσεις περιοριστή ταχύτητας
+#. button in a dialog box
+#, machine
+	Start Download	Έναρξη λήψης
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Έναρξη λήψης στις
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Έναρξη λήψης κατά την εκκίνηση του Mister Download Manager
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Άμεση έναρξη λήψης κατά την εμφάνιση του διαλόγου "Πληροφορίες αρχείου λήψης"
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Έναρξη κύριας ουράς λήψης
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Θέσεις έναρξης και πρόοδος λήψης ανά συνδέσεις
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Έναρξη της ουράς τώρα
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Έναρξη {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Ξεκίνησε
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	Ξεκίνησε με yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Κατάσταση
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Κατάσταση:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Διακοπή λήψης στις
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Διακοπή κύριας ουράς λήψης
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Διακοπή {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Διακοπείσα
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Σταματά όταν ολοκληρωθεί η λήψη
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	Κυ
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Κυριακή
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Ουρά συγχρονισμού
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Πείτε το σε ένα φίλο
+#. group box title in the Options window
+#, machine
+	Temporary directory	Προσωρινός κατάλογος
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	Πέ
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	το αρχείο .torrent που διατηρήθηκε για αυτό έχει χαθεί
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Η διεύθυνση πρέπει να είναι διεύθυνση http(s) ή ftp(s)
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Οι καλύτερες ποιότητες χρειάζονται το ffmpeg για τη συγχώνευση βίντεο και ήχου (περίπου 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Ο υπολογιστής θα τεθεί σε αναστολή λειτουργίας σε {n} δευτερόλεπτα.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Ο υπολογιστής θα αδρανοποιηθεί σε {n} δευτερόλεπτα.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Ο υπολογιστής θα τερματιστεί σε {n} δευτερόλεπτα.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	η σύνδεση έκλεισε πριν ολοκληρωθεί το τμήμα
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	η σύνδεση χάθηκε κατά τη λήψη δεδομένων
+#. text in errors.rs
+#, machine
+	the disk is full	ο δίσκος είναι πλήρης
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Το όριο λήψης ({mb} MB κάθε {hours} ώρες) έχει επιτευχθεί.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	η σύνδεση λήψης έχει λήξει (ανανεώστε τη διεύθυνση λήψης)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Ο διαχειριστής λήψεων που ήδη γνωρίζετε, ξαναχτίστηκε για να είναι ταχύτερος. Δωρεάν και ανοιχτού κώδικα υπό την GNU GPL, έκδοση 3 ή νεότερη. Τα βίντεο βρίσκονται από το yt-dlp. Τα torrent εκτελούνται στο librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Η ουρά λήψεων ολοκληρώθηκε.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	η μονάδα δίσκου ή η κοινόχρηστη τοποθεσία δικτύου δεν είναι πλέον διαθέσιμη
+#. text in errors.rs
+#, machine
+	the file changed on the server	το αρχείο άλλαξε στον διακομιστή
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Το αρχείο δεν ήταν δυνατό να μετακινηθεί
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Το αρχείο δεν ήταν δυνατό να διαβαστεί: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Το αρχείο ΔΕΝ ταιριάζει ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Το αρχείο ταιριάζει ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Το αρχείο αποθηκεύτηκε ως
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Οι τύποι αρχείων που δεν αναφέρονται σε καμία άλλη κατηγορία
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	το άθροισμα ελέγχου {algorithm} του αρχείου δεν συμφωνεί (τα δεδομένα διατηρούνται· κάντε ξανά λήψη)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Ο φάκελος δεν ήταν δυνατό να δημιουργηθεί: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	ο φάκελος {path} δεν είναι διαθέσιμος (η μονάδα δίσκου αφαιρέθηκε ή η κοινόχρηστη τοποθεσία δικτύου είναι εκτός σύνδεσης;)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	ο διακομιστής FTP απάντησε {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Η λίστα δεν ήταν δυνατό να αποθηκευτεί: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	η διαδρομή είναι πολύ μεγάλη για τα Windows: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	η έκδοση δεν έχει αριθμό έκδοσης
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	η ασφαλής σύνδεση απέτυχε
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Η επιλεγμένη λήψη δεν είναι πλήρης. Είστε βέβαιοι ότι θέλετε να τη διαγράψετε\nαπό τη λίστα λήψεων του Mister Download Manager;
+#. text in errors.rs
+#, machine
+	the server answered {status}	ο διακομιστής απάντησε {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	ο διακομιστής δεν μπορεί να στείλει τμήματα του αρχείου, επομένως δεν μπορεί να συνεχιστεί
+#. text in errors.rs
+#, machine
+	the server did not answer in time	ο διακομιστής δεν απάντησε εγκαίρως
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	ο διακομιστής δεν έστειλε το ζητούμενο τμήμα
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	ο διακομιστής είναι απασχολημένος ({status})· δοκιμάστε ξανά αργότερα
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	ο διακομιστής έστειλε μια ιστοσελίδα αντί για το αρχείο (απαιτείται σύνδεση ή έληξε η σύνδεση;)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	ο διακομιστής έστειλε ένα μη αναμενόμενο τμήμα του αρχείου ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Το torrent δεν ήταν δυνατό να αποθηκευτεί: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	το torrent δεν υπάρχει πλέον
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Η ιστοσελίδα από την οποία αποκτήθηκε αυτό το αρχείο:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Υπάρχει ήδη μια κατηγορία με αυτό το όνομα
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Αυτές οι ρυθμίσεις δεν είναι διαθέσιμες όταν είναι ενεργοποιημένη η επιλογή "Εμφάνιση παραθύρου ολοκλήρωσης λήψης"
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Αυτή η διεύθυνση υπάρχει ήδη στη λίστα λήψεων:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Αυτός ο φάκελος δεν υπάρχει:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Αυτό το torrent υπάρχει ήδη στη λίστα λήψεων
+#. text in the Scheduler window
+#, machine
+	Thursday	Πέμπτη
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Χρόνος που απομένει
+#. text in the Batch download window
+#, machine
+	To:	Προς:
+#. text in errors.rs
+#, machine
+	too many redirects	πάρα πολλές ανακατευθύνσεις
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Λήψεις Torrent (σύνδεσμοι magnet και αρχεία .torrent)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Αρχεία Torrent
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Ρυθμίσεις Torrent
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrents
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	Δεν ήταν δυνατή η έναρξη των torrent: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Tracker
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Trackers
+#. text in a download's progress window
+#, machine
+	Transfer rate	Ρυθμός μεταφοράς
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	Τρ
+#. text in the Scheduler window
+#, machine
+	Tuesday	Τρίτη
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Απενεργοποίηση
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Απενεργοποίηση υπολογιστή μετά την ολοκλήρωση
+#. button in a dialog box
+#, machine
+	Turn off now	Απενεργοποίηση τώρα
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Ενεργοποίηση
+#. text in a download's Properties window
+#, machine
+	Type:	Τύπος:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Ημιτελή
+#. text in a download's Properties window
+#, machine
+	Unknown	Άγνωστο
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	άγνωστο
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Χρήση προηγμένης ενσωμάτωσης προγράμματος περιήγησης
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Χρήση εξουσιοδότησης
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Χρήση σεναρίου αυτόματης ρύθμισης παραμέτρων
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	Χρήση FTP σε λειτουργία PASV
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Χρήση διακομιστή μεσολάβησης/socks από αίτημα προγράμματος περιήγησης εάν υπάρχουν σφάλματα λήψης /\nγια τις λήψεις που αναχαιτίστηκαν από το πρόγραμμα περιήγησης
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Χρήση περιοριστή ταχύτητας
+#. text in the Options window
+#, machine
+	Use system settings	Χρήση ρυθμίσεων συστήματος
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Χρήση αυτού του διακομιστή μεσολάβησης για τα ακόλουθα πρωτόκολλα:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Χρησιμοποιείται από τη λίστα λήψεων και το Πρόγραμμα εργασιών.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Χρήστης
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Ονόματα χρηστών και κωδικοί πρόσβασης για διακομιστές/τοποθεσίες
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	User-Agent για μη αυτόματα προστιθέμενες λήψεις:
+#. text in the Options window
+#, machine
+	User:	Χρήστης:
+#. label in the Options window
+#, machine
+	UserName	Όνομα χρήστη
+#. text in a download's progress window
+#, machine
+	Value	Τιμή
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Επαλήθευση
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Επαλήθευση αθροίσματος ελέγχου
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Επαλήθευση...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Έκδοση {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Βίντεο
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Οι αναζητήσεις βίντεο χρησιμοποιούν το yt-dlp (περίπου 23 MB, ελέγχεται έναντι της υπογραφής του).
+#. text in the Options window
+#, machine
+	Virus checking settings	Ρυθμίσεις ελέγχου ιών
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Αναμονή
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Αναμονή: το όριο λήψεων έχει επιτευχθεί (Χρονοπρογραμματιστής)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Τε
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Web
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Διευθύνσεις Web που βρέθηκαν στο {file}:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Τετάρτη
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	Τι νέο υπάρχει:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Μέγεθος χαρακτήρα μπαλαντέρ
+#. text in langpick.rs
+#, machine
+	Windows' language	Γλώσσα Windows
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Γλώσσα Windows ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	με Προσθήκη URL
+#. group box title in the Options window
+#, machine
+	Write dates and times	Σύνταξη ημερομηνιών και ωρών
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	Έτος, μήνας, ημέρα
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Ναι
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Έχετε την τελευταία έκδοση του Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Έχετε την έκδοση {version}.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	Το yt-dlp δεν είναι εγκατεστημένο (Εργασίες → Λήψη βίντεο από μια σελίδα το εγκαθιστά)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	Άθροισμα ελέγχου {algorithm}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: ελέγχθηκε όταν ολοκληρώθηκε η λήψη
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	Το {column} περιέχει
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	Αρχείο {ext}
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} από {total} ({size} το καθένα)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} από {total} κομμάτια ({size} το καθένα)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} ώρα(ες) {m} λεπτά
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} συνδεδεμένοι, {known} γνωστοί
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} λεπτά {s} δευτ.
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (αυτόματα)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} από {total} επιλεγμένα
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	το {size} είναι πολύ μεγάλο για αυτήν τη μονάδα δίσκου {file_system} (αρχεία έως 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} δευτ.
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	Δεν ήταν δυνατή η εγκατάσταση του {what}: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Προστέθηκε
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Περιγραφή
+#. column title in the download list in the download list
+#, machine
+column	File Name	Όνομα αρχείου
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Ημερομηνία τελευταίας προσπάθειας
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	Ο
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Μέγεθος
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Πηγή
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Κατάσταση
+#. column title in the download list in the download list
+#, machine
+column	Time left	Απομένει χρόνος
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Ρυθμός μεταφοράς
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Ρυθμίσεις κουμπιού...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Λήψη βίντεο
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Λήψη με το Mister Download Manager
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Σύρετε για να το μετακινήσετε κατά μήκος της άκρης του βίντεο
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Παραδίδει λήψεις από το πρόγραμμα περιήγησης στο Mister Download Manager.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Απόκρυψη σε αυτό το βίντεο
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Το Mister Download Manager δεν απάντησε
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Μονάδα ενσωμάτωσης Mister Download Manager
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Περισσότερες επιλογές
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Ποτέ στο {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Στάλθηκε στο Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+κλικ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Επάνω / Ctrl+Κάτω
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Σύρσιμο σε κενό χώρο
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+κλικ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+Επάνω / Shift+Κάτω
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Πληκτρολογήστε ένα όνομα
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Επάνω / Κάτω
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Σ&χετικά με το Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	Προσθήκη &νέας λήψης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	&Διαγραφή όλων των ολοκληρωμένων
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	&Λήψη τώρα
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Έξοδος
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Εισαγωγή
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Συντομεύσεις πληκτρολογίου
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Γλώσσα...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Επιλογές
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	&Παύση όλων
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Κατάργηση
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	&Αναφορά προβλήματος
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Προγραμματιστής και ουρές
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&Διακοπή όλων
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	&Διακοπή λήψης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&Εικονίδιο δίσκου
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Εκπαιδευτικά βίντεο
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&Λήψεις βίντεο
+#. menu command in the main window
+#, machine
+menu	3D Style	Στυλ 3D
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Προσθήκη &μαζικής λήψης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Προσθήκη συνδέσμου &magnet...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Προσθήκη ομαδικής λήψης από το &πρόχειρο
+#. menu command in the main window
+#, machine
+menu	Add category	Προσθήκη κατηγορίας
+#. menu command in the main window
+#, machine
+menu	Arrange files	Τακτοποίηση αρχείων
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Αναζήτηση
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	Ανά &περιγραφή
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	Ανά όνομα &αρχείου
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	Ανά ημερομηνία τελευταίας &προσπάθειας
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	Ανά &σειρά προσθήκης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	Ανά &μέγεθος
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	Ανά &υπολειπόμενο χρόνο
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Ανά ημερομηνία &προσθήκης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Ανά γονική &ιστοσελίδα
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	Ανά &παραπομπή
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Ανά &διαδρομή αποθήκευσης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Ανά &κατάσταση
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	Ανά &ρυθμό μεταφοράς
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	&Προσαρμογή λίστας URL...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Έλεγχος για &ενημερώσεις...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Εκκαθάριση όλων των &φίλτρων
+#. menu command in the main window
+#, machine
+menu	Create new queue	Δημιουργία νέας ουράς
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Προσαρμογή...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Υποστήριξη Σκοτεινής λειτουργίας
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Διαγραφή
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Διαγραφή από την ουρά
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	&Λήψη βίντεο από μια σελίδα...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&Εξαγωγή
+#. menu command in the main window
+#, machine
+menu	Edit queue	Επεξεργασία ουράς
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Εύρεση (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Εύρεση επόμενου (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Γραμματοσειρά
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	Από αρχείο εξαγωγής &IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	Από αρχείο &κειμένου...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&Περιεχόμενα βοήθειας
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Απόκρυψη στόχου απόθεσης
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Μεγάλα κουμπιά
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Αναζήτηση για νέες γραμμές εργαλείων
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	&Αρχική σελίδα του Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Μετακίνηση/Μετονομασία (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Νέον
+#. menu command in the main window
+#, machine
+menu	On Double click	Σε διπλό κλικ
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Άνοιγμα
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Άνοιγμα αρχείου &torrent...
+#. menu command in the main window
+#, machine
+menu	Open folder	Άνοιγμα φακέλου
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Άνοιγμα με...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Ιδιότητες
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	&Εκ νέου λήψη
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Εκ νέου λήψη
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Ανανέωση διεύθυνσης λήψης
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Κατάργηση
+#. menu command in the main window
+#, machine
+menu	Resume Download	Συνέχιση λήψης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&Προγραμματιστής
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&Ρυθμίσεις...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	Διακοπή &ουράς
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Πρόγραμμα
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Εμφάνιση &στόχου απόθεσης
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Εμφάνιση του Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Μικρά κουμπιά
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Περιοριστής &ταχύτητας
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	Έναρξη &ουράς
+#. menu command in the main window
+#, machine
+menu	Start now	Έναρξη τώρα
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Διακοπή
+#. menu command in the main window
+#, machine
+menu	Stop Download	Διακοπή λήψης
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Πείτε το σε ένα &φίλο
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	Σε αρχείο εξαγωγής &IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	Σε αρχείο &κειμένου...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Γραμμή εργαλείων
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Ρυθμίσεις &torrent...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	Ενεργο&ποίηση
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Απενεργο&ποίηση
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Επαλήθευση αθροίσματος ελέγχου...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Λήψεις
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Αρχείο
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Βοήθεια
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Εργασίες
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Προβολή
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Προσθήκη Torrent
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	Προσθήκη URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Διαγραφή
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Διαγραφή ολοκληρωμένων
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Επιλογές
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Συνέχιση
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Χρονοπρογραμματιστής
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Έναρξη ουράς
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Διακοπή
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Διακοπή όλων
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Διακοπή ουράς
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/δευτ.
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/δευτ.

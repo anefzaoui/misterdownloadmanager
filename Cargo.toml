@@ -1,0 +1,126 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "GPL-3.0-or-later"
+authors = ["Ahmed Nefzaoui"]
+publish = false
+
+[workspace.dependencies]
+mdm-cli = { path = "crates/cli" }
+mdm-engine = { path = "crates/engine" }
+mdm-ipc = { path = "crates/ipc" }
+mdm-labserver = { path = "crates/labserver" }
+mdm-tools = { path = "crates/tools" }
+mdm-torrent = { path = "crates/torrent" }
+
+# storytold craft-libs (D-003), pinned by commit.
+craft-atomic = { git = "https://github.com/storytold/craft-libs", rev = "1a11a4897865f7410c40d25ca6e452ce399a1a2c" }
+craft-i18n = { git = "https://github.com/storytold/craft-libs", rev = "1a11a4897865f7410c40d25ca6e452ce399a1a2c" }
+
+# UI: egui 0.37 on storytold's egui/winit forks, the same commits craft-libs uses (see [patch]).
+eframe = { version = "0.37.0", default-features = false, features = ["glow", "default_fonts", "accesskit"] }
+egui = "0.37.0"
+egui_extras = { version = "0.37.0", features = ["svg", "image"] }
+image = { version = "0.25.10", default-features = false, features = ["png"] }
+dirs = "7.0.0"
+arboard = { version = "3.7.0", default-features = false }
+windows-sys = { version = "0.61.2", features = [
+    "Win32_Foundation",
+    "Win32_Globalization",
+    "Win32_Graphics_Dwm",
+    "Win32_Media_Audio",
+    "Win32_Graphics_Gdi",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Com",
+    "Win32_System_IO",
+    "Win32_System_Ioctl",
+    "Win32_System_Registry",
+    "Win32_System_SystemInformation",
+    "Win32_System_Threading",
+    "Win32_UI_Controls",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+] }
+base64 = "0.23.1"
+chrono = { version = "0.4.45", default-features = false, features = ["clock"] }
+open = "5.4.5"
+
+anyhow = "1.0.104"
+axum = "0.8.9"
+bytes = "1.12.1"
+clap = { version = "4.6.7", features = ["derive"] }
+content_disposition = "0.4.0"
+futures = "0.3.34"
+hex = "0.4.3"
+http-range-header = "0.4.2"
+httpdate = "1.0.3"
+# Checksum verification (crates/engine/src/verify.rs).
+md-5 = "0.11.0"
+sha1 = "0.11.0"
+crc32fast = "1.5.3"
+# Free space and file system per volume (disk preflight); only the disk part.
+sysinfo = { version = "0.40.0", default-features = false, features = ["disk"] }
+proptest = "1.12.0"
+# HTTP/1.1 only: each engine worker must be one real TCP connection (notes/ENGINE.md §4).
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "stream", "system-proxy", "socks"] }
+# FTP and FTPS (crates/engine/src/ftp.rs), with TLS through the rustls and platform verifier
+# reqwest uses. "deprecated" is what enables implicit FTPS (ftps://, port 990).
+suppaftp = { version = "12.2.1", default-features = false, features = ["tokio-rustls-aws-lc-rs", "deprecated"] }
+rustls = { version = "0.23.46", default-features = false, features = ["aws-lc-rs", "std", "tls12", "logging"] }
+rustls-platform-verifier = "0.7.1"
+tokio-rustls = { version = "0.26.6", default-features = false, features = ["aws-lc-rs", "tls12", "logging"] }
+# The lab FTP server's test certificates.
+rcgen = { version = "0.14", default-features = false, features = ["crypto", "aws_lc_rs", "pem"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+serde_urlencoded = "0.7.1"
+sha2 = "0.11.1"
+tempfile = "3.27.0"
+thiserror = "2.0.21"
+tokio = { version = "1.54.1", features = ["full"] }
+tokio-util = "0.7.20"
+percent-encoding = "2.3.2"
+url = { version = "2.5.8", features = ["serde"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+
+[workspace.lints.rust]
+# Denied everywhere; only crates/app/src/win32.rs (Windows FFI) opts in (D-008).
+unsafe_code = "deny"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+
+[profile.release]
+lto = "thin"
+
+# Hashing is unusably slow unoptimised (a 3 MiB SHA-256 took seconds in debug tests): build
+# the checksum crates optimised in dev too.
+[profile.dev.package.sha2]
+opt-level = 3
+[profile.dev.package.sha1]
+opt-level = 3
+[profile.dev.package.md-5]
+opt-level = 3
+[profile.dev.package.crc32fast]
+opt-level = 3
+
+# Same forks and commits as storytold/craft-libs (D-003), so MDM and craft-ui share one egui.
+[patch.crates-io]
+ecolor = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+emath = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+epaint = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+epaint_default_fonts = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+egui = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+egui-winit = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+egui_glow = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+egui_extras = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+eframe = { git = "https://github.com/storytold/egui.git", rev = "6d518fc799681571963842f95b55a6b68431b15a" }
+winit = { git = "https://github.com/storytold/winit.git", rev = "a517b3846ee8457d84ee4975110bfda6797c44dc" }

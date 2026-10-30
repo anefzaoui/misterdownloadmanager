@@ -1,0 +1,2552 @@
+# Mister Download Manager in Maltese (Malti): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Malti
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ħassar ukoll il-fajl {n} mid-disk|Ħassar ukoll il-fajls {n} mid-disk|Ħassar ukoll il-fajls {n} mid-disk|Ħassar ukoll il-fajls {n} mid-disk|Ħassar ukoll il-fajls {n} mid-disk
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Żgur li trid tħassar {n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} tippermetti {n} konnessjoni|{host} tippermetti {n} konnessjoni|{host} tippermetti {n} konnessjonijiet|{host} tippermetti {n} konnessjonijiet|{host} tippermetti {n} konnessjonijiet
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} byte|{n} bytes|{n} bytes|{n} bytes|{n} bytes
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} fajl|{n} fajls|{n} fajls|{n} fajls|{n} fajls
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&Applika
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Agħlaq
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Ħassar
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Għajnuna
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	Kju &ġdid
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Ibda issa
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(separa l-ismijiet bi spazji)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-il siegħa (9:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24 siegħa (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Aħbi d-dettalji
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Dwar Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Żid download (Żid URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Żid download tal-lott
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Żid browser...
+#. text in categories.rs
+#, machine
+	Add category	Żid kategorija
+#. text in the tray icon's menu
+#, machine
+	Add new download	Żid download ġdid
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Żid id-duplikat u ikteb fuq il-fajl eżistenti
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Żid id-duplikat b'isem ta' fajl numerat
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Żid mal-kju
+#. text in a dialog box
+#, machine
+	Add to queue:	Żid mal-kju:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Żid torrent
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	Miżjud {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Indirizz
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	L-indirizz inbidel għal {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Indirizz:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Avvanzat / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Id-Downloads Kollha
+#. message or event log entry in the main window
+#, machine
+	All files	Il-fajls kollha
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	diġà qed jitniżżel: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Ħassar ukoll il-fajl mid-disk
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Dejjem ixgħel il-Limiter tal-Veloċità mal-istartjar ta' Mister Download Manager
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	April
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Int żgur li trid tħassar "{name}" mil-lista ta' downloads ta' Mister Download Manager?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Kif jiktibhom ir-reġjun tas-sistema
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Qed nitolbu lill-peers għal-lista tal-fajls. Il-links tal-magnet jistgħu jieħdu minuta jew tnejn.
+#. text in the Scheduler window
+#, machine
+	August	Awwissu
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Awtomatikament poġġi fil-kategorija "{category}" it-tipi ta' fajls li ġejjin:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Awtomatikament ibda t-tniżżil tat-tipi ta' fajls li ġejjin:
+#. window title in the Batch download window
+#, machine
+	Batch download	Tniżżil f'lott
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Ibbrawżja
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Ibbrawżja...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Integrazzjoni tal-Brawżer/Sistema
+#. message or event log entry in the main window
+#, machine
+	by batch download	permezz ta' tniżżil f'lott
+#. message or event log entry in the main window
+#, machine
+	by import	permezz ta' importazzjoni
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Ikkanċella
+#. text in errors.rs
+#, machine
+	cancelled	ikkanċellat
+#. text in errors.rs
+#, machine
+	cannot connect to the server	ma tistax tikkonnettja mas-server
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	Ma tistax issib "{text}"
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Ma tistax taqra l-fajl: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	ma tistax terġa' tibda: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Aqbad it-tniżżil mill-brawżers li ġejjin:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Kategoriji
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Kategoriji, tipi ta' fajls, fowlders
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Kategorija
+#. text in categories.rs
+#, machine
+	Category properties	Proprjetajiet tal-kategorija
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Ibdel il-fowlder għall-kategorija "{category}" fuq l-aħħar magħżula
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Iċċekkja għal aġġornamenti
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Iċċekkja għal aġġornamenti darba fil-ġimgħa
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Qed jiċċekkja għal aġġornamenti...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Qed jiċċekkja...
+#. text in langpick.rs
+#, machine
+	Choose a language	Agħżel lingwa
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Agħżel il-lingwa li Mister Download Manager juri t-twieqi tiegħu fiha:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Naddaf
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Klijent
+#. text in the Options window
+#, machine
+	Clock:	Arloġġ:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Agħlaq
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Agħlaq menu jew dialog
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Komplut
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Ikkumpressat
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Ikkonferma qabel tħassar downloads
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Ikkonferma t-tħassir tat-tniżżil
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Qed jikkonnettja...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Konnessjoni
+#. page title in the Options window
+#, machine
+	Connections and Limits	Konnessjonijiet u Limiti
+#. text in the Options window
+#, machine
+	Connections:	Konnessjonijiet:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Ikkupjat fil-clipboard.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Ikkopja
+#. window title in a dialog box
+#, machine
+	Create folder	Oħloq fowlder
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Ippersonalizza d-dialog "Progress tat-tniżżil"
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Ippersonalizza ċ-ċwievet biex tipprevjeni jew iġġiegħel it-tniżżil b'MDM
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Ippersonalizza l-pannelli tat-Tniżżil tal-MDM fil-brawżers
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Ippersonalizza l-oġġetti tal-menu tal-MDM fil-menu tal-kuntest tal-brawżers
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Kuljum
+#. text in the Options window
+#, machine
+	Date order:	Ordni tad-data:
+#. page title in the Options window
+#, machine
+	Dates and times	Dati u ħinijiet
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Jum, xahar, sena
+#. text in the Scheduler window
+#, machine
+	December	Diċembru
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Default
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Direttorju default tat-tniżżil għall-kategorija "{category}"
+#. page title in the Options window
+#, machine
+	Default download settings	Settings default tat-tniżżil
+#. text in the Options window
+#, machine
+	Default max. conn. number	Numru default massimu ta' konnessjonijiet
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Ħassar
+#. message or event log entry in the main window
+#, machine
+	Delete category	Ħassar kategorija
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Ħassar kju
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Ħassar il-kategorija "{category}"? It-tniżżil tagħha jsir Ġenerali; il-fajls tagħhom jibqgħu fejn qegħdin.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Ħassar il-kju "{queue}"? It-tniżżil tagħha jibqa' fil-lista.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Ħassar it-tniżżil magħżul (jistaqsi l-ewwel)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Ħassar it-tniżżil magħżul u l-fajls tiegħu (jistaqsi l-ewwel)
+#. text in a dialog box
+#, machine
+	Description	Deskrizzjoni
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Deskrizzjoni jew parti mid-deskrizzjoni
+#. text in a download's Properties window
+#, machine
+	Description:	Deskrizzjoni:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	żball fid-disk: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	murija fil-lista tal-kjus
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Tibdiex tniżżel, żid biss fajls mal-kju
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Trid toħloqha?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Dokumenti
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Turix din id-djalogu mill-ġdid
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Tibdiex tniżżel awtomatikament mill-indirizzi li ġejjin:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Tibdiex tniżżel awtomatikament mis-siti li ġejjin:
+#. text in a download's progress window
+#, machine
+	Done	Lest
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Niżżel
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Niżżel "{name}" mill-ġdid mill-bidu? Fajl lest jiġi sostitwit meta t-tniżżil il-ġdid jitlesta.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Tniżżil lest
+#. text in the Options window
+#, machine
+	Download failed	Tniżżil falla
+#. window title in a dialog box
+#, machine
+	Download File Info	Informazzjoni dwar il-Fajl tat-Tniżżil
+#. button in a dialog box
+#, machine
+	Download Later	Niżżel Aktar Tard
+#. window title in a dialog box
+#, machine
+	Download later	Niżżel aktar tard
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Limiti tat-tniżżil
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Niżżel mhux aktar minn {mb} MBytes\nkull {hours} siegħa
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Niżżel Issa
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Pannelli tat-tniżżil
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Status tat-tniżżil
+#. window title in the Download video window
+#, machine
+	Download video from a page	Niżżel vidjo minn paġna
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Niżżel {files} fajls fl-istess ħin
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Niżżel
+#. page title in the Options window
+#, machine
+	Downloaded file types	Tipi ta' fajls imniżżla
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	Niżżel {size} ({bytes} Bytes)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Qed jitniżżel
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Qed jitniżżel mill-ġdid mill-bidu
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	Qed jitniżżel u jiġi vverifikat ffmpeg (madwar 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	Qed jitniżżel u jiġi vverifikat yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Tniżżil
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	It-tniżżil twaqqaf u jerġa' jibda awtomatikament f'{time}'.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Idregg links hawn biex tniżżilhom
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Link tat-tniżżil duplikata
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Editja
+#. text in the Options window
+#, machine
+	Edit exception	Editja eċċezzjoni
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Editja lista...
+#. text in the Options window
+#, machine
+	Edit login	Editja login
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Editja...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	Email
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Daħħal link manjetika jew agħżel fajl .torrent
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Daħħal isem għall-kju l-ġdid li se jkun
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Daħħal indirizz ġdid biex tniżżel
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Daħħal isem il-kju
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Żball
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Żball: {error}
+#. text in the Options window
+#, machine
+	Event	Avveniment
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Eżempju:
+#. text in the Options window
+#, machine
+	Exceptions:	Eċċezzjonijiet:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Oħroġ
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Oħroġ minn Mister Download Manager meta jkun lest
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Checksum mistenni (MD5, SHA-1, SHA-256, SHA-512 jew CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Checksum mistenni ssettjat ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Esportazzjoni
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Estendi d-disponibbiltà tal-estensjonijiet tal-Manifest 2 Chrome
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Estensjonijiet separati bi spazji, pereżempju MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Frar
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Fajl
+#. text in the Scheduler window
+#, machine
+	File Name	Isem il-Fajl
+#. text in the Download video window
+#, machine
+	File name	Isem il-fajl
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Isem il-fajl jew parti mill-isem
+#. window title in a download's Properties window
+#, machine
+	File Properties	Proprjetajiet tal-Fajl
+#. text in a download's progress window
+#, machine
+	File size	Daqs tal-fajl
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Tipi ta' fajls
+#. text in categories.rs
+#, machine
+	File types:	Tipi ta' fajls:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Fajls
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Il-fajls imorru f': {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Fajls fil-kju
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Sib
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Sib download
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Sib fajl
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Sib il-logħba li jmiss
+#. text in the Find window
+#, machine
+	Find:	Sib:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Lest
+#. text in the Options window
+#, machine
+	First day of the week:	L-ewwel jum tal-ġimgħa:
+#. text in the Batch download window
+#, machine
+	First file:	L-ewwel fajl:
+#. text in categories.rs
+#, machine
+	Folder:	Folder:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Pereżempju: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Għall-kont tal-Windows tiegħek biss. App oħra magħżula f'"Iftaħ bi" tibqa' l-ewwel.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Iġġiegħel il-proċessi jintemmu
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Ġm
+#. text in the Scheduler window
+#, machine
+	Friday	Il-Ġimgħa
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	minn link manjetiku
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	minn paġna (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	minn fajl torrent
+#. message or event log entry in the main window
+#, machine
+	from the browser	mill-browser
+#. message or event log entry in the main window
+#, machine
+	from the command line	mil-linja tal-kmand
+#. text in the Batch download window
+#, machine
+	From:	Minn:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Ġenerali
+#. button in the Options window
+#, machine
+	Get System	Ikseb is-Sistema
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Qed nikseb il-lista tal-fajls mill-pari... {n} s
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Aqta' l-modem meta lest
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Għandek
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Għajnuna
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Ibernja
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Aħbi l-&kategoriji
+#. button in a download's progress window
+#, machine
+	Hide tab	Aħbi t-tab
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Paġna ewlenija
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Niddaħħal b'Mister Download Manager: veloċi, b'xejn, u jidher bħall-maniġer tat-tniżżil li diġà taf. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Jekk jiżdied link ta' tniżżil duplikat:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Jekk il-fajl eżistenti huwa komplut, uri d-djalogu tat-tniżżil komplut; inkella erġa' ibdah.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Injora l-bidliet fil-ħin tal-modifika tal-fajl meta terġa' tibda tniżżil
+#. message or event log entry in the main window
+#, machine
+	Import	Importa
+#. window title in transfer.rs
+#, machine
+	Import downloads	Importa downloads
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	F'kju
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Info
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Hash tal-info
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	Installa ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	Installa yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	Indirizz invalidu
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Huwa possibbli li żżid grupp ta' ismijiet ta' fajls sekwenzjali bħal img001.jpg, img002.jpg, eċċ.,\nimg100.jpg mal-kju tat-tniżżil tal-MDM. Uża l-asterisk wildcard għall-mudell tal-isem tal-fajl.
+#. text in the Scheduler window
+#, machine
+	January	Jannar
+#. text in the Scheduler window
+#, machine
+	July	Lulju
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Aqbeż għat-tniżżil li ismu jibda bih
+#. text in the Scheduler window
+#, machine
+	June	Ġunju
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KBytes/sek
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Kompli aqsam it-torrents wara li jispiċċaw
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Shortcuts tat-tastiera
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Ċwievet...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Lingwa
+#. text in the Batch download window
+#, machine
+	Last file:	L-aħħar fajl:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	L-aħħar prova {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Aktar tard
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Ibda Mister Download Manager mal-istartjar
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Ittri
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Liċenzji u krediti
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Illimita t-tniżżil kollu flimkien għal
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Login
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Fittex
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Qed infittex il-paġna...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Kju prinċipali tat-tniżżil
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Agħmel l-għażla itwal jew iqsar
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Konfigurazzjoni manwali tal-proxy/socks
+#. text in the Scheduler window
+#, machine
+	March	Marzu
+#. checkbox in the Find window
+#, machine
+	Match case	Qabbel il-każ
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Qabbel is-sekwenza sħiħa biss
+#. group box title in the Options window
+#, machine
+	Max. connections number	Numru massimu ta' konnessjonijiet
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Veloċità massima tat-tniżżil għal fajl wieħed {kb} KBytes/sek
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Veloċità massima tat-tniżżil:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Mejju
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Nieqes
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Konfigurazzjoni ta' Mister Download Manager
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager jikteb kull konnessjoni direttament fil-fajl\nfinali (fajl ta' parti sparse ħdejh), għalhekk m'hemmx bżonn ta' direttorju\ntemporanju u l-ebda pass ta' assemblaġġ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} huwa disponibbli (rilaxxat {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	Tne
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Tnejn
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Xahar, jum, sena
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Mexxi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Mexxi paġna 'l fuq / 'l isfel
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Mexxi jew semmi mill-ġdid it-tniżżil magħżul
+#. text in a download's Properties window
+#, machine
+	Move to folder	Mexxi fil-folder
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Mexxi fil-kju
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Mexxi mingħajr ma tibdel l-għażla
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Mexxi/Semmi mill-ġdid
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	ħafna aktar bil-mod mill-konnessjonijiet l-oħra; qed terġa' tikkonnettja
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Mużika
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Il-mod tiegħi:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	N.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Isem
+#. text in categories.rs
+#, machine
+	Name:	Isem:
+#. text in errors.rs
+#, machine
+	network error	żball fin-netwerk
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Qatt turih fuq dawn is-siti:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Ġdid
+#. text in the Options window
+#, machine
+	New exception	Eċċezzjoni ġdida
+#. text in the Options window
+#, machine
+	New login	Login ġdid
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Le
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	l-ebda folder tad-data
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	l-ebda folder tad-data għat-torrents
+#. text in langpick.rs
+#, machine
+	No language matches.	L-ebda lingwa ma taqbel.
+#. text in the Options window
+#, machine
+	No proxy/socks	Ebda proxy/socks
+#. text in the Download video window
+#, machine
+	No video this can download on that page	L-ebda vidjo li dan jista' jniżżel fuq dik il-paġna
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Ma nstabu l-ebda indirizzi tal-web f'{file}'.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Xejn: il-pari ġejjin mid-DHT u minn pari oħra
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Mhux checksum li dan jista' jaqra
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	mhux biżżejjed spazju fuq id-disk: {needed} meħtieġa, {free} ħielsa
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Mhux f'kju
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Mhux użat: il-partijiet tal-fajl jinkitbu ħdejn il-fajl
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Nota: Is-servers tal-Internet jistgħu jaqtgħu l-konnessjoni meta l-veloċità tkun limitata wisq! Għalhekk mhux\nirrakkomandat li tuża l-Limitatur tal-Veloċità biex tniżżel minn servers li ma jappoġġjawx il-karatteristika\nta' "resume".
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Nota: Dawn is-settings mhumiex relatati mal-ipproċessar tal-kju
+#. text in the Scheduler window
+#, machine
+	November	Novembru
+#. text in the Options window
+#, machine
+	Number	Numru
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Numru ta' tentattivi mill-ġdid għal kull fajl jekk it-tniżżil falla:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Numri
+#. text in the Scheduler window
+#, machine
+	October	Ottubru
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Mitfi: torrent lest jieqaf, bħal kull tniżżil.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Offri li tniżżel links ikkupjati fil-clipboard
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	OK
+#. text in a download's progress window
+#, machine
+	on download stop/resume	meta t-tniżżil jieqaf/jerġa' jibda
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Darba fi
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Tniżżil ta' darba
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Biss waqt li nkun qed nuża l-kompjuter
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Iftaħ
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Iftaħ links manjetiċi u fajls .torrent b'Mister Download Manager
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Iftaħ Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Iftaħ il-fajl li ġej meta jkun lest
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Iftaħ il-fajl li ġej meta jitlesta:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Iftaħ it-tniżżil magħżul
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Iftaħ il-menu tat-tniżżil magħżul
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Iftaħ il-fajl tat-torrent
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Għażliet
+#. text in a download's progress window
+#, machine
+	Options on completion	Għażliet mat-tlestija
+#. text in the Download video window
+#, machine
+	Page address	Indirizz tal-paġna
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Password
+#. text in the Options window
+#, machine
+	Password:	Password:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Pejstja link manjetika jew agħżel fajl .torrent, imbagħad Fittex.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Pawża
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Fil-pawża
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Sħab
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Sinkronizzazzjoni perjodika
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Biċċiet
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Daqq
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	Port
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Preview
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Programmi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Proprjetajiet tat-tniżżil magħżul
+#. text in a download's progress window
+#, machine
+	Property	Proprjetà
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Proxy / Socks
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Konfigurazzjoni tal-proxy / socks
+#. label in the Options window
+#, machine
+	Proxy server address	Indirizz tas-server proxy
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Kju # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	L-ipproċessar tal-kju beda
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	L-ipproċessar tal-kju waqaf/tlesta
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Kjujiet
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Qed jinqara l-lista tal-fajls...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Qed jinqara t-torrent...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Irċevut
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Qed tirċievi data...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Erġa' niżżel
+#. text in a download's Properties window
+#, machine
+	Referer:	Referer:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Reġjonali
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Ftakar is-settings tal-Limiter tal-Veloċità għal dan il-fajl
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Ftakar din it-triq għall-kategorija "{category}"
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Neħħi
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Ibdel l-asterisk b'
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Riżultat: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Kompli
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Kapaċità ta' tkomplija
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Tkompla
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Qed jerġa' jipprova: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	Waqqaf(&T)
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	Sa
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Is-Sibt
+#. text in a dialog box
+#, machine
+	Save As	Issejvja Bħala
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Issejvja f'
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Issejvja F'...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Issejvja F':
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Issejvjat f'
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Skeda
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Skedatur
+#. text in langpick.rs
+#, machine
+	Search:	Fittex:
+#. text in the Batch download window
+#, machine
+	Second file:	It-tieni fajl:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Agħżel kollox
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Agħżel it-tniżżil kollu
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Agħżel kull tniżżil sa dan
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Agħżel xejn
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Agħżel jew neħħi l-għażla ta' tniżżil ieħor
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Agħżel jew neħħi l-għażla tat-tniżżil bil-kontorn bit-tikek
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Agħżel ħsejjes għall-avvenimenti ta' Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Agħżel it-tniżżil fil-kaxxa
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Agħżel l-ewwel / l-aħħar tniżżil
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Agħżel it-tniżżil preċedenti / li jmiss
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Magħżul: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Ibgħat dan lil ħabib:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Mibgħut
+#. text in the Scheduler window
+#, machine
+	September	Settembru
+#. text in the Options window
+#, machine
+	Server	Server
+#. text in the Options window
+#, machine
+	Server:	Server:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Issettja d-data tal-ħolqien tal-fajl kif ipprovduta mis-server
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Proporzjon ta' qsim
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Qsim
+#. text in the download list
+#, machine
+	Show	Uri
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Uri l-kategoriji(&C)
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Uri djalogu u staqsi x'għandek tagħmel.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Uri buttuna tat-tniżżil fuq vidjows fil-browsers
+#. button in the download list
+#, machine
+	Show all	Uri kollox
+#. text in a download's progress window
+#, machine
+	Show details >>	Uri d-dettalji >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Uri djalogu ta' tniżżil komplut
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Uri l-pannell tal-għażla tal-kju meta tagħlaq id-djalogi tat-tniżżil tal-lott
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Uri l-pannell tal-għażla tal-kju meta tagħfas il-buttuna "Niżżel Aktar Tard"
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Uri d-djalogu tal-bidu tat-tniżżil
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Uri twissija qabel twaqqaf it-tniżżil
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Jintwera waqt li t-torrent ikun qed jitniżżel.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Itfi
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Isem is-sit/Link tat-tniżżil/Paġna web prinċipali/Referer
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Sit/path
+#. text in the Options window
+#, machine
+	Site/path:	Sit/path:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Logins tas-Siti
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Daqs
+#. text in the Download video window
+#, machine
+	size unknown	daqs mhux magħruf
+#. text in a download's Properties window
+#, machine
+	Size:	Daqs:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Maqbuża
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Irqad
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Xi wħud
+#. text in the Options window
+#, machine
+	Sound file	Fajl tal-ħoss
+#. page title in the Options window
+#, machine
+	Sound settings	Settings tal-ħoss
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Ħsejjes
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Kodiċi tas-sors
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Limiter tal-Veloċità
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Settings tal-Limiter tal-Veloċità
+#. button in a dialog box
+#, machine
+	Start Download	Ibda Niżżel
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Ibda tniżżil fi
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Ibda tniżżil mal-istartjar ta' Mister Download Manager
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Ibda tniżżil immedjatament waqt li jintwera d-djalogu "Informazzjoni tal-Fajl tat-Tniżżil"
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Ibda l-kju prinċipali tat-tniżżil
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Pożizzjonijiet tal-bidu u progress tat-tniżżil skont il-konnessjonijiet
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Ibda l-kju issa
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Ibda {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Beda
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	Beda b'yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Status
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Status:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Waqqaf it-tniżżil fi
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Waqqaf il-kju prinċipali tat-tniżżil
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Waqqaf {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Imwaqqaf
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Jieqaf meta t-tniżżil jintemm
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	Ħa
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Il-Ħadd
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Kju ta' sinkronizzazzjoni
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Għid lil ħabib
+#. group box title in the Options window
+#, machine
+	Temporary directory	Direttorju temporanju
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	Ħa
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	il-fajl .torrent miżmum għalih m'għadux hemm
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	L-indirizz irid ikun indirizz http(s) jew ftp(s)
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	L-aqwa kwalitajiet jeħtieġu ffmpeg biex jgħaqqad il-vidjo u l-awdjo (madwar 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Il-kompjuter se jmur jorqod fi {n} sekondi.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Il-kompjuter se jhiberna fi {n} sekondi.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Il-kompjuter se jintefa fi {n} sekondi.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	il-konnessjoni ngħalqet qabel ma l-parti kienet kompluta
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	il-konnessjoni ntilfet waqt li kienet qed tirċievi d-data
+#. text in errors.rs
+#, machine
+	the disk is full	id-disk huwa mimli
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Il-limitu tat-tniżżil ({mb} MBytes kull {hours} sigħat) intlaħaq.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	il-link tat-tniżżil skada (aġġorna l-indirizz tat-tniżżil)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Il-maniġer tat-tniżżil li diġà taf, mibni mill-ġdid biex ikun aktar veloċi. B'xejn u open source taħt il-GNU GPL, verżjoni 3 jew aktar tard. Il-vidjows jinstabu minn yt-dlp; it-torrents jaħdmu fuq librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Il-kju tat-tniżżil lest.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	id-drive jew il-qsim tan-netwerk m'għadux disponibbli
+#. text in errors.rs
+#, machine
+	the file changed on the server	il-fajl inbidel fuq is-server
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Il-fajl ma setax jiġi mċaqlaq
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Il-fajl ma setax jinqara: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Il-fajl MHUX jaqbel ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Il-fajl jaqbel ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Il-fajl salvat bħala
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	It-tipi ta' fajls li mhumiex elenkati f'xi kategorija oħra
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	iċ-checksum {algorithm} tal-fajl ma jaqbilx (id-data tinżamm; erġa' niżżilha)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Il-folder ma setax jinħoloq: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	il-folder {path} mhux disponibbli (drive imneħħi jew qsim tan-netwerk offline?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	is-server FTP wieġeb {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Il-lista ma setgħetx tiġi ssejvjata: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	il-path huwa twil wisq għall-Windows: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	ir-rilaxx m'għandux verżjoni
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	il-konnessjoni sigura falliet
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	It-tniżżil magħżul mhuwiex komplut. Inti żgur li trid tħassarha\nmill-lista ta' tniżżil ta' Mister Download Manager?
+#. text in errors.rs
+#, machine
+	the server answered {status}	is-server wieġeb {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	is-server ma jistax jibgħat partijiet tal-fajl, għalhekk ma jistax jerġa' jinbeda
+#. text in errors.rs
+#, machine
+	the server did not answer in time	is-server ma weġibx fil-ħin
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	is-server ma bagħatx il-parti mitluba
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	is-server huwa okkupat ({status}); erġa' pprova aktar tard
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	is-server bagħat paġna web minflok il-fajl (jeħtieġ li tidħol jew il-link skada?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	is-server bagħat parti mhux mistennija tal-fajl ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	It-torrent ma setax jiġi ssejvjat: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	it-torrent m'għadux hemm
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Il-paġna web minn fejn inkiseb dan il-fajl:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Diġà hemm kategorija b'dan l-isem
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Dawn is-settings mhumiex disponibbli meta "Uri djalogu ta' tniżżil komplut" huwa mixgħul
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Dan l-indirizz diġà jinsab fil-lista tat-tniżżil:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Dan il-folder ma jeżistix:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Dan it-torrent diġà jinsab fil-lista tat-tniżżil
+#. text in the Scheduler window
+#, machine
+	Thursday	Il-Ħamis
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Ħin li fadal
+#. text in the Batch download window
+#, machine
+	To:	Lil:
+#. text in errors.rs
+#, machine
+	too many redirects	wisq redirects
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Tniżżil ta' torrent (links manjetiċi u fajls .torrent)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Fajls torrent
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Settings tat-torrent
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrents
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	it-torrents ma setgħux jibdew: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Tracker
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Trackers
+#. text in a download's progress window
+#, machine
+	Transfer rate	Rata ta' trasferiment
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	It
+#. text in the Scheduler window
+#, machine
+	Tuesday	It-Tlieta
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Itfi
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Itfi l-kompjuter meta lest
+#. button in a dialog box
+#, machine
+	Turn off now	Itfi issa
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Ixgħel
+#. text in a download's Properties window
+#, machine
+	Type:	Tip:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Mhux lest
+#. text in a download's Properties window
+#, machine
+	Unknown	Mhux magħruf
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	mhux magħruf
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	L-aġġornamenti ma setgħux jiġu ċċekkjati: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Uża integrazzjoni avvanzata tal-brawżer
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Uża awtorizzazzjoni
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Uża skript ta' konfigurazzjoni awtomatika
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	Uża FTP fil-modalità PASV
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Uża proxy/socks minn talba tal-brawżer jekk ikun hemm żbalji fit-tniżżil /\ngħat-tniżżil interċettat mill-brawżer
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Uża Limiter tal-Veloċità
+#. text in the Options window
+#, machine
+	Use system settings	Uża s-settings tas-sistema
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Uża dan il-proxy għall-protokolli li ġejjin:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Użat mil-lista tat-tniżżil u l-Iskeduler.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Utent
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Ismijiet tal-utenti u passwords għal servers/siti
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	User-Agent għal tniżżil miżjud manwalment:
+#. text in the Options window
+#, machine
+	User:	Utent:
+#. label in the Options window
+#, machine
+	UserName	Isem l-Utent
+#. text in a download's progress window
+#, machine
+	Value	Valur
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Ivverifika
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Ivverifika checksum
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Qed jiġi vverifikat...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Verżjoni {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Vidjo
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	It-tfittxijiet tal-vidjo jużaw yt-dlp (madwar 23 MB, iċċekkjati kontra l-firma tiegħu).
+#. text in the Options window
+#, machine
+	Virus checking settings	Settings tal-kontroll tal-virus
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Qed jistenna
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Qed jistenna: il-limitu tat-tniżżil intlaħaq (Skeduler)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Er
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Web
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Indirizzi tal-Web misjuba f'{file}':
+#. text in the Scheduler window
+#, machine
+	Wednesday	L-Erbgħa
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	X'hemm ġdid:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Daqs tal-wildcard
+#. text in langpick.rs
+#, machine
+	Windows' language	Lingwa tal-Windows
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Lingwa tal-Windows ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	b'Żid URL
+#. group box title in the Options window
+#, machine
+	Write dates and times	Ikteb id-dati u l-ħinijiet
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	Sena, xahar, jum
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Iva
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Għandek l-aħħar verżjoni ta' Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Għandek verżjoni {version}.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp mhux installat (Ħidmiet → Niżżel vidjo minn paġna jinstallah)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	Checksum ta' {algorithm}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: iċċekkjat meta jitlesta t-tniżżil
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} fih
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	Fajl {ext}
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} minn {total} ({size} kull wieħed)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} minn {total} biċċiet ({size} kull waħda)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} siegħa(t) {m} min
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} konnessi, {known} magħrufa
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} min {s} sek
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (awtomatiku)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} minn {total} magħżula
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} huwa kbir wisq għal dan id-drive {file_system} (fajls sa 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} sek
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} ma setax jiġi installat: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Miżjud
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Deskrizzjoni
+#. column title in the download list in the download list
+#, machine
+column	File Name	Isem il-Fajl
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Data tal-Aħħar Tentattiv
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	K
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Daqs
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Sors
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Status
+#. column title in the download list in the download list
+#, machine
+column	Time left	Ħin li fadal
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Rata ta' trasferiment
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Settings tal-buttuna...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Niżżel il-vidjo
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Niżżel b'Mister Download Manager
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Iddreggja biex iċċaqlaqha tul it-tarf tal-vidjo
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Jgħaddi t-tniżżil mill-brawżer lil Mister Download Manager.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Aħbi fuq dan il-vidjo
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager ma weġibx
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Modulu ta' Integrazzjoni ta' Mister Download Manager
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Aktar għażliet
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Qatt fuq {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Mibgħut lil Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+ikklikkja
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Up / Ctrl+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Ħassar
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Iddreggja fuq spazju vojt
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+ikklikkja
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Ħassar
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Ikteb isem
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Up / Down
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	&Dwar Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	&Żid tniżżil ġdid
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	&Ħassar Kollha Kompluti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	&Niżżel Issa
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Oħroġ
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Importa
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Shortcuts tat-tastiera
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Lingwa...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Għażliet
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	&Waqqaf Kollha
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Neħħi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	&Irrapporta problema
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Skedatur u kjuwijiet
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&Waqqaf Kollha
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	&Waqqaf it-Tniżżil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	Ikona tat-&trej
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Tutorjali
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	Tniżżil ta' &vidjows
+#. menu command in the main window
+#, machine
+menu	3D Style	Stil 3D
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Żid tniżżil ta' &lott
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Żid link tal-&magnet...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Żid tniżżil tal-lott mill-&clipboard
+#. menu command in the main window
+#, machine
+menu	Add category	Żid kategorija
+#. menu command in the main window
+#, machine
+menu	Arrange files	Irranġa l-fajls
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Ibbrawżja
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	Skont id-&Deskrizzjoni
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	Skont l-Isem tal-&Fajl
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	Skont l-Aħħar Data ta' &Prova
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	Skont l-Ordni ta' Ż&ieda
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	Skont id-&Daqs
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	Skont il-&Ħin li Fadal
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Skont id-Data &Miżjuda
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Skont il-Paġna &Web tal-Ġenitur
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	Skont ir-R&eferer
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Skont il-&Path tal-Ħażna
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Skont l-I&status
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	Skont ir-Rata ta' &Trasferiment
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	I&ppersonalizza l-Lista tal-URL...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Iċċekkja għal &aġġornamenti...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Neħħi l-filtri &kollha
+#. menu command in the main window
+#, machine
+menu	Create new queue	Oħloq kju ġdid
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Ippersonalizza...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Appoġġ għall-Modalità Skura
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Ħassar
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Ħassar mill-kju
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	Niżżel &video minn paġna...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&Esporta
+#. menu command in the main window
+#, machine
+menu	Edit queue	Editja l-kju
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Sib (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Sib Li Jmiss (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Font
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	Minn fajl ta' esportazzjoni tal-&IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	Minn fajl tat-&test...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	K&ontenut tal-għajnuna
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Aħbi l-mira tal-waqgħa
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Buttuni Kbar
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Fittex għal toolbars ġodda
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager Paġna &Ewlenija
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Mexxi/Semmi mill-ġdid (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neon
+#. menu command in the main window
+#, machine
+menu	On Double click	Fuq Ikklikkja Doppja
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Iftaħ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Iftaħ fajl tat-&torrent...
+#. menu command in the main window
+#, machine
+menu	Open folder	Iftaħ il-folder
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Iftaħ bi...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Proprjetajiet
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Erġa' &niżżel
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Erġa' niżżel
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Aġġorna l-indirizz tat-tniżżil
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Neħħi
+#. menu command in the main window
+#, machine
+menu	Resume Download	Kompli Niżżel
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&Skedatur
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&Settings...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	&Waqqaf il-kju
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Skeda
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Uri l-mira tal-&waqgħa
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Uri Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Buttuni Żgħar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Limiter tal-&Veloċità
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	Ibda l-&kju
+#. menu command in the main window
+#, machine
+menu	Start now	Ibda issa
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Waqqaf
+#. menu command in the main window
+#, machine
+menu	Stop Download	Waqqaf it-Tniżżil
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Għid lil &ħabib
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	Biex tesporta fajl tal-&IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	Biex tesporta fajl tat-&test...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Toolbar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Settings tat-&torrent...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	Ixgħe&l
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Itf&i
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Ivverifika ċ-checksum...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Tniżżil
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Fajl
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Għajnuna
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Kompiti
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Ara
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Żid Torrent
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	Żid URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Ħassar
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Ħassar Kompluti
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Għażliet
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Kompli
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Skedulatur
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Ibda l-Kju
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Waqqaf
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Waqqaf Kollha
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Waqqaf il-Kju
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/sek
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/sek

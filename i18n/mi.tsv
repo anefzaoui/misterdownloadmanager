@@ -1,0 +1,2552 @@
+# Mister Download Manager in Maori (Māori): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Māori
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Mukua hoki te kōnae {n} mai i te kōpae
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Kei te hiahia muku koe i ēnei {n} tikiake mai i te rārangi tikiake a Mister Download Manager?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} ka whakaae ki ngā hononga {n}
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} paita
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} kōnae
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&Hoatu
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Katia
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Muku
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Āwhina
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Rārangi hōu
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Tīmata ināianei
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(wehea ngā ingoa mā ngā āputa)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-hōra (9:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-hōra (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Huna taipitopito
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Mō Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Tāpiri i tētahi tikiake (Tāpiri URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Tāpiri tikiake puranga
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Tāpiri pūtirotiro...
+#. text in categories.rs
+#, machine
+	Add category	Tāpiri kāwai
+#. text in the tray icon's menu
+#, machine
+	Add new download	Tāpiri tikiake hōu
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Tāpiri i te tārite ka tuhi anō i te kōnae o nāianei
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Tāpiri i te tārite me tētahi ingoa kōnae tau
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Tāpiri ki te rārangi
+#. text in a dialog box
+#, machine
+	Add to queue:	Tāpiri ki te rārangi:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Tāpiri awa
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	Kua tāpirihia {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Wāhitau
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Kua hurihia te wāhitau ki {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Wāhitau:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Arā Atu Anō / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Ngā Tikiake Katoa
+#. message or event log entry in the main window
+#, machine
+	All files	Ngā kōnae katoa
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	kei te tikiake kē: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Mukua hoki te kōnae mai i te kōpae
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Whakakā tonu i te Kaitāpae Tere i te tīmatanga o Mister Download Manager
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	Āperira
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	E hiahia ana koe ki te muku i te "{name}" mai i te rārangi tikiake a Mister Download Manager?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Ka tuhia e te rohe o te pūnaha
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	E pātai ana ki ngā hoa mō te rārangi kōnae. Ka roa pea ngā hononga autō i te meneti kotahi, e rua rānei.
+#. text in the Scheduler window
+#, machine
+	August	Ākuhata
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Whakanoho aunoa ki te kāwai "{category}" ngā momo kōnae e whai ake nei:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Tīmata aunoa te tikiake i ngā momo kōnae e whai ake nei:
+#. window title in the Batch download window
+#, machine
+	Batch download	Tikiake puranga
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Tirotiro
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Tirotiro...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Whakauru Pūtirotiro/Pūnaha
+#. message or event log entry in the main window
+#, machine
+	by batch download	mā te tikiake puranga
+#. message or event log entry in the main window
+#, machine
+	by import	mā te kawemai
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Whakakore
+#. text in errors.rs
+#, machine
+	cancelled	kua whakakorehia
+#. text in errors.rs
+#, machine
+	cannot connect to the server	kāore e taea te hono atu ki te tūmau
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	Kāore i kitea "{text}"
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Kāore e taea te pānui i te kōnae: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	kāore e taea te tīmata anō: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Hopu tikiake mai i ngā pūtirotiro e whai ake nei:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Ngā Kāwai
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Ngā Kāwai, ngā momo kōnae, ngā kōpaki
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Kāwai
+#. text in categories.rs
+#, machine
+	Category properties	Ngā āhuatanga kāwai
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Hurihia te kōpaki mō te kāwai "{category}" i te mea whakamutunga i tīpakohia
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Tirohia ngā whakahou
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Tirohia ngā whakahou kotahi i te wiki
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	E tirohia ana ngā whakahou...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	E tirohia ana...
+#. text in langpick.rs
+#, machine
+	Choose a language	Kōwhiria he reo
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Kōwhiria te reo e whakaatu ai a Mister Download Manager i ōna matapihi:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Muku
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Kiritaki
+#. text in the Options window
+#, machine
+	Clock:	Karaka:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Katia
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Katia he tahua, he pouaka kōrero rānei
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Kua oti
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Kua kōpeke
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Whakaū i mua i te muku i ngā tikiake
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Whakaū i te mukunga o ngā tikiake
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	E hono ana...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Hononga
+#. page title in the Options window
+#, machine
+	Connections and Limits	Ngā Hononga me ngā Tepe
+#. text in the Options window
+#, machine
+	Connections:	Ngā hononga:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Kua tāruatia ki te papatopenga.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Tārua
+#. window title in a dialog box
+#, machine
+	Create folder	Waihanga kōpaki
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Whakaritea te pouaka kōrero "Tikiake e haere ana"
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Whakaritea ngā kī hei ārai, hei akiaki rānei i te tikiake mā te MDM
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Whakaritea ngā paewhiri Tikiake MDM i ngā pūtirotiro
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Whakaritea ngā tūemi tahua MDM i te tahua horopaki o ngā pūtirotiro
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Ia rā
+#. text in the Options window
+#, machine
+	Date order:	Raupapa rā:
+#. page title in the Options window
+#, machine
+	Dates and times	Ngā rā me ngā wā
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Rā, marama, tau
+#. text in the Scheduler window
+#, machine
+	December	Hakihea
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Taunoa
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Whaiaronga tikiake taunoa mō te kāwai "{category}"
+#. page title in the Options window
+#, machine
+	Default download settings	Ngā tautuhinga tikiake taunoa
+#. text in the Options window
+#, machine
+	Default max. conn. number	Tau hononga mōrahi taunoa
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Mukua
+#. message or event log entry in the main window
+#, machine
+	Delete category	Mukua te kāwai
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Mukua te rārangi
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Mukua te kāwai "{category}"? Ka noho ōna tikiake hei Whānui; ka noho ōna kōnae ki te wāhi e noho ana.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Mukua te rārangi "{queue}"? Ka noho ōna tikiake ki te rārangi.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Mukua ngā tikiake kua tīpakohia (ka pātai tuatahi)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Mukua ngā tikiake kua tīpakohia me ōna kōnae (ka pātai tuatahi)
+#. text in a dialog box
+#, machine
+	Description	Whakaahuatanga
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Whakaahuatanga, wāhanga rānei o te whakaahuatanga
+#. text in a download's Properties window
+#, machine
+	Description:	Whakaahuatanga:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	hapa kōpae: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	e whakaatuhia ana i te rārangi o ngā rārangi
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Kaua e tīmata te tikiake, tāpiri kōnae anake ki te rārangi
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Kei te hiahia koe ki te waihanga?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Tuhinga
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Kaua e whakaatu anō i tēnei pouaka kōrero
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Kaua e tīmata aunoa te tikiake mai i ngā wāhitau e whai ake nei:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Kaua e tīmata aunoa te tikiake mai i ngā pae e whai ake nei:
+#. text in a download's progress window
+#, machine
+	Done	Kua oti
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Tikiake
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Tikiake anō "{name}" mai i te tīmatanga? Ka whakakapia he kōnae kua oti ina oti te tikiake hou.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Kua oti te tikiake
+#. text in the Options window
+#, machine
+	Download failed	I rahua te tikiake
+#. window title in a dialog box
+#, machine
+	Download File Info	Mōhiohio Kōnae Tikiake
+#. button in a dialog box
+#, machine
+	Download Later	Tikiake Ā muri ake
+#. window title in a dialog box
+#, machine
+	Download later	Tikiake ā muri ake
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Ngā tepe tikiake
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Kaua e tikiake neke atu i te {mb} MB\ni ia {hours} haora
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Tikiake Inaianei
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Paewanānga Tikiake
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Tūnga tikiake
+#. window title in the Download video window
+#, machine
+	Download video from a page	Tikiake ataata mai i tētahi whārangi
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Tikiake {files} kōnae i te wā kotahi
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Kua tikiake
+#. page title in the Options window
+#, machine
+	Downloaded file types	Ngā momo kōnae kua tikiake
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	Kua tikiake {size} ({bytes} Paita)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	E tikiake ana
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	E tikiake anō ana mai i te tīmatanga
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	E tango ana, e manatoko ana i te ffmpeg (tata ki te 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	E tango ana, e manatoko ana i te yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Ngā Tikiake
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Kua tū ngā tikiake, ā, ka tīmata anō aunoa hei te {time}.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Tōia ngā hononga ki konei hei tikiake
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Hononga tikiake tārua
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Whakatika
+#. text in the Options window
+#, machine
+	Edit exception	Whakatika whakawāhi
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Whakatika rārangi ...
+#. text in the Options window
+#, machine
+	Edit login	Whakatika takiuru
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Whakatika...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	Īmēra
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Whakaurua he hononga autō, kōwhiria rānei he kōnae .torrent
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Whakaurua he ingoa mō te rārangi hou ka
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Whakaurua he wāhitau hou hei tikiake
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Whakaurua te ingoa rārangi
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Hapa
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Hapa: {error}
+#. text in the Options window
+#, machine
+	Event	Takahanga
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Tauira:
+#. text in the Options window
+#, machine
+	Exceptions:	Ngā whakawāhi:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Puta
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Puta atu i te Mister Download Manager ina oti
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Tatau-whakamana e tūmanakohia ana (MD5, SHA-1, SHA-256, SHA-512, CRC32 rānei):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Kua tautuhia te tatau-whakamana e tūmanakohia ana ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Kaweake
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Whakaroa te wātea o ngā toronga Chrome Manifest 2
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Ngā toronga kua wehea e ngā mokowā, hei tauira MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Pēpuere
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Kōnae
+#. text in the Scheduler window
+#, machine
+	File Name	Ingoa Kōnae
+#. text in the Download video window
+#, machine
+	File name	Ingoa kōnae
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Ingoa kōnae, wāhanga rānei o te ingoa
+#. window title in a download's Properties window
+#, machine
+	File Properties	Ngā Āhuatanga Kōnae
+#. text in a download's progress window
+#, machine
+	File size	Rahi kōnae
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Ngā momo kōnae
+#. text in categories.rs
+#, machine
+	File types:	Ngā momo kōnae:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Ngā Kōnae
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Ka haere ngā kōnae ki: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Ngā kōnae i roto i te rārangi
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Kimihia
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Kimihia he tikiake
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Kimihia te kōnae
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Kimihia te taurite e whai ake nei
+#. text in the Find window
+#, machine
+	Find:	Kimihia:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Kua oti
+#. text in the Options window
+#, machine
+	First day of the week:	Rā tuatahi o te wiki:
+#. text in the Batch download window
+#, machine
+	First file:	Kōnae tuatahi:
+#. text in categories.rs
+#, machine
+	Folder:	Kōpaki:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Hei tauira: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Mō tō pūkete Windows anake. Ko tētahi atu taupānga i kōwhiria i roto i te "Whakatuwhera ki" ka noho tuatahi.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Whakamutua ngā tukanga
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Rā
+#. text in the Scheduler window
+#, machine
+	Friday	Rāmere
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	mai i tētahi hononga autō
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	mai i tētahi whārangi (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	mai i tētahi kōnae torrent
+#. message or event log entry in the main window
+#, machine
+	from the browser	mai i te pūtirotiro
+#. message or event log entry in the main window
+#, machine
+	from the command line	mai i te rārangi whakahau
+#. text in the Batch download window
+#, machine
+	From:	Mai i:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Whānui
+#. button in the Options window
+#, machine
+	Get System	Tikina te Pūnaha
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	E tiki ana i te rārangi kōnae mai i ngā hoa... {n} h
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Whakairi i te pouwhanga ka oti
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Kei a au
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Āwhina
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Whakamoe
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Huna &ngā kāwai
+#. button in a download's progress window
+#, machine
+	Hide tab	Huna ripa
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Whārangi kāinga
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Ka tikiake au ki a Mister Download Manager: tere, kore utu, ā, he rite tonu ki te kaiwhakahaere tikiake kua mōhio kē koe. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Mēnā ka tāpirihia he hononga tikiake tārite:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Mēnā kua oti te kōnae o nāianei, whakaatuhia te pouaka kōrero kua oti te tikiake; ki te kore, tīmata anō.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Kaua e aro ki ngā panoni wā whakarerekētanga kōnae ina tīmata anō i tētahi tikiake
+#. message or event log entry in the main window
+#, machine
+	Import	Kawemai
+#. window title in transfer.rs
+#, machine
+	Import downloads	Kawemai i ngā tikiake
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	I roto i te rārangi
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Mōhiohio
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Hash mōhiohio
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	Tāuta ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	Tāuta yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	Wāhitau hē
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Ka taea te tāpiri i tētahi rōpū ingoa kōnae raupapa pēnei i te img001.jpg, img002.jpg, me ētahi atu,\nimg100.jpg ki te rārangi tikiake MDM. Whakamahia te tohu whetū hei tauira ingoa kōnae.
+#. text in the Scheduler window
+#, machine
+	January	Hānuere
+#. text in the Scheduler window
+#, machine
+	July	Hūrae
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Peke ki te tikiake e tīmata ana tōna ingoa ki a ia
+#. text in the Scheduler window
+#, machine
+	June	Hune
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KBytes/hek
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Kia tūhura tonu i ngā awa i muri i te otinga
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Poto papapātuhi
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Kī...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Reo
+#. text in the Batch download window
+#, machine
+	Last file:	Kōnae whakamutunga:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Whakamātau whakamutunga {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Ā muri ake
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Whakarewa i a Mister Download Manager i te tīmatanga
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Pūāhua
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Raihana me ngā nama
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Whakawhāiti i ngā tikiake katoa ki
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Takiuru
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Rapu
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	E rapu ana i te whārangi...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Rārangi tikiake matua
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Kia roa ake, kia poto ake rānei te kōwhiringa
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Whirihoranga takawaenga/socks ā-ringa
+#. text in the Scheduler window
+#, machine
+	March	Poutū-te-rangi
+#. checkbox in the Find window
+#, machine
+	Match case	Whakarite take
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Whakarite aho katoa anake
+#. group box title in the Options window
+#, machine
+	Max. connections number	Tau hononga mōrahi
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Tere tikiake mōrahi mō tētahi kōnae {kb} KBytes/hek
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Tere tikiake mōrahi:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Haratua
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Ngaro
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Whirihoranga Mister Download Manager
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Ka tuhia e Mister Download Manager ngā hononga katoa ki te kōnae whakamutunga\n(he kōnae wāhanga pūkohu kei tōna taha), nō reira kāore he whaiaronga rangitahi, he\ntakahanga whakahiato rānei e hiahiatia.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Kei te wātea a Mister Download Manager {version} (i tukuna i te {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	Mane
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Mane
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Marama, rā, tau
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Nuku
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Nuku i tētahi whārangi ki runga / ki raro
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Nukuhia, whakaingoatia anō rānei te tikiake kua tohua
+#. text in a download's Properties window
+#, machine
+	Move to folder	Nuku ki te kōpaki
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Nuku ki te rārangi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Nuku me te kore e huri i te kōwhiringa
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Nuku/Whakaingoa anō
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	he puhoi rawa atu i ērā atu hononga; kei te hono anō
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Waiata
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Tōku ake ara:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	N.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Ingoa
+#. text in categories.rs
+#, machine
+	Name:	Ingoa:
+#. text in errors.rs
+#, machine
+	network error	hapa whatunga
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Kaua rawa e whakaatu i runga i ēnei pae:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Hou
+#. text in the Options window
+#, machine
+	New exception	Whakakorenga hou
+#. text in the Options window
+#, machine
+	New login	Takiuru hou
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Kao
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	kāore he kōpaki raraunga
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	kāore he kōpaki raraunga mō ngā torrent
+#. text in langpick.rs
+#, machine
+	No language matches.	Kāore he reo e ōrite ana.
+#. text in the Options window
+#, machine
+	No proxy/socks	Kāore he takawaenga/socks
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Kāore he ataata ka taea te tikiake i tēnei whārangi
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Kāore he wāhitau tukutuku i kitea i roto i te {file}.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Kāore: ka ahu mai ngā hoa i te DHT me ētahi atu hoa
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Ehara i te takitaki ka taea te pānui e tēnei
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	kāore i rahi te wāhi kōpae: {needed} e hiahiatia ana, {free} e wātea ana
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Kāore i te rārangi
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Kāore i te whakamahia: ka tuhia ngā wāhanga kōnae ki te taha o te kōnae
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Tūpato: Ka motu pea te hononga o ngā tūmau ipurangi ina tino herea te tere! Nō reira, kāore i te tūtohutia kia whakamahia te Kaitiaki Tere ki te tikiake mai i ngā tūmau kāore e tautoko i te āhuatanga "whakahou".
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Tūpato: Kāore ēnei tautuhinga e pā ana ki te tukatuka rārangi
+#. text in the Scheduler window
+#, machine
+	November	Whiringa-ā-rangi
+#. text in the Options window
+#, machine
+	Number	Tau
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Te maha o ngā nganatanga anō mō ia kōnae ki te kore te tikiake:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Ngā Tau
+#. text in the Scheduler window
+#, machine
+	October	Whiringa-ā-nuku
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Weto: ka mutu te torrent kua oti, pērā i ngā tikiake katoa.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Tukuna kia tikiake i ngā hononga i tāruatia ki te papatopenga
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	ĀE
+#. text in a download's progress window
+#, machine
+	on download stop/resume	i te mutu/whakahou tikiake
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Kotahi i te
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Tikiake kotahi-wā
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	I a au e whakamahi ana i te rorohiko anake
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Whakatuwhera
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Whakatuwheratia ngā hononga autō me ngā kōnae .torrent ki a Mister Download Manager
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Whakatuwheratia a Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Whakatuwheratia te kōnae e whai ake nei ina oti
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Whakatuwhera i te kōnae e whai ake nei ina oti:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Whakatuwhera i te tikiake kua tohua
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Whakatuwhera i te tahua o te tikiake kua tohua
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Whakatuwhera kōnae torrent
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Ngā Kōwhiringa
+#. text in a download's progress window
+#, machine
+	Options on completion	Ngā kōwhiringa i te otinga
+#. text in the Download video window
+#, machine
+	Page address	Wāhitau whārangi
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Kupuhipa
+#. text in the Options window
+#, machine
+	Password:	Kupuhipa:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Whakapiri i tētahi hono autō, tīpako rānei i tētahi kōnae .torrent, kātahi ka Rapu.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Tātari
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Kua tātari
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Ngā Hoa
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Tukutahitanga wā-poto
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Ngā Wāhanga
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Purei
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	Tauranga
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Arokite
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Ngā Hōtaka
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Ngā āhuatanga o te tikiake kua tohua
+#. text in a download's progress window
+#, machine
+	Property	Āhuatanga
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Takawaenga / Socks
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Whirihoranga takawaenga / socks
+#. label in the Options window
+#, machine
+	Proxy server address	Wāhitau tūmau takawaenga
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Rārangi {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Kua tīmata te tukatuka rārangi
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Kua mutu/oti te tukatuka rārangi
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Ngā Rārangi
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	E pānui ana i te rārangi kōnae...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	E pānui ana i te torrent...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Kua riro
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	E whiwhi raraunga ana...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Tikiake anō
+#. text in a download's Properties window
+#, machine
+	Referer:	Kaituku:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Rohe
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Kia maumahara ki ngā tautuhinga Kaitātai Tere mō tēnei kōnae
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Kia maumahara ki tēnei ara mō te kāwai "{category}"
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Tangohia
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Whakakapi whetūriki ki
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Hua: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Whakahou
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Āheinga whakahou
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Kua whakahoutia
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	E ngana anō ana: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	K&ati
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	Rāh
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Rāhoroi
+#. text in a dialog box
+#, machine
+	Save As	Tiaki Hei
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Tiaki ki
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Tiaki Ki...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Tiaki Ki:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Kua tiakina ki
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Wātaka
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Kaiwātaka
+#. text in langpick.rs
+#, machine
+	Search:	Rapu:
+#. text in the Batch download window
+#, machine
+	Second file:	Kōnae tuarua:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Tīpako katoa
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Tīpako i ngā tikiake katoa
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Tīpako i ngā tikiake katoa tae noa ki tēnei
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Kaua e tīpako
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Tīpako, wetetīpako rānei i tētahi atu tikiake
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Tīpako, wetetīpako rānei i te tikiake me te tāpare ira
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Tīpako i ngā oro mō ngā kaupapa a Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Tīpako i ngā tikiake i roto i te pouaka
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Tīpako i te tikiake tuatahi / whakamutunga
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Tīpako i te tikiake o mua / o muri
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Kua tīpakohia: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Tukuna tēnei ki tētahi hoa:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Kua tukuna
+#. text in the Scheduler window
+#, machine
+	September	Hepetema
+#. text in the Options window
+#, machine
+	Server	Tūmau
+#. text in the Options window
+#, machine
+	Server:	Tūmau:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Tautuhia te rā waihanga kōnae kia rite ki tā te tūmau i whakarato ai
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Ōwehenga tiri
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Tiri
+#. text in the download list
+#, machine
+	Show	Whakaatu
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Whakaatu &kāwai
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Whakaatu i tētahi pouaka kōrero ka pātai me aha.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Whakaatu i tētahi pātene tikiake i runga i ngā ataata i roto i ngā pūtirotiro
+#. button in the download list
+#, machine
+	Show all	Whakaatu katoa
+#. text in a download's progress window
+#, machine
+	Show details >>	Whakaatu taipitopito >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Whakaatu i te pouaka kōrero kua oti te tikiake
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Whakaatu i te paewhiri kōwhiringa rārangi i te katinga o ngā kōrero tikiake puranga
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Whakaatu i te paewhiri kōwhiringa rārangi i te pēhanga o te pātene "Tikiake Ā muri ake"
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Whakaatu i te kōrero tīmata tikiake
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Whakaatu i te whakatūpato i mua i te whakamutu i ngā tikiake
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	E whakaatuhia ana i te wā e tikiake ana te awa.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Whakaweto
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Ingoa pae/Hononga tikiake/Whārangi tukutuku matua/Kaituku
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Pae/ara
+#. text in the Options window
+#, machine
+	Site/path:	Pae/ara:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Takiuru Pae
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Rahi
+#. text in the Download video window
+#, machine
+	size unknown	kāore i te mōhiotia te rahi
+#. text in a download's Properties window
+#, machine
+	Size:	Rahi:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	I pekehia
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Moe
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Ētahi
+#. text in the Options window
+#, machine
+	Sound file	Kōnae oro
+#. page title in the Options window
+#, machine
+	Sound settings	Ngā tautuhinga oro
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Ngā Oro
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Waehere pūtake
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Kaiwhakawhāiti Tere
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Ngā tautuhinga Kaiwhakawhāiti Tere
+#. button in a dialog box
+#, machine
+	Start Download	Tīmata Tikiake
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Tīmata tikiake i te
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Tīmata tikiake i te tīmatanga o Mister Download Manager
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Tīmata te tikiake tonu i te wā e whakaatu ana i te kōrero "Mōhiohio Kōnae Tikiake"
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Tīmata i te rārangi tikiake matua
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Ngā tūnga tīmatanga me te ahunga whakamua tikiake mā ngā hononga
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Tīmatahia te rārangi ināianei
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Tīmata {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	I tīmata
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	I tīmata ki te yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Tūnga
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Tūnga:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Kati te tikiake i te
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Kati te rārangi tikiake matua
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Kati {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Kua mutu
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Ka mutu ina oti te tikiake
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	Rā
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Rātapu
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Rārangi tukutahi
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Kōrero ki tētahi hoa
+#. group box title in the Options window
+#, machine
+	Temporary directory	Whaiaronga rangitahi
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	Rā
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	kua ngaro te kōnae .torrent i puritia mōna
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Me he wāhitau http(s), ftp(s) rānei te wāhitau
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Me whakahono a ffmpeg i te ataata me te oro mō ngā kounga pai rawa atu (tata ki te 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Ka moe te rorohiko i roto i te {n} hēkona.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Ka moe hōhonu te rorohiko i roto i te {n} hēkona.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Ka whakaweto te rorohiko i roto i te {n} hēkona.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	i katia te hononga i mua i te oti o te wāhanga
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	i ngaro te hononga i te wā e whiwhi raraunga ana
+#. text in errors.rs
+#, machine
+	the disk is full	kua ki te kōpae
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Kua tae te tepe tikiake ({mb} MB i ia {hours} haora).
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	kua pau te wā o te hononga tikiake (whakahouhia te wāhitau tikiake)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Ko te kaiwhakahaere tikiake e mōhio ana koe, i hanga anō kia tere ake. He kore utu, he puna tuwhera i raro i te GNU GPL, putanga 3, muri iho rānei. Ka kitea ngā ataata e yt-dlp; ka rere ngā awa i runga i te librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Kua oti te rārangi tikiake.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	kāore te puku, te tiri whatunga rānei e wātea ana
+#. text in errors.rs
+#, machine
+	the file changed on the server	i rerekē te kōnae i runga i te tūmau
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Kāore i taea te nuku i te kōnae
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Kāore i taea te pānui i te kōnae: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Kāore te kōnae e ōrite ana ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	E ōrite ana te kōnae ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	I tiakina te kōnae hei
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Ngā momo kōnae kāore i te rārangi i roto i ētahi atu kāwai
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	kāore te {algorithm} checksum o te kōnae e ōrite (kei te puritia ngā raraunga; tikina anō)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Kāore i taea te waihanga i te kōpaki: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	kāore te kōpaki {path} e wātea ana (kua tangohia te puku, kua tuimotu rānei te tiri whatunga?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	i whakahoki te tūmau FTP i te {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Kāore i taea te tiaki i te rārangi: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	he roa rawa te ara mō Windows: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	kāore he putanga o te tukunga
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	i rahua te hononga haumaru
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Kāore i oti te tikiake i tohua. Kei te hiahia koe ki te muku\ni te rārangi tikiake a Mister Download Manager?
+#. text in errors.rs
+#, machine
+	the server answered {status}	i whakautu te tūmau {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	kāore e taea e te tūmau te tuku wāhanga o te kōnae, nō reira kāore e taea te tīmata anō
+#. text in errors.rs
+#, machine
+	the server did not answer in time	kāore te tūmau i whakautu i te wā tika
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	kāore te tūmau i tuku i te wāhanga i tonoa
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	kei te pukumahi te tūmau ({status}); ngana anō ā muri ake
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	i tukuna e te tūmau he whārangi tukutuku hei utu mō te kōnae (me takiuru, kua pau rānei te hononga?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	i tukuna e te tūmau he wāhanga ohorere o te kōnae ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Kāore i taea te tiaki i te awa: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	kāore te awa i reira
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Te whārangi tukutuku i riro mai ai tēnei kōnae:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Kua reri tētahi kāwai me tēnei ingoa
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Kāore ēnei tautuhinga e wātea ana ina whakakāhia te "Whakaatu kōrero tikiake oti"
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Kua reri tēnei wāhitau i te rārangi tikiake:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Kāore tēnei kōpaki i te noho:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Kua reri tēnei awa i te rārangi tikiake
+#. text in the Scheduler window
+#, machine
+	Thursday	Rāpare
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Wā e toe ana
+#. text in the Batch download window
+#, machine
+	To:	Ki:
+#. text in errors.rs
+#, machine
+	too many redirects	he maha rawa ngā aronga anō
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Awa
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Ngā tikiake awa (ngā hononga autō me ngā kōnae .torrent)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Ngā kōnae awa
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Ngā tautuhinga awa
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Ngā awa
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	kāore i taea te tīmata i ngā awa: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Kaitātari
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Ngā Kaitātari
+#. text in a download's progress window
+#, machine
+	Transfer rate	Auau whakawhiti
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	Rā
+#. text in the Scheduler window
+#, machine
+	Tuesday	Rātapu
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Whakaweto
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Whakaweto rorohiko ina oti
+#. button in a dialog box
+#, machine
+	Turn off now	Whakaweto ināianei
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Whakakā
+#. text in a download's Properties window
+#, machine
+	Type:	Momo:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Kāore anō kia oti
+#. text in a download's Properties window
+#, machine
+	Unknown	Kāore i te mōhiotia
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	kāore i te mōhiotia
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Kāore i taea te tirotiro i ngā whakahou: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Whakamahi whakauru pūtirotiro matatau
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Whakamahi whakamana
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Whakamahi tuhinga whirihoranga aunoa
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	Whakamahi FTP i te aratau PASV
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Whakamahi takawaenga/socks mai i te tono pūtirotiro mena he hapa tango /\nmō ngā tango i haukotia mai i te pūtirotiro
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Whakamahi Kaitāpae Tere
+#. text in the Options window
+#, machine
+	Use system settings	Whakamahi tautuhinga pūnaha
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Whakamahia tēnei takawaenga mō ngā kawa e whai ake nei:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Ka whakamahia e te rārangi o ngā tikiake me te Kaitautu.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Kaiwhakamahi
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Ngā ingoa kaiwhakamahi me ngā kupuhipa mō ngā tūmau/pae
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	Kaiwhakamahi-Kaiwhakamahi mō ngā tango i tāpirihia ā-ringa:
+#. text in the Options window
+#, machine
+	User:	Kaiwhakamahi:
+#. label in the Options window
+#, machine
+	UserName	Ingoa Kaiwhakamahi
+#. text in a download's progress window
+#, machine
+	Value	Uara
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Manatoko
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Manatoko takitaki
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	E manatokohia ana...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Putanga {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Ataata
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Ka whakamahi ngā tirohanga ataata i te yt-dlp (tata ki te 23 MB, i tirohia ki tōna waitohu).
+#. text in the Options window
+#, machine
+	Virus checking settings	Ngā tautuhinga tirotiro huaketo
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	E tatari ana
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	E tatari ana: kua tae ki te tepe tango (Kairātaka)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Rā
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Paetukutuku
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Ngā wāhitau paetukutuku i kitea i roto i te {file}:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Rāapa
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	He aha te mea hou:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Rahi kāri mohoao
+#. text in langpick.rs
+#, machine
+	Windows' language	Te reo o Windows
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Te reo o Windows ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	me te Tāpiri URL
+#. group box title in the Options window
+#, machine
+	Write dates and times	Tuhia ngā rā me ngā wā
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	Tau, marama, rā
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Āe
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Kei a koe te putanga hou o Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Kei a koe te putanga {version}.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	Kāore a yt-dlp i te tāuta (Ngā Mahi → Tikiake ataata mai i tētahi whārangi ka tāuta)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} takitaki
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: ka tirohia ina oti te tikiake
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	Kei roto i te {column}
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	Kōnae {ext}
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} o {total} ({size} ia)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} o {total} wāhanga ({size} ia)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} haora {m} min
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} hono, {known} mōhiotia
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} min {s} hekona
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (aunoa)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} o {total} i tīpakohia
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} Paita)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	he nui rawa te {size} mō tēnei puku {file_system} (ngā kōnae tae atu ki te 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} hekona
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	Kāore i taea te tāuta a {what}: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	I tāpirihia
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Whakaahuatanga
+#. column title in the download list in the download list
+#, machine
+column	File Name	Ingoa Kōnae
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Rā Whakamātautau Whakamutunga
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	R
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Rahi
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Pūtake
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Tūnga
+#. column title in the download list in the download list
+#, machine
+column	Time left	Wā e toe ana
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Reiti whakawhiti
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Ngā tautuhinga pātene...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Tikiake ataata
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Tikiake mā te Mister Download Manager
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Tōia kia neke i te taha o te tapa o te ataata
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Ka tuku i ngā tikiake mai i te pūtirotiro ki te Mister Download Manager.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Huna i runga i tēnei ataata
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Kāore a Mister Download Manager i whakautu
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Kōwae Whakauru Mister Download Manager
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Ētahi atu kōwhiringa
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Kaua rawa i runga i {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Kua tukuna ki Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+pāwhiri
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Up / Ctrl+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Muku
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Tōia ki te wāhi wātea
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Tāuru
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Kāinga / Whakamutunga
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Whārangi Whakarunga / Whārangi Whakararo
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+pāwhiri
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Muku
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+Whakarunga / Shift+Whakararo
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Patohia he ingoa
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Whakarunga / Whakararo
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Mō &Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	Tāpiri &tikiake hōu
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	Muku &Katoa Kua Oti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	&Tikiake Inaianei
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Puta
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Kawemai
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	Ngā pokatata &papapātuhi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Reo...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Kōwhiringa
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	&Tatari Katoa
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Tango
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	&Pūrongo raru
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Kairātaka me ngā rārangi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&Kati Katoa
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	&Kati Tikiake
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	Ata &pāpāho
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Akoranga
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	Ngā tikiake &ataata
+#. menu command in the main window
+#, machine
+menu	3D Style	Kāhua 3D
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Tāpiri tikiake &puranga
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Tāpiri hononga &aukume...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Tāpiri tikiake puranga mai i te &papatopenga
+#. menu command in the main window
+#, machine
+menu	Add category	Tāpiri kāwai
+#. menu command in the main window
+#, machine
+menu	Arrange files	Whakaraupapa kōnae
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Tirotiro
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	Mā te &Whakaahuatanga
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	Mā te &Ingoa Kōnae
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	Mā te &Rā Whakamātautau Whakamutunga
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	Mā te &Raupapa Tāpiri
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	Mā te &Rahi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	Mā te &Wā Toe
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Mā te Rā &Tāpiri
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Mā te &Whārangi Tukutuku Matua
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	Mā te R&eferer
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Mā te &Ara Tiaki
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Mā te Tū&nga
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	Mā te &Reiti Whakawhiti
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	Whak&arite Rārangi URL...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Tirohia ngā &whakahou...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Whakawātea ngā &tātari katoa
+#. menu command in the main window
+#, machine
+menu	Create new queue	Waihanga rārangi hou
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Whakarite...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Tautoko Aratau Pōuri
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Muku
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Muku mai i te rārangi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	Tikiake &ataata mai i tētahi whārangi...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	T&aumai
+#. menu command in the main window
+#, machine
+menu	Edit queue	Whakatika rārangi
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Kimihia (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Kimihia Panuku (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Momo momotuhi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	Mai i te kōnae taumai &IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	Mai i te kōnae &kuputuhi...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	Ngā &ihirangi āwhina
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Huna i te ūnga maturuturu
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Pātene Nui
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Rapu paeutauta hou
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager &Whārangi Kāinga
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Nuku/Whakaingoa Anō (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neon
+#. menu command in the main window
+#, machine
+menu	On Double click	I te pāwhiri rua
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Whakatuwhera
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Whakatuwhera kōnae &torrent...
+#. menu command in the main window
+#, machine
+menu	Open folder	Whakatuwhera kōpaki
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Whakatuwhera ki...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Ngā Āhuatanga
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Tī&taha anō
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Tītaha anō
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Whakahou wāhitau tītaha
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Tango
+#. menu command in the main window
+#, machine
+menu	Resume Download	Whakaara Anō i te Tītaha
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	Kai&whakarite
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	Ngā &Tautuhinga...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	Kati te &rārangi
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Whakaritea
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Whakaatu &whāinga taka
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Whakaatu Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Pātene Ririki
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Kaiwhakawhāiti &Tere
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	Tīmata &rārangi
+#. menu command in the main window
+#, machine
+menu	Start now	Tīmata ināianei
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Kati
+#. menu command in the main window
+#, machine
+menu	Stop Download	Kati te Tītaha
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Kōrero ki tētahi &hoa
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	Ki te kōnae kaweake &IDM...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	Ki te kōnae &kuputuhi...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Paemahi
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Ngā tautuhinga &torrent...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	Whakakā&hia
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Whakaweto&hia
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Manatoko rārangi arowhai...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Ngā Tītaha
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Kōnae
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Āwhina
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Ngā Mahi
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Tirohanga
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Tāpiri Torrent
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	Tāpiri URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Muku
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Muku Kua Oti
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Ngā Kōwhiringa
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Whakaū
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Kairātaka
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Tīmata Rārangi
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Kati
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Kati Katoa
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Kati Rārangi
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/hek
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/hek

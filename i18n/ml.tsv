@@ -1,0 +1,2552 @@
+# Mister Download Manager in Malayalam (മലയാളം): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	മലയാളം
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	ഡിസ്കിൽ നിന്ന് {n} ഫയൽ ഇല്ലാതാക്കുക|ഡിസ്കിൽ നിന്ന് {n} ഫയലുകൾ ഇല്ലാതാക്കുക
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് {n} ഡൗൺലോഡ് ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?|Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് ഈ {n} ഡൗൺലോഡുകൾ ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} {n} കണക്ഷൻ അനുവദിക്കുന്നു|{host} {n} കണക്ഷനുകൾ അനുവദിക്കുന്നു
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} ബൈറ്റ്|{n} ബൈറ്റുകൾ
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} ഫയൽ|{n} ഫയലുകൾ
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	പ്ര&യോഗിക്കുക
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&അടയ്ക്കുക
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&ഇല്ലാതാക്കുക
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&സഹായം
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&പുതിയ ക്യൂ
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&ഇപ്പോൾ ആരംഭിക്കുക
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(പേരുകൾ സ്പേസുകൾ ഉപയോഗിച്ച് വേർതിരിക്കുക)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12-മണിക്കൂർ (രാത്രി 9:41)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24-മണിക്കൂർ (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< വിശദാംശങ്ങൾ മറയ്ക്കുക
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Mister Download Manager-നെക്കുറിച്ച്
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	ഒരു ഡൗൺലോഡ് ചേർക്കുക (URL ചേർക്കുക)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	ബാച്ച് ഡൗൺലോഡ് ചേർക്കുക
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	ബ്രൗസർ ചേർക്കുക...
+#. text in categories.rs
+#, machine
+	Add category	വിഭാഗം ചേർക്കുക
+#. text in the tray icon's menu
+#, machine
+	Add new download	പുതിയ ഡൗൺലോഡ് ചേർക്കുക
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	ഡ്യൂപ്ലിക്കേറ്റ് ചേർക്കുകയും നിലവിലുള്ള ഫയൽ തിരുത്തിയെഴുതുകയും ചെയ്യുക
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	നമ്പർ നൽകിയ ഫയൽ നാമത്തോടൊപ്പം ഡ്യൂപ്ലിക്കേറ്റ് ചേർക്കുക
+#. message or event log entry in the main window
+#, machine
+	Add to queue	ക്യൂവിലേക്ക് ചേർക്കുക
+#. text in a dialog box
+#, machine
+	Add to queue:	ക്യൂവിലേക്ക് ചേർക്കുക:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	ടോറന്റ് ചേർക്കുക
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	{source} ചേർത്തു
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	വിലാസം
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	വിലാസം {host} എന്നതിലേക്ക് മാറ്റി
+#. text in a download's Properties window
+#, machine
+	Address:	വിലാസം:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	വിപുലമായ / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	എല്ലാ ഡൗൺലോഡുകളും
+#. message or event log entry in the main window
+#, machine
+	All files	എല്ലാ ഫയലുകളും
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	ഇതിനകം ഡൗൺലോഡ് ചെയ്യുന്നു: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	ഡിസ്കിൽ നിന്ന് ഫയൽ ഇല്ലാതാക്കുക
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ആരംഭിക്കുമ്പോൾ സ്പീഡ് ലിമിറ്റർ എപ്പോഴും ഓണാക്കുക
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	AM
+#. text in the Scheduler window
+#, machine
+	April	ഏപ്രിൽ
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് "{name}" ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	സിസ്റ്റത്തിൻ്റെ പ്രദേശം എഴുതുന്നതുപോലെ
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	ഫയൽ ലിസ്റ്റിനായി പിയറുകളോട് ചോദിക്കുന്നു. മാഗ്നറ്റ് ലിങ്കുകൾക്ക് ഒന്നോ രണ്ടോ മിനിറ്റ് എടുത്തേക്കാം.
+#. text in the Scheduler window
+#, machine
+	August	ഓഗസ്റ്റ്
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	ഇനിപ്പറയുന്ന ഫയൽ തരങ്ങൾ "{category}" വിഭാഗത്തിൽ സ്വയമേവ ചേർക്കുക:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	ഇനിപ്പറയുന്ന ഫയൽ തരങ്ങൾ സ്വയമേവ ഡൗൺലോഡ് ചെയ്യാൻ തുടങ്ങുക:
+#. window title in the Batch download window
+#, machine
+	Batch download	ബാച്ച് ഡൗൺലോഡ്
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	ബ്രൗസ് ചെയ്യുക
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	ബ്രൗസ് ചെയ്യുക...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	ബ്രൗസർ/സിസ്റ്റം സംയോജനം
+#. message or event log entry in the main window
+#, machine
+	by batch download	ബാച്ച് ഡൗൺലോഡ് വഴി
+#. message or event log entry in the main window
+#, machine
+	by import	ഇറക്കുമതി വഴി
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	റദ്ദാക്കുക
+#. text in errors.rs
+#, machine
+	cancelled	റദ്ദാക്കി
+#. text in errors.rs
+#, machine
+	cannot connect to the server	സെർവറിലേക്ക് കണക്റ്റ് ചെയ്യാൻ കഴിയുന്നില്ല
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	"{text}" കണ്ടെത്താനായില്ല
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	ഫയൽ വായിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	പുനരാരംഭിക്കാൻ കഴിയില്ല: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	ഇനിപ്പറയുന്ന ബ്രൗസറുകളിൽ നിന്ന് ഡൗൺലോഡുകൾ പിടിച്ചെടുക്കുക:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	വിഭാഗങ്ങൾ
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	വിഭാഗങ്ങൾ, ഫയൽ തരങ്ങൾ, ഫോൾഡറുകൾ
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	വിഭാഗം
+#. text in categories.rs
+#, machine
+	Category properties	വിഭാഗത്തിന്റെ ഗുണവിശേഷതകൾ
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	അവസാനം തിരഞ്ഞെടുത്തതിൽ "{category}" വിഭാഗത്തിനായുള്ള ഫോൾഡർ മാറ്റുക
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	ആഴ്ചയിൽ ഒരിക്കൽ അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുന്നു...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	പരിശോധിക്കുന്നു...
+#. text in langpick.rs
+#, machine
+	Choose a language	ഒരു ഭാഷ തിരഞ്ഞെടുക്കുക
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager അതിൻ്റെ വിൻഡോകളിൽ കാണിക്കുന്ന ഭാഷ തിരഞ്ഞെടുക്കുക:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	മായ്ക്കുക
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	ക്ലയന്റ്
+#. text in the Options window
+#, machine
+	Clock:	ക്ലോക്ക്:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	അടയ്ക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	ഒരു മെനു അല്ലെങ്കിൽ ഡയലോഗ് അടയ്ക്കുക
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	പൂർത്തിയായി
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	കംപ്രസ് ചെയ്തവ
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	ഡൗൺലോഡുകൾ ഇല്ലാതാക്കുന്നതിന് മുമ്പ് സ്ഥിരീകരിക്കുക
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	ഡൗൺലോഡുകൾ ഇല്ലാതാക്കുന്നത് സ്ഥിരീകരിക്കുക
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	ബന്ധിപ്പിക്കുന്നു...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	കണക്ഷൻ
+#. page title in the Options window
+#, machine
+	Connections and Limits	കണക്ഷനുകളും പരിധികളും
+#. text in the Options window
+#, machine
+	Connections:	കണക്ഷനുകൾ:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	പകർത്തുക
+#. window title in a dialog box
+#, machine
+	Create folder	ഫോൾഡർ സൃഷ്ടിക്കുക
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	"ഡൗൺലോഡ് പുരോഗതി" ഡയലോഗ് ഇഷ്ടാനുസൃതമാക്കുക
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	MDM ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യുന്നത് തടയാനോ നിർബന്ധിതമാക്കാനോ ഉള്ള കീകൾ ഇഷ്ടാനുസൃതമാക്കുക
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	ബ്രൗസറുകളിലെ MDM ഡൗൺലോഡ് പാനലുകൾ ഇഷ്ടാനുസൃതമാക്കുക
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	ബ്രൗസറുകളുടെ സന്ദർഭ മെനുവിലെ MDM മെനു ഇനങ്ങൾ ഇഷ്ടാനുസൃതമാക്കുക
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	പ്രതിദിനം
+#. text in the Options window
+#, machine
+	Date order:	തീയതി ക്രമം:
+#. page title in the Options window
+#, machine
+	Dates and times	തീയതികളും സമയങ്ങളും
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	ദിവസം, മാസം, വർഷം
+#. text in the Scheduler window
+#, machine
+	December	ഡിസംബർ
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	സ്ഥിരസ്ഥിതി
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	"{category}" വിഭാഗത്തിനായുള്ള സ്ഥിരസ്ഥിതി ഡൗൺലോഡ് ഡയറക്‌ടറി
+#. page title in the Options window
+#, machine
+	Default download settings	സ്ഥിരസ്ഥിതി ഡൗൺലോഡ് ക്രമീകരണങ്ങൾ
+#. text in the Options window
+#, machine
+	Default max. conn. number	സ്ഥിരസ്ഥിതി പരമാവധി കണക്ഷൻ നമ്പർ
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	ഇല്ലാതാക്കുക
+#. message or event log entry in the main window
+#, machine
+	Delete category	വിഭാഗം ഇല്ലാതാക്കുക
+#. message or event log entry in the main window
+#, machine
+	Delete queue	ക്യൂ ഇല്ലാതാക്കുക
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" എന്ന വിഭാഗം ഇല്ലാതാക്കണോ? അതിലെ ഡൗൺലോഡുകൾ പൊതുവായവയായി മാറും; അവയുടെ ഫയലുകൾ അവയുടെ സ്ഥാനത്ത് തന്നെ തുടരും.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" എന്ന ക്യൂ ഇല്ലാതാക്കണോ? അതിലെ ഡൗൺലോഡുകൾ ലിസ്റ്റിൽ തുടരും.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	തിരഞ്ഞെടുത്ത ഡൗൺലോഡുകൾ ഇല്ലാതാക്കുക (ആദ്യം ചോദിക്കും)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	തിരഞ്ഞെടുത്ത ഡൗൺലോഡുകളും അവയുടെ ഫയലുകളും ഇല്ലാതാക്കുക (ആദ്യം ചോദിക്കും)
+#. text in a dialog box
+#, machine
+	Description	വിവരണം
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	വിവരണമോ വിവരണത്തിന്റെ ഭാഗമോ
+#. text in a download's Properties window
+#, machine
+	Description:	വിവരണം:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	ഡിസ്ക് പിശക്: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	ക്യൂകളുടെ ലിസ്റ്റിൽ പ്രദർശിപ്പിച്ചത്
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	ഡൗൺലോഡ് ചെയ്യുന്നത് ആരംഭിക്കരുത്, ഫയലുകൾ ക്യൂവിലേക്ക് ചേർക്കുക മാത്രം ചെയ്യുക
+#. text in a dialog box
+#, machine
+	Do you want to create it?	നിങ്ങൾക്ക് ഇത് സൃഷ്ടിക്കണോ?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	പ്രമാണങ്ങൾ
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	ഈ ഡയലോഗ് വീണ്ടും കാണിക്കരുത്
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	ഇനിപ്പറയുന്ന വിലാസങ്ങളിൽ നിന്ന് സ്വയമേവ ഡൗൺലോഡ് ചെയ്യുന്നത് ആരംഭിക്കരുത്:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	ഇനിപ്പറയുന്ന സൈറ്റുകളിൽ നിന്ന് സ്വയമേവ ഡൗൺലോഡ് ചെയ്യുന്നത് ആരംഭിക്കരുത്:
+#. text in a download's progress window
+#, machine
+	Done	ചെയ്തു
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	ഡൗൺലോഡ് ചെയ്യുക
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" വീണ്ടും ആദ്യം മുതൽ ഡൗൺലോഡ് ചെയ്യണോ? പുതിയ ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ പൂർത്തിയാക്കിയ ഫയൽ മാറ്റിസ്ഥാപിക്കപ്പെടും.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	ഡൗൺലോഡ് പൂർത്തിയായി
+#. text in the Options window
+#, machine
+	Download failed	ഡൗൺലോഡ് പരാജയപ്പെട്ടു
+#. window title in a dialog box
+#, machine
+	Download File Info	ഫയൽ വിവരങ്ങൾ ഡൗൺലോഡ് ചെയ്യുക
+#. button in a dialog box
+#, machine
+	Download Later	പിന്നീട് ഡൗൺലോഡ് ചെയ്യുക
+#. window title in a dialog box
+#, machine
+	Download later	പിന്നീട് ഡൗൺലോഡ് ചെയ്യുക
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	ഡൗൺലോഡ് പരിധികൾ
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB-യിൽ കൂടുതൽ ഡൗൺലോഡ് ചെയ്യരുത്\nഓരോ {hours} മണിക്കൂറിലും
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	ഇപ്പോൾ ഡൗൺലോഡ് ചെയ്യുക
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	ഡൗൺലോഡ് പാനലുകൾ
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	ഡൗൺലോഡ് നില
+#. window title in the Download video window
+#, machine
+	Download video from a page	ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	ഒരേ സമയം {files} ഫയലുകൾ ഡൗൺലോഡ് ചെയ്യുക
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	ഡൗൺലോഡ് ചെയ്തത്
+#. page title in the Options window
+#, machine
+	Downloaded file types	ഡൗൺലോഡ് ചെയ്ത ഫയൽ തരങ്ങൾ
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} ബൈറ്റുകൾ) ഡൗൺലോഡ് ചെയ്തു
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	ഡൗൺലോഡ് ചെയ്യുന്നു
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	ആദ്യം മുതൽ വീണ്ടും ഡൗൺലോഡ് ചെയ്യുന്നു
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg ഡൗൺലോഡ് ചെയ്യുകയും പരിശോധിക്കുകയും ചെയ്യുന്നു (ഏകദേശം 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	yt-dlp ഡൗൺലോഡ് ചെയ്യുകയും പരിശോധിക്കുകയും ചെയ്യുന്നു...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	ഡൗൺലോഡുകൾ
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	ഡൗൺലോഡുകൾ നിർത്തി, {time} എന്ന സമയത്ത് സ്വയമേവ പുനരാരംഭിക്കും.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	ഡൗൺലോഡ് ചെയ്യാൻ ലിങ്കുകൾ ഇവിടെ വലിച്ചിടുക
+#. window title in a dialog box
+#, machine
+	Duplicate download link	ഡ്യൂപ്ലിക്കേറ്റ് ഡൗൺലോഡ് ലിങ്ക്
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	എഡിറ്റ് ചെയ്യുക
+#. text in the Options window
+#, machine
+	Edit exception	ഒഴിവാക്കൽ എഡിറ്റ് ചെയ്യുക
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	ലിസ്റ്റ് എഡിറ്റ് ചെയ്യുക...
+#. text in the Options window
+#, machine
+	Edit login	ലോഗിൻ എഡിറ്റ് ചെയ്യുക
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	എഡിറ്റ് ചെയ്യുക...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	ഇമെയിൽ
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	ഒരു മാഗ്നറ്റ് ലിങ്ക് നൽകുക അല്ലെങ്കിൽ ഒരു .torrent ഫയൽ തിരഞ്ഞെടുക്കുക
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	പുതിയ ക്യൂവിനായി ഒരു പേര് നൽകുക
+#. window title in a dialog box
+#, machine
+	Enter new address to download	ഡൗൺലോഡ് ചെയ്യാൻ പുതിയ വിലാസം നൽകുക
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	ക്യൂ പേര് നൽകുക
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	പിശക്
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	പിശക്: {error}
+#. text in the Options window
+#, machine
+	Event	ഇവന്റ്
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	ഉദാഹരണം:
+#. text in the Options window
+#, machine
+	Exceptions:	ഒഴിവാക്കലുകൾ:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	പുറത്തുകടക്കുക
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	പൂർത്തിയാകുമ്പോൾ Mister Download Manager-ൽ നിന്ന് പുറത്തുകടക്കുക
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	പ്രതീക്ഷിക്കുന്ന ചെക്ക്സം (MD5, SHA-1, SHA-256, SHA-512 അല്ലെങ്കിൽ CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	പ്രതീക്ഷിക്കുന്ന ചെക്ക്സം സജ്ജീകരിച്ചു ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	എക്‌സ്‌പോർട്ട് ചെയ്യുക
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome എക്സ്റ്റൻഷനുകളുടെ ലഭ്യത വർദ്ധിപ്പിക്കുക
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	സ്പേസുകൾ ഉപയോഗിച്ച് വേർതിരിച്ച എക്സ്റ്റൻഷനുകൾ, ഉദാഹരണത്തിന് MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	ഫെബ്രുവരി
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	ഫയൽ
+#. text in the Scheduler window
+#, machine
+	File Name	ഫയലിന്റെ പേര്
+#. text in the Download video window
+#, machine
+	File name	ഫയലിന്റെ പേര്
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	ഫയലിന്റെ പേര് അല്ലെങ്കിൽ പേരിന്റെ ഭാഗം
+#. window title in a download's Properties window
+#, machine
+	File Properties	ഫയൽ പ്രോപ്പർട്ടികൾ
+#. text in a download's progress window
+#, machine
+	File size	ഫയൽ വലുപ്പം
+#. text in the Options window
+#. tab title
+#, machine
+	File types	ഫയൽ തരങ്ങൾ
+#. text in categories.rs
+#, machine
+	File types:	ഫയൽ തരങ്ങൾ:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	ഫയലുകൾ
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	ഫയലുകൾ പോകുന്നത്: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	ക്യൂവിലെ ഫയലുകൾ
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	കണ്ടെത്തുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	ഒരു ഡൗൺലോഡ് കണ്ടെത്തുക
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	ഫയൽ കണ്ടെത്തുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	അടുത്ത പൊരുത്തം കണ്ടെത്തുക
+#. text in the Find window
+#, machine
+	Find:	കണ്ടെത്തുക:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	പൂർത്തിയായി
+#. text in the Options window
+#, machine
+	First day of the week:	ആഴ്ചയിലെ ആദ്യ ദിവസം:
+#. text in the Batch download window
+#, machine
+	First file:	ആദ്യ ഫയൽ:
+#. text in categories.rs
+#, machine
+	Folder:	ഫോൾഡർ:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	ഉദാഹരണത്തിന്: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	നിങ്ങളുടെ Windows അക്കൗണ്ടിന് മാത്രം. "ഇതുപയോഗിച്ച് തുറക്കുക" എന്നതിൽ തിരഞ്ഞെടുത്ത മറ്റൊരു ആപ്പ് ആദ്യം തന്നെ തുടരും.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	പ്രോസസ്സുകൾ അവസാനിപ്പിക്കാൻ നിർബന്ധിക്കുക
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	വെ
+#. text in the Scheduler window
+#, machine
+	Friday	വെള്ളി
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	ഒരു മാഗ്നറ്റ് ലിങ്കിൽ നിന്ന്
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	ഒരു പേജിൽ നിന്ന് (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	ഒരു ടോറന്റ് ഫയലിൽ നിന്ന്
+#. message or event log entry in the main window
+#, machine
+	from the browser	ബ്രൗസറിൽ നിന്ന്
+#. message or event log entry in the main window
+#, machine
+	from the command line	കമാൻഡ് ലൈനിൽ നിന്ന്
+#. text in the Batch download window
+#, machine
+	From:	മുതൽ:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	പൊതുവായത്
+#. button in the Options window
+#, machine
+	Get System	സിസ്റ്റം നേടുക
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	പിയറുകളിൽ നിന്ന് ഫയൽ ലിസ്റ്റ് നേടുന്നു... {n} സെ
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	പൂർത്തിയാകുമ്പോൾ മോഡം വിച്ഛേദിക്കുക
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	ഉണ്ട്
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	സഹായം
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	ഹൈബർനേറ്റ് ചെയ്യുക
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	&വിഭാഗങ്ങൾ മറയ്ക്കുക
+#. button in a download's progress window
+#, machine
+	Hide tab	ടാബ് മറയ്ക്കുക
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	ഹോം പേജ്
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	ഞാൻ Mister Download Manager ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യുന്നു: വേഗതയേറിയതും സൗജന്യവും, നിങ്ങൾക്കറിയാവുന്ന ഡൗൺലോഡ് മാനേജർ പോലെയാണിത്. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	ഒരു ഡ്യൂപ്ലിക്കേറ്റ് ഡൗൺലോഡ് ലിങ്ക് ചേർത്താൽ:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	നിലവിലുള്ള ഫയൽ പൂർണ്ണമാണെങ്കിൽ, ഡൗൺലോഡ് പൂർത്തിയായ ഡയലോഗ് കാണിക്കുക; അല്ലെങ്കിൽ അത് പുനരാരംഭിക്കുക.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	ഒരു ഡൗൺലോഡ് പുനരാരംഭിക്കുമ്പോൾ ഫയൽ പരിഷ്കരണ സമയ മാറ്റങ്ങൾ അവഗണിക്കുക
+#. message or event log entry in the main window
+#, machine
+	Import	ഇറക്കുമതി ചെയ്യുക
+#. window title in transfer.rs
+#, machine
+	Import downloads	ഡൗൺലോഡുകൾ ഇറക്കുമതി ചെയ്യുക
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	ഒരു ക്യൂവിൽ
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	വിവരങ്ങൾ
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	വിവര ഹാഷ്
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	ffmpeg ഇൻസ്റ്റാൾ ചെയ്യുക
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	yt-dlp ഇൻസ്റ്റാൾ ചെയ്യുക
+#. text in a dialog box
+#, machine
+	Invalid address	അസാധുവായ വിലാസം
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, തുടങ്ങിയ ക്രമത്തിലുള്ള ഫയൽ നാമങ്ങളുടെ ഒരു കൂട്ടം,\nimg100.jpg MDM ഡൗൺലോഡ് ക്യൂവിലേക്ക് ചേർക്കാൻ സാധിക്കും. ഫയൽ നാമ പാറ്റേണിനായി ആസ്റ്ററിസ്ക് വൈൽഡ്കാർഡ് ഉപയോഗിക്കുക.
+#. text in the Scheduler window
+#, machine
+	January	ജനുവരി
+#. text in the Scheduler window
+#, machine
+	July	ജൂലൈ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	പേര് തുടങ്ങുന്ന ഡൗൺലോഡിലേക്ക് പോകുക
+#. text in the Scheduler window
+#, machine
+	June	ജൂൺ
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KBytes/സെക്കൻഡ്
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	ടോറന്റുകൾ പൂർത്തിയാക്കിയ ശേഷം പങ്കിടുന്നത് തുടരുക
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	കീബോർഡ് കുറുക്കുവഴികൾ
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	കീകൾ...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	ഭാഷ
+#. text in the Batch download window
+#, machine
+	Last file:	അവസാന ഫയൽ:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	അവസാന ശ്രമം {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	പിന്നീട്
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Mister Download Manager ആരംഭത്തിൽ പ്രവർത്തിപ്പിക്കുക
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	അക്ഷരങ്ങൾ
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	ലൈസൻസുകളും ക്രെഡിറ്റുകളും
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	എല്ലാ ഡൗൺലോഡുകളും ഒരുമിച്ച് പരിമിതപ്പെടുത്തുക
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	ലോഗിൻ
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	തിരയുക
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	പേജ് തിരയുന്നു...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	പ്രധാന ഡൗൺലോഡ് ക്യൂ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	തിരഞ്ഞെടുപ്പ് വലുതാക്കുകയോ ചെറുതാക്കുകയോ ചെയ്യുക
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	മാനുവൽ പ്രോക്സി/SOCKS കോൺഫിഗറേഷൻ
+#. text in the Scheduler window
+#, machine
+	March	മാർച്ച്
+#. checkbox in the Find window
+#, machine
+	Match case	കേസ് പൊരുത്തപ്പെടുത്തുക
+#. checkbox in the Find window
+#, machine
+	Match whole string only	മുഴുവൻ സ്ട്രിംഗ് മാത്രം പൊരുത്തപ്പെടുത്തുക
+#. group box title in the Options window
+#, machine
+	Max. connections number	പരമാവധി കണക്ഷനുകളുടെ എണ്ണം
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	ഒരു ഫയലിനുള്ള പരമാവധി ഡൗൺലോഡ് വേഗത {kb} KBytes/സെക്കൻഡ്
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	പരമാവധി ഡൗൺലോഡ് വേഗത:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	മെയ്
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	നഷ്ടപ്പെട്ടു
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Mister Download Manager കോൺഫിഗറേഷൻ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager ഓരോ കണക്ഷനും നേരിട്ട് അന്തിമ ഫയലിലേക്ക് എഴുതുന്നു\n(അതിനടുത്തുള്ള ഒരു സ്പാർസ് പാർട്ട് ഫയൽ), അതിനാൽ താൽക്കാലിക ഡയറക്ടറിയോ\nഅസംബ്ലിംഗ് ഘട്ടമോ ആവശ്യമില്ല.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} ലഭ്യമാണ് ({date} പുറത്തിറക്കി).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	തി
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	തിങ്കൾ
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	മാസം, ദിവസം, വർഷം
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	മാറ്റുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	ഒരു പേജ് മുകളിലേക്ക് / താഴേക്ക് നീക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	തിരഞ്ഞെടുത്ത ഡൗൺലോഡ് നീക്കുക അല്ലെങ്കിൽ പേരുമാറ്റുക
+#. text in a download's Properties window
+#, machine
+	Move to folder	ഫോൾഡറിലേക്ക് നീക്കുക
+#. message or event log entry in the main window
+#, machine
+	Move to queue	ക്യൂവിലേക്ക് നീക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	തിരഞ്ഞെടുപ്പ് മാറ്റാതെ നീക്കുക
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	നീക്കുക/പേരുമാറ്റുക
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	മറ്റ് കണക്ഷനുകളേക്കാൾ വളരെ വേഗത കുറവാണ്; വീണ്ടും കണക്റ്റ് ചെയ്യുന്നു
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	സംഗീതം
+#. option (radio button) in the Options window
+#, machine
+	My own way:	എൻ്റെ സ്വന്തം രീതി:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	നമ്പർ
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	പേര്
+#. text in categories.rs
+#, machine
+	Name:	പേര്:
+#. text in errors.rs
+#, machine
+	network error	നെറ്റ്‌വർക്ക് പിശക്
+#. text in the Options window
+#, machine
+	Never show it on these sites:	ഈ സൈറ്റുകളിൽ ഇത് ഒരിക്കലും കാണിക്കരുത്:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	പുതിയത്
+#. text in the Options window
+#, machine
+	New exception	പുതിയ ഒഴിവാക്കൽ
+#. text in the Options window
+#, machine
+	New login	പുതിയ ലോഗിൻ
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	ഇല്ല
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	ഡാറ്റ ഫോൾഡർ ഇല്ല
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	ടോറന്റുകൾക്ക് ഡാറ്റ ഫോൾഡർ ഇല്ല
+#. text in langpick.rs
+#, machine
+	No language matches.	ഭാഷകളൊന്നും പൊരുത്തപ്പെടുന്നില്ല.
+#. text in the Options window
+#, machine
+	No proxy/socks	പ്രോക്സി/SOCKS ഇല്ല
+#. text in the Download video window
+#, machine
+	No video this can download on that page	ഈ പേജിൽ ഡൗൺലോഡ് ചെയ്യാൻ കഴിയുന്ന വീഡിയോകളൊന്നും ലഭ്യമല്ല
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	{file} എന്നതിൽ വെബ് വിലാസങ്ങളൊന്നും കണ്ടെത്തിയില്ല.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	ഒന്നുമില്ല: പിയറുകൾ DHT-യിൽ നിന്നും മറ്റ് പിയറുകളിൽ നിന്നും വരുന്നു
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	ഇതിന് വായിക്കാൻ കഴിയുന്ന ചെക്ക്സം അല്ല
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	മതിയായ ഡിസ്ക് സ്ഥലം ഇല്ല: {needed} ആവശ്യമാണ്, {free} സൗജന്യം
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	ഒരു ക്യൂവിലുമില്ല
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	ഉപയോഗിക്കുന്നില്ല: ഫയൽ പൂർത്തിയാകുമ്പോൾ ഫയൽ ഭാഗങ്ങൾ അതിനടുത്തേക്ക് എഴുതുന്നു
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	ശ്രദ്ധിക്കുക: വേഗത വളരെ പരിമിതമാകുമ്പോൾ ഇന്റർനെറ്റ് സെർവറുകൾക്ക് കണക്ഷൻ വിച്ഛേദിക്കാൻ കഴിഞ്ഞേക്കും! അതിനാൽ "പുനരാരംഭിക്കുക" ഫീച്ചർ പിന്തുണയ്ക്കാത്ത സെർവറുകളിൽ നിന്ന് ഡൗൺലോഡ് ചെയ്യാൻ സ്പീഡ് ലിമിറ്റർ ഉപയോഗിക്കുന്നത് ശുപാർശ ചെയ്യുന്നില്ല.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	ശ്രദ്ധിക്കുക: ഈ ക്രമീകരണങ്ങൾ ക്യൂ പ്രോസസ്സിംഗുമായി ബന്ധപ്പെട്ടതല്ല
+#. text in the Scheduler window
+#, machine
+	November	നവംബർ
+#. text in the Options window
+#, machine
+	Number	നമ്പർ
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	ഡൗൺലോഡ് പരാജയപ്പെട്ടാൽ ഓരോ ഫയലിനും എത്ര തവണ വീണ്ടും ശ്രമിക്കണം:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	നമ്പറുകൾ
+#. text in the Scheduler window
+#, machine
+	October	ഒക്ടോബർ
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	ഓഫ്: പൂർത്തിയാക്കിയ ടോറന്റ്, ഏതൊരു ഡൗൺലോഡ് പോലെയും നിർത്തുന്നു.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തിയ ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യാൻ വാഗ്ദാനം ചെയ്യുക
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	ശരി
+#. text in a download's progress window
+#, machine
+	on download stop/resume	ഡൗൺലോഡ് നിർത്തുക/പുനരാരംഭിക്കുക
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	ഒരിക്കൽ
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	ഒറ്റത്തവണ ഡൗൺലോഡ്
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	ഞാൻ കമ്പ്യൂട്ടർ ഉപയോഗിക്കുമ്പോൾ മാത്രം
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	തുറക്കുക
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	മാഗ്നറ്റ് ലിങ്കുകളും .torrent ഫയലുകളും Mister Download Manager ഉപയോഗിച്ച് തുറക്കുക
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Mister Download Manager തുറക്കുക
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	പൂർത്തിയാകുമ്പോൾ താഴെ പറയുന്ന ഫയൽ തുറക്കുക
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	പൂർത്തിയാകുമ്പോൾ താഴെ പറയുന്ന ഫയൽ തുറക്കുക:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	തിരഞ്ഞെടുത്ത ഡൗൺലോഡ് തുറക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	തിരഞ്ഞെടുത്ത ഡൗൺലോഡിന്റെ മെനു തുറക്കുക
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	ടോറന്റ് ഫയൽ തുറക്കുക
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	ഓപ്ഷനുകൾ
+#. text in a download's progress window
+#, machine
+	Options on completion	പൂർത്തിയാകുമ്പോഴുള്ള ഓപ്ഷനുകൾ
+#. text in the Download video window
+#, machine
+	Page address	പേജ് വിലാസം
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	പാസ്‌വേഡ്
+#. text in the Options window
+#, machine
+	Password:	പാസ്‌വേഡ്:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	ഒരു മാഗ്നറ്റ് ലിങ്ക് ഒട്ടിക്കുക അല്ലെങ്കിൽ ഒരു .torrent ഫയൽ തിരഞ്ഞെടുക്കുക, തുടർന്ന് തിരയുക.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	താൽക്കാലികമായി നിർത്തുക
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	താൽക്കാലികമായി നിർത്തി
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	പിയറുകൾ
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	ആവർത്തന സമന്വയം
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	ഭാഗങ്ങൾ
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	പ്ലേ ചെയ്യുക
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	PM
+#. label in the Options window
+#, machine
+	Port	പോർട്ട്
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	പ്രിവ്യൂ
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	പ്രോഗ്രാമുകൾ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	തിരഞ്ഞെടുത്ത ഡൗൺലോഡിന്റെ പ്രോപ്പർട്ടികൾ
+#. text in a download's progress window
+#, machine
+	Property	പ്രോപ്പർട്ടി
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	പ്രോക്സി / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	പ്രോക്സി / SOCKS കോൺഫിഗറേഷൻ
+#. label in the Options window
+#, machine
+	Proxy server address	പ്രോക്സി സെർവർ വിലാസം
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	ക്യൂ # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	ക്യൂ പ്രോസസ്സിംഗ് ആരംഭിച്ചു
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	ക്യൂ പ്രോസസ്സിംഗ് നിർത്തി/പൂർത്തിയാക്കി
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	ക്യൂകൾ
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	ഫയൽ ലിസ്റ്റ് വായിക്കുന്നു...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	ടോറന്റ് വായിക്കുന്നു...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	ലഭിച്ചത്
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	ഡാറ്റ സ്വീകരിക്കുന്നു...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക
+#. text in a download's Properties window
+#, machine
+	Referer:	റഫറർ:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	പ്രാദേശികം
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	ഈ ഫയലിനായുള്ള സ്പീഡ് ലിമിറ്റർ ക്രമീകരണങ്ങൾ ഓർമ്മിക്കുക
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	"{category}" വിഭാഗത്തിനായുള്ള ഈ പാത ഓർമ്മിക്കുക
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	നീക്കം ചെയ്യുക
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	നക്ഷത്രചിഹ്നം ഇതിലേക്ക് മാറ്റുക
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	ഫലം: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	പുനരാരംഭിക്കുക
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	പുനരാരംഭിക്കാനുള്ള കഴിവ്
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	പുനരാരംഭിച്ചു
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	വീണ്ടും ശ്രമിക്കുന്നു: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	നിർ&ത്തുക
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	ശനി
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	ശനിയാഴ്ച
+#. text in a dialog box
+#, machine
+	Save As	ഇങ്ങനെ സംരക്ഷിക്കുക
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	ഇതിലേക്ക് സംരക്ഷിക്കുക
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	ഇതിലേക്ക് സംരക്ഷിക്കുക...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	ഇതിലേക്ക് സംരക്ഷിക്കുക:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	ഇതിൽ സംരക്ഷിച്ചു
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	ഷെഡ്യൂൾ
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	ഷെഡ്യൂളർ
+#. text in langpick.rs
+#, machine
+	Search:	തിരയുക:
+#. text in the Batch download window
+#, machine
+	Second file:	രണ്ടാമത്തെ ഫയൽ:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	എല്ലാം തിരഞ്ഞെടുക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	എല്ലാ ഡൗൺലോഡുകളും തിരഞ്ഞെടുക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	ഇതുവരെയുള്ള എല്ലാ ഡൗൺലോഡുകളും തിരഞ്ഞെടുക്കുക
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	ഒന്നും തിരഞ്ഞെടുക്കരുത്
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	ഒന്നോ അതിലധികമോ ഡൗൺലോഡുകൾ തിരഞ്ഞെടുക്കുക അല്ലെങ്കിൽ തിരഞ്ഞെടുക്കാതിരിക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	ഡോട്ടുകളുള്ള ഔട്ട്‌ലൈനോടുകൂടിയ ഡൗൺലോഡ് തിരഞ്ഞെടുക്കുക അല്ലെങ്കിൽ തിരഞ്ഞെടുക്കാതിരിക്കുക
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Mister Download Manager ഇവന്റുകൾക്കായി ശബ്‌ദങ്ങൾ തിരഞ്ഞെടുക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	ബോക്സിലെ ഡൗൺലോഡുകൾ തിരഞ്ഞെടുക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	ആദ്യത്തെ / അവസാനത്തെ ഡൗൺലോഡ് തിരഞ്ഞെടുക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	മുമ്പത്തെ / അടുത്ത ഡൗൺലോഡ് തിരഞ്ഞെടുക്കുക
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	തിരഞ്ഞെടുത്തവ: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	ഇതൊരു സുഹൃത്തിന് അയയ്ക്കുക:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	അയച്ചത്
+#. text in the Scheduler window
+#, machine
+	September	സെപ്റ്റംബർ
+#. text in the Options window
+#, machine
+	Server	സെർവർ
+#. text in the Options window
+#, machine
+	Server:	സെർവർ:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	സെർവർ നൽകിയ ഫയൽ നിർമ്മാണ തീയതി സജ്ജമാക്കുക
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	പങ്കിടൽ അനുപാതം
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	പങ്കിടുന്നു
+#. text in the download list
+#, machine
+	Show	കാണിക്കുക
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	കാറ്റഗറികൾ കാ&ണിക്കുക
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	ഒരു ഡയലോഗ് കാണിക്കുകയും എന്തുചെയ്യണമെന്ന് ചോദിക്കുകയും ചെയ്യുക.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	ബ്രൗസറുകളിലെ വീഡിയോകളിൽ ഒരു ഡൗൺലോഡ് ബട്ടൺ കാണിക്കുക
+#. button in the download list
+#, machine
+	Show all	എല്ലാം കാണിക്കുക
+#. text in a download's progress window
+#, machine
+	Show details >>	വിശദാംശങ്ങൾ കാണിക്കുക >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	ഡൗൺലോഡ് പൂർത്തിയായ ഡയലോഗ് കാണിക്കുക
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	ബാച്ച് ഡൗൺലോഡ് ഡയലോഗുകൾ അടയ്ക്കുമ്പോൾ ക്യൂ തിരഞ്ഞെടുക്കൽ പാനൽ കാണിക്കുക
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	"പിന്നീട് ഡൗൺലോഡ് ചെയ്യുക" ബട്ടൺ അമർത്തുമ്പോൾ ക്യൂ തിരഞ്ഞെടുക്കൽ പാനൽ കാണിക്കുക
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	ഡൗൺലോഡ് ആരംഭിക്കാനുള്ള ഡയലോഗ് കാണിക്കുക
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	ഡൗൺലോഡുകൾ നിർത്തുന്നതിന് മുമ്പ് മുന്നറിയിപ്പ് കാണിക്കുക
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	ടോറന്റ് ഡൗൺലോഡ് ചെയ്യുമ്പോൾ കാണിക്കുന്നു.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	ഷട്ട് ഡൗൺ ചെയ്യുക
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	സൈറ്റിന്റെ പേര്/ഡൗൺലോഡ് ലിങ്ക്/മാതൃ വെബ് പേജ്/റഫറർ
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	സൈറ്റ്/പാത
+#. text in the Options window
+#, machine
+	Site/path:	സൈറ്റ്/പാത:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	സൈറ്റുകളുടെ ലോഗിനുകൾ
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	വലുപ്പം
+#. text in the Download video window
+#, machine
+	size unknown	വലുപ്പം അജ്ഞാതം
+#. text in a download's Properties window
+#, machine
+	Size:	വലുപ്പം:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	ഒഴിവാക്കി
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	സ്ലീപ്പ്
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	ചിലത്
+#. text in the Options window
+#, machine
+	Sound file	ശബ്ദ ഫയൽ
+#. page title in the Options window
+#, machine
+	Sound settings	ശബ്ദ ക്രമീകരണങ്ങൾ
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	ശബ്ദങ്ങൾ
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	സോഴ്സ് കോഡ്
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	സ്പീഡ് ലിമിറ്റർ
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	സ്പീഡ് ലിമിറ്റർ ക്രമീകരണങ്ങൾ
+#. button in a dialog box
+#, machine
+	Start Download	ഡൗൺലോഡ് ആരംഭിക്കുക
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	ഡൗൺലോഡ് ആരംഭിക്കുക
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Mister Download Manager ആരംഭിക്കുമ്പോൾ ഡൗൺലോഡ് ആരംഭിക്കുക
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	"ഫയൽ വിവരങ്ങൾ ഡൗൺലോഡ് ചെയ്യുക" ഡയലോഗ് പ്രദർശിപ്പിക്കുമ്പോൾ ഉടനടി ഡൗൺലോഡ് ആരംഭിക്കുക
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	പ്രധാന ഡൗൺലോഡ് ക്യൂ ആരംഭിക്കുക
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	കണക്ഷനുകൾ വഴിയുള്ള ആരംഭ സ്ഥാനങ്ങളും ഡൗൺലോഡ് പുരോഗതിയും
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	ക്യൂ ഇപ്പോൾ ആരംഭിക്കുക
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	{queue} ആരംഭിക്കുക
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	ആരംഭിച്ചു
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) ഉപയോഗിച്ച് ആരംഭിച്ചു
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	നില
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	നില:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	ഡൗൺലോഡ് നിർത്തുക
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	പ്രധാന ഡൗൺലോഡ് ക്യൂ നിർത്തുക
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	{queue} നിർത്തുക
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	നിർത്തി
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ നിർത്തുന്നു
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	ഞാ
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	ഞായർ
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	സമന്വയ ക്യൂ
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	ഒരു സുഹൃത്തിനോട് പറയുക
+#. group box title in the Options window
+#, machine
+	Temporary directory	താൽക്കാലിക ഡയറക്ടറി
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	വ്യാ
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	അതിനായി സൂക്ഷിച്ച .torrent ഫയൽ പോയി
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	വിലാസം ഒരു http(s) അല്ലെങ്കിൽ ftp(s) വിലാസമായിരിക്കണം
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	മികച്ച ഗുണനിലവാരമുള്ള വീഡിയോയും ഓഡിയോയും ലയിപ്പിക്കാൻ ffmpeg ആവശ്യമാണ് (ഏകദേശം 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	{n} സെക്കൻഡിനുള്ളിൽ കമ്പ്യൂട്ടർ സ്ലീപ്പ് മോഡിലേക്ക് പോകും.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	{n} സെക്കൻഡിനുള്ളിൽ കമ്പ്യൂട്ടർ ഹൈബർനേറ്റ് ചെയ്യും.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	{n} സെക്കൻഡിനുള്ളിൽ കമ്പ്യൂട്ടർ ഷട്ട് ഡൗൺ ചെയ്യും.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	ഭാഗം പൂർത്തിയാകുന്നതിന് മുമ്പ് കണക്ഷൻ അടച്ചു
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	ഡാറ്റ സ്വീകരിക്കുന്നതിനിടെ കണക്ഷൻ നഷ്ടപ്പെട്ടു
+#. text in errors.rs
+#, machine
+	the disk is full	ഡിസ്ക് നിറഞ്ഞിരിക്കുന്നു
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	ഡൗൺലോഡ് പരിധി ({hours} മണിക്കൂറിൽ {mb} MB) എത്തിയിരിക്കുന്നു.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	ഡൗൺലോഡ് ലിങ്ക് കാലഹരണപ്പെട്ടു (ഡൗൺലോഡ് വിലാസം പുതുക്കുക)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	നിങ്ങൾക്കറിയാവുന്ന ഡൗൺലോഡ് മാനേജർ, വേഗത്തിലാക്കാൻ പുനർനിർമ്മിച്ചത്. GNU GPL, പതിപ്പ് 3 അല്ലെങ്കിൽ അതിനുശേഷമുള്ളവയ്ക്ക് കീഴിൽ സൗജന്യവും ഓപ്പൺ സോഴ്‌സും. yt-dlp ഉപയോഗിച്ചാണ് വീഡിയോകൾ കണ്ടെത്തുന്നത്; librqbit-ൽ ടോറന്റുകൾ പ്രവർത്തിക്കുന്നു.
+#. text in a dialog box
+#, machine
+	The download queue is done.	ഡൗൺലോഡ് ക്യൂ പൂർത്തിയായി.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	ഡ്രൈവോ നെറ്റ്‌വർക്ക് പങ്കിടലോ ലഭ്യമല്ല
+#. text in errors.rs
+#, machine
+	the file changed on the server	സെർവറിൽ ഫയൽ മാറി
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	ഫയൽ നീക്കാൻ കഴിഞ്ഞില്ല
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	ഫയൽ വായിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	ഫയൽ പൊരുത്തപ്പെടുന്നില്ല ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	ഫയൽ പൊരുത്തപ്പെടുന്നു ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	ഫയൽ ഇങ്ങനെ സേവ് ചെയ്തു
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	മറ്റൊരു വിഭാഗത്തിലും ലിസ്റ്റ് ചെയ്യാത്ത ഫയൽ തരങ്ങൾ
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	ഫയലിന്റെ {algorithm} ചെക്ക്‌സം പൊരുത്തപ്പെടുന്നില്ല (ഡാറ്റ സൂക്ഷിച്ചിരിക്കുന്നു; അത് വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	ഫോൾഡർ സൃഷ്ടിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	{path} എന്ന ഫോൾഡർ ലഭ്യമല്ല (ഡ്രൈവ് നീക്കം ചെയ്‌തോ നെറ്റ്‌വർക്ക് പങ്കിടൽ ഓഫ്‌ലൈനിലാണോ?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP സെർവർ {code} {reply} എന്ന് മറുപടി നൽകി
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	ലിസ്റ്റ് സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	പാത Windows-ന് വളരെ വലുതാണ്: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	റിലീസിന് പതിപ്പില്ല
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	സുരക്ഷിത കണക്ഷൻ പരാജയപ്പെട്ടു
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	തിരഞ്ഞെടുത്ത ഡൗൺലോഡ് പൂർത്തിയായിട്ടില്ല. Mister Download Manager\nഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് ഇത് ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?
+#. text in errors.rs
+#, machine
+	the server answered {status}	സെർവർ {status} എന്ന് മറുപടി നൽകി
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	സെർവറിന് ഫയലിന്റെ ഭാഗങ്ങൾ അയയ്ക്കാൻ കഴിയില്ല, അതിനാൽ അത് പുനരാരംഭിക്കാൻ കഴിയില്ല
+#. text in errors.rs
+#, machine
+	the server did not answer in time	സെർവർ കൃത്യസമയത്ത് മറുപടി നൽകിയില്ല
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	സെർവർ ആവശ്യപ്പെട്ട ഭാഗം അയച്ചില്ല
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	സെർവർ തിരക്കിലാണ് ({status}); പിന്നീട് വീണ്ടും ശ്രമിക്കുക
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	സെർവർ ഫയലിന് പകരം ഒരു വെബ് പേജ് അയച്ചു (സൈൻ-ഇൻ ആവശ്യമാണോ അതോ ലിങ്ക് കാലഹരണപ്പെട്ടോ?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	സെർവർ ഫയലിന്റെ അപ്രതീക്ഷിത ഭാഗം അയച്ചു ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	ടോറന്റ് സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	ടോറന്റ് ഇനി അവിടെയില്ല
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	ഈ ഫയൽ ലഭിച്ച വെബ് പേജ്:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	ഈ പേരിൽ ഒരു വിഭാഗം ഇതിനകം ഉണ്ട്
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	"ഡൗൺലോഡ് പൂർത്തിയായ ഡയലോഗ് കാണിക്കുക" ഓണാക്കുമ്പോൾ ഈ ക്രമീകരണങ്ങൾ ലഭ്യമല്ല
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	ഈ വിലാസം ഇതിനകം ഡൗൺലോഡുകളുടെ ലിസ്റ്റിലുണ്ട്:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	ഈ ഫോൾഡർ നിലവിലില്ല:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	ഈ ടോറന്റ് ഇതിനകം ഡൗൺലോഡ് ലിസ്റ്റിലുണ്ട്
+#. text in the Scheduler window
+#, machine
+	Thursday	വ്യാഴം
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	ശേഷിക്കുന്ന സമയം
+#. text in the Batch download window
+#, machine
+	To:	ലേക്ക്:
+#. text in errors.rs
+#, machine
+	too many redirects	വളരെ അധികം റീഡയറക്റ്റുകൾ
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	ടോറന്റ്
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	ടോറന്റ് ഡൗൺലോഡുകൾ (മാഗ്നറ്റ് ലിങ്കുകളും .torrent ഫയലുകളും)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	ടോറന്റ് ഫയലുകൾ
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	ടോറന്റ് ക്രമീകരണങ്ങൾ
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	ടോറന്റുകൾ
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	ടോറന്റുകൾക്ക് ആരംഭിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	ട്രാക്കർ
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	ട്രാക്കറുകൾ
+#. text in a download's progress window
+#, machine
+	Transfer rate	കൈമാറ്റ നിരക്ക്
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	ചൊ
+#. text in the Scheduler window
+#, machine
+	Tuesday	ചൊവ്വാഴ്ച
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	ഓഫ് ചെയ്യുക
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	പൂർത്തിയാകുമ്പോൾ കമ്പ്യൂട്ടർ ഓഫ് ചെയ്യുക
+#. button in a dialog box
+#, machine
+	Turn off now	ഇപ്പോൾ ഓഫ് ചെയ്യുക
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	ഓൺ ചെയ്യുക
+#. text in a download's Properties window
+#, machine
+	Type:	തരം:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	പൂർത്തിയാകാത്തവ
+#. text in a download's Properties window
+#, machine
+	Unknown	അജ്ഞാതം
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	അജ്ഞാതം
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	അപ്‌ഡേറ്റുകൾ പരിശോധിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	വിപുലമായ ബ്രൗസർ സംയോജനം ഉപയോഗിക്കുക
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	അംഗീകാരം ഉപയോഗിക്കുക
+#. text in the Options window
+#, machine
+	Use automatic configuration script	ഓട്ടോമാറ്റിക് കോൺഫിഗറേഷൻ സ്ക്രിപ്റ്റ് ഉപയോഗിക്കുക
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	PASV മോഡിൽ FTP ഉപയോഗിക്കുക
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	ഡൗൺലോഡ് പിശകുകൾ ഉണ്ടെങ്കിൽ ബ്രൗസറിന്റെ അഭ്യർത്ഥനയിൽ നിന്ന് പ്രോക്സി/SOCKS ഉപയോഗിക്കുക /\nബ്രൗസറിൽ നിന്ന് തടസ്സപ്പെടുത്തിയ ഡൗൺലോഡുകൾക്കായി
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	സ്പീഡ് ലിമിറ്റർ ഉപയോഗിക്കുക
+#. text in the Options window
+#, machine
+	Use system settings	സിസ്റ്റം ക്രമീകരണങ്ങൾ ഉപയോഗിക്കുക
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	ഇനിപ്പറയുന്ന പ്രോട്ടോക്കോളുകൾക്കായി ഈ പ്രോക്സി ഉപയോഗിക്കുക:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	ഡൗൺലോഡുകളുടെ ലിസ്റ്റും ഷെഡ്യൂളറും ഉപയോഗിക്കുന്നു.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	ഉപയോക്താവ്
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	സെർവറുകൾ/സൈറ്റുകൾക്കായുള്ള ഉപയോക്തൃനാമങ്ങളും പാസ്‌വേഡുകളും
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	സ്വമേധയാ ചേർത്ത ഡൗൺലോഡുകൾക്കുള്ള യൂസർ-ഏജന്റ്:
+#. text in the Options window
+#, machine
+	User:	ഉപയോക്താവ്:
+#. label in the Options window
+#, machine
+	UserName	ഉപയോക്തൃനാമം
+#. text in a download's progress window
+#, machine
+	Value	മൂല്യം
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	പരിശോധിക്കുക
+#. window title in the Checksum window
+#, machine
+	Verify checksum	ചെക്ക്സം പരിശോധിക്കുക
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	പരിശോധിക്കുന്നു...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	പതിപ്പ് {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	വീഡിയോ
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	വീഡിയോ തിരയലുകൾ yt-dlp ഉപയോഗിക്കുന്നു (ഏകദേശം 23 MB, അതിന്റെ സിഗ്നേച്ചർ ഉപയോഗിച്ച് പരിശോധിച്ചു).
+#. text in the Options window
+#, machine
+	Virus checking settings	വൈറസ് പരിശോധന ക്രമീകരണങ്ങൾ
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	കാത്തിരിക്കുന്നു
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	കാത്തിരിക്കുന്നു: ഡൗൺലോഡ് പരിധിയിലെത്തി (ഷെഡ്യൂളർ)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	ബു
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	വെബ്
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	{file} എന്നതിൽ കണ്ടെത്തിയ വെബ് വിലാസങ്ങൾ:
+#. text in the Scheduler window
+#, machine
+	Wednesday	ബുധനാഴ്ച
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	പുതിയതെന്താണ്:
+#. text in the Batch download window
+#, machine
+	Wildcard size	വൈൽഡ്കാർഡ് വലുപ്പം
+#. text in langpick.rs
+#, machine
+	Windows' language	Windows-ന്റെ ഭാഷ
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Windows-ന്റെ ഭാഷ ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	URL ചേർക്കുക എന്നതിനൊപ്പം
+#. group box title in the Options window
+#, machine
+	Write dates and times	തീയതികളും സമയങ്ങളും എഴുതുക
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	വർഷം, മാസം, ദിവസം
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	അതെ
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	നിങ്ങൾ Mister Download Manager-ന്റെ ഏറ്റവും പുതിയ പതിപ്പാണ് ({version}) ഉപയോഗിക്കുന്നത്.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	നിങ്ങൾ {version} പതിപ്പാണ് ഉപയോഗിക്കുന്നത്.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല (ടാസ്‌ക്കുകൾ → ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക എന്നത് ഇൻസ്റ്റാൾ ചെയ്യുന്നു)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} ചെക്ക്‌സം
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ പരിശോധിച്ചു
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} അടങ്ങിയിരിക്കുന്നു
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} ഫയൽ
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{total} എണ്ണത്തിൽ {have} ({size} വീതം)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{total} കഷണങ്ങളിൽ {have} ({size} വീതം)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} മണിക്കൂർ {m} മിനിറ്റ്
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} കണക്റ്റ് ചെയ്‌തു, {known} അറിയാം
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} മിനിറ്റ് {s} സെക്കൻഡ്
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (ഓട്ടോ)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{total} എണ്ണത്തിൽ {n} തിരഞ്ഞെടുത്തു
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} ബൈറ്റുകൾ)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	ഈ {file_system} ഡ്രൈവിന് {size} വളരെ വലുതാണ് (4 GB വരെ ഫയലുകൾ)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} സെക്കൻഡ്
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} ഇൻസ്റ്റാൾ ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	ചേർത്തത്
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	വിവരണം
+#. column title in the download list in the download list
+#, machine
+column	File Name	ഫയൽ നാമം
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	അവസാന ശ്രമ തീയതി
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	ക്യൂ
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	വലുപ്പം
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	ഉറവിടം
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	നില
+#. column title in the download list in the download list
+#, machine
+column	Time left	ശേഷിക്കുന്ന സമയം
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	കൈമാറ്റ നിരക്ക്
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	ബട്ടൺ ക്രമീകരണങ്ങൾ...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Mister Download Manager ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യുക
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	വീഡിയോയുടെ അരികിലൂടെ നീക്കാൻ വലിച്ചിടുക
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	ബ്രൗസറിൽ നിന്നുള്ള ഡൗൺലോഡുകൾ Mister Download Manager-ലേക്ക് കൈമാറുന്നു.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	ഈ വീഡിയോയിൽ മറയ്ക്കുക
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager പ്രതികരിച്ചില്ല
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Mister Download Manager സംയോജന മൊഡ്യൂൾ
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	കൂടുതൽ ഓപ്ഷനുകൾ
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	{site} എന്നതിൽ ഒരിക്കലും വേണ്ട
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Mister Download Manager എന്നതിലേക്ക് അയച്ചു
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+ക്ലിക്ക്
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+മുകളിലേക്ക് / Ctrl+താഴേക്ക്
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	ഒഴിഞ്ഞ സ്ഥലത്ത് വലിച്ചിടുക
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+ക്ലിക്ക്
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+മുകളിലേക്ക് / Shift+താഴേക്ക്
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	ഒരു പേര് ടൈപ്പ് ചെയ്യുക
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	മുകളിലേക്ക് / താഴേക്ക്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	Mister Download Manager നെക്കുറിച്ച്(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	പുതിയ ഡൗൺലോഡ് ചേർക്കുക(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	പൂർത്തിയാക്കിയവയെല്ലാം ഇല്ലാതാക്കുക(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	ഇപ്പോൾ ഡൗൺലോഡ് ചെയ്യുക(&D)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	പുറത്തുകടക്കുക(&E)
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	ഇറക്കുമതി ചെയ്യുക(&I)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	കീബോർഡ് കുറുക്കുവഴികൾ(&K)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	ഭാ&ഷ...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	ഓപ്ഷനുകൾ(&O)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	എല്ലാം താൽക്കാലികമായി നിർത്തുക(&P)
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	നീക്കം ചെയ്യുക(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	ഒരു പ്രശ്നം റിപ്പോർട്ട് ചെയ്യുക(&R)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	ഷെഡ്യൂളറും ക്യൂകളും(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	എല്ലാം നിർത്തുക(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	ഡൗൺലോഡ് നിർത്തുക(&S)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	ട്രേ ഐക്കൺ(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	ട്യൂട്ടോറിയലുകൾ(&T)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	വീഡിയോ ഡൗൺലോഡുകൾ(&V)
+#. menu command in the main window
+#, machine
+menu	3D Style	3D ശൈലി
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	ബാച്ച് ഡൗൺലോഡ് ചേർക്കുക(&b)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	മാഗ്നറ്റ് ലിങ്ക് ചേർക്കുക(&m)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	ക്ലിപ്പ്ബോർഡിൽ നിന്ന് ബാച്ച് ഡൗൺലോഡ് &ചേർക്കുക
+#. menu command in the main window
+#, machine
+menu	Add category	വിഭാഗം ചേർക്കുക
+#. menu command in the main window
+#, machine
+menu	Arrange files	ഫയലുകൾ ക്രമീകരിക്കുക
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	ബ്രൗസ് ചെയ്യുക
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	&വിവരണം അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	&ഫയൽ നാമം അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	&അവസാന ശ്രമിച്ച തീയതി അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	&ചേർത്ത ക്രമം അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	&വലിപ്പം അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	&ശേഷിക്കുന്ന സമയം അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	&ചേർത്ത തീയതി അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	മാതൃ &വെബ് പേജ് അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	റഫറർ &വഴി
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	&പാത സംരക്ഷിക്കുക അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	&സ്ഥിതി അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	&കൈമാറ്റ നിരക്ക് അനുസരിച്ച്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	URL ലിസ്റ്റ് &ഇഷ്ടാനുസൃതമാക്കുക...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	&അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	എല്ലാ &ഫിൽട്ടറുകളും മായ്ക്കുക
+#. menu command in the main window
+#, machine
+menu	Create new queue	പുതിയ ക്യൂ ഉണ്ടാക്കുക
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	ഇഷ്ടാനുസൃതമാക്കുക...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	ഡാർക്ക് മോഡ് പിന്തുണ
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	ഇല്ലാതാക്കുക
+#. menu command in the main window
+#, machine
+menu	Delete from queue	ക്യൂവിൽ നിന്ന് ഇല്ലാതാക്കുക
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	ഒരു പേജിൽ നിന്ന് &വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&എക്സ്പോർട്ട് ചെയ്യുക
+#. menu command in the main window
+#, machine
+menu	Edit queue	ക്യൂ എഡിറ്റ് ചെയ്യുക
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	കണ്ടെത്തുക (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	അടുത്തത് കണ്ടെത്തുക (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	ഫോണ്ട്
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	&IDM എക്സ്പോർട്ട് ഫയലിൽ നിന്ന്...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	&ടെക്സ്റ്റ് ഫയലിൽ നിന്ന്...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	&സഹായ ഉള്ളടക്കങ്ങൾ
+#. menu command in the main window
+#, machine
+menu	Hide drop target	ഡ്രോപ്പ് ടാർഗറ്റ് മറയ്ക്കുക
+#. menu command in the main window
+#, machine
+menu	Large Buttons	വലിയ ബട്ടണുകൾ
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	പുതിയ ടൂൾബാറുകൾക്കായി തിരയുക
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Mister Download Manager ഹോം &പേജ്
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	നീക്കുക/പേരുമാറ്റുക (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	നിയോൺ
+#. menu command in the main window
+#, machine
+menu	On Double click	ഇരട്ട ക്ലിക്കിൽ
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	തുറക്കുക
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	ടോറൻ്റ് ഫയൽ തുറക്കുക(&t)...
+#. menu command in the main window
+#, machine
+menu	Open folder	ഫോൾഡർ തുറക്കുക
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	ഇതുകൊണ്ട് തുറക്കുക...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	പ്രോപ്പർട്ടികൾ
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക(&e)
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക
+#. menu command in the main window
+#, machine
+menu	Refresh download address	ഡൗൺലോഡ് വിലാസം പുതുക്കുക
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	നീക്കം ചെയ്യുക
+#. menu command in the main window
+#, machine
+menu	Resume Download	ഡൗൺലോഡ് പുനരാരംഭിക്കുക
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	ഷെഡ്യൂളർ(&c)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	ക്രമീകരണങ്ങൾ(&e)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	ക്യൂ നിർത്തുക(&p)
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	ഷെഡ്യൂൾ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	ഡ്രോപ്പ് ടാർഗറ്റ് കാണിക്കുക(&d)
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Mister Download Manager കാണിക്കുക
+#. menu command in the main window
+#, machine
+menu	Small Buttons	ചെറിയ ബട്ടണുകൾ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	സ്പീഡ് ലിമിറ്റർ(&L)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	ക്യൂ ആരംഭിക്കുക(&q)
+#. menu command in the main window
+#, machine
+menu	Start now	ഇപ്പോൾ ആരംഭിക്കുക
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	നിർത്തുക
+#. menu command in the main window
+#, machine
+menu	Stop Download	ഡൗൺലോഡ് നിർത്തുക
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	ഒരു സുഹൃത്തിനോട് പറയുക(&f)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	IDM എക്സ്പോർട്ട് ഫയലിലേക്ക്(&I)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	ടെക്സ്റ്റ് ഫയലിലേക്ക്(&t)...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	ടൂൾബാർ
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	ടോറൻ്റ് ക്രമീകരണങ്ങൾ(&n)...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	ഓൺ ചെയ്യുക(&n)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	ഓഫ് ചെയ്യുക(&f)
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	ചെക്ക്സം പരിശോധിക്കുക...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	ഡൗൺലോഡുകൾ
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	ഫയൽ
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	സഹായം
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	ടാസ്ക്കുകൾ
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	കാണുക
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	ടോറൻ്റ് ചേർക്കുക
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	URL ചേർക്കുക
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	ഇല്ലാതാക്കുക
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	പൂർത്തിയാക്കിയത് ഇല്ലാതാക്കുക
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	ഓപ്ഷനുകൾ
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	പുനരാരംഭിക്കുക
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	ഷെഡ്യൂളർ
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	ക്യൂ ആരംഭിക്കുക
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	നിർത്തുക
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	എല്ലാം നിർത്തുക
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	ക്യൂ നിർത്തുക
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/സെക്കൻഡ്
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/സെക്കൻഡ്

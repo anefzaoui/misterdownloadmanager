@@ -1,0 +1,2552 @@
+# Mister Download Manager in Icelandic (Íslenska): tools/i18n/translate.py
+# writes the rows marked '#, machine'; a native speaker deletes that line after checking.
+# context	source	translation (craft-i18n format, rows as in en.tsv)
+@id	language.name	Íslenska
+#. count in a dialog box
+#. never shown for a single file
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Eyða einnig {n} skrá af diski|Eyða einnig {n} skrám af diski
+#. count in a dialog box
+#. never shown for a single download
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Ertu viss um að þú viljir eyða {n} niðurhali af niðurhalslista Mister Download Manager?|Ertu viss um að þú viljir eyða þessum {n} niðurhölum af niðurhalslista Mister Download Manager?
+#. count in a download's progress window
+#. a connection closed because the server allows only that many
+#. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{host} allows {n} connection|{host} allows {n} connections	{host} leyfir {n} tengingu|{host} leyfir {n} tengingar
+#. count in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} byte|{n} bytes	{n} bæti|{n} bæti
+#. count in the Batch download window; count in the Add torrent window
+#. how many files the pattern gives in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file|{n} files	{n} skrá|{n} skrár
+#. text in the Scheduler window
+#. verb: save the changes
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Apply	&Virkja
+#. text in the Scheduler window
+#. verb: close the window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Close	&Loka
+#. button in the Scheduler window
+#. verb: delete the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Delete	&Eyða
+#. text in the Scheduler window
+#. noun: button that opens the help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Help	&Hjálp
+#. button in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&New queue	&Ný biðröð
+#. text in the Scheduler window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	&Start now	&Byrja núna
+#. text in the Options window
+#, machine
+	(separate names by spaces)	(aðgreina nöfn með bilum)
+#. text in the Options window
+#. a 12-hour clock, with an example
+#, machine
+	12-hour (9:41 PM)	12 tíma (9:41 PM)
+#. text in the Options window
+#. a 24-hour clock, with an example
+#, machine
+	24-hour (21:41)	24 tíma (21:41)
+#. text in a download's progress window
+#, machine
+	<< Hide details	<< Fela upplýsingar
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	About Mister Download Manager	Um Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Add a download (Add URL)	Bæta við niðurhali (Bæta við URL)
+#. text in the tray icon's menu
+#, machine
+	Add batch download	Bæta við lotuniðurhali
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Add browser...	Bæta við vafra...
+#. text in categories.rs
+#, machine
+	Add category	Bæta við flokki
+#. text in the tray icon's menu
+#, machine
+	Add new download	Bæta við nýju niðurhali
+#. text in the Options window
+#, machine
+	Add the duplicate and overwrite the existing file	Bæta við afritinu og skrifa yfir núverandi skrá
+#. text in the Options window
+#, machine
+	Add the duplicate with a numbered file name	Bæta við afritinu með númeruðu skráarnafni
+#. message or event log entry in the main window
+#, machine
+	Add to queue	Bæta við í biðröð
+#. text in a dialog box
+#, machine
+	Add to queue:	Bæta við í biðröð:
+#. message or event log entry in the main window; window title in the Add torrent window
+#, machine
+	Add torrent	Bæta við torrent
+#. message or event log entry in the main window
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Added {source}	Bætt við {source}
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
+#. noun: the web address (URL)
+#. column title: the web address (URL)
+#, machine
+	Address	Heimilisfang
+#. message or event log entry in the main window
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	Address changed to {host}	Heimilisfangi breytt í {host}
+#. text in a download's Properties window
+#, machine
+	Address:	Heimilisfang:
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Advanced / Socks...	Ítarlegt / Socks...
+#. item in the Categories tree in the main window
+#, machine
+	All Downloads	Allt niðurhal
+#. message or event log entry in the main window
+#, machine
+	All files	Allar skrár
+#. text in errors.rs
+#, machine
+	already being downloaded: {path}	er þegar í niðurhali: {path}
+#. text in a dialog box
+#, machine
+	Also delete the file from disk	Eyða einnig skránni af diski
+#. checkbox in a dialog box
+#, machine
+	Always turn on Speed Limiter on Mister Download Manager startup	Kveikja alltaf á hraðatakmarkara við ræsingu Mister Download Manager
+#. text in regional.rs; text in the Scheduler window
+#. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	AM	f.h.
+#. text in the Scheduler window
+#, machine
+	April	Apríl
+#. text in a dialog box
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Ertu viss um að þú viljir eyða „{name}“ af niðurhalslista Mister Download Manager?
+#. option (radio button) in the Options window
+#, machine
+	As the system's region writes them	Eins og svæði kerfisins skrifar þau
+#. text in the Add torrent window
+#, machine
+	Asking peers for the file list. Magnet links can take a minute or two.	Biðja jafningja um skráarlista. Segultenglar geta tekið eina eða tvær mínútur.
+#. text in the Scheduler window
+#, machine
+	August	Ágúst
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Automatically put in "{category}" category the following file types:	Setja sjálfkrafa í flokkinn „{category}“ eftirfarandi skráartegundir:
+#. text in the Options window
+#, machine
+	Automatically start downloading the following file types:	Byrja sjálfkrafa niðurhal á eftirfarandi skráartegundum:
+#. window title in the Batch download window
+#, machine
+	Batch download	Hópniðurhal
+#. button in the Options window
+#. verb: choose a folder
+#, machine
+	Browse	Fletta
+#. button in categories.rs; button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Browse...	Fletta...
+#. page title in the Options window
+#, machine
+	Browser/System Integration	Vafra-/kerfissamþætting
+#. message or event log entry in the main window
+#, machine
+	by batch download	með hópniðurhali
+#. message or event log entry in the main window
+#, machine
+	by import	með innflutningi
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#, machine
+	Cancel	Hætta við
+#. text in errors.rs
+#, machine
+	cancelled	hætt við
+#. text in errors.rs
+#, machine
+	cannot connect to the server	get ekki tengst netþjóninum
+#. message or event log entry in the main window
+#. {text} = text the user searched for (keep the braces as they are)
+#, machine
+	Cannot find "{text}"	Finn ekki „{text}“
+#. text in the Checksum window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Cannot read the file: {error}	Get ekki lesið skrána: {error}
+#. text in errors.rs
+#, machine
+	cannot resume: {detail}	get ekki haldið áfram: {detail}
+#. group box title in the Options window
+#, machine
+	Capture downloads from the following browsers:	Grípa niðurhal úr eftirfarandi vöfrum:
+#. text in the main window (menus, toolbar, Categories pane)
+#. title of the side pane that lists the categories
+#, machine
+	Categories	Flokkar
+#. page title in the Options window
+#, machine
+	Categories, file types, folders	Flokkar, skráartegundir, möppur
+#. text in a dialog box; text in the Options window
+#, machine
+	Category	Flokkur
+#. text in categories.rs
+#, machine
+	Category properties	Eiginleikar flokks
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Change folder for "{category}" category on last selected	Breyta möppu fyrir flokkinn „{category}“ á síðast valda
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates	Leita að uppfærslum
+#. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Check for updates once a week	Leita að uppfærslum einu sinni í viku
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking for updates...	Leita að uppfærslum...
+#. text in the Checksum window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking...	Athuga...
+#. text in langpick.rs
+#, machine
+	Choose a language	Veldu tungumál
+#. text in langpick.rs
+#, machine
+	Choose the language Mister Download Manager shows its windows in:	Veldu tungumálið sem Mister Download Manager birtir gluggana sína á:
+#. button in the download list
+#. verb: clears this filter
+#, machine
+	Clear	Hreinsa
+#. text in a download's progress window
+#. column title: the peer's torrent program
+#, machine
+	Client	Biðlari
+#. text in the Options window
+#, machine
+	Clock:	Klukka:
+#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. both verbs: Verify = check the file now; Close = close the window
+#. verb: closes the filter box
+#, machine
+	Close	Loka
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Close a menu or dialog	Loka valmynd eða glugga
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): finished
+#, machine
+	Complete	Lokið
+#. text in the download list (sizes, speeds, status)
+#. category name: compressed archives (zip, rar, 7z)
+#, machine
+	Compressed	Þjappað
+#. text in the Options window
+#, machine
+	Confirm before deleting downloads	Staðfesta áður en niðurhal er eytt
+#. window title in a dialog box
+#, machine
+	Confirm deletion of downloads	Staðfesta eyðingu niðurhala
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connecting...	Tengist...
+#. text in the Options window
+#. tab title: connection settings
+#, machine
+	Connection	Tenging
+#. page title in the Options window
+#, machine
+	Connections and Limits	Tengingar og takmarkanir
+#. text in the Options window
+#, machine
+	Connections:	Tengingar:
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copied to the clipboard.	Afritað á klippiborð.
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Copy	Afrita
+#. window title in a dialog box
+#, machine
+	Create folder	Búa til möppu
+#. text in the Options window
+#, machine
+	Customize "Download progress" dialog	Sérsníða gluggann „Niðurhalsframvinda“
+#. text in the Options window
+#, machine
+	Customize keys to prevent or force downloading with MDM	Sérsníða takka til að koma í veg fyrir eða þvinga niðurhal með MDM
+#. text in the Options window
+#, machine
+	Customize MDM Download panels in browsers	Sérsníða MDM niðurhalsborða í vöfrum
+#. text in the Options window
+#, machine
+	Customize MDM menu items in context menu of browsers	Sérsníða MDM valmyndaratriði í samhengisvalmynd vafra
+#. option (radio button) in the Scheduler window
+#. adverb: every day (the other choice is once, on a date)
+#, machine
+	Daily	Daglega
+#. text in the Options window
+#, machine
+	Date order:	Dagsetningarröð:
+#. page title in the Options window
+#, machine
+	Dates and times	Dagsetningar og tímar
+#. text in the Options window
+#. a date's order: day first (30/10/2026)
+#, machine
+	Day, month, year	Dagur, mánuður, ár
+#. text in the Scheduler window
+#, machine
+	December	Desember
+#. button in the Options window
+#. button: put back the default list
+#, machine
+	Default	Sjálfgefið
+#. text in the Options window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Default download directory for "{category}" category	Sjálfgefin niðurhalsmappa fyrir flokkinn „{category}“
+#. page title in the Options window
+#, machine
+	Default download settings	Sjálfgefnar niðurhalsstillingar
+#. text in the Options window
+#, machine
+	Default max. conn. number	Sjálfgefið hámark fjölda tenginga
+#. button in the Options window
+#. verb: delete the item
+#, machine
+	Delete	Eyða
+#. message or event log entry in the main window
+#, machine
+	Delete category	Eyða flokki
+#. message or event log entry in the main window
+#, machine
+	Delete queue	Eyða biðröð
+#. message or event log entry in the main window
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Eyða flokknum „{category}“? Niðurhalið í honum verður almennt; skrárnar haldast þar sem þær eru.
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Delete the queue "{queue}"? Its downloads stay in the list.	Eyða biðröðinni „{queue}“? Niðurhalið í henni helst á listanum.
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads (asks first)	Eyða völdum niðurhölum (spyr fyrst)
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Delete the selected downloads and their files (asks first)	Eyða völdum niðurhölum og skrám þeirra (spyr fyrst)
+#. text in a dialog box
+#, machine
+	Description	Lýsing
+#. checkbox in the Find window
+#, machine
+	Description or part of the description	Lýsing eða hluti lýsingar
+#. text in a download's Properties window
+#, machine
+	Description:	Lýsing:
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	disk error: {error}	diskavilla: {error}
+#. text in the Scheduler window
+#, machine
+	displayed in the list of queues	birt á lista yfir biðraðir
+#. checkbox in the Options window
+#, machine
+	Do not start downloading, only add files to the queue	Ekki hefja niðurhal, aðeins bæta skrám í biðröðina
+#. text in a dialog box
+#, machine
+	Do you want to create it?	Viltu búa hana til?
+#. text in the download list (sizes, speeds, status)
+#. category name: documents (pdf, doc…)
+#, machine
+	Documents	Skjöl
+#. checkbox in a dialog box
+#, machine
+	Don't show this dialog again	Ekki sýna þennan glugga aftur
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following addresses:	Ekki hefja niðurhal sjálfkrafa frá eftirfarandi vistföngum:
+#. text in the Options window
+#, machine
+	Don't start downloading automatically from the following sites:	Ekki hefja niðurhal sjálfkrafa frá eftirfarandi vefsvæðum:
+#. text in a download's progress window
+#, machine
+	Done	Lokið
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download	Niðurhal
+#. message or event log entry in the main window
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Sækja „{name}“ aftur frá byrjun? Lokið skrá er skipt út þegar nýja niðurhalinu er lokið.
+#. window title in a dialog box; text in a dialog box; text in the Options window
+#, machine
+	Download complete	Niðurhali lokið
+#. text in the Options window
+#, machine
+	Download failed	Niðurhal mistókst
+#. window title in a dialog box
+#, machine
+	Download File Info	Upplýsingar um niðurhalsskrá
+#. button in a dialog box
+#, machine
+	Download Later	Sækja síðar
+#. window title in a dialog box
+#, machine
+	Download later	Sækja síðar
+#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
+#, machine
+	Download limits	Niðurhalsmörk
+#. text in the Scheduler's download limits
+#. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	Download no more than {mb} MBytes\nevery {hours} hours	Sækja ekki meira en {mb} MB\ná {hours} klukkustunda fresti
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Download Now	Sækja núna
+#. window title in the Options window
+#. window title: the download button the extension shows over videos
+#, machine
+	Download panels	Niðurhalssvæði
+#. text in a download's progress window
+#. tab title: how the download is going
+#, machine
+	Download status	Staða niðurhals
+#. window title in the Download video window
+#, machine
+	Download video from a page	Sækja myndskeið af síðu
+#. text in the Scheduler window
+#. {files} is a number box (with up/down arrows), drawn where it stands in the translation
+#, machine
+	Download {files} files at the same time	Sækja {files} skrár á sama tíma
+#. text in a download's progress window
+#. label before the amount received so far
+#. column title: bytes this connection received
+#, machine
+	Downloaded	Sótt
+#. page title in the Options window
+#, machine
+	Downloaded file types	Sóttar skráartegundir
+#. text in a dialog box
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	Downloaded {size} ({bytes} Bytes)	Sótt {size} ({bytes} bæti)
+#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Downloading	Er að sækja
+#. message or event log entry in the main window
+#, machine
+	Downloading again from the start	Er að sækja aftur frá byrjun
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying ffmpeg (about 80 MB)...	Sæki og staðfesti ffmpeg (um 80 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying yt-dlp...	Sæki og staðfesti yt-dlp...
+#. text in the Options window
+#. tab title: download settings
+#, machine
+	Downloads	Niðurhal
+#. text in a dialog box
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Downloads stopped and will resume automatically at {time}.	Niðurhal stöðvaðist og heldur sjálfkrafa áfram klukkan {time}.
+#. text in droptarget.rs
+#, machine
+	Drag links here to download them	Dragðu tengla hingað til að sækja þá
+#. window title in a dialog box
+#, machine
+	Duplicate download link	Tvítekinn niðurhalstengill
+#. button in the Options window
+#. verb: edit the item
+#, machine
+	Edit	Breyta
+#. text in the Options window
+#, machine
+	Edit exception	Breyta undantekningu
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit list ...	Breyta lista...
+#. text in the Options window
+#, machine
+	Edit login	Breyta innskráningu
+#. button in the Options window
+#. verb: edit the item
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Edit...	Breyta...
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Email	Tölvupóstur
+#. text in the Add torrent window
+#, machine
+	Enter a magnet link or choose a .torrent file	Sláðu inn segultengil eða veldu .torrent skrá
+#. text in the Scheduler window
+#, machine
+	Enter a name for the new queue that will be	Sláðu inn nafn fyrir nýju biðröðina sem verður
+#. window title in a dialog box
+#, machine
+	Enter new address to download	Sláðu inn nýtt vistfang til að sækja
+#. window title in the Scheduler window
+#, machine
+	Enter queue name	Sláðu inn nafn biðraðar
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): it failed
+#, machine
+	Error	Villa
+#. text in a download's progress window
+#. a download's status: it failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Error: {error}	Villa: {error}
+#. text in the Options window
+#, machine
+	Event	Atburður
+#. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Dæmi:
+#. text in the Options window
+#, machine
+	Exceptions:	Undantekningar:
+#. text in the tray icon's menu
+#. verb: quit the app
+#, machine
+	Exit	Hætta
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Exit Mister Download Manager when done	Hætta í Mister Download Manager þegar lokið
+#. text in the Checksum window
+#, machine
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Væntanlegur prófsumma (MD5, SHA-1, SHA-256, SHA-512 eða CRC32):
+#. message or event log entry in the main window
+#. event log entry: the user gave the checksum the file must have
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Expected checksum set ({algorithm})	Væntanleg prófsumma stillt ({algorithm})
+#. message or event log entry in the main window
+#, machine
+	Export	Flytja út
+#. text in the Options window
+#, machine
+	Extend the availability of Manifest 2 Chrome extensions	Framlengja framboð Manifest 2 Chrome viðbóta
+#. text in categories.rs
+#, machine
+	Extensions separated by spaces, for example MP4 MKV R0*	Viðbætur aðskildar með bilum, til dæmis MP4 MKV R0*
+#. text in the Scheduler window
+#, machine
+	February	Febrúar
+#. text in a download's progress window; text in a download's Properties window
+#. noun: a file of no known type
+#, machine
+	File	Skrá
+#. text in the Scheduler window
+#, machine
+	File Name	Skráarnafn
+#. text in the Download video window
+#, machine
+	File name	Skráarnafn
+#. checkbox in the Find window
+#, machine
+	File name or part of the name	Skráarnafn eða hluti af nafninu
+#. window title in a download's Properties window
+#, machine
+	File Properties	Eiginleikar skráar
+#. text in a download's progress window
+#, machine
+	File size	Skráarstærð
+#. text in the Options window
+#. tab title
+#, machine
+	File types	Skráartegundir
+#. text in categories.rs
+#, machine
+	File types:	Skráartegundir:
+#. text in a download's progress window
+#. tab title: the torrent's files
+#, machine
+	Files	Skrár
+#. text in the Add torrent window
+#. {folder} = the folder the torrent's files are saved in
+#, machine
+	Files go to: {folder}	Skrár fara í: {folder}
+#. tab in the Scheduler window
+#, machine
+	Files in the queue	Skrár í biðröðinni
+#. button in the Find window
+#. verb: button that starts the search
+#, machine
+	Find	Finna
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find a download	Finna niðurhal
+#. message or event log entry in the main window; window title in the Find window
+#, machine
+	Find file	Finna skrá
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Find the next match	Finna næsta samsvörun
+#. text in the Find window
+#, machine
+	Find:	Finna:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are complete
+#, machine
+	Finished	Lokið
+#. text in the Options window
+#, machine
+	First day of the week:	Fyrsti dagur vikunnar:
+#. text in the Batch download window
+#, machine
+	First file:	Fyrsta skrá:
+#. text in categories.rs
+#, machine
+	Folder:	Mappa:
+#. text in the Batch download window
+#. {address} = an example web address with a * in the file name
+#, machine
+	For example:  {address}	Til dæmis: {address}
+#. text in the Add torrent window
+#, machine
+	For your Windows account only. Another app chosen in "Open with" stays first.	Aðeins fyrir Windows reikninginn þinn. Annað forrit valið í „Opna með“ helst fyrst.
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Force processes to terminate	Þvinga ferla til að ljúka
+#. text in the Scheduler window
+#. Friday, as short as a calendar's column head (two letters in English)
+#, machine
+	Fr	Fö
+#. text in the Scheduler window
+#, machine
+	Friday	Föstudagur
+#. message or event log entry in the main window
+#, machine
+	from a magnet link	úr segultengli
+#. message or event log entry in the main window
+#, machine
+	from a page (yt-dlp)	af síðu (yt-dlp)
+#. message or event log entry in the main window
+#, machine
+	from a torrent file	úr torrentskrá
+#. message or event log entry in the main window
+#, machine
+	from the browser	úr vafranum
+#. message or event log entry in the main window
+#, machine
+	from the command line	úr skipanalínu
+#. text in the Batch download window
+#, machine
+	From:	Frá:
+#. checkbox in the Options window
+#, machine
+	ftp	ftp
+#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. category name: files of no particular kind
+#. tab title: general settings
+#. tab title: general information
+#, machine
+	General	Almennt
+#. button in the Options window
+#, machine
+	Get System	Sækja kerfi
+#. text in the Add torrent window
+#. still going on; {n} = the seconds it has taken so far ("s" = seconds)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Getting the file list from peers...  {n} s	Sæki skráarlista frá jafningjum... {n} s
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Hang up modem when done	Slíta mótaldssambandi þegar lokið
+#. text in a download's progress window
+#. legend: pieces downloaded
+#, machine
+	Have	Hef
+#. button in the Options window
+#. noun: button that opens the help
+#, machine
+	Help	Hjálp
+#. text in the queues
+#. what the computer does when the queue is done (verb: hibernate it)
+#, machine
+	Hibernate	Dvala
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &categories	Fela &flokka
+#. button in a download's progress window
+#, machine
+	Hide tab	Fela flipa
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Home page	Heimasíða
+#. checkbox in the Options window
+#, machine
+	http	http
+#. checkbox in the Options window
+#, machine
+	https	https
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Ég sæki með Mister Download Manager: hratt, ókeypis og lítur út eins og niðurhalsstjórinn sem þú þekkir nú þegar. {link}
+#. text in the Options window
+#, machine
+	If a duplicate download link is added:	Ef tvítekin niðurhalstengill er bættur við:
+#. text in the Options window
+#, machine
+	If existing file is complete, show download complete dialog; otherwise resume it.	Ef núverandi skrá er fullgerð, sýna niðurhali lokið glugga; annars halda áfram.
+#. checkbox in the Options window
+#, machine
+	Ignore file modification time changes when resuming a download	Hunsa breytingar á breytingartíma skráar þegar haldið er áfram með niðurhal
+#. message or event log entry in the main window
+#, machine
+	Import	Flytja inn
+#. window title in transfer.rs
+#, machine
+	Import downloads	Flytja inn niðurhal
+#. value in a column's filter list in the download list
+#, machine
+	In a queue	Í biðröð
+#. text in a download's progress window
+#. column title: what the connection is doing
+#, machine
+	Info	Upplýsingar
+#. text in a download's progress window
+#. the torrent's identifier
+#, machine
+	Info hash	Upplýsinga-hash
+#. text in the Download video window
+#. button: download and install the ffmpeg program
+#, machine
+	Install ffmpeg	Setja upp ffmpeg
+#. text in the Download video window
+#. button: download and install the yt-dlp program
+#, machine
+	Install yt-dlp	Setja upp yt-dlp
+#. text in a dialog box
+#, machine
+	Invalid address	Ógilt heimilisfang
+#. text in the Batch download window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Hægt er að bæta við hópi af samliggjandi skráarnöfnum eins og img001.jpg, img002.jpg o.s.frv.,\nimg100.jpg í niðurhalssröð MDM. Notaðu stjörnu sem staðgengil fyrir skráarnafnamynstrið.
+#. text in the Scheduler window
+#, machine
+	January	Janúar
+#. text in the Scheduler window
+#, machine
+	July	Júlí
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Jump to the download whose name starts with it	Fara í niðurhalið sem nafnið byrjar á
+#. text in the Scheduler window
+#, machine
+	June	Júní
+#. text in a dialog box; text in a download's progress window
+#, machine
+	KBytes/sec	KB/sek
+#. checkbox in the Add torrent window
+#, machine
+	Keep sharing torrents after they finish	Halda áfram að deila straumum eftir að þeir klárast
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Keyboard shortcuts	Flýtilyklar
+#. text in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Keys...	Lyklar...
+#. text in langpick.rs
+#. window title (the interface language)
+#, machine
+	Language	Tungumál
+#. text in the Batch download window
+#, machine
+	Last file:	Síðasta skrá:
+#. text in a download's Properties window
+#. {last} = the date and time of the last attempt to download
+#, machine
+	Last try  {last}	Síðasta tilraun {last}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: not now (download the update later)
+#, machine
+	Later	Seinna
+#. text in the Options window
+#, machine
+	Launch Mister Download Manager on startup	Ræsa Mister Download Manager við ræsingu
+#. option (radio button) in the Batch download window
+#. the * in the address runs through letters
+#, machine
+	Letters	Stafir
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Licenses and credits	Leyfi og heimildir
+#. checkbox in a dialog box
+#, machine
+	Limit all downloads together to	Takmarka allt niðurhal saman við
+#. text in the Batch download window; text in a dialog box; text in a download's Properties window
+#. noun: the user name for the server (an input box follows)
+#. noun: the user name and password section
+#, machine
+	Login	Innskráning
+#. button in the Add torrent window; button in the Download video window
+#, machine
+	Look up	Leita
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking the page up...	Leita að síðunni...
+#. message or event log entry in the main window
+#, machine
+	Main download queue	Aðalniðurhalssröð
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Make the selection longer or shorter	Lengja eða stytta valið
+#. text in the Options window
+#, machine
+	Manual proxy/socks configuration	Handvirk proxy/socks stilling
+#. text in the Scheduler window
+#, machine
+	March	Mars
+#. checkbox in the Find window
+#, machine
+	Match case	Sama hástafi/lágstafi
+#. checkbox in the Find window
+#, machine
+	Match whole string only	Aðeins heill strengur
+#. group box title in the Options window
+#, machine
+	Max. connections number	Hámarkstengingar
+#. text in a dialog box
+#. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
+#, machine
+	Maximum download speed for one file {kb} KBytes/sec	Hámarkshraði niðurhals fyrir eina skrá {kb} KB/sek
+#. text in a download's progress window
+#, machine
+	Maximum download speed:	Hámarkshraði niðurhals:
+#. text in the Scheduler window
+#. the month (the fifth of the year)
+#, machine
+	May	Maí
+#. text in a download's progress window
+#. legend: pieces not downloaded yet
+#, machine
+	Missing	Vantar
+#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Mister Download Manager	Mister Download Manager
+#. window title in the Options window
+#, machine
+	Mister Download Manager Configuration	Stillingar Mister Download Manager
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager skrifar hverja tengingu beint í lokaskrána\n(þunn hluta skrá við hliðina á henni), svo engin tímabundin mappa og engin\nsamsetningarskref eru nauðsynleg.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} er í boði (gefin út {date}).
+#. text in the Scheduler window
+#. Monday, as short as a calendar's column head (two letters in English)
+#, machine
+	Mo	Mán
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Monday	Mánudagur
+#. text in the Options window
+#. a date's order: month first (10/30/2026)
+#, machine
+	Month, day, year	Mánuður, dagur, ár
+#. button in a download's Properties window
+#. verb: move the file to another folder
+#, machine
+	Move	Færa
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move a page up / down	Færa síðu upp/niður
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move or rename the selected download	Færa eða endurnefna valið niðurhal
+#. text in a download's Properties window
+#, machine
+	Move to folder	Færa í möppu
+#. message or event log entry in the main window
+#, machine
+	Move to queue	Færa í biðröð
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move without changing the selection	Færa án þess að breyta valinu
+#. message or event log entry in the main window
+#, machine
+	Move/Rename	Færa/endurnefna
+#. text in errors.rs
+#, machine
+	much slower than the other connections; reconnecting	miklu hægari en aðrar tengingar; endurtengist
+#. text in the download list (sizes, speeds, status)
+#. category name: audio files
+#, machine
+	Music	Tónlist
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Mín eigin leið:
+#. text in a download's progress window
+#. column title: connection number (abbreviation of Number)
+#, machine
+	N.	Nr.
+#. text in the Add torrent window
+#. column title: file name
+#, machine
+	Name	Nafn
+#. text in categories.rs
+#, machine
+	Name:	Nafn:
+#. text in errors.rs
+#, machine
+	network error	netvilla
+#. text in the Options window
+#, machine
+	Never show it on these sites:	Aldrei sýna á þessum síðum:
+#. button in the Options window
+#. button: create a new item
+#, machine
+	New	Nýtt
+#. text in the Options window
+#, machine
+	New exception	Ný undantekning
+#. text in the Options window
+#, machine
+	New login	Ný innskráning
+#. button in a dialog box; text in a download's progress window
+#, machine
+	No	Nei
+#. text in torrent downloads
+#. an error: the app has no folder for its own data
+#, machine
+	no data folder	engin gagnamappa
+#. text in torrent downloads
+#. an error: the app has no folder for its torrent data
+#, machine
+	no data folder for torrents	engin gagnamappa fyrir strauma
+#. text in langpick.rs
+#, machine
+	No language matches.	Ekkert tungumál passar.
+#. text in the Options window
+#, machine
+	No proxy/socks	Enginn proxy/socks
+#. text in the Download video window
+#, machine
+	No video this can download on that page	Ekkert myndband sem hægt er að hlaða niður á þessari síðu
+#. message or event log entry in the main window
+#, machine
+	No web addresses were found in {file}.	Engar vefslóðir fundust í {file}.
+#. text in a download's progress window
+#, machine
+	None: peers come from the DHT and other peers	Engir: jafningjar koma frá DHT og öðrum jafningjum
+#. text in the Checksum window
+#, machine
+	Not a checksum this can read	Ekki summupróf sem hægt er að lesa
+#. text in errors.rs
+#, machine
+	not enough disk space: {needed} needed, {free} free	ekki nægilegt diskpláss: {needed} þarf, {free} laust
+#. value in a column's filter list in the download list
+#, machine
+	Not in a queue	Ekki í biðröð
+#. text in the Options window
+#, machine
+	Not used: file parts are written next to the file	Ekki notað: skráarhlutar eru skrifaðir við hlið skráarinnar
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Athugið: Netþjónar geta rofið tengingu þegar hraðinn er of takmarkaður! Því er ekki\nmælt með því að nota hraðatakmarkara til að hlaða niður frá netþjónum sem styðja ekki\n„halda áfram“ eiginleikann.
+#. text in the Options window
+#, machine
+	Note: These settings don't relate to queue processing	Athugið: Þessar stillingar tengjast ekki vinnslu biðraða
+#. text in the Scheduler window
+#, machine
+	November	Nóvember
+#. text in the Options window
+#, machine
+	Number	Númer
+#. checkbox in the Scheduler window
+#, machine
+	Number of retries for each file if downloading failed :	Fjöldi endurtekninga fyrir hverja skrá ef niðurhal mistókst:
+#. option (radio button) in the Batch download window
+#. the * in the address runs through numbers
+#, machine
+	Numbers	Tölur
+#. text in the Scheduler window
+#, machine
+	October	Október
+#. text in the Add torrent window
+#, machine
+	Off: a finished torrent stops, like any download.	Slökkt: lokið straumi hættir, eins og öll niðurhal.
+#. text in the Options window
+#, machine
+	Offer to download links copied to the clipboard	Bjóða að sækja tengla sem afritaðir eru á klippiborðið
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#, machine
+	OK	Í lagi
+#. text in a download's progress window
+#, machine
+	on download stop/resume	við stöðvun/áframhald niðurhals
+#. option (radio button) in the Scheduler window
+#, machine
+	Once at	Einu sinni klukkan
+#. option (radio button) in the Scheduler window
+#, machine
+	One-time downloading	Einu sinni niðurhal
+#. checkbox in a dialog box
+#, machine
+	Only while I'm using the computer	Aðeins á meðan ég er að nota tölvuna
+#. button in a download's Properties window
+#. verb: opens the file
+#, machine
+	Open	Opna
+#. checkbox in the Add torrent window
+#, machine
+	Open magnet links and .torrent files with Mister Download Manager	Opna segultengla og .torrent skrár með Mister Download Manager
+#. text in the tray icon's menu
+#, machine
+	Open Mister Download Manager	Opna Mister Download Manager
+#. text in the Scheduler window
+#, machine
+	Open the following file when done	Opna eftirfarandi skrá þegar lokið er
+#. checkbox in the Scheduler window
+#, machine
+	Open the following file when done:	Opna eftirfarandi skrá þegar lokið er:
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download	Opna valið niðurhal
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Open the selected download's menu	Opna valmynd valins niðurhals
+#. message or event log entry in the main window; text in the Add torrent window
+#, machine
+	Open torrent file	Opna torrent-skrá
+#. text in the tray icon's menu
+#. plural noun: opens the Options window (settings)
+#, machine
+	Options	Valkostir
+#. text in a download's progress window
+#, machine
+	Options on completion	Valkostir við lok
+#. text in the Download video window
+#, machine
+	Page address	Slóð síðu
+#. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
+#, machine
+	Password	Lykilorð
+#. text in the Options window
+#, machine
+	Password:	Lykilorð:
+#. text in the Add torrent window
+#, machine
+	Paste a magnet link or choose a .torrent file, then Look up.	Límdu inn segultengil eða veldu .torrent-skrá, smelltu svo á Leita.
+#. text in a download's progress window
+#. verb: pause the download
+#, machine
+	Pause	Gera hlé
+#. text in a download's progress window
+#. a download's status (state it is in, not a command): stopped for now
+#, machine
+	Paused	Í bið
+#. text in a download's progress window
+#. tab title: the other computers sharing the torrent
+#, machine
+	Peers	Jafningjar
+#. option (radio button) in the Scheduler window
+#, machine
+	Periodic synchronization	Reglubundin samstilling
+#. text in a download's progress window
+#. tab title: the parts the torrent is made of
+#, machine
+	Pieces	Bútar
+#. button in the Options window
+#. verb: plays the sound
+#, machine
+	Play	Spila
+#. text in regional.rs; text in the Scheduler window
+#. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
+#, machine
+	PM	e.h.
+#. label in the Options window
+#, machine
+	Port	Gátt
+#. button in a dialog box
+#. verb: open the part already downloaded
+#, machine
+	Preview	Forskoða
+#. text in the download list (sizes, speeds, status)
+#. category name: programs and installers (exe, msi)
+#, machine
+	Programs	Forrit
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Properties of the selected download	Eiginleikar valins niðurhals
+#. text in a download's progress window
+#, machine
+	Property	Eiginleiki
+#. text in the Options window
+#. tab title
+#, machine
+	Proxy / Socks	Millimiðlari / SOCKS
+#. page title in the Options window
+#, machine
+	Proxy / socks configuration	Stillingar millimiðlara / SOCKS
+#. label in the Options window
+#, machine
+	Proxy server address	Slóð millimiðlara
+#. text in the Scheduler window
+#. the name proposed for a new queue; {n} = its number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Queue # {n}	Biðröð # {n}
+#. text in the Options window
+#, machine
+	Queue processing started	Vinnsla biðraðar hafin
+#. text in the Options window
+#, machine
+	Queue processing stopped/finished	Vinnsla biðraðar stöðvuð/lokið
+#. item in the Categories tree in the main window; text in the Scheduler window
+#. plural noun: the download queues
+#, machine
+	Queues	Biðraðir
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the file list...	Les skráarlista...
+#. text in the Add torrent window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the torrent...	Les torrent...
+#. text in a download's progress window
+#. column title: how much came from the peer
+#, machine
+	Received	Móttekið
+#. text in a download's progress window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Receiving data...	Tek á móti gögnum...
+#. message or event log entry in the main window
+#. window title, verb: download the file again from the start
+#, machine
+	Redownload	Endurhala
+#. text in a download's Properties window
+#, machine
+	Referer:	Tilvísun:
+#. text in the Options window
+#. tab title: how dates and times are written (date order, 12- or 24-hour clock)
+#, machine
+	Regional	Svæðisbundið
+#. text in a download's progress window
+#, machine
+	Remember Speed Limiter settings for this file	Muna stillingar hraðatakmarkara fyrir þessa skrá
+#. text in a dialog box
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Remember this path for "{category}" category	Muna þessa slóð fyrir flokkinn „{category}“
+#. button in the Options window
+#. verb: remove the item
+#, machine
+	Remove	Fjarlægja
+#. text in the Batch download window
+#. group box title: what the * in the address is replaced with (numbers or letters)
+#, machine
+	Replace asterisk to	Skipta út stjörnu fyrir
+#. text in a download's Properties window
+#. {result} = how the last attempt ended (a status or an error message)
+#, machine
+	Result: {result}	Niðurstaða: {result}
+#. text in a download's progress window
+#. verb: continue the download
+#, machine
+	Resume	Halda áfram
+#. text in a download's progress window
+#. label: whether the server lets a stopped download continue (Yes / No)
+#, machine
+	Resume capability	Hæfni til að halda áfram
+#. message or event log entry in the main window
+#. event log entry, past tense: the download resumed (just now)
+#, machine
+	Resumed	Hélt áfram
+#. text in a download's progress window
+#. a connection's state: it failed and tries again, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Retrying: {error}	Reyni aftur: {error}
+#. text in the Scheduler window
+#. verb: stop the queue
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	S&top	S&toppa
+#. text in the Scheduler window
+#. Saturday, as short as a calendar's column head (two letters in English)
+#, machine
+	Sa	La
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Saturday	Laugardagur
+#. text in a dialog box
+#, machine
+	Save As	Vista sem
+#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. tab title: where downloads are saved
+#, machine
+	Save to	Vista í
+#. group box title in the Options window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Save To...	Vista í...
+#. text in a download's progress window; text in a download's Properties window
+#, machine
+	Save To:	Vista í:
+#. text in a download's progress window
+#. label before the folder the torrent is saved in
+#, machine
+	Saved in	Vistað í
+#. tab in the Scheduler window
+#. noun: tab title; when the queue starts and stops
+#, machine
+	Schedule	Tímasetning
+#. window title in the Scheduler window; text in the tray icon's menu
+#. noun: the tool that starts and stops queues on time
+#. noun: opens the Scheduler (the tool that starts queues on time)
+#, machine
+	Scheduler	Tímaáætlun
+#. text in langpick.rs
+#, machine
+	Search:	Leita:
+#. text in the Batch download window
+#, machine
+	Second file:	Önnur skrá:
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select all	Velja allt
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select all downloads	Velja allar niðurhalanir
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select every download up to this one	Velja allar niðurhalanir upp að þessari
+#. button in the Add torrent window; button in transfer.rs
+#, machine
+	Select none	Afvelja allt
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect one more download	Velja eða afvelja eina niðurhalun í viðbót
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select or unselect the download with the dotted outline	Velja eða afvelja niðurhalunina með punktalínunni
+#. group box title in the Options window
+#, machine
+	Select sounds for Mister Download Manager events	Velja hljóð fyrir atburði Mister Download Manager
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the downloads in the box	Velja niðurhalanirnar í reitnum
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the first / last download	Velja fyrstu / síðustu niðurhalun
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Select the previous / next download	Velja fyrri / næstu niðurhalun
+#. text in the Add torrent window
+#. the files chosen: {files} = "3 files", {size} = their total size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Selected: {files}, {size}	Valið: {files}, {size}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Send this to a friend:	Senda þetta til vinar:
+#. text in a download's progress window
+#. column title: how much went to the peer
+#. how much was sent to other peers
+#, machine
+	Sent	Sent
+#. text in the Scheduler window
+#, machine
+	September	September
+#. text in the Options window
+#, machine
+	Server	Þjónn
+#. text in the Options window
+#, machine
+	Server:	Þjónn:
+#. checkbox in the Options window
+#, machine
+	Set file creation date as provided by the server	Setja stofnunardagsetningu skráar eins og gefið er upp af þjóninum
+#. text in a download's progress window
+#. sent divided by received
+#, machine
+	Share ratio	Deilingarhlutfall
+#. text in a download's progress window
+#. noun: sharing the torrent with others after it is downloaded
+#, machine
+	Sharing	Deiling
+#. text in the download list
+#, machine
+	Show	Sýna
+#. message or event log entry in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &categories	Sýna &flokka
+#. text in the Options window
+#, machine
+	Show a dialog and ask what to do.	Sýna glugga og spyrja hvað eigi að gera.
+#. checkbox in the Options window
+#, machine
+	Show a download button over videos in browsers	Sýna niðurhalshnapp yfir myndböndum í vöfrum
+#. button in the download list
+#, machine
+	Show all	Sýna allt
+#. text in a download's progress window
+#, machine
+	Show details >>	Sýna upplýsingar >>
+#. checkbox in the Options window; checkbox in a download's progress window
+#, machine
+	Show download complete dialog	Sýna glugga um lokið niðurhal
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on closing batch download dialogs	Sýna valspjaldið fyrir biðraðir þegar lokað er niðurhalsgluggum fyrir lotur
+#. checkbox in the Options window
+#, machine
+	Show queue selection panel on pressing "Download Later" button	Sýna valspjaldið fyrir biðraðir þegar ýtt er á „Hlaða niður síðar“ hnappinn
+#. checkbox in the Options window
+#, machine
+	Show start download dialog	Sýna niðurhalsglugga
+#. checkbox in the Options window; checkbox in the Scheduler window
+#, machine
+	Show warning before stopping downloads	Sýna viðvörun áður en niðurhali er hætt
+#. text in a download's progress window
+#, machine
+	Shown while the torrent is downloading.	Sýnt á meðan torrent er að hlaðast niður.
+#. text in a download's progress window; text in the queues
+#. what the computer does when the queue is done (verb: shut down the computer)
+#, machine
+	Shut down	Slökkva
+#. checkbox in the Find window
+#, machine
+	Site name/Download link/Parent web page/Referer	Nafn vefsvæðis/niðurhalstengill/foreldra vefsíða/tilvísun
+#. text in the Options window
+#. column title: the site (and path) a login is for
+#, machine
+	Site/path	Vefsvæði/slóð
+#. text in the Options window
+#, machine
+	Site/path:	Vefsvæði/slóð:
+#. text in the Options window
+#. tab title: user names and passwords for sites
+#, machine
+	Sites Logins	Innskráningar á vefsvæðum
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. column title: the file's size
+#. column title: file size
+#, machine
+	Size	Stærð
+#. text in the Download video window
+#, machine
+	size unknown	óþekkt stærð
+#. text in a download's Properties window
+#, machine
+	Size:	Stærð:
+#. text in a download's progress window
+#. a torrent file the user chose not to download
+#, machine
+	Skipped	Sleppt
+#. text in the queues
+#. what the computer does when the queue is done (verb: put it to sleep)
+#, machine
+	Sleep	Svefn
+#. text in a download's progress window
+#. legend: pieces partly downloaded
+#, machine
+	Some	Sumt
+#. text in the Options window
+#, machine
+	Sound file	Hljóðskrá
+#. page title in the Options window
+#, machine
+	Sound settings	Hljóðstillingar
+#. text in the Options window
+#. the kind of file the Open dialog lists (sound files)
+#. tab title: sound settings
+#, machine
+	Sounds	Hljóð
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Source code	Frumkóði
+#. text in a download's progress window; text in the tray icon's menu
+#. tab title: the tool that limits the download speed
+#, machine
+	Speed Limiter	Hraðatakmörkun
+#. window title in a dialog box
+#, machine
+	Speed Limiter settings	Stillingar hraðatakmörkunar
+#. button in a dialog box
+#, machine
+	Start Download	Hefja niðurhal
+#. checkbox in the Scheduler window
+#, machine
+	Start download at	Hefja niðurhal klukkan
+#. checkbox in the Scheduler window
+#, machine
+	Start download on Mister Download Manager startup	Hefja niðurhal við ræsingu Mister Download Manager
+#. checkbox in the Options window
+#, machine
+	Start downloading immediately while displaying "Download File Info" dialog	Hefja niðurhal strax á meðan „Upplýsingar um niðurhalsskrá“ glugginn er sýndur
+#. text in the tray icon's menu
+#, machine
+	Start main download queue	Hefja aðalniðurhalsbiðröð
+#. text in a download's progress window
+#, machine
+	Start positions and download progress by connections	Upphafsstaðsetningar og niðurhalsframvinda eftir tengingum
+#. checkbox in a dialog box
+#, machine
+	Start the queue now	Hefja biðröðina núna
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Start {queue}	Hefja {queue}
+#. message or event log entry in the main window
+#. event log entry, past tense: the download started (just now)
+#, machine
+	Started	Hefst
+#. message or event log entry in the main window
+#. {version} = a version number; {format} = a video format code (keep the braces as they are)
+#, machine
+	Started with yt-dlp {version} ({format})	Hefst með yt-dlp {version} ({format})
+#. text in a download's progress window; text in the Scheduler window
+#. noun: label before the download's state
+#. column title: the download's state
+#, machine
+	Status	Staða
+#. text in a download's Properties window
+#. label before the download's state
+#, machine
+	Status:	Staða:
+#. checkbox in the Scheduler window
+#, machine
+	Stop download at	Hætta niðurhali klukkan
+#. text in the tray icon's menu
+#, machine
+	Stop main download queue	Stöðva aðalniðurhalsbiðröð
+#. message or event log entry in the main window
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Stop {queue}	Stöðva {queue}
+#. value in a column's filter list in the download list
+#. a download's status (state it is in, not a command)
+#, machine
+	Stopped	Stöðvað
+#. text in a download's progress window
+#, machine
+	Stops when the download finishes	Stöðvast þegar niðurhali lýkur
+#. text in the Scheduler window
+#. Sunday, as short as a calendar's column head (two letters in English)
+#, machine
+	Su	Su
+#. text in the Options window; text in the Scheduler window
+#, machine
+	Sunday	Sunnudagur
+#. message or event log entry in the main window
+#, machine
+	Synchronization queue	Samstillingarröð
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Tell a friend	Segðu vini frá
+#. group box title in the Options window
+#, machine
+	Temporary directory	Tímabundin mappa
+#. text in the Scheduler window
+#. Thursday, as short as a calendar's column head (two letters in English)
+#, machine
+	Th	Fim
+#. text in torrent downloads
+#. an error: the copy of the .torrent file the app keeps is missing
+#, machine
+	the .torrent file kept for it is gone	.torrent skráin sem geymd var fyrir hana er horfin
+#. text in a download's Properties window
+#, machine
+	The address must be an http(s) or ftp(s) address	Slóðin verður að vera http(s) eða ftp(s) slóð
+#. text in the Download video window
+#, machine
+	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Bestu gæðin þurfa ffmpeg til að sameina myndband og hljóð (um 80 MB).
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will go to sleep in {n} seconds.	Tölvan fer í svefn í {n} sekúndur.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will hibernate in {n} seconds.	Tölvan fer í dvala í {n} sekúndur.
+#. text in a dialog box
+#. {n} = a number (keep the braces as they are)
+#, machine
+	The computer will shut down in {n} seconds.	Tölvan slekkur á sér í {n} sekúndur.
+#. text in errors.rs
+#, machine
+	the connection closed before the part was complete	tengingin lokaðist áður en hlutinn var fullgerður
+#. text in errors.rs
+#, machine
+	the connection was lost while receiving data	tengingin rofnaði við móttöku gagna
+#. text in errors.rs
+#, machine
+	the disk is full	diskurinn er fullur
+#. text in a dialog box
+#. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
+#, machine
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Niðurhalstakmarkinu ({mb} MB á {hours} klukkustunda fresti) hefur verið náð.
+#. text in errors.rs
+#, machine
+	the download link has expired (refresh the download address)	niðurhalstengillinn er útrunninn (endurnýja niðurhalsslóðina)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Niðurhalsstjórinn sem þú þekkir nú þegar, endurbyggður til að vera hraðari. Ókeypis og opinn hugbúnaður undir GNU GPL, útgáfu 3 eða nýrri. Myndbönd finnast með yt-dlp; torrent keyra á librqbit.
+#. text in a dialog box
+#, machine
+	The download queue is done.	Niðurhalsröðinni er lokið.
+#. text in errors.rs
+#, machine
+	the drive or network share is no longer available	drifið eða netdeilingin er ekki lengur tiltæk
+#. text in errors.rs
+#, machine
+	the file changed on the server	skráin breyttist á netþjóninum
+#. message or event log entry in the main window
+#, machine
+	The file could not be moved	Ekki tókst að færa skrána
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	Ekki tókst að lesa skrána: {error}
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file does NOT match ({algorithm})	Skráin passar EKKI ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	The file matches ({algorithm})	Skráin passar ({algorithm})
+#. text in a dialog box
+#, machine
+	The file saved as	Skráin vistuð sem
+#. text in the download list (sizes, speeds, status)
+#, machine
+	The file types that are not listed in any other category	Skráartegundir sem ekki eru taldar upp í neinum öðrum flokki
+#. text in errors.rs
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	summa {algorithm} skráarinnar passar ekki (gögnin eru geymd; hlaða niður aftur)
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The folder could not be created: {error}	Ekki tókst að búa til möppuna: {error}
+#. text in errors.rs
+#, machine
+	the folder {path} is not available (drive removed or network share offline?)	mappan {path} er ekki tiltæk (drif fjarlægt eða netdeiling ótengd?)
+#. text in errors.rs
+#. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
+#, machine
+	the FTP server answered {code} {reply}	FTP-þjónninn svaraði {code} {reply}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The list could not be saved: {error}	Ekki tókst að vista listann: {error}
+#. text in errors.rs
+#, machine
+	the path is too long for Windows: {path}	slóðin er of löng fyrir Windows: {path}
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. why updates could not be checked: the newest release on the site has no number
+#, machine
+	the release has no version	útgáfan hefur enga útgáfu
+#. text in errors.rs
+#. an FTPS (or other TLS) connection could not be secured
+#, machine
+	the secure connection failed	Örugg tenging mistókst
+#. text in a dialog box
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Valið niðurhal er ekki lokið. Ertu viss um að þú viljir eyða\nþví úr Mister Download Manager niðurhalslistanum?
+#. text in errors.rs
+#, machine
+	the server answered {status}	netþjónninn svaraði {status}
+#. text in errors.rs
+#, machine
+	the server can't send parts of the file, so it can't be resumed	netþjónninn getur ekki sent hluta af skránni, svo ekki er hægt að halda áfram
+#. text in errors.rs
+#, machine
+	the server did not answer in time	netþjónninn svaraði ekki í tæka tíð
+#. text in errors.rs
+#, machine
+	the server did not send the requested part	netþjónninn sendi ekki umbeðinn hluta
+#. text in errors.rs
+#, machine
+	the server is busy ({status}); try again later	netþjónninn er upptekinn ({status}); reyndu aftur síðar
+#. text in errors.rs
+#, machine
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	netþjónninn sendi vefsíðu í stað skráarinnar (þarf að skrá sig inn eða tengillinn útrunninn?)
+#. text in errors.rs
+#, machine
+	the server sent an unexpected part of the file ({detail})	netþjónninn sendi óvæntan hluta af skránni ({detail})
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The torrent could not be saved: {error}	Ekki tókst að vista torrent: {error}
+#. text in torrent downloads
+#. an error: the torrent is gone from the torrent session
+#, machine
+	the torrent is no longer there	torrent er ekki lengur til staðar
+#. text in a download's Properties window
+#, machine
+	The web page from which this file was obtained:	Vefsíðan sem þessi skrá var fengin af:
+#. text in categories.rs
+#, machine
+	There is already a category with this name	Það er nú þegar flokkur með þessu nafni
+#. text in a download's progress window
+#, machine
+	These settings are unavailable when "Show download complete dialog" is turned on	Þessar stillingar eru ekki tiltækar þegar „Sýna niðurhalslokið glugga“ er kveikt
+#. text in a dialog box
+#, machine
+	This address is already in the list of downloads:	Þessi slóð er nú þegar á niðurhalslistanum:
+#. text in a dialog box
+#, machine
+	This folder does not exist:	Þessi mappa er ekki til:
+#. text in the Add torrent window
+#, machine
+	This torrent is already in the download list	Þetta torrent er nú þegar á niðurhalslistanum
+#. text in the Scheduler window
+#, machine
+	Thursday	Fimmtudagur
+#. text in a download's progress window; text in the Scheduler window
+#, machine
+	Time left	Tími eftir
+#. text in the Batch download window
+#, machine
+	To:	Til:
+#. text in errors.rs
+#, machine
+	too many redirects	of margar tilvísanir
+#. value in a column's filter list in the download list; text in the Add torrent window
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Torrent	Torrent
+#. text in the download list (sizes, speeds, status)
+#, machine
+	Torrent downloads (magnet links and .torrent files)	Torrent niðurhal (segultenglar og .torrent skrár)
+#. text in the Add torrent window
+#. the kind of file the Open dialog lists
+#, machine
+	Torrent files	Torrent skrár
+#. window title in the Add torrent window
+#, machine
+	Torrent settings	Torrent stillingar
+#. text in the download list (sizes, speeds, status)
+#. category name: torrent downloads (BitTorrent)
+#, machine
+	Torrents	Torrent
+#. text in torrent downloads
+#. an error, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	torrents could not start: {error}	Ekki tókst að ræsa strauma: {error}
+#. text in a download's progress window
+#. column title: a server that lists the peers
+#, machine
+	Tracker	Rekill
+#. text in a download's progress window
+#. tab title: the servers that list the peers
+#, machine
+	Trackers	Reklar
+#. text in a download's progress window
+#, machine
+	Transfer rate	Flutningshraði
+#. text in the Scheduler window
+#. Tuesday, as short as a calendar's column head (two letters in English)
+#, machine
+	Tu	Þri
+#. text in the Scheduler window
+#, machine
+	Tuesday	Þriðjudagur
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter off
+#, machine
+	Turn off	Slökkva
+#. checkbox in a download's progress window; checkbox in the Scheduler window
+#, machine
+	Turn off computer when done	Slökkva á tölvu þegar lokið
+#. button in a dialog box
+#, machine
+	Turn off now	Slökkva núna
+#. text in the tray icon's menu
+#. verb: turn the Speed Limiter on
+#, machine
+	Turn on	Kveikja
+#. text in a download's Properties window
+#, machine
+	Type:	Tegund:
+#. item in the Categories tree in the main window
+#. adjective: the downloads that are not complete yet
+#, machine
+	Unfinished	Ókláruð
+#. text in a download's Properties window
+#, machine
+	Unknown	Óþekkt
+#. text in a download's progress window
+#. the reason a download failed is not known
+#, machine
+	unknown	óþekkt
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Updates could not be checked: {error}	Ekki tókst að athuga uppfærslur: {error}
+#. text in a dialog box
+#, machine
+	URL	URL
+#. text in the Options window
+#, machine
+	Use advanced browser integration	Nota ítarlega samþættingu vafra
+#. checkbox in the Batch download window; checkbox in a dialog box
+#, machine
+	Use authorization	Nota heimild
+#. text in the Options window
+#, machine
+	Use automatic configuration script	Nota sjálfvirka stillingarskrifu
+#. checkbox in the Options window
+#, machine
+	Use FTP in PASV mode	Nota FTP í PASV-stillingu
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Nota proxy/socks úr beiðni vafra ef niðurhalsvillur koma upp /\nfyrir niðurhal sem er stöðvað úr vafranum
+#. checkbox in a download's progress window
+#, machine
+	Use Speed Limiter	Nota hraðatakmarkara
+#. text in the Options window
+#, machine
+	Use system settings	Nota kerfisstillingar
+#. label in the Options window
+#, machine
+	Use this proxy for the following protocols:	Nota þennan proxy fyrir eftirfarandi samskiptareglur:
+#. text in the Options window
+#, machine
+	Used by the list of downloads and the Scheduler.	Notað af niðurhalsskrá og tímaáætlun.
+#. text in the Options window
+#. column title: the user name
+#, machine
+	User	Notandi
+#. page title in the Options window
+#, machine
+	User names and passwords for servers/sites	Notendanöfn og lykilorð fyrir netþjóna/síður
+#. text in the Options window
+#, machine
+	User-Agent for manually added downloads:	User-Agent fyrir handvirkt niðurhal:
+#. text in the Options window
+#, machine
+	User:	Notandi:
+#. label in the Options window
+#, machine
+	UserName	Notandanafn
+#. text in a download's progress window
+#, machine
+	Value	Gildi
+#. text in the Checksum window
+#. both verbs: Verify = check the file now; Close = close the window
+#, machine
+	Verify	Staðfesta
+#. window title in the Checksum window
+#, machine
+	Verify checksum	Staðfesta afprófunarsummu
+#. text in the download list (sizes, speeds, status)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Verifying...	Staðfestir...
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} ({commit})	Útgáfa {version} ({commit})
+#. text in the download list (sizes, speeds, status)
+#. category name: video files
+#, machine
+	Video	Myndband
+#. text in the Download video window
+#, machine
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Myndbandsleit notar yt-dlp (um 23 MB, athugað miðað við undirskrift þess).
+#. text in the Options window
+#, machine
+	Virus checking settings	Stillingar vírusathugunar
+#. value in a column's filter list in the download list; text in a download's progress window
+#. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue
+#, machine
+	Waiting	Bíður
+#. message or event log entry in the main window
+#, machine
+	Waiting: the download limit is reached (Scheduler)	Bíður: niðurhalsmörkum er náð (tímaáætlun)
+#. text in the Scheduler window
+#. Wednesday, as short as a calendar's column head (two letters in English)
+#, machine
+	We	Mi
+#. value in a column's filter list in the download list
+#. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#, machine
+	Web	Vefur
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Vefslóðir fundnar í {file}:
+#. text in the Scheduler window
+#, machine
+	Wednesday	Miðvikudagur
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	What's new:	Hvað er nýtt:
+#. text in the Batch download window
+#, machine
+	Wildcard size	Stærð staðgengils
+#. text in langpick.rs
+#, machine
+	Windows' language	Tungumál Windows
+#. text in langpick.rs
+#, machine
+	Windows' language ({language})	Tungumál Windows ({language})
+#. message or event log entry in the main window
+#, machine
+	with Add URL	með Bæta við URL
+#. group box title in the Options window
+#, machine
+	Write dates and times	Skrifa dagsetningar og tíma
+#. text in the main window (menus, toolbar, Categories pane)
+#, machine
+	x	x
+#. text in the Options window
+#. a date's order: year first (2026-10-30)
+#, machine
+	Year, month, day	Ár, mánuður, dagur
+#. button in a dialog box; text in a download's progress window
+#, machine
+	Yes	Já
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have the latest version of Mister Download Manager ({version}).	Þú ert með nýjustu útgáfu af Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}.	Þú ert með útgáfu {version}.
+#. message or event log entry in the main window
+#, machine
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp er ekki uppsett (Verkefni → Sækja myndskeið af síðu setur það upp)
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm} checksum	{algorithm} afprófunarsumma
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{algorithm}: checked when the download finishes	{algorithm}: athugað þegar niðurhali lýkur
+#. text in the download list
+#. {column} = a column title (keep the braces as they are)
+#, machine
+	{column} contains	{column} inniheldur
+#. text in a download's Properties window
+#. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
+#, machine
+	{ext} File	{ext} skrá
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} ({size} each)	{have} af {total} ({size} hvert)
+#. text in a download's progress window
+#. {have} and {total} = numbers of pieces; {size} = one piece's size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{have} of {total} pieces ({size} each)	{have} af {total} hlutum ({size} hver)
+#. text in the download list (sizes, speeds, status)
+#. {h} = hours; {m} = minutes (keep the braces as they are)
+#, machine
+	{h} hour(s) {m} min	{h} klst. {m} mín.
+#. text in a download's progress window
+#. {live} = peers connected now; {known} = peers heard of
+#, machine
+	{live} connected, {known} known	{live} tengd, {known} þekkt
+#. text in the Scheduler window
+#. the calendar's title: {month} = a month's name, {year} = its year
+#, machine
+	{month} {year}	{month} {year}
+#. text in the download list (sizes, speeds, status)
+#. {m} = minutes; {s} = seconds (keep the braces as they are)
+#, machine
+	{m} min {s} sec	{m} mín. {s} sek.
+#. text in the Add torrent window
+#. the torrent's name, then {files} = "3 files" and {size} = its total size
+#. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in the Options window
+#. a number of connections the app learned by itself for a server
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} (auto)	{n} (sjálfvirkt)
+#. text in transfer.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} selected	{n} af {total} valið
+#. text in errors.rs
+#, machine
+	{problem} ({cause})	{problem} ({cause})
+#. text in a download's Properties window
+#. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
+#, machine
+	{size} ({bytes} Bytes)	{size} ({bytes} bæti)
+#. text in errors.rs
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} er of stórt fyrir þetta {file_system} drif (skrár allt að 4 GB)
+#. text in the download list (sizes, speeds, status)
+#. {s} = seconds (keep the braces as they are)
+#, machine
+	{s} sec	{s} sek.
+#. text in the Download video window
+#. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{what} could not be installed: {error}	{what} var ekki hægt að setja upp: {error}
+#. column title in the download list in the download list
+#. past participle: when the download was added
+#, machine
+column	Added	Bætt við
+#. column title in the download list in the download list
+#. noun: the download's description
+#, machine
+column	Description	Lýsing
+#. column title in the download list in the download list
+#, machine
+column	File Name	Skráarnafn
+#. column title in the download list in the download list
+#, machine
+column	Last Try Date	Síðasta tilraunardagsetning
+#. column title in the download list in the download list
+#. column title: one letter for Queue (the column is narrow)
+#, machine
+column	Q	R
+#. column title in the download list in the download list
+#. noun: the file's size
+#, machine
+column	Size	Stærð
+#. column title in the download list in the download list
+#. noun: where the download comes from (Web or Torrent)
+#, machine
+column	Source	Heimild
+#. column title in the download list in the download list
+#. noun: the download's state or progress
+#, machine
+column	Status	Staða
+#. column title in the download list in the download list
+#, machine
+column	Time left	Tími eftir
+#. column title in the download list in the download list
+#, machine
+column	Transfer rate	Flutningshraði
+#. text in the browser extension
+#. menu command of the download button over a video: opens its settings in Mister Download Manager
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Button settings...	Hnappastillingar...
+#. text in the browser extension
+#. the button over a video on a web page that downloads it; verb; short (it sits on the video)
+#, machine
+extension	Download video	Hlaða niður myndbandi
+#. text in the browser extension
+#. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
+#, machine
+extension	Download with Mister Download Manager	Sækja með Mister Download Manager
+#. text in the browser extension
+#. tooltip of the download button over a video: it can be dragged to another place on the video's edge
+#, machine
+extension	Drag to move it along the video's edge	Dragðu til að færa hann meðfram brún myndbandsins
+#. text in the browser extension
+#. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Hands downloads from the browser to Mister Download Manager.	Sendir niðurhal frá vafranum til Mister Download Manager.
+#. text in the browser extension
+#. menu command of the download button over a video: hide the button on this video only
+#, machine
+extension	Hide on this video	Fela á þessu myndbandi
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer	Mister Download Manager svaraði ekki
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager Integration Module	Samþættingareining Mister Download Manager
+#. text in the browser extension
+#. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
+#, machine
+extension	More options	Fleiri valkostir
+#. text in the browser extension
+#. menu command of the download button over a video: never show the button on this web site again
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never on {site}	Aldrei á {site}
+#. text in the browser extension
+#. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
+#, machine
+extension	Sent to Mister Download Manager	Sent til Mister Download Manager
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+A	Ctrl+A
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+click	Ctrl+smella
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+F	Ctrl+F
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+M	Ctrl+M
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+N	Ctrl+N
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Space	Ctrl+Space
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Ctrl+Up / Ctrl+Down	Ctrl+Up / Ctrl+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Delete	Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Drag on blank space	Draga á autt svæði
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Esc	Esc
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	F3	F3
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Page Up / Page Down	Page Up / Page Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+click	Shift+smella
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Delete	Shift+Delete
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+F10	Shift+F10
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Type a name	Slá inn nafn
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Up / Down	Upp / Niður
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&About Mister Download Manager	&Um Mister Download Manager
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Add new download	&Bæta við nýju niðurhali
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Delete All Completed	&Eyða öllu loknu
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Download Now	&Hlaða niður núna
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Exit	&Hætta
+#. menu command in the main window
+#. verb: load downloads from a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Import	&Flytja inn
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Keyboard shortcuts	&Flýtilyklar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Language...	&Tungumál...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Options	&Valkostir
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Pause All	&Gera hlé á öllu
+#. menu command in the main window
+#. verb: removes the selected download from the list
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Remove	&Fjarlægja
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Report a problem	&Tilkynna vandamál
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Scheduler and queues	&Tímaáætlun og biðraðir
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop All	&Stöðva allt
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Stop Download	&Stöðva niðurhal
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tray icon	&Bakkatákn
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Tutorials	&Kennsluefni
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Video downloads	&Niðurhal myndskeiða
+#. menu command in the main window
+#, machine
+menu	3D Style	3D stíll
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add &batch download	Bæta við &lotuniðurhali
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &magnet link...	Bæta við &segultengli...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Add batch download from &clipboard	Bæta við rununiðurhali af &klippiborði
+#. menu command in the main window
+#, machine
+menu	Add category	Bæta við flokki
+#. menu command in the main window
+#, machine
+menu	Arrange files	Raða skrám
+#. menu command in the main window
+#. verb: opens this category's download folder
+#, machine
+menu	Browse	Fletta
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Description	Eftir &lýsingu
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &File Name	Eftir &skráarnafni
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Last Try Date	Eftir &síðustu tilraunardagsetningu
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Order Of Addition	Eftir &röð viðbótar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Size	Eftir &stærð
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By &Time Left	Eftir &eftirstandandi tíma
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Date &Added	Eftir dagsetningu &viðbótar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Parent &Web Page	Eftir &upprunavefsíðu
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By R&eferer	Eftir &tilvísun
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Save &Path	Eftir vistunar&slóð
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By St&atus	Eftir st&öðu
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	By Transfer &Rate	Eftir flutnings&hraða
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	C&ustomize URL List...	&Sérsníða URL-lista...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Check for &updates...	Leita að &uppfærslum...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Clear all &filters	Hreinsa allar &síur
+#. menu command in the main window
+#, machine
+menu	Create new queue	Búa til nýja biðröð
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Customize...	Sérsníða...
+#. menu command in the main window
+#, machine
+menu	Dark Mode support	Stuðningur við dökkan ham
+#. menu command in the main window
+#. verb: deletes the category
+#. verb: deletes the queue
+#, machine
+menu	Delete	Eyða
+#. menu command in the main window
+#, machine
+menu	Delete from queue	Eyða úr biðröð
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download &video from a page...	Hlaða niður &myndbandi af síðu...
+#. menu command in the main window
+#. verb: save the download list to a file
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	E&xport	&Flytja út
+#. menu command in the main window
+#, machine
+menu	Edit queue	Breyta biðröð
+#. menu command in the main window
+#, machine
+menu	Find (Ctrl-F)	Finna (Ctrl-F)
+#. menu command in the main window
+#, machine
+menu	Find Next (F3)	Finna næsta (F3)
+#. menu command in the main window
+#. noun: the list's font (submenu)
+#, machine
+menu	Font	Leturgerð
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &IDM export file...	Úr &IDM útflutningsskrá...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	From &text file...	Úr &textaskrá...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	H&elp contents	Hjálpar&efni
+#. menu command in the main window
+#, machine
+menu	Hide drop target	Fela dráttarmark
+#. menu command in the main window
+#, machine
+menu	Large Buttons	Stórir hnappar
+#. menu command in the main window
+#, machine
+menu	Look for new toolbars	Leita að nýjum tækjastikum
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Mister Download Manager &Home Page	Heimasíða Mister Download Manager &H
+#. menu command in the main window
+#, machine
+menu	Move/Rename (Ctrl-M)	Færa/endurnefna (Ctrl-M)
+#. menu command in the main window
+#. name of the toolbar's icon style (a proper name; may stay as is)
+#, machine
+menu	Neon	Neon
+#. menu command in the main window
+#, machine
+menu	On Double click	Við tvísmell
+#. menu command in the main window
+#. verb: opens the downloaded file
+#. what double-clicking a download does — verb: open the file
+#, machine
+menu	Open	Opna
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open &torrent file...	Opna &torrent-skrá...
+#. menu command in the main window
+#, machine
+menu	Open folder	Opna möppu
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Open with...	Opna með...
+#. menu command in the main window
+#. what double-clicking a download does — noun: show its properties
+#. noun: opens the download's Properties window
+#. noun: opens the category's properties
+#, machine
+menu	Properties	Eiginleikar
+#. menu command in the main window
+#. verb: download the file again from the start
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	R&edownload	Endur&hlaða
+#. menu command in the main window
+#. verb: download the file again from the start
+#, machine
+menu	Redownload	Endurhlaða
+#. menu command in the main window
+#, machine
+menu	Refresh download address	Endurnýja niðurhalsfang
+#. menu command in the main window
+#. verb: removes the download from the list
+#, machine
+menu	Remove	Fjarlægja
+#. menu command in the main window
+#, machine
+menu	Resume Download	Halda áfram niðurhali
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&cheduler	&Tímaáætlun
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	S&ettings...	&Stillingar...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	S&top queue	&Stöðva biðröð
+#. menu command in the main window
+#. command: opens this queue's schedule (when it starts and stops)
+#, machine
+menu	Schedule	Tímaáætlun
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Show &drop target	Sýna &sleppimark
+#. menu command in the main window
+#, machine
+menu	Show Mister Download Manager	Sýna Mister Download Manager
+#. menu command in the main window
+#, machine
+menu	Small Buttons	Litlir hnappar
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Speed &Limiter	Hraða&takmörkun
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Start &queue	Ræsa &biðröð
+#. menu command in the main window
+#, machine
+menu	Start now	Ræsa núna
+#. menu command in the main window
+#. verb: stops the queue
+#, machine
+menu	Stop	Stöðva
+#. menu command in the main window
+#, machine
+menu	Stop Download	Stöðva niðurhal
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Tell a &friend	Segja &vini
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &IDM export file...	Í &IDM útflutningsskrá...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	To &text file...	Í &textaskrá...
+#. menu command in the main window
+#. noun: the toolbar (submenu of View with its settings)
+#, machine
+menu	Toolbar	Tækjastika
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Torrent setti&ngs...	Torrent-still&ingar...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn o&n	Kveikja &á
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Turn of&f	Slökkva &á
+#. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Verify checksum...	Staðfesta afgreiðslutölu...
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Downloads	Niðurhal
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	File	Skrá
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Help	Hjálp
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	Tasks	Verkefni
+#. menu bar title in the main window (menus, toolbar, Categories pane)
+#, machine
+menubar	View	Sýn
+#. toolbar button in the main window
+#, machine
+toolbar	Add Torrent	Bæta við torrent
+#. toolbar button in the main window
+#, machine
+toolbar	Add URL	Bæta við URL
+#. toolbar button in the main window
+#. verb: delete the selected downloads
+#, machine
+toolbar	Delete	Eyða
+#. toolbar button in the main window
+#, machine
+toolbar	Delete Completed	Eyða lokið
+#. toolbar button in the main window
+#. plural noun: opens the Options window (settings)
+#, machine
+toolbar	Options	Valkostir
+#. toolbar button in the main window
+#. verb: continue the selected downloads
+#, machine
+toolbar	Resume	Halda áfram
+#. toolbar button in the main window
+#. noun: the tool that starts and stops queues on time
+#, machine
+toolbar	Scheduler	Tímaáætlun
+#. toolbar button in the main window
+#, machine
+toolbar	Start Queue	Ræsa biðröð
+#. toolbar button in the main window
+#. verb: stop the selected downloads
+#, machine
+toolbar	Stop	Stöðva
+#. toolbar button in the main window
+#, machine
+toolbar	Stop All	Stöðva allt
+#. toolbar button in the main window
+#, machine
+toolbar	Stop Queue	Stöðva biðröð
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} GB	{n} GB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB	{n} KB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} KB/sec	{n} KB/sek
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB	{n} MB
+#. unit after a number in the download list (sizes, speeds, status)
+#. {n} = a number (keep the braces as they are)
+#, machine
+unit	{n} MB/sec	{n} MB/sek
