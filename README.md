@@ -247,6 +247,8 @@ right-to-left window.
 - **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.
 - **Day and dark mode**, 86 languages, and a portable version for USB sticks.
+- **Works from the keyboard and with screen readers** (Narrator, NVDA): every window, dialog and
+  menu ([the keys](docs/keyboard-shortcuts.md)).
 - **No ads, no trial, no account**. Free and open source.
 
 Step by step: [your first download](docs/guide-first-download.md) ·
