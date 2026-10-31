@@ -18,9 +18,9 @@ keys beside it. On a Mac, **⌘** (Command) takes the place of **Ctrl**: **⌘N*
 
 | Keys | What they do |
 |---|---|
-| **Enter** | Open the selected download (as a double-click does) |
+| **Enter** | Open the selected download (a double-click follows right-click → **On Double click**) |
 | **Alt+Enter** | **Properties** of the selected download |
-| **Ctrl+M** | Move or rename the selected download |
+| **Ctrl+M** or **F2** | Move or rename the selected download |
 | **Shift+F10** | Open the selected download's menu |
 | **Delete** | Delete the selected downloads (asks first) |
 | **Shift+Delete** | Delete the selected downloads and their files (asks first) |

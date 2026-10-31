@@ -17,10 +17,19 @@
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 @plural	{n} byte|{n} bytes	{n} byte|{n} bytes
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} download|{n} downloads	{n} download|{n} downloads
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} downloading|{n} downloading	{n} downloading|{n} downloading
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file|{n} files	{n} file|{n} files
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} selected|{n} selected	{n} selected|{n} selected
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -180,6 +189,8 @@
 #. button in the download list
 #. verb: clears this filter
 	Clear	Clear
+#. link (opens a web page) in the main window
+	Clear all filters	Clear all filters
 #. text in a download's progress window
 #. column title: the peer's torrent program
 	Client	Client
@@ -699,6 +710,9 @@
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 	no data folder for torrents	no data folder for torrents
+#. message or event log entry in the main window
+#. in the empty download list (this category or queue has no downloads)
+	No downloads here.	No downloads here.
 #. text in a dialog box
 	No folders yet	No folders yet
 #. tooltip (why a control is greyed) in langpick.rs
@@ -1079,8 +1093,9 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Stop {queue}	Stop {queue}
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 	Stopped	Stopped
 #. text in a download's progress window
 	Stops when the download finishes	Stops when the download finishes
@@ -1105,6 +1120,9 @@
 	The address must be an http(s) or ftp(s) address	The address must be an http(s) or ftp(s) address
 #. text in the Download video window
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	The best qualities need ffmpeg to merge video and audio (about 80 MB).
+#. message or event log entry in the main window
+#. in the empty download list, when the column filters hide every download
+	The column filters hide every download here.	The column filters hide every download here.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 	The computer will go to sleep in {n} seconds.	The computer will go to sleep in {n} seconds.
@@ -1338,8 +1356,9 @@
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
 	Virus checking settings	Virus checking settings
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 	Waiting	Waiting
 #. message or event log entry in the main window
@@ -1390,6 +1409,10 @@
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 	{column} contains	{column} contains
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File
@@ -1517,7 +1540,7 @@ key	Ctrl+click	Ctrl+click
 key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+N	Ctrl+N
@@ -1572,6 +1595,10 @@ menu	&About Mister Download Manager	&About Mister Download Manager
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Add new download	&Add new download
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&Add new download...	&Add new download...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&Copy
@@ -1792,6 +1819,13 @@ menu	Refresh download address	Refresh download address
 #. verb: removes the download from the list
 menu	Remove	Remove
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	Remove with &files	Remove with &files
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+menu	Remove with files	Remove with files
+#. menu command in the main window
 menu	Resume Download	Resume Download
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -1806,7 +1840,7 @@ menu	S&top queue	S&top queue
 #. menu command in the main window
 #. command: opens this queue's schedule (when it starts and stops)
 menu	Schedule	Schedule
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Select &all	Select &all
 #. menu command in the main window

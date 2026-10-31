@@ -1297,6 +1297,8 @@ pub struct TreeRow<'a> {
     pub icon: IconKey,
     /// A small Silk icon overlaid at the icon's bottom-right (Finished ✓, queue stacks).
     pub badge: Option<&'static str>,
+    /// How many downloads the node holds, shown after its label (none when empty).
+    pub count: Option<usize>,
 }
 
 pub enum TreeEvent {
@@ -1527,6 +1529,17 @@ pub fn categories(
             crate::i18n::t(&r.label),
             TEXT(),
         );
+        if let Some(n) = r.count {
+            let count = format!("({})", crate::i18n::integer(n as u64));
+            text_font(
+                &tp,
+                winui::tahoma(),
+                text_x + ext + 5.0,
+                top + 11.0,
+                &count,
+                winui::MUTED(),
+            );
+        }
 
         let row = winui::rect(
             Rect::from_min_size(pos2(area.left(), top), vec2(area.width(), 16.0)).intersect(area),

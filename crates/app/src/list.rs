@@ -804,7 +804,15 @@ pub fn show(
                     }
                 }
                 let clip = bp.with_clip_rect(screen(cell.intersect(body)));
-                let ink = if sel { Color32::WHITE } else { TEXT() };
+                // A failed download's Status and Description (the reason) in the error colour.
+                let failed = row.status_group == "Error" && (*c == 3 || *c == 7);
+                let ink = if sel {
+                    Color32::WHITE
+                } else if failed {
+                    winui::ERROR()
+                } else {
+                    TEXT()
+                };
                 text_font(&clip, font.clone(), tx, top + 12.0, &s, ink);
             }
         }

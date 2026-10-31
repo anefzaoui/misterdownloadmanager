@@ -5,7 +5,7 @@
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use egui::{Color32, Painter, Sense, Stroke, Ui, pos2, vec2};
+use egui::{Stroke, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -17,10 +17,6 @@ pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const COMMIT: &str = env!("MDM_COMMIT");
 /// The weekly check: at most this often.
 pub const CHECK_EVERY: i64 = 7 * 24 * 3600;
-
-crate::theme::themed! {
-    LINK = Color32::from_rgb(0x99, 0xc8, 0xff), Color32::from_rgb(0x00, 0x66, 0xcc);
-}
 
 /// Open a page of the user guide (`"README.md"`, `"video.md"`, `"README.md#tutorials"`…, in
 /// the repository's docs/) in the browser; `""` is the home page (the repository).
@@ -79,22 +75,6 @@ fn report_fields() -> Vec<(&'static str, String)> {
         mdm_tools::update::Install::detect().label().to_owned(),
     ));
     fields
-}
-
-/// Text that opens something when clicked: link colour, underlined under the pointer.
-fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str) -> bool {
-    let rect = winui::text(p, x, baseline, crate::i18n::t(label), LINK());
-    let resp = ui
-        .interact(rect, ui.scope_id().with(("link", salt)), Sense::click())
-        .on_hover_cursor(egui::CursorIcon::PointingHand);
-    if resp.hovered() {
-        let y = rect.bottom() + 0.5;
-        p.line_segment(
-            [pos2(rect.left(), y), pos2(rect.right(), y)],
-            Stroke::new(1.0, LINK()),
-        );
-    }
-    resp.clicked()
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -627,13 +607,13 @@ impl About {
                     place("Source code"),
                     place("Licenses and credits"),
                 );
-                if link(ui, &p, home.0, home.1, "Home page", "home") {
+                if winui::link(ui, &p, home.0, home.1, "Home page", "home") {
                     open_page("");
                 }
-                if link(ui, &p, source.0, source.1, "Source code", "source") {
+                if winui::link(ui, &p, source.0, source.1, "Source code", "source") {
                     let _ = open::that_detached(REPO);
                 }
-                if link(
+                if winui::link(
                     ui,
                     &p,
                     credits.0,
@@ -676,7 +656,7 @@ const SHORTCUTS: [(&str, &str); 21] = [
     ("F3", "Find the next match"),
     ("Enter", "Open the selected download"),
     ("Alt+Enter", "Properties of the selected download"),
-    ("Ctrl+M", "Move or rename the selected download"),
+    ("Ctrl+M / F2", "Move or rename the selected download"),
     ("Delete", "Delete the selected downloads (asks first)"),
     (
         "Shift+Delete",

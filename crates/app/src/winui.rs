@@ -946,6 +946,23 @@ pub fn full_on_hover(
         .on_hover_text(full);
 }
 
+/// Text that opens or does something when clicked: link colour, underlined under the pointer.
+/// `label` is English (translated here).
+pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str) -> bool {
+    let rect = text(p, x, baseline, crate::i18n::t(label), LINK());
+    let resp = ui
+        .interact(rect, ui.scope_id().with(("link", salt)), Sense::click())
+        .on_hover_cursor(egui::CursorIcon::PointingHand);
+    if resp.hovered() {
+        let y = rect.bottom() + 0.5;
+        p.line_segment(
+            [pos2(rect.left(), y), pos2(rect.right(), y)],
+            egui::Stroke::new(1.0, LINK()),
+        );
+    }
+    resp.clicked()
+}
+
 /// A disabled control says why on hover: `reason` (English, translated here) while `disabled`.
 pub fn why_disabled(resp: Response, disabled: bool, reason: &str) -> Response {
     if disabled {
@@ -1940,6 +1957,8 @@ crate::theme::themed! {
     /// Etched separators: the shadow line and the highlight beside it.
     pub ETCH_SHADOW = rgb(0x22, 0x22, 0x22), rgb(0xa0, 0xa0, 0xa0);
     pub ETCH_LIGHT = rgb(0x50, 0x50, 0x50), rgb(0xff, 0xff, 0xff);
+    /// Text that opens something ([`link`]).
+    pub LINK = rgb(0x99, 0xc8, 0xff), rgb(0x00, 0x66, 0xcc);
     /// A selected row in a list without the focus.
     pub SELECTED_INACTIVE = rgb(0x4a, 0x4a, 0x4a), rgb(0xd9, 0xd9, 0xd9);
     /// Error text.

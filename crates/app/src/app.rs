@@ -138,8 +138,13 @@ enum Cmd {
     Arrange(Option<usize>),
     /// Header right-click → Clear all filters.
     ClearFilters,
+    /// Every download the list shows (Ctrl+A).
+    SelectAll,
     None,
 }
+
+/// The status strip's height, under the list and the Categories pane.
+const STRIP_H: f32 = 22.0;
 
 impl Cmd {
     /// The key that runs this command anywhere in the main window, as the shortcuts list writes
@@ -153,6 +158,7 @@ impl Cmd {
             Cmd::Remove => "Delete",
             Cmd::RemoveWithFiles => "Shift+Delete",
             Cmd::Open => "Enter",
+            Cmd::SelectAll => "Ctrl+A",
             Cmd::Properties => "Alt+Enter",
             _ => return None,
         })
@@ -603,6 +609,72 @@ impl App {
             .collect()
     }
 
+    /// Under an empty list: why (nothing in this view, or the column filters hide it all),
+    /// with Clear filters when they do. True when Clear filters is clicked.
+    fn empty_note(&self, ui: &Ui, outer: egui::Rect) -> bool {
+        let p = ui.painter();
+        let x = outer.left() + 12.0;
+        let y = outer.top() + list::HEADER_H + 24.0;
+        let filtered = self.list.filters.iter().any(Option::is_some) && !self.view_ids().is_empty();
+        let note = if filtered {
+            // i18n: in the empty download list, when the column filters hide every download
+            crate::i18n::t("The column filters hide every download here.")
+        } else {
+            // i18n: in the empty download list (this category or queue has no downloads)
+            crate::i18n::t("No downloads here.")
+        };
+        winui::text(p, x, y, note, winui::MUTED());
+        filtered && winui::link(ui, p, x, y + 18.0, "Clear all filters", "empty-clear")
+    }
+
+    /// The strip under the list: how many downloads are shown and selected, how many run and
+    /// how fast in all (beyond IDM, which has no status bar).
+    fn status_strip(&self, ui: &Ui, o: Pos2, w: f32, h: f32, shown: usize) {
+        let p = ui.painter();
+        let top = o.y + h - STRIP_H;
+        let baseline = top + 14.0;
+        let n = shown as u64;
+        let mut left = crate::i18n::tn(n, "{n} download", "{n} downloads");
+        let selected = self.selection.ids().len() as u64;
+        if selected > 1 {
+            left += "   ";
+            left += &crate::i18n::tn(selected, "{n} selected", "{n} selected");
+        }
+        winui::fit(
+            ui,
+            p,
+            o.x + 8.0,
+            baseline,
+            &left,
+            winui::MUTED(),
+            o.x + w / 2.0,
+            "strip-left",
+        );
+        if let Some(right) = self.activity() {
+            winui::text_right(p, o.x + w - 10.0, baseline, &right, winui::MUTED());
+        }
+    }
+
+    /// "2 downloading, 1.25 MB/sec" while downloads run (the status strip, the tray's tip).
+    fn activity(&self) -> Option<String> {
+        let running: Vec<&Item> = self.items.iter().filter(|i| i.live.is_some()).collect();
+        if running.is_empty() {
+            return None;
+        }
+        let speed: f64 = running.iter().map(|i| i.rate()).sum();
+        Some(crate::i18n::fmt(
+            // i18n: {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+            crate::i18n::t("{count}, {speed}"),
+            &[
+                (
+                    "count",
+                    &crate::i18n::tn(running.len() as u64, "{n} downloading", "{n} downloading"),
+                ),
+                ("speed", &model::rate(speed)),
+            ],
+        ))
+    }
+
     /// The list's rows as drawn: the view's downloads in the list's order that pass the column
     /// filters (Find, Select all and scrolling count these, so they match what is shown).
     fn shown_ids(&self) -> Vec<u64> {
@@ -672,7 +744,7 @@ impl App {
         let mut ids: Vec<u64> = self
             .items
             .iter()
-            .filter(|i| self.visible(i))
+            .filter(|i| self.in_view(self.view, i))
             .map(|i| i.id)
             .collect();
         if let Some((col, asc)) = self.list.sort {
@@ -689,9 +761,10 @@ impl App {
         ids
     }
 
-    fn visible(&self, i: &Item) -> bool {
+    /// Does `view` (a node of the Categories tree) hold this download?
+    fn in_view(&self, view: View, i: &Item) -> bool {
         let in_cat = |c: Option<Category>| c.is_none_or(|c| i.category == c);
-        match self.view {
+        match view {
             View::All => true,
             View::Cat(c) => i.category == c,
             View::Unfinished(c) => i.status != Status::Complete && in_cat(c),
@@ -1339,6 +1412,13 @@ impl App {
         }
         if let (Some(t), Some(q)) = (&self.tray, self.queues.first()) {
             t.set_queue(q.running);
+        }
+        if let Some(t) = &self.tray {
+            let tip = match self.activity() {
+                Some(a) => format!("{}\n{a}", crate::MAIN_TITLE),
+                None => crate::MAIN_TITLE.to_owned(),
+            };
+            t.set_tooltip(&tip);
         }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
@@ -2390,6 +2470,10 @@ impl App {
             }
             Cmd::Arrange(col) => self.list.sort = col.map(|c| (c, true)),
             Cmd::ClearFilters => self.list.filters = vec![None; list::COLS],
+            Cmd::SelectAll => {
+                let ids = self.shown_ids();
+                self.selection.apply(crate::selection::Pick::All, &ids);
+            }
             Cmd::None => {}
         }
     }
@@ -2584,6 +2668,8 @@ impl App {
                 I("&Stop Download", Cmd::Stop, running, false),
                 // i18n: verb: removes the selected download from the list
                 I("&Remove", Cmd::Remove, deletable, false),
+                // i18n: verb: removes the selected download from the list and its file from the disk
+                I("Remove with &files", Cmd::RemoveWithFiles, deletable, false),
                 I("&Download Now", Cmd::Resume, resumable, false),
                 // i18n: verb: download the file again from the start
                 I(
@@ -2606,6 +2692,12 @@ impl App {
                 Sep,
                 I("Find (Ctrl-F)", Cmd::Find, true, false),
                 I("Find Next (F3)", Cmd::FindNext, true, false),
+                I(
+                    "Select &all",
+                    Cmd::SelectAll,
+                    !self.shown_ids().is_empty(),
+                    false,
+                ),
                 Sep,
                 I("S&cheduler", Cmd::Scheduler, true, false),
                 Sub("Start &queue", true, self.queue_drop(true)),
@@ -2645,26 +2737,7 @@ impl App {
                     true,
                     false,
                 ),
-                Sub("Arrange files", true, {
-                    let sorted = self.list.sort.map(|s| s.0);
-                    let by = |label, col: Option<usize>| {
-                        I(label, Cmd::Arrange(col), true, sorted == col)
-                    };
-                    vec![
-                        by("By &Order Of Addition", None),
-                        by("By &File Name", Some(0)),
-                        by("By &Size", Some(2)),
-                        by("By St&atus", Some(3)),
-                        by("By &Time Left", Some(4)),
-                        by("By Transfer &Rate", Some(5)),
-                        by("By &Last Try Date", Some(6)),
-                        by("By Date &Added", Some(list::ADDED)),
-                        by("By &Description", Some(7)),
-                        off("By Save &Path"),
-                        off("By R&eferer"),
-                        off("By Parent &Web Page"),
-                    ]
-                }),
+                self.arrange_menu(),
                 // i18n: noun: the toolbar (submenu of View with its settings)
                 Sub("Toolbar", false, vec![]),
                 Sub("&Tray icon", false, vec![]),
@@ -2747,6 +2820,60 @@ impl App {
     /// space (`None`: nothing selected, almost everything greyed).
     /// The list's right-click menu. With several downloads selected it acts on all of them
     /// (Resume, Stop, Remove, queues); commands for one download need one.
+    /// View → Arrange files, also on the list's blank space.
+    fn arrange_menu(&self) -> MenuEntry<Cmd> {
+        use MenuEntry::{Item as I, Sub};
+        let off = |label| I(label, Cmd::None, false, false);
+        Sub("Arrange files", true, {
+            let sorted = self.list.sort.map(|s| s.0);
+            let by = |label, col: Option<usize>| I(label, Cmd::Arrange(col), true, sorted == col);
+            vec![
+                by("By &Order Of Addition", None),
+                by("By &File Name", Some(0)),
+                by("By &Size", Some(2)),
+                by("By St&atus", Some(3)),
+                by("By &Time Left", Some(4)),
+                by("By Transfer &Rate", Some(5)),
+                by("By &Last Try Date", Some(6)),
+                by("By Date &Added", Some(list::ADDED)),
+                by("By &Description", Some(7)),
+                off("By Save &Path"),
+                off("By R&eferer"),
+                off("By Parent &Web Page"),
+            ]
+        })
+    }
+
+    /// Right-click on the list's blank space: what applies to the whole list (IDM greys the
+    /// download menu there).
+    fn blank_entries(&self) -> Vec<MenuEntry<Cmd>> {
+        use MenuEntry::{Item as I, Sep};
+        vec![
+            I("&Add new download...", Cmd::AddUrl, true, false),
+            Sep,
+            I(
+                "Select &all",
+                Cmd::SelectAll,
+                !self.shown_ids().is_empty(),
+                false,
+            ),
+            self.arrange_menu(),
+            I(
+                "Clear all &filters",
+                Cmd::ClearFilters,
+                self.list.filters.iter().any(Option::is_some),
+                false,
+            ),
+            Sep,
+            I(
+                "&Delete All Completed",
+                Cmd::DeleteCompleted,
+                self.items.iter().any(|i| i.status == Status::Complete),
+                false,
+            ),
+        ]
+    }
+
     fn item_entries(&self, id: Option<u64>) -> Vec<MenuEntry<Cmd>> {
         use MenuEntry::{Item as I, Radio, Sep, Sub};
         let chosen = if id.is_some() {
@@ -2813,6 +2940,8 @@ impl App {
             Sep,
             // i18n: verb: removes the download from the list
             I("Remove", Cmd::Remove, any_idle, false),
+            // i18n: verb: removes the download from the list and its file from the disk
+            I("Remove with files", Cmd::RemoveWithFiles, any_idle, false),
             Sep,
             Sub(
                 if in_queue {
@@ -2946,6 +3075,7 @@ impl App {
             selected: view == Some(cur),
             icon,
             badge,
+            count: None,
         };
         let mut rows = Vec::new();
         // Silk icons in IDM's roles: folder, folder + green arrow, folder + tick, page stacks.
@@ -2967,6 +3097,7 @@ impl App {
                                 selected: v == cur,
                                 icon: category_icon(c),
                                 badge: None,
+                                count: None,
                             },
                             Some(v),
                             Branch::Leaf,
@@ -3029,10 +3160,18 @@ impl App {
                         selected: view == Some(cur),
                         icon: stack.clone(),
                         badge: queue.sync.then_some("tick"),
+                        count: None,
                     },
                     view,
                     Branch::Leaf,
                 ));
+            }
+        }
+        // Each node's downloads, as its list would show them (before column filters).
+        for (row, view, _) in &mut rows {
+            if let Some(v) = view {
+                let n = self.items.iter().filter(|i| self.in_view(*v, i)).count();
+                row.count = (n > 0).then_some(n);
             }
         }
         rows
@@ -3242,7 +3381,7 @@ impl App {
             let right = o.x + 6.0 + cat_w;
             let split = winui::rect(egui::Rect::from_min_max(
                 pos2(right, o.y + chrome::MENU_H + chrome::pane_top()),
-                pos2(right + 4.0, o.y + h - 5.0),
+                pos2(right + 4.0, o.y + h - STRIP_H - 5.0),
             ));
             let sr = ui.interact(split, egui::Id::unique("cat-splitter"), egui::Sense::drag());
             if sr.hovered() || sr.dragged() {
@@ -3261,7 +3400,9 @@ impl App {
             if sr.drag_stopped() {
                 self.dirty = true;
             }
-            if let Some(ev) = chrome::categories(ui, &mut self.icons, o, o.y + h, right, &tree) {
+            if let Some(ev) =
+                chrome::categories(ui, &mut self.icons, o, o.y + h - STRIP_H, right, &tree)
+            {
                 match ev {
                     TreeEvent::Close => self.show_categories = false,
                     TreeEvent::Select(k) => match rows[k].1 {
@@ -3290,7 +3431,7 @@ impl App {
         let (selected, focus) = self.selection.rows(&ids);
         let outer = egui::Rect::from_min_max(
             pos2(o.x + list_left, o.y + chrome::MENU_H + chrome::pane_top()),
-            pos2(o.x + w - 7.0, o.y + h - 4.0),
+            pos2(o.x + w - 7.0, o.y + h - STRIP_H - 4.0),
         );
         let r = list::show(
             ui,
@@ -3323,6 +3464,10 @@ impl App {
         if let Some(i) = r.enter {
             self.open_item(ids[i]);
         }
+        if ids.is_empty() && self.empty_note(ui, outer) {
+            chosen = Some((Cmd::ClearFilters, None));
+        }
+        self.status_strip(ui, o, w, h, ids.len());
         if let Some((i, pos)) = r.context {
             self.open_popup(Popup::Item(i.map(|i| ids[i])), pos);
         }
@@ -3354,6 +3499,7 @@ impl App {
                     ));
                     (e, None)
                 }
+                Popup::Item(None) => (self.blank_entries(), None),
                 Popup::Item(id) => (self.item_entries(id), id),
                 Popup::Toolbar => (Self::toolbar_entries(), None),
                 Popup::QueueDrop(start) => (self.queue_drop(start), None),
@@ -3402,7 +3548,11 @@ impl App {
                     i.consume_key(egui::Modifiers::COMMAND, egui::Key::N),
                 )
             });
-            if ctx.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::M)) {
+            // Ctrl+M as IDM; F2 as renaming in Explorer.
+            if ctx.input_mut(|i| {
+                i.consume_key(egui::Modifiers::COMMAND, egui::Key::M)
+                    || i.consume_key(egui::Modifiers::NONE, egui::Key::F2)
+            }) {
                 chosen = Some((Cmd::MoveRename, None));
             }
             if find {

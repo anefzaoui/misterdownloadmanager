@@ -536,9 +536,15 @@ impl Item {
             Status::Complete => crate::i18n::t("Complete").into(),
             // i18n: a download's status (state it is in, not a command): it failed
             Status::Error => crate::i18n::t("Error").into(),
-            Status::Queued if self.downloaded == 0 => String::new(),
-            _ => match self.size {
-                Some(t) if t > 0 => percent(self.downloaded as f64 / t as f64),
+            // Where IDM leaves the cell blank (nothing yet, or no size to take a share of), it
+            // says what the download is doing.
+            // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
+            Status::Queued if self.downloaded == 0 => crate::i18n::t("Waiting").into(),
+            _ => match (self.size, self.status) {
+                (Some(t), _) if t > 0 => percent(self.downloaded as f64 / t as f64),
+                // i18n: a download's status (state it is in, not a command): stopped by the user
+                (_, Status::Stopped) => crate::i18n::t("Stopped").into(),
+                (_, Status::Queued) => crate::i18n::t("Waiting").into(),
                 _ => String::new(),
             },
         }
