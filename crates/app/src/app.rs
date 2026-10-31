@@ -2588,7 +2588,7 @@ impl App {
             }
             Cmd::OpenTorrentFile => {
                 if let Some(f) = rfd::FileDialog::new()
-                    .add_filter("Torrent files", &["torrent"])
+                    .add_filter(crate::i18n::t("Torrent files"), &["torrent"])
                     .set_title(crate::i18n::t("Open torrent file"))
                     .pick_file()
                 {
@@ -3035,7 +3035,11 @@ impl App {
             };
             crate::chrome::label(&crate::i18n::fmt(
                 template,
-                &[("queue", crate::i18n::t(&self.queues[q].name))],
+                // A name's "&" is text, not an access key (Tom & Jerry lost it).
+                &[(
+                    "queue",
+                    &crate::i18n::t(&self.queues[q].name).replace('&', "&&"),
+                )],
             ))
         };
         (0..self.queues.len())
@@ -3139,7 +3143,7 @@ impl App {
             .filter(|(_, q)| !queue_of(q) && (!all_done || q.sync))
             .map(|(q, queue)| {
                 I(
-                    crate::chrome::label(&queue.name),
+                    crate::chrome::label(&crate::i18n::t(&queue.name).replace('&', "&&")),
                     Cmd::AddToQueue(q),
                     true,
                     false,
@@ -3756,7 +3760,20 @@ impl App {
                         .iter()
                         .enumerate()
                         .map(|(i, t)| {
-                            MenuEntry::Item(t, Cmd::ToggleColumn(i), i != 0, self.list.visible[i])
+                            // As the header names them (its own words, not the menus'), and
+                            // the narrow Q column by its whole name.
+                            let name = if *t == "Q" {
+                                crate::i18n::tc("column", "Queue")
+                            } else {
+                                crate::i18n::tc("column", t)
+                            };
+                            let name = crate::chrome::label(&name.replace('&', "&&"));
+                            MenuEntry::Item(
+                                name,
+                                Cmd::ToggleColumn(i),
+                                i != 0,
+                                self.list.visible[i],
+                            )
                         })
                         .collect();
                     e.push(MenuEntry::Sep);
@@ -4212,7 +4229,11 @@ impl App {
         dialog = if ef2 {
             dialog.add_filter("EF2", &["ef2"])
         } else {
-            dialog.add_filter("TXT", &["txt", "htm", "html", "csv"])
+            // i18n: the kind of file the Import dialog lists (text files with addresses)
+            dialog.add_filter(
+                crate::i18n::t("Lists of addresses"),
+                &["txt", "htm", "html", "csv"],
+            )
         };
         let Some(path) = dialog
             .add_filter(crate::i18n::t("All files"), &["*"])

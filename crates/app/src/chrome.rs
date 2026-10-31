@@ -45,7 +45,8 @@ themed! {
     GLYPH = rgb(0xff, 0xff, 0xff), grey(0x1a);
     TEXT_DISABLED_MENU = rgb(0x6d, 0x6d, 0x6d), grey(0x9f);
     TB_DISABLED = rgb(0xa0, 0xa0, 0xa0), grey(0xa0);
-    TB_ARROW = rgb(0x28, 0x28, 0x28), grey(0x28);
+    /// A drop-down's arrow (dark: light on the dark band, where #282828 could not be seen).
+    TB_ARROW = rgb(0xd0, 0xd0, 0xd0), grey(0x28);
     CAT_FRAME = rgb(0xdc, 0xdc, 0xdc), grey(0xdc);
     TREE_BG = rgb(0x20, 0x20, 0x20), grey(0xff);
     TREE_LINES = rgb(0x6d, 0x6d, 0x6d), grey(0x6d);
@@ -358,7 +359,10 @@ fn plain(label: &str) -> (String, Option<usize>) {
     let mut mnemonic = None;
     let mut chars = label.chars().peekable();
     while let Some(c) = chars.next() {
-        if c == '&' && chars.peek().is_some() {
+        if c == '&' && chars.peek() == Some(&'&') {
+            // "&&": an "&" in the text (a queue named "Tom & Jerry"), no access key.
+            out.push(chars.next().unwrap());
+        } else if c == '&' && chars.peek().is_some() {
             mnemonic = Some(out.chars().count());
             out.push(chars.next().unwrap());
         } else {
@@ -1250,8 +1254,12 @@ pub fn toolbar(
             && let Some(at) = resp.interact_pointer_pos()
         {
             event = Some(ToolbarEvent::Context(at));
-        } else if resp.clicked() && *enabled {
-            let on_arrow = dropdown && resp.interact_pointer_pos().is_some_and(past_button);
+        } else if resp.clicked()
+            && let on_arrow = dropdown && resp.interact_pointer_pos().is_some_and(past_button)
+            // The arrow is a button of its own (a split button): its menu lists every queue,
+            // so it works while the main one's button is greyed.
+            && (*enabled || on_arrow)
+        {
             // IDM: the drop-down menu's top-left is the button's left edge at client y 87 (light:
             // 2 px higher with the band [?]); in RTL its top-right at the button's right edge.
             event = Some(if on_arrow {

@@ -419,10 +419,11 @@ impl Item {
             .take(n)
             .rev()
             .map(|(at, text)| {
+                // In the interface's way (English month names in every language before).
                 let t = chrono::Local
                     .timestamp_opt(*at, 0)
                     .single()
-                    .map(|t| t.format("%b %d %H:%M:%S").to_string())
+                    .map(|t| when_text(t.naive_local()))
                     .unwrap_or_default();
                 format!("{t}  {text}")
             })
@@ -545,6 +546,8 @@ impl Item {
                 // i18n: a download's status (state it is in, not a command): stopped by the user
                 (_, Status::Stopped) => crate::i18n::t("Stopped").into(),
                 (_, Status::Queued) => crate::i18n::t("Waiting").into(),
+                // No size to take a share of: how much has come (it looked idle).
+                (_, Status::Downloading) if self.downloaded > 0 => size_list(self.downloaded),
                 _ => String::new(),
             },
         }
@@ -580,11 +583,20 @@ pub fn date_text(stored: &str) -> String {
     let Some(t) = stamp_time(stored) else {
         return stored.to_owned();
     };
+    if english() && !crate::regional::current().custom {
+        return stored.to_owned();
+    }
+    when_text(t)
+}
+
+/// A local time as the interface writes dates and times (Options → Regional; IDM's text in
+/// English; the Windows region's elsewhere).
+pub fn when_text(t: chrono::NaiveDateTime) -> String {
     if crate::regional::current().custom {
         return crate::i18n::ltr(&crate::regional::short_date_time(t));
     }
     if english() {
-        return stored.to_owned();
+        return t.format(STAMP).to_string();
     }
     #[cfg(windows)]
     if let Some(s) = crate::win32::local_date_time(t) {
