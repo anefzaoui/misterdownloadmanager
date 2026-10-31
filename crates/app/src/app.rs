@@ -272,6 +272,8 @@ pub struct App {
     import: Option<crate::transfer::ImportDialog>,
     /// Add category / Properties from the Categories tree.
     category_dlg: Option<crate::categories::CategoryDialog>,
+    /// The category dialog was opened by Download File Info's "+" (its result is picked there).
+    category_for_file_info: bool,
     /// Delete a category of the user's, asking first.
     confirm_category_delete: Option<(u32, dialogs::Confirm)>,
     /// File Properties windows, one per download.
@@ -579,6 +581,7 @@ impl App {
             scheduler: None,
             options: None,
             category_dlg: None,
+            category_for_file_info: false,
             import: None,
             queue_pick: None,
             drop_target: None,
@@ -2597,8 +2600,11 @@ impl App {
                     _ => s.new_queue(),
                 }
             }
+            // A dialog already open (half filled in) stays.
             Cmd::AddCategory => {
-                self.category_dlg = Some(crate::categories::CategoryDialog::new());
+                if self.category_dlg.is_none() {
+                    self.category_dlg = Some(crate::categories::CategoryDialog::new());
+                }
             }
             Cmd::CategoryProps(c) => {
                 let folder = self.settings.category_dir(c, &self.downloads);
@@ -4445,7 +4451,13 @@ impl App {
                 Outcome::Closed => self.category_dlg = None,
                 Outcome::Done(e) => {
                     self.category_dlg = None;
-                    crate::categories::apply(&mut self.settings, e, &self.downloads);
+                    let made = crate::categories::apply(&mut self.settings, e, &self.downloads);
+                    // Made with Download File Info's "+": that download goes in it.
+                    if std::mem::take(&mut self.category_for_file_info)
+                        && let Some(fi) = &mut self.file_info
+                    {
+                        fi.set_category(made);
+                    }
                     self.dirty = true;
                 }
             }
@@ -4746,6 +4758,7 @@ impl App {
             self.start_early(&mut fi);
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
+                self.category_for_file_info = true;
                 self.run(Cmd::AddCategory, None, ctx);
             }
             // The folder a download goes to is remembered for the Save As drop list.

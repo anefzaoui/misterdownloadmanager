@@ -747,3 +747,32 @@ mod stamp_tests {
         assert!(super::stamp_time("not a date").is_none());
     }
 }
+
+/// An address as typed: `www.example.com/a.zip` (no scheme, as browsers take it) is read as
+/// https; anything else as written.
+pub fn parse_address(typed: &str) -> Result<url::Url, url::ParseError> {
+    let typed = typed.trim();
+    match url::Url::parse(typed) {
+        Err(url::ParseError::RelativeUrlWithoutBase)
+            if !typed.contains(char::is_whitespace)
+                && typed
+                    .split('/')
+                    .next()
+                    .is_some_and(|host| host.contains('.')) =>
+        {
+            url::Url::parse(&format!("https://{typed}"))
+        }
+        other => other,
+    }
+}
+
+#[cfg(test)]
+mod address_tests {
+    #[test]
+    fn an_address_without_its_scheme_is_https() {
+        let u = super::parse_address(" www.example.com/a.zip ").unwrap();
+        assert_eq!(u.as_str(), "https://www.example.com/a.zip");
+        assert_eq!(super::parse_address("ftp://h/f").unwrap().scheme(), "ftp");
+        assert!(super::parse_address("not an address").is_err());
+    }
+}

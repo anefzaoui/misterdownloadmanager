@@ -412,7 +412,7 @@ impl AddUrl {
                     return Outcome::Closed;
                 }
                 if ok || (enter && !list_was_open) {
-                    match Url::parse(self.address.trim()) {
+                    match crate::model::parse_address(&self.address) {
                         Ok(url) if mdm_engine::supported(&url) || url.scheme() == "magnet" => {
                             return Outcome::Done(NewUrl {
                                 url,
@@ -445,6 +445,8 @@ pub struct FileInfo {
     url_text: String,
     /// The URL box holds no address MDM downloads: Start and Later wait.
     url_bad: bool,
+    /// Save As has been given the focus (once, when the dialog opens).
+    focused: bool,
     /// To look an edited address up again.
     rt: tokio::runtime::Handle,
     probe: Arc<Mutex<Option<Result<ProbeInfo, String>>>>,
@@ -490,6 +492,7 @@ impl FileInfo {
         FileInfo {
             url_text: new.url.to_string(),
             url_bad: false,
+            focused: false,
             rt: rt.clone(),
             url: new.url,
             login: new.login,
@@ -516,7 +519,7 @@ impl FileInfo {
     /// again; its file name too, unless Save As was edited); anything else holds Start and
     /// Later back.
     fn url_edited(&mut self, ctx: &egui::Context) {
-        match Url::parse(self.url_text.trim()) {
+        match crate::model::parse_address(&self.url_text) {
             Ok(url) if mdm_engine::supported(&url) => {
                 self.url_bad = false;
                 if url == self.url {
@@ -576,7 +579,7 @@ impl FileInfo {
         resolve_path(&self.save_as)
     }
 
-    fn set_category(&mut self, c: Category) {
+    pub(crate) fn set_category(&mut self, c: Category) {
         self.category = c;
         let name = Path::new(&self.save_as)
             .file_name()
@@ -676,6 +679,11 @@ impl FileInfo {
                 );
                 let save_rc = r(o, 96.0, 63.0, 335.0, 21.0);
                 let save = winui::combo_edit(ui, save_rc, &mut self.save_as);
+                // Opened, the keys are in Save As (its name is what one changes here).
+                if !self.focused {
+                    save.request_focus();
+                    self.focused = true;
+                }
                 if save.changed() {
                     self.edited = true;
                 }
@@ -769,7 +777,25 @@ impl FileInfo {
                     false,
                 );
 
-                let (later_kind, start_kind) = if self.url_bad {
+                // Held back while the address or the file's name can't be downloaded to (an
+                // empty Save As, or a folder, made it the profile folder).
+                let name_bad = {
+                    let typed = self.save_as.trim();
+                    let dest = self.dest();
+                    typed.is_empty()
+                        || typed.ends_with(['\\', '/'])
+                        || dest.file_name().is_none()
+                        || dest.is_dir()
+                };
+                let blocked = if self.url_bad {
+                    Some("Invalid address")
+                } else if name_bad {
+                    // i18n: why Start Download is greyed in Download File Info
+                    Some(crate::i18n::mark("Type the file's name in Save As"))
+                } else {
+                    None
+                };
+                let (later_kind, start_kind) = if blocked.is_some() {
                     (ButtonKind::Disabled, ButtonKind::Disabled)
                 } else {
                     (ButtonKind::Normal, ButtonKind::Default)
@@ -782,7 +808,7 @@ impl FileInfo {
                     false,
                     Some(9),
                 );
-                let later = winui::why_disabled(later, self.url_bad, "Invalid address");
+                let later = winui::why_disabled(later, blocked.is_some(), blocked.unwrap_or(""));
                 let start = winui::button(
                     ui,
                     r(o, 225.0, 180.0, 109.0, 21.0),
@@ -791,7 +817,7 @@ impl FileInfo {
                     true,
                     Some(0),
                 );
-                let start = winui::why_disabled(start, self.url_bad, "Invalid address");
+                let start = winui::why_disabled(start, blocked.is_some(), blocked.unwrap_or(""));
                 let cancel = winui::button(
                     ui,
                     r(o, 352.0, 180.0, 109.0, 21.0),
@@ -869,7 +895,7 @@ impl FileInfo {
                     |k| !folders_were_open && !category_was_open && ui.input(|i| i.key_pressed(k));
                 if cancel.clicked() || key(egui::Key::Escape) {
                     Outcome::Closed
-                } else if self.url_bad {
+                } else if blocked.is_some() {
                     Outcome::Open
                 } else if start.clicked() || key(egui::Key::Enter) {
                     Outcome::Done(Start::Now)

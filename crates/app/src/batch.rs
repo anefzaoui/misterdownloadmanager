@@ -16,7 +16,12 @@ pub struct Batch {
     login: String,
     password: String,
     focused: bool,
+    /// The pattern's addresses (or why none), and the inputs they were made from.
+    cached: Option<(PatternKey, Result<Vec<url::Url>, &'static str>)>,
 }
+
+/// What a pattern's addresses are made from: address, letters, from, to, size.
+type PatternKey = (String, bool, String, String, String);
 
 /// What OK adds: the addresses, and the login if one was given.
 pub struct Added {
@@ -47,24 +52,36 @@ impl Batch {
             login: String::new(),
             password: String::new(),
             focused: false,
+            cached: None,
         }
     }
 
     /// The addresses the pattern stands for (empty while it isn't valid).
+    #[cfg(test)]
     fn expand(&self) -> Vec<url::Url> {
+        self.pattern().unwrap_or_default()
+    }
+
+    /// The addresses the pattern stands for, or why there are none (English, marked).
+    fn pattern(&self) -> Result<Vec<url::Url>, &'static str> {
         let Some((head, tail)) = self.address.trim().split_once('*') else {
-            return Vec::new();
+            // i18n: why Batch download's OK is greyed
+            return Err(crate::i18n::mark(
+                "Put a * in the address where the numbers or letters go",
+            ));
         };
         if tail.contains('*') {
-            return Vec::new();
+            // i18n: why Batch download's OK is greyed
+            return Err(crate::i18n::mark("Use one * only"));
         }
         let width: usize = self.size.parse().unwrap_or(1).clamp(1, 10);
         let parts: Vec<String> = if self.letters {
             let (Some(a), Some(b)) = (self.from.chars().next(), self.to.chars().next()) else {
-                return Vec::new();
+                // i18n: why Batch download's OK is greyed
+                return Err(crate::i18n::mark("Type a letter in From and in To"));
             };
             if !a.is_ascii_alphabetic() || !b.is_ascii_alphabetic() {
-                return Vec::new();
+                return Err(crate::i18n::mark("Type a letter in From and in To"));
             }
             // In From's case (Z to a would run through [\]^_` between the cases).
             let b = if a.is_ascii_uppercase() {
@@ -73,28 +90,62 @@ impl Batch {
                 b.to_ascii_lowercase()
             };
             if a > b {
-                return Vec::new();
+                // i18n: why Batch download's OK is greyed
+                return Err(crate::i18n::mark("From must come before To"));
             }
             // One letter per file; the wildcard size applies to numbers.
             (a..=b).map(|c| c.to_string()).collect()
         } else {
             let (Ok(a), Ok(b)) = (self.from.parse::<u64>(), self.to.parse::<u64>()) else {
-                return Vec::new();
+                // i18n: why Batch download's OK is greyed
+                return Err(crate::i18n::mark("Type a number in From and in To"));
             };
-            if a > b || b - a > 100_000 {
-                return Vec::new();
+            if a > b {
+                return Err(crate::i18n::mark("From must come before To"));
+            }
+            if b - a > 100_000 {
+                // i18n: why Batch download's OK is greyed
+                return Err(crate::i18n::mark(
+                    "That is more than 100,000 files: make the range smaller",
+                ));
             }
             (a..=b).map(|n| format!("{n:0width$}")).collect()
         };
-        parts
+        let urls: Vec<url::Url> = parts
             .iter()
-            .filter_map(|p| url::Url::parse(&format!("{head}{p}{tail}")).ok())
+            .filter_map(|p| crate::model::parse_address(&format!("{head}{p}{tail}")).ok())
             .filter(mdm_engine::supported)
-            .collect()
+            .collect();
+        if urls.is_empty() {
+            // i18n: why Batch download's OK is greyed
+            return Err(crate::i18n::mark(
+                "The address must start with http://, https:// or ftp://",
+            ));
+        }
+        Ok(urls)
     }
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Added> {
-        let urls = self.expand();
+        // Worked out again only when the pattern changes (up to 100,000 addresses).
+        let key = (
+            self.address.clone(),
+            self.letters,
+            self.from.clone(),
+            self.to.clone(),
+            self.size.clone(),
+        );
+        if self.cached.as_ref().is_none_or(|(k, _)| *k != key) {
+            let made = self.pattern();
+            self.cached = Some((key, made));
+        }
+        // Lent to the body (not copied each frame), put back after.
+        let cached = self.cached.take();
+        let (urls, why): (&[url::Url], Option<&'static str>) = match cached.as_ref().map(|(_, r)| r)
+        {
+            Some(Ok(u)) => (u, None),
+            Some(Err(e)) => (&[], Some(*e)),
+            None => (&[], None),
+        };
         let outcome = window(
             ctx,
             "batch",
@@ -102,21 +153,30 @@ impl Batch {
             [474.0, 387.0],
             false,
             LIGHT_BG(),
-            |ui, o| self.body(ui, o, &urls),
+            |ui, o| self.body(ui, o, urls, why),
         );
-        match outcome {
+        let out = match outcome {
             Outcome::Done(()) => Outcome::Done(Added {
-                urls,
+                urls: urls.to_vec(),
                 login: self
                     .auth
                     .then(|| (self.login.clone(), self.password.clone())),
             }),
             Outcome::Closed => Outcome::Closed,
             Outcome::Open => Outcome::Open,
-        }
+        };
+        self.cached = cached;
+        out
     }
 
-    fn body(&mut self, ui: &mut Ui, o: Pos2, urls: &[url::Url]) -> Outcome<()> {
+    /// `why`: why the pattern makes no addresses (OK's tooltip).
+    fn body(
+        &mut self,
+        ui: &mut Ui,
+        o: Pos2,
+        urls: &[url::Url],
+        why: Option<&'static str>,
+    ) -> Outcome<()> {
         let p = ui.painter().clone();
         let lines = winui::paragraph(
             &p,
@@ -322,8 +382,8 @@ impl Batch {
                 ButtonKind::Disabled
             },
             false,
-        )
-        .clicked();
+        );
+        let ok = winui::why_disabled(ok, !valid, why.unwrap_or("")).clicked();
         let cancel = winui::button_light(
             ui,
             r(o, 372.0, 354.0, 73.0, 21.0),
