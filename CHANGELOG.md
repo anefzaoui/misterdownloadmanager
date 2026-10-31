@@ -5,6 +5,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [0.2.1] - 2026-10-31
 
+### Added
+
+- **Update now** in Help → Check for updates: MDM downloads the new version, checks it, puts it
+  in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage,
+  .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a
+  checksum list signed by MDM's release key, which every release now carries
+  (`SHA256SUMS.txt.sig`). The first update this way will be from 0.2.1 to the next version.
+
 ### Fixed
 
 - **Ghost windows while a menu is open** (issue #4): faded copies of the main window titled

@@ -77,48 +77,11 @@ fn report_fields() -> Vec<(&'static str, String)> {
         ("version", format!("{VERSION} ({COMMIT})")),
         ("language", crate::i18n::code().to_owned()),
     ];
-    if let Some(install) = installed_with() {
-        fields.push(("install", install.to_owned()));
-    }
+    fields.push((
+        "install",
+        mdm_tools::update::Install::detect().label().to_owned(),
+    ));
     fields
-}
-
-/// How this copy was installed, as the Bug report form's "Installed with" words it; `None`
-/// when it can't tell.
-fn installed_with() -> Option<&'static str> {
-    if cfg!(debug_assertions) {
-        return Some("Built from source");
-    }
-    if mdm_ipc::portable_dir().is_some() {
-        return Some("The portable zip");
-    }
-    let exe = std::env::current_exe().ok()?;
-    let dir = exe.parent()?;
-    if cfg!(windows) {
-        // The installer leaves its uninstaller next to the program; the plain zip doesn't.
-        return Some(if dir.join("unins000.exe").is_file() {
-            "The installer (setup.exe)"
-        } else {
-            "The plain zip"
-        });
-    }
-    if cfg!(target_os = "macos") {
-        return exe
-            .to_string_lossy()
-            .contains(".app/Contents/MacOS")
-            .then_some("The .dmg");
-    }
-    if std::env::var_os("APPIMAGE").is_some() {
-        return Some("The AppImage");
-    }
-    if dir == std::path::Path::new("/usr/bin") {
-        return Some(if std::path::Path::new("/etc/debian_version").exists() {
-            "The .deb"
-        } else {
-            "The .rpm"
-        });
-    }
-    Some("The .tar.gz")
 }
 
 /// Text that opens something when clicked: link colour, underlined under the pointer.
@@ -146,8 +109,10 @@ pub struct Release {
     /// `YYYY-MM-DD`.
     pub date: String,
     pub notes: String,
-    /// The release's page (the download is there; nothing installs by itself).
+    /// The release's page (its files are there too).
     pub page: String,
+    /// Its files: (name, download address); Update now takes this copy's from them.
+    pub assets: Vec<(String, String)>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -177,7 +142,9 @@ async fn latest() -> Result<Found, String> {
         .build()
         .map_err(|e| e.to_string())?;
     let resp = client
-        .get(LATEST)
+        // MDM_UPDATE_FEED: another address for the latest release (tests of Update now, as
+        // MDM_DATA_DIR is for a separate list).
+        .get(std::env::var("MDM_UPDATE_FEED").unwrap_or_else(|_| LATEST.to_owned()))
         .header("Accept", "application/vnd.github+json")
         .send()
         .await
@@ -213,6 +180,19 @@ fn parse_release(json: &str, current: &str) -> Result<Found, String> {
         date: s("published_at").chars().take(10).collect(),
         notes: s("body"),
         page: s("html_url"),
+        assets: v["assets"]
+            .as_array()
+            .map(|a| {
+                a.iter()
+                    .filter_map(|x| {
+                        Some((
+                            x["name"].as_str()?.to_owned(),
+                            x["browser_download_url"].as_str()?.to_owned(),
+                        ))
+                    })
+                    .collect()
+            })
+            .unwrap_or_default(),
     }))
 }
 
@@ -239,6 +219,17 @@ pub fn newer(a: &str, b: &str) -> bool {
 pub struct Updates {
     slot: Option<Slot>,
     result: Option<Result<Found, String>>,
+    /// Update now: the release file on its way (crate::update).
+    job: Option<crate::update::Job>,
+    /// What Update now came to, when it didn't close MDM.
+    status: Option<UpdateStatus>,
+}
+
+#[derive(Clone, Debug)]
+enum UpdateStatus {
+    Failed(String),
+    /// A .deb or .rpm, opened in the system's package installer.
+    Opened,
 }
 
 impl Updates {
@@ -246,6 +237,8 @@ impl Updates {
         Updates {
             slot: Some(check(rt, ctx)),
             result: None,
+            job: None,
+            status: None,
         }
     }
 
@@ -254,14 +247,35 @@ impl Updates {
         Updates {
             slot: None,
             result: Some(Ok(Found::Newer(release))),
+            job: None,
+            status: None,
         }
     }
 
-    /// `weekly`: the once-a-week check (its switch is here, under the answer).
-    pub fn show(&mut self, ctx: &egui::Context, weekly: &mut bool) -> Outcome<()> {
+    /// `weekly`: the once-a-week check (its switch is here, under the answer). `Done(true)`:
+    /// the update is going in place, MDM closes for it (and starts again).
+    pub fn show(
+        &mut self,
+        ctx: &egui::Context,
+        rt: &tokio::runtime::Handle,
+        weekly: &mut bool,
+    ) -> Outcome<bool> {
         if let Some(r) = self.slot.as_ref().and_then(|s| s.lock().unwrap().take()) {
             self.result = Some(r);
             self.slot = None;
+        }
+        let install = mdm_tools::update::Install::detect();
+        // The release file arrived (checked): put it in place.
+        if let Some(res) = self.job.as_ref().and_then(crate::update::Job::result) {
+            self.job = None;
+            match res.and_then(|file| crate::update::apply(install, &file)) {
+                Ok(crate::update::Next::Restart) => return Outcome::Done(true),
+                Ok(crate::update::Next::Opened) => self.status = Some(UpdateStatus::Opened),
+                Err(e) => self.status = Some(UpdateStatus::Failed(e)),
+            }
+        }
+        if self.job.is_some() {
+            ctx.request_repaint_after(std::time::Duration::from_millis(100));
         }
         let result = self.result.clone();
         // Compact unless there are release notes to show (then a window of its own size).
@@ -356,35 +370,100 @@ impl Updates {
                             13.0,
                             true,
                         );
-                        download = Some(rel.page.clone());
+                        download = Some(rel.clone());
                     }
                 }
-                winui::checkbox(
-                    ui,
-                    o + vec2(11.0, bottom + 4.0),
-                    weekly,
-                    "Check for updates once a week",
-                    true,
-                );
+                // Under the answer: how Update now is going, else the weekly switch.
+                let status_rc = r(o, 11.0, bottom, 255.0, 21.0);
+                if let Some(job) = &self.job {
+                    let fraction = job.progress.fraction();
+                    let line = crate::i18n::fmt(
+                        // i18n: Check for updates, while Update now downloads; {percent} like "42%"
+                        crate::i18n::t("Downloading the update... {percent}"),
+                        &[(
+                            "percent",
+                            &fraction.map_or(String::new(), |f| format!("{:.0}%", f * 100.0)),
+                        )],
+                    );
+                    winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);
+                    winui::progress_bar(
+                        &p,
+                        egui::Rect::from_min_size(
+                            pos2(status_rc.left(), status_rc.top() + 15.0),
+                            vec2(status_rc.width(), 4.0),
+                        ),
+                        fraction,
+                        ui.input(|i| i.time),
+                    );
+                } else if let Some(status) = &self.status {
+                    let line = match status {
+                        UpdateStatus::Failed(e) => crate::i18n::fmt(
+                            crate::i18n::t("The update couldn't be installed: {error}"),
+                            &[("error", e)],
+                        ),
+                        UpdateStatus::Opened => {
+                            crate::i18n::t("The update is open in your system's package installer.")
+                                .to_owned()
+                        }
+                    };
+                    let (rect, cut) = winui::text_fit(
+                        &p,
+                        status_rc.left(),
+                        status_rc.top() + 14.0,
+                        &line,
+                        ink,
+                        status_rc.right(),
+                    );
+                    if cut {
+                        winui::full_on_hover(ui, rect, "update-status", &line);
+                    }
+                } else {
+                    winui::checkbox(
+                        ui,
+                        o + vec2(11.0, bottom + 4.0),
+                        weekly,
+                        "Check for updates once a week",
+                        true,
+                    );
+                }
                 let close_label = if download.is_some() {
                     // i18n: button: not now (download the update later)
                     crate::i18n::mark("Later")
                 } else {
                     crate::i18n::mark("OK")
                 };
-                if let Some(page) = &download {
-                    let get = winui::button(
-                        ui,
-                        r(o, 274.0, bottom, 73.0, 21.0),
-                        "Download",
-                        ButtonKind::Default,
-                        false,
-                        None,
-                    )
-                    .clicked();
-                    if get {
-                        let _ = open::that_detached(page);
-                        return Outcome::Done(());
+                // Enter presses the default button, as in the other dialogs.
+                let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
+                if let Some(rel) = &download {
+                    // Update now when this copy's file is in the signed release (and it
+                    // hasn't just failed); else Download opens the release's page.
+                    let asset = crate::update::asset_for(install, &rel.version, &rel.assets)
+                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))));
+                    let at = r(o, 274.0, bottom, 73.0, 21.0);
+                    if let Some(asset) = asset {
+                        let idle = self.job.is_none();
+                        let kind = if idle {
+                            ButtonKind::Default
+                        } else {
+                            ButtonKind::Disabled
+                        };
+                        // i18n: button: download and install the new version, then restart
+                        let update = winui::button(ui, at, "Update now", kind, false, None);
+                        if update.clicked() || (enter && idle) {
+                            self.status = None;
+                            self.job = Some(crate::update::Job::start(
+                                rt,
+                                ui.ctx(),
+                                rel.assets.clone(),
+                                asset,
+                            ));
+                        }
+                    } else if winui::button(ui, at, "Download", ButtonKind::Default, false, None)
+                        .clicked()
+                        || enter
+                    {
+                        let _ = open::that_detached(&rel.page);
+                        return Outcome::Done(false);
                     }
                 }
                 let kind = if download.is_some() {
@@ -401,7 +480,10 @@ impl Updates {
                     None,
                 )
                 .clicked();
-                if close || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if close
+                    || ui.input(|i| i.key_pressed(egui::Key::Escape))
+                    || (enter && download.is_none())
+                {
                     Outcome::Closed
                 } else {
                     Outcome::Open
@@ -797,7 +879,8 @@ mod tests {
     #[test]
     fn a_release_is_read_from_github() {
         let json = r###"{"tag_name":"v0.2.0","published_at":"2026-11-05T10:00:00Z",
-            "html_url":"https://github.com/x/y/releases/tag/v0.2.0","body":"## New\n- Faster"}"###;
+            "html_url":"https://github.com/x/y/releases/tag/v0.2.0","body":"## New\n- Faster",
+            "assets":[{"name":"SHA256SUMS.txt","browser_download_url":"https://x/SHA256SUMS.txt"}]}"###;
         assert_eq!(
             parse_release(json, "0.1.0").unwrap(),
             Found::Newer(Release {
@@ -805,6 +888,7 @@ mod tests {
                 date: "2026-11-05".into(),
                 notes: "## New\n- Faster".into(),
                 page: "https://github.com/x/y/releases/tag/v0.2.0".into(),
+                assets: vec![("SHA256SUMS.txt".into(), "https://x/SHA256SUMS.txt".into())],
             })
         );
         assert_eq!(parse_release(json, "0.2.0").unwrap(), Found::Latest);
@@ -842,17 +926,11 @@ mod tests {
             }
         }
         assert!(fields.iter().any(|(id, _)| *id == "install"));
-        // Every value installed_with() and report_fields() can give, on any system.
+        // Every value Install::label() and report_fields() can give, on any system.
+        for install in mdm_tools::update::Install::ALL {
+            assert!(has(format!("- {}", install.label())), "{}", install.label());
+        }
         for option in [
-            "The installer (setup.exe)",
-            "The portable zip",
-            "The plain zip",
-            "The .dmg",
-            "The AppImage",
-            "The .deb",
-            "The .rpm",
-            "The .tar.gz",
-            "Built from source",
             "Windows 11",
             "Windows 10",
             "macOS (Apple Silicon)",

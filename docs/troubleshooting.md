@@ -68,7 +68,19 @@ To back up your list, quit MDM (**Tasks → Exit**) and copy `downloads.json`.
 
 ## Updates
 
-**Help → Check for updates...** tells you whether a newer version is out, and what is new in it. **Check for updates once a week** in that window lets MDM look by itself. New versions are on the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page.
+**Help → Check for updates...** tells you whether a newer version is out, and what is new in it. **Check for updates once a week** in that window lets MDM look by itself.
+
+When there is one, **Update now** downloads it, checks it, puts it in place and restarts MDM; your list, settings and downloads stay as they are:
+
+| You installed | What Update now does |
+|---|---|
+| Windows, the setup | Runs the new setup without its windows. An installation for all users asks for the administrator's permission. |
+| Windows, the portable or plain zip | Replaces the programs in their folder (a portable copy's `data` folder is kept). |
+| Mac | Replaces the app in Applications. |
+| Linux, the AppImage or the .tar.gz | Replaces the AppImage, or the programs in their folder. |
+| Linux, the .deb or .rpm | Opens the checked package in your system's package installer, which asks for your password. |
+
+MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and **Download** opens the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.
 
 **Help → About Mister Download Manager** shows the version you have.
 

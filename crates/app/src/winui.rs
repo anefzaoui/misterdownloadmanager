@@ -543,6 +543,47 @@ fn no_line_start(c: char) -> bool {
         .contains(c)
 }
 
+/// A Windows 11 progress bar in `rc` (a few pixels tall): a thin track and the accent filled to
+/// `fraction`; while the total is unknown (`None`) a segment runs along it (`time`: seconds,
+/// for its place).
+pub fn progress_bar(p: &Painter, rc: Rect, fraction: Option<f32>, time: f64) {
+    let dark = crate::theme::dark();
+    let (track, accent) = if dark {
+        (rgb(0x9a, 0x9a, 0x9a), rgb(0x60, 0xcd, 0xff))
+    } else {
+        (rgb(0x86, 0x86, 0x86), rgb(0x00, 0x5f, 0xb8))
+    };
+    let r = rc.height() / 2.0;
+    // The track is a 1 px line through the middle, as Windows 11 draws it.
+    let mid = rc.center().y;
+    p.rect_filled(
+        rect(Rect::from_min_max(
+            pos2(rc.left(), mid - 0.5),
+            pos2(rc.right(), mid + 0.5),
+        )),
+        0.5,
+        track,
+    );
+    let (from, to) = match fraction {
+        Some(f) => (0.0, f.clamp(0.0, 1.0)),
+        None => {
+            let t = (time * 0.6).fract() as f32;
+            ((t * 1.4 - 0.4).max(0.0), (t * 1.4).min(1.0))
+        }
+    };
+    if to > from {
+        let w = rc.width();
+        p.rect_filled(
+            rect(Rect::from_min_max(
+                pos2(rc.left() + from * w, rc.top()),
+                pos2(rc.left() + to * w, rc.bottom()),
+            )),
+            r,
+            accent,
+        );
+    }
+}
+
 /// Read-only text that scrolls inside `area` (English coordinates, the box's own frame drawn by
 /// the caller): the wheel or a trackpad over it, its scroll bar when the text is longer than the
 /// box, and with `keys` the window's Up, Down, Page Up, Page Down, Home and End. Where it is
