@@ -705,9 +705,8 @@ impl App {
 
     /// The rows the list draws ([`Self::shown_ids`]) with their cells.
     fn list_rows(&self) -> (Vec<u64>, Vec<list::Row>) {
-        self.view_ids()
+        self.view_items()
             .into_iter()
-            .filter_map(|id| self.items.iter().find(|i| i.id == id))
             .map(|it| (it.id, self.row(it)))
             .filter(|(_, r)| list::matches(&self.list, r))
             .unzip()
@@ -760,24 +759,22 @@ impl App {
 
     /// The view's downloads in the list's order, before the column filters.
     fn view_ids(&self) -> Vec<u64> {
-        let mut ids: Vec<u64> = self
-            .items
-            .iter()
-            .filter(|i| self.in_view(self.view, i))
-            .map(|i| i.id)
-            .collect();
-        if let Some((col, asc)) = self.list.sort {
-            let key = |id: &u64| {
-                let it = self.items.iter().find(|i| i.id == *id);
-                it.map_or((0.0, String::new()), |it| sort_key(it, col))
-            };
-            ids.sort_by(|a, b| {
-                let (ka, kb) = (key(a), key(b));
-                let ord = ka.0.total_cmp(&kb.0).then_with(|| ka.1.cmp(&kb.1));
-                if asc { ord } else { ord.reverse() }
-            });
-        }
-        ids
+        self.view_items().iter().map(|i| i.id).collect()
+    }
+
+    /// [`Self::view_ids`]'s downloads themselves (each sort key worked out once, not at
+    /// every comparison).
+    fn view_items(&self) -> Vec<&Item> {
+        let shown = self.items.iter().filter(|i| self.in_view(self.view, i));
+        let Some((col, asc)) = self.list.sort else {
+            return shown.collect();
+        };
+        let mut keyed: Vec<((f64, String), &Item)> = shown.map(|i| (sort_key(i, col), i)).collect();
+        keyed.sort_by(|(ka, _), (kb, _)| {
+            let ord = ka.0.total_cmp(&kb.0).then_with(|| ka.1.cmp(&kb.1));
+            if asc { ord } else { ord.reverse() }
+        });
+        keyed.into_iter().map(|(_, i)| i).collect()
     }
 
     /// Does `view` (a node of the Categories tree) hold this download?
