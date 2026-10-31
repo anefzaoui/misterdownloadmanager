@@ -93,7 +93,6 @@ pub fn keep_theme(
 
 /// A fixed-size dialog window whose client area is exactly `client` pixels; `body` gets the
 /// client origin and paints at absolute spec coordinates.
-#[allow(clippy::too_many_arguments)]
 pub(crate) fn window<T>(
     ctx: &egui::Context,
     id: &str,
@@ -101,6 +100,36 @@ pub(crate) fn window<T>(
     client: [f32; 2],
     minimize: bool,
     bg: egui::Color32,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(ctx, id, title, client, minimize, bg, false, body)
+}
+
+/// A question that must be answered (Yes / No, a countdown): a `window` that stays above the
+/// app's other windows and takes the focus when it opens, so a click on the dialog that asked
+/// it, or on the main window, never hides it behind them (on Windows it is also owned by the
+/// main window; macOS and Linux have no owner to keep it in front).
+pub(crate) fn question<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(ctx, id, title, client, minimize, bg, true, body)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn dialog_window<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    modal: bool,
     mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
     let key = egui::Id::unique(("dialog-pos", id));
@@ -117,6 +146,9 @@ pub(crate) fn window<T>(
         .with_maximize_button(false);
     // Every dialog carries the app icon: without one Windows draws its generic placeholder.
     builder = crate::quiet(builder.with_icon(crate::app_icon()));
+    if modal {
+        builder = builder.with_always_on_top();
+    }
     if let Some(p) = place(ctx, key, client) {
         builder = builder.with_position(p);
     }
@@ -153,7 +185,17 @@ pub(crate) fn window<T>(
         bg != winui::LIGHT_BG,
         matches!(out, Outcome::Open),
     );
+    // A question takes the focus once it is shown (not while hidden for its theme).
+    let focused = key.with("focus-sent");
+    if modal && matches!(out, Outcome::Open) && !crate::offscreen() {
+        let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
+        if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
+            ctx.send_viewport_cmd_to(ViewportId::from_hash_of(id), egui::ViewportCommand::Focus);
+            ctx.data_mut(|d| d.insert_temp(focused, true));
+        }
+    }
     if !matches!(out, Outcome::Open) {
+        ctx.data_mut(|d| d.remove::<bool>(focused));
         forget_place(ctx, key);
         #[cfg(windows)]
         ctx.data_mut(|d| d.remove::<bool>(key.with("framed")));
@@ -193,6 +235,9 @@ pub struct AddUrl {
     pub login: String,
     pub password: String,
     error: Option<String>,
+    /// The addresses entered before, newest first (the Address drop list).
+    history: Vec<String>,
+    list_open: bool,
 }
 
 pub struct NewUrl {
@@ -203,7 +248,7 @@ pub struct NewUrl {
 impl AddUrl {
     /// Opens like IDM's: pre-filled with the clipboard's text when it is an http(s) URL (or a
     /// magnet link: OK then opens Add torrent).
-    pub fn from_clipboard() -> Self {
+    pub fn from_clipboard(history: &[String]) -> Self {
         let clip = arboard::Clipboard::new()
             .and_then(|mut c| c.get_text())
             .unwrap_or_default();
@@ -214,6 +259,7 @@ impl AddUrl {
         };
         AddUrl {
             address,
+            history: history.to_vec(),
             ..AddUrl::default()
         }
     }
@@ -236,9 +282,29 @@ impl AddUrl {
                     crate::i18n::t("Address"),
                     winui::TEXT(),
                 );
-                let addr =
-                    winui::combo_edit(ui, r(o, 68.0, 11.0, 396.0, 21.0), &mut self.address, true);
+                let addr_rc = r(o, 68.0, 11.0, 396.0, 21.0);
+                let addr = winui::combo_edit(ui, addr_rc, &mut self.address, true);
                 if ui.memory(|m| m.focused().is_none()) {
+                    addr.request_focus();
+                }
+                // The arrow: the addresses entered before.
+                if winui::combo_arrow(ui, addr_rc, "add-url").clicked()
+                    || winui::combo_keys(ui, &addr)
+                {
+                    self.list_open = !self.list_open;
+                }
+                let list_was_open = self.list_open;
+                if self.list_open
+                    && let Some(i) = winui::drop_list(
+                        ui,
+                        "add-url-history",
+                        addr_rc,
+                        &self.history,
+                        crate::i18n::t("No addresses yet"),
+                        &mut self.list_open,
+                    )
+                {
+                    self.address = self.history[i].clone();
                     addr.request_focus();
                 }
                 // Enter presses the default button (OK), as in IDM, wherever the focus is.
@@ -319,10 +385,11 @@ impl AddUrl {
                         winui::full_on_hover(ui, rect, "add-url-error", e);
                     }
                 }
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                // Escape closes an open drop list first, then the dialog.
+                if cancel || (!list_was_open && ui.input(|i| i.key_pressed(egui::Key::Escape))) {
                     return Outcome::Closed;
                 }
-                if ok || enter {
+                if ok || (enter && !list_was_open) {
                     match Url::parse(self.address.trim()) {
                         Ok(url) if mdm_engine::supported(&url) || url.scheme() == "magnet" => {
                             return Outcome::Done(NewUrl {
@@ -368,6 +435,11 @@ pub struct FileInfo {
     /// The download already running while the dialog shows (Options → Downloads → "Start
     /// downloading immediately while displaying Download File Info dialog").
     pub early: Option<u64>,
+    /// The folders downloads were saved to before, newest first (the Save As drop list).
+    pub folders: Vec<String>,
+    folders_open: bool,
+    /// "+" was clicked: the app opens the new-category window.
+    pub new_category: bool,
 }
 
 pub enum Start {
@@ -415,7 +487,20 @@ impl FileInfo {
             context: Default::default(),
             asking: None,
             early: None,
+            folders: Vec::new(),
+            folders_open: false,
+            new_category: false,
         }
+    }
+
+    /// Save As keeps its file name in `folder`.
+    fn set_folder(&mut self, folder: &Path) {
+        let name = Path::new(&self.save_as)
+            .file_name()
+            .map(|n| n.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        self.save_as = display_path(&folder.join(name));
+        self.edited = true;
     }
 
     /// "Remember this path for … category": the category and the folder to keep for it.
@@ -524,7 +609,10 @@ impl FileInfo {
                 if winui::combo(ui, cat_rect, &shown, "category").clicked() {
                     self.category_open = !self.category_open;
                 }
-                winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+");
+                // "+": a new category (the app's category window).
+                if winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+").clicked() {
+                    self.new_category = true;
+                }
 
                 winui::text_right(
                     &p,
@@ -533,12 +621,53 @@ impl FileInfo {
                     crate::i18n::t("Save As"),
                     winui::TEXT(),
                 );
-                let save =
-                    winui::combo_edit(ui, r(o, 96.0, 63.0, 335.0, 21.0), &mut self.save_as, false);
+                let save_rc = r(o, 96.0, 63.0, 335.0, 21.0);
+                let save = winui::combo_edit(ui, save_rc, &mut self.save_as, false);
                 if save.changed() {
                     self.edited = true;
                 }
-                winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...");
+                // The arrow: the folders saved to before.
+                if winui::combo_arrow(ui, save_rc, "save-as").clicked()
+                    || winui::combo_keys(ui, &save)
+                {
+                    self.folders_open = !self.folders_open;
+                }
+                let folders_were_open = self.folders_open;
+                if self.folders_open {
+                    let shown: Vec<String> = self
+                        .folders
+                        .iter()
+                        .map(|f| display_path(Path::new(f)))
+                        .collect();
+                    if let Some(i) = winui::drop_list(
+                        ui,
+                        "save-as-history",
+                        save_rc,
+                        &shown,
+                        crate::i18n::t("No folders yet"),
+                        &mut self.folders_open,
+                    ) {
+                        let folder = PathBuf::from(&self.folders[i]);
+                        self.set_folder(&folder);
+                    }
+                }
+                // "...": choose the folder.
+                if winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...").clicked() {
+                    let now = self
+                        .dest()
+                        .parent()
+                        .map(Path::to_path_buf)
+                        .unwrap_or_default();
+                    // i18n: title of the folder picker
+                    let mut pick =
+                        rfd::FileDialog::new().set_title(crate::i18n::t("Select a folder"));
+                    if now.is_dir() {
+                        pick = pick.set_directory(&now);
+                    }
+                    if let Some(dir) = pick.pick_folder() {
+                        self.set_folder(&dir);
+                    }
+                }
 
                 let caption = crate::i18n::fmt(
                     crate::i18n::t("Remember this path for \"{category}\" category"),
@@ -678,9 +807,11 @@ impl FileInfo {
                     }
                 }
 
-                if cancel.clicked() || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                // Escape closes an open drop list first, then the dialog.
+                let key = |k| !folders_were_open && ui.input(|i| i.key_pressed(k));
+                if cancel.clicked() || key(egui::Key::Escape) {
                     Outcome::Closed
-                } else if start.clicked() || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if start.clicked() || key(egui::Key::Enter) {
                     Outcome::Done(Start::Now)
                 } else if later.clicked() {
                     Outcome::Done(Start::Later)
@@ -1134,7 +1265,7 @@ impl TurnOffCountdown {
             TurnOff::Sleep => crate::i18n::t("The computer will go to sleep in {n} seconds."),
             TurnOff::Hibernate => crate::i18n::t("The computer will hibernate in {n} seconds."),
         };
-        window(
+        question(
             ctx,
             "turn-off",
             "Mister Download Manager",
@@ -1277,7 +1408,7 @@ impl ConfirmDelete {
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<(bool, bool)> {
         let n = self.ids.len() as u64;
-        window(
+        question(
             ctx,
             "confirm-delete",
             "Confirm deletion of downloads",
@@ -1427,7 +1558,7 @@ impl Duplicate {
     }
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<usize> {
-        window(
+        question(
             ctx,
             "duplicate",
             "Duplicate download link",
@@ -1580,7 +1711,7 @@ impl Confirm {
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let text = self.text.clone();
-        window(
+        question(
             ctx,
             &format!("confirm-{}", self.title),
             self.title,
@@ -1646,7 +1777,7 @@ impl CreateFolder {
     /// `Done` once the folder exists (created on Yes); `Closed` on No, Escape or the close box.
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let folder = self.folder.display().to_string();
-        window(
+        question(
             ctx,
             "create-folder",
             "Create folder",

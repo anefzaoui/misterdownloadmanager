@@ -3,6 +3,35 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [Unreleased]
+
+### Fixed
+
+- **Menus on macOS and Linux**: clicking a menu item did nothing (the click moved the focus to
+  the menu's own window, which closed it first). The list's right-click menu and the toolbar's
+  drop-downs had the same fault.
+- **Paste** from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.
+- **The app icon on macOS**: the Dock showed a small, blurry icon while MDM ran; it keeps the
+  app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).
+- **The download list's file icons** were drawn over the Categories pane when the list was
+  scrolled sideways (the Categories tree and the Scheduler had the same fault).
+- **The download progress window** could be stretched on macOS and Linux without its contents
+  following; it keeps its size, as on Windows.
+- **Questions** ("Create this folder?", delete, a duplicate download, the turn-off countdown)
+  could open behind the window that asked them; they stay in front now.
+- **Video downloads' progress** went back and forth (a stream in fragments re-estimates its size,
+  and picture and sound arrive one after the other); it only moves forward now, from the size
+  the video window showed.
+
+### Added
+
+- The menus show each command's keys (**Ctrl+N**, on a Mac **⌘N**) and work from the keyboard:
+  **F10** or **Alt** (on a Mac **Ctrl+F2**), the underlined letters, the arrows, **Enter**, **Esc**.
+- Right-click any text box for **Cut**, **Copy**, **Paste**, **Delete** and **Select all**.
+- **Address** (Add URL) and **Save As** (Download File Info) list the last 20 addresses and folders
+  from their arrows; **...** beside Save As chooses a folder, **+** beside Category makes one.
+- Help → Keyboard shortcuts shows the Mac's keys on a Mac.
+
 ## [0.1.0] - 2026-10-30
 
 The first release: a free download manager for Windows, laid out the way Internet Download

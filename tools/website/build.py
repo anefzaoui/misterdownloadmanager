@@ -660,6 +660,9 @@ def build_news() -> None:
     releases = []
     for m in re.finditer(r"(?ms)^## \[([^\]]+)\](?: - (\d{4}-\d{2}-\d{2}))?\s*\n(.*?)(?=^## |\Z)", text):
         ver, date, body = m.group(1), m.group(2), m.group(3).strip()
+        # Changes not released yet aren't news.
+        if ver.lower() == "unreleased":
+            continue
         body = re.sub(r"\]\((docs/[^)]+)\)", lambda x: "](" + doc_link(x.group(1).split("/", 1)[1], ROOT / "docs" / "x.md") + ")", body)
         releases.append((ver, date, body))
     trail = [("Home", "/"), ("News", "/news.html")]

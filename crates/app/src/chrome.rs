@@ -137,6 +137,12 @@ impl ShellIcons {
     /// Paint the icon for `key` with its top-left at English point `min` (16 × 16, the large ones
     /// 32): placed where that is on screen, not mirrored. A generic page if unavailable.
     pub fn paint(&mut self, ui: &Ui, key: IconKey, min: Pos2) {
+        self.paint_in(ui, ui.painter(), key, min);
+    }
+
+    /// `paint` through `painter`, so the icon keeps to its clip (a list scrolled sideways must
+    /// not draw its icons over the pane beside it).
+    pub fn paint_in(&mut self, ui: &Ui, painter: &egui::Painter, key: IconKey, min: Pos2) {
         let side = if matches!(key, IconKey::ExtLarge(_) | IconKey::FolderOpenLarge) {
             32.0
         } else {
@@ -146,23 +152,34 @@ impl ShellIcons {
         let min = rc.min;
         if let IconKey::Silk(name) = key {
             if let Some(src) = silk(name) {
-                egui::Image::new(src)
-                    .texture_options(egui::TextureOptions::NEAREST)
-                    .paint_at(ui, rc);
+                paint_image(ui, painter, src, rc);
             }
             return;
         }
         match self.get(ui.ctx(), key) {
             Some(id) => {
-                ui.painter().image(
+                painter.image(
                     id,
                     rc,
                     Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)),
                     Color32::WHITE,
                 );
             }
-            None => generic_page(ui.painter(), min),
+            None => generic_page(painter, min),
         }
+    }
+}
+
+/// An image source drawn in `rc` through `painter` (its clip), pixel-sharp.
+pub fn paint_image(ui: &Ui, painter: &egui::Painter, src: egui::ImageSource<'static>, rc: Rect) {
+    let img = egui::Image::new(src).texture_options(egui::TextureOptions::NEAREST);
+    if let Ok(egui::load::TexturePoll::Ready { texture }) = img.load_for_size(ui.ctx(), rc.size()) {
+        painter.image(
+            texture.id,
+            rc,
+            Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)),
+            Color32::WHITE,
+        );
     }
 }
 
@@ -355,6 +372,208 @@ pub enum PopupResult<C> {
     Open,
     Chosen(C),
     Dismissed,
+    /// Left or Right on a menu of the bar: open the menu before (-1) or after (+1) it.
+    Neighbor(i32),
+}
+
+/// A key or key combination as written in the shortcuts list ("Ctrl+N", "Shift+Delete"), as
+/// this system shows it: macOS's symbols (⌘N, ⇧⌦), elsewhere the translated key names.
+pub fn key_label(spec: &'static str) -> String {
+    if cfg!(target_os = "macos") {
+        spec.replace("Ctrl+", "\u{2318}")
+            .replace("Shift+", "\u{21e7}")
+            .replace("Alt+", "\u{2325}")
+            .replace("Delete", "\u{2326}")
+            .replace("Enter", "\u{21a9}")
+    } else {
+        crate::i18n::tc("key", spec).to_owned()
+    }
+}
+
+/// A menu label without the shortcut IDM writes into some labels ("Find (Ctrl-F)"), when the
+/// menu shows the shortcut in its own column.
+fn without_shortcut(text: &str) -> &str {
+    let t = text.trim_end();
+    if let Some(open) = t.rfind(" (")
+        && t.ends_with(')')
+    {
+        let inner = &t[open + 2..t.len() - 1];
+        let keyish = inner.len() <= 12
+            && !inner.contains(' ')
+            && (inner.contains('-') || inner.contains('+') || inner.starts_with('F'));
+        if keyish {
+            return &t[..open];
+        }
+    }
+    t
+}
+
+/// Open a menu from the keyboard: its first item is highlighted.
+pub fn start_keyboard(ctx: &egui::Context, id: &str) {
+    let kb = egui::Id::unique(("popup-sub", id)).with("kb");
+    ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(usize::MAX), None)));
+}
+
+/// The next item of `level` from `from` in direction `dir`, skipping separators (wraps).
+fn step<C>(level: &[MenuEntry<C>], from: Option<usize>, dir: i32) -> Option<usize> {
+    let n = level.len() as i32;
+    if n == 0 {
+        return None;
+    }
+    let mut i = match from {
+        Some(f) if f < level.len() => f as i32,
+        _ if dir > 0 => -1,
+        _ => n,
+    };
+    for _ in 0..n {
+        i = (i + dir).rem_euclid(n);
+        if !matches!(level[i as usize], MenuEntry::Sep) {
+            return Some(i as usize);
+        }
+    }
+    None
+}
+
+fn entry_label<C>(e: &MenuEntry<C>) -> Option<(&'static str, bool)> {
+    match e {
+        MenuEntry::Item(l, _, en, _) | MenuEntry::Radio(l, _, en, _) | MenuEntry::Sub(l, en, _) => {
+            Some((l, *en))
+        }
+        MenuEntry::Sep => None,
+    }
+}
+
+/// Keys for an open menu (pressed in the main window or in the menu's own windows): Up and Down
+/// move the highlight, Right opens a submenu or the next menu, Left closes a submenu or opens
+/// the previous menu, Enter or an item's underlined letter runs it, Escape closes a submenu.
+fn keyboard<C: Clone>(
+    ctx: &egui::Context,
+    id: &str,
+    entries: &[MenuEntry<C>],
+    sub_key: egui::Id,
+) -> Option<PopupResult<C>> {
+    let kb_key = sub_key.with("kb");
+    let mut keys: Vec<egui::Key> = Vec::new();
+    let mut grab = |i: &egui::InputState| {
+        for e in &i.events {
+            if let egui::Event::Key {
+                key,
+                pressed: true,
+                modifiers,
+                ..
+            } = e
+                && !modifiers.command
+                && !modifiers.ctrl
+            {
+                keys.push(*key);
+            }
+        }
+    };
+    ctx.input(&mut grab);
+    for depth in 0..2 {
+        let vid = egui::ViewportId::from_hash_of(("menu", id, depth));
+        ctx.input_for(vid, &mut grab);
+    }
+    let (mut hl0, mut hl1): (Option<usize>, Option<usize>) =
+        ctx.data(|d| d.get_temp(kb_key)).unwrap_or_default();
+    if hl0 == Some(usize::MAX) {
+        hl0 = step(entries, None, 1);
+        ctx.data_mut(|d| d.insert_temp(kb_key, (hl0, hl1)));
+    }
+    if keys.is_empty() {
+        return None;
+    }
+    // The keys are the menu's: the list underneath doesn't move too.
+    ctx.input_mut(|i| {
+        for k in &keys {
+            i.consume_key(egui::Modifiers::NONE, *k);
+        }
+    });
+    let mut open_sub = ctx.data(|d| d.get_temp::<usize>(sub_key));
+    let mut out = None;
+    for key in keys {
+        let children: Option<&[MenuEntry<C>]> = open_sub.and_then(|i| match entries.get(i) {
+            Some(MenuEntry::Sub(_, _, c)) => Some(c.as_slice()),
+            _ => None,
+        });
+        let in_sub = children.is_some() && hl1.is_some();
+        let level = if in_sub {
+            children.unwrap_or(&[])
+        } else {
+            entries
+        };
+        let hl = if in_sub { hl1 } else { hl0 };
+        let mut target = None;
+        match key {
+            egui::Key::ArrowDown | egui::Key::ArrowUp => {
+                let n = step(level, hl, if key == egui::Key::ArrowDown { 1 } else { -1 });
+                if in_sub { hl1 = n } else { hl0 = n }
+            }
+            egui::Key::Escape if in_sub => {
+                open_sub = None;
+                hl1 = None;
+            }
+            egui::Key::Escape => out = Some(PopupResult::Dismissed),
+            egui::Key::ArrowLeft if in_sub => {
+                open_sub = None;
+                hl1 = None;
+            }
+            egui::Key::ArrowLeft => out = Some(PopupResult::Neighbor(-1)),
+            egui::Key::ArrowRight => match hl.and_then(|h| level.get(h)) {
+                Some(MenuEntry::Sub(_, true, c)) if !in_sub => {
+                    open_sub = hl;
+                    hl1 = step(c, None, 1);
+                }
+                _ => out = Some(PopupResult::Neighbor(1)),
+            },
+            egui::Key::Enter | egui::Key::Space => target = hl,
+            other => {
+                let name = other.name().to_lowercase();
+                if name.chars().count() == 1 {
+                    target = level.iter().position(|e| {
+                        entry_label(e).is_some_and(|(l, en)| {
+                            let (t, m) = plain(crate::i18n::tc("menu", l));
+                            en && m
+                                .and_then(|m| t.chars().nth(m))
+                                .is_some_and(|c| c.to_lowercase().to_string() == name)
+                        })
+                    });
+                }
+            }
+        }
+        if let Some(t) = target {
+            if in_sub {
+                hl1 = Some(t)
+            } else {
+                hl0 = Some(t)
+            }
+            match level.get(t) {
+                Some(MenuEntry::Item(_, c, true, _) | MenuEntry::Radio(_, c, true, _)) => {
+                    out = Some(PopupResult::Chosen(c.clone()));
+                }
+                Some(MenuEntry::Sub(_, true, c)) if !in_sub => {
+                    open_sub = Some(t);
+                    hl1 = step(c, None, 1);
+                }
+                _ => {}
+            }
+        }
+        if out.is_some() {
+            break;
+        }
+    }
+    ctx.data_mut(|d| {
+        d.insert_temp(kb_key, (hl0, hl1));
+        match open_sub {
+            Some(i) => {
+                d.insert_temp(sub_key, i);
+            }
+            None => {
+                d.remove::<usize>(sub_key);
+            }
+        }
+    });
+    out
 }
 
 /// Show a popup menu with its top-left at `pos` (main-window client coordinates, on screen) —
@@ -369,8 +588,16 @@ pub fn popup<C: Clone>(
     id: &str,
     pos: Pos2,
     entries: &[MenuEntry<C>],
+    hint: &dyn Fn(&C) -> Option<&'static str>,
 ) -> PopupResult<C> {
     let sub_key = egui::Id::unique(("popup-sub", id));
+    if let Some(r) = keyboard(ctx, id, entries, sub_key) {
+        ctx.data_mut(|d| {
+            d.remove::<usize>(sub_key);
+            d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
+        });
+        return r;
+    }
     let origin = ctx
         .input(|i| i.viewport().inner_rect)
         .map_or(Pos2::ZERO, |r| r.min);
@@ -384,9 +611,13 @@ pub fn popup<C: Clone>(
         sub_key,
         &mut result,
         0,
+        hint,
     );
     if let Some(c) = result {
-        ctx.data_mut(|d| d.remove::<usize>(sub_key));
+        ctx.data_mut(|d| {
+            d.remove::<usize>(sub_key);
+            d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
+        });
         return PopupResult::Chosen(c);
     }
     // The menus are other windows: any press that reaches the main window, Escape, or the
@@ -394,7 +625,13 @@ pub fn popup<C: Clone>(
     // whose press may be the very click that opened it.
     let pass = ctx.cumulative_pass_nr();
     let shown = sub_key.with("shown");
-    let focused = ctx.input(|i| i.viewport().focused) == Some(true);
+    // Focus in the menu's own windows is still ours: on macOS and Linux a click in a menu window
+    // gives that window the focus, and must not count as clicking away.
+    let focused = ctx.input(|i| i.viewport().focused) == Some(true)
+        || (0..2).any(|depth| {
+            let vid = egui::ViewportId::from_hash_of(("menu", id, depth));
+            ctx.input_for(vid, |i| i.viewport().focused) == Some(true)
+        });
     // (first pass, last pass, focused since): focus is only *lost* if it was had.
     let (first, lost_focus) = ctx.data_mut(|d| {
         let (first, last, had) = d
@@ -408,7 +645,10 @@ pub fn popup<C: Clone>(
         && (lost_focus
             || ctx.input(|i| i.key_pressed(egui::Key::Escape) || i.pointer.any_pressed()))
     {
-        ctx.data_mut(|d| d.remove::<usize>(sub_key));
+        ctx.data_mut(|d| {
+            d.remove::<usize>(sub_key);
+            d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
+        });
         return PopupResult::Dismissed;
     }
     PopupResult::Open
@@ -432,15 +672,25 @@ fn menu_width(p: &egui::Painter, label: &str) -> f32 {
 }
 
 /// Size of a menu window: widest label + 98, slots of 22 (separators 9), 3 px top and bottom.
-fn menu_size<C>(ctx: &egui::Context, entries: &[MenuEntry<C>]) -> egui::Vec2 {
+fn menu_size<C>(
+    ctx: &egui::Context,
+    entries: &[MenuEntry<C>],
+    hint: &dyn Fn(&C) -> Option<&'static str>,
+) -> egui::Vec2 {
     let painter = ctx.layer_painter(egui::LayerId::background());
     let width = |t: &str| menu_width(&painter, t);
     let widest = entries
         .iter()
         .filter_map(|e| match e {
-            MenuEntry::Item(l, ..) | MenuEntry::Radio(l, ..) | MenuEntry::Sub(l, ..) => {
-                Some(width(&plain(crate::i18n::tc("menu", l)).0))
-            }
+            MenuEntry::Item(l, c, ..) | MenuEntry::Radio(l, c, ..) => Some(match hint(c) {
+                Some(k) => {
+                    width(without_shortcut(&plain(crate::i18n::tc("menu", l)).0))
+                        + 28.0
+                        + text_width_font(&painter, winui::segoe(), &key_label(k)).ceil()
+                }
+                None => width(&plain(crate::i18n::tc("menu", l)).0),
+            }),
+            MenuEntry::Sub(l, ..) => Some(width(&plain(crate::i18n::tc("menu", l)).0)),
             MenuEntry::Sep => None,
         })
         .fold(0.0, f32::max);
@@ -508,8 +758,13 @@ fn popup_level<C: Clone>(
     sub_key: egui::Id,
     result: &mut Option<C>,
     depth: usize,
+    hint: &dyn Fn(&C) -> Option<&'static str>,
 ) {
-    let size = menu_size(ctx, entries);
+    let size = menu_size(ctx, entries, hint);
+    let kb_key = sub_key.with("kb");
+    let kb: Option<usize> = ctx
+        .data(|d| d.get_temp::<(Option<usize>, Option<usize>)>(kb_key))
+        .and_then(|(a, b)| if depth == 0 { a } else { b });
     let screen = Rect::from_min_size(place_menu(at, size, parent), size);
     let title = format!("misterdownloadmanager menu {depth}"); // not translated: an id
     let builder = egui::ViewportBuilder::default()
@@ -550,6 +805,8 @@ fn popup_level<C: Clone>(
         );
         let pointer = ui.ctx().pointer_hover_pos();
         let clicked = ui.input(|i| i.pointer.primary_released());
+        // The pointer moving over an item takes the highlight from the keyboard.
+        let moving = ui.input(|i| i.pointer.is_moving());
         let mut y = o.y + 3.0;
         for (i, e) in entries.iter().enumerate() {
             if matches!(e, MenuEntry::Sep) {
@@ -571,7 +828,26 @@ fn popup_level<C: Clone>(
             };
             let slot = Rect::from_min_max(pos2(o.x + 6.0, y), pos2(o.x + w - 6.0, y + SLOT));
             let hovered = pointer.is_some_and(|p| slot.contains(p));
-            if hovered || open_sub == Some(i) {
+            if hovered && moving && kb.is_some() && kb != Some(i) {
+                ui.ctx().data_mut(|d| {
+                    let (a, b) = d
+                        .get_temp::<(Option<usize>, Option<usize>)>(kb_key)
+                        .unwrap_or_default();
+                    d.insert_temp(
+                        kb_key,
+                        if depth == 0 {
+                            (Some(i), b)
+                        } else {
+                            (a, Some(i))
+                        },
+                    );
+                });
+            }
+            let lit = match kb {
+                Some(k) => k == i,
+                None => hovered,
+            };
+            if lit || open_sub == Some(i) {
                 painter.rect_filled(slot, 4.0, POPUP_HOVER());
             } else {
                 // Spec: an item's normal background is one level lighter than the padding.
@@ -596,7 +872,26 @@ fn popup_level<C: Clone>(
                 TEXT_DISABLED_MENU()
             };
             let (t, mn) = plain(crate::i18n::tc("menu", label));
+            let keys = match e {
+                MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => hint(c),
+                _ => None,
+            };
+            let t = if keys.is_some() {
+                without_shortcut(&t).to_owned()
+            } else {
+                t
+            };
             let drawn = text_font(&painter, winui::segoe(), o.x + 38.0, y + 14.0, &t, color);
+            // The shortcut at the trailing edge, in the menu's quieter ink.
+            if let Some(k) = keys {
+                winui::text_right(
+                    &painter,
+                    o.x + w - 24.0,
+                    y + 14.0,
+                    &key_label(k),
+                    TEXT_DISABLED_MENU(),
+                );
+            }
             // Underlined mnemonics in dark mode only (light: the Windows rule, after Alt).
             if let Some(m) = mn
                 && crate::theme::dark()
@@ -643,10 +938,10 @@ fn popup_level<C: Clone>(
                         ],
                         Stroke::new(1.2, glyph),
                     );
-                    if depth == 0 && enabled && hovered {
+                    if depth == 0 && enabled && hovered && (kb.is_none() || moving) {
                         ui.ctx().data_mut(|d| d.insert_temp(sub_key, i));
                     }
-                    if depth == 0 && (open_sub == Some(i) || (enabled && hovered)) {
+                    if depth == 0 && (open_sub == Some(i) || (enabled && hovered && kb.is_none())) {
                         sub_at = Some((i, y - o.y));
                     }
                 }
@@ -697,6 +992,7 @@ fn popup_level<C: Clone>(
             sub_key,
             result,
             depth + 1,
+            hint,
         );
     }
 }
@@ -1179,12 +1475,12 @@ pub fn categories(
             }
         }
         // Icons placed, not mirrored.
-        icons.paint(ui, r.icon.clone(), pos2(icon_x, top));
+        icons.paint_in(ui, &tp, r.icon.clone(), pos2(icon_x, top));
         if let Some(name) = r.badge
             && let Some(src) = silk(name)
         {
             let rc = Rect::from_min_size(pos2(icon_x + 7.0, top + 7.0), vec2(9.0, 9.0));
-            egui::Image::new(src).paint_at(ui, winui::rect(rc));
+            paint_image(ui, &tp, src, winui::rect(rc));
         }
         text_font(
             &tp,

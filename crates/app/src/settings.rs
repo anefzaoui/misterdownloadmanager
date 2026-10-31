@@ -71,6 +71,10 @@ pub struct Settings {
     /// Save to: a folder per category (category label → folder); missing = the default.
     pub category_dirs: Vec<(String, String)>,
     pub change_folder_on_last: bool,
+    /// The addresses typed into Add URL and the folders downloads were saved to, newest first
+    /// (the Address and Save As drop lists, as IDM's UrlHistory.txt).
+    pub url_history: Vec<String>,
+    pub folder_history: Vec<String>,
     pub set_creation_date: bool,
     /// Downloads.
     pub show_start_dialog: bool,
@@ -173,6 +177,8 @@ impl Default for Settings {
             regional: crate::regional::Regional::default(),
             category_dirs: Vec::new(),
             change_folder_on_last: true,
+            url_history: Vec::new(),
+            folder_history: Vec::new(),
             set_creation_date: false,
             show_start_dialog: true,
             only_add_to_queue: false,
@@ -206,6 +212,20 @@ impl Default for Settings {
             drop_target_pos: None,
         }
     }
+}
+
+/// The most entries a drop list keeps.
+pub const HISTORY: usize = 20;
+
+/// Put `value` first in a drop list's history: once, newest first, at most `HISTORY`.
+pub fn remember(list: &mut Vec<String>, value: &str) {
+    let value = value.trim();
+    if value.is_empty() {
+        return;
+    }
+    list.retain(|v| v != value);
+    list.insert(0, value.to_owned());
+    list.truncate(HISTORY);
 }
 
 impl Settings {
@@ -315,6 +335,20 @@ impl Settings {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn history_keeps_each_entry_once_newest_first() {
+        let mut h = Vec::new();
+        for v in ["a", "b", "a", "  ", "c"] {
+            remember(&mut h, v);
+        }
+        assert_eq!(h, ["c", "a", "b"]);
+        for i in 0..30 {
+            remember(&mut h, &i.to_string());
+        }
+        assert_eq!(h.len(), HISTORY);
+        assert_eq!(h[0], "29");
+    }
 
     #[test]
     fn site_logins_match_by_host_and_path() {

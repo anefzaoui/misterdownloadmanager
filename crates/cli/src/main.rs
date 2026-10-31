@@ -304,6 +304,8 @@ async fn main() -> anyhow::Result<()> {
                 &stem,
                 None,
                 ffmpeg.as_deref(),
+                // No size shown here: the progress steadies itself (video::Meter).
+                None,
             )?;
             loop {
                 tokio::time::sleep(std::time::Duration::from_millis(500)).await;

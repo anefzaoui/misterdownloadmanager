@@ -6,7 +6,7 @@ Rows are craft-i18n catalog rows (context, source, translation); in en.tsv the t
 the source itself. Found:
   * explicit `t("…")`, `tc("ctx", "…")`, `tn(n, "one", "other")` (an `@plural` row);
   * labels given to widgets that translate them: `button`, `button_light`, `checkbox`,
-    `checkbox_light`, `radio_light`, dialog titles (`window(ctx, id, "Title", …)`), light tabs
+    `checkbox_light`, `radio_light`, dialog titles (`window(ctx, id, "Title", …)`, `question(…)`), light tabs
     (`label: "…"`), tree rows (context ""), Options' page titles, group boxes and labels
     (`header`, `group`, `disabled_label`);
   * menu entries `Item`/`I`/`Radio`/`Sub`/`off`/`by` (context "menu"), toolbar buttons
@@ -43,7 +43,7 @@ LITERAL = re.compile(r"^\s*" + LIT + r"\s*$")
 SINKS = {
     "button": (2, ""), "button_light": (2, ""), "checkbox": (3, ""), "checkbox_until": (3, ""),
     "checkbox_light": (3, ""), "checkbox_light_until": (3, ""), "radio_light_until": (3, ""),
-    "radio_light": (3, ""), "window": (2, ""), "row": (1, ""), "t": (0, ""), "tc": (1, None),
+    "radio_light": (3, ""), "window": (2, ""), "question": (2, ""), "row": (1, ""), "t": (0, ""), "tc": (1, None),
     "tn": (1, "@plural"), "mark": (0, ""), "branch": (0, ""),
     "Item": (0, "menu"), "I": (0, "menu"), "Radio": (0, "menu"), "Sub": (0, "menu"),
     "off": (0, "menu"), "by": (0, "menu"), "link": (4, ""),
@@ -77,7 +77,7 @@ ROLES = {
     "button": "button", "button_light": "button", "checkbox": "checkbox",
     "checkbox_light": "checkbox", "checkbox_light_until": "checkbox", "checkbox_until": "checkbox",
     "radio_light": "option (radio button)", "radio_light_until": "option (radio button)",
-    "window": "window title", "row": "item in the Categories tree",
+    "window": "window title", "question": "window title", "row": "item in the Categories tree",
     "branch": "item in the Categories tree", "Item": "menu command", "I": "menu command",
     "Radio": "menu choice", "Sub": "submenu", "off": "menu command", "by": "menu choice",
     "tn": "count", "link": "link (opens a web page)", "header": "page title",

@@ -2093,7 +2093,7 @@ fn multiline(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) {
         .id_salt((id, "scroll"))
         .max_height(inner.height())
         .show(&mut child, |ui| {
-            ui.add(
+            let resp = ui.add(
                 egui::TextEdit::multiline(value)
                     .font(winui::tahoma())
                     .text_color(LIGHT_TEXT)
@@ -2102,6 +2102,7 @@ fn multiline(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) {
                     .desired_width(inner.width() - 14.0)
                     .desired_rows(3),
             );
+            winui::edit_menu(&resp, value, false, true);
         });
 }
 
@@ -2142,7 +2143,8 @@ fn password(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) {
         .text_color(if enabled { LIGHT_TEXT } else { LIGHT_DISABLED })
         .frame(egui::Frame::NONE)
         .margin(egui::Margin::ZERO);
-    ui.add_enabled_ui(enabled, |ui| {
-        ui.put(inner, edit);
-    });
+    let resp = ui.add_enabled_ui(enabled, |ui| ui.put(inner, edit)).inner;
+    if enabled {
+        winui::edit_menu(&resp, value, true, false);
+    }
 }

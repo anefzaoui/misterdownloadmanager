@@ -8,7 +8,7 @@ There are several ways to give MDM something to download. Most of them end in th
 
 1. Copy the file's address (in a browser: right-click the link → **Copy link**).
 2. Click **Add URL** on the toolbar, choose **Tasks → Add new download**, or press **Ctrl+N**.
-3. **Enter new address to download** opens. If the clipboard holds a web address, it is already filled in.
+3. **Enter new address to download** opens. If the clipboard holds a web address, it is already filled in. The arrow at the end of **Address** lists the last 20 addresses you entered; pick one to use it again. Right-click the box for **Cut**, **Copy**, **Paste**, **Delete** and **Select all**.
 4. If the server needs a user name and password, tick **Use authorization** and type them.
 5. Click **OK**.
 
@@ -53,8 +53,8 @@ Mister Download Manager**, or copy it and use **Add URL**.
 MDM asks the server for the file's name and size, and shows them in **Download File Info**:
 
 - **URL** — the address.
-- **Category** — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder.
-- **Save As** — the folder and file name. You can type another.
+- **Category** — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. **+** beside it makes a new category.
+- **Save As** — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with **...**.
 - **Remember this path for "…" category** — tick it to make the folder you typed the category's folder from now on.
 - **Description** — a note of your own. It shows in the list's **Description** column and Find can search it.
 

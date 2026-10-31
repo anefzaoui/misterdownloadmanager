@@ -129,8 +129,10 @@ impl Progress {
             .with_title(title)
             .with_inner_size(client)
             // IDM's progress window has the sizing-frame caption (31 px) but 2 px borders and a
-            // fixed size: win32::thin_frame trims the borders and disables resizing.
-            .with_resizable(true)
+            // fixed size. On Windows the sizing frame is asked for and win32::thin_frame trims
+            // its borders and disables resizing; elsewhere the window is simply not resizable
+            // (its contents are laid out for one size: Show/Hide details switches between two).
+            .with_resizable(cfg!(windows))
             .with_icon(crate::app_icon())
             .with_maximize_button(false);
         if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0]) {

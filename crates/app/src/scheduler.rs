@@ -472,7 +472,7 @@ impl Scheduler {
                 self.tree_focused = true;
                 self.file_sel = None;
             }
-            icons.paint(ui, IconKey::Silk(icon), pos2(rc.left() + 5.0, top));
+            icons.paint_in(ui, &clip, IconKey::Silk(icon), pos2(rc.left() + 5.0, top));
             let x = rc.left() + 25.0;
             let w = winui::text_width(&clip, label);
             if i == self.selected {
