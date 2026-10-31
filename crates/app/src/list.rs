@@ -713,6 +713,20 @@ pub fn show(
         egui::Id::unique("download-list"),
         winui::pointer_drag(),
     );
+    // For screen readers: the list, its rows below, and the row with the dotted outline
+    // as the one they read (the list keeps its keys itself, not egui's focus).
+    winui::expose(
+        &resp,
+        egui::Role::ListBox,
+        crate::i18n::t("Downloads"),
+        true,
+        None,
+    );
+    if let Some(f) = focus {
+        let row = egui::Id::unique(("download-row", f));
+        ui.ctx()
+            .accesskit_node_builder(resp.id, |n| n.set_active_descendant(row.accesskit_id()));
+    }
     let bp = p.with_clip_rect(screen(body));
     // Fully visible rows; the list scrolls by whole rows until the last one is fully shown.
     let page_rows = (body.height() / ROW_H).floor().max(1.0);
@@ -743,6 +757,30 @@ pub fn show(
         let top = body_top + k as f32 * ROW_H - offset;
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
+            // A screen reader's row: the name, then Status and Size, selected or not.
+            let ppp = ui.ctx().pixels_per_point();
+            let bounds = screen(Rect::from_min_size(
+                pos2(cl, top),
+                egui::vec2(rr - cl, ROW_H),
+            ));
+            let spoken = [0usize, 3, 2]
+                .iter()
+                .map(|c| row.cells[*c].as_str())
+                .filter(|t| !t.is_empty())
+                .collect::<Vec<_>>()
+                .join(", ");
+            ui.ctx()
+                .accesskit_node_builder(egui::Id::unique(("download-row", idx)), |n| {
+                    n.set_role(egui::Role::ListBoxOption);
+                    n.set_label(spoken);
+                    n.set_selected(picked);
+                    n.set_bounds(egui::accesskit::Rect {
+                        x0: (bounds.left() * ppp) as f64,
+                        y0: (bounds.top() * ppp) as f64,
+                        x1: (bounds.right() * ppp) as f64,
+                        y1: (bounds.bottom() * ppp) as f64,
+                    });
+                });
             let sel = picked && st.focused;
             let has_focus = focus == Some(idx) && st.focused;
             if (sel || has_focus) && !crate::theme::dark() {

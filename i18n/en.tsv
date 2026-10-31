@@ -365,7 +365,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	Downloading the update... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Downloads
 #. text in a dialog box
@@ -750,6 +750,11 @@
 	No language matches the search	No language matches the search
 #. text in langpick.rs
 	No language matches.	No language matches.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+	No mail app opened.	No mail app opened.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	No mail app: the message is copied, paste it in your mail.	No mail app: the message is copied, paste it in your mail.
 #. text in the Options window
 	No proxy/socks	No proxy/socks
 #. text in the Download video window
@@ -1166,6 +1171,9 @@
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+	The clipboard is busy: try again.	The clipboard is busy: try again.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 	The computer will go to sleep in {n} seconds.	The computer will go to sleep in {n} seconds.
@@ -1407,7 +1415,7 @@
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 	Verify	Verify
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 	Verify checksum	Verify checksum
 #. text in the download list (sizes, speeds, status)
 #. the trailing ... means it is still going on: keep it
@@ -1488,8 +1496,16 @@
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 	{file} could not be opened: {error}	{file} could not be opened: {error}
+#. text in the Checksum window
+	{file} could not be read to check it	{file} could not be read to check it
 #. text in a dialog box
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: the file does NOT match its checksum ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+	{file}: the file matches its checksum ({algorithm})	{file}: the file matches its checksum ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
