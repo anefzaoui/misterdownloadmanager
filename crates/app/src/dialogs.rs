@@ -1006,7 +1006,7 @@ impl Complete {
                 let grip = ui.interact(
                     handle,
                     egui::Id::unique(("drag-out", self.id)),
-                    egui::Sense::drag(),
+                    winui::pointer_drag(),
                 );
                 if grip.hovered() {
                     ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);

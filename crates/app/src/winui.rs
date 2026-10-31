@@ -1022,6 +1022,8 @@ pub fn row_list(
     let right = inner.right() - if bar { crate::scrollbar::THICK } else { 0.0 };
     let area = Rect::from_min_max(inner.min, pos2(right, inner.bottom()));
     let resp = ui.interact(rect(inner), id, Sense::click());
+    // Its arrows (a tree's Left / Right too) stay with it.
+    keep_keys(ui, &resp, true, true, false);
     let focused = resp.has_focus();
     // The wheel: whole rows, the rest kept for the next turn of it.
     if ui.rect_contains_pointer(rect(inner)) {
@@ -1143,6 +1145,8 @@ pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str
     let resp = ui
         .interact(rect, ui.scope_id().with(("link", salt)), Sense::click())
         .on_hover_cursor(egui::CursorIcon::PointingHand);
+    // A Tab stop shows that it has the keys.
+    show_focus(ui, &resp, rect.expand(2.0));
     if resp.hovered() {
         let y = rect.bottom() + 0.5;
         p.line_segment(
@@ -1463,6 +1467,9 @@ fn edit_text_with(
         .font(tahoma())
         .text_color(color)
         .password(password)
+        // Enter keeps the focus in the box (the dialog's default button answers it; a box that
+        // lost the keys on Enter took the next typing nowhere).
+        .return_key(None)
         .desired_width(inner.width());
     let resp = ui.put(inner, |ui: &mut Ui| {
         // The caret in the box's own ink: egui's default (a pale blue in its dark style) was
@@ -1699,7 +1706,9 @@ impl State {
     pub fn of(resp: &Response, enabled: bool) -> Self {
         if !enabled {
             State::Disabled
-        } else if resp.is_pointer_button_down_on() {
+        } else if resp.is_pointer_button_down_on() && resp.contains_pointer() {
+            // Held, it looks pressed only while the pointer is on it (as in Windows: moved
+            // off, it lets go without a click).
             State::Pressed
         } else if resp.hovered() {
             State::Hot
@@ -2075,9 +2084,11 @@ pub fn checkbox_until(
     };
     let resp = ui.interact(
         hit,
-        widget_id(ui, ("check", caption, box_min.x as i32, box_min.y as i32)),
+        // By place, not caption: a caption that changes keeps the focus.
+        widget_id(ui, ("check", box_min.x as i32, box_min.y as i32)),
         sense,
     );
+    let resp = enter_is_not_a_click(ui, resp);
     show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
@@ -2556,8 +2567,52 @@ pub fn show_focus(ui: &Ui, resp: &Response, rc: Rect) {
     }
 }
 
+/// Is the keyboard in use in the current window? A navigation key (Tab, the arrows, Space,
+/// Enter, Home / End, Page Up / Down) turns it on, a mouse press off: focus rings show only
+/// for a user moving with the keys, as Windows shows them.
+pub fn keyboard_in_use(ctx: &egui::Context) -> bool {
+    use egui::Key as K;
+    let key = egui::Id::unique(("keyboard-in-use", ctx.viewport_id()));
+    let (keys, press) = ctx.input(|i| {
+        let nav = i.events.iter().any(|e| {
+            matches!(
+                e,
+                egui::Event::Key {
+                    key: K::Tab
+                        | K::ArrowUp
+                        | K::ArrowDown
+                        | K::ArrowLeft
+                        | K::ArrowRight
+                        | K::Space
+                        | K::Enter
+                        | K::Home
+                        | K::End
+                        | K::PageUp
+                        | K::PageDown
+                        | K::F6,
+                    pressed: true,
+                    ..
+                }
+            )
+        });
+        (nav, i.pointer.any_pressed())
+    });
+    let mut on = ctx.data(|d| d.get_temp::<bool>(key)).unwrap_or(false);
+    if keys {
+        on = true;
+    } else if press {
+        on = false;
+    }
+    ctx.data_mut(|d| d.insert_temp(key, on));
+    on
+}
+
 /// The keyboard focus around `rc`: a dotted rectangle, every other pixel, in the theme's ink.
 pub fn focus_ring(p: &Painter, rc: Rect) {
+    // Only once the keyboard is in use in this window, as Windows shows focus rectangles.
+    if !keyboard_in_use(p.ctx()) {
+        return;
+    }
     let ink = if crate::theme::dark() {
         rgb(0xcc, 0xcc, 0xcc)
     } else {
@@ -2615,9 +2670,10 @@ pub fn checkbox_light_until(
     };
     let resp = ui.interact(
         hit,
-        widget_id(ui, ("check-light", caption, glyph.x as i32, glyph.y as i32)),
+        widget_id(ui, ("check-light", glyph.x as i32, glyph.y as i32)),
         sense,
     );
+    let resp = enter_is_not_a_click(ui, resp);
     show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
@@ -2766,9 +2822,10 @@ pub fn radio_light_until(
     };
     let resp = ui.interact(
         hit,
-        widget_id(ui, ("radio-light", caption, glyph.x as i32, glyph.y as i32)),
+        widget_id(ui, ("radio-light", glyph.x as i32, glyph.y as i32)),
         sense,
     );
+    let resp = enter_is_not_a_click(ui, resp);
     show_focus(ui, &resp, hit.expand(1.0));
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
@@ -2810,6 +2867,12 @@ pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
         ui.data_mut(|d| d.remove::<f64>(key));
         return false;
     }
+    // Paused while the pointer is off it (Windows' arrows wait for it to come back).
+    if !resp.contains_pointer() {
+        ui.ctx()
+            .request_repaint_after(std::time::Duration::from_millis(50));
+        return false;
+    }
     let now = ui.input(|i| i.time);
     let due = ui.data(|d| d.get_temp::<f64>(key));
     let (fire, next) = match due {
@@ -2821,6 +2884,35 @@ pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
     ui.ctx()
         .request_repaint_after(std::time::Duration::from_secs_f64((next - now).max(0.01)));
     fire
+}
+
+/// egui clicks a focused control on Enter as on Space. A check box, radio button or tab answers
+/// Space only, as in Windows: Enter is the dialog's default button (it ticked the box and
+/// pressed OK). Links do open on Enter.
+pub fn enter_is_not_a_click(ui: &Ui, mut resp: Response) -> Response {
+    if resp.has_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+        resp.flags.remove(egui::response::Flags::CLICKED);
+    }
+    resp
+}
+
+/// A focused control that answers arrow keys (or Escape) itself keeps them: egui otherwise also
+/// moves the focus to the next control on an arrow and drops it on Escape. Call each frame
+/// with the control's response.
+pub fn keep_keys(ui: &Ui, resp: &Response, horizontal: bool, vertical: bool, escape: bool) {
+    if resp.has_focus() {
+        ui.memory_mut(|m| {
+            m.set_focus_lock_filter(
+                resp.id,
+                egui::EventFilter {
+                    horizontal_arrows: horizontal,
+                    vertical_arrows: vertical,
+                    escape,
+                    ..Default::default()
+                },
+            )
+        });
+    }
 }
 
 /// A tab control's keys, as Windows has them: Ctrl+Tab / Ctrl+Page Down the next of its `n`
@@ -2850,6 +2942,7 @@ pub fn tab_keys(ui: &Ui, n: usize, current: usize) -> Option<usize> {
 /// enabled one, wrapping, and choose it. Returns the one chosen.
 pub fn radio_keys(ui: &Ui, group: &[Response]) -> Option<usize> {
     let at = group.iter().position(Response::has_focus)?;
+    keep_keys(ui, &group[at], true, true, false);
     let step: isize = if take_key(ui, egui::Key::ArrowDown) || take_key(ui, egui::Key::ArrowRight) {
         1
     } else if take_key(ui, egui::Key::ArrowUp) || take_key(ui, egui::Key::ArrowLeft) {
@@ -3015,13 +3108,37 @@ pub fn tabs_light(
         let hit = Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, t));
         // Keyed by the control's place and the tab's index: its x changes when it is chosen,
         // and the focus must stay on it.
-        let resp = ui.interact(
-            hit,
-            widget_id(ui, ("tab-light", rc.min.x as i32, rc.min.y as i32, i)),
-            Sense::click(),
-        );
+        // One Tab stop, the chosen tab (Windows' tab control); the arrows choose.
+        let sense = if sel { Sense::click() } else { pointer_only() };
+        let id_of =
+            |ui: &Ui, k: usize| widget_id(ui, ("tab-light", rc.min.x as i32, rc.min.y as i32, k));
+        let resp = ui.interact(hit, id_of(ui, i), sense);
+        let resp = enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
+        }
+        if sel {
+            keep_keys(ui, &resp, true, false, false);
+            if resp.has_focus() {
+                let last = tabs.len().saturating_sub(1) as isize;
+                let fwd = if rtl() { -1 } else { 1 };
+                let to = if take_key(ui, egui::Key::ArrowRight) {
+                    Some(i as isize + fwd)
+                } else if take_key(ui, egui::Key::ArrowLeft) {
+                    Some(i as isize - fwd)
+                } else if take_key(ui, egui::Key::Home) {
+                    Some(0)
+                } else if take_key(ui, egui::Key::End) {
+                    Some(last)
+                } else {
+                    None
+                };
+                if let Some(to) = to.map(|t| t.clamp(0, last) as usize).filter(|t| *t != i) {
+                    clicked = Some(to);
+                    let next = id_of(ui, to);
+                    ui.memory_mut(|m| m.request_focus(next));
+                }
+            }
         }
         let face = if sel {
             LIGHT_PAGE()
@@ -3133,6 +3250,9 @@ pub fn combo_light(
         Sense::hover()
     };
     let resp = ui.interact(rc, key.with("button"), sense);
+    // Its arrows stay with it; Escape too while its list is open.
+    let list_open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false));
+    keep_keys(ui, &resp, false, true, list_open);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
     // The row the keys point at while the list is open (the choice when it opens).
     let hl_key = key.with("highlight");
@@ -3242,7 +3362,9 @@ pub fn combo_light(
                         vec2(list.width() - 2.0, row_h),
                     );
                     let r = ui.interact(row, key.with(("item", i)), pointer_only());
-                    if r.hovered() {
+                    // The pointer takes the highlight when it moves (resting over the list,
+                    // it overrode the arrow keys every frame).
+                    if r.hovered() && ui.input(|i| i.pointer.is_moving()) {
                         hl = i;
                     }
                     let hot = i == hl;

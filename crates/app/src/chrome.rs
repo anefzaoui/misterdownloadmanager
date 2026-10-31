@@ -7,7 +7,7 @@
 
 use std::collections::HashMap;
 
-use egui::{Color32, Pos2, Rect, Sense, Stroke, TextureHandle, Ui, pos2, vec2};
+use egui::{Color32, Pos2, Rect, Stroke, TextureHandle, Ui, pos2, vec2};
 
 use crate::icons::Icon;
 use crate::scrollbar;
@@ -1364,7 +1364,7 @@ pub fn categories(
         vec2(16.0, 15.0),
     ));
     let cr = ui
-        .interact(close, egui::Id::unique("cat-close"), Sense::click())
+        .interact(close, egui::Id::unique("cat-close"), winui::pointer_only())
         // i18n: tooltip of the × that closes the Categories pane
         .on_hover_text(crate::i18n::t("Close"));
     if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::dark()) {

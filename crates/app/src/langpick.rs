@@ -4,7 +4,7 @@
 //! name; typing filters the list; the arrows, Page Up/Down, Home/End move; Enter or a double
 //! click chooses.
 
-use egui::{Color32, Rect, Sense, pos2, vec2};
+use egui::{Color32, Rect, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -197,7 +197,7 @@ impl Picker {
                 let list_resp = ui.interact(
                     shown_list,
                     egui::Id::unique("language-list"),
-                    Sense::click(),
+                    winui::pointer_only(),
                 );
                 if list_resp.hovered() {
                     let wheel = ui.input(|i| i.smooth_scroll_delta.y);
@@ -220,7 +220,7 @@ impl Picker {
                     let resp = ui.interact(
                         winui::rect(row),
                         egui::Id::unique(("language-row", k)),
-                        Sense::click(),
+                        winui::pointer_only(),
                     );
                     if resp.clicked() {
                         self.selected = *entry;

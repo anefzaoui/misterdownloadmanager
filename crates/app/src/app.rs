@@ -3570,7 +3570,11 @@ impl App {
                 pos2(right, o.y + chrome::MENU_H + chrome::pane_top()),
                 pos2(right + 4.0, o.y + h - STRIP_H - 5.0),
             ));
-            let sr = ui.interact(split, egui::Id::unique("cat-splitter"), egui::Sense::drag());
+            let sr = ui.interact(
+                split,
+                egui::Id::unique("cat-splitter"),
+                winui::pointer_drag(),
+            );
             if sr.hovered() || sr.dragged() {
                 ctx.set_cursor_icon(egui::CursorIcon::ResizeHorizontal);
             }

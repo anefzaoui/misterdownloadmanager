@@ -605,7 +605,7 @@ impl Progress {
         self.limit_kb.retain(|c| c.is_ascii_digit());
         // A typed rate applies once typed (focus leaves, Enter), not at each digit (typing 100
         // would throttle to 1, then 10 KB/s on the way).
-        let typed = rate_box.lost_focus();
+        let typed = rate_box.lost_focus() || (rate_box.has_focus() && winui::enter_pressed(ui));
         // i18n: unit after an input box: kilobytes per second
         text(
             &p,

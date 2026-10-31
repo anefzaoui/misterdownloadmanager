@@ -494,7 +494,7 @@ pub fn show(
     let hresp = ui.interact(
         screen(header),
         egui::Id::unique("list-header"),
-        Sense::click_and_drag(),
+        winui::pointer_drag(),
     );
     let pointer = ui.ctx().pointer_interact_pos().map(english);
     let cols = spans(st);
@@ -694,7 +694,7 @@ pub fn show(
     let resp = ui.interact(
         screen(body),
         egui::Id::unique("download-list"),
-        Sense::click_and_drag(),
+        winui::pointer_drag(),
     );
     let bp = p.with_clip_rect(screen(body));
     // Fully visible rows; the list scrolls by whole rows until the last one is fully shown.

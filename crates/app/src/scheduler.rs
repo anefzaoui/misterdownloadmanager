@@ -1256,7 +1256,11 @@ fn time_picker(
     }
     for (i, fr) in rects.iter().enumerate() {
         if ui
-            .interact(*fr, egui::Id::unique(("time-field", id, i)), Sense::click())
+            .interact(
+                *fr,
+                egui::Id::unique(("time-field", id, i)),
+                winui::pointer_only(),
+            )
             .clicked()
         {
             focus.at = Some((id, i));
@@ -1486,7 +1490,7 @@ fn date_picker(
         pos2(winui::rect(rc).right() - 20.0, rc.top()),
         winui::rect(rc).max,
     ));
-    let drop_resp = ui.interact(drop, key.with("drop"), Sense::click());
+    let drop_resp = ui.interact(drop, key.with("drop"), winui::pointer_only());
     winui::tint_part(
         &p,
         drop.shrink(1.0),
@@ -1499,7 +1503,7 @@ fn date_picker(
     }
     for (i, fr) in rects.iter().enumerate() {
         if ui
-            .interact(*fr, key.with(("field", i)), Sense::click())
+            .interact(*fr, key.with(("field", i)), winui::pointer_only())
             .clicked()
         {
             focus.at = Some((id, i));
@@ -1647,7 +1651,11 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
             );
             for (dir, x, glyph) in [(-1, rect.left() + 8.0, "<"), (1, rect.right() - 22.0, ">")] {
                 let b = Rect::from_min_size(pos2(x, rect.top() + 5.0), vec2(14.0, 16.0));
-                let r = ui.interact(winui::rect(b), key.with(("cal-nav", dir)), Sense::click());
+                let r = ui.interact(
+                    winui::rect(b),
+                    key.with(("cal-nav", dir)),
+                    winui::pointer_only(),
+                );
                 if let Some(c) =
                     winui::highlight_fill(winui::State::of(&r, true), crate::theme::dark())
                 {
@@ -1680,7 +1688,11 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
                 let (col, row) = ((k % 7) as f32, (k / 7) as f32);
                 let cell =
                     Rect::from_min_size(pos2(x0 + cw * col, y0 + 18.0 + ch * row), vec2(cw, ch));
-                let r = ui.interact(winui::rect(cell), key.with(("cal-day", k)), Sense::click());
+                let r = ui.interact(
+                    winui::rect(cell),
+                    key.with(("cal-day", k)),
+                    winui::pointer_only(),
+                );
                 let label = day.day().to_string();
                 let w = winui::text_width(&p, &label);
                 let chosen = day == date;

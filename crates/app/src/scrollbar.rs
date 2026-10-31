@@ -105,8 +105,11 @@ pub fn bar(
     };
     let before = *pos;
     let grab_id = id.with("grab");
-    if resp.drag_started()
-        && let Some(q) = resp.interact_pointer_pos()
+    // The thumb is grabbed where the button went down (taken when egui decides it's a drag,
+    // the pointer had moved on: the thumb jumped, a quick flick missed it).
+    if resp.is_pointer_button_down_on()
+        && ui.input(|i| i.pointer.any_pressed())
+        && let Some(q) = ui.input(|i| i.pointer.press_origin())
     {
         let u = along(q);
         let s = start(*pos);
@@ -114,14 +117,14 @@ pub fn bar(
             ui.ctx().data_mut(|d| d.insert_temp(grab_id, u - s));
         }
     }
-    if resp.dragged()
+    if resp.is_pointer_button_down_on()
         && let Some(grab) = ui.ctx().data(|d| d.get_temp::<f32>(grab_id))
         && let Some(q) = resp.interact_pointer_pos()
         && avail > thumb
     {
         *pos = (along(q) - grab - THICK) / (avail - thumb) * max;
     }
-    if resp.drag_stopped() {
+    if !resp.is_pointer_button_down_on() {
         ui.ctx().data_mut(|d| d.remove::<f32>(grab_id));
     }
     // An arrow or the track: on the press, then again while held (not while the thumb is

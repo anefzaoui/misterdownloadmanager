@@ -345,6 +345,9 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
 
 pub fn apply(ctx: &egui::Context) {
     load_fonts(ctx, false);
+    // A press held for a while is still a click when let go over the control, as in Windows
+    // (egui gives it up after 0.8 s).
+    ctx.options_mut(|o| o.input_options.max_click_duration = f64::INFINITY);
     egui_extras::install_image_loaders(ctx);
     let mut v = Visuals::dark();
     v.panel_fill = WINDOW;

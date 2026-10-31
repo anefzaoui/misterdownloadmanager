@@ -316,7 +316,7 @@ impl TorrentDialog {
             None,
         )
         .clicked()
-            || (edit.lost_focus() && winui::enter_pressed(ui) && can_look);
+            || (edit.has_focus() && winui::enter_pressed(ui) && can_look);
         if look && can_look {
             self.look_up(rt, ui.ctx());
         }

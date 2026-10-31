@@ -1358,7 +1358,7 @@ impl OptionsDialog {
                 .interact(
                     box_hit,
                     egui::Id::unique(("sound-check", i)),
-                    Sense::click(),
+                    winui::pointer_only(),
                 )
                 .clicked()
             {
@@ -1367,7 +1367,7 @@ impl OptionsDialog {
                 .interact(
                     winui::rect(row),
                     egui::Id::unique(("sound-row", i)),
-                    Sense::click(),
+                    winui::pointer_only(),
                 )
                 .clicked()
             {
@@ -1777,9 +1777,42 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             o + vec2(x0, top),
             o + vec2(x1 + 1.0, bottom + 1.0),
         ));
-        let resp = ui.interact(rc, egui::Id::unique(("opt-tab", i)), Sense::click());
+        // The strip is one Tab stop, the chosen tab (Windows' tab control); the arrows move.
+        let sense = if sel {
+            Sense::click()
+        } else {
+            winui::pointer_only()
+        };
+        let resp = ui.interact(rc, egui::Id::unique(("opt-tab", i)), sense);
+        let resp = winui::enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
+        }
+        if sel {
+            winui::keep_keys(ui, &resp, true, false, false);
+            if resp.has_focus() {
+                // Left / Right (mirrored in RTL), Home / End through the pages in order.
+                const ORDER: [usize; 9] = [0, 1, 2, 3, 4, 5, 6, 8, 9];
+                let at = ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
+                let fwd = if winui::rtl() { -1 } else { 1 };
+                let to = if winui::take_key(ui, egui::Key::ArrowRight) {
+                    Some(at + fwd)
+                } else if winui::take_key(ui, egui::Key::ArrowLeft) {
+                    Some(at - fwd)
+                } else if winui::take_key(ui, egui::Key::Home) {
+                    Some(0)
+                } else if winui::take_key(ui, egui::Key::End) {
+                    Some(ORDER.len() as isize - 1)
+                } else {
+                    None
+                };
+                if let Some(to) = to {
+                    let next = ORDER[to.clamp(0, ORDER.len() as isize - 1) as usize];
+                    clicked = Some(next);
+                    // The keys stay on the strip: the new tab takes the focus.
+                    ui.memory_mut(|m| m.request_focus(egui::Id::unique(("opt-tab", next))));
+                }
+            }
         }
         let face = if sel {
             LIGHT_PAGE()
@@ -1825,6 +1858,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             let rc = text(&p, o.x + lx, o.y + base, &shown, LIGHT_TEXT());
             winui::full_on_hover(ui, rc, ("opt-tab-label", i), full);
         }
+        winui::show_focus(ui, &resp, rc.shrink(2.0));
     };
     for t in back {
         tab(ui, *t, 9.0, 22.0, false);

@@ -8,7 +8,7 @@
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, atomic::AtomicBool, atomic::Ordering};
 
-use egui::{Pos2, Sense, ViewportBuilder, ViewportCommand, ViewportId, pos2, vec2};
+use egui::{Pos2, ViewportBuilder, ViewportCommand, ViewportId, pos2, vec2};
 
 /// The window's title (its OLE target is found by it).
 const TITLE: &str = "Mister Download Manager drop target"; // not translated: an id
@@ -139,7 +139,7 @@ impl DropTarget {
                 .interact(
                     rect,
                     ui.scope_id().with("drop-target"),
-                    Sense::click_and_drag(),
+                    crate::winui::pointer_drag(),
                 )
                 .on_hover_text(crate::i18n::t("Drag links here to download them"));
             if resp.drag_started() {

@@ -273,7 +273,7 @@ impl VideoDialog {
             None,
         )
         .clicked()
-            || (edit.lost_focus() && winui::enter_pressed(ui) && can_look);
+            || (edit.has_focus() && winui::enter_pressed(ui) && can_look);
         // Opened for a page: look it up as soon as yt-dlp is there.
         let look = look || (can_look && std::mem::take(&mut self.auto_look));
         if look
