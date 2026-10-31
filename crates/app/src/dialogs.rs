@@ -197,12 +197,27 @@ fn dialog_window<T>(
         }
     }
     if !matches!(out, Outcome::Open) {
+        // The next opening of this window is a new one (its text boxes start afresh).
+        let opened = opening_key_of(ViewportId::from_hash_of(id));
+        ctx.data_mut(|d| {
+            let n = d.get_temp::<u64>(opened).unwrap_or(0);
+            d.insert_temp(opened, n + 1);
+        });
         ctx.data_mut(|d| d.remove::<bool>(focused));
         forget_place(ctx, key);
         #[cfg(windows)]
         ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
     }
     out
+}
+
+/// How many times the current window has closed (its text boxes' ids include it).
+pub fn opening_key(ctx: &egui::Context) -> egui::Id {
+    opening_key_of(ctx.viewport_id())
+}
+
+fn opening_key_of(viewport: ViewportId) -> egui::Id {
+    egui::Id::unique(("dialog-opening", viewport))
 }
 
 /// IDM shows paths under the user profile relative to it: `Downloads\Compressed\a.zip`.

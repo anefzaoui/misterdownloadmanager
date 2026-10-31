@@ -18,7 +18,8 @@ crate::theme::themed! {
     pub TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
     /// Light: embossed #a0a0a0 statics (drawn flat here).
     pub TEXT_DISABLED = rgb(0x80, 0x80, 0x80), rgb(0xa0, 0xa0, 0xa0);
-    pub EDIT_TEXT_DISABLED = rgb(0x6d, 0x6d, 0x6d), rgb(0x6d, 0x6d, 0x6d);
+    /// A greyed text box's text (dark: #8a8a8a, readable on the dark dialog; #6d6d6d was not).
+    pub EDIT_TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x6d, 0x6d, 0x6d);
 }
 pub const GROUP_LINE: Color32 = rgb(0xdc, 0xdc, 0xdc);
 pub const SELECTION: Color32 = rgb(0x00, 0x78, 0xd7);
@@ -1127,7 +1128,12 @@ pub fn row_list(
         } else if selected {
             Some(SELECTED_INACTIVE())
         } else {
-            subtle_fill(State::of(&r, true), crate::theme::dark())
+            // Hot, and pressed lighter still on a dark field (subtle_fill's pressed grey was the
+            // dark field's own).
+            match (State::of(&r, true), crate::theme::dark()) {
+                (State::Pressed, true) => Some(rgb(0x4f, 0x4f, 0x4f)),
+                (state, dark) => subtle_fill(state, dark),
+            }
         };
         if let Some(f) = fill {
             clip.rect_filled(rect(row), 0.0, f);
@@ -1498,7 +1504,12 @@ fn edit_text_with(
     );
     // The whole drawn box takes clicks (the text itself fills only a strip inside it): first,
     // so the text on top still gets its own; a click elsewhere in the box focuses it.
-    let edit_id = widget_id(ui, ("edit-box", rc.min.x as i32, rc.min.y as i32));
+    // Keyed by its window's opening too: a box shown again for another record (New login after
+    // Edit login) starts without the last one's text in its undo.
+    // (The key first: asking the context inside its own lock deadlocks.)
+    let opening = crate::dialogs::opening_key(ui.ctx());
+    let opened = ui.data(|d| d.get_temp::<u64>(opening)).unwrap_or(0);
+    let edit_id = widget_id(ui, ("edit-box", rc.min.x as i32, rc.min.y as i32, opened));
     if enabled {
         let frame = ui.interact(rc, edit_id.with("frame"), pointer_only());
         if frame.hovered() {
@@ -1733,11 +1744,16 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
 /// A dark edit with right-aligned text (numbers, e.g. the Speed Limiter value).
 pub fn edit_right(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    let color = if enabled { TEXT() } else { DISABLED_TEXT };
-    edit_text_with(ui, rc, value, enabled, false, 5.0, color, end_align())
+    let color = if enabled {
+        TEXT()
+    } else {
+        EDIT_TEXT_DISABLED()
+    };
+    let resp = edit_text_with(ui, rc, value, enabled, false, 5.0, color, end_align());
+    // Its focus shows as every text box's does.
+    edit_focus_line(ui, &resp, rc);
+    resp
 }
-
-const DISABLED_TEXT: Color32 = rgb(0x80, 0x80, 0x80);
 
 // ---- control states -------------------------------------------------------------------------
 
@@ -3685,6 +3701,71 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    /// egui's context locks itself for `data`, `memory`, `input` and their `_mut`s: asking it
+    /// again inside one (`ctx.viewport_id()` to build a key) deadlocks the app at once. The
+    /// key is worked out first; this keeps it so in every file of the app.
+    fn no_context_call_inside_a_context_lock() {
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let opens = [
+            ".data(|",
+            ".data_mut(|",
+            ".memory(|",
+            ".memory_mut(|",
+            ".input(|",
+            ".input_mut(|",
+        ];
+        let inner = [
+            "ctx()",
+            ".viewport_id()",
+            ".cumulative_pass_nr()",
+            "_key(ctx",
+            "_key(ui",
+            "_key(&",
+        ];
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(&dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().is_none_or(|e| e != "rs") {
+                continue;
+            }
+            let mut src = std::fs::read_to_string(&path).unwrap();
+            // Not this test's own patterns.
+            if let Some(me) = src.find("fn no_context_call_inside_a_context_lock") {
+                src.truncate(me);
+            }
+            for open in opens {
+                let mut from = 0;
+                while let Some(at) = src[from..].find(open) {
+                    let start = from + at + open.len() - 2; // the "(" of the call
+                    let mut depth = 0;
+                    let mut end = start;
+                    for (k, c) in src[start..].char_indices() {
+                        match c {
+                            '(' => depth += 1,
+                            ')' => depth -= 1,
+                            _ => {}
+                        }
+                        if depth == 0 {
+                            end = start + k;
+                            break;
+                        }
+                    }
+                    let body = &src[start..end];
+                    if inner.iter().any(|i| body.contains(i)) {
+                        let line = src[..start].lines().count();
+                        found.push(format!("{}:{line}", path.display()));
+                    }
+                    from = end.max(start + 1);
+                }
+            }
+        }
+        assert!(
+            found.is_empty(),
+            "context asked inside its own lock: {found:?}"
+        );
+    }
 
     #[test]
     fn a_pressed_button_looks_pressed_in_both_themes() {
