@@ -6,19 +6,13 @@
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
-use egui::{Color32, Pos2, Rect, Sense, Ui, pos2};
+use egui::{Pos2, Ui, pos2};
 use mdm_tools::resolve::{Choice, Video};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r, text};
 
 type Slot<T> = Arc<Mutex<Option<Result<T, String>>>>;
-
-crate::theme::themed! {}
-
-const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
-    Color32::from_rgb(r, g, b)
-}
 
 /// What OK adds.
 pub struct VideoAdd {
@@ -45,7 +39,8 @@ pub struct VideoDialog {
     video: Option<(Video, Vec<Choice>)>,
     chosen: usize,
     /// First choice shown (the list scrolls by whole rows).
-    first: usize,
+    /// The choices list's scroll and selection.
+    rows: winui::RowList,
     error: Option<String>,
     focused: bool,
     /// Download Now (true) or Later, once chosen.
@@ -107,7 +102,7 @@ impl VideoDialog {
             install: None,
             video: None,
             chosen: 0,
-            first: 0,
+            rows: Default::default(),
             error: None,
             focused: false,
             start_now: None,
@@ -130,7 +125,7 @@ impl VideoDialog {
         let merge = tools().2.is_some();
         let choices = mdm_tools::resolve::choices(&v, merge);
         self.chosen = 0;
-        self.first = 0;
+        self.rows = Default::default();
         self.error = choices
             .is_empty()
             .then(|| crate::i18n::t("No video this can download on that page").into());
@@ -382,56 +377,23 @@ impl VideoDialog {
             }
         }
 
-        // The choices.
+        // The choices: the shared row list.
         let list = r(o, 11.0, 94.0, 478.0, 150.0);
-        winui::solid(&p, list, rgb(0x82, 0x87, 0x90));
-        p.rect_filled(list.shrink(1.0), 0.0, winui::FIELD());
         let mut picked = None;
-        if let Some((_, choices)) = &self.video {
-            // Whole rows only, scrolled by the wheel; a thin bar when they don't all fit.
-            let page = ((list.height() - 4.0) / 17.0).floor() as usize;
-            let max_first = choices.len().saturating_sub(page);
-            if ui.rect_contains_pointer(list) {
-                let dy = ui.input(|i| i.smooth_scroll_delta.y);
-                if dy < 0.0 {
-                    self.first = (self.first + 1).min(max_first);
-                } else if dy > 0.0 {
-                    self.first = self.first.saturating_sub(1);
-                }
-            }
-            self.first = self.first.min(max_first);
-            let clip = p.with_clip_rect(list.shrink(1.0));
-            // Rows laid out in English, made where they are on screen: the choice from the
-            // leading edge, its size at the trailing one, the bar after them.
-            let list = winui::rect(list);
-            let right = list.right() - if max_first > 0 { 17.0 } else { 1.0 };
-            for (k, (i, c)) in choices
-                .iter()
-                .enumerate()
-                .skip(self.first)
-                .take(page)
-                .enumerate()
-            {
-                let top = list.top() + 2.0 + 17.0 * k as f32;
-                let row = Rect::from_min_max(pos2(list.left() + 1.0, top), pos2(right, top + 17.0));
-                if ui
-                    .interact(
-                        winui::rect(row),
-                        egui::Id::unique(("video-choice", i)),
-                        Sense::click(),
-                    )
-                    .clicked()
-                {
-                    picked = Some(i);
-                }
-                let sel = i == self.chosen;
-                if sel {
-                    clip.rect_filled(winui::rect(row), 0.0, winui::SELECTION);
-                }
-                let color = if sel { Color32::WHITE } else { winui::TEXT() };
-                // A format ("1080p mp4, 60 fps") reads left to right.
+        let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
+        self.rows.selected = Some(self.chosen).filter(|c| *c < choices.len());
+        let ev = winui::row_list(
+            ui,
+            "video-choices",
+            list,
+            choices.len(),
+            17.0,
+            &mut self.rows,
+            |_, clip, i, row, look| {
+                let c = &choices[i];
+                // A format ("1080p mp4, 60 fps") reads left to right; its size at the trailing edge.
                 let label = crate::i18n::ltr(&c.label);
-                text(&clip, row.left() + 6.0, top + 12.0, &label, color);
+                text(clip, row.left() + 6.0, row.top() + 12.0, &label, look.ink);
                 let size = c
                     .size
                     // i18n: the video's file size is not known
@@ -439,15 +401,11 @@ impl VideoDialog {
                         crate::i18n::t("size unknown").into(),
                         crate::dialogs::dialog_size,
                     );
-                winui::text_right(&clip, row.right() - 6.0, top + 12.0, &size, color);
-            }
-            if max_first > 0 {
-                let (t, b) = (list.top() + 2.0, list.bottom() - 2.0);
-                let len = ((b - t) * page as f32 / choices.len() as f32).max(12.0);
-                let y0 = t + (b - t - len) * self.first as f32 / max_first as f32;
-                let x = list.right() - 9.0;
-                winui::fill_l(&p, x - 1.0, y0, x, y0 + len, winui::MUTED());
-            }
+                winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
+            },
+        );
+        if let Some(i) = ev.picked {
+            picked = Some(i);
         }
         if let Some(i) = picked {
             self.chosen = i;

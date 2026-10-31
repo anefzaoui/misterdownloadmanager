@@ -1301,6 +1301,11 @@ pub struct TreeRow<'a> {
     pub count: Option<usize>,
 }
 
+/// A tree node's count, after its label: "(7)".
+fn count_text(n: usize) -> String {
+    format!("({})", crate::i18n::integer(n as u64))
+}
+
 pub enum TreeEvent {
     Select(usize),
     Toggle(usize),
@@ -1381,7 +1386,13 @@ pub fn categories(
         .iter()
         .map(|r| {
             let text_x = if r.level == 0 { 51.0 } else { 70.0 };
-            text_x - 8.0 + text_width_font(&p, winui::tahoma(), crate::i18n::t(&r.label)) + 5.0
+            let count = r.count.map_or(0.0, |n| {
+                5.0 + text_width_font(&p, winui::tahoma(), &count_text(n))
+            });
+            text_x - 8.0
+                + text_width_font(&p, winui::tahoma(), crate::i18n::t(&r.label))
+                + count
+                + 5.0
         })
         .fold(0.0, f32::max)
         .ceil();
@@ -1530,7 +1541,7 @@ pub fn categories(
             TEXT(),
         );
         if let Some(n) = r.count {
-            let count = format!("({})", crate::i18n::integer(n as u64));
+            let count = count_text(n);
             text_font(
                 &tp,
                 winui::tahoma(),

@@ -946,6 +946,194 @@ pub fn full_on_hover(
         .on_hover_text(full);
 }
 
+// ---- row list -------------------------------------------------------------------------------
+
+/// Where a [`row_list`] is: its first row shown and its selected row (kept by the caller).
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct RowList {
+    pub first: usize,
+    pub selected: Option<usize>,
+    /// Wheel travel not yet a whole row.
+    wheel: f32,
+}
+
+impl RowList {
+    /// Scroll so row `i` shows (whole), `page` rows being visible.
+    pub fn show_row(&mut self, i: usize, page: usize) {
+        if i < self.first {
+            self.first = i;
+        } else if i >= self.first + page {
+            self.first = i + 1 - page;
+        }
+    }
+}
+
+/// What happened in a [`row_list`] this frame (row indexes).
+#[derive(Default, Debug)]
+pub struct RowEvents {
+    /// The selection moved to this row (a click, the keys).
+    pub picked: Option<usize>,
+    pub double_clicked: Option<usize>,
+    /// Enter on the selected row.
+    pub entered: Option<usize>,
+    /// Space on the selected row (a list of check boxes ticks it).
+    pub space: Option<usize>,
+    /// Delete on the selected row.
+    pub delete: Option<usize>,
+    /// Right-click on a row (selected first), at this screen point.
+    pub context: Option<(usize, Pos2)>,
+    /// The list has the keys (a tree adds Left / Right).
+    pub focused: bool,
+}
+
+/// How [`row_list`] drew a row's background: the row's text goes in `ink`.
+pub struct RowLook {
+    pub selected: bool,
+    pub ink: Color32,
+}
+
+/// The one list of whole rows in a box (a dialog's list, a tree drawn as rows): its frame,
+/// rows scrolled whole by the wheel (travel kept until it makes a row) and by a scroll bar
+/// when they don't all fit, the row under the pointer tinted, the selected row in the
+/// selection colour (grey while the list hasn't the keys), and the keys while it has them:
+/// Up, Down, Home, End, Page Up, Page Down move the selection; Enter, Space and Delete are
+/// reported. `rc` is where the box is on screen ([`r`]); `paint` draws row `i`'s contents in
+/// its English rect, after its background, and may put controls in it (they take their own
+/// clicks).
+pub fn row_list(
+    ui: &mut Ui,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    rc: Rect,
+    n: usize,
+    row_h: f32,
+    st: &mut RowList,
+    mut paint: impl FnMut(&mut Ui, &Painter, usize, Rect, &RowLook),
+) -> RowEvents {
+    let mut ev = RowEvents::default();
+    let id = widget_id(ui, ("row-list", id));
+    let p = ui.painter().clone();
+    solid(&p, rc, FIELD_EDGE());
+    p.rect_filled(rc.shrink(1.0), 0.0, FIELD());
+    // Laid out in English, made where it is on screen.
+    let inner = rect(rc).shrink(1.0);
+    let page = (((inner.height() - 2.0) / row_h).floor() as usize).max(1);
+    let max_first = n.saturating_sub(page);
+    let bar = n > page;
+    let right = inner.right() - if bar { crate::scrollbar::THICK } else { 0.0 };
+    let area = Rect::from_min_max(inner.min, pos2(right, inner.bottom()));
+    let resp = ui.interact(rect(inner), id, Sense::click());
+    let focused = resp.has_focus();
+    // The wheel: whole rows, the rest kept for the next turn of it.
+    if ui.rect_contains_pointer(rect(inner)) {
+        st.wheel -= ui.input(|i| i.smooth_scroll_delta.y) / row_h;
+        let whole = st.wheel.trunc();
+        st.wheel -= whole;
+        st.first = (st.first as f32 + whole).max(0.0) as usize;
+    }
+    if focused && n > 0 {
+        let at = st.selected.map_or(-1, |s| s as isize);
+        let last = n as isize - 1;
+        let step = page as isize;
+        let keys = [
+            (egui::Key::ArrowDown, at + 1),
+            (egui::Key::ArrowUp, (at - 1).max(0)),
+            (egui::Key::Home, 0),
+            (egui::Key::End, last),
+            (egui::Key::PageDown, at + step),
+            (egui::Key::PageUp, at - step),
+        ];
+        for (key, to) in keys {
+            if take_key(ui, key) {
+                let to = to.clamp(0, last) as usize;
+                st.selected = Some(to);
+                st.show_row(to, page);
+                ev.picked = Some(to);
+            }
+        }
+        if let Some(s) = st.selected {
+            if take_key(ui, egui::Key::Enter) {
+                ev.entered = Some(s);
+            }
+            if take_key(ui, egui::Key::Space) {
+                ev.space = Some(s);
+            }
+            if take_key(ui, egui::Key::Delete) {
+                ev.delete = Some(s);
+            }
+        }
+    }
+    st.first = st.first.min(max_first);
+    ev.focused = focused;
+    let clip = p.with_clip_rect(rect(area));
+    for i in st.first..n.min(st.first + page) {
+        let top = inner.top() + 1.0 + row_h * (i - st.first) as f32;
+        let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
+        let r = ui.interact(rect(row), id.with(i), pointer_only());
+        let selected = st.selected == Some(i);
+        let fill = if selected && focused {
+            Some(ROW_SELECTED())
+        } else if selected {
+            Some(SELECTED_INACTIVE())
+        } else {
+            subtle_fill(State::of(&r, true), crate::theme::dark())
+        };
+        if let Some(f) = fill {
+            clip.rect_filled(rect(row), 0.0, f);
+        }
+        if r.clicked() || r.secondary_clicked() || r.double_clicked() {
+            resp.request_focus();
+            if st.selected != Some(i) {
+                st.selected = Some(i);
+                ev.picked = Some(i);
+            }
+        }
+        if r.double_clicked() {
+            ev.double_clicked = Some(i);
+        }
+        if r.secondary_clicked()
+            && let Some(at) = r.interact_pointer_pos()
+        {
+            ev.context = Some((i, at));
+        }
+        let look = RowLook {
+            selected,
+            ink: if selected && focused {
+                Color32::WHITE
+            } else {
+                TEXT()
+            },
+        };
+        paint(ui, &clip, i, row, &look);
+        if selected && focused {
+            focus_ring(&clip, rect(row));
+        }
+    }
+    if focused
+        && st
+            .selected
+            .is_none_or(|s| s < st.first || s >= st.first + page)
+    {
+        focus_ring(&p, rect(area));
+    }
+    if bar {
+        let track = Rect::from_min_max(pos2(right, inner.top()), inner.max);
+        let mut pos = st.first as f32;
+        if crate::scrollbar::bar(
+            ui,
+            id.with("bar"),
+            rect(track),
+            true,
+            n as f32,
+            page as f32,
+            1.0,
+            &mut pos,
+        ) {
+            st.first = (pos.round().max(0.0) as usize).min(max_first);
+        }
+    }
+    ev
+}
+
 /// Text that opens or does something when clicked: link colour, underlined under the pointer.
 /// `label` is English (translated here).
 pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str) -> bool {
@@ -1957,6 +2145,9 @@ crate::theme::themed! {
     /// Etched separators: the shadow line and the highlight beside it.
     pub ETCH_SHADOW = rgb(0x22, 0x22, 0x22), rgb(0xa0, 0xa0, 0xa0);
     pub ETCH_LIGHT = rgb(0x50, 0x50, 0x50), rgb(0xff, 0xff, 0xff);
+    /// A selected row in a focused list ([`row_list`]; the download list's colours), white
+    /// text on it.
+    pub ROW_SELECTED = rgb(0x2d, 0x4b, 0x63), rgb(0x00, 0x78, 0xd7);
     /// Text that opens something ([`link`]).
     pub LINK = rgb(0x99, 0xc8, 0xff), rgb(0x00, 0x66, 0xcc);
     /// A selected row in a list without the focus.

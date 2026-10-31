@@ -465,8 +465,8 @@ pub fn show(
     let (mut need_v, mut need_h) = (false, false);
     for _ in 0..2 {
         // An empty list has nothing to scroll to (its empty state is centred in the view).
-        need_h = !rows.is_empty()
-            && content_w > client_w - if need_v { scrollbar::THICK } else { 0.0 };
+        need_h =
+            !rows.is_empty() && content_w > client_w - if need_v { scrollbar::THICK } else { 0.0 };
         need_v = rows_h > client_h - HEADER_H - if need_h { scrollbar::THICK } else { 0.0 };
     }
     // Inclusive right edge of the header and rows, and bottom of the rows.

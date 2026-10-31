@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
-use egui::{Color32, Pos2, Rect, Sense, Stroke, Ui, pos2, vec2};
+use egui::{Color32, Pos2, Rect, Stroke, Ui, pos2, vec2};
 use mdm_torrent::{Meta, Source};
 
 use crate::dialogs::{Outcome, window};
@@ -26,7 +26,6 @@ type Slot = Arc<Mutex<Option<Result<Meta, String>>>>;
 crate::theme::themed! {
     LIST_HEAD = rgb(0x19, 0x19, 0x19), rgb(0xf3, 0xf3, 0xf3);
     LIST_LINE = rgb(0x4a, 0x4a, 0x4a), rgb(0xe5, 0xe5, 0xe5);
-    THUMB = rgb(0x95, 0x95, 0x95), rgb(0x85, 0x85, 0x85);
 }
 
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
@@ -59,8 +58,8 @@ pub struct TorrentDialog {
     started: Option<Instant>,
     meta: Option<Meta>,
     chosen: Vec<bool>,
-    /// First row shown (the list scrolls by whole rows).
-    first: usize,
+    /// The file tree's scroll and selection.
+    rows: winui::RowList,
     /// The file tree (built when the list arrives) and which folders are open.
     tree: Vec<Node>,
     open: Vec<bool>,
@@ -128,7 +127,7 @@ impl TorrentDialog {
             started: None,
             meta: None,
             chosen: Vec::new(),
-            first: 0,
+            rows: Default::default(),
             tree: Vec::new(),
             open: Vec::new(),
             error: None,
@@ -179,7 +178,7 @@ impl TorrentDialog {
         self.lookup = Some(slot);
         self.started = Some(Instant::now());
         self.meta = None;
-        self.first = 0;
+        self.rows = Default::default();
         self.error = None;
     }
 
@@ -579,79 +578,90 @@ impl TorrentDialog {
             return;
         }
         let rows = visible_rows(&self.tree, &self.open);
-        let page = (body.height() / ROW).floor() as usize;
-        let max_first = rows.len().saturating_sub(page);
-        if ui.rect_contains_pointer(winui::rect(body)) {
-            let dy = ui.input(|i| i.smooth_scroll_delta.y);
-            if dy < 0.0 {
-                self.first = (self.first + 1).min(max_first);
-            } else if dy > 0.0 {
-                self.first = self.first.saturating_sub(1);
-            }
-        }
-        self.first = self.first.min(max_first);
-        let right = if max_first > 0 {
-            body.right() - 16.0
-        } else {
-            body.right()
-        };
+        // The shared row list over the body (its frame on the list's): a click selects, the
+        // box, Space or a double-click on a file ticks, a double-click or the arrow opens a
+        // folder, Right / Left open and close the selected one.
+        let (tree, open, chosen) = (&self.tree, &self.open, &self.chosen);
         let mut toggle = None;
         let mut flip_open = None;
-        for (k, &n) in rows.iter().skip(self.first).take(page).enumerate() {
-            let node = &self.tree[n];
-            let top = body.top() + ROW * k as f32;
-            let row = Rect::from_min_max(pos2(body.left(), top), pos2(right, top + ROW));
-            let resp = ui.interact(
-                winui::rect(row),
-                egui::Id::unique(("torrent-node", n)),
-                Sense::click(),
-            );
-            if resp.hovered() {
-                p.rect_filled(winui::rect(row), 0.0, LIST_LINE().gamma_multiply(0.6));
-            }
-            let x = row.left() + 6.0 + 16.0 * node.depth as f32;
-            // Folders: an expander (▸ closed, ▾ open), clicked or double-clicked on the row.
-            let is_dir = node.file.is_none();
-            if is_dir {
-                let arrow = Rect::from_min_size(pos2(x, top), vec2(14.0, ROW));
-                let ar = ui.interact(
-                    winui::rect(arrow),
-                    egui::Id::unique(("torrent-arrow", n)),
-                    Sense::click(),
-                );
-                if ar.clicked() || resp.double_clicked() {
-                    flip_open = Some(n);
+        let ev = winui::row_list(
+            ui,
+            "torrent-tree",
+            winui::rect(body.expand(1.0)),
+            rows.len(),
+            ROW,
+            &mut self.rows,
+            |ui, clip, k, row, look| {
+                let n = rows[k];
+                let node = &tree[n];
+                let top = row.top();
+                let x = row.left() + 6.0 + 16.0 * node.depth as f32;
+                let is_dir = node.file.is_none();
+                if is_dir {
+                    let arrow = Rect::from_min_size(pos2(x, top), vec2(14.0, ROW));
+                    let ar = ui.interact(
+                        winui::rect(arrow),
+                        egui::Id::unique(("torrent-arrow", n)),
+                        winui::pointer_only(),
+                    );
+                    if ar.clicked() {
+                        flip_open = Some(n);
+                    }
+                    expander(clip, pos2(x + 4.0, top + 5.0), open[n]);
                 }
-                expander(&p, pos2(x + 4.0, top + 5.0), self.open[n]);
-            }
-            let state = tri_state(node, &self.chosen);
-            let glyph = pos2(x + 16.0, top + 2.0);
-            let mut on = state == Tri::All;
-            let clicked = winui::checkbox(ui, glyph, &mut on, "", true).clicked();
-            if state == Tri::Some {
-                mixed_mark(&p, glyph);
-            }
-            // A click on a file's row ticks it; a folder's row opens on a double-click and only
-            // its box ticks it (a double-click must not flip the tick on its first click).
-            if clicked || (resp.clicked() && !is_dir) {
-                toggle = Some(n);
-            }
-            let size = crate::dialogs::dialog_size(node.size);
-            let size_w = winui::text_width(&p, &size);
-            let left = glyph.x + 19.0;
-            let max = right - 8.0 - size_w - 12.0 - left;
-            // A name keeps its own direction (cut inside its isolate).
-            let name = crate::i18n::isolate(&node.name);
-            let shown = winui::ellipsize(&p, &winui::tahoma(), &name, max);
-            text(&p, left, top + 12.0, &shown, winui::TEXT());
-            let size_color = if is_dir {
-                winui::MUTED()
+                let state = tri_state(node, chosen);
+                let glyph = pos2(x + 16.0, top + 2.0);
+                let mut on = state == Tri::All;
+                if winui::checkbox(ui, glyph, &mut on, "", true).clicked() {
+                    toggle = Some(n);
+                }
+                if state == Tri::Some {
+                    mixed_mark(clip, glyph);
+                }
+                let size = crate::dialogs::dialog_size(node.size);
+                let size_w = winui::text_width(clip, &size);
+                let left = glyph.x + 19.0;
+                // A name keeps its own direction (cut inside its isolate), whole on hover.
+                let name = crate::i18n::isolate(&node.name);
+                let max = row.right() - 8.0 - size_w - 12.0;
+                winui::fit(
+                    ui,
+                    clip,
+                    left,
+                    top + 12.0,
+                    &name,
+                    look.ink,
+                    max,
+                    ("torrent-name", n),
+                );
+                let size_color = if is_dir && !look.selected {
+                    winui::MUTED()
+                } else {
+                    look.ink
+                };
+                winui::text_right(clip, row.right() - 8.0, top + 12.0, &size, size_color);
+            },
+        );
+        let is_dir = |k: usize| self.tree[rows[k]].file.is_none();
+        if let Some(k) = ev.double_clicked {
+            if is_dir(k) {
+                flip_open = Some(rows[k]);
             } else {
-                winui::TEXT()
-            };
-            winui::text_right(&p, right - 8.0, top + 12.0, &size, size_color);
-            if shown != name {
-                resp.on_hover_text(node.name.clone());
+                toggle = Some(rows[k]);
+            }
+        }
+        if let Some(k) = ev.space {
+            toggle = Some(rows[k]);
+        }
+        // Right opens the selected folder, Left closes it.
+        if ev.focused
+            && let Some(k) = self.rows.selected.filter(|k| *k < rows.len() && is_dir(*k))
+        {
+            let n = rows[k];
+            if (winui::take_key(ui, egui::Key::ArrowRight) && !self.open[n])
+                || (winui::take_key(ui, egui::Key::ArrowLeft) && self.open[n])
+            {
+                flip_open = Some(n);
             }
         }
         if let Some(n) = flip_open {
@@ -663,14 +673,6 @@ impl TorrentDialog {
             for &f in &self.tree[n].files {
                 self.chosen[f] = on;
             }
-        }
-        if max_first > 0 {
-            let track = Rect::from_min_max(pos2(right, body.top()), body.max);
-            let span = track.height() - 4.0;
-            let len = (span * page as f32 / rows.len() as f32).max(12.0);
-            let y0 = track.top() + 2.0 + (span - len) * self.first as f32 / max_first as f32;
-            let x = track.center().x.floor();
-            fill(&p, x - 1.0, y0, x, y0 + len, THUMB());
         }
     }
 }

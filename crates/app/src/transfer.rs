@@ -4,11 +4,11 @@
 //! download — `<`, the address, `referer: …` / `cookie: …` / `User-Agent: …` lines, `>` — so a
 //! list moves between IDM and MDM with its request context.
 
-use egui::{Pos2, Rect, Sense, pos2, vec2};
+use egui::{Rect, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::model::Item;
-use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_PAGE, LIGHT_TEXT, r};
+use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, r};
 
 /// A download read from a file: its address and what the browser sent with it.
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -126,7 +126,8 @@ fn addresses(text: &str) -> Vec<String> {
 /// "Import downloads": the addresses found, each with a checkbox; OK adds the ticked ones.
 pub struct ImportDialog {
     found: Vec<(Imported, bool)>,
-    first: usize,
+    /// The list's scroll and selection.
+    rows: winui::RowList,
     source: String,
 }
 
@@ -134,7 +135,7 @@ impl ImportDialog {
     pub fn new(found: Vec<Imported>, source: String) -> Self {
         ImportDialog {
             found: found.into_iter().map(|d| (d, true)).collect(),
-            first: 0,
+            rows: Default::default(),
             source,
         }
     }
@@ -165,46 +166,39 @@ impl ImportDialog {
                     pos2(o.x + 11.0, o.y + 30.0),
                     vec2(538.0, ROWS as f32 * ROW_H + 4.0),
                 );
-                let shown = winui::rect(list);
-                p.rect_filled(shown, 0.0, LIGHT_PAGE());
-                p.rect_stroke(
-                    shown,
-                    0.0,
-                    egui::Stroke::new(1.0, winui::FIELD_EDGE()),
-                    egui::StrokeKind::Inside,
+                // The shared row list: Space ticks the selected address.
+                let found = &mut self.found;
+                let ev = winui::row_list(
+                    ui,
+                    "import-list",
+                    winui::rect(list),
+                    found.len(),
+                    ROW_H,
+                    &mut self.rows,
+                    |ui, clip, i, row, look| {
+                        let (d, on) = &mut found[i];
+                        winui::checkbox_light(
+                            ui,
+                            pos2(row.left() + 5.0, row.top() + 2.0),
+                            on,
+                            "",
+                            true,
+                        );
+                        let url = crate::i18n::ltr(&d.url);
+                        winui::fit(
+                            ui,
+                            clip,
+                            row.left() + 25.0,
+                            row.top() + 13.0,
+                            &url,
+                            look.ink,
+                            row.right() - 6.0,
+                            ("import-row", i),
+                        );
+                    },
                 );
-                // The wheel scrolls by whole rows.
-                let resp = ui.interact(shown, ui.scope_id().with("import-list"), Sense::hover());
-                if resp.hovered() {
-                    let dy = ui.input(|i| i.smooth_scroll_delta.y);
-                    if dy < 0.0 {
-                        self.first = (self.first + 1).min(self.found.len().saturating_sub(ROWS));
-                    } else if dy > 0.0 {
-                        self.first = self.first.saturating_sub(1);
-                    }
-                }
-                let clip = p.with_clip_rect(shown.shrink(2.0));
-                for (k, (d, on)) in self
-                    .found
-                    .iter_mut()
-                    .enumerate()
-                    .skip(self.first)
-                    .take(ROWS)
-                {
-                    let y = list.top() + 2.0 + (k - self.first) as f32 * ROW_H;
-                    winui::checkbox_light(ui, Pos2::new(list.left() + 6.0, y + 2.0), on, "", true);
-                    let url = crate::i18n::ltr(&d.url);
-                    let (rect, cut) = winui::text_fit(
-                        &clip,
-                        list.left() + 26.0,
-                        y + 13.0,
-                        &url,
-                        LIGHT_TEXT(),
-                        list.right() - 6.0,
-                    );
-                    if cut {
-                        winui::full_on_hover(ui, rect, ("import-row", k), &d.url);
-                    }
+                if let Some(i) = ev.space.or(ev.double_clicked) {
+                    found[i].1 = !found[i].1;
                 }
                 let ticked = self.found.iter().filter(|(_, on)| *on).count();
                 let count = crate::i18n::fmt(

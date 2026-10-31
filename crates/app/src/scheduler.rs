@@ -153,9 +153,9 @@ pub struct Scheduler {
     /// Index into the tree: a queue, or `queues.len()` for Download limits.
     selected: usize,
     tab: Tab,
-    tree_focused: bool,
-    file_sel: Option<usize>,
-    files_focused: bool,
+    /// The queue list's and the files list's scroll and selection.
+    tree_rows: winui::RowList,
+    files_rows: winui::RowList,
     focus: Focus,
     /// The "Enter queue name" prompt, while open.
     naming: Option<String>,
@@ -190,9 +190,8 @@ impl Scheduler {
             queues,
             selected: 0,
             tab: Tab::Schedule,
-            tree_focused: false,
-            file_sel: None,
-            files_focused: false,
+            tree_rows: Default::default(),
+            files_rows: Default::default(),
             focus: Focus::default(),
             naming: None,
         };
@@ -204,13 +203,13 @@ impl Scheduler {
     pub fn show_queue(&mut self, q: usize, files: bool) {
         self.selected = q.min(self.queues.len().saturating_sub(1));
         self.tab = if files { Tab::Files } else { Tab::Schedule };
-        self.file_sel = None;
+        self.files_rows.selected = None;
     }
 
     /// Ask for a new queue's name (Create new queue in a right-click menu).
     pub fn new_queue(&mut self) {
         self.naming = Some(queue_name(self.queues.len() + 1));
-        self.file_sel = None;
+        self.files_rows.selected = None;
     }
 
     /// The draft as the app would store it.
@@ -279,9 +278,6 @@ impl Scheduler {
         modal: bool,
     ) -> Outcome<()> {
         let p = ui.painter().clone();
-        // Pointer presses outside a list take its focus away.
-        let pressed = ui.input(|i| i.pointer.any_pressed());
-        let pointer = ui.input(|i| i.pointer.interact_pos());
 
         // ---- left pane ----------------------------------------------------------------
         let clock = r(o, 11.0, 7.0, 32.0, 32.0);
@@ -295,7 +291,7 @@ impl Scheduler {
             LIGHT_TEXT(),
         );
         let tree = r(o, 11.0, 44.0, 173.0, 379.0);
-        self.tree(ui, &p, icons, tree, pressed, pointer);
+        let delete_key = self.tree(ui, icons, tree);
         let new_queue = winui::button_light(
             ui,
             r(o, 21.0, 432.0, 73.0, 21.0),
@@ -358,7 +354,7 @@ impl Scheduler {
             }
             match self.tab {
                 Tab::Schedule => self.schedule_page(ui, o),
-                Tab::Files => self.files_page(ui, o, icons, items, pressed, pointer),
+                Tab::Files => self.files_page(ui, o, icons, items),
             }
         } else {
             self.limits_page(ui, o);
@@ -404,11 +400,11 @@ impl Scheduler {
         if new_queue {
             self.naming = Some(queue_name(self.queues.len() + 1));
         }
-        if delete && deletable {
+        if (delete || delete_key) && deletable {
             self.queues.remove(self.selected);
             self.forms.remove(self.selected);
             self.selected -= 1;
-            self.file_sel = None;
+            self.files_rows.selected = None;
         }
         if apply {
             self.apply(actions);
@@ -432,86 +428,50 @@ impl Scheduler {
         }
     }
 
-    /// The queue list (a tree view in IDM): queues, then Download limits.
-    fn tree(
-        &mut self,
-        ui: &mut Ui,
-        p: &egui::Painter,
-        icons: &mut ShellIcons,
-        rc: Rect,
-        pressed: bool,
-        pointer: Option<Pos2>,
-    ) {
-        p.rect_filled(rc, 0.0, winui::FIELD());
-        p.rect_stroke(
+    /// The queue list (a tree view in IDM): queues, then Download limits, in the shared row
+    /// list. True when Delete is pressed on it.
+    fn tree(&mut self, ui: &mut Ui, icons: &mut ShellIcons, rc: Rect) -> bool {
+        let queues = &self.queues;
+        let n = queues.len() + 1;
+        self.tree_rows.selected = Some(self.selected);
+        let ev = winui::row_list(
+            ui,
+            "sched-tree",
             rc,
-            0.0,
-            egui::Stroke::new(1.0, winui::FIELD_EDGE()),
-            egui::StrokeKind::Inside,
-        );
-        if pressed && pointer.is_some_and(|q| !rc.contains(q)) {
-            self.tree_focused = false;
-        }
-        let clip = p.with_clip_rect(rc.shrink(1.0));
-        let rc = winui::rect(rc);
-        let n = self.queues.len() + 1;
-        for i in 0..n {
-            let top = rc.top() + 2.0 + 16.0 * i as f32;
-            let (label, icon) = if i < self.queues.len() {
-                let q = &self.queues[i];
-                (
-                    crate::i18n::t(q.name.as_str()),
-                    if q.sync { "folder_link" } else { "folder" },
-                )
-            } else {
-                (crate::i18n::t(LIMITS_LABEL), "folder_delete")
-            };
-            let row = winui::rect(Rect::from_min_size(
-                pos2(rc.left() + 1.0, top),
-                vec2(rc.width() - 2.0, 16.0),
-            ));
-            let resp = ui.interact(row, egui::Id::unique(("sched-tree", i)), Sense::click());
-            if resp.clicked() {
-                self.selected = i;
-                self.tree_focused = true;
-                self.file_sel = None;
-            }
-            icons.paint_in(ui, &clip, IconKey::Silk(icon), pos2(rc.left() + 5.0, top));
-            let x = rc.left() + 25.0;
-            let w = winui::text_width(&clip, label);
-            if i == self.selected {
-                let bg = if self.tree_focused {
-                    winui::SELECTION
-                } else {
-                    winui::SELECTED_INACTIVE()
+            n,
+            16.0,
+            &mut self.tree_rows,
+            |ui, clip, i, row, look| {
+                let (label, icon) = match queues.get(i) {
+                    Some(q) => (
+                        crate::i18n::t(q.name.as_str()),
+                        if q.sync { "folder_link" } else { "folder" },
+                    ),
+                    None => (crate::i18n::t(LIMITS_LABEL), "folder_delete"),
                 };
-                fill(&clip, x - 1.0, top, x + w + 2.0, top + 15.0, bg);
-            }
-            let c = if i == self.selected && self.tree_focused {
-                Color32::WHITE
-            } else {
-                LIGHT_TEXT()
-            };
-            let (trect, cut) = winui::text_fit(&clip, x, top + 11.0, label, c, rc.right() - 3.0);
-            if cut {
-                winui::full_on_hover(ui, trect, ("sched-tree-full", i), label);
-            }
+                icons.paint_in(
+                    ui,
+                    clip,
+                    IconKey::Silk(icon),
+                    pos2(row.left() + 4.0, row.top()),
+                );
+                winui::fit(
+                    ui,
+                    clip,
+                    row.left() + 24.0,
+                    row.top() + 11.0,
+                    label,
+                    look.ink,
+                    row.right() - 3.0,
+                    ("sched-tree-full", i),
+                );
+            },
+        );
+        if let Some(i) = ev.picked {
+            self.selected = i;
+            self.files_rows = Default::default();
         }
-        // Up / Down move through the list while it has the focus.
-        if self.tree_focused {
-            let (up, down) = ui.input(|i| {
-                (
-                    i.key_pressed(egui::Key::ArrowUp),
-                    i.key_pressed(egui::Key::ArrowDown),
-                )
-            });
-            if up && self.selected > 0 {
-                self.selected -= 1;
-            }
-            if down && self.selected + 1 < n {
-                self.selected += 1;
-            }
-        }
+        ev.delete.is_some()
     }
 
     fn schedule_page(&mut self, ui: &mut Ui, o: Pos2) {
@@ -732,15 +692,7 @@ impl Scheduler {
         );
     }
 
-    fn files_page(
-        &mut self,
-        ui: &mut Ui,
-        o: Pos2,
-        icons: &mut ShellIcons,
-        items: &[Item],
-        pressed: bool,
-        pointer: Option<Pos2>,
-    ) {
+    fn files_page(&mut self, ui: &mut Ui, o: Pos2, icons: &mut ShellIcons, items: &[Item]) {
         let p = ui.painter().clone();
         let boxes = winui::sentence(
             ui,
@@ -791,9 +743,6 @@ impl Scheduler {
             egui::Stroke::new(1.0, winui::FIELD_EDGE()),
             egui::StrokeKind::Inside,
         );
-        if pressed && pointer.is_some_and(|q| !list.contains(q)) {
-            self.files_focused = false;
-        }
         let cols = [
             (crate::i18n::mark("File Name"), 230.0, 421.0),
             // i18n: column title: the file's size
@@ -815,90 +764,58 @@ impl Scheduler {
                 winui::HEADER_LINE(),
             );
         }
+        // The rows: the shared row list under the header (its frame on the list's).
         let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0));
-        let clip = p.with_clip_rect(winui::rect(body));
         let ids = self.queues[self.selected].items.clone();
         let rows: Vec<&Item> = ids
             .iter()
             .filter_map(|id| items.iter().find(|i| i.id == *id))
             .collect();
-        let visible = ((body.height()) / 17.0).ceil() as usize;
-        for k in 0..visible {
-            let top = body.top() + 17.0 * k as f32;
-            fill(
-                &clip,
-                body.left(),
-                top + 16.0,
-                body.right(),
-                top + 16.0,
-                grid,
-            );
-            let Some(item) = rows.get(k) else { continue };
-            let row = Rect::from_min_size(pos2(body.left(), top), vec2(body.width(), 16.0));
-            let resp = ui.interact(
-                winui::rect(row),
-                egui::Id::unique(("sched-file", k)),
-                Sense::click(),
-            );
-            if resp.clicked() {
-                self.file_sel = Some(k);
-                self.files_focused = true;
-            }
-            let sel = self.file_sel == Some(k);
-            if sel {
-                let bg = if self.files_focused {
-                    winui::SELECTION
-                } else {
-                    winui::SELECTED_INACTIVE()
-                };
-                fill(
-                    &clip,
-                    row.left(),
-                    row.top(),
-                    row.right() - 1.0,
-                    row.bottom() - 1.0,
-                    bg,
-                );
-            }
-            let c = if sel && self.files_focused {
-                Color32::WHITE
-            } else {
-                LIGHT_TEXT()
-            };
-            let cells = [
-                // Its own direction (an Arabic name right to left in any window).
-                crate::i18n::isolate(&item.file_name),
-                item.size.map(model::size_list).unwrap_or_default(),
-                item.status_text(),
-                item.time_left(),
-            ];
-            for ((_, x0, x1), cell) in cols.iter().zip(&cells) {
-                let cell_clip = clip.with_clip_rect(winui::rect(
-                    Rect::from_min_max(pos2(o.x + x0, top), pos2(o.x + x1 - 1.0, top + 16.0))
-                        .intersect(body),
-                ));
-                let (rect, cut) = winui::text_fit(
-                    &cell_clip,
-                    o.x + x0 + 6.0,
-                    top + 12.0,
-                    cell,
-                    c,
-                    o.x + x1 - 3.0,
-                );
-                if cut {
-                    winui::full_on_hover(ui, rect, ("sched-cell", k, *x0 as i32), cell);
+        let ev = winui::row_list(
+            ui,
+            "sched-files",
+            winui::rect(body.expand(1.0)),
+            rows.len(),
+            17.0,
+            &mut self.files_rows,
+            |ui, clip, k, row, look| {
+                let item = rows[k];
+                let top = row.top();
+                fill(clip, row.left(), top + 16.0, row.right(), top + 16.0, grid);
+                let cells = [
+                    // Its own direction (an Arabic name right to left in any window).
+                    crate::i18n::isolate(&item.file_name),
+                    item.size.map(model::size_list).unwrap_or_default(),
+                    item.status_text(),
+                    item.time_left(),
+                ];
+                for ((_, x0, x1), cell) in cols.iter().zip(&cells) {
+                    fill(clip, o.x + x1, top, o.x + x1, top + 16.0, grid);
+                    let cell_clip = clip.with_clip_rect(
+                        winui::rect(Rect::from_min_max(
+                            pos2(o.x + x0, top),
+                            pos2(o.x + x1 - 1.0, top + 16.0),
+                        ))
+                        .intersect(clip.clip_rect()),
+                    );
+                    winui::fit(
+                        ui,
+                        &cell_clip,
+                        o.x + x0 + 6.0,
+                        top + 12.0,
+                        cell,
+                        look.ink,
+                        o.x + x1 - 3.0,
+                        ("sched-cell", k, *x0 as i32),
+                    );
                 }
-            }
-        }
-        for (_, _, x1) in cols {
-            fill(&clip, o.x + x1, body.top(), o.x + x1, body.bottom(), grid);
-        }
-        if self.file_sel.is_some_and(|s| s >= rows.len()) {
-            self.file_sel = None;
-        }
+            },
+        );
+        // Delete on a file: Remove from the queue.
+        let delete_key = ev.delete.is_some();
 
         // Move down, move up, remove from the queue.
-        let sel = self.file_sel;
+        let sel = self.files_rows.selected;
         let n = rows.len();
         let buttons = [
             // i18n: tooltip of an icon button in the Scheduler's list of files
@@ -925,7 +842,8 @@ impl Scheduler {
         ];
         for (icon, x, enabled, tip) in buttons {
             let rc = r(o, x, 387.0, 19.0, 21.0);
-            let clicked = winui::icon_button_light(ui, rc, icon, enabled, tip).clicked();
+            let clicked = winui::icon_button_light(ui, rc, icon, enabled, tip).clicked()
+                || (icon == "cross" && delete_key);
             // English, as the icon and its wash take it.
             let img = winui::rect(rc).min + vec2(2.0, 2.0);
             icons.paint(ui, IconKey::Silk(icon), img);
@@ -953,17 +871,17 @@ impl Scheduler {
                     let next = rows[s + 1].id;
                     let npos = q.items.iter().position(|x| *x == next).unwrap_or(pos);
                     q.items.swap(pos, npos);
-                    self.file_sel = Some(s + 1);
+                    self.files_rows.selected = Some(s + 1);
                 }
                 "arrow_up" => {
                     let prev = rows[s - 1].id;
                     let ppos = q.items.iter().position(|x| *x == prev).unwrap_or(pos);
                     q.items.swap(pos, ppos);
-                    self.file_sel = Some(s - 1);
+                    self.files_rows.selected = Some(s - 1);
                 }
                 _ => {
                     q.items.remove(pos);
-                    self.file_sel = None;
+                    self.files_rows.selected = None;
                 }
             }
         }

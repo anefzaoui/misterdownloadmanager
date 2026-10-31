@@ -3234,9 +3234,12 @@ impl App {
                 ));
             }
         }
-        // Each node's downloads, as its list would show them (before column filters).
+        // Each top node's downloads, as its list would show them (before column filters):
+        // the pane is narrow, its children's names fill it already.
         for (row, view, _) in &mut rows {
-            if let Some(v) = view {
+            if row.level == 0
+                && let Some(v) = view
+            {
                 let n = self.items.iter().filter(|i| self.in_view(*v, i)).count();
                 row.count = (n > 0).then_some(n);
             }
