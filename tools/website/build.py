@@ -39,7 +39,32 @@ OUT = ROOT / "target" / "site"
 SITE = "https://misterdownloadmanager.com"
 REPO = "https://github.com/anefzaoui/misterdownloadmanager"
 NAME = "Mister Download Manager"
-VERSION = re.search(r'(?m)^version\s*=\s*"([^"]+)"', (ROOT / "Cargo.toml").read_text("utf-8")).group(1)
+CARGO_VERSION = re.search(r'(?m)^version\s*=\s*"([^"]+)"', (ROOT / "Cargo.toml").read_text("utf-8")).group(1)
+
+
+def github(path: str):
+    """GET api.github.com/<path> as JSON, or None (offline, rate-limited)."""
+    req = urllib.request.Request(f"https://api.github.com/{path}", headers={
+        "Accept": "application/vnd.github+json", "User-Agent": "misterdownloadmanager-site"})
+    if os.environ.get("GITHUB_TOKEN"):
+        req.add_header("Authorization", f"Bearer {os.environ['GITHUB_TOKEN']}")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return json.load(r)
+    except Exception as e:  # noqa: BLE001 — the site builds without the numbers
+        print(f"github {path}: {e}", file=sys.stderr)
+        return None
+
+
+def published_version() -> str:
+    """The latest published release's version: what the download links and the version shown
+    point at. Cargo.toml's is ahead of it between a merged version bump and its release's
+    files (release.yml rebuilds the site once they are published); used offline."""
+    latest = github(f"repos/{REPO.split('github.com/')[1]}/releases/latest")
+    return (latest or {}).get("tag_name", "").lstrip("v") or CARGO_VERSION
+
+
+VERSION = published_version()
 TODAY = datetime.date.today().isoformat()
 RELEASE = f"{REPO}/releases/download/v{VERSION}/MisterDownloadManager-{VERSION}"
 FILES = {
@@ -85,20 +110,6 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 def stats_code() -> str:
     return "" if os.environ.get("MDM_SITE_NO_STATS") == "1" else STATCOUNTER
-
-
-def github(path: str):
-    """GET api.github.com/<path> as JSON, or None (offline, rate-limited)."""
-    req = urllib.request.Request(f"https://api.github.com/{path}", headers={
-        "Accept": "application/vnd.github+json", "User-Agent": "misterdownloadmanager-site"})
-    if os.environ.get("GITHUB_TOKEN"):
-        req.add_header("Authorization", f"Bearer {os.environ['GITHUB_TOKEN']}")
-    try:
-        with urllib.request.urlopen(req, timeout=15) as r:
-            return json.load(r)
-    except Exception as e:  # noqa: BLE001 — the site builds without the numbers
-        print(f"github {path}: {e}", file=sys.stderr)
-        return None
 
 
 def short_num(n: int) -> str:
