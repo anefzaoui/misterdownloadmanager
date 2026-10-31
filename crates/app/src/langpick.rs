@@ -230,8 +230,14 @@ impl Picker {
                         chosen = true;
                     }
                     let on = self.selected == *entry;
+                    // The shared list's colours: the selection (its dark value in dark mode),
+                    // the row under the pointer tinted.
                     if on {
-                        clip.rect_filled(winui::rect(row), 0.0, winui::SELECTION);
+                        clip.rect_filled(winui::rect(row), 0.0, winui::ROW_SELECTED());
+                    } else if let Some(c) =
+                        winui::subtle_fill(winui::State::of(&resp, true), crate::theme::dark())
+                    {
+                        clip.rect_filled(winui::rect(row), 0.0, c);
                     }
                     let (fg, muted) = if on {
                         (Color32::WHITE, Color32::from_gray(0xe0))

@@ -272,8 +272,6 @@ pub struct Row {
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
     pub cells: [String; COLS],
-    /// The Status cell's tooltip: the download's recent events (empty: none).
-    pub status_tip: String,
 }
 
 #[derive(Default)]
@@ -425,6 +423,7 @@ fn keyboard(
 
 /// Paint the list inside `outer` (its 1 px #828790 border rect). `selected`: each row's
 /// selection; `focus`: the focused row (the dotted outline, where keys move from).
+#[allow(clippy::too_many_arguments)]
 pub fn show(
     ui: &mut Ui,
     outer: Rect,
@@ -433,6 +432,8 @@ pub fn show(
     selected: &[bool],
     focus: Option<usize>,
     icons: &mut ShellIcons,
+    // The Status cell's tip for row `i` (asked for the row under the pointer only).
+    status_tip: &dyn Fn(usize) -> String,
 ) -> ListResponse {
     let mut out = ListResponse::default();
     // `outer` and everything below are English (the main window's layout): each part is made where
@@ -823,8 +824,13 @@ pub fn show(
                     .map(english)
                     .is_some_and(|h| cell.contains(h))
                 {
-                    if *c == 3 && !row.status_tip.is_empty() {
-                        cut_under_pointer = Some(row.status_tip.clone());
+                    let tip = if *c == 3 {
+                        status_tip(idx)
+                    } else {
+                        String::new()
+                    };
+                    if !tip.is_empty() {
+                        cut_under_pointer = Some(tip);
                     } else if s != value {
                         cut_under_pointer = Some(row.cells[*c].clone());
                     }
@@ -1447,7 +1453,6 @@ mod tests {
             icon: IconKey::Silk("page_white"),
             queued,
             cells,
-            status_tip: String::new(),
         }
     }
 

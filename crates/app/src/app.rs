@@ -148,6 +148,11 @@ enum Cmd {
     None,
 }
 
+/// A download's standing (a gone one counts as complete: nothing to start).
+fn member_in(members: &std::collections::HashMap<u64, Member>, id: u64) -> Member {
+    members.get(&id).copied().unwrap_or(Member::Complete)
+}
+
 /// A file move's answer, from its thread.
 type MoveDone = std::sync::mpsc::Receiver<Result<(), String>>;
 
@@ -398,17 +403,16 @@ fn file_icon(name: &str) -> IconKey {
 }
 
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
-fn sort_key(it: &Item, col: usize) -> (f64, String) {
+/// `queued`: the download is in a queue (the Q column's mark).
+fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
     let frac = it
         .size
         .filter(|s| *s > 0)
         .map_or(0.0, |s| it.downloaded as f64 / s as f64);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
-        1 => (
-            f64::from(u8::from(it.status == Status::Queued)),
-            String::new(),
-        ),
+        // As the column shows it: in a queue or not.
+        1 => (f64::from(u8::from(queued)), String::new()),
         2 => (it.size.unwrap_or(0) as f64, String::new()),
         3 => (
             if it.status == Status::Complete {
@@ -793,15 +797,21 @@ impl App {
 
     /// The rows the list draws ([`Self::shown_ids`]) with their cells.
     fn list_rows(&self) -> (Vec<u64>, Vec<list::Row>) {
+        let queued: std::collections::HashSet<u64> = self
+            .queues
+            .iter()
+            .flat_map(|q| q.items.iter().copied())
+            .collect();
         self.view_items()
             .into_iter()
-            .map(|it| (it.id, self.row(it)))
+            .map(|it| (it.id, self.row(it, &queued)))
             .filter(|(_, r)| list::matches(&self.list, r))
             .unzip()
     }
 
     /// One download's row in the list.
-    fn row(&self, it: &Item) -> list::Row {
+    /// `queued`: the downloads in a queue (worked out once for all the rows).
+    fn row(&self, it: &Item, queued: &std::collections::HashSet<u64>) -> list::Row {
         list::Row {
             status_group: match it.status {
                 // i18n: a download's status (state it is in, not a command): being downloaded now
@@ -816,7 +826,7 @@ impl App {
                 Status::Error => "Error",
             },
             icon: file_icon(&it.file_name),
-            queued: self.queues.iter().any(|q| q.items.contains(&it.id)),
+            queued: queued.contains(&it.id),
             cells: [
                 it.file_name.clone(),
                 String::new(),
@@ -841,7 +851,6 @@ impl App {
                     "Web".into()
                 },
             ],
-            status_tip: it.log_lines(12),
         }
     }
 
@@ -857,7 +866,14 @@ impl App {
         let Some((col, asc)) = self.list.sort else {
             return shown.collect();
         };
-        let mut keyed: Vec<((f64, String), &Item)> = shown.map(|i| (sort_key(i, col), i)).collect();
+        let queued: std::collections::HashSet<u64> = self
+            .queues
+            .iter()
+            .flat_map(|q| q.items.iter().copied())
+            .collect();
+        let mut keyed: Vec<((f64, String), &Item)> = shown
+            .map(|i| (sort_key(i, col, queued.contains(&i.id)), i))
+            .collect();
         keyed.sort_by(|(ka, _), (kb, _)| {
             let ord = ka.0.total_cmp(&kb.0).then_with(|| ka.1.cmp(&kb.1));
             if asc { ord } else { ord.reverse() }
@@ -2211,10 +2227,16 @@ impl App {
     }
 
     /// How a queue sees one of its downloads.
-    fn member(&self, id: u64, now: Instant) -> Member {
-        let Some(i) = self.items.iter().find(|i| i.id == id) else {
-            return Member::Complete;
-        };
+    /// Every download's standing for the queues, by id.
+    fn members(&self, now: Instant) -> std::collections::HashMap<u64, Member> {
+        self.items
+            .iter()
+            .map(|i| (i.id, self.member_of(i, now)))
+            .collect()
+    }
+
+    fn member_of(&self, i: &Item, now: Instant) -> Member {
+        let id = i.id;
         match i.status {
             Status::Queued | Status::Stopped => Member::Waiting,
             Status::Downloading => Member::Running,
@@ -2254,11 +2276,14 @@ impl App {
             if !self.queues[q].running {
                 continue;
             }
-            let starts = queue::to_start(&self.queues[q], |id| self.member(id, now), now);
+            // Each download's standing, looked up once (a linear search per queued id before).
+            let members = self.members(now);
+            let starts = queue::to_start(&self.queues[q], |id| member_in(&members, id), now);
             for id in starts {
                 self.start(id, false);
             }
-            if queue::finished(&self.queues[q], |id| self.member(id, now)) {
+            let members = self.members(now);
+            if queue::finished(&self.queues[q], |id| member_in(&members, id)) {
                 self.queues[q].running = false;
                 self.queue_done(q);
             }
@@ -3656,6 +3681,14 @@ impl App {
             self.list.scroll = 0.0;
             self.list_view = self.view;
         }
+        // The Status cell's tip, the download's recent events: made for the row under the
+        // pointer only (twelve dated lines for every row, every frame, before).
+        let items = &self.items;
+        let tip = |i: usize| {
+            ids.get(i)
+                .and_then(|id| items.iter().find(|it| it.id == *id))
+                .map_or(String::new(), |it| it.log_lines(12))
+        };
         let r = list::show(
             ui,
             outer,
@@ -3664,6 +3697,7 @@ impl App {
             &selected,
             focus,
             &mut self.icons,
+            &tip,
         );
         if let Some(pick) = r.pick {
             self.selection.apply(pick, &ids);
