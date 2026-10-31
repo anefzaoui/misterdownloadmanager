@@ -316,6 +316,10 @@ impl Scheduler {
                 }
             }
         }
+        if !matches!(outcome, Outcome::Open) {
+            // Closed: the calendar doesn't open again with the next Scheduler.
+            close_pickers(ctx, &mut self.focus);
+        }
         if matches!(outcome, Outcome::Closed) {
             // Close keeps the changes (as Apply would) [IDM: unknown, lab].
             self.apply(actions);
@@ -535,6 +539,8 @@ impl Scheduler {
         if let Some(i) = ev.picked {
             self.selected = i;
             self.files_rows = Default::default();
+            // Another queue: its own date, not this one's calendar left open over it.
+            close_pickers(ui.ctx(), &mut self.focus);
         }
         ev.delete.is_some()
     }
@@ -581,16 +587,15 @@ impl Scheduler {
             &mut self.focus,
         );
         let date_x = after(235.0, "Once at", 337.0, 627.0 - 188.0);
-        if winui::radio_light_until(
+        let once = winui::radio_light_until(
             ui,
             at(235.0, 144.0),
             f.once,
             "Once at",
             on,
             Some(o.x + date_x),
-        )
-        .clicked()
-        {
+        );
+        if once.clicked() {
             f.once = true;
         }
         date_picker(
@@ -606,17 +611,20 @@ impl Scheduler {
         let last_day = 16.0 + winui::text_width(&p, crate::i18n::t(WEEKDAYS[6])).ceil() + 4.0;
         let shift = after(235.0, "Daily", 310.0, 627.0 - last_day - 221.0) - 310.0;
         // i18n: adverb: every day (the other choice is once, on a date)
-        if winui::radio_light_until(
+        let daily = winui::radio_light_until(
             ui,
             at(235.0, 173.0),
             !f.once,
             "Daily",
             on,
             Some(o.x + 310.0 + shift),
-        )
-        .clicked()
-        {
+        );
+        if daily.clicked() {
             f.once = false;
+        }
+        // The arrows between them, as in a Windows radio group.
+        if let Some(i) = winui::radio_keys(ui, &[once, daily]) {
+            f.once = i == 0;
         }
         let days = [
             (WEEKDAYS[0], 310.0, 173.0),
@@ -642,6 +650,39 @@ impl Scheduler {
                 on && !f.once,
                 next,
             );
+        }
+        // A start that can never come says so where it is set (the queue just never ran).
+        if f.start_at_on {
+            let today = Local::now().date_naive();
+            let (bad, rc, why) = if f.once {
+                (
+                    f.date < today,
+                    r(o, date_x, 141.0, 188.0, 24.0),
+                    // i18n: tooltip on the Scheduler's date when it is in the past
+                    "This date has passed: the queue will not start",
+                )
+            } else {
+                (
+                    !f.days.iter().any(|d| *d),
+                    r(o, 306.0 + shift, 169.0, 321.0 - shift, 54.0),
+                    // i18n: tooltip on the Scheduler's weekdays when none is ticked
+                    "No day is ticked: the queue will not start",
+                )
+            };
+            if bad {
+                p.rect_stroke(
+                    rc,
+                    3.0,
+                    egui::Stroke::new(1.0, winui::ERROR()),
+                    egui::StrokeKind::Inside,
+                );
+                ui.interact(
+                    rc,
+                    egui::Id::unique(("start-warning", self.selected)),
+                    Sense::hover(),
+                )
+                .on_hover_text(crate::i18n::t(why));
+            }
         }
         winui::etched_h(&p, o.x + 229.0, o.y + 227.0, 398.0);
         let stop_x = after(229.0, "Stop download at", 384.0, 627.0 - 89.0);
@@ -832,10 +873,10 @@ impl Scheduler {
         // The rows: the shared row list under the header (its frame on the list's).
         let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0));
         let ids = self.queues[self.selected].items.clone();
-        let rows: Vec<&Item> = ids
-            .iter()
-            .filter_map(|id| items.iter().find(|i| i.id == *id))
-            .collect();
+        // Looked up once a frame (a long queue in a long list was slow to draw).
+        let by_id: std::collections::HashMap<u64, &Item> =
+            items.iter().map(|i| (i.id, i)).collect();
+        let rows: Vec<&Item> = ids.iter().filter_map(|id| by_id.get(id).copied()).collect();
         let ev = winui::row_list(
             ui,
             "sched-files",
@@ -1011,6 +1052,13 @@ impl Scheduler {
         let Some(mut name) = self.naming.take() else {
             return;
         };
+        // The names in use, as stored and as shown (a built-in queue's in the interface's
+        // language).
+        let names: Vec<String> = self
+            .queues
+            .iter()
+            .flat_map(|q| [q.name.clone(), crate::i18n::t(&q.name).to_owned()])
+            .collect();
         let outcome = window(
             ctx,
             "queue-name",
@@ -1043,14 +1091,45 @@ impl Scheduler {
                     edit.request_focus();
                     ui.data_mut(|d| d.insert_temp(egui::Id::unique("queue-name-focused"), true));
                 }
+                // An empty name or one in use holds OK back, saying which.
+                let typed = name.trim();
+                let why = if typed.is_empty() {
+                    // i18n: why OK is greyed when naming a new queue
+                    Some("Type the queue's name")
+                } else if names
+                    .iter()
+                    .any(|n| n.to_lowercase() == typed.to_lowercase())
+                {
+                    // i18n: why OK is greyed when naming a new queue
+                    Some("There is already a queue with this name")
+                } else {
+                    None
+                };
                 let ok = winui::button_light(
                     ui,
                     r(o, 55.0, 87.0, 73.0, 21.0),
                     "OK",
-                    ButtonKind::Default,
+                    if why.is_some() {
+                        ButtonKind::Disabled
+                    } else {
+                        ButtonKind::Default
+                    },
                     false,
-                )
-                .clicked();
+                );
+                let ok = winui::why_disabled(ok, why.is_some(), why.unwrap_or("")).clicked()
+                    && why.is_none();
+                if let Some(w) = why.filter(|_| !typed.is_empty()) {
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 11.0,
+                        o.y + 80.0,
+                        crate::i18n::t(w),
+                        winui::ERROR(),
+                        o.x + 269.0,
+                        "queue-name-taken",
+                    );
+                }
                 let cancel = winui::button_light(
                     ui,
                     r(o, 148.0, 87.0, 73.0, 21.0),
@@ -1061,7 +1140,7 @@ impl Scheduler {
                 .clicked();
                 if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || winui::enter_pressed(ui) {
+                } else if ok || (why.is_none() && winui::enter_pressed(ui)) {
                     Outcome::Done(())
                 } else {
                     Outcome::Open
@@ -1075,7 +1154,7 @@ impl Scheduler {
                 let taken = self
                     .queues
                     .iter()
-                    .any(|q| q.name.eq_ignore_ascii_case(name));
+                    .any(|q| q.name.to_lowercase() == name.to_lowercase());
                 if name.is_empty() || taken {
                     self.naming = Some(name.to_owned()); // keep asking
                 } else {
@@ -1117,6 +1196,34 @@ fn field(p: &egui::Painter, x: f32, base: f32, s: &str, selected: bool, enabled:
 }
 
 /// Keyboard and wheel input for the focused picker field: (step, digit typed, move by).
+/// Every picker's field and calendar closed (another queue, the Scheduler closing).
+fn close_pickers(ctx: &egui::Context, focus: &mut Focus) {
+    focus.at = None;
+    focus.typed.clear();
+    let key = egui::Id::unique(("date-picker", "once-at"));
+    ctx.data_mut(|d| {
+        d.remove::<bool>(key);
+        d.remove::<NaiveDate>(key.with("month"));
+        d.remove::<NaiveDate>(key.with("cursor"));
+    });
+}
+
+/// A time or date picker is one Tab stop: its field is chosen while it has the keys (Tab in:
+/// the first), and none when they go elsewhere (it took arrows and digits meant for the box
+/// Tab moved to).
+fn picker_focus(ui: &Ui, hold: &egui::Response, id: &'static str, focus: &mut Focus) {
+    let ours = focus.at.is_some_and(|(fid, _)| fid == id);
+    if hold.has_focus() {
+        winui::keep_keys(ui, hold, true, true, false);
+        if !ours {
+            focus.at = Some((id, 0));
+            focus.typed.clear();
+        }
+    } else if ours && !ui.input(|i| i.pointer.any_down()) {
+        focus.at = None;
+    }
+}
+
 fn picker_keys(ui: &Ui, hovered: bool) -> (i32, Option<char>, i32) {
     ui.input(|i| {
         let mut step = 0;
@@ -1189,7 +1296,16 @@ fn time_picker(
     } else {
         Rect::from_min_max(rc.min, rc.max + vec2(extra, 0.0))
     };
-    let hover = ui.interact(rc, egui::Id::unique(("time-picker", id)), Sense::hover());
+    let hover = ui.interact(
+        rc,
+        egui::Id::unique(("time-picker", id)),
+        if enabled {
+            Sense::click()
+        } else {
+            Sense::hover()
+        },
+    );
+    picker_focus(ui, &hover, id, focus);
     winui::dropdown_frame_light(&p, rc, winui::State::of(&hover, enabled));
     // A time reads left to right in every language: its fields are laid out on screen as they
     // are; in RTL the up-down is at the left and the fields follow it.
@@ -1279,6 +1395,7 @@ fn time_picker(
         {
             focus.at = Some((id, i));
             focus.typed.clear();
+            hover.request_focus();
         }
     }
     if ui.input(|i| i.pointer.any_pressed()) && !ui.rect_contains_pointer(rc) && sel.is_some() {
@@ -1291,8 +1408,11 @@ fn time_picker(
         (0, None, 0)
     };
     step += step_btn;
-    if step_btn != 0 && sel.is_none() {
-        focus.at = Some((id, 0));
+    if step_btn != 0 {
+        if sel.is_none() {
+            focus.at = Some((id, 0));
+        }
+        hover.request_focus();
     }
     if step != 0 {
         let (h, m, s) = value;
@@ -1451,7 +1571,16 @@ fn date_picker(
         rc = winui::rect(english);
     }
     let key = egui::Id::unique(("date-picker", id));
-    let hover = ui.interact(rc, key, Sense::hover());
+    let hover = ui.interact(
+        rc,
+        key,
+        if enabled {
+            Sense::click()
+        } else {
+            Sense::hover()
+        },
+    );
+    picker_focus(ui, &hover, id, focus);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
     winui::dropdown_frame_light(&p, rc, winui::State::of(&hover, enabled).open_if(open));
     let sel = match focus.at {
@@ -1522,6 +1651,7 @@ fn date_picker(
         {
             focus.at = Some((id, i));
             focus.typed.clear();
+            hover.request_focus();
         }
     }
     if ui.input(|i| i.pointer.any_pressed()) && !ui.rect_contains_pointer(rc) && sel.is_some() {
