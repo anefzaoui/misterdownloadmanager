@@ -1022,6 +1022,7 @@ pub fn row_list(
     let right = inner.right() - if bar { crate::scrollbar::THICK } else { 0.0 };
     let area = Rect::from_min_max(inner.min, pos2(right, inner.bottom()));
     let resp = ui.interact(rect(inner), id, Sense::click());
+    expose(&resp, egui::Role::ListBox, "", true, None);
     // Its arrows (a tree's Left / Right too) stay with it.
     keep_keys(ui, &resp, true, true, false);
     let focused = resp.has_focus();
@@ -1074,6 +1075,7 @@ pub fn row_list(
         let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
         let r = ui.interact(rect(row), id.with(i), pointer_only());
         let selected = st.selected == Some(i);
+        expose(&r, egui::Role::ListBoxOption, "", true, Some(selected));
         let fill = if selected && focused {
             Some(ROW_SELECTED())
         } else if selected {
@@ -1145,6 +1147,7 @@ pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str
     let resp = ui
         .interact(rect, ui.scope_id().with(("link", salt)), Sense::click())
         .on_hover_cursor(egui::CursorIcon::PointingHand);
+    expose(&resp, egui::Role::Link, crate::i18n::t(label), true, None);
     // A Tab stop shows that it has the keys.
     show_focus(ui, &resp, rect.expand(2.0));
     if resp.hovered() {
@@ -1569,6 +1572,7 @@ pub fn readonly_field(
     };
     text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
     let resp = ui.interact(rc, widget_id(ui, ("readonly", id)), Sense::click());
+    expose(&resp, egui::Role::TextInput, value, true, None);
     show_focus(ui, &resp, rc.shrink(2.0));
     copy_menu(&resp, value);
     if cut { resp.on_hover_text(value) } else { resp }
@@ -1851,6 +1855,8 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
 /// Drop-list combo showing `value`; returns the click response.
 pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
+    let resp = opener_click(ui, resp);
+    expose(&resp, egui::Role::ComboBox, value, true, None);
     combo_frame(ui.painter(), rc, resp.has_focus());
     // The arrow zone (always white) shows the state.
     tint_part(
@@ -1907,6 +1913,7 @@ pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String) -> Response {
 pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str, open: bool) -> Response {
     let zone = combo_zone(rc);
     let resp = ui.interact(zone, widget_id(ui, ("combo-arrow", id)), pointer_only());
+    let resp = opener_click(ui, resp);
     let state = State::of(&resp, true).open_if(open);
     tint_part(ui.painter(), zone, state, false, |p| combo_chevron(p, rc));
     resp
@@ -1959,13 +1966,14 @@ pub fn drop_list(
             .map(|(i, t)| MenuEntry::Item(shown(t), i, true, false))
             .collect()
     };
-    let menu = crate::chrome::popup(
-        ui.ctx(),
-        &format!("drop-{id}"),
-        anchor.left_bottom(),
-        &entries,
-        &|_| None,
-    );
+    // Under the box's leading edge (its right one in a right-to-left interface, where menus
+    // open leftwards from their top-right).
+    let at = if rtl() {
+        anchor.right_bottom()
+    } else {
+        anchor.left_bottom()
+    };
+    let menu = crate::chrome::popup(ui.ctx(), &format!("drop-{id}"), at, &entries, &|_| None);
     match menu {
         PopupResult::Chosen(i) => {
             *open = false;
@@ -2093,6 +2101,13 @@ pub fn checkbox_until(
     if resp.clicked() {
         *checked = !*checked;
     }
+    expose(
+        &resp,
+        egui::Role::CheckBox,
+        caption,
+        enabled,
+        Some(*checked),
+    );
     let (l, t) = (box_min.x, box_min.y);
     let (rr, b) = (l + 12.0, t + 12.0);
     // Interior: white, or #f0f0f0 when disabled (spec "Checkbox").
@@ -2367,6 +2382,13 @@ fn button_face(
         rc,
         widget_id(ui, ("button", rc.min.x as i32, rc.min.y as i32)),
         sense,
+    );
+    expose(
+        &resp,
+        egui::Role::Button,
+        crate::i18n::t(label),
+        enabled,
+        None,
     );
     // A focused button answers Enter itself (egui clicks it): the dialog's default button,
     // read after it, doesn't run as well.
@@ -2678,6 +2700,13 @@ pub fn checkbox_light_until(
     if resp.clicked() {
         *checked = !*checked;
     }
+    expose(
+        &resp,
+        egui::Role::CheckBox,
+        caption,
+        enabled,
+        Some(*checked),
+    );
     let rc = Rect::from_min_size(glyph, vec2(13.0, 13.0));
     check_box_glyph(&p, rc, *checked, State::of(&resp, enabled));
     let color = if enabled {
@@ -2827,6 +2856,13 @@ pub fn radio_light_until(
     );
     let resp = enter_is_not_a_click(ui, resp);
     show_focus(ui, &resp, hit.expand(1.0));
+    expose(
+        &resp,
+        egui::Role::RadioButton,
+        caption,
+        enabled,
+        Some(selected),
+    );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
     if selected {
@@ -2884,6 +2920,40 @@ pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
     ui.ctx()
         .request_repaint_after(std::time::Duration::from_secs_f64((next - now).max(0.01)));
     fire
+}
+
+/// What a control is for screen readers (Narrator, NVDA through AccessKit): its role, its name
+/// (the full translated label, "&" taken out), whether it can be used, and for a check box,
+/// radio button, tab or list row whether it is on. Our controls are painted by hand, so egui
+/// can't tell otherwise. Call right after the control's `interact`, before any tooltip.
+pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on: Option<bool>) {
+    let name = label
+        .replace("&&", "\u{1}")
+        .replace('&', "")
+        .replace('\u{1}', "&");
+    resp.widget_info(|| {
+        let mut info = egui::WidgetInfo::labeled(role, enabled, &name);
+        info.selected = on;
+        info
+    });
+}
+
+/// The click of a control that opens a popup, except the one ending the press that just closed
+/// that popup (it went down on the control): a click on an open list's arrow closes it, not
+/// closes and opens it again.
+pub fn opener_click(ui: &Ui, mut resp: Response) -> Response {
+    let key = crate::chrome::dismissed_at_key(ui.ctx());
+    let Some(at) = ui.data(|d| d.get_temp::<Pos2>(key)) else {
+        return resp;
+    };
+    if resp.clicked() && resp.rect.contains(at) {
+        resp.flags.remove(egui::response::Flags::CLICKED);
+        ui.data_mut(|d| d.remove::<Pos2>(key));
+    } else if !ui.input(|i| i.pointer.any_down() || i.pointer.any_released()) {
+        // Between presses: that press is over.
+        ui.data_mut(|d| d.remove::<Pos2>(key));
+    }
+    resp
 }
 
 /// egui clicks a focused control on Enter as on Space. A check box, radio button or tab answers
@@ -3113,6 +3183,13 @@ pub fn tabs_light(
         let id_of =
             |ui: &Ui, k: usize| widget_id(ui, ("tab-light", rc.min.x as i32, rc.min.y as i32, k));
         let resp = ui.interact(hit, id_of(ui, i), sense);
+        expose(
+            &resp,
+            egui::Role::Tab,
+            crate::i18n::t(tab.label),
+            true,
+            Some(sel),
+        );
         let resp = enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
@@ -3250,37 +3327,32 @@ pub fn combo_light(
         Sense::hover()
     };
     let resp = ui.interact(rc, key.with("button"), sense);
-    // Its arrows stay with it; Escape too while its list is open.
-    let list_open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false));
-    keep_keys(ui, &resp, false, true, list_open);
+    let resp = opener_click(ui, resp);
+    keep_keys(ui, &resp, false, true, false);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
-    // The row the keys point at while the list is open (the choice when it opens).
-    let hl_key = key.with("highlight");
-    let mut hl = ui.data(|d| d.get_temp::<usize>(hl_key)).unwrap_or(selected);
+    let popup_id = format!("combo-light-{}", key.short_debug_format());
     let mut chosen = None;
     let last = items.len().saturating_sub(1);
-    // egui clicks a focused control on Enter too: on an open list Enter chooses (below); on a
-    // closed one it is the dialog's default button, not an opener.
+    // egui clicks a focused control on Enter too: on a closed one Enter is the dialog's default
+    // button, not an opener.
     let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
     if resp.clicked() && !enter {
         open = !open;
-        hl = selected;
     }
-    // The keys, as a Windows drop-down list has them.
-    if resp.has_focus() && enabled && !items.is_empty() {
+    // The keys, as a Windows drop-down list has them (an open list's are the popup's).
+    if resp.has_focus() && enabled && !items.is_empty() && !open {
         let opener = ui.input_mut(|i| {
             i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowDown)
                 || i.consume_key(egui::Modifiers::NONE, egui::Key::F4)
         });
         if opener {
-            open = !open;
-            hl = selected;
+            open = true;
+            crate::chrome::start_at(ui.ctx(), &popup_id, selected.min(last));
         }
-        let at = if open { hl } else { selected };
         let to = if take_key(ui, egui::Key::ArrowDown) {
-            Some((at + 1).min(last))
+            Some((selected + 1).min(last))
         } else if take_key(ui, egui::Key::ArrowUp) {
-            Some(at.saturating_sub(1))
+            Some(selected.saturating_sub(1))
         } else if take_key(ui, egui::Key::Home) {
             Some(0)
         } else if take_key(ui, egui::Key::End) {
@@ -3288,11 +3360,9 @@ pub fn combo_light(
         } else {
             None
         };
-        match to {
-            Some(i) if open => hl = i,
-            // Closed: the arrows change the choice itself.
-            Some(i) if i != selected => chosen = Some(i),
-            _ => {}
+        // Closed: the arrows change the choice itself.
+        if let Some(i) = to.filter(|i| *i != selected) {
+            chosen = Some(i);
         }
     }
     let p = ui.painter().clone();
@@ -3304,6 +3374,7 @@ pub fn combo_light(
     };
     // Items are shown in the interface language (data such as numbers passes through as is).
     let full = crate::i18n::t(items.get(selected).copied().unwrap_or(""));
+    expose(&resp, egui::Role::ComboBox, full, enabled, None);
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
     let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0);
     let drawn = text_start(
@@ -3327,81 +3398,38 @@ pub fn combo_light(
     // Over the face (drawn before it, the face hid it).
     show_focus(ui, &resp, rc.shrink(3.0));
     if open {
-        // The list: rows of 15 px under the combo, the hovered row in the accent colour.
-        let row_h = 15.0;
-        // As wide as the combo, or as its longest item (a translation): it grows from the
-        // leading edge.
-        let longest = items
+        // The list: the shared popup (a window of its own, never clipped by the dialog, kept on
+        // the screen; the keys, the pointer), the choice marked.
+        use crate::chrome::{MenuEntry, PopupResult, label as menu_label};
+        let entries: Vec<MenuEntry<usize>> = items
             .iter()
-            .map(|s| text_width(&p, crate::i18n::t(s)).ceil() + 8.0)
-            .fold(rc.width(), f32::max);
-        let left = if rtl() {
-            rc.right() - longest
+            .enumerate()
+            .map(|(i, s)| {
+                let shown = crate::i18n::t(s).replace('&', "&&");
+                MenuEntry::Radio(menu_label(&shown), i, true, i == selected)
+            })
+            .collect();
+        let at = if rtl() {
+            rc.right_bottom()
         } else {
-            rc.left()
+            rc.left_bottom()
         };
-        let list = Rect::from_min_size(
-            pos2(left, rc.bottom()),
-            vec2(longest, row_h * items.len() as f32 + 2.0),
-        );
-        let area = egui::Area::new(key.with("list"))
-            .order(egui::Order::Foreground)
-            .fixed_pos(list.min)
-            .show(ui.ctx(), |ui| {
-                let (_, lp) = ui.allocate_painter(list.size(), Sense::hover());
-                lp.rect_filled(list, 0.0, FIELD());
-                lp.rect_stroke(
-                    list,
-                    0.0,
-                    Stroke::new(1.0, FIELD_EDGE()),
-                    StrokeKind::Inside,
-                );
-                for (i, item) in items.iter().enumerate() {
-                    let row = Rect::from_min_size(
-                        pos2(list.left() + 1.0, list.top() + 1.0 + row_h * i as f32),
-                        vec2(list.width() - 2.0, row_h),
-                    );
-                    let r = ui.interact(row, key.with(("item", i)), pointer_only());
-                    // The pointer takes the highlight when it moves (resting over the list,
-                    // it overrode the arrow keys every frame).
-                    if r.hovered() && ui.input(|i| i.pointer.is_moving()) {
-                        hl = i;
-                    }
-                    let hot = i == hl;
-                    if hot {
-                        lp.rect_filled(row, 0.0, SELECTION);
-                    }
-                    let c = if hot { Color32::WHITE } else { LIGHT_TEXT() };
-                    text_start(
-                        &lp,
-                        tahoma(),
-                        lead(row) + 3.0 * fwd(),
-                        row.top() + 11.0,
-                        crate::i18n::t(item),
-                        c,
-                    );
-                    if r.clicked() {
-                        chosen = Some(i);
-                    }
-                }
-            });
-        let outside = ui.input(|i| i.pointer.any_pressed())
-            && !area.response.contains_pointer()
-            && !resp.contains_pointer();
-        // An open list answers Escape and Enter itself (the dialog under it doesn't): Enter
-        // chooses the row the keys or the pointer point at.
-        if take_key(ui, egui::Key::Enter) || (enter && resp.clicked()) {
-            chosen = Some(hl.min(last)).filter(|i| *i != selected);
-            open = false;
+        match crate::chrome::popup(ui.ctx(), &popup_id, at, &entries, &|_| None) {
+            PopupResult::Chosen(i) => {
+                open = false;
+                chosen = Some(i).filter(|i| *i != selected);
+                resp.request_focus();
+            }
+            PopupResult::Dismissed => {
+                open = false;
+                resp.request_focus();
+            }
+            PopupResult::Open | PopupResult::Neighbor(_) => {}
         }
-        if chosen.is_some() || outside || take_key(ui, egui::Key::Escape) {
-            open = false;
-        }
+        // The keys went to the list: the dialog's default button doesn't take Enter too.
+        take_key(ui, egui::Key::Enter);
     }
-    ui.data_mut(|d| {
-        d.insert_temp(key, open);
-        d.insert_temp(hl_key, hl);
-    });
+    ui.data_mut(|d| d.insert_temp(key, open));
     chosen
 }
 
@@ -3420,6 +3448,14 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
             Sense::hover()
         };
         let r = ui.interact(part, widget_id(ui, ("updown-light", id, i)), sense);
+        let name = if dir > 0 {
+            // i18n: a spin box's arrow, for screen readers: one more
+            crate::i18n::t("Increase")
+        } else {
+            // i18n: a spin box's arrow, for screen readers: one less
+            crate::i18n::t("Decrease")
+        };
+        expose(&r, egui::Role::Button, name, enabled, None);
         let face = if !enabled {
             subtle_or(State::Disabled)
         } else if r.is_pointer_button_down_on() {
@@ -3469,6 +3505,13 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
         Sense::hover()
     };
     let resp = ui.interact(rc, widget_id(ui, ("icon-button-light", id)), sense);
+    expose(
+        &resp,
+        egui::Role::Button,
+        crate::i18n::t(tip),
+        enabled,
+        None,
+    );
     let p = ui.painter();
     let face = subtle_or(State::of(&resp, enabled));
     p.rect_filled(rc, 2.0, face);

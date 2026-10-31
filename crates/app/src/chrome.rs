@@ -669,10 +669,29 @@ pub fn popup<C: Clone>(
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
+            // Closed by a press: where it was, so the control that opened it doesn't take that
+            // press's click (on release) as opening it again (winui::opener_click).
+            if let Some(at) =
+                ctx.input(|i| i.pointer.press_origin().filter(|_| i.pointer.any_pressed()))
+            {
+                d.insert_temp(dismissed_at_key(ctx), at);
+            }
         });
         return PopupResult::Dismissed;
     }
     PopupResult::Open
+}
+
+/// Where the last press that closed a popup went down, in this window.
+pub fn dismissed_at_key(ctx: &egui::Context) -> egui::Id {
+    egui::Id::unique(("popup-dismissed-at", ctx.viewport_id()))
+}
+
+/// Open a menu from the keyboard with item `i` highlighted (a drop-down list on its choice).
+pub fn start_at(ctx: &egui::Context, id: &str, i: usize) {
+    show_cues(ctx);
+    let kb = egui::Id::unique(("popup-sub", id)).with("kb");
+    ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(i), None)));
 }
 
 /// A menu label's width as Win32 sizes menus: GDI's whole-pixel width (egui's advances differ

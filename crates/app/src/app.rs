@@ -233,6 +233,8 @@ pub struct App {
     show_categories: bool,
     /// The node the list was last drawn for (a new one starts at the top).
     list_view: View,
+    /// The language screen readers were last told.
+    a11y_lang: &'static str,
     /// Maximized as last seen (the saved size is the restored window's, not the screen's).
     maximized: Option<bool>,
     all_open: bool,
@@ -560,6 +562,7 @@ impl App {
             finished_open,
             queues_open,
             maximized: None,
+            a11y_lang: "",
             list_view: view,
             add_url: None,
             about: None,
@@ -3996,6 +3999,12 @@ impl App {
     /// The window's place and size, the Categories pane and the node shown, kept in the
     /// settings as they change (so they come back at the next start).
     fn remember_layout(&mut self, ctx: &egui::Context) {
+        // Screen readers speak in the interface's language (its voice for Arabic, Japanese...).
+        let lang = crate::i18n::code();
+        if self.a11y_lang != lang {
+            ctx.set_language(Some(lang.to_owned()));
+            self.a11y_lang = lang;
+        }
         let s = &mut self.settings;
         let pane = (
             self.show_categories,

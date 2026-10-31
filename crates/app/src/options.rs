@@ -1784,6 +1784,13 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             winui::pointer_only()
         };
         let resp = ui.interact(rc, egui::Id::unique(("opt-tab", i)), sense);
+        winui::expose(
+            &resp,
+            egui::Role::Tab,
+            crate::i18n::t(label),
+            true,
+            Some(sel),
+        );
         let resp = winui::enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
