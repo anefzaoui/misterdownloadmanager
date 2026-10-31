@@ -442,6 +442,10 @@ pub struct FileInfo {
     /// … category on last selected" says.
     pub remember: bool,
     url_text: String,
+    /// The URL box holds no address MDM downloads: Start and Later wait.
+    url_bad: bool,
+    /// To look an edited address up again.
+    rt: tokio::runtime::Handle,
     probe: Arc<Mutex<Option<Result<ProbeInfo, String>>>>,
     info: Option<Result<ProbeInfo, String>>,
     edited: bool,
@@ -481,18 +485,11 @@ impl FileInfo {
         let category = Category::of(&name);
         let folder = crate::model::category_folder(category, &downloads, &dirs);
         let save_as = display_path(&folder.join(&name));
-        let probe = Arc::new(Mutex::new(None));
-        let (slot, url, ctx) = (probe.clone(), new.url.clone(), ctx.clone());
-        let headers = crate::app::auth_headers(new.login.as_ref());
-        rt.spawn(async move {
-            let res = mdm_engine::probe(url, headers, &Options::default())
-                .await
-                .map_err(|e| e.to_string());
-            *slot.lock().unwrap() = Some(res);
-            ctx.request_repaint();
-        });
+        let probe = start_probe(rt, ctx, &new.url, new.login.as_ref());
         FileInfo {
             url_text: new.url.to_string(),
+            url_bad: false,
+            rt: rt.clone(),
             url: new.url,
             login: new.login,
             save_as,
@@ -511,6 +508,31 @@ impl FileInfo {
             folders: Vec::new(),
             folders_open: false,
             new_category: false,
+        }
+    }
+
+    /// The URL box changed: a new address MDM downloads is the one to download (looked up
+    /// again; its file name too, unless Save As was edited); anything else holds Start and
+    /// Later back.
+    fn url_edited(&mut self, ctx: &egui::Context) {
+        match Url::parse(self.url_text.trim()) {
+            Ok(url) if mdm_engine::supported(&url) => {
+                self.url_bad = false;
+                if url == self.url {
+                    return;
+                }
+                if !self.edited {
+                    let name = mdm_engine::naming::file_name(None, &url);
+                    self.category = Category::of(&name);
+                    let dir =
+                        crate::model::category_folder(self.category, &self.downloads, &self.dirs);
+                    self.save_as = display_path(&dir.join(&name));
+                }
+                self.probe = start_probe(&self.rt, ctx, &url, self.login.as_ref());
+                self.info = None;
+                self.url = url;
+            }
+            _ => self.url_bad = true,
         }
     }
 
@@ -609,13 +631,20 @@ impl FileInfo {
                     crate::i18n::t("URL"),
                     winui::TEXT(),
                 );
-                winui::edit(
-                    ui,
-                    r(o, 96.0, 5.0, 366.0, 23.0),
-                    &mut self.url_text,
-                    true,
-                    false,
-                );
+                let url_rc = r(o, 96.0, 5.0, 366.0, 23.0);
+                let url_box = winui::edit(ui, url_rc, &mut self.url_text, true, false);
+                // An edited address is the one downloaded (it was ignored before).
+                if url_box.changed() {
+                    self.url_edited(ui.ctx());
+                }
+                if self.url_bad {
+                    p.rect_stroke(
+                        url_rc,
+                        0.0,
+                        egui::Stroke::new(1.0, winui::ERROR()),
+                        egui::StrokeKind::Inside,
+                    );
+                }
 
                 // i18n: noun: label before the list of categories
                 winui::text_right(
@@ -627,9 +656,11 @@ impl FileInfo {
                 );
                 let cat_rect = r(o, 96.0, 36.0, 174.0, 21.0);
                 let shown = crate::i18n::t(&self.category.label()).to_owned();
-                if winui::combo(ui, cat_rect, &shown, "category").clicked() {
+                let cat = winui::combo(ui, cat_rect, &shown, "category");
+                if cat.clicked() || winui::combo_keys(ui, &cat) {
                     self.category_open = !self.category_open;
                 }
+                let category_was_open = self.category_open;
                 // "+": a new category (the app's category window).
                 if winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+").clicked() {
                     self.new_category = true;
@@ -737,22 +768,29 @@ impl FileInfo {
                     false,
                 );
 
+                let (later_kind, start_kind) = if self.url_bad {
+                    (ButtonKind::Disabled, ButtonKind::Disabled)
+                } else {
+                    (ButtonKind::Normal, ButtonKind::Default)
+                };
                 let later = winui::button(
                     ui,
                     r(o, 97.0, 180.0, 109.0, 21.0),
                     "Download Later",
-                    ButtonKind::Normal,
+                    later_kind,
                     false,
                     Some(9),
                 );
+                let later = winui::why_disabled(later, self.url_bad, "Invalid address");
                 let start = winui::button(
                     ui,
                     r(o, 225.0, 180.0, 109.0, 21.0),
                     "Start Download",
-                    ButtonKind::Default,
+                    start_kind,
                     true,
                     Some(0),
                 );
+                let start = winui::why_disabled(start, self.url_bad, "Invalid address");
                 let cancel = winui::button(
                     ui,
                     r(o, 352.0, 180.0, 109.0, 21.0),
@@ -773,13 +811,23 @@ impl FileInfo {
                     crate::chrome::IconKey::ExtLarge(ext),
                     o + vec2(500.0, 45.0),
                 );
-                let size = match &self.info {
-                    None => "...".to_owned(),
-                    Some(Ok(pi)) => pi.size.map_or("unknown".to_owned(), dialog_size),
-                    Some(Err(_)) => "error".to_owned(),
+                let (size, reason) = match &self.info {
+                    None => ("...".to_owned(), None),
+                    Some(Ok(pi)) => (
+                        // i18n: a download's size is not known (the server didn't say)
+                        pi.size
+                            .map_or(crate::i18n::t("unknown").to_owned(), dialog_size),
+                        None,
+                    ),
+                    // i18n: in Download File Info, where the size goes: the address didn't answer
+                    Some(Err(e)) => (crate::i18n::t("Error").to_owned(), Some(e.clone())),
                 };
                 let w = winui::text_width(&p, &size);
-                winui::text(&p, o.x + 515.0 - w / 2.0, o.y + 103.0, &size, winui::TEXT());
+                let at = winui::text(&p, o.x + 515.0 - w / 2.0, o.y + 103.0, &size, winui::TEXT());
+                // Why the address didn't answer (not found, sign-in needed…): on hover, copyable.
+                if let Some(reason) = reason {
+                    winui::copyable(ui, at, "file-info-error", &reason, true);
+                }
                 winui::button(
                     ui,
                     r(o, 480.0, 128.0, 73.0, 21.0),
@@ -794,42 +842,34 @@ impl FileInfo {
                     "Preview isn't available yet",
                 ));
 
+                // The categories in a list window of their own (the shared drop list: keys,
+                // Escape, never cut off by this short window).
                 if self.category_open {
-                    let mut picked = None;
-                    egui::Area::new(egui::Id::unique("category-list"))
-                        .order(egui::Order::Foreground)
-                        .fixed_pos(cat_rect.left_bottom())
-                        .show(ui.ctx(), |ui| {
-                            egui::Frame::new()
-                                .fill(winui::BG())
-                                .stroke(egui::Stroke::new(1.0, winui::FIELD_EDGE()))
-                                .show(ui, |ui| {
-                                    ui.set_width(cat_rect.width() - 2.0);
-                                    // Items from the leading edge (the right in RTL).
-                                    let items = egui::Layout::top_down(winui::start_align());
-                                    ui.with_layout(items, |ui| {
-                                        for c in Category::all() {
-                                            let label = crate::i18n::t(&c.label()).to_owned();
-                                            if ui
-                                                .selectable_label(c == self.category, label)
-                                                .clicked()
-                                            {
-                                                picked = Some(c);
-                                            }
-                                        }
-                                    });
-                                });
-                        });
-                    if let Some(c) = picked {
-                        self.set_category(c);
-                        self.category_open = false;
+                    let all = Category::all();
+                    let labels: Vec<String> = all
+                        .iter()
+                        .map(|c| crate::i18n::t(&c.label()).to_owned())
+                        .collect();
+                    if let Some(i) = winui::drop_list(
+                        ui,
+                        "file-info-category",
+                        cat_rect,
+                        &labels,
+                        "",
+                        &mut self.category_open,
+                    ) && let Some(c) = all.get(i)
+                    {
+                        self.set_category(*c);
                     }
                 }
 
                 // Escape closes an open drop list first, then the dialog.
-                let key = |k| !folders_were_open && ui.input(|i| i.key_pressed(k));
+                let key =
+                    |k| !folders_were_open && !category_was_open && ui.input(|i| i.key_pressed(k));
                 if cancel.clicked() || key(egui::Key::Escape) {
                     Outcome::Closed
+                } else if self.url_bad {
+                    Outcome::Open
                 } else if start.clicked() || key(egui::Key::Enter) {
                     Outcome::Done(Start::Now)
                 } else if later.clicked() {
@@ -840,6 +880,26 @@ impl FileInfo {
             },
         )
     }
+}
+
+/// Look `url` up in the background (name, size), the answer landing in the slot returned.
+fn start_probe(
+    rt: &tokio::runtime::Handle,
+    ctx: &egui::Context,
+    url: &Url,
+    login: Option<&(String, String)>,
+) -> Arc<Mutex<Option<Result<ProbeInfo, String>>>> {
+    let probe = Arc::new(Mutex::new(None));
+    let (slot, url, ctx) = (probe.clone(), url.clone(), ctx.clone());
+    let headers = crate::app::auth_headers(login);
+    rt.spawn(async move {
+        let res = mdm_engine::probe(url, headers, &Options::default())
+            .await
+            .map_err(|e| e.to_string());
+        *slot.lock().unwrap() = Some(res);
+        ctx.request_repaint();
+    });
+    probe
 }
 
 // ---- Download complete (client 455 × 215) --------------------------------------------------

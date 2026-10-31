@@ -4167,6 +4167,15 @@ impl App {
                 );
                 self.dirty = true;
             }
+            // The address was edited after the early start: that download is the old address's.
+            // It goes; the new one starts early in its turn (start_early).
+            if let Some(id) = fi.early
+                && self.item(id).is_some_and(|i| i.url != fi.url)
+            {
+                self.stop(id);
+                self.after_stop.push((id, None));
+                fi.early = None;
+            }
             match out {
                 Outcome::Open => self.file_info = Some(fi),
                 Outcome::Closed => {
