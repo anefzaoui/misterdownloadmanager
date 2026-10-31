@@ -314,6 +314,14 @@ impl AddUrl {
                 {
                     self.list_open = !self.list_open;
                 }
+                // Up / Down step through the addresses entered before.
+                let at = self.history.iter().position(|h| *h == self.address.trim());
+                if !self.list_open
+                    && let Some(i) = winui::history_keys(ui, &addr, self.history.len(), at)
+                {
+                    self.address = self.history[i].clone();
+                    self.error = None;
+                }
                 let list_was_open = self.list_open;
                 if self.list_open
                     && let Some(i) = winui::drop_list(
@@ -707,6 +715,19 @@ impl FileInfo {
                     || winui::combo_keys(ui, &save)
                 {
                     self.folders_open = !self.folders_open;
+                }
+                // Up / Down step through the folders saved to before (the file name stays).
+                let dir = Path::new(&self.save_as).parent().map(|d| d.to_path_buf());
+                let at = self
+                    .folders
+                    .iter()
+                    .position(|f| dir.as_deref() == Some(resolve_path(f).as_path()));
+                if !self.folders_open
+                    && let Some(i) = winui::history_keys(ui, &save, self.folders.len(), at)
+                {
+                    let folder = resolve_path(&self.folders[i]);
+                    self.set_folder(&folder);
+                    self.edited = true;
                 }
                 let folders_were_open = self.folders_open;
                 if self.folders_open {

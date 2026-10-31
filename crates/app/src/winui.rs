@@ -1579,6 +1579,63 @@ fn edit_text_with(
         // lost the keys on Enter took the next typing nowhere).
         .return_key(None)
         .desired_width(inner.width());
+    if ui.memory(|m| m.has_focus(edit_id)) {
+        ui.input_mut(|i| {
+            let mut events = Vec::with_capacity(i.events.len());
+            for e in i.events.drain(..) {
+                match e {
+                    // Ctrl+V: one clean line (see single_line).
+                    egui::Event::Paste(t) => events.push(egui::Event::Paste(single_line(&t))),
+                    // A password's word moves would show where its words end: whole-box
+                    // moves instead (Ctrl+Left / Right to its ends, Ctrl+Backspace / Delete
+                    // to them).
+                    egui::Event::Key {
+                        key,
+                        pressed: true,
+                        modifiers,
+                        physical_key,
+                        repeat,
+                    } if password
+                        && modifiers.command
+                        && matches!(
+                            key,
+                            egui::Key::ArrowLeft
+                                | egui::Key::ArrowRight
+                                | egui::Key::Backspace
+                                | egui::Key::Delete
+                        ) =>
+                    {
+                        let plain = egui::Modifiers {
+                            shift: modifiers.shift,
+                            ..Default::default()
+                        };
+                        let select = egui::Modifiers::SHIFT;
+                        let press = |key, modifiers| egui::Event::Key {
+                            key,
+                            physical_key,
+                            pressed: true,
+                            repeat,
+                            modifiers,
+                        };
+                        match key {
+                            egui::Key::ArrowLeft => events.push(press(egui::Key::Home, plain)),
+                            egui::Key::ArrowRight => events.push(press(egui::Key::End, plain)),
+                            egui::Key::Backspace => {
+                                events.push(press(egui::Key::Home, select));
+                                events.push(press(egui::Key::Backspace, Default::default()));
+                            }
+                            _ => {
+                                events.push(press(egui::Key::End, select));
+                                events.push(press(egui::Key::Delete, Default::default()));
+                            }
+                        }
+                    }
+                    other => events.push(other),
+                }
+            }
+            i.events = events;
+        });
+    }
     let resp = ui.put(inner, |ui: &mut Ui| {
         // The caret in the box's own ink: egui's default (a pale blue in its dark style) was
         // all but invisible on a light box.
@@ -1755,8 +1812,10 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
             ctx.memory_mut(|m| m.request_focus(id));
             return;
         }
+        // Each change an undo step of its own (Undo after the menu's Paste did nothing).
         EditCmd::Cut => {
             ctx.copy_text(value[ba..bb].to_owned());
+            undoer.add_undo(&now);
             value.replace_range(ba..bb, "");
             (a, a)
         }
@@ -1770,13 +1829,15 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
             let text = if multiline {
                 text.replace("\r\n", "\n")
             } else {
-                text.replace(['\r', '\n'], " ")
+                single_line(&text)
             };
+            undoer.add_undo(&now);
             value.replace_range(ba..bb, &text);
             let end = a + text.chars().count();
             (end, end)
         }
         EditCmd::Delete => {
+            undoer.add_undo(&now);
             value.replace_range(ba..bb, "");
             (a, a)
         }
@@ -1786,6 +1847,7 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
         CCursor::new(caret.0),
         CCursor::new(caret.1),
     )));
+    state.set_undoer(undoer);
     state.store(&ctx, id);
     ctx.memory_mut(|m| m.request_focus(id));
 }
@@ -2030,6 +2092,31 @@ pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str, open: bool) -> Response {
 
 /// The keys that open an editable combo's drop list while its box has the focus: Alt+Down or
 /// F4, as Windows' combo boxes.
+/// Up / Down in an editable drop-down's box (the list closed): the next / previous of its
+/// `n` items, as Windows' editable combos step through theirs. `current`: the one the box
+/// shows, if any. Returns the item to put in the box.
+pub fn history_keys(ui: &Ui, edit: &Response, n: usize, current: Option<usize>) -> Option<usize> {
+    if !edit.has_focus() || n == 0 {
+        return None;
+    }
+    keep_keys(ui, edit, false, true, false);
+    if take_key(ui, egui::Key::ArrowDown) {
+        Some(current.map_or(0, |c| (c + 1).min(n - 1)))
+    } else if take_key(ui, egui::Key::ArrowUp) {
+        Some(current.map_or(0, |c| c.saturating_sub(1)))
+    } else {
+        None
+    }
+}
+
+/// Text pasted into a one-line box: a trailing line break dropped, line breaks and tabs inside
+/// it one space each, other control characters out ("url\r\n" was "url" and two spaces).
+pub fn single_line(text: &str) -> String {
+    let t = text.trim_end_matches(['\r', '\n']);
+    let t = t.replace("\r\n", " ").replace(['\r', '\n', '\t'], " ");
+    t.chars().filter(|c| !c.is_control()).collect()
+}
+
 pub fn combo_keys(ui: &mut Ui, edit: &Response) -> bool {
     edit.has_focus()
         && ui.input_mut(|i| {
