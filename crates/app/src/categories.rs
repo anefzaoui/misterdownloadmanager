@@ -30,6 +30,8 @@ pub struct CategoryDialog {
     name: String,
     types: String,
     folder: String,
+    /// Name has been given the focus (once, when the dialog opens).
+    focused: bool,
 }
 
 impl CategoryDialog {
@@ -39,6 +41,7 @@ impl CategoryDialog {
             name: String::new(),
             types: String::new(),
             folder: String::new(),
+            focused: false,
         }
     }
 
@@ -46,7 +49,8 @@ impl CategoryDialog {
     pub fn edit(cat: Category, folder: &Path) -> Self {
         CategoryDialog {
             target: Target::Edit(cat),
-            name: cat.label().into_owned(),
+            // A built-in category's name as the interface writes it (its own stays as typed).
+            name: crate::i18n::t(&cat.label()).to_owned(),
             types: match cat {
                 Category::Custom(id) => crate::model::custom(id)
                     .map(|c| c.types)
@@ -54,6 +58,7 @@ impl CategoryDialog {
                 c => c.types_text(),
             },
             folder: folder.display().to_string(),
+            focused: false,
         }
     }
 
@@ -65,7 +70,7 @@ impl CategoryDialog {
             Target::Edit(_) => crate::i18n::mark("Category properties"),
         };
         let own = match self.target {
-            Target::Edit(c) => c.label().into_owned(),
+            Target::Edit(c) => crate::i18n::t(&c.label()).to_owned(),
             Target::New => String::new(),
         };
         let out = window(
@@ -81,13 +86,18 @@ impl CategoryDialog {
                     winui::text_right(&p, o.x + 90.0, o.y + y, crate::i18n::t(s), LIGHT_TEXT())
                 };
                 label(26.0, crate::i18n::mark("Name:"));
-                winui::edit_light(
+                let name_box = winui::edit_light(
                     ui,
                     r(o, 98.0, 12.0, 310.0, 23.0),
                     &mut self.name,
                     !built_in,
                     false,
                 );
+                // Opened, the keys are in Name (a new category is named first).
+                if !self.focused && !built_in {
+                    name_box.request_focus();
+                    self.focused = true;
+                }
                 label(57.0, crate::i18n::mark("File types:"));
                 winui::edit_light(
                     ui,
@@ -96,12 +106,15 @@ impl CategoryDialog {
                     !built_in,
                     false,
                 );
-                winui::text(
+                winui::fit(
+                    ui,
                     &p,
                     o.x + 98.0,
                     o.y + 80.0,
                     crate::i18n::t("Extensions separated by spaces, for example MP4 MKV R0*"),
                     LIGHT_DISABLED(),
+                    o.x + 408.0,
+                    "category-types-hint",
                 );
                 label(112.0, crate::i18n::mark("Folder:"));
                 winui::edit_light(
@@ -119,21 +132,41 @@ impl CategoryDialog {
                     false,
                 )
                 .clicked()
-                    && let Some(dir) = rfd::FileDialog::new()
-                        .set_directory(&self.folder)
-                        .pick_folder()
                 {
-                    self.folder = dir.display().to_string();
+                    // i18n: title of the folder picker of the category dialog
+                    let mut pick =
+                        rfd::FileDialog::new().set_title(crate::i18n::t("Category folder"));
+                    // From the folder typed, when there is one.
+                    let typed = Path::new(self.folder.trim());
+                    if typed.is_dir() {
+                        pick = pick.set_directory(typed);
+                    }
+                    if let Some(dir) = pick.pick_folder() {
+                        self.folder = dir.display().to_string();
+                    }
                 }
                 let name = self.name.trim();
                 // An empty name only greys OK; a name in use says so.
+                // Compared in any script's case (Книги is книги), the translated names too.
+                let same = |a: &str, b: &str| a.to_lowercase() == b.to_lowercase();
                 let taken = !built_in
-                    && names
-                        .iter()
-                        .any(|n| n.eq_ignore_ascii_case(name) && !n.eq_ignore_ascii_case(&own));
+                    && names.iter().any(|n| {
+                        (same(n, name) || same(crate::i18n::t(n), name))
+                            && !same(n, &own)
+                            && !same(crate::i18n::t(n), &own)
+                    });
                 if taken {
                     let e = crate::i18n::t("There is already a category with this name");
-                    winui::text(&p, o.x + 98.0, o.y + 142.0, e, winui::ERROR());
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 98.0,
+                        o.y + 142.0,
+                        e,
+                        winui::ERROR(),
+                        o.x + 408.0,
+                        "category-taken",
+                    );
                 }
                 let valid = built_in || (!name.is_empty() && !taken);
                 let ok = winui::button_light(
@@ -146,6 +179,12 @@ impl CategoryDialog {
                         ButtonKind::Disabled
                     },
                     false,
+                );
+                // i18n: why OK is greyed in the category dialog
+                let ok = winui::why_disabled(
+                    ok,
+                    name.is_empty() && !built_in,
+                    "Type the category's name",
                 )
                 .clicked();
                 let cancel = winui::button_light(
@@ -171,10 +210,33 @@ impl CategoryDialog {
             Outcome::Done(()) => Outcome::Done(CategoryEdit {
                 target: self.target,
                 name: self.name.trim().to_owned(),
-                types: self.types.split_whitespace().collect::<Vec<_>>().join(" "),
+                types: normalize_types(&self.types),
                 folder: self.folder.trim().to_owned(),
             }),
         }
+    }
+}
+
+/// File types as the matching reads them: one extension per word, without the "." or "*."
+/// people type (".mp4", "*.mp4"), commas and semicolons as spaces ("mp4, mkv"); a pattern's
+/// own "*" (R0*) stays.
+pub fn normalize_types(typed: &str) -> String {
+    typed
+        .split(|c: char| c.is_whitespace() || c == ',' || c == ';')
+        .map(|t| t.trim_start_matches("*.").trim_start_matches('.'))
+        .filter(|t| !t.is_empty())
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+#[cfg(test)]
+mod types_tests {
+    #[test]
+    fn typed_extensions_are_made_plain() {
+        assert_eq!(
+            super::normalize_types(".mp4, *.mkv;avi  R0*"),
+            "mp4 mkv avi R0*"
+        );
     }
 }
 
