@@ -45,6 +45,8 @@ enum Sub {
 
 pub struct OptionsDialog {
     s: Settings,
+    /// The settings it opened with: OK applies only what changed from them.
+    pub from: Settings,
     page: usize,
     /// The browsers check list's scroll and selection.
     browser_rows: winui::RowList,
@@ -87,6 +89,7 @@ impl OptionsDialog {
     ) -> Self {
         let s = settings.clone();
         OptionsDialog {
+            from: s.clone(),
             browser_rows: Default::default(),
             cat_dir: display_dir(&s.category_dir(Category::General, downloads)),
             mb: s.limits_mb.to_string(),

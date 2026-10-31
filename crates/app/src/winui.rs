@@ -2354,6 +2354,11 @@ fn button_face(
         widget_id(ui, ("button", label, rc.min.x as i32, rc.min.y as i32)),
         sense,
     );
+    // A focused button answers Enter itself (egui clicks it): the dialog's default button,
+    // read after it, doesn't run as well.
+    if resp.has_focus() {
+        take_key(ui, egui::Key::Enter);
+    }
     let state = State::of(&resp, enabled);
     let p = ui.painter();
     let face = button_colors(kind, state, dark);

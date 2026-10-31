@@ -156,9 +156,13 @@ pub struct Scheduler {
     /// The queue list's and the files list's scroll and selection.
     tree_rows: winui::RowList,
     files_rows: winui::RowList,
+    /// Each queue's downloads as the app last had them ([`Scheduler::sync_items`]).
+    base: std::collections::HashMap<String, Vec<u64>>,
     focus: Focus,
     /// The "Enter queue name" prompt, while open.
     naming: Option<String>,
+    /// Delete's question, for this queue, while it is asked.
+    deleting: Option<(usize, crate::dialogs::Confirm)>,
 }
 
 // i18n: the Scheduler's page (and checkbox) that caps how much is downloaded in a time
@@ -180,6 +184,10 @@ impl Scheduler {
             q.running = false;
         }
         let forms = queues.iter().map(Form::of).collect();
+        let base = queues
+            .iter()
+            .map(|q| (q.name.clone(), q.items.clone()))
+            .collect();
         let limits = Limits::from_settings(settings);
         let mut s = Scheduler {
             limits_mb: limits.mb.to_string(),
@@ -194,6 +202,8 @@ impl Scheduler {
             files_rows: Default::default(),
             focus: Focus::default(),
             naming: None,
+            deleting: None,
+            base,
         };
         s.applied = s.state();
         s
@@ -235,16 +245,47 @@ impl Scheduler {
         }
     }
 
-    /// Draw the dialog. `running` holds the names of running queues. Returns false once closed.
+    /// The queues' downloads as the app has them now (`live`), merged into the draft: added or
+    /// deleted in the main window while the Scheduler is open is kept, and so is what the
+    /// Scheduler moved or removed itself.
+    fn sync_items(&mut self, live: &[Queue]) {
+        for (k, q) in self.queues.iter_mut().enumerate() {
+            let Some(now) = live.iter().find(|l| l.name == q.name) else {
+                continue;
+            };
+            let base = self
+                .base
+                .entry(q.name.clone())
+                .or_insert_with(|| now.items.clone());
+            if *base == now.items {
+                continue;
+            }
+            q.items = merge_items(base, &q.items, &now.items);
+            if let Some(a) = self.applied.0.get_mut(k).filter(|a| a.name == q.name) {
+                a.items = merge_items(base, &a.items, &now.items);
+            }
+            *base = now.items.clone();
+        }
+    }
+
+    /// Draw the dialog. `live` is the app's queues (what runs, their downloads now). Returns
+    /// false once closed.
     pub fn show(
         &mut self,
         ctx: &egui::Context,
         icons: &mut ShellIcons,
         items: &[Item],
-        running: &[String],
+        live: &[Queue],
         actions: &mut Vec<Action>,
     ) -> bool {
-        let naming = self.naming.is_some();
+        self.sync_items(live);
+        let running: Vec<String> = live
+            .iter()
+            .filter(|q| q.running)
+            .map(|q| q.name.clone())
+            .collect();
+        let running = running.as_slice();
+        let naming = self.naming.is_some() || self.deleting.is_some();
         let outcome = window(
             ctx,
             "scheduler",
@@ -257,6 +298,23 @@ impl Scheduler {
         );
         if self.naming.is_some() {
             self.name_prompt(ctx);
+        }
+        // Delete asks first: a queue's schedule can't be had back.
+        if let Some((q, ask)) = &mut self.deleting {
+            match ask.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.deleting = None,
+                Outcome::Done(()) => {
+                    let q = *q;
+                    self.deleting = None;
+                    if q < self.queues.len() {
+                        self.queues.remove(q);
+                        self.forms.remove(q);
+                        self.selected = q - 1;
+                        self.files_rows.selected = None;
+                    }
+                }
+            }
         }
         if matches!(outcome, Outcome::Closed) {
             // Close keeps the changes (as Apply would) [IDM: unknown, lab].
@@ -402,10 +460,16 @@ impl Scheduler {
             self.naming = Some(queue_name(self.queues.len() + 1));
         }
         if (delete || delete_key) && deletable {
-            self.queues.remove(self.selected);
-            self.forms.remove(self.selected);
-            self.selected -= 1;
-            self.files_rows.selected = None;
+            let name = crate::i18n::t(&self.queues[self.selected].name).to_owned();
+            let text = crate::i18n::fmt(
+                // i18n: asked before deleting a queue; its downloads stay in the list
+                crate::i18n::t("Delete the queue \"{queue}\"? Its downloads stay in the list."),
+                &[("queue", &crate::i18n::isolate(&name))],
+            );
+            self.deleting = Some((
+                self.selected,
+                crate::dialogs::Confirm::new(crate::i18n::mark("Delete queue"), text),
+            ));
         }
         if apply {
             self.apply(actions);
@@ -1689,9 +1753,34 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
     (picked, over)
 }
 
+/// A queue's downloads after a three-way merge: the draft's order, less what left the list
+/// since `base`, plus what was added to the queue since (at the end).
+fn merge_items(base: &[u64], draft: &[u64], live: &[u64]) -> Vec<u64> {
+    let mut out: Vec<u64> = draft
+        .iter()
+        .copied()
+        .filter(|i| live.contains(i) || !base.contains(i))
+        .collect();
+    for i in live {
+        if !base.contains(i) && !out.contains(i) {
+            out.push(*i);
+        }
+    }
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_draft_keeps_its_order_and_the_lists_changes() {
+        // Opened with 1 2 3; the Scheduler moved 3 up and removed 1; meanwhile the main window
+        // deleted 2 and added 4.
+        assert_eq!(merge_items(&[1, 2, 3], &[3, 2], &[1, 3, 4]), vec![3, 4]);
+        // Nothing changed elsewhere: the draft as it is.
+        assert_eq!(merge_items(&[1, 2], &[2, 1], &[1, 2]), vec![2, 1]);
+    }
 
     #[test]
     fn a_form_round_trips_a_queue() {

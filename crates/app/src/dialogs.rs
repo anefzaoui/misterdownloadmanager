@@ -1440,28 +1440,22 @@ impl TurnOffCountdown {
         use crate::queue::TurnOff;
         #[cfg(windows)]
         {
-            let mut cmd = match self.mode {
-                TurnOff::ShutDown => {
-                    let mut c = std::process::Command::new("shutdown");
-                    c.args(["/s", "/t", "0"]);
-                    c
-                }
-                TurnOff::Hibernate => {
-                    let mut c = std::process::Command::new("shutdown");
-                    c.arg("/h");
-                    c
-                }
+            use std::os::windows::process::CommandExt;
+            let mut cmd = std::process::Command::new("shutdown");
+            match self.mode {
+                TurnOff::ShutDown => cmd.args(["/s", "/t", "0"]),
+                TurnOff::Hibernate => cmd.arg("/h"),
                 TurnOff::Sleep => {
-                    let mut c = std::process::Command::new("rundll32.exe");
-                    c.arg("powrprof.dll,SetSuspendState").arg("0,1,0");
-                    c
+                    crate::win32::sleep(self.force);
+                    return;
                 }
             };
             // "Force processes to terminate": don't wait for programs that hold it up.
-            if self.force && self.mode != TurnOff::Sleep {
+            if self.force {
                 cmd.arg("/f");
             }
-            let _ = cmd.spawn();
+            // No console window flashing up (CREATE_NO_WINDOW).
+            let _ = cmd.creation_flags(0x0800_0000).spawn();
         }
         // Linux: systemd, as the desktop's own menu does; forcing ignores the programs that ask
         // to delay it (inhibitors).
@@ -1510,6 +1504,8 @@ pub struct ConfirmDelete {
     unfinished: bool,
     files: bool,
     dont_show: bool,
+    /// The files box's answer becomes the next one's default (not after Shift+Delete).
+    pub remember: bool,
 }
 
 impl ConfirmDelete {
@@ -1521,6 +1517,7 @@ impl ConfirmDelete {
             unfinished,
             files,
             dont_show: false,
+            remember: true,
         }
     }
 

@@ -243,6 +243,24 @@ pub fn remember(list: &mut Vec<String>, value: &str) {
 }
 
 impl Settings {
+    /// `live` with the settings a dialog changed (`from` → `to`) put in, field by field: what
+    /// changed elsewhere while it was open (the toolbar's Speed Limiter, Torrent settings, the
+    /// Categories pane) is kept, not reverted to the copy the dialog started from.
+    pub fn merge_changes(live: &Settings, from: &Settings, to: &Settings) -> Settings {
+        let value = |s: &Settings| serde_json::to_value(s).unwrap_or_default();
+        let (mut out, before, after) = (value(live), value(from), value(to));
+        if let (Some(out), Some(before), Some(after)) =
+            (out.as_object_mut(), before.as_object(), after.as_object())
+        {
+            for (k, v) in after {
+                if before.get(k) != Some(v) {
+                    out.insert(k.clone(), v.clone());
+                }
+            }
+        }
+        serde_json::from_value(out).unwrap_or_else(|_| to.clone())
+    }
+
     /// Options → Save to: the category's folder (its own choice, else `Downloads\<Category>`).
     pub fn category_dir(
         &self,
@@ -348,6 +366,18 @@ impl Settings {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_dialog_keeps_what_changed_elsewhere_meanwhile() {
+        let from = super::Settings::default();
+        let mut live = from.clone();
+        live.speed_limit_on = !from.speed_limit_on; // the toolbar, while Options was open
+        let mut to = from.clone();
+        to.max_connections = 3; // Options
+        let out = super::Settings::merge_changes(&live, &from, &to);
+        assert_eq!(out.speed_limit_on, live.speed_limit_on);
+        assert_eq!(out.max_connections, 3);
+    }
+
     use super::*;
 
     #[test]

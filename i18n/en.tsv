@@ -263,12 +263,13 @@
 	Delete	Delete
 #. message or event log entry in the main window
 	Delete category	Delete category
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 	Delete queue	Delete queue
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Delete the category "{category}"? Its downloads become General; their files stay where they are.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Delete the queue "{queue}"? Its downloads stay in the list.	Delete the queue "{queue}"? Its downloads stay in the list.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -675,6 +676,9 @@
 	Move without changing the selection	Move without changing the selection
 #. message or event log entry in the main window
 	Move/Rename	Move/Rename
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+	Moving the file...	Moving the file...
 #. text in errors.rs
 	much slower than the other connections; reconnecting	much slower than the other connections; reconnecting
 #. text in the download list (sizes, speeds, status)
@@ -767,6 +771,8 @@
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 	Only a finished download, or one not started yet, can be moved	Only a finished download, or one not started yet, can be moved
+#. message or event log entry in the main window
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
 #. button in a download's Properties window
@@ -1156,6 +1162,9 @@
 	the file changed on the server	the file changed on the server
 #. message or event log entry in the main window
 	The file could not be moved	The file could not be moved
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+	The file could not be moved: {error}	The file could not be moved: {error}
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be read: {error}	The file could not be read: {error}

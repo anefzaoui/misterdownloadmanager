@@ -344,6 +344,8 @@ impl Picker {
                     None,
                 )
                 .clicked();
+                // Enter, unless a focused button (Cancel) took it.
+                let enter = enter && winui::enter_pressed(ui);
                 if (ok || enter || chosen) && !rows.is_empty() {
                     Outcome::Done(self.selected)
                 } else if cancel || esc {

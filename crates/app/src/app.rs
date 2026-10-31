@@ -148,6 +148,30 @@ enum Cmd {
     None,
 }
 
+/// A file move's answer, from its thread.
+type MoveDone = std::sync::mpsc::Receiver<Result<(), String>>;
+
+/// Move a file: a rename, else a copy and the original deleted (a copy whose original can't go,
+/// in use, is taken back: the file stays in one place).
+fn move_file(from: &std::path::Path, to: &std::path::Path) -> Result<(), String> {
+    if std::fs::rename(from, to).is_ok() {
+        return Ok(());
+    }
+    std::fs::copy(from, to).map_err(|e| e.to_string())?;
+    std::fs::remove_file(from).map_err(|e| {
+        let _ = std::fs::remove_file(to);
+        e.to_string()
+    })
+}
+
+/// A download's new place (its name from it).
+fn take_place(item: &mut Item, target: PathBuf) {
+    if let Some(name) = target.file_name() {
+        item.file_name = name.to_string_lossy().into_owned();
+    }
+    item.dest = target;
+}
+
 /// The status strip's height, under the list and the Categories pane.
 const STRIP_H: f32 = 22.0;
 
@@ -265,6 +289,8 @@ pub struct App {
     notice: Option<(&'static str, String)>,
     /// Why the last save of the download list failed (told once per reason).
     save_failed: Option<String>,
+    /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
+    moving: Vec<(u64, PathBuf, MoveDone)>,
     /// A finished queue asked to turn the computer off: the countdown, cancellable.
     turn_off: Option<dialogs::TurnOffCountdown>,
     /// A finished queue asked to exit.
@@ -565,6 +591,7 @@ impl App {
             last_find: None,
             notice: None,
             save_failed: None,
+            moving: Vec::new(),
             turn_off: None,
             exit_requested: false,
             global: std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None)),
@@ -1393,15 +1420,20 @@ impl App {
             .filter_map(|id| self.items.iter().find(|i| i.id == *id && i.live.is_none()))
             .collect();
         let Some(first) = gone.first() else { return };
+        // Shift+Delete ticks "also the files" this once; only a plain Delete's answer is
+        // remembered (else one Shift+Delete made every later Delete erase files).
+        let shift = files;
         let files = files || self.settings.delete_files_too;
         if self.settings.confirm_delete {
             let one = gone.len() == 1;
-            self.confirm_delete = Some(dialogs::ConfirmDelete::new(
+            let mut ask = dialogs::ConfirmDelete::new(
                 gone.iter().map(|i| i.id).collect(),
                 first.file_name.clone(),
                 one && first.status != Status::Complete,
                 files,
-            ));
+            );
+            ask.remember = !shift;
+            self.confirm_delete = Some(ask);
         } else {
             let ids: Vec<u64> = gone.into_iter().map(|i| i.id).collect();
             self.remove_downloads(&ids, files);
@@ -1600,20 +1632,75 @@ impl App {
                 item.status = Status::Stopped;
             }
         }
-        if let Some(dir) = c.move_to {
-            let target = mdm_engine::naming::unique_path(&dir, &item.file_name);
-            if item.status == Status::Complete {
-                let moved = std::fs::rename(&item.dest, &target).is_ok()
-                    || (std::fs::copy(&item.dest, &target).is_ok()
-                        && std::fs::remove_file(&item.dest).is_ok());
-                if moved {
-                    item.dest = target;
+        // Moved into the folder it is already in: nothing to do (it became "a (1).zip").
+        let move_to = c
+            .move_to
+            .filter(|dir| item.dest.parent() != Some(dir.as_path()))
+            .map(|dir| mdm_engine::naming::unique_path(&dir, &item.file_name));
+        self.dirty = true;
+        if let Some(target) = move_to {
+            self.start_move(c.id, target);
+        }
+    }
+
+    /// Move a download to `target` (its name too): a finished file moves on a thread of its
+    /// own (a copy to another drive takes a while), one not started just takes the new place.
+    /// A failure says why.
+    fn start_move(&mut self, id: u64, target: PathBuf) {
+        let Some(item) = self.item(id) else { return };
+        if target == item.dest {
+            return;
+        }
+        if item.status != Status::Complete {
+            if item.downloaded == 0 {
+                take_place(item, target);
+                self.dirty = true;
+            }
+            return;
+        }
+        let (tx, rx) = std::sync::mpsc::channel();
+        let from = item.dest.clone();
+        let to = target.clone();
+        item.note(crate::i18n::t("Moving the file..."));
+        std::thread::spawn(move || {
+            let _ = tx.send(move_file(&from, &to));
+        });
+        self.moving.push((id, target, rx));
+    }
+
+    /// Moves that finished: the download takes its new place, or the user is told why not.
+    fn poll_moves(&mut self) {
+        let mut done = Vec::new();
+        self.moving.retain(|(id, target, rx)| match rx.try_recv() {
+            Ok(r) => {
+                done.push((*id, target.clone(), r));
+                false
+            }
+            Err(std::sync::mpsc::TryRecvError::Empty) => true,
+            Err(_) => false,
+        });
+        for (id, target, r) in done {
+            match r {
+                Ok(()) => {
+                    if let Some(item) = self.item(id) {
+                        take_place(item, target);
+                    }
+                    self.dirty = true;
                 }
-            } else if item.downloaded == 0 {
-                item.dest = target;
+                Err(e) => {
+                    if let Some(item) = self.item(id) {
+                        item.note(crate::i18n::t("The file could not be moved"));
+                    }
+                    self.notice = Some((
+                        crate::i18n::mark("Move/Rename"),
+                        crate::i18n::fmt(
+                            crate::i18n::t("The file could not be moved: {error}"),
+                            &[("error", &e)],
+                        ),
+                    ));
+                }
             }
         }
-        self.dirty = true;
     }
 
     /// Select the next download matching `q` after the selection: in the list as shown, else
@@ -2031,6 +2118,14 @@ impl App {
         let index = |queues: &[Queue], name: &str| queues.iter().position(|q| q.name == name);
         match a {
             Action::Apply { queues, limits } => {
+                // A running queue the Scheduler deleted stops first (its downloads stay).
+                for q in 0..self.queues.len() {
+                    if self.queues[q].running
+                        && !queues.iter().any(|n| n.name == self.queues[q].name)
+                    {
+                        self.stop_queue(q);
+                    }
+                }
                 // Running state belongs to the app, not the draft.
                 let running: Vec<String> = self
                     .queues
@@ -2038,6 +2133,14 @@ impl App {
                     .filter(|q| q.running)
                     .map(|q| q.name.clone())
                     .collect();
+                // The list showing a queue follows it to its new place (All Downloads when
+                // it is gone).
+                if let View::Queue(i) = self.view {
+                    let name = self.queues.get(i).map(|q| q.name.clone());
+                    self.view = name
+                        .and_then(|n| queues.iter().position(|q| q.name == n))
+                        .map_or(View::All, View::Queue);
+                }
                 self.queues = queues;
                 for q in &mut self.queues {
                     q.running = running.contains(&q.name);
@@ -2547,6 +2650,10 @@ impl App {
 
     /// Pull engine progress into the rows; open "Download complete" when one finishes.
     fn poll(&mut self, ctx: &egui::Context) {
+        self.poll_moves();
+        if !self.moving.is_empty() {
+            ctx.request_repaint_after(Duration::from_millis(200));
+        }
         let mut finished = Vec::new();
         let mut failed = Vec::new();
         let mut any_live = false;
@@ -3663,9 +3770,11 @@ impl App {
             let (del, shift_del) = ctx.input(|i| {
                 (
                     i.key_pressed(egui::Key::Delete) && !i.modifiers.shift,
+                    // Windows reports it as Cut; macOS and Linux as the key.
                     i.modifiers.shift
                         && !i.modifiers.command
-                        && i.events.iter().any(|e| matches!(e, egui::Event::Cut)),
+                        && (i.events.iter().any(|e| matches!(e, egui::Event::Cut))
+                            || i.key_pressed(egui::Key::Delete)),
                 )
             });
             if shift_del {
@@ -4119,6 +4228,14 @@ impl App {
         };
         let complete = item.status == Status::Complete;
         if item.live.is_some() || !(complete || item.downloaded == 0) {
+            // Said, not silently ignored (F2, Ctrl+M on a download that can't move).
+            self.notice = Some((
+                crate::i18n::mark("Move/Rename"),
+                crate::i18n::t(
+                    "Only a finished download, or one not started yet, can be moved. Stop it and finish it first.",
+                )
+                .to_owned(),
+            ));
             return;
         }
         let Some(target) = rfd::FileDialog::new()
@@ -4129,24 +4246,7 @@ impl App {
         else {
             return;
         };
-        let Some(item) = self.item(id) else { return };
-        if target == item.dest {
-            return;
-        }
-        if complete {
-            let moved = std::fs::rename(&item.dest, &target).is_ok()
-                || (std::fs::copy(&item.dest, &target).is_ok()
-                    && std::fs::remove_file(&item.dest).is_ok());
-            if !moved {
-                item.note(crate::i18n::t("The file could not be moved"));
-                return;
-            }
-        }
-        if let Some(name) = target.file_name() {
-            item.file_name = name.to_string_lossy().into_owned();
-        }
-        item.dest = target;
-        self.dirty = true;
+        self.start_move(id, target);
     }
 
     /// Delete a queue of the user's (not the two built-in ones); its downloads stay in the list.
@@ -4390,9 +4490,12 @@ impl App {
                 Outcome::Closed => self.confirm_delete = None,
                 Outcome::Done((files, dont_show)) => {
                     let ids = std::mem::take(&mut d.ids);
+                    let remember = d.remember;
                     self.confirm_delete = None;
                     self.remove_downloads(&ids, files);
-                    self.settings.delete_files_too = files;
+                    if remember {
+                        self.settings.delete_files_too = files;
+                    }
                     if dont_show {
                         self.settings.confirm_delete = false;
                     }
@@ -4557,20 +4660,21 @@ impl App {
                     self.options = None;
                 }
                 Outcome::Done(new) => {
+                    let new = Settings::merge_changes(&self.settings, &d.from, &new);
                     self.options = None;
                     self.apply_options(new);
                 }
             }
         }
         if let Some(mut s) = self.scheduler.take() {
-            let running: Vec<String> = self
-                .queues
-                .iter()
-                .filter(|q| q.running)
-                .map(|q| q.name.clone())
-                .collect();
             let mut actions = Vec::new();
-            let open = s.show(ctx, &mut self.icons, &self.items, &running, &mut actions);
+            let open = s.show(
+                ctx,
+                &mut self.icons,
+                &self.items,
+                &self.queues,
+                &mut actions,
+            );
             for a in actions {
                 self.scheduler_action(a);
             }

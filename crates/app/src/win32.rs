@@ -363,6 +363,14 @@ pub fn apps_use_dark() -> bool {
     rc == 0 && value == 0
 }
 
+/// Sleep now (not hibernate: rundll32's SetSuspendState read its own window handle as
+/// "hibernate"). `force`: don't let programs delay it. False when Windows refused.
+pub fn sleep(force: bool) -> bool {
+    use windows_sys::Win32::System::Power::SetSuspendState;
+    // SAFETY: a plain call; FALSE / force / FALSE (no wake events disabled).
+    unsafe { SetSuspendState(false, force, false) }
+}
+
 /// Is this screen point (a saved window's corner, in points) on a monitor now? A window put
 /// back where a since-removed screen was would open out of sight.
 pub fn on_a_screen(x: i32, y: i32) -> bool {
