@@ -744,9 +744,7 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
     // Long values are cut with "..." at the page edge and shown whole on hover.
     let fit = |key: &str, x: f32, base: f32, s: &str, color| {
         let (rect, cut) = winui::text_fit(p, o.x + x, o.y + base, s, color, o.x + PAGE_TEXT_RIGHT);
-        if cut {
-            winui::full_on_hover(ui, rect, key, s);
-        }
+        winui::copyable(ui, rect, key, s, cut);
     };
     let status = match item.status {
         Status::Downloading => {
@@ -1277,9 +1275,8 @@ fn table(
             let x = heads.get(c).map_or(o.x + 25.0, |h| o.x + h.0);
             let (rect, cut) =
                 winui::text_fit(&clip, x, top + 12.0, cell, winui::TEXT(), right_of(c));
-            if cut {
-                winui::full_on_hover(ui, rect.intersect(body), (id, first + k, c), cell);
-            }
+            // Cells hold info hashes, folders, trackers, peers: copyable (whole on hover).
+            winui::copyable(ui, rect.intersect(body), (id, first + k, c), cell, cut);
         }
     }
     if rows.len() > visible {

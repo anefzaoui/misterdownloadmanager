@@ -99,9 +99,7 @@ impl Properties {
         let fit = |ui: &mut Ui, x: f32, base: f32, s: &str| {
             let (rect, cut) =
                 winui::text_fit(&p, o.x + x, o.y + base, s, LIGHT_TEXT(), o.x + 466.0);
-            if cut {
-                winui::full_on_hover(ui, rect, ("props", base as i32), s);
-            }
+            winui::copyable(ui, rect, ("props", base as i32), s, cut);
         };
         fit(ui, 87.0, 31.0, &item.file_name);
         winui::etched_h(&p, o.x + 11.0, o.y + 50.0, 456.0);
@@ -372,27 +370,10 @@ fn file_type(name: &str, ext: &str) -> String {
     }
 }
 
-/// A read-only field: the dialog colour, its text cut to fit (whole on hover).
-/// A read-only field holding a path or an address (left-to-right data).
+/// A read-only field holding a path or an address (left-to-right data): the shared one, so it
+/// can be copied.
 fn readonly(ui: &mut Ui, rc: egui::Rect, value: &str) {
-    winui::edit_frame(ui.painter(), rc, true);
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, LIGHT_BG());
-    let p = ui.painter().clone();
-    // From the field's leading edge (an English pen in its English rect).
-    let e = winui::rect(rc);
-    let shown = winui::ellipsize(&p, &winui::tahoma(), value, e.width() - 9.0);
-    let cut = shown != value;
-    // A path or an address reads left to right in every language: in RTL its "..." stays at
-    // its end, not at the start of the line.
-    let shown = if winui::rtl() {
-        crate::i18n::ltr(&shown)
-    } else {
-        shown
-    };
-    let rect = winui::text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
-    if cut {
-        winui::full_on_hover(ui, rect, ("props-readonly", rc.top() as i32), value);
-    }
+    winui::readonly_field(ui, rc, value, LIGHT_BG(), true, ("props", rc.top() as i32));
 }
 
 fn password(ui: &mut Ui, rc: egui::Rect, value: &mut String, enabled: bool) {

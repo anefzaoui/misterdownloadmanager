@@ -2072,29 +2072,16 @@ fn multiline(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) {
     winui::multiline_light(ui, rc, value, id);
 }
 
-/// A read-only field (the page colour, as IDM's).
+/// A read-only field (the page colour, as IDM's): the shared one, so it can be copied.
 fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
-    winui::edit_frame(ui.painter(), rc, true);
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, LIGHT_PAGE());
-    let p = ui.painter().clone();
-    // The value from the field's leading edge (an English pen in its English rect).
-    let e = winui::rect(rc);
-    let (rect, cut) = winui::text_fit(
-        &p,
-        e.left() + 5.0,
-        e.top() + 15.0,
+    winui::readonly_field(
+        ui,
+        rc,
         value,
-        LIGHT_TEXT(),
-        e.right() - 4.0,
+        LIGHT_PAGE(),
+        false,
+        ("options", rc.left() as i32, rc.top() as i32),
     );
-    if cut {
-        winui::full_on_hover(
-            ui,
-            rect,
-            ("readonly", rc.left() as i32, rc.top() as i32),
-            value,
-        );
-    }
 }
 
 /// A password edit (characters shown as bullets): the shared one, on the tab page.

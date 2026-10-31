@@ -612,12 +612,12 @@ pub fn scroll_text(
     let max_top = (total - visible).max(0.0);
     let mut top: f32 = ui.data(|d| d.get_temp(id)).unwrap_or(0.0);
     // The wheel scrolls three lines a notch, as Windows text boxes do.
-    if ui
-        .interact(rect(area), id.with("area"), Sense::hover())
-        .hovered()
-    {
+    let area_resp = ui.interact(rect(area), id.with("area"), pointer_only());
+    if area_resp.hovered() {
         top -= ui.input(|i| i.smooth_scroll_delta.y) / 40.0 * 3.0;
     }
+    // The whole text to the clipboard from its right-click menu.
+    copy_menu(&area_resp, s);
     if keys {
         let page = (visible - 1.0).max(1.0);
         ui.input(|i| {
@@ -946,6 +946,21 @@ pub fn full_on_hover(
         .on_hover_text(full);
 }
 
+/// Text already drawn in `rect` that the user may want to copy (an address, a hash, a path, a
+/// version): its right-click menu copies it whole ([`copy_menu`]), and it shows whole on hover
+/// when `cut`. Taken by the pointer only (labels are no Tab stops).
+pub fn copyable(
+    ui: &Ui,
+    rect: Rect,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+    text: &str,
+    cut: bool,
+) -> Response {
+    let resp = ui.interact(rect, ui.scope_id().with(("copyable", salt)), pointer_only());
+    copy_menu(&resp, text);
+    if cut { resp.on_hover_text(text) } else { resp }
+}
+
 /// Right-aligned label whose ink ends at `right`.
 pub fn text_right(p: &Painter, right: f32, baseline: f32, s: &str, color: Color32) -> (Rect, bool) {
     // A text longer than the room to the window's near edge (6 px margin) is cut with "...":
@@ -1156,7 +1171,20 @@ fn edit_text_with(
         pos2(rc.left() + inset, rc.top() + 3.0),
         pos2(rc.right() - inset, rc.top() + 16.0),
     );
+    // The whole drawn box takes clicks (the text itself fills only a strip inside it): first,
+    // so the text on top still gets its own; a click elsewhere in the box focuses it.
+    let edit_id = widget_id(ui, ("edit-box", rc.min.x as i32, rc.min.y as i32));
+    if enabled {
+        let frame = ui.interact(rc, edit_id.with("frame"), pointer_only());
+        if frame.hovered() {
+            ui.ctx().set_cursor_icon(egui::CursorIcon::Text);
+        }
+        if frame.clicked() {
+            ui.memory_mut(|m| m.request_focus(edit_id));
+        }
+    }
     let te = egui::TextEdit::singleline(value)
+        .id(edit_id)
         .align(egui::Align2([align, egui::Align::TOP]))
         .frame(egui::Frame::NONE)
         .margin(egui::Margin::ZERO)
@@ -1170,6 +1198,18 @@ fn edit_text_with(
         ui.visuals_mut().text_cursor.stroke.color = color;
         ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
     });
+    // Tab into a box selects its text, as in Windows (a click places the caret instead).
+    if resp.gained_focus() && !ui.input(|i| i.pointer.any_down()) {
+        let mut state = egui::text_edit::TextEditState::load(ui.ctx(), edit_id).unwrap_or_default();
+        let n = value.chars().count();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::two(
+                egui::text::CCursor::new(0),
+                egui::text::CCursor::new(n),
+            )));
+        state.store(ui.ctx(), edit_id);
+    }
     if enabled {
         edit_menu(&resp, value, password, false);
     }
@@ -1178,6 +1218,7 @@ fn edit_text_with(
 
 #[derive(Clone, Copy)]
 enum EditCmd {
+    Undo,
     Cut,
     Copy,
     Paste,
@@ -1188,6 +1229,72 @@ enum EditCmd {
 /// A text box's right-click menu: Cut, Copy, Paste, Delete and Select all, on the box's own
 /// selection, as every Windows, macOS and Linux text box has (Cut and Copy not for passwords). A
 /// menu window of its own (`chrome::popup`), so short dialogs never cut it off.
+/// A right-click (or Shift+F10) menu with Copy for read-only text `text` shown by `resp` (a
+/// value, a version, an address): the whole text goes to the clipboard. Ctrl+C does the same
+/// while `resp` has the focus.
+pub fn copy_menu(resp: &Response, text: &str) {
+    use crate::chrome::{MenuEntry, PopupResult};
+    let ctx = resp.ctx.clone();
+    let key = resp.id.with("copy-menu");
+    if resp.has_focus() && ctx.input(|i| i.events.iter().any(|e| matches!(e, egui::Event::Copy))) {
+        ctx.copy_text(text.to_owned());
+    }
+    if resp.secondary_clicked()
+        && let Some(p) = resp.interact_pointer_pos()
+    {
+        ctx.data_mut(|d| d.insert_temp(key, p));
+    }
+    if resp.has_focus() && ctx.input_mut(|i| i.consume_key(egui::Modifiers::SHIFT, egui::Key::F10))
+    {
+        ctx.data_mut(|d| d.insert_temp(key, resp.rect.left_bottom()));
+    }
+    let Some(at) = ctx.data(|d| d.get_temp::<Pos2>(key)) else {
+        return;
+    };
+    let entries = [MenuEntry::Item("&Copy", (), !text.is_empty(), false)];
+    match crate::chrome::popup(&ctx, &format!("copy-{:?}", resp.id), at, &entries, &|_| {
+        None
+    }) {
+        PopupResult::Open | PopupResult::Neighbor(_) => {}
+        PopupResult::Chosen(()) => {
+            ctx.copy_text(text.to_owned());
+            ctx.data_mut(|d| d.remove::<Pos2>(key));
+        }
+        PopupResult::Dismissed => ctx.data_mut(|d| d.remove::<Pos2>(key)),
+    }
+}
+
+/// A read-only value in a box (a path, an address): cut to fit with "..." and whole on hover,
+/// on `fill`; it takes the focus (Tab), and Ctrl+C or its right-click menu copies the whole
+/// value ([`copy_menu`]). `ltr`: the value reads left to right in every language (paths,
+/// addresses keep their "..." at their end in a right-to-left interface).
+pub fn readonly_field(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &str,
+    fill: Color32,
+    ltr: bool,
+    id: impl std::hash::Hash + std::fmt::Debug,
+) -> Response {
+    edit_frame(ui.painter(), rc, true);
+    ui.painter().rect_filled(rc.shrink(2.0), 0.0, fill);
+    let p = ui.painter().clone();
+    // From the field's leading edge (an English pen in its English rect).
+    let e = rect(rc);
+    let shown = ellipsize(&p, &tahoma(), value, e.width() - 9.0);
+    let cut = shown != value;
+    let shown = if ltr && rtl() {
+        crate::i18n::ltr(&shown)
+    } else {
+        shown
+    };
+    text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
+    let resp = ui.interact(rc, widget_id(ui, ("readonly", id)), Sense::click());
+    show_focus(ui, &resp, rc.shrink(2.0));
+    copy_menu(&resp, value);
+    if cut { resp.on_hover_text(value) } else { resp }
+}
+
 pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline: bool) {
     use crate::chrome::{MenuEntry, PopupResult};
     use egui::text::{CCursor, CCursorRange};
@@ -1223,7 +1330,12 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
         .and_then(|mut c| c.get_text())
         .ok()
         .filter(|t| !t.is_empty());
+    // egui's own undo history (Ctrl+Z uses it too).
+    let mut undoer = state.undoer();
+    let now = (state.cursor.char_range().unwrap_or_default(), value.clone());
     let entries = vec![
+        MenuEntry::Item("&Undo", EditCmd::Undo, undoer.has_undo(&now), false),
+        MenuEntry::Sep,
         MenuEntry::Item("Cu&t", EditCmd::Cut, has && !password, false),
         MenuEntry::Item("&Copy", EditCmd::Copy, has && !password, false),
         MenuEntry::Item("&Paste", EditCmd::Paste, clip.is_some(), false),
@@ -1241,6 +1353,17 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
     let byte = |c: usize| value.char_indices().nth(c).map_or(value.len(), |(i, _)| i);
     let (ba, bb) = (byte(a), byte(b));
     let caret = match cmd {
+        EditCmd::Undo => {
+            let Some((range, text)) = undoer.undo(&now).cloned() else {
+                return;
+            };
+            *value = text;
+            state.set_undoer(undoer);
+            state.cursor.set_char_range(Some(range));
+            state.store(&ctx, id);
+            ctx.memory_mut(|m| m.request_focus(id));
+            return;
+        }
         EditCmd::Cut => {
             ctx.copy_text(value[ba..bb].to_owned());
             value.replace_range(ba..bb, "");

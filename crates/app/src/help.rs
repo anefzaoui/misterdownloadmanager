@@ -572,7 +572,9 @@ impl About {
                     crate::i18n::t("Version {version} ({commit})"),
                     &[("version", VERSION), ("commit", COMMIT)],
                 );
-                winui::text(&p, o.x + 80.0, o.y + 46.0, &version, winui::MUTED());
+                // Copyable: bug reports ask for it.
+                let rect = winui::text(&p, o.x + 80.0, o.y + 46.0, &version, winui::MUTED());
+                winui::copyable(ui, rect, "about-version", &version, false);
                 let lines = winui::paragraph(
                     &p,
                     o.x + 80.0,

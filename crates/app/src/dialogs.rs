@@ -696,13 +696,10 @@ impl FileInfo {
                     ))
                     .trim_end_matches('\\')
                 );
-                winui::edit(
-                    ui,
-                    r(o, 104.0, 112.0, 348.0, 23.0),
-                    &mut folder,
-                    false,
-                    false,
-                );
+                let folder_rc = r(o, 104.0, 112.0, 348.0, 23.0);
+                winui::edit(ui, folder_rc, &mut folder, false, false);
+                // Greyed as IDM shows it, and still copyable.
+                winui::copyable(ui, folder_rc, "remembered-folder", &folder, false);
 
                 // i18n: noun: label before a free-text box describing the file
                 winui::text_right(
@@ -876,8 +873,15 @@ impl Complete {
                     crate::i18n::t("Address"),
                     winui::TEXT(),
                 );
-                let mut url = self.url.clone();
-                winui::edit(ui, r(o, 11.0, 78.0, 434.0, 23.0), &mut url, true, false);
+                // Read-only and copyable (an editable copy let typing seem to work, then reverted).
+                winui::readonly_field(
+                    ui,
+                    r(o, 11.0, 78.0, 434.0, 23.0),
+                    &self.url,
+                    winui::BG(),
+                    true,
+                    "complete-url",
+                );
                 winui::text(
                     &p,
                     o.x + 11.0,
@@ -885,8 +889,14 @@ impl Complete {
                     crate::i18n::t("The file saved as"),
                     winui::TEXT(),
                 );
-                let mut saved = display_path(&self.path);
-                winui::edit(ui, r(o, 11.0, 124.0, 434.0, 23.0), &mut saved, true, false);
+                winui::readonly_field(
+                    ui,
+                    r(o, 11.0, 124.0, 434.0, 23.0),
+                    &display_path(&self.path),
+                    winui::BG(),
+                    true,
+                    "complete-saved",
+                );
 
                 let btn = |ui: &mut Ui, x: f32, label: &str, kind| {
                     winui::button(ui, r(o, x, 157.0, 90.0, 21.0), label, kind, false, None)
