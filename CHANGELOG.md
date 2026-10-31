@@ -15,6 +15,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **Check for updates**: the release notes scroll (the wheel, a trackpad, their scroll bar, and
   the arrow, Page and Home/End keys); their lines no longer break mid-sentence, and links show
   as their text (issue #5).
+- **Controls that didn't react to the mouse**: the ▾ of Address and Save As (Add URL, Download
+  File Info), the drop-down lists, check boxes, radio buttons, the Categories pane's ×, the
+  Scheduler's date button and calendar, scroll bars and the list's column headers now show
+  when the pointer is over them and when they're pressed, as Windows' own controls do; an
+  arrow stays pressed while its list is open.
 
 ### Changed
 

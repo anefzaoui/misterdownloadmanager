@@ -601,7 +601,10 @@ pub fn scroll_text(
     }
     top = top.clamp(0.0, max_top);
     // Moved by the wheel or a key: draw the new place now, not at the next event.
-    if ui.data(|d| d.get_temp::<f32>(id)).is_some_and(|was| was != top) {
+    if ui
+        .data(|d| d.get_temp::<f32>(id))
+        .is_some_and(|was| was != top)
+    {
         ui.ctx().request_repaint();
     }
     let clip = p.with_clip_rect(rect(area.shrink(2.0)));
@@ -1227,6 +1230,115 @@ pub fn edit_right(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> R
 
 const DISABLED_TEXT: Color32 = rgb(0x80, 0x80, 0x80);
 
+// ---- control states -------------------------------------------------------------------------
+
+/// What a control shows this frame: at rest, under the pointer (hot), with the mouse button held
+/// on it (pressed), with its list or menu open, or disabled. Every control takes its look from
+/// one of these, so they all answer the pointer the same way.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum State {
+    Normal,
+    Hot,
+    Pressed,
+    Open,
+    Disabled,
+}
+
+impl State {
+    /// From the control's response this frame.
+    pub fn of(resp: &Response, enabled: bool) -> Self {
+        if !enabled {
+            State::Disabled
+        } else if resp.is_pointer_button_down_on() {
+            State::Pressed
+        } else if resp.hovered() {
+            State::Hot
+        } else {
+            State::Normal
+        }
+    }
+
+    /// Shown open while `open` (a combo's list, a drop-down's menu); a press still shows.
+    pub fn open_if(self, open: bool) -> Self {
+        if open && matches!(self, State::Normal | State::Hot) {
+            State::Open
+        } else {
+            self
+        }
+    }
+}
+
+/// The fill of a part with no face of its own (a combo's arrow, a glyph button, a column
+/// header) in `state`: none at rest, a tint under the pointer, a deeper one pressed or open.
+/// `dark_surface`: the part sits on a dark background (the dark buttons' greys), else the light
+/// icon buttons' greys.
+pub fn subtle_fill(state: State, dark_surface: bool) -> Option<Color32> {
+    match (state, dark_surface) {
+        (State::Hot, false) => Some(rgb(0xf3, 0xf3, 0xf3)),
+        (State::Pressed | State::Open, false) => Some(rgb(0xe8, 0xe8, 0xe8)),
+        (State::Hot, true) => Some(rgb(0x45, 0x45, 0x45)),
+        (State::Pressed | State::Open, true) => Some(rgb(0x26, 0x26, 0x26)),
+        _ => None,
+    }
+}
+
+/// The blue highlight of a calendar's days and arrows (Win32's month calendar) in `state`:
+/// #e5f1fb under the pointer, #cce4f7 pressed.
+pub fn highlight_fill(state: State) -> Option<Color32> {
+    match state {
+        State::Hot => Some(rgb(0xe5, 0xf1, 0xfb)),
+        State::Pressed | State::Open => Some(rgb(0xcc, 0xe4, 0xf7)),
+        _ => None,
+    }
+}
+
+/// Tints `zone` (a part already drawn at rest) for `state` and draws its glyph again on top.
+pub fn tint_part(
+    p: &Painter,
+    zone: Rect,
+    state: State,
+    dark_surface: bool,
+    glyph: impl FnOnce(&Painter),
+) {
+    if let Some(c) = subtle_fill(state, dark_surface) {
+        p.rect_filled(zone, 2.0, c);
+        glyph(p);
+    }
+}
+
+/// An editable or drop-list combo's arrow zone (inside its border, at the trailing edge).
+fn combo_zone(rc: Rect) -> Rect {
+    if rtl() {
+        Rect::from_min_max(
+            rc.min + vec2(1.0, 1.0),
+            pos2(rc.left() + 20.0, rc.bottom() - 1.0),
+        )
+    } else {
+        Rect::from_min_max(
+            pos2(rc.right() - 20.0, rc.top() + 1.0),
+            rc.max - vec2(1.0, 1.0),
+        )
+    }
+}
+
+/// A combo's chevron: 8 × 6 "v" at the arrow zone's left + 6, top + 8.
+fn combo_chevron(p: &Painter, rc: Rect) {
+    let arrow_left = if rtl() {
+        rc.left() + 1.0
+    } else {
+        rc.right() - 1.0 - 19.0
+    };
+    let (cx, cy) = (arrow_left + 6.0, rc.top() + 8.0);
+    p.line(
+        vec![
+            pos2(cx, cy + 0.5),
+            pos2(cx + 4.0, cy + 4.5),
+            pos2(cx + 8.0, cy + 0.5),
+        ],
+        Stroke::new(1.2, rgb(0x6f, 0x6f, 0x6f)),
+    );
+}
+
 /// Combo frame: 1 px border (#8d8d8d, or #0078d4 when focused), 2 px white ring, dark text
 /// area, white 19 px arrow zone with a grey chevron. Height 21.
 pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
@@ -1258,23 +1370,21 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
         };
         p.rect_filled(text_area, 0.0, BG());
     }
-    // Chevron: 8 × 6 "v" at arrow-zone left + 6, top + 8.
-    let cx = arrow_left + 6.0;
-    let cy = t + 8.0;
-    p.line(
-        vec![
-            pos2(cx, cy + 0.5),
-            pos2(cx + 4.0, cy + 4.5),
-            pos2(cx + 8.0, cy + 0.5),
-        ],
-        Stroke::new(1.2, rgb(0x6f, 0x6f, 0x6f)),
-    );
+    combo_chevron(p, rc);
 }
 
 /// Drop-list combo showing `value`; returns the click response.
 pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
     combo_frame(ui.painter(), rc, false);
+    // The arrow zone (always white) shows the state.
+    tint_part(
+        ui.painter(),
+        combo_zone(rc),
+        State::of(&resp, true),
+        false,
+        |p| combo_chevron(p, rc),
+    );
     text_start(
         ui.painter(),
         tahoma(),
@@ -1302,14 +1412,13 @@ pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String, focused: bool) -> R
 }
 
 /// The arrow zone of an editable combo (`combo_edit`, at the trailing edge): a click on it
-/// opens the combo's drop list (`drop_list`).
-pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str) -> Response {
-    let zone = if rtl() {
-        Rect::from_min_max(rc.min, pos2(rc.left() + 20.0, rc.bottom()))
-    } else {
-        Rect::from_min_max(pos2(rc.right() - 20.0, rc.top()), rc.max)
-    };
-    ui.interact(zone, widget_id(ui, ("combo-arrow", id)), Sense::click())
+/// opens the combo's drop list (`drop_list`); it shows hot, pressed, and pressed while `open`.
+pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str, open: bool) -> Response {
+    let zone = combo_zone(rc);
+    let resp = ui.interact(zone, widget_id(ui, ("combo-arrow", id)), Sense::click());
+    let state = State::of(&resp, true).open_if(open);
+    tint_part(ui.painter(), zone, state, false, |p| combo_chevron(p, rc));
+    resp
 }
 
 /// The keys that open an editable combo's drop list while its box has the focus: Alt+Down or
@@ -1419,12 +1528,10 @@ pub fn button(
         ButtonKind::Default => (rgb(0xff, 0xff, 0xff), rgb(0xe5, 0xe5, 0xe5)),
         ButtonKind::Disabled => (rgb(0x40, 0x40, 0x40), rgb(0x40, 0x40, 0x40)),
     };
-    let fill = if resp.is_pointer_button_down_on() {
-        rgb(0x26, 0x26, 0x26)
-    } else if resp.hovered() {
-        rgb(0x45, 0x45, 0x45)
-    } else {
-        rgb(0x33, 0x33, 0x33)
+    let fill = match State::of(&resp, kind != ButtonKind::Disabled) {
+        State::Pressed => rgb(0x26, 0x26, 0x26),
+        State::Hot => rgb(0x45, 0x45, 0x45),
+        _ => rgb(0x33, 0x33, 0x33),
     };
     p.rect_filled(rc, 4.0, fill);
     p.rect_stroke(rc, 4.0, Stroke::new(1.0, border), StrokeKind::Inside);
@@ -1555,11 +1662,11 @@ pub fn checkbox_until(
     }
     let (l, t) = (box_min.x, box_min.y);
     let (rr, b) = (l + 12.0, t + 12.0);
-    // Interior: white, or #f0f0f0 when disabled (spec "Checkbox").
-    let interior = if enabled {
-        Color32::WHITE
-    } else {
-        rgb(0xf0, 0xf0, 0xf0)
+    // Interior: white, or #f0f0f0 when disabled (spec "Checkbox") or pressed (classic
+    // Windows: the button face while the mouse button is held on it).
+    let interior = match State::of(&resp, enabled) {
+        State::Normal | State::Hot | State::Open => Color32::WHITE,
+        State::Pressed | State::Disabled => rgb(0xf0, 0xf0, 0xf0),
     };
     solid(&p, Rect::from_min_size(box_min, vec2(13.0, 13.0)), interior);
     hline(&p, l, rr - 1.0, t, rgb(0xa0, 0xa0, 0xa0));
@@ -1737,12 +1844,10 @@ pub fn button_light(
             rgb(0x83, 0x83, 0x83),
         ),
     };
-    let fill_c = if kind != ButtonKind::Disabled && resp.is_pointer_button_down_on() {
-        rgb(0xf5, 0xf5, 0xf5)
-    } else if kind != ButtonKind::Disabled && resp.hovered() {
-        rgb(0xf6, 0xf6, 0xf6)
-    } else {
-        fill_c
+    let fill_c = match State::of(&resp, kind != ButtonKind::Disabled) {
+        State::Pressed => rgb(0xf5, 0xf5, 0xf5),
+        State::Hot => rgb(0xf6, 0xf6, 0xf6),
+        _ => fill_c,
     };
     p.rect_filled(rc, 3.0, fill_c);
     p.rect_stroke(rc, 3.0, Stroke::new(1.0, border), StrokeKind::Inside);
@@ -1856,12 +1961,9 @@ pub fn checkbox_light_until(
         *checked = !*checked;
     }
     let rc = Rect::from_min_size(glyph, vec2(13.0, 13.0));
+    let state = State::of(&resp, enabled);
     if *checked {
-        let accent = if enabled {
-            rgb(0x00, 0x5f, 0xb8)
-        } else {
-            rgb(0xc3, 0xc3, 0xc3)
-        };
+        let accent = fluent_accent(state);
         p.rect_filled(rc, 2.0, accent);
         p.line(
             vec![
@@ -1872,13 +1974,9 @@ pub fn checkbox_light_until(
             Stroke::new(1.4, Color32::WHITE),
         );
     } else {
-        let border = if enabled {
-            rgb(0x62, 0x62, 0x62)
-        } else {
-            rgb(0xc3, 0xc3, 0xc3)
-        };
-        if enabled {
-            p.rect_filled(rc, 2.0, rgb(0xf3, 0xf3, 0xf3));
+        let (fill_c, border) = fluent_box(state);
+        if let Some(f) = fill_c {
+            p.rect_filled(rc, 2.0, f);
         }
         p.rect_stroke(rc, 2.0, Stroke::new(1.0, border), StrokeKind::Inside);
     }
@@ -1893,6 +1991,28 @@ pub fn checkbox_light_until(
 
 /// Tab page body.
 pub const LIGHT_PAGE: Color32 = rgb(0xf9, 0xf9, 0xf9);
+
+/// A checked Windows 11 check box's or radio's accent in `state`: lighter under the pointer,
+/// lighter still while pressed, grey when disabled.
+fn fluent_accent(state: State) -> Color32 {
+    match state {
+        State::Disabled => rgb(0xc3, 0xc3, 0xc3),
+        State::Hot => rgb(0x19, 0x6e, 0xbf),
+        State::Pressed => rgb(0x33, 0x7f, 0xc6),
+        _ => rgb(0x00, 0x5f, 0xb8),
+    }
+}
+
+/// An unchecked Windows 11 check box's or radio's fill (none when disabled) and border in
+/// `state`: darker fill under the pointer, darker still and a fainter border while pressed.
+fn fluent_box(state: State) -> (Option<Color32>, Color32) {
+    match state {
+        State::Disabled => (None, rgb(0xc3, 0xc3, 0xc3)),
+        State::Hot => (Some(rgb(0xea, 0xea, 0xea)), rgb(0x62, 0x62, 0x62)),
+        State::Pressed => (Some(rgb(0xdd, 0xdd, 0xdd)), rgb(0x9a, 0x9a, 0x9a)),
+        _ => (Some(rgb(0xf3, 0xf3, 0xf3)), rgb(0x62, 0x62, 0x62)),
+    }
+}
 
 /// Win11 light radio glyph (13 × 13) with its label at glyph.x + 16. The caller sets the
 /// choice when the response is clicked.
@@ -1935,23 +2055,21 @@ pub fn radio_light_until(
         sense,
     );
     let c = glyph + vec2(6.5, 6.5);
+    let state = State::of(&resp, enabled);
     if selected {
-        let accent = if enabled {
-            rgb(0x00, 0x5f, 0xb8)
-        } else {
-            rgb(0xc3, 0xc3, 0xc3)
+        p.circle_filled(c, 6.5, fluent_accent(state));
+        // Windows 11's dot grows under the pointer and shrinks while pressed.
+        let dot = match state {
+            State::Hot => 3.1,
+            State::Pressed => 2.1,
+            _ => 2.6,
         };
-        p.circle_filled(c, 6.5, accent);
-        p.circle_filled(c, 2.6, Color32::WHITE);
+        p.circle_filled(c, dot, Color32::WHITE);
     } else {
-        if enabled {
-            p.circle_filled(c, 6.0, rgb(0xf3, 0xf3, 0xf3));
+        let (fill_c, ring) = fluent_box(state);
+        if let Some(f) = fill_c {
+            p.circle_filled(c, 6.0, f);
         }
-        let ring = if enabled {
-            rgb(0x62, 0x62, 0x62)
-        } else {
-            rgb(0xc3, 0xc3, 0xc3)
-        };
         p.circle_stroke(c, 6.0, Stroke::new(1.0, ring));
     }
     let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
@@ -2175,11 +2293,15 @@ pub fn chevron_light(p: &Painter, at: Pos2, enabled: bool) {
 
 /// The frame of a light drop-down (combo or date picker): rounded `#c8c8c8` border, `#fefefe`
 /// fill; enabled ones darken on hover and take the accent border while open.
-pub fn dropdown_frame_light(p: &Painter, rc: Rect, enabled: bool, hovered: bool, open: bool) {
-    let (border, fill_c) = match (enabled, hovered || open) {
-        (false, _) => (rgb(0xc8, 0xc8, 0xc8), rgb(0xfe, 0xfe, 0xfe)),
-        (true, false) => (rgb(0xd0, 0xd0, 0xd0), rgb(0xfd, 0xfd, 0xfd)),
-        (true, true) => (rgb(0xd0, 0xd0, 0xd0), rgb(0xf6, 0xf6, 0xf6)),
+pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
+    let enabled = state != State::Disabled;
+    let open = state == State::Open;
+    // The light buttons' fills: hot #f6f6f6, pressed #f5f5f5 (as `button_light`).
+    let (border, fill_c) = match state {
+        State::Disabled => (rgb(0xc8, 0xc8, 0xc8), rgb(0xfe, 0xfe, 0xfe)),
+        State::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xfd, 0xfd, 0xfd)),
+        State::Pressed => (rgb(0xd0, 0xd0, 0xd0), rgb(0xf5, 0xf5, 0xf5)),
+        State::Hot | State::Open => (rgb(0xd0, 0xd0, 0xd0), rgb(0xf6, 0xf6, 0xf6)),
     };
     let border = if open { rgb(0x00, 0x78, 0xd4) } else { border };
     p.rect_filled(rc, 3.0, fill_c);
@@ -2217,7 +2339,7 @@ pub fn combo_light(
         open = !open;
     }
     let p = ui.painter().clone();
-    dropdown_frame_light(&p, rc, enabled, resp.hovered(), open);
+    dropdown_frame_light(&p, rc, State::of(&resp, enabled).open_if(open));
     let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
     // Items are shown in the interface language (data such as numbers passes through as is).
     let full = crate::i18n::t(items.get(selected).copied().unwrap_or(""));
@@ -2370,13 +2492,7 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Resp
     };
     let resp = ui.interact(rc, widget_id(ui, ("icon-button-light", id)), sense);
     let p = ui.painter();
-    let face = if enabled && resp.is_pointer_button_down_on() {
-        rgb(0xe8, 0xe8, 0xe8)
-    } else if enabled && resp.hovered() {
-        rgb(0xf3, 0xf3, 0xf3)
-    } else {
-        rgb(0xfb, 0xfb, 0xfb)
-    };
+    let face = subtle_fill(State::of(&resp, enabled), false).unwrap_or(rgb(0xfb, 0xfb, 0xfb));
     p.rect_filled(rc, 2.0, face);
     p.rect_stroke(
         rc,
@@ -2390,6 +2506,33 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Resp
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn control_states_open_and_tint() {
+        assert_eq!(State::Hot.open_if(true), State::Open);
+        assert_eq!(State::Normal.open_if(true), State::Open);
+        assert_eq!(State::Pressed.open_if(true), State::Pressed);
+        assert_eq!(State::Disabled.open_if(true), State::Disabled);
+        assert_eq!(State::Hot.open_if(false), State::Hot);
+        for dark in [false, true] {
+            assert_eq!(subtle_fill(State::Normal, dark), None);
+            assert_eq!(subtle_fill(State::Disabled, dark), None);
+            let grey = |s| subtle_fill(s, dark).unwrap().r();
+            // Pressed (and open) is deeper than hot, on either surface.
+            assert!(grey(State::Pressed) < grey(State::Hot));
+            assert_eq!(
+                subtle_fill(State::Open, dark),
+                subtle_fill(State::Pressed, dark)
+            );
+        }
+        assert!(
+            highlight_fill(State::Pressed).unwrap().r() < highlight_fill(State::Hot).unwrap().r()
+        );
+        // Windows 11 boxes: deeper under the pointer, deeper still pressed.
+        let fill = |s| fluent_box(s).0.unwrap().r();
+        assert!(fill(State::Pressed) < fill(State::Hot) && fill(State::Hot) < fill(State::Normal));
+        assert_eq!(fluent_box(State::Disabled).0, None);
+    }
 
     /// 6 px per character: a stand-in for the font.
     fn w(s: &str) -> f32 {

@@ -1337,8 +1337,8 @@ pub fn categories(
         vec2(16.0, 15.0),
     ));
     let cr = ui.interact(close, egui::Id::unique("cat-close"), Sense::click());
-    if cr.hovered() {
-        p.rect_filled(close, 2.0, grey(0x50));
+    if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::dark()) {
+        p.rect_filled(close, 2.0, c);
     }
     text_font(
         &p,

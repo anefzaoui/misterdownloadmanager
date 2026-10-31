@@ -1165,7 +1165,7 @@ fn time_picker(
         Rect::from_min_max(rc.min, rc.max + vec2(extra, 0.0))
     };
     let hover = ui.interact(rc, egui::Id::unique(("time-picker", id)), Sense::hover());
-    winui::dropdown_frame_light(&p, rc, enabled, false, false);
+    winui::dropdown_frame_light(&p, rc, winui::State::of(&hover, enabled));
     // A time reads left to right in every language: its fields are laid out on screen as they
     // are; in RTL the up-down is at the left and the fields follow it.
     let spin = if rtl {
@@ -1416,7 +1416,7 @@ fn date_picker(
     let key = egui::Id::unique(("date-picker", id));
     let hover = ui.interact(rc, key, Sense::hover());
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
-    winui::dropdown_frame_light(&p, rc, enabled, false, open);
+    winui::dropdown_frame_light(&p, rc, winui::State::of(&hover, enabled).open_if(open));
     let sel = match focus.at {
         Some((fid, f)) if fid == id && enabled => Some(f),
         _ => None,
@@ -1467,10 +1467,15 @@ fn date_picker(
         pos2(winui::rect(rc).right() - 20.0, rc.top()),
         winui::rect(rc).max,
     ));
-    if ui
-        .interact(drop, key.with("drop"), Sense::click())
-        .clicked()
-    {
+    let drop_resp = ui.interact(drop, key.with("drop"), Sense::click());
+    winui::tint_part(
+        &p,
+        drop.shrink(1.0),
+        winui::State::of(&drop_resp, true).open_if(open),
+        false,
+        |p| winui::chevron_light(p, chevron, true),
+    );
+    if drop_resp.clicked() {
         open = !open;
     }
     for (i, fr) in rects.iter().enumerate() {
@@ -1578,8 +1583,8 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
             for (dir, x, glyph) in [(-1, rect.left() + 8.0, "<"), (1, rect.right() - 22.0, ">")] {
                 let b = Rect::from_min_size(pos2(x, rect.top() + 5.0), vec2(14.0, 16.0));
                 let r = ui.interact(winui::rect(b), key.with(("cal-nav", dir)), Sense::click());
-                if r.hovered() {
-                    p.rect_filled(winui::rect(b), 2.0, winui::rgb_hex(0xe5f1fb));
+                if let Some(c) = winui::highlight_fill(winui::State::of(&r, true)) {
+                    p.rect_filled(winui::rect(b), 2.0, c);
                 }
                 text(&p, b.left() + 4.0, b.top() + 12.0, glyph, LIGHT_TEXT);
                 if r.clicked() {
@@ -1615,8 +1620,8 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                 let mark = winui::rect(cell.shrink(1.0));
                 if chosen {
                     p.rect_filled(mark, 3.0, winui::rgb_hex(0x0078d7));
-                } else if r.hovered() {
-                    p.rect_filled(mark, 3.0, winui::rgb_hex(0xe5f1fb));
+                } else if let Some(c) = winui::highlight_fill(winui::State::of(&r, true)) {
+                    p.rect_filled(mark, 3.0, c);
                 }
                 if day == today && !chosen {
                     p.rect_stroke(
