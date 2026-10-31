@@ -884,43 +884,23 @@ impl Progress {
             // i18n: tab title: general information
             (TTab::General, crate::i18n::mark("General")),
         ];
-        let mut x = o.x + 17.0;
-        for (t, label) in tabs {
-            let label = crate::i18n::t(label);
-            let w = winui::text_width(p, label) + 16.0;
-            let rc = winui::rect(egui::Rect::from_min_size(
-                egui::pos2(x, o.y + 229.0),
-                egui::vec2(w, 18.0),
-            ));
-            let resp = ui.interact(rc, egui::Id::unique(("ttab", label)), egui::Sense::click());
-            if resp.clicked() {
-                self.ttab = t;
-            }
-            let on = self.ttab == t;
-            let dark = crate::theme::dark();
-            if on || resp.hovered() {
-                let bg = match (on, dark) {
-                    (true, true) => rgb(0x55, 0x55, 0x55),
-                    (true, false) => rgb(0xcc, 0xe4, 0xf7),
-                    (false, true) => rgb(0x45, 0x45, 0x45),
-                    (false, false) => rgb(0xe5, 0xf1, 0xfb),
-                };
-                p.rect_filled(rc, 3.0, bg);
-            }
-            if resp.hovered() {
-                ui.ctx().set_cursor_icon(egui::CursorIcon::PointingHand);
-            }
-            text(p, x + 8.0, o.y + 242.0, label, winui::TEXT());
-            if on {
-                // The selected tab: a 2 px accent line under it.
-                let accent = if dark {
-                    rgb(0x4c, 0xc2, 0xff)
-                } else {
-                    rgb(0x00, 0x78, 0xd7)
-                };
-                fill(p, x + 3.0, o.y + 245.0, x + w - 4.0, o.y + 246.0, accent);
-            }
-            x += w + 2.0;
+        // The usual tab control (the Scheduler's and Options' look): tabs sized to their
+        // labels from the leading edge, the page under them holding the piece map and the
+        // table.
+        let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
+        let light: Vec<winui::LightTab> = winui::tab_row(p, &english, 16.0, 530.0, 2.0, 8.0)
+            .into_iter()
+            .zip(tabs.iter())
+            .map(|((x0, x1, _), (_, label))| winui::LightTab {
+                label,
+                sel: (x0 - 2.0, x1 + 2.0),
+                unsel: (x0, x1),
+            })
+            .collect();
+        let current = tabs.iter().position(|t| t.0 == self.ttab).unwrap_or(0);
+        if let Some(i) = winui::tabs_light(ui, o, r(o, 14.0, 226.0, 521.0, 180.0), &light, current)
+        {
+            self.ttab = tabs[i].0;
         }
         let pieces = d.as_ref().map(|d| d.pieces.as_slice()).unwrap_or(&[]);
         piece_bar(p, o, pieces);
