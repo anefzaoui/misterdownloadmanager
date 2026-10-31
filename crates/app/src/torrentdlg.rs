@@ -631,7 +631,9 @@ impl TorrentDialog {
             if state == Tri::Some {
                 mixed_mark(&p, glyph);
             }
-            if clicked || (resp.clicked() && !(is_dir && flip_open == Some(n))) {
+            // A click on a file's row ticks it; a folder's row opens on a double-click and only
+            // its box ticks it (a double-click must not flip the tick on its first click).
+            if clicked || (resp.clicked() && !is_dir) {
                 toggle = Some(n);
             }
             let size = crate::dialogs::dialog_size(node.size);

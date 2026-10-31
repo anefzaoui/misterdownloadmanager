@@ -1765,6 +1765,27 @@ pub fn checkbox(
     checkbox_until(ui, box_min, checked, caption, enabled, None)
 }
 
+/// A checkbox's caption drawn apart from it (two lines, a paragraph) in English `caption`: a
+/// click on it ticks the box too, as on a caption the box draws itself.
+pub fn caption_click(
+    ui: &mut Ui,
+    caption: Rect,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    checked: &mut bool,
+    enabled: bool,
+) -> Response {
+    let sense = if enabled {
+        pointer_only()
+    } else {
+        Sense::hover()
+    };
+    let resp = ui.interact(rect(caption), widget_id(ui, ("caption", id)), sense);
+    if resp.clicked() {
+        *checked = !*checked;
+    }
+    resp
+}
+
 /// [`checkbox`] whose caption also stops before English x `until` (a control after it).
 pub fn checkbox_until(
     ui: &mut Ui,

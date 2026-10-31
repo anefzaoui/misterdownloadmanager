@@ -32,6 +32,16 @@ pub struct Schedule {
     pub force_close: bool,
 }
 
+/// What happens when a queue, or one download, is done (besides opening a file).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct WhenDone {
+    pub hang_up: bool,
+    pub exit: bool,
+    pub turn_off: Option<TurnOff>,
+    /// With `turn_off`: don't let other programs delay it.
+    pub force: bool,
+}
+
 /// "Turn off computer when done" modes, in IDM's combo order.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum TurnOff {
@@ -41,6 +51,15 @@ pub enum TurnOff {
 }
 
 impl Schedule {
+    pub fn when_done(&self) -> WhenDone {
+        WhenDone {
+            hang_up: self.hang_up,
+            exit: self.exit_when_done,
+            turn_off: self.turn_off,
+            force: self.force_close,
+        }
+    }
+
     /// Whether the start time applies on this day: "Once at" its date, else "Daily" on the
     /// checked weekdays. `weekday` counts from Sunday = 0.
     pub fn starts_on(&self, date: (i32, u32, u32), weekday: usize) -> bool {

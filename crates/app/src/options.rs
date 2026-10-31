@@ -946,8 +946,8 @@ impl OptionsDialog {
             "",
             true,
         );
-        // The checkbox's caption, in two lines as IDM has it.
-        winui::paragraph(
+        // The checkbox's caption, in two lines as IDM has it (clicking it ticks the box).
+        let lines = winui::paragraph(
             &p,
             o.x + 46.0,
             o.y + 104.0,
@@ -957,6 +957,13 @@ impl OptionsDialog {
             LIGHT_TEXT(),
             o.x + 426.0,
             13.0,
+        );
+        winui::caption_click(
+            ui,
+            r(o, 46.0, 99.0, 380.0, 13.0 * lines as f32 + 2.0),
+            "proxy-from-browser",
+            &mut s.proxy_from_browser,
+            true,
         );
         winui::etched_h(&p, o.x + 22.0, o.y + 128.0, 380.0);
         let modes = [

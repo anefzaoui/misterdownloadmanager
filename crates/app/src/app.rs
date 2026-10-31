@@ -248,6 +248,8 @@ pub struct App {
     last_find: Option<crate::find::Query>,
     /// A message with OK: its window title and message: "Cannot find …", an export that failed…
     notice: Option<(&'static str, String)>,
+    /// Why the last save of the download list failed (told once per reason).
+    save_failed: Option<String>,
     /// A finished queue asked to turn the computer off: the countdown, cancellable.
     turn_off: Option<dialogs::TurnOffCountdown>,
     /// A finished queue asked to exit.
@@ -535,6 +537,7 @@ impl App {
             find: None,
             last_find: None,
             notice: None,
+            save_failed: None,
             turn_off: None,
             exit_requested: false,
             global: std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None)),
@@ -2042,16 +2045,23 @@ impl App {
         if let Some(path) = &sch.open_when_done {
             let _ = open::that_detached(path);
         }
+        self.when_done(sch.when_done());
+    }
+
+    /// A queue's, or a download's (its progress window's Options on completion), "when done":
+    /// hang up, turn the computer off (a countdown first), or exit.
+    fn when_done(&mut self, w: crate::queue::WhenDone) {
+        // Ends dial-up (RAS) connections; nothing happens without one. Windows only: macOS and
+        // Linux have no dial-up command to call.
         #[cfg(windows)]
-        if sch.hang_up {
-            // Ends dial-up (RAS) connections; nothing happens without one.
+        if w.hang_up {
             let _ = std::process::Command::new("rasdial")
                 .arg("/disconnect")
                 .spawn();
         }
-        if let Some(mode) = sch.turn_off {
-            self.turn_off = Some(dialogs::TurnOffCountdown::new(mode, sch.force_close));
-        } else if sch.exit_when_done {
+        if let Some(mode) = w.turn_off {
+            self.turn_off = Some(dialogs::TurnOffCountdown::new(mode, w.force));
+        } else if w.exit {
             self.exit_requested = true;
         }
     }
@@ -2426,11 +2436,11 @@ impl App {
         for id in finished {
             // This file's "Show download complete dialog" (its progress window's Options on
             // completion tab), read before the window closes.
-            let this_file = self
-                .progress
-                .iter()
-                .find(|p| p.id == id)
-                .is_none_or(|p| p.shows_complete());
+            let window = self.progress.iter().find(|p| p.id == id);
+            let this_file = window.is_none_or(|p| p.shows_complete());
+            if let Some(w) = window.and_then(Progress::when_done) {
+                self.when_done(w);
+            }
             self.progress.retain(|p| p.id != id);
             if Some(id) == early {
                 continue;
@@ -2458,13 +2468,33 @@ impl App {
             }
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
-            let _ = store::save(
+            let saved = store::save(
                 self.next_id,
                 &self.items,
                 &self.list.layout(),
                 &self.settings,
                 &self.queues,
             );
+            // A list that can't be saved says so, once for each reason (not every second);
+            // it was silent and a restart lost the changes.
+            match saved {
+                Ok(()) => self.save_failed = None,
+                Err(e) => {
+                    let e = e.to_string();
+                    if self.save_failed.as_ref() != Some(&e) {
+                        self.notice = Some((
+                            crate::i18n::mark("Mister Download Manager"),
+                            crate::i18n::fmt(
+                                crate::i18n::t(
+                                    "The download list could not be saved: {error}. Changes are kept while MDM runs.",
+                                ),
+                                &[("error", &e)],
+                            ),
+                        ));
+                    }
+                    self.save_failed = Some(e);
+                }
+            }
             self.dirty = false;
             self.last_save = Instant::now();
         }

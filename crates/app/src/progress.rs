@@ -73,6 +73,12 @@ pub struct Progress {
     pending_limit: Option<(Option<u64>, bool)>,
     remember: bool,
     show_complete: bool,
+    /// Options on completion, used when "Show download complete dialog" is off.
+    hang_up: bool,
+    exit: bool,
+    turn_off_on: bool,
+    turn_off: usize,
+    force: bool,
 }
 
 pub enum Action {
@@ -101,6 +107,11 @@ impl Progress {
             pending_limit: None,
             remember: false,
             show_complete: true,
+            hang_up: false,
+            exit: false,
+            turn_off_on: false,
+            turn_off: 0,
+            force: false,
         }
     }
 
@@ -576,14 +587,16 @@ impl Progress {
             crate::i18n::t("Maximum download speed:"),
             label,
         );
-        let before = self.limit_kb.clone();
-        winui::edit_right(
+        let rate_box = winui::edit_right(
             ui,
             r(o, 33.0, 100.0, 77.0, 23.0),
             &mut self.limit_kb,
             self.limiter,
         );
         self.limit_kb.retain(|c| c.is_ascii_digit());
+        // A typed rate applies once typed (focus leaves, Enter), not at each digit (typing 100
+        // would throttle to 1, then 10 KB/s on the way).
+        let typed = rate_box.lost_focus();
         // i18n: unit after an input box: kilobytes per second
         text(
             &p,
@@ -594,12 +607,21 @@ impl Progress {
         );
         let remembered = self.remember;
         winui::checkbox(ui, o + vec2(33.0, 134.0), &mut self.remember, "", true);
-        if was_on != self.limiter
-            || (self.limiter && before != self.limit_kb)
-            || remembered != self.remember
+        // Its caption is two lines drawn below; a click on them ticks it too.
+        winui::caption_click(
+            ui,
+            r(o, 51.0, 127.0, 450.0, 27.0),
+            "remember-limit",
+            &mut self.remember,
+            true,
+        );
+        // An empty or zero rate isn't "unlimited" while the box is ticked: the limit stays
+        // as it was until a rate is typed.
+        let kb: u64 = self.limit_kb.parse().unwrap_or(0);
+        if (was_on != self.limiter || (self.limiter && typed) || remembered != self.remember)
+            && !(self.limiter && kb == 0)
         {
-            let kb: u64 = self.limit_kb.parse().unwrap_or(0);
-            let limit = (self.limiter && kb > 0).then_some(kb * 1024);
+            let limit = self.limiter.then_some(kb * 1024);
             self.pending_limit = Some((limit, self.remember));
         }
         text(
@@ -622,6 +644,18 @@ impl Progress {
     /// Options on completion → "Show download complete dialog" for this file.
     pub fn shows_complete(&self) -> bool {
         self.show_complete
+    }
+
+    /// Options on completion's other settings, when they apply (the complete dialog is off).
+    pub fn when_done(&self) -> Option<crate::queue::WhenDone> {
+        (!self.show_complete).then(|| crate::queue::WhenDone {
+            hang_up: self.hang_up,
+            exit: self.exit,
+            turn_off: self
+                .turn_off_on
+                .then(|| crate::queue::TurnOff::ALL[self.turn_off]),
+            force: self.turn_off_on && self.force,
+        })
     }
 
     /// Returns true when "Hide tab" is pressed.
@@ -673,44 +707,47 @@ impl Progress {
             ),
             winui::TEXT(),
         );
-        let mut off = false;
+        // Used when the complete dialog is off (it asks what to do itself).
+        let on = !self.show_complete;
         winui::checkbox(
             ui,
             o + vec2(33.0, 96.0),
-            &mut off,
+            &mut self.hang_up,
             "Hang up modem when done",
-            false,
+            on,
         );
         winui::checkbox(
             ui,
             o + vec2(33.0, 114.0),
-            &mut off,
+            &mut self.exit,
             "Exit Mister Download Manager when done",
-            false,
+            on,
         );
         winui::checkbox_until(
             ui,
             o + vec2(33.0, 132.0),
-            &mut off,
+            &mut self.turn_off_on,
             "Turn off computer when done",
-            false,
+            on,
             Some(o.x + 267.0),
         );
         winui::checkbox(
             ui,
             o + vec2(52.0, 148.0),
-            &mut off,
+            &mut self.force,
             "Force processes to terminate",
-            false,
+            on && self.turn_off_on,
         );
-        winui::combo_frame(&p, r(o, 267.0, 134.0, 119.0, 21.0), false);
-        text(
-            &p,
-            o.x + 273.0,
-            o.y + 147.0,
-            crate::i18n::t("Shut down"),
-            winui::LIGHT_DISABLED(),
-        );
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 267.0, 134.0, 119.0, 21.0),
+            &crate::queue::TurnOff::LABELS,
+            self.turn_off,
+            on && self.turn_off_on,
+            "progress-turn-off",
+        ) {
+            self.turn_off = i;
+        }
         hide_tab(ui, o)
     }
 }
@@ -1230,7 +1267,8 @@ fn table(
         text(p, o.x + x, o.y + 290.0, crate::i18n::t(h), winui::TEXT());
     }
     let visible = 6usize;
-    let key = egui::Id::unique(("torrent-table", id));
+    // Per window: each progress window scrolls its own tables.
+    let key = egui::Id::unique(("torrent-table", id, ui.ctx().viewport_id()));
     let max_first = rows.len().saturating_sub(visible);
     let mut first = ui
         .ctx()
@@ -1425,7 +1463,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         .map(|s| s.connections.iter().collect())
         .unwrap_or_default();
     conns.sort_by_key(|c| c.id);
-    let key = egui::Id::unique("conn-scroll");
+    let key = egui::Id::unique(("conn-scroll", ui.ctx().viewport_id()));
     let visible = 6usize;
     let max_first = conns.len().saturating_sub(visible);
     let mut first = ui

@@ -10,7 +10,8 @@ use mdm_engine::verify::Hash;
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, r, text};
 
-type Check = Arc<Mutex<Option<Result<bool, String>>>>;
+/// A check of the file: its digest once read, or why it couldn't be.
+type Check = Arc<Mutex<Option<Result<Vec<u8>, String>>>>;
 
 pub struct ChecksumDialog {
     pub id: u64,
@@ -32,14 +33,31 @@ impl ChecksumDialog {
         }
     }
 
-    /// `Done(hash)`: keep it with the download.
+    /// The file's own checksum when the check found it differs (shown, to copy, under the
+    /// verdict).
+    fn mismatch(&self) -> Option<Hash> {
+        let want = Hash::parse(&self.text)?;
+        let check = self.check.as_ref()?.lock().unwrap();
+        match &*check {
+            Some(Ok(got)) if *got != want.value => Some(Hash {
+                algo: want.algo,
+                value: got.clone(),
+            }),
+            _ => None,
+        }
+    }
+
+    /// `Done(hash)`: keep it with the download. Close and the window's × both keep a hash that
+    /// was checked.
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Hash> {
         let id = format!("checksum-{}", self.id);
-        window(
+        let got = self.mismatch();
+        let extra = if got.is_some() { 30.0 } else { 0.0 };
+        let out = window(
             ctx,
             &id,
             "Verify checksum",
-            [430.0, 118.0],
+            [430.0, 118.0 + extra],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -77,14 +95,14 @@ impl ChecksumDialog {
                             crate::i18n::t("Checking...").to_owned(),
                             winui::LIGHT_DISABLED(),
                         ),
-                        Some(Ok(true)) => (
+                        Some(Ok(v)) if *v == h.value => (
                             crate::i18n::fmt(
                                 crate::i18n::t("The file matches ({algorithm})"),
                                 &[("algorithm", h.algo.name())],
                             ),
                             winui::SUCCESS(),
                         ),
-                        Some(Ok(false)) => (
+                        Some(Ok(_)) => (
                             crate::i18n::fmt(
                                 crate::i18n::t("The file does NOT match ({algorithm})"),
                                 &[("algorithm", h.algo.name())],
@@ -124,7 +142,27 @@ impl ChecksumDialog {
                     o.x + 419.0,
                     "checksum-status",
                 );
-                let valid = hash.is_some();
+                if let Some(got) = &got {
+                    winui::readonly_field(
+                        ui,
+                        r(o, 11.0, 80.0, 408.0, 23.0),
+                        &got.display(),
+                        LIGHT_BG(),
+                        true,
+                        "checksum-got",
+                    )
+                    .on_hover_text(crate::i18n::t(
+                        // i18n: tooltip of the box showing the checksum the file really has
+                        "The file's own checksum",
+                    ));
+                }
+                let o = o + egui::vec2(0.0, extra);
+                // Verify waits while a check runs.
+                let checking = self
+                    .check
+                    .as_ref()
+                    .is_some_and(|c| c.lock().unwrap().is_none());
+                let valid = hash.is_some() && !checking;
                 let kind = if valid {
                     ButtonKind::Default
                 } else {
@@ -154,14 +192,14 @@ impl ChecksumDialog {
                         (Some(h), Some(_)) => Outcome::Done(h),
                         _ => Outcome::Closed,
                     }
-                } else if let (Some(h), true) = (hash, go || enter) {
+                } else if let (Some(h), true) = (hash, go || (enter && valid)) {
                     match &self.file {
                         None => Outcome::Done(h),
                         Some(file) => {
                             let slot: Check = Arc::new(Mutex::new(None));
                             let (out, file, ctx) = (slot.clone(), file.clone(), ui.ctx().clone());
                             std::thread::spawn(move || {
-                                let r = mdm_engine::verify::matches(&file, &h)
+                                let r = mdm_engine::verify::digest(&file, h.algo)
                                     .map_err(|e| e.to_string());
                                 *out.lock().unwrap() = Some(r);
                                 ctx.request_repaint();
@@ -174,6 +212,11 @@ impl ChecksumDialog {
                     Outcome::Open
                 }
             },
-        )
+        );
+        // The window's ×: as Close.
+        match (out, Hash::parse(&self.text), &self.check) {
+            (Outcome::Closed, Some(h), Some(_)) => Outcome::Done(h),
+            (out, ..) => out,
+        }
     }
 }

@@ -207,13 +207,16 @@ impl Properties {
             LIGHT_TEXT(),
         );
         if editable {
-            winui::edit_light(
+            let edit = winui::edit_light(
                 ui,
                 r(o, col, 151.0, 467.0 - col, 23.0),
                 &mut self.address,
                 true,
                 false,
             );
+            if edit.changed() {
+                self.error = None;
+            }
         } else {
             readonly(ui, r(o, col, 151.0, 467.0 - col, 23.0), &self.address);
         }
@@ -299,6 +302,20 @@ impl Properties {
                 &[("last", &last)],
             );
             fit(ui, 11.0, 376.0, &last_try);
+        }
+        // The dialog's own error (a bad address) takes the Result line's place while it lasts.
+        if let Some(e) = &self.error {
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                o.y + 395.0,
+                e,
+                winui::ERROR(),
+                o.x + 250.0,
+                "props-error",
+            );
+        } else if !complete {
             let result = item.error.clone().unwrap_or_else(|| item.status_text());
             let x1 = o.x + 250.0;
             let (rect, cut) = winui::text_fit(
@@ -316,18 +333,6 @@ impl Properties {
             if cut {
                 winui::full_on_hover(ui, rect, "props-result", &result);
             }
-        }
-        if let Some(e) = &self.error {
-            winui::fit(
-                ui,
-                &p,
-                o.x + 11.0,
-                o.y + 395.0,
-                e,
-                winui::ERROR(),
-                o.x + 250.0,
-                "props-error",
-            );
         }
         let open = winui::button_light(
             ui,
