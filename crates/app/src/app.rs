@@ -3468,12 +3468,7 @@ impl App {
         {
             let labels: Vec<String> = chrome::menus(ui.painter())
                 .iter()
-                .map(|(l, ..)| {
-                    l.chars()
-                        .next()
-                        .map(|c| c.to_lowercase().to_string())
-                        .unwrap_or_default()
-                })
+                .map(|(l, ..)| chrome::menu_letter(l))
                 .collect();
             let (alt, other, f10, ctrl_f2, letter) = ctx.input(|i| {
                 let mut letter = None;
@@ -3492,6 +3487,10 @@ impl App {
                             }
                         }
                         egui::Event::PointerButton { pressed: true, .. } => other = true,
+                        // A letter of another script (Cyrillic, Arabic...) typed with Alt.
+                        egui::Event::Text(t) if i.modifiers.alt && !i.modifiers.ctrl => {
+                            letter = Some(t.to_lowercase());
+                        }
                         _ => {}
                     }
                 }

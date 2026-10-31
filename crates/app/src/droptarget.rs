@@ -104,7 +104,9 @@ impl DropTarget {
             .with_resizable(false)
             .with_taskbar(false)
             .with_always_on_top()
-            .with_drag_and_drop(false)
+            // Windows: our own OLE target takes links and files; elsewhere winit's own
+            // (files only: macOS and Linux hand links over no other way here).
+            .with_drag_and_drop(!cfg!(windows))
             .with_position(self.pos)
             .with_inner_size(vec2(SIZE, SIZE));
         let over = self.drops.over();
@@ -141,7 +143,18 @@ impl DropTarget {
                     ui.scope_id().with("drop-target"),
                     crate::winui::pointer_drag(),
                 )
-                .on_hover_text(crate::i18n::t("Drag links here to download them"));
+                .on_hover_text(if cfg!(windows) {
+                    crate::i18n::t("Drag links here to download them")
+                } else {
+                    // i18n: the drop target's tooltip on macOS and Linux (they hand over files only)
+                    crate::i18n::t("Drag .torrent files or lists of addresses here")
+                });
+            #[cfg(not(windows))]
+            for f in ui.ctx().input(|i| i.raw.dropped_files.clone()) {
+                if let Some(path) = f.path {
+                    events.push(Event::Drop(path.display().to_string()));
+                }
+            }
             if resp.drag_started() {
                 ui.ctx().send_viewport_cmd(ViewportCommand::StartDrag);
             }

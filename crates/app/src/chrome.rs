@@ -214,18 +214,18 @@ fn generic_page(p: &egui::Painter, min: Pos2) {
 /// Dark mode is IDM's owner-drawn bar; light mode the standard Win32 one (text at item.x + 7,
 /// width = text + 14; light-main.md).
 const MENUS_DARK: [(&str, f32, f32, f32); 5] = [
-    ("Tasks", 0.0, 49.0, 10.0),
-    ("File", 49.0, 37.0, 58.0),
-    ("Downloads", 86.0, 84.0, 98.0),
-    ("View", 170.0, 44.0, 179.0),
-    ("Help", 214.0, 43.0, 223.0),
+    ("&Tasks", 0.0, 49.0, 10.0),
+    ("&File", 49.0, 37.0, 58.0),
+    ("&Downloads", 86.0, 84.0, 98.0),
+    ("&View", 170.0, 44.0, 179.0),
+    ("&Help", 214.0, 43.0, 223.0),
 ];
 const MENUS_LIGHT: [(&str, f32, f32, f32); 5] = [
-    ("Tasks", 0.0, 42.0, 7.0),
-    ("File", 42.0, 32.0, 49.0),
-    ("Downloads", 74.0, 73.0, 81.0),
-    ("View", 147.0, 39.0, 154.0),
-    ("Help", 186.0, 39.0, 193.0),
+    ("&Tasks", 0.0, 42.0, 7.0),
+    ("&File", 42.0, 32.0, 49.0),
+    ("&Downloads", 74.0, 73.0, 81.0),
+    ("&View", 147.0, 39.0, 154.0),
+    ("&Help", 186.0, 39.0, 193.0),
 ];
 
 /// The menu bar in the interface language: English keeps the measured rects; a translation is
@@ -258,7 +258,7 @@ pub fn menus(p: &egui::Painter) -> Vec<(&'static str, f32, f32, f32)> {
     translated
         .into_iter()
         .map(|label| {
-            let w = menu_width(p, label) + pad;
+            let w = menu_width(p, &plain(label).0) + pad;
             let item = (label, x, w, x + inset);
             x += w;
             item
@@ -309,11 +309,15 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
             let hot = Rect::from_min_max(rc.min + vec2(0.0, 1.0), rc.max - vec2(0.0, bottom));
             p.rect_filled(hot, 0.0, MENUBAR_HOT());
         }
-        let drawn = text_font(&p, winui::segoe(), o.x + tx, o.y + 13.0, label, TEXT());
-        // Dark mode always underlines mnemonics (1 px under the first letter's advance);
-        // light mode follows the Windows rule: once the keyboard is in use (`cues`).
+        // The title without its "&", its access letter underlined (each language marks its
+        // own: French Tâches and Téléchargements both had T).
+        let (shown, letter) = plain(label);
+        let drawn = text_font(&p, winui::segoe(), o.x + tx, o.y + 13.0, &shown, TEXT());
+        // Dark mode always underlines mnemonics (1 px under the letter's advance); light mode
+        // follows the Windows rule: once the keyboard is in use (`cues`).
         if cues(ui.ctx()) {
-            let (x0, x1) = winui::char_span(&p, &winui::segoe(), label, 0, drawn);
+            let (x0, x1) =
+                winui::char_span(&p, &winui::segoe(), &shown, letter.unwrap_or(0), drawn);
             fill(&p, x0, o.y + 15.0, x1, o.y + 15.0, TEXT());
         }
         if resp.clicked() || (open.is_some() && open != Some(i) && resp.hovered()) {
@@ -353,6 +357,16 @@ pub fn label(text: &str) -> &'static str {
 
 const SLOT: f32 = 22.0;
 const SEP: f32 = 9.0;
+
+/// A menu title's access letter, lower case ("&Tasks": "t"; none marked: its first letter).
+pub fn menu_letter(label: &str) -> String {
+    let (shown, at) = plain(label);
+    shown
+        .chars()
+        .nth(at.unwrap_or(0))
+        .map(|c| c.to_lowercase().to_string())
+        .unwrap_or_default()
+}
 
 fn plain(label: &str) -> (String, Option<usize>) {
     let mut out = String::new();
