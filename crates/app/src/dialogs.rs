@@ -166,15 +166,16 @@ fn dialog_window<T>(
             })
             .inner
     });
-    // Give the window IDM's modal-dialog frame (3 px borders, 26 px caption) once it exists.
+    // Give the window IDM's modal-dialog frame (3 px borders, 26 px caption) once it exists,
+    // and again at a new size (a dialog that grows: the frame is sized from the client).
     #[cfg(windows)]
     {
         let framed = key.with("framed");
         let scale = ctx.input_for(ViewportId::from_hash_of(id), |i| i.pixels_per_point);
-        if !ctx.data(|d| d.get_temp::<bool>(framed).unwrap_or(false))
+        if ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(client)
             && crate::win32::dialog_frame(title, client, !crate::theme::dark(), scale)
         {
-            ctx.data_mut(|d| d.insert_temp(framed, true));
+            ctx.data_mut(|d| d.insert_temp(framed, client));
         }
     }
     keep_theme(
@@ -199,7 +200,7 @@ fn dialog_window<T>(
         ctx.data_mut(|d| d.remove::<bool>(focused));
         forget_place(ctx, key);
         #[cfg(windows)]
-        ctx.data_mut(|d| d.remove::<bool>(key.with("framed")));
+        ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
     }
     out
 }

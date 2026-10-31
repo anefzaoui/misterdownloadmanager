@@ -63,7 +63,16 @@ impl Batch {
             let (Some(a), Some(b)) = (self.from.chars().next(), self.to.chars().next()) else {
                 return Vec::new();
             };
-            if !a.is_ascii_alphabetic() || !b.is_ascii_alphabetic() || a > b {
+            if !a.is_ascii_alphabetic() || !b.is_ascii_alphabetic() {
+                return Vec::new();
+            }
+            // In From's case (Z to a would run through [\]^_` between the cases).
+            let b = if a.is_ascii_uppercase() {
+                b.to_ascii_uppercase()
+            } else {
+                b.to_ascii_lowercase()
+            };
+            if a > b {
                 return Vec::new();
             }
             // One letter per file; the wildcard size applies to numbers.
@@ -358,7 +367,13 @@ impl Batch {
         if step != 0 {
             *value = if letters {
                 let c = value.chars().next().unwrap_or('a');
-                let n = (c as u8 as i32 + step).clamp(b'a' as i32, b'z' as i32) as u8;
+                // Within the letter's own case.
+                let (lo, hi) = if c.is_ascii_uppercase() {
+                    (b'A', b'Z')
+                } else {
+                    (b'a', b'z')
+                };
+                let n = (c as u8 as i32 + step).clamp(lo as i32, hi as i32) as u8;
                 (n as char).to_string()
             } else {
                 let n = value.parse::<i64>().unwrap_or(0) + step as i64;
@@ -427,6 +442,14 @@ mod tests {
                 "http://x/part-c.rar"
             ]
         );
+        // Mixed case: the range keeps From's case, never the signs between the cases.
+        b.from = "y".into();
+        b.to = "Z".into();
+        let urls: Vec<String> = b.expand().iter().map(|u| u.to_string()).collect();
+        assert_eq!(urls, ["http://x/part-y.rar", "http://x/part-z.rar"]);
+        b.from = "Y".into();
+        b.to = "a".into();
+        assert!(b.expand().is_empty(), "Y to A: nothing between the cases");
         assert!(batch("http://x/no-asterisk.jpg").expand().is_empty());
         assert!(
             batch("http://x/*/*.jpg").expand().is_empty(),

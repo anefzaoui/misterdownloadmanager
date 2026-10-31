@@ -1337,6 +1337,9 @@ impl App {
             t.set_limiter(self.settings.speed_limit_on);
             self.tray_limiter = Some(self.settings.speed_limit_on);
         }
+        if let (Some(t), Some(q)) = (&self.tray, self.queues.first()) {
+            t.set_queue(q.running);
+        }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
@@ -2594,7 +2597,12 @@ impl App {
                 I("&Pause All", Cmd::StopAll, any_running, false),
                 I("&Stop All", Cmd::StopAll, any_running, false),
                 Sep,
-                I("&Delete All Completed", Cmd::DeleteCompleted, true, false),
+                I(
+                    "&Delete All Completed",
+                    Cmd::DeleteCompleted,
+                    self.items.iter().any(|i| i.status == Status::Complete),
+                    false,
+                ),
                 Sep,
                 I("Find (Ctrl-F)", Cmd::Find, true, false),
                 I("Find Next (F3)", Cmd::FindNext, true, false),
@@ -3311,6 +3319,9 @@ impl App {
             } else {
                 self.open_item(id);
             }
+        }
+        if let Some(i) = r.enter {
+            self.open_item(ids[i]);
         }
         if let Some((i, pos)) = r.context {
             self.open_popup(Popup::Item(i.map(|i| ids[i])), pos);

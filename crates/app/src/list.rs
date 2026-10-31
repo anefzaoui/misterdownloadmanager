@@ -268,8 +268,10 @@ pub struct Row {
 pub struct ListResponse {
     /// How the selection changes (a click, a key, a selection box).
     pub pick: Option<Pick>,
-    /// Double-click or Enter on this row.
+    /// Double-click on this row.
     pub double_clicked: Option<usize>,
+    /// Enter on the focused row (Open, as its menu says, whatever a double-click does).
+    pub enter: Option<usize>,
     /// Alt+Enter: the focused row's Properties.
     pub properties: Option<usize>,
     /// Right-click: the row (None = blank space) and where its menu opens.
@@ -353,7 +355,7 @@ fn keyboard(
     });
     if let Some(f) = focus {
         if enter {
-            out.double_clicked = Some(f);
+            out.enter = Some(f);
         } else if alt_enter {
             out.properties = Some(f);
         }

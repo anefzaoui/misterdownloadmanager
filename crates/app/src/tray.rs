@@ -29,6 +29,10 @@ pub struct Tray {
     _icon: TrayIcon,
     limiter_on: CheckMenuItem,
     limiter_off: CheckMenuItem,
+    /// Start and Stop main download queue: one of them enabled, as the queue runs.
+    start_queue: MenuItem,
+    stop_queue: MenuItem,
+    queue_running: std::cell::Cell<Option<bool>>,
     rx: Receiver<TrayCmd>,
     /// Every entry with its English text, to translate again when the language changes.
     labels: Vec<(Entry, &'static str)>,
@@ -52,7 +56,8 @@ impl Tray {
             let item = MenuItem::new(crate::i18n::t(label), true, None);
             items.push((item.id().clone(), cmd));
             m.append(&item).ok();
-            labels.push((Entry::Item(item), label));
+            labels.push((Entry::Item(item.clone()), label));
+            item
         };
         add(
             &menu,
@@ -77,12 +82,12 @@ impl Tray {
         menu.append(&limiter_menu).ok();
         // i18n: noun: opens the Scheduler (the tool that starts queues on time)
         add(&menu, mark("Scheduler"), TrayCmd::Scheduler);
-        add(
+        let start_queue = add(
             &menu,
             mark("Start main download queue"),
             TrayCmd::StartQueue,
         );
-        add(&menu, mark("Stop main download queue"), TrayCmd::StopQueue);
+        let stop_queue = add(&menu, mark("Stop main download queue"), TrayCmd::StopQueue);
         // i18n: plural noun: opens the Options window (settings)
         add(&menu, mark("Options"), TrayCmd::Options);
         menu.append(&PredefinedMenuItem::separator()).ok();
@@ -132,6 +137,9 @@ impl Tray {
             _icon: tray,
             limiter_on,
             limiter_off,
+            start_queue,
+            stop_queue,
+            queue_running: std::cell::Cell::new(None),
             rx,
             labels,
         })
@@ -151,6 +159,15 @@ impl Tray {
                 Entry::Check(i) => i.set_text(text),
                 Entry::Sub(i) => i.set_text(text),
             }
+        }
+    }
+
+    /// Keep Start / Stop main download queue in step with the queue (the menu is only told
+    /// when it changes).
+    pub fn set_queue(&self, running: bool) {
+        if self.queue_running.replace(Some(running)) != Some(running) {
+            self.start_queue.set_enabled(!running);
+            self.stop_queue.set_enabled(running);
         }
     }
 

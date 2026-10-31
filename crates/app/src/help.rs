@@ -277,11 +277,8 @@ impl Updates {
         let result = self.result.clone();
         // Compact unless there are release notes to show (then a window of its own size).
         let notes = matches!(result, Some(Ok(Found::Newer(_))));
-        let (id, h) = if notes {
-            ("updates-new", 250.0)
-        } else {
-            ("updates", 96.0)
-        };
+        // One window that grows when notes arrive (a second id made a new window flash up).
+        let (id, h) = ("updates", if notes { 250.0 } else { 96.0 });
         let bottom = h - 32.0;
         window(
             ctx,
@@ -432,14 +429,28 @@ impl Updates {
                         true,
                     );
                 }
-                let close_label = if download.is_some() {
+                let close_label = if self.job.is_some() {
+                    // i18n: button: stop downloading the update
+                    crate::i18n::mark("Cancel")
+                } else if download.is_some() {
                     // i18n: button: not now (download the update later)
                     crate::i18n::mark("Later")
                 } else {
                     crate::i18n::mark("OK")
                 };
                 // Enter presses the default button, as in the other dialogs.
-                let enter = winui::enter_pressed(ui);
+                let mut enter = winui::enter_pressed(ui);
+                // A check that failed can be tried again.
+                if matches!(result, Some(Err(_))) {
+                    let at = r(o, 274.0, bottom, 73.0, 21.0);
+                    // i18n: button: check for updates again
+                    let retry = winui::button(ui, at, "Retry", ButtonKind::Default, false, None);
+                    if retry.clicked() || enter {
+                        self.slot = Some(check(rt, ui.ctx()));
+                        self.result = None;
+                        enter = false;
+                    }
+                }
                 if let Some(rel) = &download {
                     // Update now when this copy's file is in the signed release (and it
                     // hasn't just failed); else Download opens the release's page.
@@ -472,7 +483,7 @@ impl Updates {
                         return Outcome::Done(false);
                     }
                 }
-                let kind = if download.is_some() {
+                let kind = if download.is_some() || matches!(result, Some(Err(_))) {
                     ButtonKind::Normal
                 } else {
                     ButtonKind::Default
@@ -486,7 +497,11 @@ impl Updates {
                     None,
                 )
                 .clicked();
-                if close || winui::escape_pressed(ui) || (enter && download.is_none()) {
+                if close && self.job.is_some() {
+                    // Cancel: the download stops, the window stays (Update now again, Later).
+                    self.job = None;
+                    Outcome::Open
+                } else if close || winui::escape_pressed(ui) || (enter && download.is_none()) {
                     Outcome::Closed
                 } else {
                     Outcome::Open

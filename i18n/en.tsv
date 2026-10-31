@@ -134,7 +134,8 @@
 	by batch download	by batch download
 #. message or event log entry in the main window
 	by import	by import
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
 	cancelled	cancelled
@@ -625,7 +626,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 	Missing	Missing
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
 	Mister Download Manager Configuration	Mister Download Manager Configuration
@@ -885,6 +886,9 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 	Resumed	Resumed
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+	Retry	Retry
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -993,7 +997,7 @@
 	Show warning before stopping downloads	Show warning before stopping downloads
 #. text in a download's progress window
 	Shown while the torrent is downloading.	Shown while the torrent is downloading.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 	Shut down	Shut down
 #. checkbox in the Find window
@@ -1124,6 +1128,9 @@
 	The download limit ({mb} MBytes every {hours} hours) has been reached.	The download limit ({mb} MBytes every {hours} hours) has been reached.
 #. text in errors.rs
 	the download link has expired (refresh the download address)	the download link has expired (refresh the download address)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	The download list could not be saved: {error}. Changes are kept while MDM runs.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.
 #. text in a dialog box
@@ -1147,6 +1154,9 @@
 	The file saved as	The file saved as
 #. text in the download list (sizes, speeds, status)
 	The file types that are not listed in any other category	The file types that are not listed in any other category
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+	The file's own checksum	The file's own checksum
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)
