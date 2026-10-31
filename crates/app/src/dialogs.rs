@@ -283,7 +283,7 @@ impl AddUrl {
                     winui::TEXT(),
                 );
                 let addr_rc = r(o, 68.0, 11.0, 396.0, 21.0);
-                let addr = winui::combo_edit(ui, addr_rc, &mut self.address, true);
+                let addr = winui::combo_edit(ui, addr_rc, &mut self.address);
                 if ui.memory(|m| m.focused().is_none()) {
                     addr.request_focus();
                 }
@@ -622,7 +622,7 @@ impl FileInfo {
                     winui::TEXT(),
                 );
                 let save_rc = r(o, 96.0, 63.0, 335.0, 21.0);
-                let save = winui::combo_edit(ui, save_rc, &mut self.save_as, false);
+                let save = winui::combo_edit(ui, save_rc, &mut self.save_as);
                 if save.changed() {
                     self.edited = true;
                 }

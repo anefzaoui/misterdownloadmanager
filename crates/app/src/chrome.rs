@@ -300,7 +300,7 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     for (i, (label, x, w, tx)) in menus(&p).iter().enumerate() {
         // From the leading edge: the first menu at the right in RTL.
         let rc = winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H)));
-        let resp = ui.interact(rc, egui::Id::unique(("menubar", i)), Sense::click());
+        let resp = ui.interact(rc, egui::Id::unique(("menubar", i)), winui::pointer_only());
         if open == Some(i) {
             p.rect_filled(rc, 0.0, MENUBAR_OPEN());
         } else if open.is_none() && resp.hovered() {
@@ -1088,7 +1088,7 @@ pub fn toolbar(
             pos2(x, band.top()),
             vec2(total, band_h),
         ));
-        let resp = ui.interact(rc, egui::Id::unique(("tb", i)), Sense::click());
+        let resp = ui.interact(rc, egui::Id::unique(("tb", i)), winui::pointer_only());
         let resp = if cut { resp.on_hover_text(full) } else { resp };
         let past_button = |q: Pos2| winui::mx(q.x) >= x + bw;
         if *enabled && resp.hovered() {
@@ -1400,7 +1400,7 @@ pub fn categories(
     let blank = ui.interact(
         winui::rect(area),
         egui::Id::unique("tree-blank"),
-        Sense::click(),
+        winui::pointer_only(),
     );
     if blank.secondary_clicked()
         && let Some(k) = rows.iter().position(|r| r.selected)
@@ -1513,7 +1513,11 @@ pub fn categories(
         let row = winui::rect(
             Rect::from_min_size(pos2(area.left(), top), vec2(area.width(), 16.0)).intersect(area),
         );
-        let resp = ui.interact(row, egui::Id::unique(("tree-row", k)), Sense::click());
+        let resp = ui.interact(
+            row,
+            egui::Id::unique(("tree-row", k)),
+            winui::pointer_only(),
+        );
         if resp.clicked() {
             let on_expander = resp.interact_pointer_pos().is_some_and(|q| {
                 let x = winui::mx(q.x);

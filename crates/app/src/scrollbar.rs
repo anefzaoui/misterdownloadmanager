@@ -2,7 +2,7 @@
 //! (notes/ui-spec/scrollbars.md): 17 px thick, collapsed to a 2 px line until the pointer is
 //! over the bar, then a 6 px rounded thumb with arrows. Win32 thumb sizing.
 
-use egui::{Color32, Pos2, Rect, Sense, Ui, pos2};
+use egui::{Color32, Pos2, Rect, Ui, pos2};
 
 use crate::winui::{fill, px};
 
@@ -28,6 +28,8 @@ themed! {
     /// A pressed arrow or thumb (a dragged thumb too): brighter on the dark track, darker on
     /// the light one, as Windows 11's bars answer a press.
     INK_PRESSED = Color32::from_gray(0xc8), Color32::from_gray(0x5c);
+    /// The arrow or thumb under the pointer: between rest and pressed.
+    INK_HOT = Color32::from_gray(0xb0), Color32::from_gray(0x70);
 }
 
 /// Measured glyphs over the #17 track, columns = across the bar from v 5 (up/down) or rows =
@@ -89,7 +91,7 @@ pub fn bar(
             }
     };
 
-    let resp = ui.interact(track, id, Sense::click_and_drag());
+    let resp = ui.interact(track, id, crate::winui::pointer_drag());
     let from_right = !vertical && crate::winui::rtl();
     // Along-the-bar coordinate of a point.
     let along = |q: Pos2| {
@@ -181,9 +183,26 @@ pub fn bar(
                 Part::Track
             }
         });
+    // The part under the pointer (while nothing is held).
+    let hot = (held.is_none())
+        .then(|| resp.hover_pos().map(along))
+        .flatten()
+        .map(|u| {
+            if u < THICK {
+                Part::First
+            } else if u >= len - THICK {
+                Part::Second
+            } else if u >= s && u <= e {
+                Part::Thumb
+            } else {
+                Part::Track
+            }
+        });
     let ink_of = |part: Part| {
         if held == Some(part) {
             INK_PRESSED()
+        } else if hot == Some(part) {
+            INK_HOT()
         } else {
             INK_C()
         }

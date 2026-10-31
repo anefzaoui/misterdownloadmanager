@@ -1083,7 +1083,23 @@ pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
 /// baseline at top+13.
 pub fn edit(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool, password: bool) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    edit_text(ui, rc, value, enabled, password, 5.0)
+    let resp = edit_text(ui, rc, value, enabled, password, 5.0);
+    edit_focus_line(ui, &resp, rc);
+    resp
+}
+
+/// A text box's focus, as Windows 11 shows it: an accent line along its bottom edge.
+pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
+    if resp.has_focus() {
+        fill(
+            ui.painter(),
+            rc.left() + 1.0,
+            rc.bottom() - 2.0,
+            rc.right() - 2.0,
+            rc.bottom() - 1.0,
+            accent(),
+        );
+    }
 }
 
 fn edit_text(
@@ -1417,7 +1433,7 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
 /// Drop-list combo showing `value`; returns the click response.
 pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
-    combo_frame(ui.painter(), rc, false);
+    combo_frame(ui.painter(), rc, resp.has_focus());
     // The arrow zone (always white) shows the state.
     tint_part(
         ui.painter(),
@@ -1439,8 +1455,13 @@ pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
 
 /// Editable combo (Add URL "Address", Save As): frame + edit child at +3,+3 .. right−20 (the
 /// arrow zone at the trailing edge).
-pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String, focused: bool) -> Response {
-    combo_frame(ui.painter(), rc, focused);
+/// Its blue focus border while its box has the keyboard focus.
+pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String) -> Response {
+    // The frame goes under the box, so it is drawn first, with the box's focus as last frame
+    // left it (a change repaints at once).
+    let key = widget_id(ui, ("combo-edit-focus", rc.min.x as i32, rc.min.y as i32));
+    let was = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false));
+    combo_frame(ui.painter(), rc, was);
     let child = if rtl() {
         Rect::from_min_max(pos2(rc.left() + 20.0, rc.top()), rc.max - vec2(3.0, 0.0))
     } else {
@@ -1449,14 +1470,19 @@ pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String, focused: bool) -> R
             pos2(rc.right() - 20.0, rc.bottom()),
         )
     };
-    edit_text(ui, child, value, true, false, 2.0)
+    let resp = edit_text(ui, child, value, true, false, 2.0);
+    if resp.has_focus() != was {
+        ui.data_mut(|d| d.insert_temp(key, resp.has_focus()));
+        ui.ctx().request_repaint();
+    }
+    resp
 }
 
 /// The arrow zone of an editable combo (`combo_edit`, at the trailing edge): a click on it
 /// opens the combo's drop list (`drop_list`); it shows hot, pressed, and pressed while `open`.
 pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str, open: bool) -> Response {
     let zone = combo_zone(rc);
-    let resp = ui.interact(zone, widget_id(ui, ("combo-arrow", id)), Sense::click());
+    let resp = ui.interact(zone, widget_id(ui, ("combo-arrow", id)), pointer_only());
     let state = State::of(&resp, true).open_if(open);
     tint_part(ui.painter(), zone, state, false, |p| combo_chevron(p, rc));
     resp
@@ -1546,99 +1572,17 @@ pub fn button(
     focus_rect: bool,
     mnemonic: Option<usize>,
 ) -> Response {
-    // The label is translated here (M16); a mnemonic index points into the English text only.
+    // The label is translated here (M16); a mnemonic index points into the English text only,
+    // and becomes the "&" form every button uses.
     let translated = crate::i18n::t(label);
-    let mnemonic = mnemonic.filter(|_| translated == label);
-    let label = translated;
-    if !crate::theme::dark() {
-        return button_light(ui, rc, label, kind, focus_rect);
-    }
-    let sense = if kind == ButtonKind::Disabled {
-        Sense::hover()
-    } else {
-        Sense::click()
-    };
-    let resp = ui.interact(
-        rc,
-        widget_id(ui, ("button", label, rc.min.x as i32, rc.min.y as i32)),
-        sense,
-    );
-    let p = ui.painter();
-    let (border, bottom) = match kind {
-        ButtonKind::Normal => (rgb(0x9b, 0x9b, 0x9b), rgb(0x89, 0x89, 0x89)),
-        ButtonKind::Default => (rgb(0xff, 0xff, 0xff), rgb(0xe5, 0xe5, 0xe5)),
-        ButtonKind::Disabled => (rgb(0x40, 0x40, 0x40), rgb(0x40, 0x40, 0x40)),
-    };
-    let fill = match State::of(&resp, kind != ButtonKind::Disabled) {
-        State::Pressed => rgb(0x26, 0x26, 0x26),
-        State::Hot => rgb(0x45, 0x45, 0x45),
-        _ => rgb(0x33, 0x33, 0x33),
-    };
-    p.rect_filled(rc, 4.0, fill);
-    p.rect_stroke(rc, 4.0, Stroke::new(1.0, border), StrokeKind::Inside);
-    hline(
-        p,
-        rc.left() + 4.0,
-        rc.right() - 5.0,
-        rc.bottom() - 1.0,
-        bottom,
-    );
-    let color = if kind == ButtonKind::Disabled {
-        rgb(0xcc, 0xcc, 0xcc)
-    } else {
-        TEXT()
-    };
-    // A translation wider than the button ends in "..." and shows whole on hover (UI rule).
-    let (shown, cut) = fit_label(p, label, rc);
-    let mnemonic = mnemonic.filter(|_| !cut);
-    let w = text_width(p, &shown);
-    let x = (rc.center().x - w / 2.0 - 1.0).round();
-    let baseline = rc.top() + if rc.height() <= 19.0 { 13.0 } else { 14.0 };
-    // Centred in a rect on screen: placed by its left, not by an English pen.
-    let drawn = text_at(p, tahoma(), x, baseline, &shown, color);
-    if let Some(i) = mnemonic {
-        let (x0, x1) = char_span(p, &tahoma(), label, i, drawn);
-        hline(p, x0, x1, baseline + 2.0, color);
-    }
-    if focus_rect {
-        let f = rc.shrink(2.0);
-        let mut i = 0;
-        let mut dot = |x: f32, y: f32| {
-            px(
-                p,
-                x,
-                y,
-                if i % 2 == 0 {
-                    rgb(0xcc, 0xcc, 0xcc)
-                } else {
-                    rgb(0x0a, 0x0a, 0x0a)
-                },
-            );
-            i += 1;
-        };
-        let (l, t, rr, b) = (f.left(), f.top(), f.right() - 1.0, f.bottom() - 1.0);
-        let mut x = l;
-        while x <= rr {
-            dot(x, t);
-            x += 1.0;
+    let label = match mnemonic.filter(|_| translated == label) {
+        Some(i) => {
+            let at = label.char_indices().nth(i).map_or(label.len(), |(b, _)| b);
+            format!("{}&{}", &label[..at], &label[at..])
         }
-        let mut y = t + 1.0;
-        while y <= b {
-            dot(rr, y);
-            y += 1.0;
-        }
-        let mut x = rr - 1.0;
-        while x >= l {
-            dot(x, b);
-            x -= 1.0;
-        }
-        let mut y = b - 1.0;
-        while y > t {
-            dot(l, y);
-            y -= 1.0;
-        }
-    }
-    if cut { resp.on_hover_text(label) } else { resp }
+        None => translated.to_owned(),
+    };
+    button_face(ui, rc, &label, kind, focus_rect)
 }
 
 /// `label` as it fits on a button `rc`: whole, or cut with "..." (true) when it would reach the
@@ -1698,16 +1642,19 @@ pub fn checkbox_until(
         widget_id(ui, ("check", caption, box_min.x as i32, box_min.y as i32)),
         sense,
     );
+    show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
     }
     let (l, t) = (box_min.x, box_min.y);
     let (rr, b) = (l + 12.0, t + 12.0);
-    // Interior: white, or #f0f0f0 when disabled (spec "Checkbox") or pressed (classic
-    // Windows: the button face while the mouse button is held on it).
-    let interior = match State::of(&resp, enabled) {
-        State::Normal | State::Hot | State::Open => Color32::WHITE,
-        State::Pressed | State::Disabled => rgb(0xf0, 0xf0, 0xf0),
+    // Interior: white, or #f0f0f0 when disabled (spec "Checkbox").
+    let state = State::of(&resp, enabled);
+    let interior = match state {
+        State::Disabled => rgb(0xf0, 0xf0, 0xf0),
+        // Under the pointer and pressed: the shared highlight (a classic box has no hot look
+        // of its own; without one it didn't answer the pointer at all).
+        _ => highlight_fill(state).unwrap_or(Color32::WHITE),
     };
     solid(&p, Rect::from_min_size(box_min, vec2(13.0, 13.0)), interior);
     hline(&p, l, rr - 1.0, t, rgb(0xa0, 0xa0, 0xa0));
@@ -1822,6 +1769,18 @@ pub fn edit_light_on(
     align_right: bool,
     parent: Color32,
 ) -> Response {
+    edit_light_with(ui, rc, value, enabled, align_right, false, parent)
+}
+
+fn edit_light_with(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    enabled: bool,
+    align_right: bool,
+    password: bool,
+    parent: Color32,
+) -> Response {
     edit_frame(ui.painter(), rc, enabled);
     let fill_c = if enabled { Color32::WHITE } else { parent };
     fill(
@@ -1833,12 +1792,20 @@ pub fn edit_light_on(
         fill_c,
     );
     let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+    // A number keeps to the end (the left in RTL), text to the start.
     let align = if align_right {
-        egui::Align::RIGHT
+        end_align()
     } else {
-        egui::Align::LEFT
+        start_align()
     };
-    edit_text_with(ui, rc, value, enabled, false, 5.0, color, align)
+    let resp = edit_text_with(ui, rc, value, enabled, password, 5.0, color, align);
+    edit_focus_line(ui, &resp, rc);
+    resp
+}
+
+/// A light password box: dots, and no Cut or Copy in its menu.
+pub fn password_light(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> Response {
+    edit_light_with(ui, rc, value, enabled, false, true, LIGHT_BG)
 }
 
 /// Light push button: #fdfdfd fill, radius 3; border #d0d0d0 (bottom #bababa), default
@@ -1850,56 +1817,54 @@ pub fn button_light(
     kind: ButtonKind,
     focus_rect: bool,
 ) -> Response {
-    let label = crate::i18n::t(label);
-    let sense = if kind == ButtonKind::Disabled {
-        Sense::hover()
-    } else {
+    button_face(ui, rc, crate::i18n::t(label), kind, focus_rect)
+}
+
+/// A push button in the current theme (dark: IDM's dark buttons; light: Windows 11's), its
+/// (translated) `label` with "&" before the access letter: the letter is underlined and
+/// Alt+letter presses it. Hot and pressed as Windows 11 draws them: a pressed button's label
+/// dims and its darker bottom edge flattens. `default_focus`: the dialog's default button, whose
+/// focus rectangle shows while no other control has the keyboard focus; any control with the
+/// focus shows it.
+fn button_face(
+    ui: &mut Ui,
+    rc: Rect,
+    label: &str,
+    kind: ButtonKind,
+    default_focus: bool,
+) -> Response {
+    let dark = crate::theme::dark();
+    let enabled = kind != ButtonKind::Disabled;
+    let sense = if enabled {
         Sense::click()
+    } else {
+        Sense::hover()
     };
     let resp = ui.interact(
         rc,
-        widget_id(
-            ui,
-            ("button-light", label, rc.min.x as i32, rc.min.y as i32),
-        ),
+        widget_id(ui, ("button", label, rc.min.x as i32, rc.min.y as i32)),
         sense,
     );
+    let state = State::of(&resp, enabled);
     let p = ui.painter();
-    let (border, bottom, fill_c, color) = match kind {
-        ButtonKind::Normal => (
-            rgb(0xd0, 0xd0, 0xd0),
-            rgb(0xba, 0xba, 0xba),
-            rgb(0xfd, 0xfd, 0xfd),
-            LIGHT_TEXT,
-        ),
-        ButtonKind::Default => (
-            rgb(0x00, 0x78, 0xd4),
-            rgb(0x00, 0x6b, 0xbe),
-            rgb(0xfd, 0xfd, 0xfd),
-            LIGHT_TEXT,
-        ),
-        ButtonKind::Disabled => (
-            rgb(0xe9, 0xe9, 0xe9),
-            rgb(0xe9, 0xe9, 0xe9),
-            rgb(0xf9, 0xf9, 0xf9),
-            rgb(0x83, 0x83, 0x83),
-        ),
-    };
-    let fill_c = match State::of(&resp, kind != ButtonKind::Disabled) {
-        State::Pressed => rgb(0xf5, 0xf5, 0xf5),
-        State::Hot => rgb(0xf6, 0xf6, 0xf6),
-        _ => fill_c,
-    };
-    p.rect_filled(rc, 3.0, fill_c);
-    p.rect_stroke(rc, 3.0, Stroke::new(1.0, border), StrokeKind::Inside);
+    let face = button_colors(kind, state, dark);
+    let rounding = if dark { 4.0 } else { 3.0 };
+    p.rect_filled(rc, rounding, face.fill);
+    p.rect_stroke(
+        rc,
+        rounding,
+        Stroke::new(1.0, face.border),
+        StrokeKind::Inside,
+    );
+    let inset = if dark { 4.0 } else { 3.0 };
     hline(
         p,
-        rc.left() + 3.0,
-        rc.right() - 4.0,
+        rc.left() + inset,
+        rc.right() - inset - 1.0,
         rc.bottom() - 1.0,
-        bottom,
+        face.bottom,
     );
-    // "&Start now": the letter after '&' is underlined (y + 16) and Alt+letter presses it.
+    // "&Start now": the letter after '&' is underlined and Alt+letter presses it.
     let (shown, mnemonic) = match label.split_once('&') {
         Some((before, after)) if !after.is_empty() => (format!("{before}{after}"), Some(before)),
         _ => (label.to_owned(), None),
@@ -1908,26 +1873,28 @@ pub fn button_light(
     let (shown, cut) = fit_label(p, &shown, rc);
     let mnemonic = mnemonic.filter(|_| !cut);
     let w = text_width(p, &shown);
-    let x = (rc.center().x - w / 2.0).round();
-    let drawn = text_at(p, tahoma(), x, rc.top() + 13.0, &shown, color);
+    let x = (rc.center().x - w / 2.0 - if dark { 1.0 } else { 0.0 }).round();
+    let baseline = rc.top()
+        + if dark && rc.height() > 19.0 {
+            14.0
+        } else {
+            13.0
+        };
+    // Centred in a rect on screen: placed by its left, not by an English pen.
+    let drawn = text_at(p, tahoma(), x, baseline, &shown, face.text);
     let mut pressed_by_key = false;
     if let Some(before) = mnemonic
         && let Some(letter) = shown[before.len()..].chars().next()
     {
-        let (x0, x1) = if rtl() {
-            char_span(p, &tahoma(), &shown, before.chars().count(), drawn)
-        } else {
-            (
-                x + text_width(p, before),
-                x + text_width(p, &shown[..before.len() + letter.len_utf8()]) - 1.0,
-            )
-        };
-        hline(p, x0, x1, rc.top() + 16.0, color);
-        if kind != ButtonKind::Disabled
-            && let Some(key) = egui::Key::from_name(&letter.to_ascii_uppercase().to_string())
-        {
-            pressed_by_key = ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, key));
-        }
+        let (x0, x1) = char_span(p, &tahoma(), &shown, before.chars().count(), drawn);
+        hline(
+            p,
+            x0,
+            x1,
+            baseline + if dark { 2.0 } else { 3.0 },
+            face.text,
+        );
+        pressed_by_key = enabled && mnemonic_pressed(ui, letter);
     }
     let resp = if pressed_by_key {
         let mut r = resp;
@@ -1936,25 +1903,139 @@ pub fn button_light(
     } else {
         resp
     };
-    if focus_rect {
-        let f = rc.shrink(2.0);
-        let mut x = f.left();
-        while x < f.right() {
-            px(p, x, f.top(), rgb(0x0d, 0x0d, 0x0d));
-            px(p, x, f.bottom() - 1.0, rgb(0x0d, 0x0d, 0x0d));
-            x += 2.0;
-        }
-        let mut y = f.top();
-        while y < f.bottom() {
-            px(p, f.left(), y, rgb(0x0d, 0x0d, 0x0d));
-            px(p, f.right() - 1.0, y, rgb(0x0d, 0x0d, 0x0d));
-            y += 2.0;
-        }
+    if resp.has_focus() || (default_focus && ui.ctx().memory(|m| m.focused().is_none())) {
+        focus_ring(ui.painter(), rc.shrink(2.0));
     }
     if cut {
         resp.on_hover_text(label.replace('&', ""))
     } else {
         resp
+    }
+}
+
+/// A button's colours.
+#[derive(Clone, Copy, Debug, PartialEq)]
+struct Face {
+    fill: Color32,
+    border: Color32,
+    /// The bottom edge (a darker line at rest; flat, the border's own, while pressed).
+    bottom: Color32,
+    text: Color32,
+}
+
+/// A button's colours for `kind` in `state`: dark, IDM's dark buttons; light, Windows 11's.
+fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
+    let pressed = state == State::Pressed;
+    let face = if dark {
+        let (border, bottom) = match kind {
+            ButtonKind::Normal => (rgb(0x9b, 0x9b, 0x9b), rgb(0x89, 0x89, 0x89)),
+            ButtonKind::Default => (rgb(0xff, 0xff, 0xff), rgb(0xe5, 0xe5, 0xe5)),
+            ButtonKind::Disabled => (rgb(0x40, 0x40, 0x40), rgb(0x40, 0x40, 0x40)),
+        };
+        Face {
+            fill: match state {
+                State::Pressed => rgb(0x26, 0x26, 0x26),
+                State::Hot => rgb(0x45, 0x45, 0x45),
+                _ => rgb(0x33, 0x33, 0x33),
+            },
+            border,
+            bottom,
+            text: match state {
+                State::Disabled => rgb(0x80, 0x80, 0x80),
+                State::Pressed => rgb(0xc8, 0xc8, 0xc8),
+                _ => TEXT(),
+            },
+        }
+    } else {
+        let (border, bottom) = match kind {
+            ButtonKind::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xba, 0xba, 0xba)),
+            ButtonKind::Default => (rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x6b, 0xbe)),
+            ButtonKind::Disabled => (rgb(0xe9, 0xe9, 0xe9), rgb(0xe9, 0xe9, 0xe9)),
+        };
+        Face {
+            fill: match state {
+                State::Disabled => rgb(0xf9, 0xf9, 0xf9),
+                State::Pressed => rgb(0xf5, 0xf5, 0xf5),
+                State::Hot => rgb(0xf6, 0xf6, 0xf6),
+                _ => rgb(0xfd, 0xfd, 0xfd),
+            },
+            border,
+            bottom,
+            text: match state {
+                State::Disabled => rgb(0x83, 0x83, 0x83),
+                State::Pressed => rgb(0x5d, 0x5d, 0x5d),
+                _ => LIGHT_TEXT,
+            },
+        }
+    };
+    if pressed {
+        Face {
+            bottom: face.border,
+            ..face
+        }
+    } else {
+        face
+    }
+}
+
+/// Alt+`letter` was pressed (and is taken): Latin letters as egui keys, other scripts (Cyrillic,
+/// Greek, Arabic…) as the text typed with Alt held.
+pub fn mnemonic_pressed(ui: &Ui, letter: char) -> bool {
+    let upper: String = letter.to_uppercase().collect();
+    if let Some(key) = egui::Key::from_name(&upper)
+        && ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, key))
+    {
+        return true;
+    }
+    let lower: String = letter.to_lowercase().collect();
+    ui.input_mut(|i| {
+        let alt = i.modifiers.alt;
+        let at = i
+            .events
+            .iter()
+            .position(|e| matches!(e, egui::Event::Text(t) if alt && t.to_lowercase() == lower));
+        at.map(|k| i.events.remove(k)).is_some()
+    })
+}
+
+/// A part clicked by the pointer that never takes the keyboard focus (egui's `click()` is also
+/// a Tab stop): spinner arrows, a combo's arrow, scroll bars, toolbar and menu-bar items, rows
+/// of a list that handles its own keys. Tab then only reaches real controls.
+pub fn pointer_only() -> Sense {
+    Sense::CLICK
+}
+
+/// [`pointer_only`] that can also be dragged (a scroll bar's thumb).
+pub fn pointer_drag() -> Sense {
+    Sense::CLICK | Sense::DRAG
+}
+
+/// The ring of `resp`'s control around `rc` while it has the keyboard focus.
+pub fn show_focus(ui: &Ui, resp: &Response, rc: Rect) {
+    if resp.has_focus() {
+        focus_ring(ui.painter(), rc);
+    }
+}
+
+/// The keyboard focus around `rc`: a dotted rectangle, every other pixel, in the theme's ink.
+pub fn focus_ring(p: &Painter, rc: Rect) {
+    let ink = if crate::theme::dark() {
+        rgb(0xcc, 0xcc, 0xcc)
+    } else {
+        rgb(0x0d, 0x0d, 0x0d)
+    };
+    let (l, t, r, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
+    let mut x = l;
+    while x <= r {
+        px(p, x, t, ink);
+        px(p, x, b, ink);
+        x += 2.0;
+    }
+    let mut y = t;
+    while y <= b {
+        px(p, l, y, ink);
+        px(p, r, y, ink);
+        y += 2.0;
     }
 }
 
@@ -1998,6 +2079,7 @@ pub fn checkbox_light_until(
         widget_id(ui, ("check-light", caption, glyph.x as i32, glyph.y as i32)),
         sense,
     );
+    show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
     }
@@ -2095,6 +2177,7 @@ pub fn radio_light_until(
         widget_id(ui, ("radio-light", caption, glyph.x as i32, glyph.y as i32)),
         sense,
     );
+    show_focus(ui, &resp, hit.expand(1.0));
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
     if selected {
@@ -2275,6 +2358,7 @@ pub fn tabs_light(
             widget_id(ui, ("tab-light", tab.label, x0 as i32)),
             Sense::click(),
         );
+        show_focus(ui, &resp, hit.shrink(2.0));
         if resp.clicked() && !sel {
             clicked = Some(i);
         }
@@ -2335,26 +2419,37 @@ pub fn chevron_light(p: &Painter, at: Pos2, enabled: bool) {
 /// The frame of a light drop-down (combo or date picker): rounded `#c8c8c8` border, `#fefefe`
 /// fill; enabled ones darken on hover and take the accent border while open.
 pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
-    let enabled = state != State::Disabled;
+    // Drawn as a button (Windows 11 draws its drop-downs so): the same faces and states, in
+    // the current theme; open, the accent border and no bottom edge (its list is out).
+    let dark = crate::theme::dark();
     let open = state == State::Open;
-    // The light buttons' fills: hot #f6f6f6, pressed #f5f5f5 (as `button_light`).
-    let (border, fill_c) = match state {
-        State::Disabled => (rgb(0xc8, 0xc8, 0xc8), rgb(0xfe, 0xfe, 0xfe)),
-        State::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xfd, 0xfd, 0xfd)),
-        State::Pressed => (rgb(0xd0, 0xd0, 0xd0), rgb(0xf5, 0xf5, 0xf5)),
-        State::Hot | State::Open => (rgb(0xd0, 0xd0, 0xd0), rgb(0xf6, 0xf6, 0xf6)),
+    let kind = if state == State::Disabled {
+        ButtonKind::Disabled
+    } else {
+        ButtonKind::Normal
     };
-    let border = if open { rgb(0x00, 0x78, 0xd4) } else { border };
-    p.rect_filled(rc, 3.0, fill_c);
-    p.rect_stroke(rc, 3.0, Stroke::new(1.0, border), StrokeKind::Inside);
-    if enabled && !open {
+    let face = button_colors(kind, if open { State::Hot } else { state }, dark);
+    let border = if open { accent() } else { face.border };
+    let rounding = if dark { 4.0 } else { 3.0 };
+    p.rect_filled(rc, rounding, face.fill);
+    p.rect_stroke(rc, rounding, Stroke::new(1.0, border), StrokeKind::Inside);
+    if !open {
         hline(
             p,
             rc.left() + 3.0,
             rc.right() - 4.0,
             rc.bottom() - 1.0,
-            rgb(0x86, 0x86, 0x86),
+            face.bottom,
         );
+    }
+}
+
+/// The accent (Windows' blue): borders of open and focused controls.
+pub fn accent() -> Color32 {
+    if crate::theme::dark() {
+        rgb(0x60, 0xcd, 0xff)
+    } else {
+        rgb(0x00, 0x78, 0xd4)
     }
 }
 
@@ -2375,6 +2470,7 @@ pub fn combo_light(
         Sense::hover()
     };
     let resp = ui.interact(rc, key.with("button"), sense);
+    show_focus(ui, &resp, rc.shrink(3.0));
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
     if resp.clicked() {
         open = !open;
@@ -2440,7 +2536,7 @@ pub fn combo_light(
                         pos2(list.left() + 1.0, list.top() + 1.0 + row_h * i as f32),
                         vec2(list.width() - 2.0, row_h),
                     );
-                    let r = ui.interact(row, key.with(("item", i)), Sense::click());
+                    let r = ui.interact(row, key.with(("item", i)), pointer_only());
                     let hot = r.hovered() || (!ui.rect_contains_pointer(list) && i == selected);
                     if hot {
                         lp.rect_filled(row, 0.0, rgb(0x00, 0x78, 0xd7));
@@ -2480,7 +2576,7 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
     let mut step = 0;
     for (i, part, dir) in [(0, up, 1), (1, down, -1)] {
         let sense = if enabled {
-            Sense::click()
+            pointer_only()
         } else {
             Sense::hover()
         };
@@ -2532,6 +2628,7 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Resp
         Sense::hover()
     };
     let resp = ui.interact(rc, widget_id(ui, ("icon-button-light", id)), sense);
+    show_focus(ui, &resp, rc.shrink(2.0));
     let p = ui.painter();
     let face = subtle_fill(State::of(&resp, enabled), false).unwrap_or(rgb(0xfb, 0xfb, 0xfb));
     p.rect_filled(rc, 2.0, face);
@@ -2547,6 +2644,35 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Resp
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_pressed_button_looks_pressed_in_both_themes() {
+        // Issue #7: pressed was #f5f5f5 against hot #f6f6f6, the same to the eye.
+        for dark in [false, true] {
+            for kind in [ButtonKind::Normal, ButtonKind::Default] {
+                let rest = button_colors(kind, State::Normal, dark);
+                let hot = button_colors(kind, State::Hot, dark);
+                let pressed = button_colors(kind, State::Pressed, dark);
+                assert_ne!(pressed.text, rest.text, "pressed dims the label");
+                assert_eq!(
+                    pressed.bottom, pressed.border,
+                    "pressed flattens the bottom edge"
+                );
+                assert_ne!(
+                    rest.bottom, rest.border,
+                    "at rest the bottom edge is darker"
+                );
+                assert_ne!(hot.fill, rest.fill, "hot differs from rest");
+            }
+            let disabled = button_colors(ButtonKind::Disabled, State::Disabled, dark);
+            let enabled = button_colors(ButtonKind::Normal, State::Normal, dark);
+            let gap = |a: Color32, b: Color32| (a.r() as i32 - b.r() as i32).abs();
+            assert!(
+                gap(disabled.text, enabled.text) >= 0x50,
+                "disabled text is clearly dimmer"
+            );
+        }
+    }
 
     #[test]
     fn control_states_open_and_tint() {

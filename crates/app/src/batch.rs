@@ -245,13 +245,7 @@ impl Batch {
             false,
         );
         embossed(&p, o.x + 290.0, o.y + 236.0, crate::i18n::t("Password"), on);
-        winui::edit_light(
-            ui,
-            r(o, 342.0, 221.0, 113.0, 23.0),
-            &mut self.password,
-            on,
-            false,
-        );
+        winui::password_light(ui, r(o, 342.0, 221.0, 113.0, 23.0), &mut self.password, on);
 
         // Preview: first, second and last file.
         let name = |i: Option<&url::Url>| {

@@ -379,14 +379,19 @@ impl Progress {
                 (o.x + x0, o.x + x1, o.y + 10.0)
             };
             let y1 = o.y + 27.0;
-            fill(
-                &p,
-                x0,
-                y0,
-                x1,
-                y1 + if sel { 2.0 } else { 0.0 },
-                winui::BG(),
+            let hit = winui::rect(Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, y1 + 1.0)));
+            let resp = ui.interact(
+                hit,
+                egui::Id::unique(("progress-tab", label)),
+                Sense::click(),
             );
+            // An unselected tab under the pointer: lighter (the torrent tabs' hover grey).
+            let body = if !sel && resp.hovered() {
+                rgb(0x45, 0x45, 0x45)
+            } else {
+                winui::BG()
+            };
+            fill(&p, x0, y0, x1, y1 + if sel { 2.0 } else { 0.0 }, body);
             px(&p, x0, y0, TAB_CORNER);
             px(&p, x0 + 1.0, y0, TAB_CORNER);
             fill(&p, x0 + 2.0, y0, x1 - 2.0, y0, HILIGHT);
@@ -410,15 +415,8 @@ impl Progress {
                 label,
                 winui::TEXT(),
             );
-            let hit = winui::rect(Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, y1 + 1.0)));
-            if ui
-                .interact(
-                    hit,
-                    egui::Id::unique(("progress-tab", label)),
-                    Sense::click(),
-                )
-                .clicked()
-            {
+            winui::show_focus(ui, &resp, hit.shrink(3.0));
+            if resp.clicked() {
                 self.tab = tab;
             }
         }
@@ -487,6 +485,26 @@ impl Progress {
         draw(selected, true);
         for (i, (tab, label, dark_x0, _)) in tabs.iter().enumerate() {
             let sel = i == selected;
+            let hit = winui::rect(Rect::from_min_max(
+                pos2(o.x + edges[i], o.y + 8.0),
+                pos2(o.x + edges[i + 1] + 1.0, o.y + 28.0),
+            ));
+            let resp = ui.interact(
+                hit,
+                egui::Id::unique(("progress-tab", *label)),
+                Sense::click(),
+            );
+            // An unselected tab under the pointer: lighter, as the shared light tabs.
+            if !sel && resp.hovered() {
+                fill(
+                    &p,
+                    o.x + edges[i] + 1.0,
+                    o.y + 11.0,
+                    o.x + edges[i + 1] - 1.0,
+                    o.y + 27.0,
+                    rgb(0xfd, 0xfd, 0xfd),
+                );
+            }
             // Text x is the same as in dark mode (25 / 117 / 193).
             let tx = o.x + dark_x0 + 5.0;
             text(
@@ -496,18 +514,8 @@ impl Progress {
                 label,
                 winui::TEXT(),
             );
-            let hit = winui::rect(Rect::from_min_max(
-                pos2(o.x + edges[i], o.y + 8.0),
-                pos2(o.x + edges[i + 1] + 1.0, o.y + 28.0),
-            ));
-            if ui
-                .interact(
-                    hit,
-                    egui::Id::unique(("progress-tab", *label)),
-                    Sense::click(),
-                )
-                .clicked()
-            {
+            winui::show_focus(ui, &resp, hit.shrink(3.0));
+            if resp.clicked() {
                 self.tab = *tab;
             }
         }
