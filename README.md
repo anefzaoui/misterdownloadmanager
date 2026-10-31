@@ -360,7 +360,7 @@ pieces fit.
 
 ## Status and helping out
 
-Version 0.1.0 is an early preview: the engine and the main window are solid, some corners are
+MDM is an early preview: the engine and the main window are solid, some corners are
 "good enough for now".
 
 - **Translations are machine-made.** Rows marked `#, machine` in [`i18n/`](i18n) wait for a

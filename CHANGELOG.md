@@ -3,7 +3,10 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
-## [Unreleased]
+## [0.2.0] - 2026-10-31
+
+Mac fixes from the first round of real use, found on every system and fixed there too; the
+menus and text boxes work as in any desktop program; and MDM works with AI assistants.
 
 ### Fixed
 
@@ -35,7 +38,19 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Cursor, VS Code and other MCP assistants list, add, pause, resume and remove the running
   app's downloads and start its queue, through the automation API
   ([how to set it up](docs/ai-assistants.md)).
-- The automation API's "it is off" answer carries `"code": "api-off"` for programs to check.
+- **`--json`** for `misterdownloadmanager-cli`: every command prints JSON for scripts and AI
+  agents, downloads as one `progress` line per half second and then `done` or `paused`
+  ([the formats](docs/command-line.md#json-for-scripts-and-programs)).
+- **The automation API's JSON Schema**, [automation-api.schema.json](docs/automation-api.schema.json),
+  made from the code the app answers with. Each download in its list now says why it failed
+  (`error`), and the "it is off" answer carries `"code": "api-off"` for programs to check.
+- The website has `llms.txt` and `llms-full.txt`, and every help page as Markdown, for AI tools.
+
+### Changed
+
+- `misterdownloadmanager-cli status`, `pause`, `start`, `remove`, `delete` and `api` exit with
+  code 1 when the app answers with an error (the API is off, an unknown action), as they do when
+  the app isn't running.
 
 ## [0.1.0] - 2026-10-30
 
