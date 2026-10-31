@@ -2,7 +2,8 @@
 
 [← Back to docs index](README.md)
 
-The same list is in MDM under **Help → Keyboard shortcuts**.
+The same list is in MDM under **Help → Keyboard shortcuts**, and the menus show each command's
+keys beside it. On a Mac, **⌘** (Command) takes the place of **Ctrl**: **⌘N** adds a download.
 
 ## Adding and finding
 
@@ -43,8 +44,15 @@ The same list is in MDM under **Help → Keyboard shortcuts**.
 
 | Keys | What they do |
 |---|---|
-| **Esc** | Close a menu or dialog |
+| **F10**, or **Alt** pressed alone | Open the first menu (**Tasks**); on a Mac **Ctrl+F2** |
+| **Alt** + a menu's underlined letter | Open that menu (Windows and Linux) |
+| **Up** / **Down** | Move through an open menu |
+| **Left** / **Right** | The menu before / after; in a submenu, **Left** closes it |
+| **Enter**, or an item's underlined letter | Run the highlighted item |
+| **Esc** | Close a menu or dialog (an open drop-down list first) |
 | **Enter** | In **Download File Info**: **Start Download** |
+
+Right-click any text box for **Cut**, **Copy**, **Paste**, **Delete** and **Select all**.
 
 In the Scheduler's time boxes, **Up** / **Down** and the number keys change the selected part of the time, and **Left** / **Right** move between parts.
 

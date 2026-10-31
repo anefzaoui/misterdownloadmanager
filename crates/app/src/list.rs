@@ -715,13 +715,18 @@ pub fn show(
             for (c, x0, x1) in &cols {
                 // The file-type icon sits in the File Name column, wherever it is.
                 let tx = if *c == 0 {
-                    icons.paint(ui, row.icon.clone(), pos2(x0 + 4.0, top));
+                    icons.paint_in(ui, &bp, row.icon.clone(), pos2(x0 + 4.0, top));
                     x0 + 22.0
                 } else {
                     x0 + 6.0
                 };
                 if *c == 1 && row.queued {
-                    icons.paint(ui, IconKey::Silk("page_white_stack"), pos2(x0 + 2.0, top));
+                    icons.paint_in(
+                        ui,
+                        &bp,
+                        IconKey::Silk("page_white_stack"),
+                        pos2(x0 + 2.0, top),
+                    );
                 }
                 let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + ROW_H));
                 if *c == SOURCE {

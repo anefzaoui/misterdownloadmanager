@@ -74,9 +74,16 @@ enum Attempt {
 /// Runs the download; once more with a fresh look-up when a run whose links had to be moved to
 /// other servers fails (new links, often other servers: YouTube's alternatives refuse some
 /// streams some of the time).
-fn supervise(exe: &Path, url: &str, ours: &[String], progress: &Mutex<Progress>, child: &Child) {
+fn supervise(
+    exe: &Path,
+    url: &str,
+    ours: &[String],
+    progress: &Mutex<Progress>,
+    child: &Child,
+    expected: Option<u64>,
+) {
     for n in 0..2 {
-        match attempt(exe, url, ours, progress, child) {
+        match attempt(exe, url, ours, progress, child, expected) {
             Attempt::Stopped => return,
             Attempt::Done(f) => {
                 let mut p = progress.lock().unwrap();
@@ -104,6 +111,76 @@ fn supervise(exe: &Path, url: &str, ours: &[String], progress: &Mutex<Progress>,
     }
 }
 
+/// yt-dlp's progress lines (`MDMP <downloaded> <total> <estimate> <speed>`) made into one
+/// steady figure. Each stream of a merged download (video, then audio) reports from 0 with its
+/// own total, and a fragmented stream's total (HLS, DASH) is an estimate that moves with every
+/// fragment: the streams are added up, the total never falls below the size the video window
+/// showed (`expected`, every stream), and the fraction done never goes back.
+struct Meter {
+    expected: Option<u64>,
+    /// The streams already finished, and the current one's last total and bytes.
+    finished: u64,
+    last_total: u64,
+    last_got: u64,
+    /// The highest fraction shown so far.
+    frac: f64,
+}
+
+impl Meter {
+    fn new(expected: Option<u64>) -> Self {
+        Meter {
+            expected: expected.filter(|e| *e > 0),
+            finished: 0,
+            last_total: 0,
+            last_got: 0,
+            frac: 0.0,
+        }
+    }
+
+    fn line(&mut self, rest: &str, p: &mut Progress) {
+        let f: Vec<Option<f64>> = rest.split_whitespace().map(|v| v.parse().ok()).collect();
+        let got = f.first().copied().flatten().unwrap_or(0.0).max(0.0) as u64;
+        let total = f
+            .get(1)
+            .copied()
+            .flatten()
+            .or(f.get(2).copied().flatten())
+            .map(|t| t.max(0.0) as u64);
+        // Back near 0: the next stream started; the one before counts in full.
+        if got < self.last_got && self.last_got > 0 {
+            self.finished += self.last_total.max(self.last_got);
+            self.last_total = 0;
+        }
+        self.last_got = got;
+        if let Some(t) = total {
+            self.last_total = t;
+        }
+        let downloaded = self.finished + got;
+        let mut whole = self.finished + self.last_total.max(got);
+        if let Some(e) = self.expected {
+            whole = whole.max(e);
+        }
+        p.downloaded = downloaded;
+        p.speed = f.get(3).copied().flatten().unwrap_or(0.0);
+        if whole == 0 {
+            p.total = None;
+            return;
+        }
+        let frac = downloaded as f64 / whole as f64;
+        if frac >= self.frac {
+            self.frac = frac;
+            p.total = Some(whole);
+        } else {
+            // The estimate grew: keep the bar where it was rather than move it back.
+            p.total = Some(
+                (downloaded as f64 / self.frac)
+                    .round()
+                    .max(downloaded as f64) as u64,
+            );
+        }
+    }
+}
+
 /// One run: look the page up, move links off unreachable servers, download from that list.
 fn attempt(
     exe: &Path,
@@ -111,6 +188,7 @@ fn attempt(
     ours: &[String],
     progress: &Mutex<Progress>,
     child: &Child,
+    expected: Option<u64>,
 ) -> Attempt {
     let failed = |error: String, rerouted: bool| Attempt::Failed { error, rerouted };
     let mut info = match look_up(exe, url) {
@@ -150,24 +228,12 @@ fn attempt(
         }
     };
     let mut saved = None;
-    // Each stream (video, then audio) reports from 0: earlier ones add up.
-    let mut finished_streams = 0u64;
-    let mut last_total = 0u64;
+    let mut meter = Meter::new(expected);
     for line in BufReader::new(stdout).lines().map_while(Result::ok) {
         if let Some(rest) = line.strip_prefix("MDMF ") {
             saved = Some(PathBuf::from(rest.trim()));
         } else if let Some(rest) = line.strip_prefix("MDMP ") {
-            let f: Vec<Option<f64>> = rest.split_whitespace().map(|v| v.parse().ok()).collect();
-            let got = f.first().copied().flatten().unwrap_or(0.0) as u64;
-            let total = f.get(1).copied().flatten().or(f.get(2).copied().flatten());
-            let mut p = progress.lock().unwrap();
-            if got + finished_streams < p.downloaded && last_total > 0 {
-                finished_streams += last_total;
-            }
-            last_total = total.map_or(last_total, |t| t as u64);
-            p.downloaded = finished_streams + got;
-            p.total = total.map(|t| finished_streams + t as u64);
-            p.speed = f.get(3).copied().flatten().unwrap_or(0.0);
+            meter.line(rest, &mut progress.lock().unwrap());
         }
     }
     // Poll (the lock is free in between, so stop() can still kill it).
@@ -225,7 +291,9 @@ const FINAL: &str = "after_move:MDMF %(filepath)s";
 
 impl VideoJob {
     /// Download `url` in format `selector` to `dir/<stem>.<ext>`, at most `rate` bytes/s;
-    /// `ffmpeg` (its exe) merges separate video and audio into an MP4.
+    /// `ffmpeg` (its exe) merges separate video and audio into an MP4. `expected`: the size the
+    /// choice was shown with (every stream), so the progress starts from the whole.
+    #[allow(clippy::too_many_arguments)]
     pub fn start(
         exe: &Path,
         url: &str,
@@ -234,6 +302,7 @@ impl VideoJob {
         stem: &str,
         rate: Option<u64>,
         ffmpeg: Option<&Path>,
+        expected: Option<u64>,
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let output = dir.join(format!("{}.%(ext)s", template_text(stem)));
@@ -281,7 +350,7 @@ impl VideoJob {
             std::thread::spawn(move || {
                 // A panic in here must not leave the download "running" forever.
                 let run = std::panic::AssertUnwindSafe(|| {
-                    supervise(&exe, &url, &ours, &progress, &child)
+                    supervise(&exe, &url, &ours, &progress, &child, expected)
                 });
                 if std::panic::catch_unwind(run).is_err() {
                     let mut p = progress.lock().unwrap_or_else(|e| e.into_inner());
@@ -332,6 +401,7 @@ mod tests {
             "a",
             None,
             ffmpeg.as_deref(),
+            None,
         )
         .unwrap();
         let end = std::time::Instant::now() + std::time::Duration::from_secs(180);
@@ -351,6 +421,65 @@ mod tests {
             "{:?}",
             p.state
         );
+    }
+
+    fn run(expected: Option<u64>, lines: &[&str]) -> Vec<(u64, Option<u64>)> {
+        let mut m = Meter::new(expected);
+        let mut p = Progress {
+            state: State::Running,
+            downloaded: 0,
+            total: None,
+            speed: 0.0,
+            events: Vec::new(),
+        };
+        lines
+            .iter()
+            .map(|l| {
+                m.line(l, &mut p);
+                (p.downloaded, p.total)
+            })
+            .collect()
+    }
+
+    fn fractions(v: &[(u64, Option<u64>)]) -> Vec<f64> {
+        v.iter()
+            .map(|(d, t)| *d as f64 / t.unwrap() as f64)
+            .collect()
+    }
+
+    /// A fragmented 1080p stream whose estimate grows, then the separate audio from 0: the bar
+    /// only moves forward, and ends at the whole.
+    #[test]
+    fn video_then_audio_never_moves_back() {
+        let lines = [
+            "100 NA 1000 5",
+            "300 NA 1300 5",
+            "600 NA 1500 5",
+            "1400 NA 1600 5",
+            "1600 1600 NA 5",
+            "50 200 NA 5",
+            "150 200 NA 5",
+            "200 200 NA 5",
+        ];
+        for expected in [None, Some(1800)] {
+            let f = fractions(&run(expected, &lines));
+            for w in f.windows(2) {
+                assert!(w[1] >= w[0] - 1e-9, "went back: {f:?}");
+            }
+            let last = run(expected, &lines).pop().unwrap();
+            assert_eq!(last.0, 1800);
+            assert!((f[f.len() - 1] - 1.0).abs() < 1e-9, "{f:?}");
+        }
+    }
+
+    /// The size the window showed counts both streams from the start: the first stream alone
+    /// never looks like the whole download.
+    #[test]
+    fn expected_size_holds_the_bar_back() {
+        let v = run(Some(1000), &["400 400 NA 0"]);
+        assert_eq!(v[0], (400, Some(1000)));
+        let v = run(None, &["NA NA NA NA"]);
+        assert_eq!(v[0], (0, None));
     }
 
     #[test]

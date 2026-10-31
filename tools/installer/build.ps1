@@ -20,7 +20,7 @@ $version = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Valu
 if (-not $version) { throw "no version in Cargo.toml" }
 
 if (-not $NoBuild) {
-  & cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli
+  & cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
   if ($LASTEXITCODE) { throw "cargo build failed" }
 }
 & (Join-Path $root "tools\extension\pack.ps1") | Out-Null
@@ -46,7 +46,7 @@ function New-Zip([string]$name, [bool]$portable) {
   $stage = Join-Path $dist "stage\$name"
   if (Test-Path $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
   New-Item -ItemType Directory -Force $stage | Out-Null
-  foreach ($exe in "misterdownloadmanager.exe", "misterdownloadmanager-nmhost.exe", "misterdownloadmanager-cli.exe") {
+  foreach ($exe in "misterdownloadmanager.exe", "misterdownloadmanager-nmhost.exe", "misterdownloadmanager-cli.exe", "misterdownloadmanager-mcp.exe") {
     Copy-Item (Join-Path $bin $exe) $stage
   }
   New-Item -ItemType Directory -Force (Join-Path $stage "extension") | Out-Null

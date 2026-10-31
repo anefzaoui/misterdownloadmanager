@@ -141,6 +141,24 @@ enum Cmd {
     None,
 }
 
+impl Cmd {
+    /// The key that runs this command anywhere in the main window, as the shortcuts list writes
+    /// it (Help → Keyboard shortcuts); menus show it beside the item.
+    fn hint(&self) -> Option<&'static str> {
+        Some(match self {
+            Cmd::AddUrl => "Ctrl+N",
+            Cmd::Find => "Ctrl+F",
+            Cmd::FindNext => "F3",
+            Cmd::MoveRename => "Ctrl+M",
+            Cmd::Remove => "Delete",
+            Cmd::RemoveWithFiles => "Shift+Delete",
+            Cmd::Open => "Enter",
+            Cmd::Properties => "Alt+Enter",
+            _ => return None,
+        })
+    }
+}
+
 /// The open popup menu (other than the menu bar's); notes/ui-spec/menus.md "Context menus".
 #[derive(Clone, Copy, PartialEq, Debug)]
 enum Popup {
@@ -272,6 +290,9 @@ pub struct App {
     icons: ShellIcons,
     /// Open top-level menu (index into `chrome::menus()`).
     open_menu: Option<usize>,
+    /// Alt is down, and was pressed alone so far (releasing it opens the menu bar).
+    alt_down: bool,
+    alt_alone: bool,
     /// The open context / drop-down menu, and its top-left.
     popup: Option<(Popup, Pos2, u64)>,
     /// Counts menu opens: each open is a new menu window, even at the same place.
@@ -539,6 +560,8 @@ impl App {
             list,
             icons: ShellIcons::default(),
             open_menu: None,
+            alt_down: false,
+            alt_alone: false,
             popup: None,
             popup_serial: 0,
             last_layout: None,
@@ -956,6 +979,7 @@ impl App {
             );
             fi.context = cmd;
             fi.remember = self.settings.change_folder_on_last;
+            fi.folders = self.settings.folder_history.clone();
             self.file_info = Some(fi);
         }
     }
@@ -1466,6 +1490,7 @@ impl App {
             &stem,
             rate,
             ffmpeg.as_ref().map(|f| f.exe.as_path()),
+            item.size,
         );
         match started {
             Ok(job) => {
@@ -1628,39 +1653,44 @@ impl App {
         self.dirty = true;
     }
 
-    /// The automation API's answer (a JSON line): `api` turns it on or off; `query: "list"`
-    /// gives every download and the total speed, `action` acts on downloads ([`App::act`]) —
-    /// only while it is on.
+    /// The automation API's answer (a JSON line, shaped by `ipc::api`): `api` turns it on or
+    /// off; `query: "list"` gives every download and the total speed, `action` acts on
+    /// downloads ([`App::act`]) — only while it is on.
     fn answer(&mut self, cmd: &ipc::Command) -> String {
+        use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
         if let Some(on) = cmd.api {
             self.settings.automation_api = on;
             self.dirty = true;
-            return serde_json::json!({ "api": on }).to_string();
+            return line(&ApiAnswer { api: on });
         }
         if !self.settings.automation_api {
-            return serde_json::json!({ "error": "the automation API is off (misterdownloadmanager-cli api on)" })
-                .to_string();
+            return line(&ErrorAnswer {
+                error: "the automation API is off (misterdownloadmanager-cli api on)".into(),
+                code: Some(ipc::api::API_OFF.into()),
+            });
         }
         if let Some(action) = cmd.action.as_deref() {
-            return self.act(action, &cmd.ids).to_string();
+            return match self.act(action, &cmd.ids) {
+                Ok(done) => line(&done),
+                Err(e) => line(&e),
+            };
         }
         match cmd.query.as_deref() {
             Some("list") => {
-                let downloads: Vec<serde_json::Value> = self
+                let downloads = self
                     .items
                     .iter()
-                    .map(|i| {
-                        serde_json::json!({
-                            "id": i.id,
-                            "file": i.file_name,
-                            "url": i.url.as_str(),
-                            "path": i.dest,
-                            "status": format!("{:?}", i.status),
-                            "size": i.size,
-                            "downloaded": i.downloaded,
-                            "speed": if i.live.is_some() { i.rate() as u64 } else { 0 },
-                            "added": i.added,
-                        })
+                    .map(|i| DownloadInfo {
+                        id: i.id,
+                        file: i.file_name.clone(),
+                        url: i.url.to_string(),
+                        path: i.dest.to_string_lossy().into_owned(),
+                        status: format!("{:?}", i.status),
+                        size: i.size,
+                        downloaded: i.downloaded,
+                        speed: if i.live.is_some() { i.rate() as u64 } else { 0 },
+                        added: i.added.clone(),
+                        error: i.error.clone().filter(|_| i.status == Status::Error),
                     })
                     .collect();
                 let speed: f64 = self
@@ -1669,24 +1699,39 @@ impl App {
                     .filter(|i| i.live.is_some())
                     .map(|i| i.rate())
                     .sum();
-                serde_json::json!({ "downloads": downloads, "speed": speed as u64 }).to_string()
+                line(&ListAnswer {
+                    downloads,
+                    speed: speed as u64,
+                })
             }
-            other => serde_json::json!({ "error": format!("unknown query {other:?}") }).to_string(),
+            other => line(&ErrorAnswer {
+                error: format!("unknown query {other:?}"),
+                code: None,
+            }),
         }
     }
 
     /// The automation API's actions on downloads by id: pause one running, start one stopped,
     /// queued or failed, remove one (its file kept) or delete it with its file; one that runs
-    /// is paused first by the caller. `{"done": [ids], "skipped": [{"id", "why"}]}`.
-    fn act(&mut self, action: &str, ids: &[u64]) -> serde_json::Value {
+    /// is paused first by the caller.
+    fn act(
+        &mut self,
+        action: &str,
+        ids: &[u64],
+    ) -> Result<ipc::api::ActAnswer, ipc::api::ErrorAnswer> {
         if !matches!(action, "pause" | "start" | "remove" | "delete") {
-            return serde_json::json!({ "error": format!("unknown action {action:?}") });
+            return Err(ipc::api::ErrorAnswer {
+                error: format!("unknown action {action:?}"),
+                code: None,
+            });
         }
-        let mut done = Vec::new();
-        let mut skipped = Vec::new();
+        let mut answer = ipc::api::ActAnswer::default();
         for &id in ids {
             let Some(item) = self.item(id) else {
-                skipped.push(serde_json::json!({ "id": id, "why": "no such download" }));
+                answer.skipped.push(ipc::api::Skipped {
+                    id,
+                    why: "no such download".into(),
+                });
                 continue;
             };
             let running = item.live.is_some();
@@ -1713,11 +1758,14 @@ impl App {
                 }
             };
             match why {
-                Some(why) => skipped.push(serde_json::json!({ "id": id, "why": why })),
-                None => done.push(id),
+                Some(why) => answer.skipped.push(ipc::api::Skipped {
+                    id,
+                    why: why.into(),
+                }),
+                None => answer.done.push(id),
             }
         }
-        serde_json::json!({ "done": done, "skipped": skipped })
+        Ok(answer)
     }
 
     /// Options → OK: keep the new settings and act on what changed.
@@ -1954,7 +2002,7 @@ impl App {
             .and_then(|id| self.items.iter().find(|i| i.id == id))
             .map(|i| i.dest.clone());
         match cmd {
-            Cmd::AddUrl => self.add_url = Some(AddUrl::from_clipboard()),
+            Cmd::AddUrl => self.add_url = Some(AddUrl::from_clipboard(&self.settings.url_history)),
             Cmd::Exit => {
                 self.exiting = true;
                 ctx.send_viewport_cmd(egui::ViewportCommand::Close);
@@ -2901,6 +2949,81 @@ impl App {
         // The client area, laid out from the right in a right-to-left interface (winui).
         let _surface = winui::Surface::enter(o.x, o.x + w);
 
+        // The menu bar from the keyboard: F10 or Alt pressed alone opens its first menu, Alt and a
+        // menu's underlined letter that menu (Windows and Linux); on macOS, whose apps have no
+        // Alt keys, Ctrl+F2 (the system's key for the menu bar).
+        if self.open_menu.is_none() && self.popup.is_none() && ctx.memory(|m| m.focused().is_none())
+        {
+            let labels: Vec<String> = chrome::menus(ui.painter())
+                .iter()
+                .map(|(l, ..)| {
+                    l.chars()
+                        .next()
+                        .map(|c| c.to_lowercase().to_string())
+                        .unwrap_or_default()
+                })
+                .collect();
+            let (alt, other, f10, ctrl_f2, letter) = ctx.input(|i| {
+                let mut letter = None;
+                let mut other = false;
+                for e in &i.events {
+                    match e {
+                        egui::Event::Key {
+                            key,
+                            pressed: true,
+                            modifiers,
+                            ..
+                        } => {
+                            other = true;
+                            if modifiers.alt && !modifiers.ctrl && !modifiers.command {
+                                letter = Some(key.name().to_lowercase());
+                            }
+                        }
+                        egui::Event::PointerButton { pressed: true, .. } => other = true,
+                        _ => {}
+                    }
+                }
+                (
+                    i.modifiers.alt,
+                    other,
+                    i.key_pressed(egui::Key::F10) && i.modifiers.is_none(),
+                    i.key_pressed(egui::Key::F2) && i.modifiers.ctrl,
+                    letter,
+                )
+            });
+            let mut open = None;
+            if cfg!(target_os = "macos") {
+                if ctrl_f2 {
+                    open = Some(0);
+                }
+            } else {
+                if alt && !self.alt_down {
+                    self.alt_alone = true;
+                }
+                if alt && other {
+                    self.alt_alone = false;
+                }
+                if !alt && self.alt_down && self.alt_alone {
+                    open = Some(0);
+                }
+                if f10 {
+                    open = Some(0);
+                }
+                if let Some(l) = letter {
+                    open = labels.iter().position(|m| *m == l).or(open);
+                }
+            }
+            self.alt_down = alt;
+            if let Some(i) = open {
+                self.alt_alone = false;
+                self.open_menu = Some(i);
+                chrome::start_keyboard(&ctx, &format!("menu-{i}"));
+            }
+        } else {
+            self.alt_down = false;
+            self.alt_alone = false;
+        }
+
         // Menu bar and its popups.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
             let clicked = ui.input(|x| x.pointer.any_released());
@@ -2915,8 +3038,16 @@ impl App {
             let entries = self.menu_entries(i);
             // Under the item's leading edge (the menu's top-right in RTL).
             let at = pos2(winui::mx(o.x + x), o.y + chrome::MENU_H - 1.0);
-            match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries) {
+            match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
+                c.hint()
+            }) {
                 PopupResult::Open => {}
+                PopupResult::Neighbor(d) => {
+                    let n = chrome::menus(ui.painter()).len() as i32;
+                    let j = (i as i32 + d).rem_euclid(n) as usize;
+                    self.open_menu = Some(j);
+                    chrome::start_keyboard(&ctx, &format!("menu-{j}"));
+                }
                 PopupResult::Chosen(c) => {
                     chosen = Some((c, None));
                     self.open_menu = None;
@@ -3179,8 +3310,14 @@ impl App {
                     None,
                 ),
             };
-            match chrome::popup(&ctx, &format!("popup-{serial}"), pos, &entries) {
-                PopupResult::Open => {}
+            match chrome::popup(
+                &ctx,
+                &format!("popup-{serial}"),
+                pos,
+                &entries,
+                &|c: &Cmd| c.hint(),
+            ) {
+                PopupResult::Open | PopupResult::Neighbor(_) => {}
                 PopupResult::Chosen(c) => {
                     chosen = Some((c, target));
                     self.popup = None;
@@ -3246,6 +3383,7 @@ impl App {
             ctx,
         );
         fi.remember = self.settings.change_folder_on_last;
+        fi.folders = self.settings.folder_history.clone();
         self.file_info = Some(fi);
     }
 
@@ -3752,7 +3890,13 @@ impl App {
             }
         }
         if let Some(d) = &mut self.add_url {
-            match d.show(ctx) {
+            let out = d.show(ctx);
+            // Every address that goes on is remembered for the Address drop list.
+            if let Outcome::Done(new) = &out {
+                crate::settings::remember(&mut self.settings.url_history, new.url.as_str());
+                self.dirty = true;
+            }
+            match out {
                 Outcome::Open => {}
                 Outcome::Closed => self.add_url = None,
                 Outcome::Done(new) if new.url.scheme() == "magnet" => {
@@ -3997,7 +4141,21 @@ impl App {
         }
         if let Some(mut fi) = self.file_info.take() {
             self.start_early(&mut fi);
-            match fi.show(ctx, &mut self.icons) {
+            let out = fi.show(ctx, &mut self.icons);
+            if std::mem::take(&mut fi.new_category) {
+                self.run(Cmd::AddCategory, None, ctx);
+            }
+            // The folder a download goes to is remembered for the Save As drop list.
+            if matches!(out, Outcome::Done(_))
+                && let Some(dir) = fi.dest().parent()
+            {
+                crate::settings::remember(
+                    &mut self.settings.folder_history,
+                    &dir.display().to_string(),
+                );
+                self.dirty = true;
+            }
+            match out {
                 Outcome::Open => self.file_info = Some(fi),
                 Outcome::Closed => {
                     if let Some(id) = fi.early {

@@ -1,5 +1,6 @@
 use std::io::Write;
 use std::path::PathBuf;
+use std::process::ExitCode;
 use std::time::{Duration, Instant};
 
 use anyhow::Context;
@@ -7,6 +8,7 @@ use clap::{Parser, Subcommand};
 use mdm_engine::download::{ConnStatus, State};
 use mdm_engine::{Destination, Download, Options, Request};
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
+use serde_json::json;
 
 #[derive(Parser)]
 #[command(
@@ -17,6 +19,10 @@ use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
                   https://github.com/anefzaoui/misterdownloadmanager/blob/main/docs/command-line.md"
 )]
 struct Cli {
+    /// Print JSON for programs: one object per line (`progress` events, then `done`, `paused`
+    /// or `stopped`, for a download; one object for a question), `{"error": …}` on failure.
+    #[arg(long, global = true)]
+    json: bool,
     #[command(subcommand)]
     cmd: Cmd,
 }
@@ -136,20 +142,66 @@ enum Cmd {
     },
 }
 
-/// An automation API action on the running app's downloads; prints its answer.
-fn act(action: &str, ids: Vec<u64>) -> anyhow::Result<()> {
-    let cmd = mdm_ipc::Command {
-        action: Some(action.into()),
-        ids,
-        ..Default::default()
-    };
-    println!("{}", mdm_ipc::request(&cmd).map_err(anyhow::Error::msg)?);
+/// One JSON line on stdout (`--json`).
+fn emit(v: serde_json::Value) {
+    let mut out = std::io::stdout().lock();
+    let _ = writeln!(out, "{v}");
+    let _ = out.flush();
+}
+
+/// A failure already printed (the app's own `{"error"}` answer): exit 1, print nothing more.
+#[derive(Debug)]
+struct Reported;
+
+impl std::fmt::Display for Reported {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        f.write_str("reported")
+    }
+}
+
+impl std::error::Error for Reported {}
+
+/// Ask the running app (automation API) and print its answer, which is JSON already; an
+/// `{"error"}` answer fails the command.
+fn ask(cmd: mdm_ipc::Command) -> anyhow::Result<()> {
+    let answer = mdm_ipc::request(&cmd)
+        .map_err(|e| anyhow::anyhow!("Mister Download Manager isn't running ({e})"))?;
+    println!("{answer}");
+    if serde_json::from_str::<mdm_ipc::api::ErrorAnswer>(&answer).is_ok() {
+        return Err(Reported.into());
+    }
     Ok(())
 }
 
+/// An automation API action on the running app's downloads; prints its answer.
+fn act(action: &str, ids: Vec<u64>) -> anyhow::Result<()> {
+    ask(mdm_ipc::Command {
+        action: Some(action.into()),
+        ids,
+        ..Default::default()
+    })
+}
+
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    match Cli::parse().cmd {
+async fn main() -> ExitCode {
+    let cli = Cli::parse();
+    let json = cli.json;
+    match run(cli.cmd, json).await {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(e) if e.is::<Reported>() => ExitCode::FAILURE,
+        Err(e) => {
+            if json {
+                emit(json!({ "error": format!("{e:#}") }));
+            } else {
+                eprintln!("Error: {e:?}");
+            }
+            ExitCode::FAILURE
+        }
+    }
+}
+
+async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
+    match cmd {
         Cmd::Get {
             url,
             output,
@@ -171,26 +223,34 @@ async fn main() -> anyhow::Result<()> {
                 checksum,
                 ..opts(connections)
             };
-            watch(Download::start(req, opts)).await
+            watch(Download::start(req, opts), json).await
         }
         Cmd::InstallYtdlp => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let i = mdm_tools::install_latest(&dir).await?;
-            println!(
-                "yt-dlp {} verified and installed: {}",
-                i.version,
-                i.exe.display()
-            );
+            if json {
+                emit(json!({ "tool": "yt-dlp", "version": i.version, "path": i.exe }));
+            } else {
+                println!(
+                    "yt-dlp {} verified and installed: {}",
+                    i.version,
+                    i.exe.display()
+                );
+            }
             Ok(())
         }
         Cmd::InstallFfmpeg => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let i = mdm_tools::ffmpeg::install_latest(&dir).await?;
-            println!(
-                "ffmpeg {} verified and installed: {}",
-                i.version,
-                i.exe.display()
-            );
+            if json {
+                emit(json!({ "tool": "ffmpeg", "version": i.version, "path": i.exe }));
+            } else {
+                println!(
+                    "ffmpeg {} verified and installed: {}",
+                    i.version,
+                    i.exe.display()
+                );
+            }
             Ok(())
         }
         Cmd::VideoInfo { url } => {
@@ -198,9 +258,18 @@ async fn main() -> anyhow::Result<()> {
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
             let v = mdm_tools::resolve::resolve(&tool.exe, &url)?;
-            println!("{}", v.title);
             let merge = mdm_tools::ffmpeg::installed(&dir).is_some();
-            for c in mdm_tools::resolve::choices(&v, merge) {
+            let choices = mdm_tools::resolve::choices(&v, merge);
+            if json {
+                let choices: Vec<_> = choices
+                    .iter()
+                    .map(|c| json!({ "label": c.label, "format": c.selector, "size": c.size }))
+                    .collect();
+                emit(json!({ "title": v.title, "choices": choices }));
+                return Ok(());
+            }
+            println!("{}", v.title);
+            for c in choices {
                 let size = c
                     .size
                     .map_or(String::new(), |s| format!("  ~{} MB", s / 1_000_000));
@@ -221,7 +290,11 @@ async fn main() -> anyhow::Result<()> {
             )
             .await?;
             std::fs::write(&output, made.as_bytes()?)?;
-            println!("{}  {}", made.info_hash().as_string(), output.display());
+            if json {
+                emit(json!({ "info_hash": made.info_hash().as_string(), "path": output }));
+            } else {
+                println!("{}  {}", made.info_hash().as_string(), output.display());
+            }
             Ok(())
         }
         Cmd::TorrentInfo { source } => {
@@ -229,9 +302,22 @@ async fn main() -> anyhow::Result<()> {
             let m = t
                 .metadata(&torrent_source(&source)?, Duration::from_secs(180))
                 .await?;
-            println!("{}  {}  {} bytes", m.name, m.info_hash, m.total());
-            for (i, f) in m.files.iter().enumerate().filter(|(_, f)| !f.padding) {
-                println!("{i:>4}  {:>14}  {}", f.size, f.path.display());
+            let files = m.files.iter().enumerate().filter(|(_, f)| !f.padding);
+            if json {
+                let files: Vec<_> = files
+                    .map(|(i, f)| json!({ "index": i, "size": f.size, "path": f.path }))
+                    .collect();
+                emit(json!({
+                    "name": m.name,
+                    "info_hash": m.info_hash,
+                    "size": m.total(),
+                    "files": files,
+                }));
+            } else {
+                println!("{}  {}  {} bytes", m.name, m.info_hash, m.total());
+                for (i, f) in files {
+                    println!("{i:>4}  {:>14}  {}", f.size, f.path.display());
+                }
             }
             t.stop().await;
             Ok(())
@@ -254,31 +340,48 @@ async fn main() -> anyhow::Result<()> {
             loop {
                 tokio::time::sleep(Duration::from_millis(1000)).await;
                 let s = t.stats(&hash)?;
-                eprint!(
-                    "\r{:?} {} / {}  {:.0} KB/s  peers {}/{}      ",
-                    s.phase,
-                    s.done,
-                    s.total,
-                    s.down_speed / 1024.0,
-                    s.peers_live,
-                    s.peers_seen
-                );
+                if json {
+                    emit(json!({
+                        "event": "progress",
+                        "phase": format!("{:?}", s.phase),
+                        "downloaded": s.done,
+                        "size": s.total,
+                        "speed": s.down_speed as u64,
+                        "peers": s.peers_live,
+                        "peers_seen": s.peers_seen,
+                    }));
+                } else {
+                    eprint!(
+                        "\r{:?} {} / {}  {:.0} KB/s  peers {}/{}      ",
+                        s.phase,
+                        s.done,
+                        s.total,
+                        s.down_speed / 1024.0,
+                        s.peers_live,
+                        s.peers_seen
+                    );
+                }
                 if s.phase == mdm_torrent::Phase::Finished {
-                    eprintln!();
-                    println!("saved in {}", folder.display());
+                    if json {
+                        emit(json!({ "event": "done", "path": folder, "size": s.total }));
+                    } else {
+                        eprintln!();
+                        println!("saved in {}", folder.display());
+                    }
                     break;
                 }
                 if let Some(e) = s.error {
                     anyhow::bail!(e);
                 }
                 if seconds.is_some_and(|n| started.elapsed().as_secs() >= n) {
-                    eprintln!();
                     t.pause(&hash).await?;
-                    println!(
-                        "stopped after {} s; {} bytes there",
-                        started.elapsed().as_secs(),
-                        s.done
-                    );
+                    let secs = started.elapsed().as_secs();
+                    if json {
+                        emit(json!({ "event": "stopped", "downloaded": s.done, "seconds": secs }));
+                    } else {
+                        eprintln!();
+                        println!("stopped after {secs} s; {} bytes there", s.done);
+                    }
                     break;
                 }
             }
@@ -304,54 +407,61 @@ async fn main() -> anyhow::Result<()> {
                 &stem,
                 None,
                 ffmpeg.as_deref(),
+                // No size shown here: the progress steadies itself (video::Meter).
+                None,
             )?;
             loop {
                 tokio::time::sleep(std::time::Duration::from_millis(500)).await;
                 let p = job.progress();
-                eprint!(
-                    "\r{} / {}  {:.0} KB/s      ",
-                    p.downloaded,
-                    p.total.map_or("?".into(), |t| t.to_string()),
-                    p.speed / 1024.0
-                );
+                if json {
+                    emit(json!({
+                        "event": "progress",
+                        "downloaded": p.downloaded,
+                        "size": p.total,
+                        "speed": p.speed as u64,
+                    }));
+                } else {
+                    eprint!(
+                        "\r{} / {}  {:.0} KB/s      ",
+                        p.downloaded,
+                        p.total.map_or("?".into(), |t| t.to_string()),
+                        p.speed / 1024.0
+                    );
+                }
                 match p.state {
                     mdm_tools::video::State::Running => {}
                     mdm_tools::video::State::Done(f) => {
-                        eprintln!();
-                        println!("saved {}", f.display());
+                        if json {
+                            emit(json!({ "event": "done", "path": f }));
+                        } else {
+                            eprintln!();
+                            println!("saved {}", f.display());
+                        }
                         return Ok(());
                     }
                     other => anyhow::bail!("{other:?}"),
                 }
             }
         }
-        Cmd::Status => {
-            let cmd = mdm_ipc::Command {
-                query: Some("list".into()),
-                ..Default::default()
-            };
-            println!("{}", mdm_ipc::request(&cmd).map_err(anyhow::Error::msg)?);
-            Ok(())
-        }
+        Cmd::Status => ask(mdm_ipc::Command {
+            query: Some("list".into()),
+            ..Default::default()
+        }),
         Cmd::Pause { ids } => act("pause", ids),
         Cmd::Start { ids } => act("start", ids),
         Cmd::Remove { ids } => act("remove", ids),
         Cmd::Delete { ids } => act("delete", ids),
-        Cmd::Api { state } => {
-            let cmd = mdm_ipc::Command {
-                api: Some(state == "on"),
-                ..Default::default()
-            };
-            println!("{}", mdm_ipc::request(&cmd).map_err(anyhow::Error::msg)?);
-            Ok(())
-        }
+        Cmd::Api { state } => ask(mdm_ipc::Command {
+            api: Some(state == "on"),
+            ..Default::default()
+        }),
         Cmd::Resume {
             state,
             connections,
             headers,
         } => {
             let dl = Download::resume(state, parse_headers(&headers)?, opts(connections))?;
-            watch(dl).await
+            watch(dl, json).await
         }
     }
 }
@@ -382,8 +492,9 @@ fn parse_headers(raw: &[String]) -> anyhow::Result<HeaderMap> {
     Ok(headers)
 }
 
-/// Print progress until the download ends; Ctrl+C pauses it (state is saved).
-async fn watch(dl: Download) -> anyhow::Result<()> {
+/// Print progress until the download ends; Ctrl+C pauses it (state is saved). `json`: one
+/// `progress` line per tick, then `done` or `paused`.
+async fn watch(dl: Download, json: bool) -> anyhow::Result<()> {
     let started = Instant::now();
     let mut last = (Instant::now(), 0u64);
     let mut speed = 0.0;
@@ -393,7 +504,9 @@ async fn watch(dl: Download) -> anyhow::Result<()> {
             _ = tick.tick() => {}
             _ = tokio::signal::ctrl_c() => {
                 dl.cancel();
-                println!("\npausing…");
+                if !json {
+                    println!("\npausing…");
+                }
             }
         }
         let s = dl.snapshot();
@@ -410,17 +523,28 @@ async fn watch(dl: Download) -> anyhow::Result<()> {
             .iter()
             .filter(|c| matches!(c.status, ConnStatus::Receiving))
             .count();
-        let pct = s.size.map_or(String::new(), |t| {
-            format!("{:5.1}% ", 100.0 * s.downloaded as f64 / t.max(1) as f64)
-        });
-        print!(
-            "\r{pct}{} / {}  {}/s  conns {active}  segs {}   ",
-            mb(s.downloaded),
-            s.size.map_or("?".into(), mb),
-            mb(speed as u64),
-            s.segments.len()
-        );
-        std::io::stdout().flush().ok();
+        if json {
+            emit(json!({
+                "event": "progress",
+                "downloaded": s.downloaded,
+                "size": s.size,
+                "speed": speed as u64,
+                "connections": active,
+                "segments": s.segments.len(),
+            }));
+        } else {
+            let pct = s.size.map_or(String::new(), |t| {
+                format!("{:5.1}% ", 100.0 * s.downloaded as f64 / t.max(1) as f64)
+            });
+            print!(
+                "\r{pct}{} / {}  {}/s  conns {active}  segs {}   ",
+                mb(s.downloaded),
+                s.size.map_or("?".into(), mb),
+                mb(speed as u64),
+                s.segments.len()
+            );
+            std::io::stdout().flush().ok();
+        }
         if !matches!(
             s.state,
             State::Probing | State::Downloading | State::Completing
@@ -428,23 +552,34 @@ async fn watch(dl: Download) -> anyhow::Result<()> {
             break;
         }
     }
-    println!();
+    if !json {
+        println!();
+    }
     let file = dl.snapshot().file;
     match dl.wait().await {
         Ok(out) => {
-            println!(
-                "saved {} ({}) in {:.1}s",
-                out.path.display(),
-                mb(out.size),
-                started.elapsed().as_secs_f64()
-            );
+            let secs = started.elapsed().as_secs_f64();
+            if json {
+                emit(
+                    json!({ "event": "done", "path": out.path, "size": out.size, "seconds": secs }),
+                );
+            } else {
+                println!(
+                    "saved {} ({}) in {secs:.1}s",
+                    out.path.display(),
+                    mb(out.size)
+                );
+            }
             Ok(())
         }
         Err(mdm_engine::Error::Cancelled) => {
-            if let Some(f) = file {
+            let state = file.map(|f| mdm_engine::state::state_path(&f));
+            if json {
+                emit(json!({ "event": "paused", "state": state }));
+            } else if let Some(state) = state {
                 println!(
                     "paused. continue with:\n  misterdownloadmanager-cli resume \"{}\"",
-                    mdm_engine::state::state_path(&f).display()
+                    state.display()
                 );
             }
             Ok(())

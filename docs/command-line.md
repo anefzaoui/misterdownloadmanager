@@ -6,7 +6,7 @@ MDM can be driven without its window in three ways:
 
 - **The app's own command line**, the same switches as IDM's: hand a download to the running app from a script, a batch file or another program.
 - **`misterdownloadmanager-cli`**, a separate command-line tool: download files, videos and torrents in a terminal, with progress, without the app.
-- **The automation API**: other programs list the running app's downloads (as JSON) and pause, start, remove or delete them, over a local, token-protected channel.
+- **The automation API**: other programs list the running app's downloads (as JSON) and pause, start, remove or delete them, over a local, token-protected channel. AI assistants use it through MDM's MCP server: see [AI assistants](ai-assistants.md).
 
 The examples use Windows' paths; on macOS and Linux the programs have the same names without `.exe`.
 
@@ -54,12 +54,36 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `remove ID...`, `delete ID...` | Take downloads off the running app's list: `remove` keeps their files, `delete` deletes them too. A running download is paused first (`pause`). |
 | `api on`, `api off` | Turn the running app's automation API on or off. |
 
-`misterdownloadmanager-cli help <command>` shows every option. For example:
+`misterdownloadmanager-cli help <command>` shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:
 
 ```
 misterdownloadmanager-cli get https://example.com/big.iso -o D:\Downloads -c 16 --checksum sha256:9f86d0…
 misterdownloadmanager-cli video-get "https://www.youtube.com/watch?v=aqz-KE-bpKQ" -f "b[height=720]"
 misterdownloadmanager-cli torrent-get "magnet:?xt=urn:btih:…" --files 0
+```
+
+### JSON for scripts and programs
+
+With `--json` (before or after the command), every command prints JSON instead of text, one object per line, for scripts and AI agents to read:
+
+| Command | Prints |
+|---|---|
+| `get`, `resume` | A `{"event": "progress", "downloaded", "size", "speed", "connections", "segments"}` line every half second, then `{"event": "done", "path", "size", "seconds"}`, or `{"event": "paused", "state"}` after `Ctrl+C` (`state` is the file `resume` takes). |
+| `video-get` | `{"event": "progress", "downloaded", "size", "speed"}` lines, then `{"event": "done", "path"}`. |
+| `torrent-get` | `{"event": "progress", "phase", "downloaded", "size", "speed", "peers", "peers_seen"}` lines, then `{"event": "done", "path", "size"}`, or `{"event": "stopped", "downloaded", "seconds"}` with `--seconds`. |
+| `video-info` | `{"title", "choices": [{"label", "format", "size"}]}`; a choice's `format` is what `video-get -f` takes. |
+| `torrent-info` | `{"name", "info_hash", "size", "files": [{"index", "size", "path"}]}`. |
+| `torrent-create` | `{"info_hash", "path"}`. |
+| `install-ytdlp`, `install-ffmpeg` | `{"tool", "version", "path"}`. |
+| `status`, `pause`, `start`, `remove`, `delete`, `api` | The app's answer, which is JSON already (see below). |
+
+Sizes are in bytes (`null` while unknown), speeds in bytes per second. A failure prints `{"error": "…"}` and exits with code 1. For example:
+
+```
+misterdownloadmanager-cli --json get https://example.com/big.iso -o D:\Downloads
+{"event":"progress","downloaded":4194304,"size":1073741824,"speed":52428800,"connections":8,"segments":8}
+…
+{"event":"done","path":"D:\\Downloads\\big.iso","size":1073741824,"seconds":20.4}
 ```
 
 ## The automation API
@@ -82,13 +106,15 @@ Other programs can ask the running app what it is downloading, and pause, start,
 
 | Fields (besides `token`) | Answer |
 |---|---|
-| `{"query": "list"}` | Every download and the total speed: `{"downloads": [{"id", "file", "url", "path", "status", "size", "downloaded", "speed", "added"}], "speed": bytes per second}`. Only while the API is on. |
+| `{"query": "list"}` | Every download and the total speed: `{"downloads": [{"id", "file", "url", "path", "status", "size", "downloaded", "speed", "added", "error"}], "speed": bytes per second}`. `status` is `Queued`, `Downloading`, `Stopped`, `Complete` or `Error`; `size` is `null` while unknown; `error` (why it failed) is there only for a download in `Error`. Only while the API is on. |
 | `{"action": "pause", "ids": [3, 4]}` | Acts on downloads by id: `"pause"`, `"start"`, `"remove"` (file kept) or `"delete"` (file deleted too). Answers `{"done": [3], "skipped": [{"id": 4, "why": "not running"}]}`; a running download must be paused before it is removed or deleted. Only while the API is on. |
 | `{"api": true}` / `{"api": false}` | Turns the API on or off: `{"api": true}`. |
 | `{"url": "https://…", "dir": "D:\\Files", "name": "a.zip", "silent": true}` | Adds a download, as the command line's `/d /p /f /n` do (`"later": true` is `/a`); `ok`. Also with the API off, like the command line. |
 | `{"start_queue": true}` | Starts the main download queue; `ok`. |
 
-An unknown question or action is answered `{"error": "…"}`, as is a question while the API is off. A wrong token is answered `denied`.
+An unknown question or action is answered `{"error": "…"}`, as is a question while the API is off (then with `"code": "api-off"`, for programs to check: the error text may change). A wrong token is answered `denied`.
+
+Every request and answer is described, field by field, in a JSON Schema: [automation-api.schema.json](automation-api.schema.json) (also at `https://misterdownloadmanager.com/automation-api.schema.json`). It is made from the code the app answers with, so it stays exact; programs can check what they send and read against it, or generate their types from it.
 
 ### Examples
 

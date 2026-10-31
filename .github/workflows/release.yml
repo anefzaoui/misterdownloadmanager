@@ -207,7 +207,10 @@ jobs:
           }
           $all = (Get-ChildItem dist -File).FullName
           if ($m.Success -and $m.Groups[1].Value.Trim()) {
-            Set-Content -Encoding utf8 notes.md ($invite + $m.Groups[1].Value.Trim())
+            # Links into the repository (docs/x.md) would resolve against the release's page:
+            # point them at the tagged files.
+            $notes = $m.Groups[1].Value.Trim() -replace '\]\((?![a-z]+:|#)([^)\s]+)\)', '](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/$1)'
+            Set-Content -Encoding utf8 notes.md ($invite + $notes)
             gh release create "${{ github.ref_name }}" --latest --title $title --notes-file notes.md $all
           } else {
             Set-Content -Encoding utf8 notes.md $invite

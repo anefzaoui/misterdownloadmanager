@@ -14,10 +14,10 @@ bin="$root/target/release"
 version="$(sed -n 's/^version *= *"\([^"]*\)".*/\1/p' "$root/Cargo.toml" | head -1)"
 [ -n "$version" ] || { echo "no version in Cargo.toml" >&2; exit 1; }
 name="MisterDownloadManager-$version-linux-x86_64-experimental"
-programs=(misterdownloadmanager misterdownloadmanager-nmhost misterdownloadmanager-cli)
+programs=(misterdownloadmanager misterdownloadmanager-nmhost misterdownloadmanager-cli misterdownloadmanager-mcp)
 
 if [ "${1:-}" != "--no-build" ]; then
-  cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli
+  cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
 fi
 pwsh -NoProfile -File "$root/tools/extension/pack.ps1"
 
@@ -105,6 +105,7 @@ cp -a "$tree/." %{buildroot}/
 /usr/bin/misterdownloadmanager
 /usr/bin/misterdownloadmanager-nmhost
 /usr/bin/misterdownloadmanager-cli
+/usr/bin/misterdownloadmanager-mcp
 /usr/share/applications/misterdownloadmanager.desktop
 /usr/share/icons/hicolor/256x256/apps/misterdownloadmanager.png
 /usr/share/misterdownloadmanager

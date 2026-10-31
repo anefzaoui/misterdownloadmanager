@@ -244,6 +244,7 @@ right-to-left window.
 - **Downloads videos** from web pages (a button appears over the video), and **torrents and magnet links**.
 - **Downloads overnight** with queues and a scheduler, then shuts the computer down if you like.
 - **Works from scripts too**: IDM's command-line switches, a command-line tool, and a local API for other programs ([how](docs/command-line.md)).
+- **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.
 - **Day and dark mode**, 86 languages, and a portable version for USB sticks.
 - **No ads, no trial, no account**. Free and open source.
@@ -309,7 +310,8 @@ cargo test
 ```
 
 This makes `misterdownloadmanager.exe` (the app), `misterdownloadmanager-cli.exe` (headless
-command line) and `misterdownloadmanager-nmhost.exe` (the browser host) in `target\release\`.
+command line), `misterdownloadmanager-mcp.exe` (the MCP server for AI assistants) and
+`misterdownloadmanager-nmhost.exe` (the browser host) in `target\release\`.
 `tools\installer\build.ps1` builds the installer and both zips into `target\dist\` (needs
 [Inno Setup 6](https://jrsoftware.org/isinfo.php)); a `vX.Y.Z` tag does the same on GitHub
 Actions and publishes the release.
@@ -332,6 +334,7 @@ pieces fit.
 | [`mdm-engine`](crates/engine) | The download engine: segmentation, connections, resume, limits |
 | [`mdm-app`](crates/app) | The Windows app (egui) |
 | [`mdm-cli`](crates/cli) | Headless downloads from the command line |
+| [`mdm-mcp`](crates/mcp) | The MCP server, for AI assistants |
 | [`mdm-nmhost`](crates/nmhost) | The browser's native messaging host |
 | [`mdm-ipc`](crates/ipc) | Talking to a running app; shared capture rules |
 | [`mdm-tools`](crates/tools) | yt-dlp and ffmpeg for video pages |
@@ -357,7 +360,7 @@ pieces fit.
 
 ## Status and helping out
 
-Version 0.1.0 is an early preview: the engine and the main window are solid, some corners are
+MDM is an early preview: the engine and the main window are solid, some corners are
 "good enough for now".
 
 - **Translations are machine-made.** Rows marked `#, machine` in [`i18n/`](i18n) wait for a

@@ -413,15 +413,20 @@ fn password(ui: &mut Ui, rc: egui::Rect, value: &mut String, enabled: bool) {
         pos2(rc.left() + 4.0, rc.top() + 3.0),
         rc.max - vec2(3.0, 3.0),
     );
-    ui.add_enabled_ui(enabled, |ui| {
-        ui.put(
-            inner,
-            egui::TextEdit::singleline(value)
-                .password(true)
-                .font(winui::tahoma())
-                .text_color(LIGHT_TEXT)
-                .frame(egui::Frame::NONE)
-                .margin(egui::Margin::ZERO),
-        );
-    });
+    let resp = ui
+        .add_enabled_ui(enabled, |ui| {
+            ui.put(
+                inner,
+                egui::TextEdit::singleline(value)
+                    .password(true)
+                    .font(winui::tahoma())
+                    .text_color(LIGHT_TEXT)
+                    .frame(egui::Frame::NONE)
+                    .margin(egui::Margin::ZERO),
+            )
+        })
+        .inner;
+    if enabled {
+        winui::edit_menu(&resp, value, true, false);
+    }
 }

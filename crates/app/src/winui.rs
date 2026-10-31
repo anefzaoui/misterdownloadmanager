@@ -1017,9 +1017,113 @@ fn edit_text_with(
         .text_color(color)
         .password(password)
         .desired_width(inner.width());
-    ui.put(inner, |ui: &mut Ui| {
+    let resp = ui.put(inner, |ui: &mut Ui| {
         ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
-    })
+    });
+    if enabled {
+        edit_menu(&resp, value, password, false);
+    }
+    resp
+}
+
+#[derive(Clone, Copy)]
+enum EditCmd {
+    Cut,
+    Copy,
+    Paste,
+    Delete,
+    SelectAll,
+}
+
+/// A text box's right-click menu: Cut, Copy, Paste, Delete and Select all, on the box's own
+/// selection, as every Windows, macOS and Linux text box has (Cut and Copy not for passwords). A
+/// menu window of its own (`chrome::popup`), so short dialogs never cut it off.
+pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline: bool) {
+    use crate::chrome::{MenuEntry, PopupResult};
+    use egui::text::{CCursor, CCursorRange};
+    use egui::text_edit::TextEditState;
+    let ctx = resp.ctx.clone();
+    let id = resp.id;
+    let key = id.with("edit-menu");
+    if resp.secondary_clicked()
+        && let Some(p) = resp.interact_pointer_pos()
+    {
+        ctx.data_mut(|d| d.insert_temp(key, p));
+    }
+    // Shift+F10 (the keyboard's way to a right-click menu) opens it under the box.
+    if resp.has_focus() && ctx.input_mut(|i| i.consume_key(egui::Modifiers::SHIFT, egui::Key::F10))
+    {
+        ctx.data_mut(|d| d.insert_temp(key, resp.rect.left_bottom()));
+    }
+    let Some(at) = ctx.data(|d| d.get_temp::<Pos2>(key)) else {
+        return;
+    };
+    let mut state = TextEditState::load(&ctx, id).unwrap_or_default();
+    let n = value.chars().count();
+    let (a, b) = state
+        .cursor
+        .char_range()
+        .map(|r| {
+            let (x, y) = (r.primary.index.0.min(n), r.secondary.index.0.min(n));
+            (x.min(y), x.max(y))
+        })
+        .unwrap_or((n, n));
+    let has = a < b;
+    let clip = arboard::Clipboard::new()
+        .and_then(|mut c| c.get_text())
+        .ok()
+        .filter(|t| !t.is_empty());
+    let entries = vec![
+        MenuEntry::Item("Cu&t", EditCmd::Cut, has && !password, false),
+        MenuEntry::Item("&Copy", EditCmd::Copy, has && !password, false),
+        MenuEntry::Item("&Paste", EditCmd::Paste, clip.is_some(), false),
+        MenuEntry::Item("&Delete", EditCmd::Delete, has, false),
+        MenuEntry::Sep,
+        MenuEntry::Item("Select &all", EditCmd::SelectAll, n > 0, false),
+    ];
+    let cmd = match crate::chrome::popup(&ctx, &format!("edit-{id:?}"), at, &entries, &|_| None) {
+        PopupResult::Open | PopupResult::Neighbor(_) => return,
+        PopupResult::Dismissed => None,
+        PopupResult::Chosen(c) => Some(c),
+    };
+    ctx.data_mut(|d| d.remove::<Pos2>(key));
+    let Some(cmd) = cmd else { return };
+    let byte = |c: usize| value.char_indices().nth(c).map_or(value.len(), |(i, _)| i);
+    let (ba, bb) = (byte(a), byte(b));
+    let caret = match cmd {
+        EditCmd::Cut => {
+            ctx.copy_text(value[ba..bb].to_owned());
+            value.replace_range(ba..bb, "");
+            (a, a)
+        }
+        EditCmd::Copy => {
+            ctx.copy_text(value[ba..bb].to_owned());
+            (a, b)
+        }
+        EditCmd::Paste => {
+            // A single-line box takes one line; a list box keeps the lines.
+            let text = clip.unwrap_or_default();
+            let text = if multiline {
+                text.replace("\r\n", "\n")
+            } else {
+                text.replace(['\r', '\n'], " ")
+            };
+            value.replace_range(ba..bb, &text);
+            let end = a + text.chars().count();
+            (end, end)
+        }
+        EditCmd::Delete => {
+            value.replace_range(ba..bb, "");
+            (a, a)
+        }
+        EditCmd::SelectAll => (0, value.chars().count()),
+    };
+    state.cursor.set_char_range(Some(CCursorRange::two(
+        CCursor::new(caret.0),
+        CCursor::new(caret.1),
+    )));
+    state.store(&ctx, id);
+    ctx.memory_mut(|m| m.request_focus(id));
 }
 
 /// A dark edit with right-aligned text (numbers, e.g. the Speed Limiter value).
@@ -1103,6 +1207,84 @@ pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String, focused: bool) -> R
         )
     };
     edit_text(ui, child, value, true, false, 2.0)
+}
+
+/// The arrow zone of an editable combo (`combo_edit`, at the trailing edge): a click on it
+/// opens the combo's drop list (`drop_list`).
+pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str) -> Response {
+    let zone = if rtl() {
+        Rect::from_min_max(rc.min, pos2(rc.left() + 20.0, rc.bottom()))
+    } else {
+        Rect::from_min_max(pos2(rc.right() - 20.0, rc.top()), rc.max)
+    };
+    ui.interact(zone, widget_id(ui, ("combo-arrow", id)), Sense::click())
+}
+
+/// The keys that open an editable combo's drop list while its box has the focus: Alt+Down or
+/// F4, as Windows' combo boxes.
+pub fn combo_keys(ui: &mut Ui, edit: &Response) -> bool {
+    edit.has_focus()
+        && ui.input_mut(|i| {
+            i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowDown)
+                || i.consume_key(egui::Modifiers::NONE, egui::Key::F4)
+        })
+}
+
+/// An editable combo's drop list under `anchor`: `items` newest first, or `empty` greyed when
+/// there are none. A window of its own, as the menus are (`chrome::popup`), so a list longer
+/// than the dialog is never cut off, and the arrow keys, Enter and Escape work in it. Returns the
+/// index picked; `open` turns false on a pick, on Escape or on a click anywhere else.
+pub fn drop_list(
+    ui: &mut Ui,
+    id: &str,
+    anchor: Rect,
+    items: &[String],
+    empty: &str,
+    open: &mut bool,
+) -> Option<usize> {
+    use crate::chrome::{MenuEntry, PopupResult, label};
+    // A menu label: long addresses shortened in the middle, "&" kept as text (not an access key).
+    let shown = |t: &str| {
+        let n = t.chars().count();
+        let short: String = if n > 72 {
+            t.chars()
+                .take(36)
+                .chain(std::iter::once('\u{2026}'))
+                .chain(t.chars().skip(n - 35))
+                .collect()
+        } else {
+            t.to_owned()
+        };
+        label(&short.replace('&', "&&"))
+    };
+    let entries: Vec<MenuEntry<usize>> = if items.is_empty() {
+        vec![MenuEntry::Item(label(empty), usize::MAX, false, false)]
+    } else {
+        items
+            .iter()
+            .take(crate::settings::HISTORY)
+            .enumerate()
+            .map(|(i, t)| MenuEntry::Item(shown(t), i, true, false))
+            .collect()
+    };
+    let menu = crate::chrome::popup(
+        ui.ctx(),
+        &format!("drop-{id}"),
+        anchor.left_bottom(),
+        &entries,
+        &|_| None,
+    );
+    match menu {
+        PopupResult::Chosen(i) => {
+            *open = false;
+            Some(i)
+        }
+        PopupResult::Dismissed => {
+            *open = false;
+            None
+        }
+        PopupResult::Open | PopupResult::Neighbor(_) => None,
+    }
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]

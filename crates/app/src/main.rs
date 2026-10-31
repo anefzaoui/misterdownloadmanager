@@ -43,11 +43,18 @@ mod winui;
 pub const MAIN_TITLE: &str = concat!("Mister Download Manager ", env!("CARGO_PKG_VERSION"));
 
 /// The app icon (art/, made with ChatGPT; sizes by tools/icon/build_icon.py), for windows that
-/// show one as IDM's do.
+/// show one as IDM's do: the 256 px size, which the system scales down for the title bar, the
+/// taskbar and Alt+Tab at any display scaling. On macOS none: the Dock keeps the app bundle's own
+/// icon (AppIcon.icns, every size, tools/installer/build-macos.sh), which an icon set at run
+/// time would replace.
 pub fn app_icon() -> std::sync::Arc<egui::IconData> {
     static ICON: std::sync::OnceLock<std::sync::Arc<egui::IconData>> = std::sync::OnceLock::new();
     ICON.get_or_init(|| {
-        let png = include_bytes!("../assets/icons/app/mdm-32.png");
+        if cfg!(target_os = "macos") {
+            // eframe takes an empty icon as "none" (AppTitleIconSetter).
+            return std::sync::Arc::new(egui::IconData::default());
+        }
+        let png = include_bytes!("../assets/icons/app/mdm-256.png");
         std::sync::Arc::new(eframe::icon_data::from_png_bytes(png).unwrap_or_default())
     })
     .clone()

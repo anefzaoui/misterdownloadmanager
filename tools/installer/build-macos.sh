@@ -11,13 +11,13 @@ dist="$root/target/dist"
 version="$(sed -n 's/^version *= *"\([^"]*\)".*/\1/p' "$root/Cargo.toml" | head -1)"
 [ -n "$version" ] || { echo "no version in Cargo.toml" >&2; exit 1; }
 name="MisterDownloadManager-$version-macos-universal-experimental"
-programs=(misterdownloadmanager misterdownloadmanager-nmhost misterdownloadmanager-cli)
+programs=(misterdownloadmanager misterdownloadmanager-nmhost misterdownloadmanager-cli misterdownloadmanager-mcp)
 targets=(aarch64-apple-darwin x86_64-apple-darwin)
 
 if [ "${1:-}" != "--no-build" ]; then
   for t in "${targets[@]}"; do
     rustup target add "$t"
-    cargo build --release --target "$t" -p mdm-app -p mdm-nmhost -p mdm-cli
+    cargo build --release --target "$t" -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
   done
 fi
 pwsh -NoProfile -File "$root/tools/extension/pack.ps1"

@@ -8,7 +8,8 @@ Key facts:
 - Engine: up to 32 connections per file (8 by default), dynamic re-splitting, crash-safe resume, checksum verification, refresh of expired download links, per-server connection limits learned automatically.
 - Browser extension for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): hands downloads over with cookies and referrer, right-click "Download with Mister Download Manager", a draggable "Download video" button over videos. Without the extension, copying a link to a file opens the download window.
 - 86 interface languages (every Windows 11 display language), right-to-left layouts for Arabic, Hebrew, Persian, Urdu and Uyghur.
-- Imports IDM's export files (.ef2). Accepts IDM's command-line switches (/d /p /f /a /n /s). Has a CLI (misterdownloadmanager-cli) and a local token-protected automation API.
+- Imports IDM's export files (.ef2). Accepts IDM's command-line switches (/d /p /f /a /n /s). Has a CLI (misterdownloadmanager-cli, with --json output for scripts and agents) and a local token-protected automation API, described by a JSON Schema.
+- AI assistants: an MCP server (misterdownloadmanager-mcp) lets Claude, Cursor, VS Code and other MCP clients list, add, pause, resume and remove downloads in the running app.
 - Privacy: the app has no accounts, no analytics, no telemetry; a weekly update check against GitHub that can be turned off.
 - Written in Rust with egui. Made by Ahmed Nefzaoui and contributors.
 

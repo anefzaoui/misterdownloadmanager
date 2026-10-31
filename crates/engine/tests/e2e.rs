@@ -279,8 +279,12 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
     let limits = std::sync::Arc::new(mdm_engine::hosts::HostLimits::default());
     limits.refused("127.0.0.1", 2);
     limits.refused("127.0.0.1", 2);
+    // Margins both ways, for slow, busy machines: the blocker (1 MiB at 2 MB/s) holds its slot
+    // for about half a second, long enough for our download to start into it (512 KiB was gone
+    // first on CI runners); the file (8 MiB, 4 s on one connection) outlasts the retries'
+    // growing waits, so a second connection can still join.
     let blocker = tokio::spawn(
-        reqwest::get(s.url("/gen/512K/blocker.bin?seed=1"))
+        reqwest::get(s.url("/gen/1M/blocker.bin?seed=1"))
             .await
             .unwrap()
             .bytes(),
@@ -290,9 +294,9 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
         host_limits: Some(limits),
         ..fast_opts()
     };
-    let (log, size) = fetch(&s, "/gen/4M/c.bin?seed=33", 33, opts).await;
+    let (log, size) = fetch(&s, "/gen/8M/c.bin?seed=33", 33, opts).await;
     blocker.await.unwrap().unwrap();
-    assert_eq!(size, 4 << 20);
+    assert_eq!(size, 8 << 20);
     let ours: Vec<_> = log.iter().filter(|e| e.path.contains("c.bin")).collect();
     assert!(
         ours.iter().any(|e| e.outcome == "fault:max_conns"),
@@ -928,7 +932,9 @@ async fn speed_limit_caps_the_whole_download() {
     let (_, size) = fetch(&s, "/gen/2M?seed=12", 12, opts).await;
     let secs = t.elapsed().as_secs_f64() - 0.3; // fetch() waits 300 ms for the server log
     assert_eq!(size, 2 << 20);
-    assert!((1.5..3.0).contains(&secs), "2 MB at 1 MB/s took {secs:.2}s");
+    // At least the time the limit allows (without it: well under a second). The upper bound
+    // only catches a limit far too strict; a busy CI runner adds seconds of its own.
+    assert!((1.5..6.0).contains(&secs), "2 MB at 1 MB/s took {secs:.2}s");
 }
 
 #[tokio::test]

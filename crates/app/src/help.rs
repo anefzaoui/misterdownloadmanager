@@ -515,9 +515,9 @@ impl Shortcuts {
                 let ink = winui::TEXT();
                 for (i, (keys, what)) in SHORTCUTS.iter().enumerate() {
                     let y = o.y + 24.0 + 18.0 * i as f32;
-                    // i18n: a key or key combination (translate key names as the keyboard shows them, e.g. Strg for Ctrl)
-                    let keys = crate::i18n::tc("key", keys);
-                    winui::text_fit(&p, o.x + 16.0, y, keys, ink, o.x + 174.0);
+                    // As this system writes it: ⌘N on macOS, the translated key names elsewhere.
+                    let keys = crate::chrome::key_label(keys);
+                    winui::text_fit(&p, o.x + 16.0, y, &keys, ink, o.x + 174.0);
                     winui::text_fit(&p, o.x + 184.0, y, crate::i18n::t(what), ink, o.x + 504.0);
                 }
                 let y = 24.0 + 18.0 * rows + 6.0;
