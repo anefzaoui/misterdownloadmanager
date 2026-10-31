@@ -369,6 +369,9 @@
 	Downloads stopped and will resume automatically at {time}.	Downloads stopped and will resume automatically at {time}.
 #. text in droptarget.rs
 	Drag links here to download them	Drag links here to download them
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+	Dropped links	Dropped links
 #. window title in a dialog box
 	Duplicate download link	Duplicate download link
 #. button in the Options window
@@ -741,6 +744,8 @@
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.
 #. text in the Options window
 	Note: These settings don't relate to queue processing	Note: These settings don't relate to queue processing
+#. message or event log entry in the main window
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).
 #. text in the Scheduler window
 	November	November
 #. text in the Options window
@@ -1641,6 +1646,10 @@ menu	&Remove	&Remove
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Report a problem	&Report a problem
+#. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Reset columns	&Reset columns
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Scheduler and queues	&Scheduler and queues

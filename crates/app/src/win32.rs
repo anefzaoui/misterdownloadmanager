@@ -1088,6 +1088,9 @@ pub mod ole {
         over: Arc<AtomicBool>,
         /// What the current drag carries (decided at DragEnter).
         accepts: AtomicBool,
+        /// Woken at enter, leave and drop: OLE's drag loop sends the window no input, so
+        /// egui wouldn't draw the highlight, or take the drop, until something else came.
+        wake: egui::Context,
     }
 
     static VTBL: Vtbl = Vtbl {
@@ -1146,6 +1149,7 @@ pub mod ole {
             let ok = !read(data).is_empty();
             (*this).accepts.store(ok, Ordering::Relaxed);
             (*this).over.store(ok, Ordering::Relaxed);
+            (*this).wake.request_repaint();
             *effect = if ok { DROPEFFECT_COPY } else { DROPEFFECT_NONE };
         }
         S_OK
@@ -1170,7 +1174,10 @@ pub mod ole {
 
     unsafe extern "system" fn drag_leave(this: *mut Target) -> HResult {
         // SAFETY: valid for the call.
-        unsafe { (*this).over.store(false, Ordering::Relaxed) };
+        unsafe {
+            (*this).over.store(false, Ordering::Relaxed);
+            (*this).wake.request_repaint();
+        }
         S_OK
     }
 
@@ -1193,6 +1200,7 @@ pub mod ole {
             for s in found {
                 let _ = (*this).tx.send(s);
             }
+            (*this).wake.request_repaint();
         }
         S_OK
     }
@@ -1212,6 +1220,8 @@ pub mod ole {
                             let w = w.to_ascii_lowercase();
                             w.starts_with("http://")
                                 || w.starts_with("https://")
+                                || w.starts_with("ftp://")
+                                || w.starts_with("ftps://")
                                 || w.starts_with("magnet:")
                         })
                         .map(str::to_owned)
@@ -1289,7 +1299,12 @@ pub mod ole {
 
     impl Registration {
         /// None until the window exists (tried again next frame).
-        pub fn new(title: &str, tx: Sender<String>, over: Arc<AtomicBool>) -> Option<Self> {
+        pub fn new(
+            title: &str,
+            tx: Sender<String>,
+            over: Arc<AtomicBool>,
+            wake: &egui::Context,
+        ) -> Option<Self> {
             let hwnd = crate::win32::find_own_window(title)?;
             let target = Box::into_raw(Box::new(Target {
                 vtbl: &VTBL,
@@ -1297,6 +1312,7 @@ pub mod ole {
                 tx,
                 over,
                 accepts: AtomicBool::new(false),
+                wake: wake.clone(),
             }));
             // SAFETY: OLE on the UI thread (winit initialised it already: S_FALSE is fine);
             // any target winit registered goes first, then ours (RegisterDragDrop AddRefs it).

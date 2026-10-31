@@ -205,6 +205,15 @@ pub struct Layout {
 }
 
 impl ListState {
+    /// Columns as they first were: order, widths, every one shown.
+    pub fn reset_columns(&mut self) {
+        let fresh = ListState::default();
+        self.order = fresh.order;
+        self.widths = fresh.widths;
+        self.visible = fresh.visible;
+        self.hscroll = 0.0;
+    }
+
     pub fn layout(&self) -> Layout {
         Layout {
             order: self.order.clone(),
@@ -530,6 +539,14 @@ pub fn show(
             }
             _ => {}
         }
+    }
+    // A double-click on a border fits the column to the widest of its title and cells (as in
+    // Explorer).
+    if hresp.double_clicked()
+        && let Some(col) = pointer.and_then(|pp| near_sep(pp.x))
+    {
+        st.widths[col] = fit_width(&p, &font, col, rows);
+        st.drag = None;
     }
     if hresp.drag_stopped() {
         if let (Some(HeaderDrag::Move { col, .. }), Some(pp)) = (st.drag, pointer) {
@@ -1063,6 +1080,23 @@ pub fn show(
 /// file name or a description as a first-strong isolate (an Arabic name reads right to left in
 /// an English window, a Latin one left to right in an Arabic window), a date left to right. The
 /// cut happens inside the isolate, so the "..." ends the name.
+/// The width that shows column `col`'s title and every cell whole (its icon, its padding).
+fn fit_width(p: &egui::Painter, font: &egui::FontId, col: usize, rows: &[Row]) -> f32 {
+    let measure = |s: &str| winui::text_width_font(p, font.clone(), s);
+    // The title, with room for the sort arrow and the filter funnel.
+    let title = measure(crate::i18n::tc("column", TITLES[col])) + 6.0 + 24.0;
+    let lead = if col == 0 { 22.0 } else { 6.0 };
+    let cells = rows
+        .iter()
+        .map(|r| lead + measure(&cell_text(col, crate::i18n::t(&r.cells[col]))) + 8.0)
+        .fold(0.0, f32::max);
+    match col {
+        // The queue icon and the source chip have their own sizes.
+        1 | SOURCE => DEFAULT_WIDTHS[col],
+        _ => title.max(cells).ceil().max(MIN_WIDTH),
+    }
+}
+
 fn cell_text(col: usize, s: &str) -> String {
     match col {
         0 | 7 => crate::i18n::isolate(s),

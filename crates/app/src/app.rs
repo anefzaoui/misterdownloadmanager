@@ -140,6 +140,8 @@ enum Cmd {
     ClearFilters,
     /// Every download the list shows (Ctrl+A).
     SelectAll,
+    /// Header right-click → Reset columns.
+    ResetColumns,
     None,
 }
 
@@ -229,6 +231,8 @@ pub struct App {
     after_stop: Vec<(u64, Option<(PathBuf, bool)>)>,
     /// Tasks → Show drop target: the floating box links are dragged onto.
     drop_target: Option<crate::droptarget::DropTarget>,
+    /// Links and files dropped on the main window.
+    drops: crate::droptarget::Drops,
     /// The queue selection panel after Download Later / a batch: the downloads waiting for it.
     queue_pick: Option<(Vec<u64>, dialogs::QueuePick)>,
     /// Tasks → Import: the addresses found, to check before adding.
@@ -530,6 +534,7 @@ impl App {
             import: None,
             queue_pick: None,
             drop_target: None,
+            drops: Default::default(),
             after_stop: Vec::new(),
             confirm_category_delete: None,
             properties: Vec::new(),
@@ -2470,6 +2475,7 @@ impl App {
             }
             Cmd::Arrange(col) => self.list.sort = col.map(|c| (c, true)),
             Cmd::ClearFilters => self.list.filters = vec![None; list::COLS],
+            Cmd::ResetColumns => self.list.reset_columns(),
             Cmd::SelectAll => {
                 let ids = self.shown_ids();
                 self.selection.apply(crate::selection::Pick::All, &ids);
@@ -3464,6 +3470,16 @@ impl App {
         if let Some(i) = r.enter {
             self.open_item(ids[i]);
         }
+        // Something droppable over the window: the list is where it goes.
+        let dragging = self.drops.over() || ctx.input(|i| !i.raw.hovered_files.is_empty());
+        if dragging {
+            ui.painter().rect_stroke(
+                winui::rect(outer),
+                0.0,
+                egui::Stroke::new(2.0, winui::accent()),
+                egui::StrokeKind::Inside,
+            );
+        }
         if ids.is_empty() && self.empty_note(ui, outer) {
             chosen = Some((Cmd::ClearFilters, None));
         }
@@ -3495,6 +3511,13 @@ impl App {
                         "Clear all &filters",
                         Cmd::ClearFilters,
                         self.list.filters.iter().any(Option::is_some),
+                        false,
+                    ));
+                    // i18n: header menu: put the columns back as they first were (order, widths, all shown)
+                    e.push(MenuEntry::Item(
+                        "&Reset columns",
+                        Cmd::ResetColumns,
+                        true,
                         false,
                     ));
                     (e, None)
@@ -3726,13 +3749,7 @@ impl App {
         for ev in dt.show(ctx, &icon) {
             use crate::droptarget::Event;
             match ev {
-                Event::Drop(s) => {
-                    let cmd = ipc::Command {
-                        url: Some(s),
-                        ..Default::default()
-                    };
-                    self.handle_command(cmd, ctx);
-                }
+                Event::Drop(s) => self.dropped(vec![s], ctx),
                 Event::ShowMain => self.show_window(ctx),
                 Event::Context(screen) => {
                     // Popups take a point in the main window.
@@ -3780,6 +3797,96 @@ impl App {
         }
     }
 
+    /// What was dropped on the main window (its OLE target on Windows; winit's dropped files on
+    /// macOS and Linux, which hand over files only).
+    fn main_drops(&mut self, ctx: &egui::Context) {
+        #[cfg_attr(windows, allow(unused_mut))]
+        let mut got = self.drops.poll(ctx, crate::MAIN_TITLE);
+        #[cfg(not(windows))]
+        got.extend(ctx.input(|i| {
+            i.raw
+                .dropped_files
+                .iter()
+                .filter_map(|f| f.path.as_ref().map(|p| p.display().to_string()))
+                .collect::<Vec<_>>()
+        }));
+        if !got.is_empty() {
+            self.dropped(got, ctx);
+        }
+    }
+
+    /// Links or files dropped (on the main window, on the drop target): one address, a magnet
+    /// link or a .torrent file goes the usual way (Download File Info, Add torrent); several
+    /// addresses, or a list file (.txt, .ef2, .htm, .csv), show in Import to tick first.
+    fn dropped(&mut self, items: Vec<String>, ctx: &egui::Context) {
+        let list_file = |s: &str| {
+            let p = std::path::Path::new(s);
+            p.is_file()
+                && p.extension().is_some_and(|e| {
+                    ["txt", "ef2", "htm", "html", "csv"]
+                        .contains(&e.to_string_lossy().to_ascii_lowercase().as_str())
+                })
+        };
+        let (lists, items): (Vec<String>, Vec<String>) =
+            items.into_iter().partition(|s| list_file(s));
+        for file in lists {
+            self.import_file(std::path::Path::new(&file));
+        }
+        let (links, other): (Vec<String>, Vec<String>) = items
+            .into_iter()
+            .partition(|s| url::Url::parse(s.trim()).is_ok_and(|u| mdm_engine::supported(&u)));
+        if links.len() > 1 {
+            self.show_window(ctx);
+            let found = links
+                .into_iter()
+                .map(|url| crate::transfer::Imported {
+                    url,
+                    referer: None,
+                    cookies: None,
+                    user_agent: None,
+                })
+                .collect();
+            // i18n: in Import, where the addresses came from: dragged onto the window
+            let source = crate::i18n::t("Dropped links").to_owned();
+            self.import = Some(crate::transfer::ImportDialog::new(found, source));
+        } else {
+            for url in links {
+                self.handle_command(
+                    ipc::Command {
+                        url: Some(url),
+                        ..Default::default()
+                    },
+                    ctx,
+                );
+            }
+        }
+        for s in other {
+            let torrent = mdm_torrent::Source::magnet(&s).is_some()
+                || (s.to_ascii_lowercase().ends_with(".torrent")
+                    && std::path::Path::new(&s).is_file());
+            if torrent {
+                self.handle_command(
+                    ipc::Command {
+                        url: Some(s),
+                        ..Default::default()
+                    },
+                    ctx,
+                );
+            } else {
+                // A file MDM can't download or import (a picture, a program).
+                self.notice = Some((
+                    crate::i18n::mark("Mister Download Manager"),
+                    crate::i18n::fmt(
+                        crate::i18n::t(
+                            "Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).",
+                        ),
+                        &[("item", &crate::i18n::isolate(&s))],
+                    ),
+                ));
+            }
+        }
+    }
+
     /// Tasks → Import: read a file and show the addresses found, to check before adding.
     fn import(&mut self, ef2: bool) {
         let mut dialog = rfd::FileDialog::new().set_title(crate::i18n::t("Import"));
@@ -3794,11 +3901,16 @@ impl App {
         else {
             return;
         };
+        self.import_file(&path);
+    }
+
+    /// The addresses in a list file, shown in Import to tick before adding.
+    fn import_file(&mut self, path: &std::path::Path) {
         let file = path
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        let found = match std::fs::read(&path) {
+        let found = match std::fs::read(path) {
             Ok(bytes) => crate::transfer::import(&String::from_utf8_lossy(&bytes)),
             Err(e) => {
                 self.notice = Some((
@@ -4462,6 +4574,7 @@ impl eframe::App for App {
         }
         self.poll(&ctx);
         self.drop_target(&ctx);
+        self.main_drops(&ctx);
         self.weekly_update_check(&ctx);
         self.apply_global_limit();
         self.watch_clipboard(&ctx);
