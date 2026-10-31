@@ -46,12 +46,15 @@ enum Sub {
 pub struct OptionsDialog {
     s: Settings,
     page: usize,
+    /// The browsers check list's scroll and selection.
+    browser_rows: winui::RowList,
     category: usize,
     cat_dir: String,
     mb: String,
     hours: String,
-    exc_sel: Option<usize>,
-    login_sel: Option<usize>,
+    /// The exceptions' and site logins' lists: scroll and selection.
+    exc_rows: winui::RowList,
+    login_rows: winui::RowList,
     sound_sel: Option<usize>,
     sub: Option<Sub>,
     /// Save to → New / Edit...: the category editor (D-021).
@@ -84,14 +87,15 @@ impl OptionsDialog {
     ) -> Self {
         let s = settings.clone();
         OptionsDialog {
+            browser_rows: Default::default(),
             cat_dir: display_dir(&s.category_dir(Category::General, downloads)),
             mb: s.limits_mb.to_string(),
             hours: s.limits_hours.to_string(),
             s,
             page: 0,
             category: 0,
-            exc_sel: None,
-            login_sel: None,
+            exc_rows: Default::default(),
+            login_rows: Default::default(),
             sound_sel: None,
             sub: None,
             cat_edit: None,
@@ -249,56 +253,25 @@ impl OptionsDialog {
             198.0,
             "Capture downloads from the following browsers:",
         );
-        // Check list: one row per browser, scrolled by the wheel, with the thin Win11 bar.
-        let list_on_screen = r(o, 30.0, 206.0, 362.0, 116.0);
-        list_frame(&p, list_on_screen);
-        let list = winui::rect(list_on_screen);
-        let inner = Rect::from_min_max(list.min + vec2(2.0, 2.0), list.max - vec2(2.0, 2.0));
-        let content = 17.0 * s.browsers.len() as f32;
-        let overflow = (content - inner.height()).max(0.0);
-        let key = egui::Id::unique("browsers-scroll");
-        let mut off: f32 = ui.data(|d| d.get_temp(key).unwrap_or(0.0));
-        if ui.rect_contains_pointer(list_on_screen) {
-            off -= ui.input(|i| i.smooth_scroll_delta.y);
+        // Check list: one row per browser in the shared row list (Space ticks the selected
+        // one; the box and its name tick it too).
+        let browsers = &mut s.browsers;
+        let ev = winui::row_list(
+            ui,
+            "browsers",
+            r(o, 30.0, 206.0, 362.0, 116.0),
+            browsers.len(),
+            17.0,
+            &mut self.browser_rows,
+            |ui, _, i, row, _| {
+                let (name, on) = &mut browsers[i];
+                winui::checkbox_light(ui, pos2(row.left() + 5.0, row.top() + 2.0), on, name, true);
+            },
+        );
+        if let Some(i) = ev.space {
+            browsers[i].1 = !browsers[i].1;
         }
-        off = off.clamp(0.0, overflow);
-        ui.data_mut(|d| d.insert_temp(key, off));
-        let rows_right = if overflow > 0.0 {
-            inner.right() - 16.0
-        } else {
-            inner.right()
-        };
-        let rows = Rect::from_min_max(inner.min, pos2(rows_right, inner.bottom()));
-        let clip = p.with_clip_rect(winui::rect(rows));
-        for (i, (name, on)) in s.browsers.iter_mut().enumerate() {
-            let top = inner.top() + 17.0 * i as f32 - off;
-            let hit = winui::rect(
-                Rect::from_min_size(pos2(rows.left(), top), vec2(rows.width(), 17.0))
-                    .intersect(rows),
-            );
-            if hit.height() <= 0.0 {
-                continue;
-            }
-            if ui
-                .interact(hit, egui::Id::unique(("browser", i)), Sense::click())
-                .clicked()
-            {
-                *on = !*on;
-            }
-            let glyph = pos2(list.left() + 6.0, top + 2.0);
-            check_glyph(&clip, glyph, *on, true);
-            text(&clip, glyph.x + 18.0, top + 12.0, name, LIGHT_TEXT());
-        }
-        if overflow > 0.0 {
-            // Track #f0f0f0; the thumb a 2 px #858585 line (arrows hidden, 17 px ends).
-            let track = Rect::from_min_max(pos2(rows_right, inner.top()), inner.max);
-            p.rect_filled(winui::rect(track), 0.0, winui::GRID());
-            let span = track.height() - 34.0;
-            let len = (span * inner.height() / content).max(12.0);
-            let y0 = track.top() + 17.0 + (span - len) * off / overflow;
-            let x = track.center().x.floor();
-            fill(&p, x - 1.0, y0, x, y0 + len, winui::FIELD_EDGE());
-        } // Adding browsers, keys, and the browser menu / panel editors are the extension's
+        // Adding browsers, keys, and the browser menu / panel editors are the extension's
         // settings (M8): shown as IDM has them, not yet available.
         let off = |ui: &mut Ui, rc: Rect, label: &str| {
             winui::button_light(ui, rc, label, ButtonKind::Disabled, false);
@@ -818,7 +791,7 @@ impl OptionsDialog {
                     }),
             )
             .collect();
-        let dbl = report(
+        let (dbl, del_key) = report(
             ui,
             o,
             r(o, 30.0, 162.0, 281.0, 122.0),
@@ -828,12 +801,15 @@ impl OptionsDialog {
                 (crate::i18n::mark("Number"), 291.0),
             ],
             &rows,
-            &mut self.exc_sel,
+            &mut self.exc_rows,
             true,
             "opt-exceptions",
         );
         // Learned rows can't be edited or deleted (they fade by themselves).
-        let sel = self.exc_sel.filter(|i| *i < self.s.conn_exceptions.len());
+        let sel = self
+            .exc_rows
+            .selected
+            .filter(|i| *i < self.s.conn_exceptions.len());
         let new = winui::button_light(
             ui,
             r(o, 319.0, 173.0, 73.0, 21.0),
@@ -850,7 +826,8 @@ impl OptionsDialog {
         };
         // i18n: verb: delete the item
         let del = winui::button_light(ui, r(o, 319.0, 202.0, 73.0, 21.0), "Delete", kind, false)
-            .clicked();
+            .clicked()
+            || del_key;
         let edit =
             // i18n: verb: edit the item
             winui::button_light(ui, r(o, 319.0, 232.0, 73.0, 21.0), "Edit", kind, false).clicked();
@@ -860,7 +837,7 @@ impl OptionsDialog {
         if let Some(i) = sel {
             if del {
                 self.s.conn_exceptions.remove(i);
-                self.exc_sel = None;
+                self.exc_rows.selected = None;
             } else if edit || dbl {
                 let (server, n) = self.s.conn_exceptions[i].clone();
                 self.sub = Some(Sub::Exception(Some(i), server, n.to_string()));
@@ -1108,7 +1085,7 @@ impl OptionsDialog {
                 vec![site.clone(), user.clone(), "*".repeat(pass.chars().count())]
             })
             .collect();
-        let dbl = report(
+        let (dbl, del_key) = report(
             ui,
             o,
             r(o, 21.0, 93.0, 383.0, 280.0),
@@ -1120,11 +1097,11 @@ impl OptionsDialog {
                 (crate::i18n::mark("Password"), 387.0),
             ],
             &rows,
-            &mut self.login_sel,
+            &mut self.login_rows,
             false,
             "opt-logins",
         );
-        let sel = self.login_sel.filter(|i| *i < rows.len());
+        let sel = self.login_rows.selected.filter(|i| *i < rows.len());
         let new = winui::button_light(
             ui,
             r(o, 31.0, 381.0, 73.0, 21.0),
@@ -1144,7 +1121,8 @@ impl OptionsDialog {
             winui::button_light(ui, r(o, 125.0, 381.0, 73.0, 21.0), "Edit", kind, false).clicked();
         // i18n: verb: remove the item
         let remove = winui::button_light(ui, r(o, 220.0, 381.0, 73.0, 21.0), "Remove", kind, false)
-            .clicked();
+            .clicked()
+            || del_key;
         if new {
             self.sub = Some(Sub::Login(
                 None,
@@ -1156,7 +1134,7 @@ impl OptionsDialog {
         if let Some(i) = sel {
             if remove {
                 self.s.site_logins.remove(i);
-                self.login_sel = None;
+                self.login_rows.selected = None;
             } else if edit || dbl {
                 let (site, user, pass) = self.s.site_logins[i].clone();
                 self.sub = Some(Sub::Login(Some(i), site, user, pass));
@@ -1987,10 +1965,10 @@ fn report(
     rc: Rect,
     cols: &[(&str, f32)],
     rows: &[Vec<String>],
-    sel: &mut Option<usize>,
+    st: &mut winui::RowList,
     grid: bool,
     id: &str,
-) -> bool {
+) -> (bool, bool) {
     let p = ui.painter().clone();
     list_frame(&p, rc);
     // Laid out in English, as `cols` are; each part made on screen.
@@ -2010,77 +1988,58 @@ fn report(
         fill(&p, right, head + 1.0, right, head + 23.0, divider);
         x0 = right;
     }
+    // The rows: the shared row list under the header (its frame on the list's).
     let body = Rect::from_min_max(
         pos2(rc.left() + 1.0, head + 25.0),
         pos2(rc.right() - 1.0, rc.bottom() - 1.0),
     );
-    let clip = p.with_clip_rect(winui::rect(body));
     let gridc = winui::GRID();
-    let mut double = false;
-    let n = ((body.height()) / 17.0).ceil() as usize;
-    for k in 0..n {
-        let top = body.top() + 17.0 * k as f32;
-        if grid {
-            fill(
-                &clip,
-                body.left() + 1.0,
-                top + 16.0,
-                body.right() - 1.0,
-                top + 16.0,
-                gridc,
-            );
-        }
-        let Some(row) = rows.get(k) else { continue };
-        let line = Rect::from_min_size(pos2(body.left(), top), vec2(body.width(), 16.0));
-        let resp = ui.interact(
-            winui::rect(line),
-            egui::Id::unique((id, "row", k)),
-            Sense::click(),
-        );
-        if resp.clicked() {
-            *sel = Some(k);
-        }
-        if resp.double_clicked() {
-            *sel = Some(k);
-            double = true;
-        }
-        let selected = *sel == Some(k);
-        if selected {
-            fill(
-                &clip,
-                line.left(),
-                line.top(),
-                line.right() - 1.0,
-                line.bottom() - 1.0,
-                winui::SELECTION,
-            );
-        }
-        let c = if selected {
-            Color32::WHITE
-        } else {
-            LIGHT_TEXT()
-        };
-        let mut cx = left;
-        for (i, (_, right)) in cols.iter().enumerate() {
-            let right = o.x + right;
-            let tx = cx + 6.0;
-            if let Some(cell) = row.get(i) {
-                let (rect, cut) = winui::text_fit(&clip, tx, top + 12.0, cell, c, right - 3.0);
-                if cut {
-                    let shown = rect.intersect(winui::rect(body));
-                    winui::full_on_hover(ui, shown, (id, "cell", k, i), cell);
-                }
+    let ev = winui::row_list(
+        ui,
+        (id, "rows"),
+        winui::rect(body.expand(1.0)),
+        rows.len(),
+        17.0,
+        st,
+        |ui, clip, k, line, look| {
+            let top = line.top();
+            if grid {
+                fill(
+                    clip,
+                    line.left(),
+                    top + 16.0,
+                    line.right(),
+                    top + 16.0,
+                    gridc,
+                );
             }
-            cx = right;
-        }
-    }
-    if grid {
-        for (_, right) in cols {
-            let x = o.x + right + 1.0;
-            fill(&clip, x, body.top(), x, body.bottom(), gridc);
-        }
-    }
-    double
+            let mut cx = left;
+            for (i, (_, right)) in cols.iter().enumerate() {
+                let right = o.x + right;
+                if grid {
+                    fill(clip, right + 1.0, top, right + 1.0, top + 16.0, gridc);
+                }
+                if let Some(cell) = rows[k].get(i) {
+                    winui::fit(
+                        ui,
+                        clip,
+                        cx + 6.0,
+                        top + 12.0,
+                        cell,
+                        look.ink,
+                        right - 3.0,
+                        (id, "cell", k, i),
+                    );
+                }
+                cx = right;
+            }
+        },
+    );
+    // A double-click or Enter edits; Delete removes.
+    (
+        ev.double_clicked.or(ev.entered).is_some(),
+        ev.delete.is_some(),
+    )
 }
 
 /// A multi-line edit that wraps its text (the shared one).

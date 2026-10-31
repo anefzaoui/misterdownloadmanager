@@ -1248,8 +1248,38 @@ fn vline(p: &Painter, x: f32, y0: f32, y1: f32, c: Color32) {
     fill(p, x, y0, x, y1, c);
 }
 
-/// The 2 px light edit border around a dark fill (height 23).
+/// The rounding of a control's corners (buttons, text boxes, drop-downs): IDM's dark buttons,
+/// Windows 11's light ones.
+pub fn control_radius() -> f32 {
+    if crate::theme::dark() { 4.0 } else { 3.0 }
+}
+
+/// A text box's frame. Light: Windows 11's, rounded as the buttons are, a subtle border with a
+/// darker bottom line (flat when disabled). Dark: IDM's 2 px light border around a dark fill
+/// (height 23), its corner pixels measured.
 pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
+    if !crate::theme::dark() {
+        let radius = control_radius();
+        let (fill_c, border, bottom) = if enabled {
+            (Color32::WHITE, rgb(0xe5, 0xe5, 0xe5), rgb(0x86, 0x86, 0x86))
+        } else {
+            (
+                rgb(0xf9, 0xf9, 0xf9),
+                rgb(0xe9, 0xe9, 0xe9),
+                rgb(0xe9, 0xe9, 0xe9),
+            )
+        };
+        p.rect_filled(rc, radius, fill_c);
+        p.rect_stroke(rc, radius, Stroke::new(1.0, border), StrokeKind::Inside);
+        hline(
+            p,
+            rc.left() + radius,
+            rc.right() - radius - 1.0,
+            rc.bottom() - 1.0,
+            bottom,
+        );
+        return;
+    }
     let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
     // Dark: the dialog colour. Light: white when editable, #f0f0f0 read-only/disabled.
     let fill_c = match (crate::theme::dark(), enabled) {
@@ -1335,11 +1365,17 @@ pub fn edit(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool, password: 
 /// A text box's focus, as Windows 11 shows it: an accent line along its bottom edge.
 pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
     if resp.has_focus() {
+        // Inside the rounded corners.
+        let inset = if crate::theme::dark() {
+            1.0
+        } else {
+            control_radius()
+        };
         fill(
             ui.painter(),
-            rc.left() + 1.0,
+            rc.left() + inset,
             rc.bottom() - 2.0,
-            rc.right() - 2.0,
+            rc.right() - inset - 1.0,
             rc.bottom() - 1.0,
             accent(),
         );
@@ -1753,9 +1789,18 @@ fn combo_chevron(p: &Painter, rc: Rect) {
     );
 }
 
-/// Combo frame: 1 px border (#8d8d8d, or #0078d4 when focused), 2 px white ring, dark text
-/// area, white 19 px arrow zone with a grey chevron. Height 21.
+/// Combo frame. Dark: 1 px border (#8d8d8d, or #0078d4 when focused), 2 px white ring, dark
+/// text area, white 19 px arrow zone with a grey chevron. Height 21.
 pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
+    // Light: the text box's rounded frame (an accent border while focused), the chevron.
+    if !crate::theme::dark() {
+        edit_frame(p, rc, true);
+        if focused {
+            p.rect_stroke(rc, control_radius(), Stroke::new(1.0, accent()), StrokeKind::Inside);
+        }
+        combo_chevron(p, rc);
+        return;
+    }
     let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
     let border = if focused {
         rgb(0x00, 0x78, 0xd4)
@@ -2307,7 +2352,7 @@ fn button_face(
     let state = State::of(&resp, enabled);
     let p = ui.painter();
     let face = button_colors(kind, state, dark);
-    let rounding = if dark { 4.0 } else { 3.0 };
+    let rounding = control_radius();
     p.rect_filled(rc, rounding, face.fill);
     p.rect_stroke(
         rc,
@@ -2968,7 +3013,7 @@ pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
     };
     let face = button_colors(kind, if open { State::Hot } else { state }, dark);
     let border = if open { accent() } else { face.border };
-    let rounding = if dark { 4.0 } else { 3.0 };
+    let rounding = control_radius();
     p.rect_filled(rc, rounding, face.fill);
     p.rect_stroke(rc, rounding, Stroke::new(1.0, border), StrokeKind::Inside);
     if !open {
