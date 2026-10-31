@@ -3,7 +3,7 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
-## [0.2.2] - 2026-10-31
+## [0.2.2] - 2026-11-01
 
 A sweep through every window for the small things that make a program feel finished: how each
 control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers,
