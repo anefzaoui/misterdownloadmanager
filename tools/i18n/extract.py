@@ -49,6 +49,8 @@ SINKS = {
     "off": (0, "menu"), "by": (0, "menu"), "link": (4, ""),
     # Options' own page helpers (options.rs), which translate their labels.
     "header": (3, ""), "group": (6, ""), "disabled_label": (3, ""), "page_title": (4, ""),
+    # A greyed control's reason on hover (winui::why_disabled).
+    "why_disabled": (2, ""),
 }
 SINK_CALL = re.compile(
     r"\b(?:winui::|MenuEntry::|crate::i18n::|i18n::)?(" + "|".join(SINKS) + r")\s*\(")
@@ -82,6 +84,7 @@ ROLES = {
     "Radio": "menu choice", "Sub": "submenu", "off": "menu command", "by": "menu choice",
     "tn": "count", "link": "link (opens a web page)", "header": "page title",
     "group": "group box title", "disabled_label": "label", "page_title": "page title",
+    "why_disabled": "tooltip (why a control is greyed)",
 }
 CONTEXT_ROLES = {
     "menu": "menu command", "toolbar": "toolbar button", "column": "column title",

@@ -157,6 +157,12 @@ impl Find {
                         ButtonKind::Disabled
                     },
                     false,
+                );
+                let find = winui::why_disabled(
+                    find,
+                    !can,
+                    // i18n: tooltip of the greyed Find button
+                    "Type what to find, and tick at least one place to look",
                 )
                 .clicked();
                 let cancel = winui::button_light(

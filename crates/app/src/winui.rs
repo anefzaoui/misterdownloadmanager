@@ -946,6 +946,35 @@ pub fn full_on_hover(
         .on_hover_text(full);
 }
 
+/// A disabled control says why on hover: `reason` (English, translated here) while `disabled`.
+pub fn why_disabled(resp: Response, disabled: bool, reason: &str) -> Response {
+    if disabled {
+        resp.on_hover_text(crate::i18n::t(reason))
+    } else {
+        resp
+    }
+}
+
+/// [`text_fit`] that shows the whole text on hover whenever it cut it: the one way to draw a
+/// line that may not fit (no caller can forget the hover). `salt` tells the lines apart.
+#[allow(clippy::too_many_arguments)]
+pub fn fit(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> Rect {
+    let (rect, cut) = text_fit(p, x, baseline, s, color, right);
+    if cut {
+        full_on_hover(ui, rect, salt, s);
+    }
+    rect
+}
+
 /// Text already drawn in `rect` that the user may want to copy (an address, a hash, a path, a
 /// version): its right-click menu copies it whole ([`copy_menu`]), and it shows whole on hover
 /// when `cut`. Taken by the pointer only (labels are no Tab stops).
@@ -1565,15 +1594,21 @@ pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
         false,
         |p| combo_chevron(p, rc),
     );
+    // Short of the arrow zone: a longer value ends in "..." and shows whole on hover.
+    let shown = ellipsize(ui.painter(), &tahoma(), value, rc.width() - 5.0 - 22.0);
     text_start(
         ui.painter(),
         tahoma(),
         lead(rc) + 5.0 * fwd(),
         rc.top() + 13.0,
-        value,
+        &shown,
         TEXT(),
     );
-    resp
+    if shown != value {
+        resp.on_hover_text(value)
+    } else {
+        resp
+    }
 }
 
 /// Editable combo (Add URL "Address", Save As): frame + edit child at +3,+3 .. right−20 (the
@@ -2901,8 +2936,9 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
     step
 }
 
-/// A flat 19 × 21 button with a 16 × 16 icon (the Scheduler's move up / down / remove).
-pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Response {
+/// A flat 19 × 21 button with a 16 × 16 icon (the Scheduler's move up / down / remove), its
+/// `tip` (English, translated here) on hover.
+pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &str) -> Response {
     let sense = if enabled {
         Sense::click()
     } else {
@@ -2919,7 +2955,8 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Resp
         Stroke::new(1.0, CONTROL_EDGE()),
         StrokeKind::Inside,
     );
-    resp
+    // No label of its own: its tooltip says what it does (translated).
+    resp.on_hover_text(crate::i18n::t(tip))
 }
 
 #[cfg(test)]

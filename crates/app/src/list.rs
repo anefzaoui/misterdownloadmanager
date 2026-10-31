@@ -639,12 +639,20 @@ pub fn show(
                 arrow_room += 14.0;
             }
         }
-        let label = winui::ellipsize(
-            &p,
-            &font,
-            crate::i18n::tc("column", TITLES[*c]),
-            x1 - x0 - 10.0 - arrow_room,
-        );
+        let full = crate::i18n::tc("column", TITLES[*c]);
+        let label = winui::ellipsize(&p, &font, full, x1 - x0 - 10.0 - arrow_room);
+        // A cut title shows whole under the pointer; the one-letter Q says what it is.
+        if hovered && st.drag.is_none() {
+            let tip = if TITLES[*c] == "Q" {
+                // i18n: tooltip of the narrow "Q" column's title
+                Some(crate::i18n::tc("column", "Queue"))
+            } else {
+                (label != full).then_some(full)
+            };
+            if let Some(tip) = tip {
+                hresp.clone().on_hover_text(tip);
+            }
+        }
         let clip = p.with_clip_rect(screen(Rect::from_x_y_ranges(*x0..=*x1, ct..=ct + HEADER_H)));
         text_font(&clip, font.clone(), x0 + 6.0, ct + 15.0, &label, TEXT());
     }

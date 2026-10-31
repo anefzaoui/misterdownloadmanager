@@ -327,6 +327,12 @@ impl Picker {
                     },
                     false,
                     None,
+                );
+                let ok = winui::why_disabled(
+                    ok,
+                    rows.is_empty(),
+                    // i18n: tooltip of the greyed OK button in the language picker
+                    "No language matches the search",
                 )
                 .clicked();
                 let cancel = winui::button(

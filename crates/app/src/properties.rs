@@ -176,6 +176,17 @@ impl Properties {
                 ButtonKind::Disabled
             },
             false,
+        );
+        let pick = winui::why_disabled(
+            pick,
+            !movable,
+            if running {
+                // i18n: tooltip of the greyed Move button in File Properties
+                crate::i18n::mark("Pause the download first")
+            } else {
+                // i18n: tooltip of the greyed Move button in File Properties
+                crate::i18n::mark("Only a finished download, or one not started yet, can be moved")
+            },
         )
         .clicked();
         if pick
@@ -307,7 +318,16 @@ impl Properties {
             }
         }
         if let Some(e) = &self.error {
-            winui::text_fit(&p, o.x + 11.0, o.y + 395.0, e, winui::ERROR(), o.x + 250.0);
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                o.y + 395.0,
+                e,
+                winui::ERROR(),
+                o.x + 250.0,
+                "props-error",
+            );
         }
         let open = winui::button_light(
             ui,
@@ -320,6 +340,12 @@ impl Properties {
                 ButtonKind::Disabled
             },
             false,
+        );
+        let open = winui::why_disabled(
+            open,
+            !complete,
+            // i18n: tooltip of the greyed Open button in File Properties
+            "The download isn't complete yet",
         )
         .clicked();
         if open && complete {

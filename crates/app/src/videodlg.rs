@@ -348,7 +348,16 @@ impl VideoDialog {
                 winui::full_on_hover(ui, rect, "video-title", &v.title);
             }
         } else if let Some((_, _, msg)) = offer {
-            winui::text_fit(&p, o.x + 11.0, line_y, msg, winui::MUTED(), o.x + 390.0);
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                line_y,
+                msg,
+                winui::MUTED(),
+                o.x + 390.0,
+                "video-offer",
+            );
         }
         if let Some((tool, label, _)) = offer
             && installing.is_none()

@@ -901,13 +901,31 @@ impl Scheduler {
         let sel = self.file_sel;
         let n = rows.len();
         let buttons = [
-            ("arrow_down", 233.0, sel.is_some_and(|s| s + 1 < n)),
-            ("arrow_up", 263.0, sel.is_some_and(|s| s > 0)),
-            ("cross", 290.0, sel.is_some()),
+            // i18n: tooltip of an icon button in the Scheduler's list of files
+            (
+                "arrow_down",
+                233.0,
+                sel.is_some_and(|s| s + 1 < n),
+                crate::i18n::mark("Move down"),
+            ),
+            // i18n: tooltip of an icon button in the Scheduler's list of files
+            (
+                "arrow_up",
+                263.0,
+                sel.is_some_and(|s| s > 0),
+                crate::i18n::mark("Move up"),
+            ),
+            // i18n: tooltip of an icon button in the Scheduler's list of files
+            (
+                "cross",
+                290.0,
+                sel.is_some(),
+                crate::i18n::mark("Remove from the queue"),
+            ),
         ];
-        for (icon, x, enabled) in buttons {
+        for (icon, x, enabled, tip) in buttons {
             let rc = r(o, x, 387.0, 19.0, 21.0);
-            let clicked = winui::icon_button_light(ui, rc, icon, enabled).clicked();
+            let clicked = winui::icon_button_light(ui, rc, icon, enabled, tip).clicked();
             // English, as the icon and its wash take it.
             let img = winui::rect(rc).min + vec2(2.0, 2.0);
             icons.paint(ui, IconKey::Silk(icon), img);

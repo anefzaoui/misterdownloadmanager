@@ -114,7 +114,16 @@ impl ChecksumDialog {
                         LIGHT_TEXT(),
                     ),
                 };
-                winui::text_fit(&p, o.x + 11.0, o.y + 72.0, &line, color, o.x + 419.0);
+                winui::fit(
+                    ui,
+                    &p,
+                    o.x + 11.0,
+                    o.y + 72.0,
+                    &line,
+                    color,
+                    o.x + 419.0,
+                    "checksum-status",
+                );
                 let valid = hash.is_some();
                 let kind = if valid {
                     ButtonKind::Default

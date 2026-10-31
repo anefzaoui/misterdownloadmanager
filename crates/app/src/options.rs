@@ -1403,7 +1403,16 @@ impl OptionsDialog {
                 .file_name()
                 .map(|n| n.to_string_lossy().into_owned())
                 .unwrap_or_default();
-            winui::text_fit(&p, o.x + 231.0, top + 12.0, &name, c, list.right() - 4.0);
+            winui::fit(
+                ui,
+                &p,
+                o.x + 231.0,
+                top + 12.0,
+                &name,
+                c,
+                list.right() - 4.0,
+                ("sound-file", i),
+            );
         }
         let sel = self.sound_sel;
         let kind = if sel.is_some() {

@@ -332,7 +332,16 @@ impl Updates {
                             ),
                             &[("version", &rel.version), ("date", &rel.date)],
                         );
-                        winui::text_fit(&p, o.x + 11.0, o.y + 24.0, &line, ink, right);
+                        winui::fit(
+                            ui,
+                            &p,
+                            o.x + 11.0,
+                            o.y + 24.0,
+                            &line,
+                            ink,
+                            right,
+                            "update-line",
+                        );
                         let have = crate::i18n::fmt(
                             crate::i18n::t("You have version {version}."),
                             &[("version", VERSION)],
@@ -701,8 +710,27 @@ impl Shortcuts {
                     let y = o.y + 24.0 + 18.0 * i as f32;
                     // As this system writes it: ⌘N on macOS, the translated key names elsewhere.
                     let keys = crate::chrome::key_label(keys);
-                    winui::text_fit(&p, o.x + 16.0, y, &keys, ink, o.x + 174.0);
-                    winui::text_fit(&p, o.x + 184.0, y, crate::i18n::t(what), ink, o.x + 504.0);
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 16.0,
+                        y,
+                        &keys,
+                        ink,
+                        o.x + 174.0,
+                        ("keys", y as i32),
+                    );
+                    let what = crate::i18n::t(what);
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 184.0,
+                        y,
+                        what,
+                        ink,
+                        o.x + 504.0,
+                        ("what", y as i32),
+                    );
                 }
                 let y = 24.0 + 18.0 * rows + 6.0;
                 let ok = winui::button(
@@ -790,12 +818,16 @@ impl TellFriend {
                     13.0,
                 );
                 if self.copied {
-                    winui::text(
+                    // Short of the buttons beside it (a long translation: "...", whole on hover).
+                    winui::fit(
+                        ui,
                         &p,
                         o.x + 11.0,
                         o.y + 150.0,
                         crate::i18n::t("Copied to the clipboard."),
                         winui::MUTED(),
+                        o.x + 166.0,
+                        "copied",
                     );
                 }
                 let copy = winui::button(

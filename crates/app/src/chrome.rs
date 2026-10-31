@@ -1338,21 +1338,23 @@ pub fn categories(
         y0 + 18.0,
         CAT_FRAME(),
     ); // caption underline
-    text_font(
-        &p,
-        winui::tahoma(),
-        o.x + 12.0,
-        y0 + 13.0,
-        // i18n: title of the side pane that lists the categories
-        crate::i18n::t("Categories"),
-        TEXT(),
-    );
+    // i18n: title of the side pane that lists the categories
+    let caption = crate::i18n::t("Categories");
+    // Short of the close box: in a narrow pane or a long translation, "..." and whole on hover.
+    let shown = winui::ellipsize(&p, &winui::tahoma(), caption, right - 21.0 - (o.x + 12.0));
+    let drawn = text_font(&p, winui::tahoma(), o.x + 12.0, y0 + 13.0, &shown, TEXT());
+    if shown != caption {
+        winui::full_on_hover(ui, drawn, "categories-caption", caption);
+    }
     let mut event = None;
     let close = winui::rect(Rect::from_min_size(
         pos2(right - 19.0, y0 + 2.0),
         vec2(16.0, 15.0),
     ));
-    let cr = ui.interact(close, egui::Id::unique("cat-close"), Sense::click());
+    let cr = ui
+        .interact(close, egui::Id::unique("cat-close"), Sense::click())
+        // i18n: tooltip of the × that closes the Categories pane
+        .on_hover_text(crate::i18n::t("Close"));
     if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::dark()) {
         p.rect_filled(close, 2.0, c);
     }

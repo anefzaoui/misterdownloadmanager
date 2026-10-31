@@ -285,6 +285,10 @@ impl AddUrl {
                 );
                 let addr_rc = r(o, 68.0, 11.0, 396.0, 21.0);
                 let addr = winui::combo_edit(ui, addr_rc, &mut self.address);
+                // An error about the address goes once it is edited.
+                if addr.changed() {
+                    self.error = None;
+                }
                 if ui.memory(|m| m.focused().is_none()) {
                     addr.request_focus();
                 }
@@ -380,11 +384,27 @@ impl AddUrl {
                 if let Some(e) = &self.error {
                     let red = winui::ERROR();
                     // Ends before the OK / Cancel buttons; whole on hover when cut.
-                    let (rect, cut) =
-                        winui::text_fit(&p, o.x + 140.0, o.y + 49.0, e, red, o.x + 465.0);
-                    if cut {
-                        winui::full_on_hover(ui, rect, "add-url-error", e);
-                    }
+                    // On the group box's top line, over a strip of the dialog's colour (as a
+                    // caption sits on its line), not struck through by it.
+                    let w = winui::text_width(&p, e).min(465.0 - 140.0) + 6.0;
+                    winui::fill_l(
+                        &p,
+                        o.x + 137.0,
+                        o.y + 39.0,
+                        o.x + 137.0 + w,
+                        o.y + 52.0,
+                        winui::BG(),
+                    );
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 140.0,
+                        o.y + 49.0,
+                        e,
+                        red,
+                        o.x + 465.0,
+                        "add-url-error",
+                    );
                 }
                 // Escape closes an open drop list first, then the dialog.
                 if cancel || (!list_was_open && winui::escape_pressed(ui)) {
@@ -768,7 +788,11 @@ impl FileInfo {
                     ButtonKind::Disabled,
                     false,
                     None,
-                );
+                )
+                .on_hover_text(crate::i18n::t(
+                    // i18n: tooltip of the greyed Preview button in Download File Info
+                    "Preview isn't available yet",
+                ));
 
                 if self.category_open {
                     let mut picked = None;
@@ -1115,35 +1139,56 @@ impl SpeedSettings {
     }
 }
 
+// ---- Paragraphs that grow their dialog -------------------------------------------------------
+
+/// The height a dialog adds for its paragraph `key` (13 px a line beyond the lines its layout
+/// planned), as the paragraph measured it last frame ([`grow_to`]): a long translation or name
+/// moves what is under it down and the window grows, instead of running over the controls.
+pub fn grow_extra(ctx: &egui::Context, key: &str) -> f32 {
+    ctx.data(|d| d.get_temp::<f32>(egui::Id::unique(("grow", key))))
+        .unwrap_or(0.0)
+}
+
+/// Records that paragraph `key` took `lines` lines where `planned` fit (see [`grow_extra`]); a
+/// change draws again at once, at the new size.
+pub fn grow_to(ctx: &egui::Context, key: &str, lines: usize, planned: usize) {
+    let extra = lines.saturating_sub(planned) as f32 * 13.0;
+    if extra != grow_extra(ctx, key) {
+        ctx.data_mut(|d| d.insert_temp(egui::Id::unique(("grow", key)), extra));
+        ctx.request_repaint();
+    }
+}
+
 // ---- Message (light) --------------------------------------------------------------------------
 
-/// A one-line notice with OK, sized to its text (crate::i18n::t("Cannot find …")).
+/// A notice with OK, sized to its text (crate::i18n::t("Cannot find …")): one line when it
+/// fits, wrapped and taller when it doesn't (a long path or reason is never cut off).
 pub fn message(ctx: &egui::Context, id: &str, title: &str, text: &str) -> Outcome<()> {
     // Tahoma −11 averages about 5.5 px a character; the box is kept between 260 and 480 px.
     let width = (text.chars().count() as f32 * 5.6 + 40.0).clamp(260.0, 480.0);
+    let extra = grow_extra(ctx, id);
     window(
         ctx,
         id,
         title,
-        [width, 80.0],
+        [width, 80.0 + extra],
         false,
         winui::LIGHT_BG(),
         |ui, o| {
             let p = ui.painter().clone();
-            let (rect, cut) = winui::text_fit(
+            let lines = winui::paragraph(
                 &p,
                 o.x + 16.0,
                 o.y + 24.0,
                 text,
                 winui::LIGHT_TEXT(),
                 o.x + width - 16.0,
+                13.0,
             );
-            if cut {
-                winui::full_on_hover(ui, rect, (id, "text"), text);
-            }
+            grow_to(ui.ctx(), id, lines, 1);
             let ok = winui::button_light(
                 ui,
-                r(o, (width - 73.0) / 2.0, 47.0, 73.0, 21.0),
+                r(o, (width - 73.0) / 2.0, 47.0 + extra, 73.0, 21.0),
                 "OK",
                 ButtonKind::Default,
                 false,
@@ -1210,13 +1255,15 @@ impl LimitNotice {
             |ui, o| {
                 let p = ui.painter().clone();
                 for (i, line) in self.lines.iter().enumerate() {
-                    winui::text_fit(
+                    winui::fit(
+                        ui,
                         &p,
                         o.x + 11.0,
                         o.y + 21.0 + 13.0 * i as f32,
                         line,
                         winui::LIGHT_TEXT(),
                         o.x + 409.0,
+                        ("notice-line", i),
                     );
                 }
                 let ok = winui::button_light(
@@ -1418,11 +1465,12 @@ impl ConfirmDelete {
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<(bool, bool)> {
         let n = self.ids.len() as u64;
+        let extra = grow_extra(ctx, "confirm-delete");
         question(
             ctx,
             "confirm-delete",
             "Confirm deletion of downloads",
-            [374.0, 146.0],
+            [374.0, 146.0 + extra],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
@@ -1435,12 +1483,8 @@ it from Mister Download Manager list of downloads?",
                     )
                     .to_owned()
                 } else if n == 1 {
-                    // A very long name is cut so the question stays in the box.
-                    let name: String = if self.name.chars().count() > 48 {
-                        self.name.chars().take(45).collect::<String>() + "..."
-                    } else {
-                        self.name.clone()
-                    };
+                    // The whole name (two similar names must stay apart): the box grows.
+                    let name = self.name.clone();
                     crate::i18n::fmt(
                         crate::i18n::t(
                             "Are you sure you want to delete \"{name}\" from Mister Download Manager list of downloads?",
@@ -1461,7 +1505,10 @@ it from Mister Download Manager list of downloads?",
                         &[("n", &crate::i18n::integer(n))],
                     )
                 };
-                winui::paragraph(&p, o.x + 11.0, o.y + 21.0, &text, black, o.x + 362.0, 13.0);
+                let lines =
+                    winui::paragraph(&p, o.x + 11.0, o.y + 21.0, &text, black, o.x + 362.0, 13.0);
+                grow_to(ui.ctx(), "confirm-delete", lines, 3);
+                let o = o + vec2(0.0, extra);
                 let files = if n == 1 {
                     crate::i18n::t("Also delete the file from disk").to_owned()
                 } else {
@@ -1717,16 +1764,18 @@ impl Confirm {
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let text = self.text.clone();
+        let key = format!("confirm-{}", self.title);
+        let extra = grow_extra(ctx, &key);
         question(
             ctx,
-            &format!("confirm-{}", self.title),
+            &key,
             self.title,
-            [400.0, 96.0],
+            [400.0, 96.0 + extra],
             false,
             winui::BG(),
             |ui, o| {
                 let p = ui.painter().clone();
-                winui::paragraph(
+                let lines = winui::paragraph(
                     &p,
                     o.x + 11.0,
                     o.y + 22.0,
@@ -1735,6 +1784,8 @@ impl Confirm {
                     o.x + 389.0,
                     13.0,
                 );
+                grow_to(ui.ctx(), &key, lines, 3);
+                let o = o + vec2(0.0, extra);
                 let yes = winui::button(
                     ui,
                     r(o, 234.0, 64.0, 73.0, 21.0),
