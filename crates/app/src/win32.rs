@@ -363,6 +363,15 @@ pub fn apps_use_dark() -> bool {
     rc == 0 && value == 0
 }
 
+/// Is this screen point (a saved window's corner, in points) on a monitor now? A window put
+/// back where a since-removed screen was would open out of sight.
+pub fn on_a_screen(x: i32, y: i32) -> bool {
+    use windows_sys::Win32::Foundation::POINT;
+    use windows_sys::Win32::Graphics::Gdi::{MONITOR_DEFAULTTONULL, MonitorFromPoint};
+    // SAFETY: a plain query.
+    !unsafe { MonitorFromPoint(POINT { x, y }, MONITOR_DEFAULTTONULL) }.is_null()
+}
+
 /// Seconds since the last keyboard or mouse input anywhere ("limit while I'm using the
 /// computer").
 pub fn idle_seconds() -> u64 {

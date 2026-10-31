@@ -25,8 +25,9 @@ use crate::store;
 use crate::winui;
 use mdm_ipc as ipc;
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-enum View {
+/// A node of the Categories tree, what the list shows (saved: the last one comes back).
+#[derive(Clone, Copy, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
+pub(crate) enum View {
     All,
     Cat(Category),
     Unfinished(Option<Category>),
@@ -204,6 +205,8 @@ pub struct App {
     selection: crate::selection::Selection,
     view: View,
     show_categories: bool,
+    /// Maximized as last seen (the saved size is the restored window's, not the screen's).
+    maximized: Option<bool>,
     all_open: bool,
     unfinished_open: bool,
     finished_open: bool,
@@ -420,6 +423,7 @@ impl App {
         cc: &eframe::CreationContext<'_>,
         rt: tokio::runtime::Handle,
         initial: Option<ipc::Command>,
+        loaded: store::Loaded,
     ) -> Self {
         let (tx, commands) = std::sync::mpsc::channel();
         if let Some(cmd) = initial {
@@ -429,7 +433,6 @@ impl App {
         // Without the channel the app still works; it just can't receive commands.
         let _ = ipc::serve(tx, move || wake.request_repaint());
         crate::theme::apply(&cc.egui_ctx);
-        let loaded = store::load();
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
             settings.speed_limit_on = true;
@@ -505,17 +508,28 @@ impl App {
         let downloads = dirs::download_dir()
             .or_else(|| dirs::home_dir().map(|h| h.join("Downloads")))
             .unwrap_or_else(|| PathBuf::from("."));
+        // The Categories pane as it was left, and the node shown (if it still exists).
+        let [all_open, unfinished_open, finished_open, queues_open] = settings.branches;
+        let known = |c: Option<Category>| c.is_none_or(|c| Category::all().contains(&c));
+        let view = match settings.view {
+            Some(View::Queue(q)) if q < queues.len() => View::Queue(q),
+            Some(v @ View::Cat(c)) if known(Some(c)) => v,
+            Some(v @ (View::Unfinished(c) | View::Finished(c))) if known(c) => v,
+            _ => View::All,
+        };
+        let show_categories = settings.show_categories;
         App {
             rt,
             items,
             next_id,
             selection: Default::default(),
-            view: View::All,
-            show_categories: true,
-            all_open: true,
-            unfinished_open: false,
-            finished_open: false,
-            queues_open: false,
+            view,
+            show_categories,
+            all_open,
+            unfinished_open,
+            finished_open,
+            queues_open,
+            maximized: None,
             add_url: None,
             about: None,
             updates: None,
@@ -3797,6 +3811,58 @@ impl App {
         }
     }
 
+    /// The window's place and size, the Categories pane and the node shown, kept in the
+    /// settings as they change (so they come back at the next start).
+    fn remember_layout(&mut self, ctx: &egui::Context) {
+        let s = &mut self.settings;
+        let pane = (
+            self.show_categories,
+            [
+                self.all_open,
+                self.unfinished_open,
+                self.finished_open,
+                self.queues_open,
+            ],
+            Some(self.view),
+        );
+        if (s.show_categories, s.branches, s.view) != pane {
+            (s.show_categories, s.branches, s.view) = pane;
+            self.dirty = true;
+        }
+        // Not a test instance's off-screen window, nor a zoomed one (screenshots).
+        if crate::offscreen() || ctx.zoom_factor() != 1.0 {
+            return;
+        }
+        let (outer, inner, maximized, minimized) = ctx.input(|i| {
+            let v = i.viewport();
+            (v.outer_rect, v.inner_rect, v.maximized, v.minimized)
+        });
+        if minimized == Some(true) {
+            return;
+        }
+        if let Some(m) = maximized {
+            self.maximized = Some(m);
+            if s.window_maximized != m {
+                s.window_maximized = m;
+                self.dirty = true;
+            }
+        }
+        if self.maximized == Some(false)
+            && let (Some(outer), Some(inner)) = (outer, inner)
+        {
+            let rect = [
+                outer.min.x.round() as i32,
+                outer.min.y.round() as i32,
+                inner.width().round() as i32,
+                inner.height().round() as i32,
+            ];
+            if s.window != Some(rect) {
+                s.window = Some(rect);
+                self.dirty = true;
+            }
+        }
+    }
+
     /// What was dropped on the main window (its OLE target on Windows; winit's dropped files on
     /// macOS and Linux, which hand over files only).
     fn main_drops(&mut self, ctx: &egui::Context) {
@@ -4575,6 +4641,7 @@ impl eframe::App for App {
         self.poll(&ctx);
         self.drop_target(&ctx);
         self.main_drops(&ctx);
+        self.remember_layout(&ctx);
         self.weekly_update_check(&ctx);
         self.apply_global_limit();
         self.watch_clipboard(&ctx);

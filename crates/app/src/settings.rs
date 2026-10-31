@@ -31,6 +31,15 @@ pub struct Settings {
     pub delete_files_too: bool,
     /// Categories pane frame width (IDM: 143, frame x 6..149); dragged with the splitter.
     pub categories_width: u32,
+    /// The main window as last left: position and size (points: x, y, width, height), and
+    /// maximized.
+    pub window: Option<[i32; 4]>,
+    pub window_maximized: bool,
+    /// The Categories pane shown, its branches open (All, Unfinished, Finished, Queues),
+    /// and the node last shown.
+    pub show_categories: bool,
+    pub branches: [bool; 4],
+    pub view: Option<crate::app::View>,
     /// View → Dark Mode support (IDM 6.37): follow Windows' dark app mode; off = always light.
     pub dark_mode_support: bool,
     /// Scheduler → Download limits: "Download no more than `limits_mb` MBytes every
@@ -157,6 +166,11 @@ impl Default for Settings {
             confirm_delete: true,
             delete_files_too: false,
             categories_width: 143,
+            window: None,
+            window_maximized: false,
+            show_categories: true,
+            branches: [true, false, false, false],
+            view: None,
             dark_mode_support: true,
             limits_on: false,
             limits_mb: 200,
