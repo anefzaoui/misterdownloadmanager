@@ -115,9 +115,11 @@ fn row_value(row: &Row, col: usize) -> &str {
     }
 }
 
-/// Does the row pass every column filter?
+/// Does the row pass every column filter? A hidden column's filter is kept but doesn't filter
+/// (nothing on screen would say why rows are missing).
 pub fn matches(st: &ListState, row: &Row) -> bool {
     st.filters.iter().enumerate().all(|(c, f)| match f {
+        _ if !st.visible[c] => true,
         None => true,
         Some(Filter::Values(keep)) => keep.contains(&row_value(row, c)),
         Some(Filter::Text(t)) => row.cells[c].to_lowercase().contains(&t.to_lowercase()),
@@ -155,7 +157,7 @@ pub struct ListState {
     /// Horizontal scroll in px.
     pub hscroll: f32,
     drag: Option<HeaderDrag>,
-    /// Like a Windows list view, the selection only shows while the list has focus.
+    /// The list has the keys: the selection in its colour (grey while it hasn't).
     focused: bool,
     /// Bring this row into view on the next frame (Find).
     pub scroll_to: Option<usize>,
@@ -695,7 +697,8 @@ pub fn show(
         let idx = first + k;
         let top = body_top + k as f32 * ROW_H - offset;
         if let Some(row) = rows.get(idx) {
-            let sel = selected.get(idx).copied().unwrap_or(false) && st.focused;
+            let picked = selected.get(idx).copied().unwrap_or(false);
+            let sel = picked && st.focused;
             let has_focus = focus == Some(idx) && st.focused;
             if (sel || has_focus) && !crate::theme::dark() {
                 // Light: the row above its grid line; the focused row has a dotted outline
@@ -735,6 +738,18 @@ pub fn show(
                     right,
                     top + ROW_H - 2.0,
                     SELECTED_RIGHT(),
+                );
+            } else if picked {
+                // Unfocused (Find, Properties, a menu has the keys): still shown, in the inactive
+                // selection grey, as Explorer shows it, so what a command acts on stays visible.
+                let bottom = top + ROW_H - if crate::theme::dark() { 1.0 } else { 2.0 };
+                fill(
+                    &bp,
+                    cl,
+                    top,
+                    last_right - 1.0,
+                    bottom,
+                    winui::SELECTED_INACTIVE(),
                 );
             }
             for (c, x0, x1) in &cols {

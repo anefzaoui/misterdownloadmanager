@@ -600,8 +600,72 @@ impl App {
             .collect()
     }
 
-    /// The list's rows: the view's downloads in the list's order.
+    /// The list's rows as drawn: the view's downloads in the list's order that pass the column
+    /// filters (Find, Select all and scrolling count these, so they match what is shown).
     fn shown_ids(&self) -> Vec<u64> {
+        if self.list.filters.iter().all(Option::is_none) {
+            return self.view_ids();
+        }
+        self.list_rows().0
+    }
+
+    /// The rows the list draws ([`Self::shown_ids`]) with their cells.
+    fn list_rows(&self) -> (Vec<u64>, Vec<list::Row>) {
+        self.view_ids()
+            .into_iter()
+            .filter_map(|id| self.items.iter().find(|i| i.id == id))
+            .map(|it| (it.id, self.row(it)))
+            .filter(|(_, r)| list::matches(&self.list, r))
+            .unzip()
+    }
+
+    /// One download's row in the list.
+    fn row(&self, it: &Item) -> list::Row {
+        list::Row {
+            status_group: match it.status {
+                // i18n: a download's status (state it is in, not a command): being downloaded now
+                Status::Downloading => "Downloading",
+                // i18n: a download's status (state it is in, not a command): stopped by the user
+                Status::Stopped => "Stopped",
+                // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
+                Status::Queued => "Waiting",
+                // i18n: a download's status (state it is in, not a command): finished, the whole file is there
+                Status::Complete => "Complete",
+                // i18n: a download's status (state it is in, not a command): it failed
+                Status::Error => "Error",
+            },
+            icon: file_icon(&it.file_name),
+            queued: self.queues.iter().any(|q| q.items.contains(&it.id)),
+            cells: [
+                it.file_name.clone(),
+                String::new(),
+                it.size.map_or(String::new(), model::size_list),
+                it.status_text(),
+                it.time_left(),
+                if it.live.is_some() {
+                    model::rate(it.rate())
+                } else {
+                    String::new()
+                },
+                it.last_try
+                    .as_deref()
+                    .map_or(String::new(), model::date_text),
+                it.error.clone().unwrap_or_else(|| it.description.clone()),
+                it.added.as_deref().map_or(String::new(), model::date_text),
+                if it.torrent.is_some() {
+                    // i18n: where a download comes from: BitTorrent (shown on a small colored label)
+                    "Torrent".into()
+                } else {
+                    // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
+                    "Web".into()
+                },
+            ],
+            status_tip: it.log_lines(12),
+        }
+    }
+
+    /// The view's downloads in the list's order, before the column filters.
+    fn view_ids(&self) -> Vec<u64> {
         let mut ids: Vec<u64> = self
             .items
             .iter()
@@ -1141,7 +1205,19 @@ impl App {
 
     /// Take a download off the list; its files stay.
     fn delete(&mut self, id: u64) {
-        self.remove_download(id, false);
+        self.remove_downloads(&[id], false);
+    }
+
+    /// Take downloads off the list (not while they run; see [`Self::remove_download`]). When
+    /// the selection goes with them, the row that comes after them is selected, as in Explorer,
+    /// so Delete can be pressed again.
+    fn remove_downloads(&mut self, ids: &[u64], files: bool) {
+        let before = self.shown_ids();
+        for id in ids {
+            self.remove_download(*id, files);
+        }
+        let after = self.shown_ids();
+        self.selection.after_removal(&before, &after);
     }
 
     /// Take a download off the list (not while it runs); with `files`, its file goes from disk
@@ -1186,9 +1262,8 @@ impl App {
                 files,
             ));
         } else {
-            for id in gone.into_iter().map(|i| i.id).collect::<Vec<_>>() {
-                self.remove_download(id, files);
-            }
+            let ids: Vec<u64> = gone.into_iter().map(|i| i.id).collect();
+            self.remove_downloads(&ids, files);
         }
     }
 
@@ -3172,58 +3247,7 @@ impl App {
         };
 
         // Download list.
-        let ids = self.shown_ids();
-        let rows: Vec<list::Row> = ids
-            .iter()
-            .filter_map(|id| self.items.iter().find(|i| i.id == *id))
-            .map(|it| list::Row {
-                status_group: match it.status {
-                    // i18n: a download's status (state it is in, not a command): being downloaded now
-                    Status::Downloading => "Downloading",
-                    // i18n: a download's status (state it is in, not a command): stopped by the user
-                    Status::Stopped => "Stopped",
-                    // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
-                    Status::Queued => "Waiting",
-                    // i18n: a download's status (state it is in, not a command): finished, the whole file is there
-                    Status::Complete => "Complete",
-                    // i18n: a download's status (state it is in, not a command): it failed
-                    Status::Error => "Error",
-                },
-                icon: file_icon(&it.file_name),
-                queued: self.queues.iter().any(|q| q.items.contains(&it.id)),
-                cells: [
-                    it.file_name.clone(),
-                    String::new(),
-                    it.size.map_or(String::new(), model::size_list),
-                    it.status_text(),
-                    it.time_left(),
-                    if it.live.is_some() {
-                        model::rate(it.rate())
-                    } else {
-                        String::new()
-                    },
-                    it.last_try
-                        .as_deref()
-                        .map_or(String::new(), model::date_text),
-                    it.error.clone().unwrap_or_else(|| it.description.clone()),
-                    it.added.as_deref().map_or(String::new(), model::date_text),
-                    if it.torrent.is_some() {
-                        // i18n: where a download comes from: BitTorrent (shown on a small colored label)
-                        "Torrent".into()
-                    } else {
-                        // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
-                        "Web".into()
-                    },
-                ],
-                status_tip: it.log_lines(12),
-            })
-            .collect();
-        // Column filters: only the rows that pass them (ids kept in step).
-        let (ids, rows): (Vec<u64>, Vec<list::Row>) = ids
-            .into_iter()
-            .zip(rows)
-            .filter(|(_, r)| list::matches(&self.list, r))
-            .unzip();
+        let (ids, rows) = self.list_rows();
         self.selection.retain(&ids);
         let (selected, focus) = self.selection.rows(&ids);
         let outer = egui::Rect::from_min_max(
@@ -3946,9 +3970,7 @@ impl App {
                 Outcome::Done((files, dont_show)) => {
                     let ids = std::mem::take(&mut d.ids);
                     self.confirm_delete = None;
-                    for id in ids {
-                        self.remove_download(id, files);
-                    }
+                    self.remove_downloads(&ids, files);
                     self.settings.delete_files_too = files;
                     if dont_show {
                         self.settings.confirm_delete = false;
