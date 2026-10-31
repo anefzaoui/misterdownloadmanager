@@ -124,20 +124,33 @@ fn addresses(text: &str) -> Vec<String> {
 }
 
 /// "Import downloads": the addresses found, each with a checkbox; OK adds the ticked ones.
+#[derive(Default)]
 pub struct ImportDialog {
     found: Vec<(Imported, bool)>,
+    /// Which addresses are in the download list already (shown so, not ticked).
+    known: Vec<bool>,
     /// The list's scroll and selection.
     rows: winui::RowList,
     source: String,
 }
 
 impl ImportDialog {
-    pub fn new(found: Vec<Imported>, source: String) -> Self {
-        ImportDialog {
-            found: found.into_iter().map(|d| (d, true)).collect(),
-            rows: Default::default(),
-            source,
+    /// More addresses, from `source` (a file, dropped links): those `known` in the list
+    /// already come unticked and marked; an address listed twice is shown once.
+    pub fn add(&mut self, found: Vec<Imported>, source: String, known: impl Fn(&str) -> bool) {
+        for d in found {
+            if self.found.iter().any(|(f, _)| f.url == d.url) {
+                continue;
+            }
+            let k = known(&d.url);
+            self.known.push(k);
+            self.found.push((d, !k));
         }
+        self.source = if self.source.is_empty() {
+            source
+        } else {
+            format!("{}, {source}", self.source)
+        };
     }
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Vec<Imported>> {
@@ -168,6 +181,7 @@ impl ImportDialog {
                 );
                 // The shared row list: Space ticks the selected address.
                 let found = &mut self.found;
+                let known = &self.known;
                 let ev = winui::row_list(
                     ui,
                     "import-list",
@@ -184,6 +198,20 @@ impl ImportDialog {
                             "",
                             true,
                         );
+                        // One in the download list already says so at the row's end.
+                        let mut right = row.right() - 6.0;
+                        if known.get(i).copied().unwrap_or(false) {
+                            // i18n: in Import, after an address the download list has already
+                            let tag = crate::i18n::t("in the list");
+                            let ink = if look.selected {
+                                look.ink
+                            } else {
+                                winui::MUTED()
+                            };
+                            let w = winui::text_width(clip, tag);
+                            winui::text(clip, right - w, row.top() + 13.0, tag, ink);
+                            right -= w + 10.0;
+                        }
                         let url = crate::i18n::ltr(&d.url);
                         winui::fit(
                             ui,
@@ -192,7 +220,7 @@ impl ImportDialog {
                             row.top() + 13.0,
                             &url,
                             look.ink,
-                            row.right() - 6.0,
+                            right,
                             ("import-row", i),
                         );
                     },

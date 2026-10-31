@@ -326,6 +326,8 @@ pub struct App {
     confirm_redownload: Option<(u64, dialogs::Confirm)>,
     /// A duplicate address asking what to do: the download already there, what was being added.
     duplicate: Option<(u64, Pending, dialogs::Duplicate)>,
+    /// Duplicates that came while one was being asked about, next in turn.
+    duplicates_waiting: std::collections::VecDeque<(u64, Pending, dialogs::Duplicate)>,
     /// The next duplicate check is passed (the user chose to add it anyway).
     duplicate_cleared: bool,
     downloads: PathBuf,
@@ -617,6 +619,7 @@ impl App {
             confirm_queue_delete: None,
             confirm_redownload: None,
             duplicate: None,
+            duplicates_waiting: Default::default(),
             duplicate_cleared: false,
             downloads,
             dirty: false,
@@ -3871,8 +3874,13 @@ impl App {
                 false
             }
             _ => {
+                // One question at a time; the others wait their turn (a second link while the
+                // first was asked was dropped).
+                let ask = (dup, pending(), dialogs::Duplicate::new(name));
                 if self.duplicate.is_none() {
-                    self.duplicate = Some((dup, pending(), dialogs::Duplicate::new(name)));
+                    self.duplicate = Some(ask);
+                } else {
+                    self.duplicates_waiting.push_back(ask);
                 }
                 false
             }
@@ -4125,7 +4133,7 @@ impl App {
                 .collect();
             // i18n: in Import, where the addresses came from: dragged onto the window
             let source = crate::i18n::t("Dropped links").to_owned();
-            self.import = Some(crate::transfer::ImportDialog::new(found, source));
+            self.show_import(found, source);
         } else {
             for url in links {
                 self.handle_command(
@@ -4210,10 +4218,24 @@ impl App {
             ));
             return;
         }
-        self.import = Some(crate::transfer::ImportDialog::new(found, file));
+        self.show_import(found, file);
     }
 
     /// The checked addresses go to the list and the main queue, not started (IDM's import).
+    /// Addresses to check before adding (Import, dropped links): into the Import window open
+    /// already (several dropped lists, a list and links), else a new one; those in the list
+    /// already are marked and unticked (imported twice, they were doubled).
+    fn show_import(&mut self, found: Vec<crate::transfer::Imported>, source: String) {
+        let known: std::collections::HashSet<String> =
+            self.items.iter().map(|i| i.url.to_string()).collect();
+        let dialog = self
+            .import
+            .get_or_insert_with(crate::transfer::ImportDialog::default);
+        dialog.add(found, source, |u| {
+            url::Url::parse(u).is_ok_and(|u| known.contains(u.as_str()))
+        });
+    }
+
     fn add_imported(&mut self, found: Vec<crate::transfer::Imported>) {
         for d in found {
             let Ok(url) = url::Url::parse(&d.url) else {
@@ -4402,6 +4424,9 @@ impl App {
 
     fn dialogs(&mut self, ctx: &egui::Context) {
         self.help_dialogs(ctx);
+        if self.duplicate.is_none() {
+            self.duplicate = self.duplicates_waiting.pop_front();
+        }
         if let Some((_, _, d)) = &mut self.duplicate {
             match d.show(ctx) {
                 Outcome::Open => {}
