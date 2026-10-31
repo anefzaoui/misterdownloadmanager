@@ -28,8 +28,10 @@ $wins = New-Object System.Collections.ArrayList
   $titled = (-not $Title) -or ($sb.ToString() -like "$Title*")
   if ($ids -contains $p -and $titled -and [CO]::IsWindowVisible($h)) {
     $v = New-Object CO+RECT
-    # DWMWA_EXTENDED_FRAME_BOUNDS: the visible bounds, without the invisible resize border.
+    # DWMWA_EXTENDED_FRAME_BOUNDS: the visible bounds, without the invisible resize border;
+    # less the 1 px window border Windows 11 draws round them, which PrintWindow paints black.
     [CO]::DwmGetWindowAttribute($h, 9, [ref]$v, 16) | Out-Null
+    $v.L += 1; $v.T += 1; $v.R -= 1; $v.B -= 1
     if ($v.R - $v.L -gt 8) { [void]$wins.Add(@($h, $v)) }
   }
   return $true }, [IntPtr]::Zero) | Out-Null
@@ -48,7 +50,7 @@ for ($i = $wins.Count - 1; $i -ge 0; $i--) {
   $og = [System.Drawing.Graphics]::FromImage($one); $hdc = $og.GetHdc()
   [CO]::PrintWindow($h, $hdc, 2) | Out-Null   # PW_RENDERFULLCONTENT
   $og.ReleaseHdc($hdc); $og.Dispose()
-  # Keep only the visible bounds (drop the invisible resize border).
+  # Keep only the visible bounds (drop the invisible resize border and the 1 px border).
   $src = New-Object System.Drawing.Rectangle ($v.L - $w.L), ($v.T - $w.T), ($v.R - $v.L), ($v.B - $v.T)
   $g.DrawImage($one, ($v.L - $L), ($v.T - $T), $src, [System.Drawing.GraphicsUnit]::Pixel)
   $one.Dispose()

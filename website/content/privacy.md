@@ -1,7 +1,7 @@
 ---
 title: Privacy policy
-description: What Mister Download Manager, its browser extension and this website do with your data: no accounts, no analytics, no telemetry, no tracking.
-lede: Short version: Mister Download Manager doesn't collect anything about you. No accounts, no analytics, no telemetry, no ads, no tracking.
+description: What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.
+lede: Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.
 fine: Last updated {{TODAY}} · applies to the app, the browser extension and misterdownloadmanager.com
 priority: 0.4
 ---
@@ -10,7 +10,8 @@ priority: 0.4
 
 ## In short
 
-- The app, the extension and this site **send nothing about you to us**. We don't run servers that could receive it.
+- The app and the extension **send nothing about you to us**. We don't run servers that could receive it.
+- This **website** counts visits with **Statcounter**, which sets a cookie and sees your IP address; it runs only on the website, never in the app.
 - The app talks to **the servers you download from**, to **GitHub** to check for updates once a week (you can turn that off), and to GitHub again for **yt-dlp and ffmpeg** if you download videos.
 - **Torrents** are peer to peer: other people in a torrent's swarm see your IP address, as with every torrent client.
 - The **browser extension** talks only to Mister Download Manager on your own computer.
@@ -57,19 +58,25 @@ Its permissions, and why: *downloads* to see and hand over downloads; *cookies* 
 
 ## This website
 
-misterdownloadmanager.com is a static site hosted by **GitHub Pages**. We don't use cookies, analytics, ads, fonts or scripts from other companies. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere. GitHub, as the host, receives your IP address and browser details when you visit, and may keep them in its server logs for security; see the [GitHub Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement). Download links lead to GitHub Releases.
+misterdownloadmanager.com is a static site. Three companies take part in showing it to you:
+
+- **GitHub Pages** hosts it. GitHub receives your IP address and browser details when you visit and may keep them in its server logs for security; see the [GitHub Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement). Download links lead to GitHub Releases.
+- **Cloudflare** sits in front of the site: every request passes through its network, which sees your IP address and browser details, protects the site from attacks and may set a cookie needed for that. See [Cloudflare's privacy policy](https://www.cloudflare.com/privacypolicy/).
+- **Statcounter** counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See [Statcounter's privacy policy](https://statcounter.com/about/legal/#privacy). Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.
+
+The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.
 
 ## Children
 
-MDM collects no personal data from anyone, children included.
+The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.
 
 ## Your rights
 
-Since we hold no personal data about you, there is nothing for us to show, correct or delete. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.
+The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.
 
 ## Changes
 
-If MDM ever needs to contact a new service, this page will say so before the release that does it, and the change will be listed in [What's new](/news.html). Past versions of this page are in the project's history on GitHub.
+If MDM or this website ever needs to use a new service, this page will say so first, and the change will be listed in [What's new](/news.html). Past versions of this page are in the project's history on GitHub.
 
 ## Questions
 

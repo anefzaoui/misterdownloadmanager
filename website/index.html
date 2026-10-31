@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mister Download Manager — free download manager and IDM alternative</title>
   <meta name="description" content="Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.">
-  <meta name="theme-color" content="#f3f3f3" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1c1c1c" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#070708" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
   <link rel="canonical" href="{{SITE}}/">
 
@@ -26,12 +26,9 @@
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="alternate" type="application/atom+xml" title="Mister Download Manager news" href="/news.xml">
-  <link rel="preload" as="image" href="/assets/logo-256.webp">
   <link rel="stylesheet" href="/styles.css">
   <!--@theme-->
   <script src="/main.js" defer></script>
-  <script src="/vendor/echarts.min.js" defer></script>
-  <script src="/bench.js" defer></script>
   <script type="application/ld+json">{{SOFTWARE_LD}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Mister Download Manager","alternateName":"MDM","url":"{{SITE}}/"}</script>
 </head>
@@ -39,287 +36,408 @@
   <!--@header-->
 
   <main id="main">
-    <!-- Hero -->
+    <!-- Hero: support card, the wordmark with its echoes and flyers, the line, the buttons, the app. -->
     <section class="hero" id="top">
-      <div class="wrap hero-text">
-        <img class="hero-logo" src="/assets/logo-256.webp" width="92" height="92" alt="Mister Download Manager logo">
-        <p class="kicker"><a class="news-pill" href="/news.html"><b>New</b> Version {{VERSION}}: FTP, torrents, a video button in your browser, 86 languages</a></p>
-        <h1>The download manager you already know.<br><span class="grad">Rebuilt to be faster.</span></h1>
-        <p class="lede">Same windows, same menus, same muscle memory. Underneath, a new engine that opens every connection at once, survives crashes and dropped Wi-Fi, and handles torrents and video in the same list. Free and open source, for good.</p>
-        <div class="cta">
-          <a class="btn btn-primary btn-big os-cta" href="/download.html" data-os-cta>
-            <svg class="os-ico" aria-hidden="true"><use href="#os-windows" data-os-cta-icon/></svg>
-            <span><span data-os-label>Download for Windows</span><small data-os-sub>Free · 64-bit · Windows 10 and 11</small></span>
-          </a>
-          <a class="btn btn-ghost btn-big" href="{{REPO}}">
-            <svg class="os-ico" aria-hidden="true"><use href="#i-github"/></svg> Source on GitHub
+      <div class="wrap">
+        <div class="support">
+          <a class="support-card" href="{{REPO}}">
+            <span class="support-text"><small>Support Mister Download Manager</small><b>Star it on GitHub ↗</b></span>
+            <span class="support-badge"><svg aria-hidden="true"><use href="#i-github"/></svg><span><small>Open source on</small><b>GitHub</b></span><span class="support-count"><i>★</i>{{STARS}}</span></span>
           </a>
         </div>
-        <p class="also">Also for
-          <a href="#download" data-os-link="windows"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg>Windows</a>
-          <a href="#download" data-os-link="macos"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg>macOS</a>
-          <a href="#download" data-os-link="linux"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg>Linux</a>
-        </p>
-        <ul class="chips" aria-label="At a glance">
-          <li><img src="/assets/icons/faster.webp" width="34" height="34" alt=""><span><b>5× faster</b> than IDM</span></li>
-          <li><img src="/assets/icons/languages.webp" width="34" height="34" alt=""><span><b>86 languages</b>, 46 more than IDM</span></li>
-          <li><img src="/assets/icons/torrent.webp" width="34" height="34" alt=""><span><b>Torrents</b> built in</span></li>
-          <li><img src="/assets/icons/free.webp" width="34" height="34" alt=""><span><b>100% free</b>, no ads, no trial</span></li>
-        </ul>
-      </div>
 
-      <div class="wrap shot-hero">
-        <figure class="window">
-          <img class="for-light" src="/assets/screens/main-light.webp" width="931" height="486" fetchpriority="high" alt="Mister Download Manager's main window in day mode: web and torrent downloads in one list, with categories, sizes, progress, speeds and dates.">
-          <img class="for-dark" src="/assets/screens/main-dark.webp" width="931" height="486" alt="Mister Download Manager's main window in night mode: web and torrent downloads in one list.">
+        <div class="hero-stage" aria-hidden="true">
+          <div class="hero-echoes">
+            <div class="hero-echo" data-row="-2"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
+            <div class="hero-echo" data-row="-1"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
+            <div class="hero-echo" data-row="1"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
+            <div class="hero-echo" data-row="2"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
+          </div>
+          <div class="hero-word-wrap">
+            <p class="hero-word"><span class="hero-letter" style="--i:0">M</span><span class="hero-letter" style="--i:1">D</span><span class="hero-letter" style="--i:2">M</span></p>
+          </div>
+          <span class="hero-flyer" style="--i:0;left:27%;top:6%"><img src="/assets/logo-256.webp" width="64" height="64" alt=""></span>
+          <span class="hero-flyer" style="--i:1;left:64%;top:4%"><img src="/assets/icons/torrent.webp" width="52" height="52" alt=""></span>
+          <span class="hero-flyer" style="--i:2;left:21%;top:66%"><img src="/assets/icons/faster.webp" width="52" height="52" alt=""></span>
+          <span class="hero-flyer" style="--i:3;left:74%;top:44%"><img src="/assets/icons/languages.webp" width="56" height="56" alt=""></span>
+          <span class="hero-flyer" style="--i:4;left:58%;top:76%"><img src="/assets/icons/free.webp" width="48" height="48" alt=""></span>
+        </div>
+
+        <div class="hero-copy">
+          <h1 class="hero-tagline">The download manager you already know. <span class="accent">Rebuilt to be faster.</span></h1>
+          <div class="hero-cta">
+            <!--@split-->
+            <a class="btn btn-ghost btn-h11" href="{{REPO}}"><svg class="os-ico" aria-hidden="true"><use href="#i-star"/></svg> Star on GitHub <span class="count">{{STARS}}</span></a>
+          </div>
+          <p class="hero-sub">The free, open-source IDM alternative. Every connection at once, crash-safe resume, torrents and video in one list. Windows 10 and 11; <a href="/download.html#macos">macOS</a> and <a href="/download.html#linux">Linux</a> to try.</p>
+        </div>
+
+        <figure class="hero-mock">
+          <div class="device">
+            <span class="device-cam"></span>
+            <div class="device-screen">
+              <img class="for-light" src="/assets/screens/main-light.webp" width="930" height="485" fetchpriority="high" alt="Mister Download Manager's main window in day mode: web and torrent downloads in one list, with categories, sizes, progress, speeds and dates.">
+              <img class="for-dark" src="/assets/screens/main-dark.webp" width="930" height="485" alt="Mister Download Manager's main window in night mode: web and torrent downloads in one list.">
+            </div>
+          </div>
+          <figcaption>The real app, version {{VERSION}} on Windows 11 · every screenshot on this site is unretouched. <a href="#features">See every window</a>.</figcaption>
         </figure>
       </div>
     </section>
 
+    <!-- Built in the open -->
+    <section class="wrap partof" aria-labelledby="partof-title">
+      <div class="partof-box">
+        <h2 id="partof-title">Built in the open</h2>
+        <ul>
+          <li><a href="{{REPO}}"><span class="partof-ico"><svg aria-hidden="true"><use href="#i-github"/></svg></span><span><b>Every line on GitHub</b><small>public source code</small></span></a></li>
+          <li><a href="/license.html"><span class="partof-ico"><svg aria-hidden="true"><use href="#i-tag"/></svg></span><span><b>GNU GPL 3.0</b><small>free software, for good</small></span></a></li>
+          <li><a href="{{REPO}}/actions"><span class="partof-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></span><span><b>Built by GitHub Actions</b><small>never on someone's laptop</small></span></a></li>
+          <li><a href="/download.html#check-your-download"><span class="partof-ico"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/></svg></span><span><b>SHA-256 checksums</b><small>for every file</small></span></a></li>
+        </ul>
+      </div>
+    </section>
+
     <!-- In short: the facts, for skimmers and for search and AI summaries. -->
-    <section class="tldr" aria-labelledby="tldr-title">
+    <section class="wrap tldr" aria-labelledby="tldr-title">
+      <div class="tldr-box">
+        <div>
+          <h2 id="tldr-title" class="label">In short</h2>
+          <p><strong>Mister Download Manager (MDM)</strong> is a free, open-source download manager for Windows 10 and 11, with experimental builds for macOS and Linux. It looks and works like Internet Download Manager (IDM), but it is free (GPL-3.0), downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in our published benchmark, and also downloads torrents, magnet links and videos from web pages. A browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox hands downloads to it.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Free forever, no ads, no trial</dd></div>
+          <div><dt>Licence</dt><dd>Open source, GNU GPL 3.0</dd></div>
+          <div><dt>Systems</dt><dd>Windows 10/11; macOS and Linux to try</dd></div>
+          <div><dt>Downloads</dt><dd>HTTP(S), FTP(S), torrents, magnets, video pages</dd></div>
+          <div><dt>Speed</dt><dd>Up to 32 connections per file, re-split as they go</dd></div>
+          <div><dt>Languages</dt><dd>86, right to left included</dd></div>
+          <div><dt>Privacy</dt><dd>The app has no accounts, telemetry or tracking</dd></div>
+          <div><dt>Version</dt><dd><a href="/news.html">{{VERSION}}</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- From download to your first file -->
+    <div class="wrap">
+      <section class="launch-section" aria-labelledby="start-title">
+        <h2 id="start-title">From download to your first file.</h2>
+        <p class="launch-intro">One installer and one click in your browser. No account, no setup wizard to fight, nothing to learn if you've used a download manager before.</p>
+        <ol class="launch-steps">
+          <li>
+            <div class="shot-scene"><div class="cam" style="--f:1.2500;--x:21.20%;--y:6.00%;--w:57.59%;--k:3.981;--tx:-44.28%;--ty:-54.98%;--d:0s"><img src="/assets/win/language-picker.webp" width="380" height="464" loading="lazy" alt="The language picker: every language with its flag."></div></div>
+            <h3>Install, pick your language</h3>
+            <p><a href="/download.html">Download the installer</a> for your computer and run it. It asks your language and connects your browsers.</p>
+          </li>
+          <li>
+            <div class="shot-scene"><div class="cam" style="--f:1.2500;--x:6.00%;--y:19.06%;--w:88.00%;--k:3.045;--tx:-191.95%;--ty:-30.81%;--d:-2s"><img src="/assets/browser/video-button-youtube.webp" width="560" height="315" loading="lazy" alt="The Download video button with the MDM logo, over a video in the browser."></div></div>
+            <h3>Keep browsing</h3>
+            <p>Click a download link as usual: the extension hands it to MDM. Over a video, a <b>Download video</b> button appears.</p>
+          </li>
+          <li>
+            <div class="shot-scene"><div class="cam" style="--f:1.2500;--x:6.00%;--y:39.64%;--w:88.00%;--k:2.822;--tx:-6.82%;--ty:-42.28%;--d:-4s"><img src="/assets/win/add-url.webp" width="560" height="105" loading="lazy" alt="Enter new address to download: the Address box, with OK and Cancel."></div></div>
+            <h3>Or paste an address</h3>
+            <p>Copy a link anywhere and MDM opens the download window, ready to go. Magnet links and .torrent files too.</p>
+          </li>
+          <li>
+            <div class="shot-scene"><div class="cam" style="--f:1.2500;--x:6.00%;--y:7.14%;--w:88.00%;--k:2.903;--tx:-9.60%;--ty:-129.83%;--d:-6s"><img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="427" loading="lazy" alt="The progress window: the bar of eight connections, each filling its part of the file."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="427" loading="lazy" alt="The progress window: the bar of eight connections, each filling its part of the file."></div></div>
+            <h3>Watch it fly</h3>
+            <p>Eight connections at once, up to 32. Pull the plug and it carries on where it stopped.</p>
+          </li>
+        </ol>
+        <div class="launch-links"><a href="/help/guide-first-download.html">Your first download, step by step →</a></div>
+      </section>
+    </div>
+
+    <!-- Everything it does -->
+    <section class="sec" id="features" aria-labelledby="features-title">
       <div class="wrap">
-        <div class="tldr-box">
+        <div class="sec-center">
+          <h2 id="features-title">Everything a download manager should do.</h2>
+          <p>The layout you know from IDM, rebuilt from scratch in Rust, with the things it never had. Every window below is in the app today.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="fcard wide">
+            <div class="fcard-text">
+              <h3>Every connection, visible.</h3>
+              <p>A file is split across eight connections the moment the server says it can. When one finishes, it takes half of the biggest piece left, so nobody waits on a straggler.</p>
+              <p class="fcard-link"><a href="/help/connections-and-speed.html">How the connections work →</a></p>
+            </div>
+            <div class="fcard-media">
+              <div class="device small">
+                <span class="device-cam"></span>
+                <div class="device-screen"><div class="cam" style="--f:1.6000;--x:14.71%;--y:6.00%;--w:70.59%;--k:2.212;--tx:-20.84%;--ty:-114.37%;--d:-2s"><img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="427" loading="lazy" alt="The progress window: what each connection has downloaded."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="427" loading="lazy" alt="The progress window: what each connection has downloaded."></div></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="fcard">
+            <h3>Video in every quality</h3>
+            <p>Paste a page or click the button over the video. Up to 4K at 60 fps, merged into one MP4.</p>
+            <div class="cam-frame"><div class="cam" style="--f:1.6000;--x:13.09%;--y:6.00%;--w:73.83%;--k:2.084;--tx:-17.73%;--ty:-47.20%;--d:0s"><img class="for-light" src="/assets/screens/video-light.webp" width="500" height="372" loading="lazy" alt="Download video from a page: every quality with its size."><img class="for-dark" src="/assets/screens/video-dark.webp" width="500" height="372" loading="lazy" alt="Download video from a page: every quality with its size."></div></div>
+          </article>
+          <article class="fcard">
+            <h3>Torrents, file by file</h3>
+            <p>Magnet links and .torrent files show their real folder tree. Tick what you want, skip the rest.</p>
+            <div class="cam-frame"><div class="cam" style="--f:1.6000;--x:15.08%;--y:6.00%;--w:69.84%;--k:2.643;--tx:-22.69%;--ty:-38.11%;--d:-3s"><img class="for-light" src="/assets/screens/add-torrent-light.webp" width="600" height="472" loading="lazy" alt="Add torrent: the folder tree with a checkbox at every level."><img class="for-dark" src="/assets/screens/add-torrent-dark.webp" width="600" height="472" loading="lazy" alt="Add torrent: the folder tree with a checkbox at every level."></div></div>
+          </article>
+          <article class="fcard">
+            <h3>One list for everything</h3>
+            <p>Web or torrent, every row says where it came from. Filter any column like a spreadsheet.</p>
+            <div class="cam-frame"><div class="cam" style="--f:1.6000;--x:6.00%;--y:13.29%;--w:88.00%;--k:3.252;--tx:-47.03%;--ty:-72.36%;--d:-6s"><img class="for-light" src="/assets/screens/main-light.webp" width="930" height="485" loading="lazy" alt="The download list: web and torrent downloads with size, status, time left and speed."><img class="for-dark" src="/assets/screens/main-dark.webp" width="930" height="485" loading="lazy" alt="The download list: web and torrent downloads with size, status, time left and speed."></div></div>
+          </article>
+          <article class="fcard">
+            <h3>Speed limits</h3>
+            <p>Cap everything at once so calls and games stay smooth, or slow down just one download.</p>
+            <div class="cam-frame"><div class="cam" style="--f:1.6000;--x:6.00%;--y:17.44%;--w:88.00%;--k:1.584;--tx:-6.82%;--ty:-31.61%;--d:-1.5s"><img src="/assets/win/speed-limiter.webp" width="453" height="209" loading="lazy" alt="Speed Limiter: a maximum for one file, and for all downloads together."></div></div>
+          </article>
+          <article class="fcard">
+            <h3>Find anything</h3>
+            <p>Ctrl+F searches names, descriptions and addresses across thousands of downloads.</p>
+            <div class="cam-frame"><div class="cam" style="--f:1.6000;--x:12.57%;--y:6.00%;--w:74.85%;--k:1.418;--tx:-16.80%;--ty:-6.82%;--d:-4.5s"><img src="/assets/win/find.webp" width="345" height="253" loading="lazy" alt="Find file: by name, description or address."></div></div>
+          </article>
+          <article class="fcard">
+            <h3>A scheduler that keeps time</h3>
+            <p>Start a queue at night, stop it before work, then sleep or shut the computer down.</p>
+            <div class="cam-frame"><div class="cam" style="--f:1.6000;--x:12.51%;--y:6.00%;--w:74.98%;--k:2.671;--tx:-99.26%;--ty:-48.60%;--d:-7.5s"><img src="/assets/win/scheduler.webp" width="651" height="477" loading="lazy" alt="The Scheduler: start a queue at a set time, daily on chosen days."></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="sec" aria-labelledby="how-title">
+      <div class="wrap">
+        <h2 id="how-title" class="sec-h">How it works</h2>
+        <div class="how-grid">
+          <article>
+            <div class="shot-scene"><div class="cam" style="--f:1.2500;--x:6.00%;--y:7.14%;--w:88.00%;--k:2.737;--tx:-6.82%;--ty:-119.56%;--d:-1s"><img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="427" loading="lazy" alt="The progress window: the bar of eight connections, each filling its part of the file."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="427" loading="lazy" alt="The progress window: the bar of eight connections, each filling its part of the file."></div></div>
+            <h3>Every connection at once</h3>
+            <p>The first request reaches the server milliseconds after your click, and every connection opens together. When one finishes, it takes over half of the slowest piece.</p>
+          </article>
+          <article>
+            <div class="shot-scene"><div class="cam" style="--f:1.2500;--x:20.81%;--y:6.00%;--w:58.38%;--k:2.705;--tx:-106.50%;--ty:-21.09%;--d:-4s"><img src="/assets/win/options-connection.webp" width="430" height="518" loading="lazy" alt="Options, Connection: connections per download and per-server exceptions."></div></div>
+            <h3>Learns each server</h3>
+            <p>A server that only allows two connections gets two, and MDM remembers it. In our benchmark IDM opened 480 against the same server and still finished later.</p>
+          </article>
+          <article>
+            <div class="shot-scene"><div class="cam" style="--f:1.2500;--x:20.81%;--y:6.00%;--w:58.38%;--k:3.237;--tx:-45.99%;--ty:-112.34%;--d:-7s"><img src="/assets/win/options-general.webp" width="430" height="518" loading="lazy" alt="Options, General: the browsers whose downloads MDM takes over."></div></div>
+            <h3>Your browsers, connected</h3>
+            <p>Tick the browsers whose downloads MDM should take over. The extension hands them over with their cookies, so files behind a sign-in still work. Copied links open the download window too.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- What do you download? -->
+    <section class="sec" aria-labelledby="pick-title">
+      <div class="wrap">
+        <div class="sec-intro">
+          <h2 id="pick-title">What do you download?</h2>
+          <p>Pick one to see how MDM handles it, and what it does for you on the way.</p>
+        </div>
+        <div class="jobs" data-picker data-auto>
+          <ul class="job-tabs" role="tablist" aria-label="Kinds of downloads">
+            <li><button class="job-tab" type="button" role="tab" aria-selected="true" aria-controls="pick-big" id="tab-big"><span class="job-tab-label">Big files</span><span class="job-bar"><i></i></span></button></li>
+            <li><button class="job-tab" type="button" role="tab" aria-selected="false" aria-controls="pick-video" id="tab-video"><span class="job-tab-label">Videos</span><span class="job-bar"><i></i></span></button></li>
+            <li><button class="job-tab" type="button" role="tab" aria-selected="false" aria-controls="pick-torrent" id="tab-torrent"><span class="job-tab-label">Torrents</span><span class="job-bar"><i></i></span></button></li>
+            <li><button class="job-tab" type="button" role="tab" aria-selected="false" aria-controls="pick-night" id="tab-night"><span class="job-tab-label">Overnight</span><span class="job-bar"><i></i></span></button></li>
+            <li><button class="job-tab" type="button" role="tab" aria-selected="false" aria-controls="pick-broken" id="tab-broken"><span class="job-tab-label">Broken downloads</span><span class="job-bar"><i></i></span></button></li>
+            <li><button class="job-tab" type="button" role="tab" aria-selected="false" aria-controls="pick-usb" id="tab-usb"><span class="job-tab-label">From a USB stick</span><span class="job-bar"><i></i></span></button></li>
+          </ul>
           <div>
-            <h2 id="tldr-title" class="eyebrow">In short</h2>
-            <p><strong>Mister Download Manager (MDM)</strong> is a free, open-source download manager for Windows 10 and 11, with experimental builds for macOS and Linux. It looks and works like Internet Download Manager (IDM), but it is free (GPL-3.0), downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in our published benchmark, and also downloads torrents and magnet links and videos from web pages. A browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox hands downloads to it.</p>
+            <div class="job-panel" role="tabpanel" id="pick-big" aria-labelledby="tab-big">
+              <p class="job-lede">Eight connections from the first second, re-split as each one finishes, so a 4 GB file arrives as fast as your line allows.</p>
+              <dl><dt>Connections</dt><dd>8 by default, up to 32</dd><dt>Survives</dt><dd>crashes, sleep, dropped Wi-Fi</dd></dl>
+              <a class="launch-button" href="/help/connections-and-speed.html">Connections and speed ↗</a>
+            </div>
+            <div class="job-panel" role="tabpanel" id="pick-video" aria-labelledby="tab-video" hidden>
+              <p class="job-lede">Paste a video page or click the button over the video. Choose 4K, 1080p or audio only, and get one MP4.</p>
+              <dl><dt>Sites</dt><dd>thousands, through yt-dlp</dd><dt>Quality</dt><dd>up to 2160p at 60 fps</dd></dl>
+              <a class="launch-button" href="/help/guide-video-from-page.html">Download a video ↗</a>
+            </div>
+            <div class="job-panel" role="tabpanel" id="pick-torrent" aria-labelledby="tab-torrent" hidden>
+              <p class="job-lede">Open a .torrent or paste a magnet link, tick the files you want, and it downloads beside everything else.</p>
+              <dl><dt>Shows</dt><dd>files, peers, trackers, pieces</dd><dt>Sharing</dt><dd>stops when done, unless you want more</dd></dl>
+              <a class="launch-button" href="/help/torrents.html">Torrents ↗</a>
+            </div>
+            <div class="job-panel" role="tabpanel" id="pick-night" aria-labelledby="tab-night" hidden>
+              <p class="job-lede">Put the big ones in a queue and let the scheduler start it at 2 a.m., then sleep or shut the computer down when it's done.</p>
+              <dl><dt>Starts</dt><dd>daily, weekly or once</dd><dt>Then</dt><dd>exit, sleep, hibernate or shut down</dd></dl>
+              <a class="launch-button" href="/help/guide-download-overnight.html">Download overnight ↗</a>
+            </div>
+            <div class="job-panel" role="tabpanel" id="pick-broken" aria-labelledby="tab-broken" hidden>
+              <p class="job-lede">A download that stopped at 80% picks up at 80%. If the link expired, give MDM a fresh one and keep everything already downloaded.</p>
+              <dl><dt>Checks</dt><dd>the server's file hasn't changed</dd><dt>Keeps</dt><dd>every byte already on disk</dd></dl>
+              <a class="launch-button" href="/help/guide-resume-broken-download.html">Resume a broken download ↗</a>
+            </div>
+            <div class="job-panel" role="tabpanel" id="pick-usb" aria-labelledby="tab-usb" hidden>
+              <p class="job-lede">Unzip the portable version to a USB stick: the list, the settings and the downloads go wherever it goes.</p>
+              <dl><dt>Installs</dt><dd>nothing on the computer</dd><dt>Keeps</dt><dd>everything in its own folder</dd></dl>
+              <a class="launch-button" href="/help/guide-usb-stick.html">MDM on a USB stick ↗</a>
+            </div>
           </div>
-          <dl class="facts">
-            <div><dt>Price</dt><dd>Free forever, no ads, no trial</dd></div>
-            <div><dt>Licence</dt><dd>Open source, GNU GPL 3.0</dd></div>
-            <div><dt>Systems</dt><dd>Windows 10/11; macOS and Linux to try</dd></div>
-            <div><dt>Downloads</dt><dd>HTTP(S), FTP(S), torrents, magnet links, video pages</dd></div>
-            <div><dt>Speed</dt><dd>Up to 32 connections per file, re-split as they go</dd></div>
-            <div><dt>Languages</dt><dd>86, right to left included</dd></div>
-            <div><dt>Privacy</dt><dd>No accounts, no telemetry, no tracking</dd></div>
-            <div><dt>Version</dt><dd><a href="/news.html">{{VERSION}}</a></dd></div>
-          </dl>
+          <figure class="jobs-shot">
+            <div class="device small">
+              <span class="device-cam"></span>
+              <div class="device-screen"><div class="cam" data-for="pick-big" style="--f:1.4545;--x:11.18%;--y:6.00%;--w:77.64%;--k:2.011;--tx:-14.40%;--ty:-74.56%;--d:0s"><img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="427" loading="lazy" alt="The progress window: the bar of eight connections, each filling its part of the file."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="427" loading="lazy" alt="The progress window: the bar of eight connections, each filling its part of the file."></div><div class="cam" data-for="pick-video" style="--f:1.4545;--x:12.50%;--y:6.00%;--w:75.01%;--k:1.050;--tx:18.39%;--ty:18.52%;--d:0s"><img src="/assets/screens/progress-video.webp" width="274" height="221" loading="lazy" alt="A video downloading, with speed and time left."></div><div class="cam" data-for="pick-torrent" style="--f:1.4545;--x:11.18%;--y:6.00%;--w:77.64%;--k:2.011;--tx:-14.40%;--ty:-94.26%;--d:0s"><img class="for-light" src="/assets/screens/torrent-light.webp" width="548" height="427" loading="lazy" alt="A torrent's progress window with its pieces."><img class="for-dark" src="/assets/screens/torrent-dark.webp" width="548" height="427" loading="lazy" alt="A torrent's progress window with its pieces."></div><div class="cam" data-for="pick-night" style="--f:1.4545;--x:8.76%;--y:6.00%;--w:82.48%;--k:2.249;--tx:-76.50%;--ty:-79.50%;--d:0s"><img src="/assets/win/scheduler.webp" width="651" height="477" loading="lazy" alt="The Scheduler: daily on chosen days, then stop at a set time."></div><div class="cam" data-for="pick-broken" style="--f:1.4545;--x:11.18%;--y:6.00%;--w:77.64%;--k:2.011;--tx:-14.40%;--ty:-94.26%;--d:0s"><img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="427" loading="lazy" alt="The progress window: what each connection has downloaded."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="427" loading="lazy" alt="The progress window: what each connection has downloaded."></div><div class="cam" data-for="pick-usb" style="--f:1.4545;--x:24.91%;--y:6.00%;--w:50.17%;--k:2.442;--tx:-49.65%;--ty:-18.87%;--d:0s"><img src="/assets/win/options-save-to.webp" width="430" height="518" loading="lazy" alt="Options, Save to: the folder each category downloads to."></div></div>
+            </div>
+            <figcaption>Real screenshots of the app.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Works with -->
+    <section class="sec" aria-labelledby="with-title">
+      <div class="wrap">
+        <h2 id="with-title" class="sec-h">Works with what you already use</h2>
+        <p class="sec-p">Your browsers hand it their downloads, and proven open-source tools do the specialist work. <a href="/help/browser-integration.html">Set up the extension</a>.</p>
+        <div class="with-rows">
+          <div class="with-row"><span class="label">Browsers</span>
+            <div class="marquee"><div class="marquee-track">
+              <div class="marquee-copy"><span class="tchip"><i class="tchip-ico" style="color:#1a73e8"><svg aria-hidden="true"><use href="#b-chrome"/></svg></i><b>Chrome</b><small>Google</small></span><span class="tchip"><i class="tchip-ico" style="color:#0c8ed9"><svg aria-hidden="true"><use href="#b-edge"/></svg></i><b>Edge</b><small>Microsoft</small></span><span class="tchip"><i class="tchip-ico" style="color:#fb542b"><svg aria-hidden="true"><use href="#b-brave"/></svg></i><b>Brave</b><small>Brave</small></span><span class="tchip"><i class="tchip-ico" style="color:#ff1b2d"><svg aria-hidden="true"><use href="#b-opera"/></svg></i><b>Opera</b><small>Opera</small></span><span class="tchip"><i class="tchip-ico" style="color:#ef3939"><svg aria-hidden="true"><use href="#b-vivaldi"/></svg></i><b>Vivaldi</b><small>Vivaldi</small></span><span class="tchip"><i class="tchip-ico" style="color:#ff7139"><svg aria-hidden="true"><use href="#b-firefox"/></svg></i><b>Firefox</b><small>Mozilla · in testing</small></span></div>
+              <div class="marquee-copy" aria-hidden="true"><span class="tchip"><i class="tchip-ico" style="color:#1a73e8"><svg aria-hidden="true"><use href="#b-chrome"/></svg></i><b>Chrome</b><small>Google</small></span><span class="tchip"><i class="tchip-ico" style="color:#0c8ed9"><svg aria-hidden="true"><use href="#b-edge"/></svg></i><b>Edge</b><small>Microsoft</small></span><span class="tchip"><i class="tchip-ico" style="color:#fb542b"><svg aria-hidden="true"><use href="#b-brave"/></svg></i><b>Brave</b><small>Brave</small></span><span class="tchip"><i class="tchip-ico" style="color:#ff1b2d"><svg aria-hidden="true"><use href="#b-opera"/></svg></i><b>Opera</b><small>Opera</small></span><span class="tchip"><i class="tchip-ico" style="color:#ef3939"><svg aria-hidden="true"><use href="#b-vivaldi"/></svg></i><b>Vivaldi</b><small>Vivaldi</small></span><span class="tchip"><i class="tchip-ico" style="color:#ff7139"><svg aria-hidden="true"><use href="#b-firefox"/></svg></i><b>Firefox</b><small>Mozilla · in testing</small></span></div>
+            </div></div>
+          </div>
+          <div class="with-row"><span class="label">Protocols</span>
+            <div class="marquee"><div class="marquee-track" data-reverse>
+              <div class="marquee-copy"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>HTTP</b><small>and HTTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-ftp"/></svg></i><b>FTP</b><small>and FTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>BitTorrent</b><small>DHT and trackers</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-magnet"/></svg></i><b>Magnet</b><small>links</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-proxy"/></svg></i><b>SOCKS5</b><small>and HTTP proxies</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-pac"/></svg></i><b>PAC</b><small>proxy scripts</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-import"/></svg></i><b>IDM</b><small>list import</small></span></div>
+              <div class="marquee-copy" aria-hidden="true"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>HTTP</b><small>and HTTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-ftp"/></svg></i><b>FTP</b><small>and FTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>BitTorrent</b><small>DHT and trackers</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-magnet"/></svg></i><b>Magnet</b><small>links</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-proxy"/></svg></i><b>SOCKS5</b><small>and HTTP proxies</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-pac"/></svg></i><b>PAC</b><small>proxy scripts</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-import"/></svg></i><b>IDM</b><small>list import</small></span></div>
+            </div></div>
+          </div>
+          <div class="with-row"><span class="label">Built on</span>
+            <div class="marquee"><div class="marquee-track">
+              <div class="marquee-copy"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>yt-dlp</b><small>video from thousands of sites</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>ffmpeg</b><small>merges picture and sound</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>librqbit</b><small>torrent engine</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>rustls</b><small>encryption</small></span></div>
+              <div class="marquee-copy" aria-hidden="true"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>yt-dlp</b><small>video from thousands of sites</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>ffmpeg</b><small>merges picture and sound</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>librqbit</b><small>torrent engine</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>rustls</b><small>encryption</small></span></div>
+            </div></div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Measured -->
-    <section class="proof" aria-labelledby="proof-title">
+    <section class="sec" aria-labelledby="proof-title">
       <div class="wrap">
-        <h2 id="proof-title" class="eyebrow">Measured, not promised</h2>
+        <div class="sec-center">
+          <h2 id="proof-title">Faster than IDM, timed to the millisecond.</h2>
+          <p>Both apps on the same PC, the same test server, in alternating runs. The server's own log keeps the time.</p>
+        </div>
         <div class="stats">
-          <article class="stat">
-            <p class="num"><span>5.4×</span><small>faster than IDM</small></p>
-            <p>for 1 GiB over a fast link: 1.0 s against IDM 6.42's 5.5 s. Its first request reaches the server 14 ms after the click, and every connection opens at once.</p>
-            <p class="src">Our benchmark, same PC and server for both, October 2026 · <a href="{{REPO}}/blob/main/docs/bench/run5/REPORT.md">report</a></p>
-          </article>
-          <article class="stat">
-            <p class="num"><span>106×</span><small>on small files</small></p>
-            <p>A 256 KiB file is done in 30 ms. IDM takes 3.1 s, nearly all of it before its first request reaches the server.</p>
-            <p class="src">Our benchmark, October 2026 · <a href="{{REPO}}/blob/main/docs/bench/run5/REPORT.md">report</a></p>
-          </article>
-          <article class="stat">
-            <p class="num"><span>2</span><small>connections, not 480</small></p>
-            <p>A server that allows only two connections: MDM learns it, keeps to two and still finishes first (12.6 s against 15.9 s). IDM opened 480.</p>
-            <p class="src">Our benchmark, October 2026 · <a href="{{REPO}}/blob/main/docs/bench/run5/REPORT.md">report</a></p>
-          </article>
+          <article class="stat"><p class="num"><span>5.4×</span></p><h3>faster on 1 GiB</h3><p>1.0 s against IDM 6.42's 5.5 s over a fast link.</p></article>
+          <article class="stat"><p class="num"><span>106×</span></p><h3>faster on small files</h3><p>A 256 KiB file in 30 ms. IDM takes 3.1 s, mostly before its first request.</p></article>
+          <article class="stat"><p class="num"><span>2</span></p><h3>connections, not 480</h3><p>On a server that allows two, MDM keeps to two and still finishes first.</p></article>
         </div>
+        <div class="center-cta"><a class="btn btn-ghost btn-h11" href="/benchmark.html">Every chart and the raw data</a><a class="text-link" href="#compare">Compare with IDM</a></div>
       </div>
     </section>
 
-    <!-- Engine -->
-    <section class="feature" id="engine" aria-labelledby="engine-title">
-      <div class="wrap split">
-        <div class="copy">
-          <p class="kicker">The engine</p>
-          <h2 id="engine-title">Every connection, visible.</h2>
-          <p>A file is split across eight connections the moment the server says it can, up to 32 if you like. When one finishes its part, it takes half of the biggest piece still left, so nobody waits on a straggler. The bar shows it happening, connection by connection.</p>
-          <div class="segbar" aria-hidden="true" data-segbar>
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    <!-- Open source -->
+    <section class="sec" id="open-source" aria-labelledby="oss-title">
+      <div class="wrap">
+        <a class="pill-link" href="{{REPO}}">Meet Mister Download Manager. Free and open source.</a>
+        <div class="community">
+          <div>
+            <span class="community-ico"><svg aria-hidden="true"><use href="#i-github"/></svg></span>
+            <h2 id="oss-title">Join the project</h2>
+            <p class="community-lede">Report what's broken, ask for what's missing, fix a translation or send a pull request. The maintainer reads every issue.</p>
+            <p class="community-small">Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.</p>
           </div>
-          <ul class="ticks">
-            <li><b>Crash-safe resume.</b> Progress is written as it goes; pull the plug and it carries on where it stopped, checking the server's file hasn't changed.</li>
-            <li><b>Expired links refreshed.</b> When a download address times out, give it a fresh one and keep the data.</li>
-            <li><b>HTTP, HTTPS, FTP and FTPS</b>, through proxies, SOCKS and PAC scripts.</li>
-            <li><b>Checksums.</b> Give it an MD5, SHA-1, SHA-256, SHA-512 or CRC32 and it verifies the file when it lands.</li>
-          </ul>
-          <p class="more-link"><a href="/help/connections-and-speed.html">How the connections work →</a></p>
-        </div>
-        <figure class="window">
-          <img class="for-light" src="/assets/screens/progress-light.webp" width="549" height="428" loading="lazy" alt="The download progress window in day mode: a file at 49 percent over eight connections, with the per-connection bar and table.">
-          <img class="for-dark" src="/assets/screens/progress-dark.webp" width="549" height="428" loading="lazy" alt="The download progress window in night mode: eight connections receiving data.">
-        </figure>
-      </div>
-    </section>
-
-    <!-- Browser -->
-    <section class="browser" id="browser" aria-labelledby="browser-title">
-      <div class="wrap split reverse">
-        <div class="copy">
-          <p class="kicker">In your browser</p>
-          <h2 id="browser-title">Click a link. MDM takes it from there.</h2>
-          <p>The MDM extension hands every download to the app with its cookies and referrer, so files behind a sign-in still work. Point at a video and a <b>Download video</b> button appears over it: one click and MDM lists every quality. Drag the button where you like; it stays there on that site.</p>
-          <ul class="ticks">
-            <li><b>Right-click any link</b> and choose <i>Download with Mister Download Manager</i>.</li>
-            <li><b>No extension? Copy a link.</b> MDM opens the download window, ready to go.</li>
-            <li><b>Out of your way:</b> MDM not running? The browser simply keeps the download.</li>
-          </ul>
-          <ul class="browser-list" aria-label="Browsers">
-            <li>Chrome</li><li>Edge</li><li>Brave</li><li>Opera</li><li>Vivaldi</li><li class="soon">Firefox, in testing</li>
-          </ul>
-          <p class="more-link"><a href="/help/browser-integration.html">Set up the extension →</a></p>
-        </div>
-        <figure class="shot-photo">
-          <img src="/assets/browser/video-button-youtube.webp" width="1120" height="630" loading="lazy" alt="The Download video button with the MDM logo, over a video playing in Chrome.">
-        </figure>
-      </div>
-    </section>
-
-    <!-- Torrents -->
-    <section class="feature" id="torrents" aria-labelledby="torrents-title">
-      <div class="wrap">
-        <div class="copy narrow">
-          <p class="kicker">Torrents, built in</p>
-          <h2 id="torrents-title">Pick the files. Skip the rest.</h2>
-          <p>Paste a magnet link or open a .torrent and you get the real folder tree, with a checkbox at every level. Then it downloads next to everything else, with its peers, trackers and pieces one tab away. When it's done it stops sharing, like any download — unless you'd rather it kept going. No second program, no ads, no bundled offers.</p>
-        </div>
-        <div class="pair">
-          <figure class="window">
-            <img class="for-light" src="/assets/screens/add-torrent-light.webp" width="601" height="474" loading="lazy" alt="The Add torrent dialog in day mode: a folder tree with checkboxes, the README left out.">
-            <img class="for-dark" src="/assets/screens/add-torrent-dark.webp" width="601" height="474" loading="lazy" alt="The Add torrent dialog in night mode: a folder tree with checkboxes.">
-          </figure>
-          <figure class="window">
-            <img class="for-light" src="/assets/screens/torrent-light.webp" width="549" height="428" loading="lazy" alt="A torrent's progress window in day mode, showing the pieces downloaded so far.">
-            <img class="for-dark" src="/assets/screens/torrent-dark.webp" width="549" height="428" loading="lazy" alt="A torrent's progress window in night mode, showing the pieces downloaded so far.">
-          </figure>
+          <div class="community-side">
+            <div class="community-stats">
+              <div><b>{{STARS}}</b><small>Stars</small></div>
+              <span class="vr"></span>
+              <div><b><span class="ping"></span>{{ISSUES}}</b><small>Open issues</small></div>
+              <span class="vr"></span>
+              <div><b>{{FORKS}}</b><small>Forks</small></div>
+            </div>
+            <a class="btn btn-ink btn-h11 wide" href="{{REPO}}"><svg class="os-ico" aria-hidden="true"><use href="#i-github"/></svg> Star it on GitHub</a>
+            <div class="community-links"><a href="{{REPO}}/issues/new">Report a bug</a><a href="/contributing.html">Contribute</a><a href="/languages.html">Translate</a></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Video -->
-    <section class="feature alt" id="video" aria-labelledby="video-title">
-      <div class="wrap split">
-        <div class="copy">
-          <p class="kicker">Video from a page</p>
-          <h2 id="video-title">Paste the page. Pick the quality.</h2>
-          <p>Give it a video page, or click the button over the video, and it lists every quality the site offers, up to 4K at 60 fps, with sizes. The best picture and sound are merged into one MP4 for you.</p>
-          <ul class="ticks">
-            <li><b>Thousands of sites</b>, powered by <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a>, downloaded on first use and checked against its developers' signing key before it ever runs.</li>
-            <li><b>ffmpeg</b> (an LGPL build) is fetched only if you want merged qualities, and checked against its published checksums.</li>
-            <li><b>No DRM.</b> Paid streaming services stay off limits, by design.</li>
-          </ul>
-          <p class="more-link"><a href="/help/guide-video-from-page.html">Download a video, step by step →</a></p>
-        </div>
-        <figure class="window">
-          <img class="for-light" src="/assets/screens/video-light.webp" width="501" height="374" loading="lazy" alt="The Download video from a page dialog in day mode, listing qualities from 2160p 60fps down to 144p with sizes.">
-          <img class="for-dark" src="/assets/screens/video-dark.webp" width="501" height="374" loading="lazy" alt="The Download video from a page dialog in night mode, listing qualities with sizes.">
-        </figure>
-      </div>
-    </section>
-
-    <!-- One list -->
-    <section class="feature" aria-labelledby="list-title">
-      <div class="wrap split reverse">
-        <div class="copy">
-          <p class="kicker">One list for everything</p>
-          <h2 id="list-title">Web or torrent. Find it in a click.</h2>
-          <p>Every row says where it came from: <span class="pill web">Web</span> or <span class="pill torrent">Torrent</span>. Every column has a filter, like a spreadsheet: tick the states you want to see, or type part of a name.</p>
-          <ul class="ticks">
-            <li><b>Sorted the way you think.</b> Newest first, biggest first, fastest first: click a header.</li>
-            <li><b>Queues and a scheduler.</b> Start at night, stop at seven, shut the PC down when the queue is done.</li>
-            <li><b>Speed limits.</b> Per download or for everything, so calls and games stay smooth.</li>
-          </ul>
-        </div>
-        <figure class="window">
-          <img class="for-light" src="/assets/screens/filter-light.webp" width="931" height="486" loading="lazy" alt="The main window in day mode with the Status column filtered to unfinished downloads.">
-          <img class="for-dark" src="/assets/screens/filter-dark.webp" width="931" height="486" loading="lazy" alt="The main window in night mode with the Status column filtered to unfinished downloads.">
-        </figure>
-      </div>
-    </section>
-
-    <!-- Gallery -->
-    <section class="gallery" aria-labelledby="gallery-title">
-      <div class="wrap">
-        <p class="kicker">A closer look</p>
-        <h2 id="gallery-title">Every window you expect, every control working.</h2>
-        <div class="shots">
-          <figure><a href="/assets/screens/scheduler.webp"><img src="/assets/screens/scheduler.webp" width="653" height="492" loading="lazy" alt="The Scheduler: start and stop a queue by the clock, then shut down or sleep."></a><figcaption><b>Scheduler.</b> Download overnight, stop before work.</figcaption></figure>
-          <figure><a href="/assets/screens/language-picker.webp"><img src="/assets/screens/language-picker.webp" width="382" height="479" loading="lazy" alt="The language picker with a flag for each of the 86 languages."></a><figcaption><b>86 languages,</b> chosen by flag.</figcaption></figure>
-          <figure><a href="/assets/screens/arabic-main.webp"><img src="/assets/screens/arabic-main.webp" width="932" height="502" loading="lazy" alt="The main window in Arabic, laid out right to left."></a><figcaption><b>Right to left</b> for Arabic, Hebrew, Persian, Urdu and Uyghur.</figcaption></figure>
-          <figure><a href="/assets/screens/progress-video.webp"><img src="/assets/screens/progress-video.webp" width="550" height="444" loading="lazy" alt="The progress window of a video download."></a><figcaption><b>Video downloads</b> with speed and time left.</figcaption></figure>
-          <figure><a href="/assets/screens/options-connection.webp"><img src="/assets/screens/options-connection.webp" width="432" height="533" loading="lazy" alt="Options, Connection page: connections per download and per-server exceptions."></a><figcaption><b>Options</b> where you expect them.</figcaption></figure>
-          <figure><a href="/assets/screens/speed-limiter.webp"><img src="/assets/screens/speed-limiter.webp" width="455" height="224" loading="lazy" alt="The Speed Limiter settings."></a><figcaption><b>Speed Limiter</b> for everything at once.</figcaption></figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- The rest -->
-    <section class="more" aria-labelledby="more-title">
-      <div class="wrap">
-        <h2 id="more-title">And everything else you'd expect from a download manager.</h2>
-        <ul class="cards">
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><path d="M4 17V7l8-4 8 4v10l-8 4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></span><h3>Import from IDM</h3><p>Bring your download list over from IDM's export file, referrers and cookies included.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></span><h3>Command line and API</h3><p>IDM's familiar switches, a CLI for terminals, and a local, token-protected automation API.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg></span><h3>Categories</h3><p>Programs, music, video, documents, archives and torrents each land in their own folder.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg></span><h3>Day and night</h3><p>Follows your system's light or dark setting, or your own choice.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="13" rx="2"/><path d="M9 15v5h6v-5M10 6h4"/></svg></span><h3>Portable</h3><p>Unzip it to a USB stick: the list, the settings and the downloads stay with it.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/></svg></span><h3>Learns each server</h3><p>A site that refuses extra connections is remembered, so the next download doesn't hammer it.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Private by design</h3><p>No account, no telemetry, no ads. The whole source is public.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><path d="M9 4h6v4H9zM5 6h4M15 6h4v14H5V6"/><path d="M9 13l2 2 4-4"/></svg></span><h3>Copied links</h3><p>Copy a link to a file and the download window opens, ready to start, no extension needed.</p></li>
-          <li><span class="c-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Download limits</h3><p>Cap the speed for one download or for all of them, and keep the rest of the network fast.</p></li>
+    <!-- Hello -->
+    <section class="sec hello" aria-labelledby="hello-title">
+      <div class="wrap hello-inner">
+        <h2 id="hello-title" class="sr-only">86 languages</h2>
+        <span class="hello-stage" aria-hidden="true" data-hello>
+          <span class="hello-word" data-pos="current" lang="en">Hello</span>
+        </span>
+        <p class="hello-from"><span>from</span><img src="/assets/logo-256.webp" width="40" height="40" alt="">Mister Download Manager</p>
+        <p class="hello-sub">The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.</p>
+        <ul class="hello-chips" data-hello-chips>
+          <li><a class="hello-chip" href="/languages.html" lang="en" data-on>English</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="ar">العربية</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="fr">Français</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="de">Deutsch</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="es">Español</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="ja">日本語</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="pt">Português</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="ru">Русский</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="hi">हिन्दी</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="tr">Türkçe</a></li>
+          <li><a class="hello-chip" href="/languages.html" lang="zh">简体中文</a></li>
+          <li><a class="hello-chip" href="/languages.html">+ 75 more</a></li>
         </ul>
+        <p class="hello-note">Most translations were made by machine and are waiting for a native speaker. <a href="/languages.html">Help with yours</a>.</p>
       </div>
     </section>
 
-    <!-- Benchmarks -->
-    <section class="bench" id="bench" aria-labelledby="bench-title">
+    <!-- Download: one card per system -->
+    <section class="sec" id="download" aria-labelledby="download-title">
       <div class="wrap">
-        <p class="kicker">Benchmarks</p>
-        <h2 id="bench-title">IDM vs MDM, timed to the millisecond.</h2>
-        <p class="lede small">Seven downloads, each run at least seven times by both apps, from the same lab server on the same machine. The server's own log says when each request arrived and when the last byte left; nothing relies on either app's word. Every run is a dot.</p>
-        <div class="bench-switch" role="group" aria-label="What to compare">
-          <button type="button" data-metric="transfer_ms" aria-pressed="true">Transfer: first request to last byte</button>
-          <button type="button" data-metric="e2e_ms" aria-pressed="false">End to end: command to finished file</button>
+        <div class="sec-center">
+          <h2 id="download-title">Get Mister Download Manager {{VERSION}}</h2>
+          <p>Free for everyone, forever. No sign-up, no ads, nothing bundled.</p>
         </div>
-        <p class="fine bench-note">IDM takes about three seconds to accept a download from its command line before it sends anything; downloads caught by its browser extension skip that step. That is why "Transfer" is the fair engine-to-engine view. "End to end" is here too.</p>
-        <p class="bench-status" data-bench-status hidden></p>
-        <div class="bench-grid" data-bench-grid></div>
-
-        <h3 class="bench-h">Where the time goes</h3>
-        <div class="bench-wide" data-bench-phases></div>
-
-        <h3 class="bench-h">What it costs the computer</h3>
-        <p class="fine">Median CPU time each app used during a run, and its peak memory. MDM draws its window with the GPU, which takes more memory than IDM's classic Windows controls.</p>
-        <div class="bench-wide short" data-bench-res></div>
-
-        <details class="bench-details">
-          <summary>All the numbers</summary>
-          <div class="table-wrap">
-            <table data-bench-table>
-              <thead>
-                <tr><th scope="col">Scenario</th><th scope="col">App</th><th scope="col">n</th><th scope="col">End to end, median (IQR)</th><th scope="col">95% CI of median</th><th scope="col">Transfer</th><th scope="col">Startup</th><th scope="col">Connections</th><th scope="col">Requests</th><th scope="col">CPU</th><th scope="col">Peak memory</th><th scope="col">p</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <p class="fine" data-bench-env></p>
-        </details>
-        <details class="bench-details">
-          <summary>How it was measured</summary>
-          <ul class="method">
-            <li><b>Server.</b> The lab server from this repository, on 127.0.0.1, serving generated content. It throttles, delays, refuses or cuts connections per scenario, and logs every request with millisecond start and end times.</li>
-            <li><b>Clients.</b> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <code>/d URL /p folder /f name /n</code>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.</li>
-            <li><b>Timing.</b> End to end: from issuing the command to the finished file under its final name, polled every millisecond on a monotonic clock. MDM renames its finished file into place; IDM creates the final file early and fills it, so for IDM the moment it reaches full size counts. Transfer: the server's first request to its last byte, read on the same clock through a calibration request before each run.</li>
-            <li><b>Fairness.</b> The apps alternate, IDM first on even runs and MDM first on odd ones, so drift on the machine hits both. One warm-up run each is discarded. Failed runs are counted, not dropped. Before every run the harness waits until the loopback is quiet: no closed connections to the server still lingering and a new connection made at once. Against a server that refuses extra connections IDM retries about 250 times a second, leaving thousands of closed sockets for half a minute; without the wait, whichever app ran next was timed on that backlog.</li>
-            <li><b>Statistics.</b> Medians with interquartile ranges, bootstrap 95% intervals (10,000 resamples) for each median and for the ratio of medians, and a two-sided Mann–Whitney U test.</li>
-            <li><b>Limits.</b> A loopback link has no real distance or packet loss; the faults stand in for them. Results are from one machine. Run it yourself: <code>python tools/bench/bench.py</code>, then <code>python tools/bench/report.py</code>.</li>
-          </ul>
-          <p class="fine"><a href="{{REPO}}/tree/main/docs/bench">Raw data, server logs and the report on GitHub</a> · <a href="{{REPO}}/tree/main/tools/bench">the harness</a></p>
-        </details>
+        <div class="plans os-cards">
+          <article class="plan os-card" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows">
+            <header><h3><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Windows</h3><span class="plan-tag">10 and 11</span></header>
+            <div class="plan-tags"><span class="tag stable">Stable</span><span class="tag">Recommended</span></div>
+            <span class="label">What you get</span>
+            <dl>
+              <div><dt>Installer</dt><dd>setup.exe — connects your browsers</dd></div>
+              <div><dt>Portable</dt><dd>portable.zip — runs from a folder or USB stick</dd></div>
+              <div><dt>Needs</dt><dd>64-bit Windows 10 or 11, about 100 MB</dd></div>
+            </dl>
+            <a class="btn btn-primary btn-h11" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
+          </article>
+          <article class="plan os-card" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS">
+            <header><h3><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> macOS</h3><span class="plan-tag">11 and later</span></header>
+            <div class="plan-tags"><span class="tag try">Experimental</span></div>
+            <span class="label">What you get</span>
+            <dl>
+              <div><dt>Disk image</dt><dd>.dmg — one download for every Mac</dd></div>
+              <div><dt>Runs on</dt><dd>Apple Silicon and Intel</dd></div>
+              <div><dt>First start</dt><dd>right-click the app → Open (not notarized yet)</dd></div>
+            </dl>
+            <a class="btn btn-primary btn-h11" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
+          </article>
+          <article class="plan os-card" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux">
+            <header><h3><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Linux</h3><span class="plan-tag">x86-64</span></header>
+            <div class="plan-tags"><span class="tag try">Experimental</span></div>
+            <span class="label">What you get</span>
+            <dl>
+              <div><dt>AppImage</dt><dd>any distribution: make it executable, run it</dd></div>
+              <div><dt>Packages</dt><dd><a href="{{FILE_DEB}}">.deb</a> for Debian and Ubuntu, <a href="{{FILE_RPM}}">.rpm</a> for Fedora</dd></div>
+              <div><dt>Or</dt><dd><a href="{{FILE_TAR}}">.tar.gz</a> to unpack anywhere</dd></div>
+            </dl>
+            <a class="btn btn-primary btn-h11" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
+          </article>
+        </div>
+        <p class="plans-note">The browser extension comes with the app and as its own download for <a href="{{FILE_CHROMIUM}}">Chrome, Edge, Brave, Opera and Vivaldi</a> and <a href="{{FILE_FIREFOX}}">Firefox</a>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.</p>
+        <p class="fine center" data-mobile-note hidden>It's a desktop app: open this page on your computer to download it.</p>
+        <div class="center-cta"><a class="btn btn-ghost btn-h11" href="/download.html">All files and install steps</a><a class="text-link" href="{{REPO}}/releases">Every release on GitHub</a></div>
       </div>
     </section>
 
     <!-- Compare -->
-    <section class="compare" id="compare" aria-labelledby="compare-title">
-      <div class="wrap">
-        <p class="kicker">Side by side</p>
-        <h2 id="compare-title">Mister Download Manager and IDM</h2>
-        <p class="lede small">Internet Download Manager is the long-established paid download manager for Windows, and the design we grew up with. Here is what can be checked. Where it's ahead, we say so.</p>
+    <div class="wrap">
+      <section class="launch-section" id="compare" aria-labelledby="compare-title">
+        <h2 id="compare-title">Mister Download Manager and IDM, side by side.</h2>
+        <p class="launch-intro">Internet Download Manager is the long-established paid download manager for Windows, and the design we grew up with. Here is what can be checked. Where it's ahead, we say so.</p>
         <div class="table-wrap">
           <table>
             <thead>
@@ -329,13 +447,11 @@
               <tr><th scope="row">Price</th><td class="yes">Free</td><td>Paid licence after a 30-day free trial<sup><a href="#s1">1</a></sup></td></tr>
               <tr><th scope="row">Source code</th><td class="yes">Open (GPL-3.0)</td><td>Closed</td></tr>
               <tr><th scope="row">1 GiB over a fast link</th><td class="yes">1.0 s</td><td>5.5 s<sup><a href="#s2">2</a></sup></td></tr>
-              <tr><th scope="row">100 MiB, 2 MB/s per connection</th><td class="yes">6.3 s</td><td>10.2 s<sup><a href="#s2">2</a></sup></td></tr>
               <tr><th scope="row">A 256 KiB file</th><td class="yes">0.03 s</td><td>3.1 s<sup><a href="#s2">2</a></sup></td></tr>
               <tr><th scope="row">Server allowing 2 connections</th><td class="yes">Uses 2, done in 12.6 s</td><td>Opened 480, done in 15.9 s<sup><a href="#s2">2</a></sup></td></tr>
               <tr><th scope="row">Torrents and magnet links</th><td class="yes">Yes</td><td>Not offered on its website<sup><a href="#s3">3</a></sup></td></tr>
               <tr><th scope="row">Video from web pages</th><td class="yes">Yes, via yt-dlp</td><td class="yes">Yes, from web players<sup><a href="#s3">3</a></sup></td></tr>
               <tr><th scope="row">FTP and FTPS</th><td class="yes">Yes</td><td class="yes">Yes<sup><a href="#s3">3</a></sup></td></tr>
-              <tr><th scope="row">Scheduling downloads</th><td class="yes">Yes</td><td class="yes">Yes<sup><a href="#s3">3</a></sup></td></tr>
               <tr><th scope="row">Interface languages</th><td class="yes">86, built in</td><td>About 40, as separate downloads<sup><a href="#s3">3</a></sup></td></tr>
               <tr><th scope="row">Browser extensions</th><td>Chrome, Edge, Brave, Opera, Vivaldi; Firefox in testing</td><td class="yes">Chrome, Firefox, Edge<sup><a href="#s3">3</a></sup></td></tr>
               <tr><th scope="row">Systems</th><td>Windows 10/11; macOS and Linux to try</td><td>Windows<sup><a href="#s3">3</a></sup></td></tr>
@@ -345,87 +461,44 @@
         </div>
         <ol class="sources">
           <li id="s1">"Try IDM 30-days free trial" — <a href="https://www.internetdownloadmanager.com/">internetdownloadmanager.com</a>; prices at <a href="https://secure.internetdownloadmanager.com/buy_idm.html">its purchase page</a></li>
-          <li id="s2">Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <a href="{{REPO}}/blob/main/docs/bench/run5/REPORT.md">report and raw data</a></li>
+          <li id="s2">Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <a href="/benchmark.html">charts, report and raw data</a></li>
           <li id="s3"><a href="https://www.internetdownloadmanager.com/">internetdownloadmanager.com</a>: supported Windows versions, browser extensions, video, FTP, scheduling and translations; no mention of BitTorrent or magnet links</li>
         </ol>
-        <p class="fine">Last checked October 2026. Spot something wrong? <a href="{{REPO}}/issues">Open an issue</a> and we'll fix it. More in <a href="/idm-alternative.html">MDM as an IDM alternative</a>.</p>
-      </div>
-    </section>
+        <div class="launch-links"><a href="/idm-alternative.html">MDM as an IDM alternative</a><a href="{{REPO}}/issues/new">Spot something wrong? Tell us</a></div>
+      </section>
 
-    <!-- Download -->
-    <section class="download" id="download" aria-labelledby="download-title">
-      <div class="wrap">
-        <p class="kicker">Download</p>
-        <h2 id="download-title">Get Mister Download Manager {{VERSION}}</h2>
-        <p class="lede small">Free for everyone, forever. No sign-up, no ads, nothing bundled.</p>
-        <div class="os-cards">
-          <article class="os-card" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows" data-sub="Free · 64-bit · Windows 10 and 11">
-            <svg class="os-big" aria-hidden="true"><use href="#os-windows"/></svg>
-            <h3>Windows</h3>
-            <span class="tag stable">Windows 10 and 11 · 64-bit</span>
-            <ul class="files">
-              <li><code>setup.exe</code> — installs it, connects your browser</li>
-              <li><code>portable.zip</code> — runs from any folder or USB stick</li>
-            </ul>
-            <a class="btn btn-primary" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
-            <a class="alt-link" href="{{FILE_PORTABLE}}">or the portable zip</a>
-          </article>
-          <article class="os-card" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS" data-sub="Free · Apple Silicon and Intel · experimental">
-            <svg class="os-big" aria-hidden="true"><use href="#os-macos"/></svg>
-            <h3>macOS</h3>
-            <span class="tag try">Experimental · Apple Silicon and Intel</span>
-            <ul class="files">
-              <li><code>.dmg</code> — one download for every Mac</li>
-              <li>New and less tested: tell us how it goes</li>
-            </ul>
-            <a class="btn btn-primary" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
-          </article>
-          <article class="os-card" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux" data-sub="Free · AppImage, .deb, .rpm · experimental">
-            <svg class="os-big" aria-hidden="true"><use href="#os-linux"/></svg>
-            <h3>Linux</h3>
-            <span class="tag try">Experimental · x86-64</span>
-            <ul class="files">
-              <li><a href="{{FILE_APPIMAGE}}"><code>.AppImage</code></a> — any distribution</li>
-              <li><a href="{{FILE_DEB}}"><code>.deb</code></a> Debian, Ubuntu, Mint · <a href="{{FILE_RPM}}"><code>.rpm</code></a> Fedora, openSUSE</li>
-            </ul>
-            <a class="btn btn-primary" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
-          </article>
+      <!-- FAQ -->
+      <section class="launch-section" id="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">A few things to know before you start.</h2>
+        <div class="launch-faq">
+          <details><summary>Is it really free?</summary><p>Yes. It's open source under the GNU GPL, version 3. No trial, no paid edition, no registration key, no nag screen, no ads. <a href="/faq/is-it-free.html">More</a></p></details>
+          <details><summary>Is it IDM?</summary><p>No. It's an independent project with no connection to Tonec Inc. It's written from scratch in Rust and contains none of IDM's code or artwork. The layout follows the classic download manager because that's what many people know and like. <a href="/faq/is-it-idm.html">More</a></p></details>
+          <details><summary>Is it safe to install?</summary><p>The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <a href="/faq/is-it-safe.html">More</a></p></details>
+          <details><summary>Can I move my downloads over from IDM?</summary><p>Yes: export your list from IDM, then choose Tasks → Import → From IDM export file in MDM. <a href="/faq/import-from-idm.html">More</a></p></details>
+          <details><summary>Which browsers work with it?</summary><p>Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <a href="/faq/browsers.html">More</a></p></details>
+          <details><summary>Mac or Linux?</summary><p>Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <a href="/faq/systems.html">More</a></p></details>
+          <details><summary>Where can I get help?</summary><p>The <a href="/help/">user guide</a> covers every window, with step-by-step tutorials. Something broken? <a href="{{REPO}}/issues/new">Open an issue on GitHub</a>, or use Help → Report a problem in the app.</p></details>
         </div>
-        <p class="ext-note"><b>Browser extension:</b> comes with the app (in its <code>extension</code> folder) and as its own download for <a href="{{FILE_CHROMIUM}}">Chrome, Edge, Brave, Opera and Vivaldi</a> and <a href="{{FILE_FIREFOX}}">Firefox</a>. Store listings are on the way. <a href="/download.html">All files, checksums and install steps →</a></p>
-        <p class="fine" data-mobile-note hidden>It's a desktop app: open this page on your computer to download it.</p>
-      </div>
-    </section>
+        <div class="launch-links"><a href="/faq/">All questions</a><a href="/help/troubleshooting.html">Troubleshooting</a><a href="{{REPO}}/issues/new">Report an issue</a></div>
+      </section>
+    </div>
 
-    <!-- FAQ -->
-    <section class="faq" id="faq" aria-labelledby="faq-title">
-      <div class="wrap narrow">
-        <h2 id="faq-title">Questions</h2>
-        <details>
-          <summary>Is it really free?</summary>
-          <p>Yes. It's open source under the GNU GPL, version 3. No trial, no paid edition, no registration key, no nag screen, no ads. <a href="/faq/is-it-free.html">More</a></p>
-        </details>
-        <details>
-          <summary>Is it IDM?</summary>
-          <p>No. It's an independent project with no connection to Tonec Inc. It's written from scratch in Rust and contains none of IDM's code or artwork. The layout follows the classic download manager because that's what many people know and like. <a href="/faq/is-it-idm.html">More</a></p>
-        </details>
-        <details>
-          <summary>Is it safe to install?</summary>
-          <p>The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <a href="/faq/is-it-safe.html">More</a></p>
-        </details>
-        <details>
-          <summary>Can I move my downloads over from IDM?</summary>
-          <p>Yes: export your list from IDM, then choose Tasks → Import → From IDM export file in MDM. <a href="/faq/import-from-idm.html">More</a></p>
-        </details>
-        <details>
-          <summary>Which browsers work with it?</summary>
-          <p>Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <a href="/faq/browsers.html">More</a></p>
-        </details>
-        <details>
-          <summary>Mac or Linux?</summary>
-          <p>Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <a href="/faq/systems.html">More</a></p>
-        </details>
-        <p class="more-link"><a href="/faq/">All questions and answers →</a></p>
+    <!-- Last call -->
+    <section class="closing" aria-labelledby="final-title">
+      <div class="closing-inner">
+        <h2 id="final-title">Your next download, faster.</h2>
+        <p>Free and open source. Install it, click a link, and watch every connection at work.</p>
+        <div class="hero-cta">
+          <!--@split-->
+          <a class="btn btn-ghost btn-h11" href="{{REPO}}"><svg class="os-ico" aria-hidden="true"><use href="#i-star"/></svg> Star on GitHub <span class="count">{{STARS}}</span></a>
+        </div>
+        <div class="launch-links"><a href="/help/getting-started.html">Installation help</a><a href="/help/">User guide</a><a href="{{REPO}}/issues/new">Report an issue</a></div>
       </div>
+      <svg class="closing-art" viewBox="0 0 600 340" aria-hidden="true">
+        <circle cx="300" cy="300" r="250" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <path d="M300 50c-70 70-70 430 0 500M300 50c70 70 70 430 0 500M60 230c160 40 320 40 480 0M90 140c140 30 280 30 420 0" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity=".55"/>
+        <path d="M300 150v130m-50-50 50 50 50-50" fill="none" stroke="var(--fg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </section>
   </main>
 

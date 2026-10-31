@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" class="js-off">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Benchmark: Mister Download Manager vs IDM, timed to the millisecond</title>
+  <meta name="description" content="Seven downloads, each run at least seven times by IDM 6.42 and Mister Download Manager from the same test server: MDM was 5.4× faster on 1 GiB and 106× on small files. Charts, raw data and the method.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="{{SITE}}/benchmark.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Mister Download Manager">
+  <meta property="og:title" content="IDM vs Mister Download Manager, timed to the millisecond">
+  <meta property="og:description" content="5.4× faster on 1 GiB, 106× on small files, 2 connections instead of 480. Every run, the raw data and the method.">
+  <meta property="og:url" content="{{SITE}}/benchmark.html">
+  <meta property="og:image" content="{{SITE}}/assets/social.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
+  <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <!--@theme-->
+  <script src="/main.js" defer></script>
+  <script src="/vendor/echarts.min.js" defer></script>
+  <script src="/bench.js" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{SITE}}/"},{"@type":"ListItem","position":2,"name":"Benchmark","item":"{{SITE}}/benchmark.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"IDM 6.42 vs Mister Download Manager download benchmark","description":"Seven download scenarios against a local fault-injecting test server, each run at least seven times per app in alternating order; end-to-end and server-side transfer times, connections, requests, CPU and memory.","url":"{{SITE}}/benchmark.html","license":"https://www.gnu.org/licenses/gpl-3.0.html","creator":{"@type":"Person","name":"Ahmed Nefzaoui"},"dateModified":"2026-10-29","distribution":[{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"{{SITE}}/bench/results.json"}]}</script>
+</head>
+<body>
+  <!--@header-->
+  <main id="main">
+    <section class="page-head">
+      <div class="wrap">
+        <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Benchmark</li></ol>
+        <h1>IDM vs MDM, timed to the millisecond.</h1>
+        <p class="lede small">Both apps on the same PC, downloading from the same test server, in alternating runs. The server's own log says when each request arrived and when the last byte left, so nothing relies on either app's word.</p>
+      </div>
+    </section>
+
+    <section class="sec tight flush">
+      <div class="wrap">
+        <div class="stats">
+          <article class="stat">
+            <p class="num"><span class="grad">5.4×</span><small>faster on 1 GiB</small></p>
+            <p>1.0 s against IDM 6.42's 5.5 s over a fast link.</p>
+          </article>
+          <article class="stat">
+            <p class="num"><span class="grad">106×</span><small>on a 256 KiB file</small></p>
+            <p>30 ms against 3.1 s, nearly all of it before IDM's first request.</p>
+          </article>
+          <article class="stat">
+            <p class="num"><span class="grad">2</span><small>connections, not 480</small></p>
+            <p>On a server that allows two, MDM keeps to two and still finishes first.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec bench" id="bench" aria-labelledby="bench-title">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="bench-title">Every run is a dot.</h2>
+          <p>Seven downloads, each run at least seven times by both apps.</p>
+        </div>
+        <div class="bench-switch" role="group" aria-label="What to compare">
+          <button type="button" data-metric="transfer_ms" aria-pressed="true">Transfer: first request to last byte</button>
+          <button type="button" data-metric="e2e_ms" aria-pressed="false">End to end: command to finished file</button>
+        </div>
+        <p class="fine bench-note">IDM takes about three seconds to accept a download from its command line before it sends anything; downloads caught by its browser extension skip that step. That is why "Transfer" is the fair engine-to-engine view. "End to end" is here too.</p>
+        <p class="bench-status" data-bench-status hidden></p>
+        <div class="bench-grid" data-bench-grid></div>
+
+        <h3 class="bench-h">Where the time goes</h3>
+        <div class="bench-wide" data-bench-phases></div>
+
+        <h3 class="bench-h">What it costs the computer</h3>
+        <p class="fine">Median CPU time each app used during a run, and its peak memory. MDM draws its window with the GPU, which takes more memory than IDM's classic Windows controls.</p>
+        <div class="bench-wide short" data-bench-res></div>
+
+        <details class="bench-details">
+          <summary>All the numbers</summary>
+          <div class="table-wrap">
+            <table data-bench-table>
+              <thead>
+                <tr><th scope="col">Scenario</th><th scope="col">App</th><th scope="col">n</th><th scope="col">End to end, median (IQR)</th><th scope="col">95% CI of median</th><th scope="col">Transfer</th><th scope="col">Startup</th><th scope="col">Connections</th><th scope="col">Requests</th><th scope="col">CPU</th><th scope="col">Peak memory</th><th scope="col">p</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="fine" data-bench-env></p>
+        </details>
+      </div>
+    </section>
+
+    <section class="sec" id="report" aria-labelledby="report-title">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="report-title">The report</h2>
+          <p>End-to-end medians with interquartile ranges, the ratio with its 95% interval, and the Mann–Whitney test, as <code>tools/bench/report.py</code> writes them.</p>
+        </div>
+        {{BENCH_REPORT}}
+      </div>
+    </section>
+
+    <section class="sec" id="method" aria-labelledby="method-title">
+      <div class="wrap narrow">
+        <div class="sec-head"><h2 id="method-title">How it was measured</h2></div>
+        <ul class="method">
+          <li><b>Server.</b> The lab server from this repository, on 127.0.0.1, serving generated content. It throttles, delays, refuses or cuts connections per scenario, and logs every request with millisecond start and end times.</li>
+          <li><b>Clients.</b> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <code>/d URL /p folder /f name /n</code>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.</li>
+          <li><b>Timing.</b> End to end: from issuing the command to the finished file under its final name, polled every millisecond on a monotonic clock. MDM renames its finished file into place; IDM creates the final file early and fills it, so for IDM the moment it reaches full size counts. Transfer: the server's first request to its last byte, read on the same clock through a calibration request before each run.</li>
+          <li><b>Fairness.</b> The apps alternate, IDM first on even runs and MDM first on odd ones, so drift on the machine hits both. One warm-up run each is discarded. Failed runs are counted, not dropped. Before every run the harness waits until the loopback is quiet: against a server that refuses extra connections IDM retries about 250 times a second, leaving thousands of closed sockets for half a minute; without the wait, whichever app ran next was timed on that backlog.</li>
+          <li><b>Statistics.</b> Medians with interquartile ranges, bootstrap 95% intervals (10,000 resamples) for each median and for the ratio of medians, and a two-sided Mann–Whitney U test.</li>
+          <li><b>Limits.</b> A loopback link has no real distance or packet loss; the faults stand in for them. Results are from one machine. Run it yourself: <code>python tools/bench/bench.py</code>, then <code>python tools/bench/report.py</code>.</li>
+        </ul>
+        <div class="page-tools">
+          <a href="{{REPO}}/tree/main/docs/bench"><svg aria-hidden="true"><use href="#i-code"/></svg>Raw data and server logs</a>
+          <a href="{{REPO}}/tree/main/tools/bench"><svg aria-hidden="true"><use href="#i-code"/></svg>The harness</a>
+          <a href="/bench/results.json"><svg aria-hidden="true"><use href="#i-out"/></svg>results.json</a>
+          <a href="{{REPO}}/issues/new?title=Benchmark%3A%20"><svg aria-hidden="true"><use href="#i-issue"/></svg>Question a number</a>
+        </div>
+        <div class="cta-band"><p>See it for yourself: it's free.</p><a class="btn btn-primary" href="/download.html">Download Mister Download Manager</a></div>
+      </div>
+    </section>
+  </main>
+  <!--@footer-->
+</body>
+</html>

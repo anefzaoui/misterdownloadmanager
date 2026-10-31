@@ -15,7 +15,7 @@ No. MDM is an independent program written from scratch in Rust, with no connecti
 
 ### How is MDM different from IDM? {#mdm-vs-idm}
 
-The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in [our benchmark](/#bench), speaks 86 languages and has experimental builds for macOS and Linux. IDM is the more mature product, refined over many years. See the full [comparison](/idm-alternative.html).
+The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in [our benchmark](/benchmark.html), speaks 86 languages and has experimental builds for macOS and Linux. IDM is the more mature product, refined over many years. See the full [comparison](/idm-alternative.html).
 
 ### Is it safe? Does it contain adware or spyware? {#is-it-safe}
 

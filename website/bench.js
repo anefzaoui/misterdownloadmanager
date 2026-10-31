@@ -310,7 +310,7 @@
     resizeT = setTimeout(function () { charts.forEach(function (c) { c.resize(); }); }, 120);
   });
 
-  fetch("bench/results.json")
+  fetch("/bench/results.json")
     .then(function (r) { return r.json(); })
     .then(function (j) { data = j; drawAll(); })
     .catch(function () {
