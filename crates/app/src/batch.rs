@@ -174,17 +174,16 @@ impl Batch {
         );
         text(&p, o.x + 20.0, o.y + 114.0, caption, LIGHT_TEXT());
         // i18n: the * in the address runs through numbers
-        if winui::radio_light(ui, o + vec2(23.0, 129.0), !self.letters, "Numbers", true).clicked()
-            && self.letters
-        {
+        let numbers = winui::radio_light(ui, o + vec2(23.0, 129.0), !self.letters, "Numbers", true);
+        // i18n: the * in the address runs through letters
+        let letters = winui::radio_light(ui, o + vec2(138.0, 129.0), self.letters, "Letters", true);
+        let key = winui::radio_keys(ui, &[numbers.clone(), letters.clone()]);
+        if (numbers.clicked() || key == Some(0)) && self.letters {
             self.letters = false;
             self.from = "0".into();
             self.to = "10".into();
         }
-        // i18n: the * in the address runs through letters
-        if winui::radio_light(ui, o + vec2(138.0, 129.0), self.letters, "Letters", true).clicked()
-            && !self.letters
-        {
+        if (letters.clicked() || key == Some(1)) && !self.letters {
             self.letters = true;
             self.from = "a".into();
             self.to = "z".into();

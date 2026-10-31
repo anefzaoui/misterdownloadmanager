@@ -349,6 +349,7 @@ impl Scheduler {
             let current = if self.tab == Tab::Schedule { 0 } else { 1 };
             if let Some(t) =
                 winui::tabs_light(ui, o, r(o, 213.0, 23.0, 428.0, 403.0), &tabs, current)
+                    .or(winui::tab_keys(ui, 2, current))
             {
                 self.tab = if t == 0 { Tab::Schedule } else { Tab::Files };
             }

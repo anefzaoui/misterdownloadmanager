@@ -341,6 +341,11 @@ impl Progress {
 
     /// Classic 3-D tabs over a raised page frame (spec "Tab strip").
     fn tabs(&mut self, ui: &mut Ui, o: Pos2) {
+        let order = [Tab::Status, Tab::Limiter, Tab::Completion];
+        let current = order.iter().position(|t| *t == self.tab).unwrap_or(0);
+        if let Some(i) = winui::tab_keys(ui, order.len(), current) {
+            self.tab = order[i];
+        }
         let p = ui.painter().clone();
         let tabs = [
             // i18n: tab title: how the download is going

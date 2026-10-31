@@ -124,7 +124,11 @@ pub fn bar(
     if resp.drag_stopped() {
         ui.ctx().data_mut(|d| d.remove::<f32>(grab_id));
     }
-    if resp.clicked()
+    // An arrow or the track: on the press, then again while held (not while the thumb is
+    // grabbed).
+    let grabbing = ui.ctx().data(|d| d.get_temp::<f32>(grab_id)).is_some();
+    if !grabbing
+        && crate::winui::auto_repeat(ui, &resp)
         && let Some(q) = resp.interact_pointer_pos()
     {
         let u = along(q);

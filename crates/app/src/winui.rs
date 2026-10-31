@@ -1796,7 +1796,12 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
     if !crate::theme::dark() {
         edit_frame(p, rc, true);
         if focused {
-            p.rect_stroke(rc, control_radius(), Stroke::new(1.0, accent()), StrokeKind::Inside);
+            p.rect_stroke(
+                rc,
+                control_radius(),
+                Stroke::new(1.0, accent()),
+                StrokeKind::Inside,
+            );
         }
         combo_chevron(p, rc);
         return;
@@ -2788,6 +2793,70 @@ pub fn radio_light_until(
     }
 }
 
+/// A held button that repeats, as Windows' spinners and scroll-bar arrows do: true when it is
+/// pressed, then after 0.4 s every 50 ms while it stays held (redraws are asked for to keep
+/// time).
+pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
+    let key = resp.id.with("repeat-at");
+    if !resp.is_pointer_button_down_on() {
+        ui.data_mut(|d| d.remove::<f64>(key));
+        return false;
+    }
+    let now = ui.input(|i| i.time);
+    let due = ui.data(|d| d.get_temp::<f64>(key));
+    let (fire, next) = match due {
+        None => (true, now + 0.4),
+        Some(t) if now >= t => (true, t + 0.05),
+        Some(t) => (false, t),
+    };
+    ui.data_mut(|d| d.insert_temp(key, next));
+    ui.ctx()
+        .request_repaint_after(std::time::Duration::from_secs_f64((next - now).max(0.01)));
+    fire
+}
+
+/// A tab control's keys, as Windows has them: Ctrl+Tab / Ctrl+Page Down the next of its `n`
+/// tabs, Ctrl+Shift+Tab / Ctrl+Page Up the previous one, wrapping. For a window's main tabs
+/// (one tab control a window answers them).
+pub fn tab_keys(ui: &Ui, n: usize, current: usize) -> Option<usize> {
+    if n == 0 {
+        return None;
+    }
+    let (next, prev) = ui.input_mut(|i| {
+        let ctrl = egui::Modifiers::COMMAND;
+        let ctrl_shift = egui::Modifiers::COMMAND | egui::Modifiers::SHIFT;
+        (
+            i.consume_key(ctrl, egui::Key::Tab) || i.consume_key(ctrl, egui::Key::PageDown),
+            i.consume_key(ctrl_shift, egui::Key::Tab) || i.consume_key(ctrl, egui::Key::PageUp),
+        )
+    });
+    match (next, prev) {
+        (true, _) => Some((current + 1) % n),
+        (_, true) => Some((current + n - 1) % n),
+        _ => None,
+    }
+}
+
+/// A radio group's keys, as Windows has them: while one of the group's buttons (`group`, in
+/// order) has the focus, Up / Left and Down / Right move the focus to the previous / next
+/// enabled one, wrapping, and choose it. Returns the one chosen.
+pub fn radio_keys(ui: &Ui, group: &[Response]) -> Option<usize> {
+    let at = group.iter().position(Response::has_focus)?;
+    let step: isize = if take_key(ui, egui::Key::ArrowDown) || take_key(ui, egui::Key::ArrowRight) {
+        1
+    } else if take_key(ui, egui::Key::ArrowUp) || take_key(ui, egui::Key::ArrowLeft) {
+        -1
+    } else {
+        return None;
+    };
+    let n = group.len() as isize;
+    let next = (1..n)
+        .map(|k| (at as isize + step * k).rem_euclid(n) as usize)
+        .find(|&j| group[j].sense.senses_click())?;
+    group[next].request_focus();
+    Some(next)
+}
+
 /// Etched horizontal separator in English rect `x, y, w × 2`: `#a0a0a0` over `#ffffff`, the
 /// white line 1 px longer so it covers the far end.
 pub fn etched_h(p: &Painter, x: f32, y: f32, w: f32) {
@@ -3055,8 +3124,46 @@ pub fn combo_light(
     let resp = ui.interact(rc, key.with("button"), sense);
     show_focus(ui, &resp, rc.shrink(3.0));
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
-    if resp.clicked() {
+    // The row the keys point at while the list is open (the choice when it opens).
+    let hl_key = key.with("highlight");
+    let mut hl = ui.data(|d| d.get_temp::<usize>(hl_key)).unwrap_or(selected);
+    let mut chosen = None;
+    let last = items.len().saturating_sub(1);
+    // egui clicks a focused control on Enter too: on an open list Enter chooses (below); on a
+    // closed one it is the dialog's default button, not an opener.
+    let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
+    if resp.clicked() && !enter {
         open = !open;
+        hl = selected;
+    }
+    // The keys, as a Windows drop-down list has them.
+    if resp.has_focus() && enabled && !items.is_empty() {
+        let opener = ui.input_mut(|i| {
+            i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowDown)
+                || i.consume_key(egui::Modifiers::NONE, egui::Key::F4)
+        });
+        if opener {
+            open = !open;
+            hl = selected;
+        }
+        let at = if open { hl } else { selected };
+        let to = if take_key(ui, egui::Key::ArrowDown) {
+            Some((at + 1).min(last))
+        } else if take_key(ui, egui::Key::ArrowUp) {
+            Some(at.saturating_sub(1))
+        } else if take_key(ui, egui::Key::Home) {
+            Some(0)
+        } else if take_key(ui, egui::Key::End) {
+            Some(last)
+        } else {
+            None
+        };
+        match to {
+            Some(i) if open => hl = i,
+            // Closed: the arrows change the choice itself.
+            Some(i) if i != selected => chosen = Some(i),
+            _ => {}
+        }
     }
     let p = ui.painter().clone();
     dropdown_frame_light(&p, rc, State::of(&resp, enabled).open_if(open));
@@ -3087,7 +3194,6 @@ pub fn combo_light(
         rc.right() - 13.0
     };
     chevron_light(&p, pos2(chevron_x, rc.top() + 8.0), enabled);
-    let mut chosen = None;
     if open {
         // The list: rows of 15 px under the combo, the hovered row in the accent colour.
         let row_h = 15.0;
@@ -3124,7 +3230,10 @@ pub fn combo_light(
                         vec2(list.width() - 2.0, row_h),
                     );
                     let r = ui.interact(row, key.with(("item", i)), pointer_only());
-                    let hot = r.hovered() || (!ui.rect_contains_pointer(list) && i == selected);
+                    if r.hovered() {
+                        hl = i;
+                    }
+                    let hot = i == hl;
                     if hot {
                         lp.rect_filled(row, 0.0, SELECTION);
                     }
@@ -3145,16 +3254,20 @@ pub fn combo_light(
         let outside = ui.input(|i| i.pointer.any_pressed())
             && !area.response.contains_pointer()
             && !resp.contains_pointer();
-        // An open list answers Escape and Enter itself (the dialog under it doesn't).
-        if chosen.is_some()
-            || outside
-            || take_key(ui, egui::Key::Escape)
-            || take_key(ui, egui::Key::Enter)
-        {
+        // An open list answers Escape and Enter itself (the dialog under it doesn't): Enter
+        // chooses the row the keys or the pointer point at.
+        if take_key(ui, egui::Key::Enter) || (enter && resp.clicked()) {
+            chosen = Some(hl.min(last)).filter(|i| *i != selected);
+            open = false;
+        }
+        if chosen.is_some() || outside || take_key(ui, egui::Key::Escape) {
             open = false;
         }
     }
-    ui.data_mut(|d| d.insert_temp(key, open));
+    ui.data_mut(|d| {
+        d.insert_temp(key, open);
+        d.insert_temp(hl_key, hl);
+    });
     chosen
 }
 
@@ -3205,7 +3318,8 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
             ]
         };
         p.add(egui::Shape::convex_polygon(pts, arrow, Stroke::NONE));
-        if r.clicked() {
+        // Held, it keeps counting.
+        if auto_repeat(ui, &r) {
             step = dir;
         }
     }

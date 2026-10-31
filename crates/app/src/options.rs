@@ -114,7 +114,11 @@ impl OptionsDialog {
             false,
             LIGHT_BG(),
             |ui, o| {
-                if let Some(p) = tabs(ui, o, self.page) {
+                // Ctrl+Tab through the pages in the tabs' order (there is no page 7).
+                const ORDER: [usize; 9] = [0, 1, 2, 3, 4, 5, 6, 8, 9];
+                let at = ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
+                let by_key = winui::tab_keys(ui, ORDER.len(), at).map(|i| ORDER[i]);
+                if let Some(p) = tabs(ui, o, self.page).or(by_key) {
                     self.page = p;
                 }
                 match self.page {
@@ -957,18 +961,22 @@ impl OptionsDialog {
                 crate::i18n::mark("Manual proxy/socks configuration"),
             ),
         ];
+        let mut group = Vec::new();
         for (i, (x, y, label)) in modes.iter().enumerate() {
-            if winui::radio_light(
+            let resp = winui::radio_light(
                 ui,
                 o + vec2(*x, *y),
                 s.proxy_mode as usize == i,
                 label,
                 true,
-            )
-            .clicked()
-            {
+            );
+            if resp.clicked() {
                 s.proxy_mode = i as u8;
             }
+            group.push(resp);
+        }
+        if let Some(i) = winui::radio_keys(ui, &group) {
+            s.proxy_mode = i as u8;
         }
         winui::etched_h(&p, o.x + 22.0, o.y + 159.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 187.0, 380.0);
@@ -1158,20 +1166,19 @@ impl OptionsDialog {
         );
         let reg = &mut self.s.regional;
         group(ui, o, 16.0, 92.0, 392.0, 250.0, "Write dates and times");
-        if winui::radio_light(
+        let system = winui::radio_light(
             ui,
             o + vec2(30.0, 112.0),
             !reg.custom,
             "As the system's region writes them",
             true,
-        )
-        .clicked()
-        {
-            reg.custom = false;
-        }
-        if winui::radio_light(ui, o + vec2(30.0, 140.0), reg.custom, "My own way:", true).clicked()
-        {
-            reg.custom = true;
+        );
+        let own = winui::radio_light(ui, o + vec2(30.0, 140.0), reg.custom, "My own way:", true);
+        match winui::radio_keys(ui, &[system.clone(), own.clone()]) {
+            Some(i) => reg.custom = i == 1,
+            None if system.clicked() => reg.custom = false,
+            None if own.clicked() => reg.custom = true,
+            None => {}
         }
         let on = reg.custom;
         // Each choice: its label right-aligned before its box.

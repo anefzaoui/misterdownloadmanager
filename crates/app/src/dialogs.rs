@@ -1695,13 +1695,18 @@ impl Duplicate {
                 if cut {
                     winui::full_on_hover(ui, rect, "duplicate-name", &self.name);
                 }
+                let mut group = Vec::new();
                 for (k, label) in crate::options::DUPLICATE.iter().enumerate().skip(1) {
                     let y = 52.0 + 20.0 * (k - 1) as f32;
-                    if winui::radio_light(ui, o + vec2(14.0, y), self.choice == k, label, true)
-                        .clicked()
-                    {
+                    let resp =
+                        winui::radio_light(ui, o + vec2(14.0, y), self.choice == k, label, true);
+                    if resp.clicked() {
                         self.choice = k;
                     }
+                    group.push(resp);
+                }
+                if let Some(j) = winui::radio_keys(ui, &group) {
+                    self.choice = j + 1;
                 }
                 let ok = winui::button_light(
                     ui,
