@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} bajt|{n} bajt
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} shkarkim|{n} shkarkime
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} duke shkarkuar|{n} duke shkarkuar
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} skedar|{n} skedarë
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} i zgjedhur|{n} të zgjedhura
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	nga importimi
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	Anulo
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	Kategoria
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	Dosja e kategorisë
 #. text in categories.rs
 #, machine
 	Category properties	Vetitë e kategorisë
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	Ora:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	Mbyll
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	Dhjetor
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	Zvogëlo
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Nr. maks. i lidhjeve parazgjedhura
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	Fshi
 #. message or event log entry in the main window
 #, machine
 	Delete category	Fshi kategorinë
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Fshi radhën
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Të fshihet kategoria "{category}"? Shkarkimet e saj bëhen të Përgjithshme; skedarët e tyre mbeten aty ku janë.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	Të fshihet radha "{queue}"? Shkarkimet e saj mbeten në listë.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Po shkarkohet përditësimi... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	Shkarkimet
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	Shkarkimet u ndalën dhe do të rifillojnë automatikisht në {time}.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	Zvarritni këtu skedarë .torrent ose lista adresash
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	Zvarritni lidhjet këtu për t'i shkarkuar
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	Lidhje të lëshuara
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Lidhje shkarkimi e dyfishtë
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	Vendosni emrin e radhës
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	Për shembull: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	Vetëm për llogarinë tuaj. Një aplikacion tjetër i caktuar si parazgjedhur mbetet i pari.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	Vetëm për llogarinë tuaj të Windows-it. Një aplikacion tjetër i zgjedhur te "Hap me" mbetet i pari.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	nga një skedar torrent
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	Nga duhet të vijë para Te
 #. message or event log entry in the main window
 #, machine
 	from the browser	nga shfletuesi
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	Po merret lista e skedarëve nga shokët... {n} s
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	Vazhdon pasi të përfundojë shkarkimi
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Mbyll modemin kur të mbarojë
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Në një radhë
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	në listë
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	Rrit
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Kufizo të gjitha shkarkimet së bashku në
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	Lista adresash
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	Identifikohu
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Kërko
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	Kërkoni fillimisht adresën e re
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	Mungojnë
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Lëviz faqen lart/poshtë
+#. text in the Scheduler window
+#, machine
+	Move down	Lëviz poshtë
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Zhvendos ose riemërto shkarkimin e zgjedhur
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Zhvendos te radha
+#. text in the Scheduler window
+#, machine
+	Move up	Lëviz lart
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	Zhvendos pa ndryshuar zgjedhjen
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Zhvendos/Riemërto
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	Po lëviz skedarin...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	shumë më i ngadaltë se lidhjet e tjera; po rilidhet
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Ende pa dosje
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	Asnjë gjuhë nuk përputhet me kërkimin
 #. text in langpick.rs
 #, machine
 	No language matches.	Asnjë gjuhë nuk përputhet.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	Asnjë aplikacion emaili nuk u hap.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	Asnjë aplikacion emaili: mesazhi kopjohet, ngjiteni në emailin tuaj.
 #. text in the Options window
 #, machine
 	No proxy/socks	Pa proxy/socks
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Shënim: Këto cilësime nuk lidhen me përpunimin e radhës
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Asgjë për të shkarkuar në {item}: lëshoni lidhje, një skedar .torrent ose një listë adresash (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	Nëntor
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Shkarkim një herë
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	Vetëm një shkarkim i përfunduar, ose një që nuk ka filluar ende, mund të zhvendoset
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Vetëm një shkarkim i përfunduar, ose një që nuk ka filluar ende, mund të zhvendoset. Ndalojeni dhe përfundojeni fillimisht.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Vetëm kur jam duke përdorur kompjuterin
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	Hap
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	Pauzë
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	Ndërprisni shkarkimin fillimisht
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	Parashikim
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	Parashikimi nuk është ende i disponueshëm
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Adresa e serverit proxy
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	Vendosni një * në adresën ku shkojnë numrat ose shkronjat
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	Hiq
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	Hiq nga radha
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	U rifillua
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	Riprovo
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	Skedari i dytë:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	Zgjidhni një dosje
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	Shfaqet ndërsa torrenti po shkarkohet.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Fik
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	Statusi:
+#. text in the Add torrent window
+#, machine
+	Stop	Ndalo
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	Ndal shkarkimin në
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	Ndal {queue}
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Ndalur
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	En
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	Kjo është më shumë se 100,000 skedarë: bëjeni diapazonin më të vogël
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Cilësitë më të mira kërkojnë ffmpeg për të bashkuar videon dhe audion (rreth 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Cilësitë më të mira kërkojnë ffmpeg: instalojeni me menaxherin e paketave të sistemit tuaj (ose Homebrew).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	Klipbordi është i zënë: provoni përsëri.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	Kompjuteri nuk mund të fiket: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	disku është plot
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	Shkarkimi nuk ka përfunduar ende
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	lidhja e shkarkimit ka skaduar (rifreskoni adresën e shkarkimit)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	Lista e shkarkimeve nuk mund të ruhej: {error}. Ndryshimet ruhen ndërsa MDM funksionon.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Menaxheri i shkarkimeve që tashmë e njihni, i rindërtuar për të qenë më i shpejtë. Falas dhe me burim të hapur sipas GNU GPL, versioni 3 ose më i ri. Videot gjenden nga yt-dlp; torrentet ekzekutohen në librqbit.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	Skedari nuk mund të zhvendosej: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	Skedari nuk mund të lexohej: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	Llojet e skedarëve që nuk janë të listuara në asnjë kategori tjetër
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	Shuma kontrolluese e vetë skedarit
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Kjo dosje nuk ekziston:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	Ky sistem nuk ka lidhje dial-up për të mbyllur
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Ky torrent është tashmë në listën e shkarkimeve
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	Te:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	Sot: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	shumë ridrejtime
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	Shkarkime torrent (lidhje magnetike dhe skedarë .torrent)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	Skedarë torrent
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	Çaktivizo
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	Fik kompjuterin
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	Fik kompjuterin kur të mbarojë
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Aktivizo
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	Shkruani një shkronjë te Nga dhe te Te
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	Shkruani një numër te Nga dhe te Te
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	Shkruani emrin e kategorisë
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	Shkruani emrin e skedarit te Ruaj si
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	Shkruani çfarë të gjeni dhe shënoni të paktën një vend për të kërkuar
 #. text in a download's Properties window
 #, machine
 	Type:	Lloji:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	E panjohur
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	e panjohur
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Përdor FTP në modalitetin PASV
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	Përdorni vetëm një *
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	Verifiko
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	Verifiko shumën kontrolluese
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Cilësimet e kontrollit të viruseve
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Në pritje
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} përmban
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	Skedar {ext}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} s’u fshi dot nga disku: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} s’u hap dot: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file} s’u lexua dot për t’u kontrolluar
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} nuk është më aty ku u ruajt (u zhvendos ose u fshi). Rishkarkojeni, në menynë e kontekstit, për ta marrë sërish.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: skedari NUK përputhet me shumën e tij kontrolluese ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: skedari përputhet me shumën e tij kontrolluese ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	Data e provës së fundit
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	R
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	Radha
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Rreth &Mister Download Manager
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	&Shto shkarkim të ri
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	&Shto shkarkim të ri...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	&Hiq
 #, machine
 menu	&Report a problem	&Raporto një problem
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	&Rivendos kolonat
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	&Planifikuesi dhe radhët
@@ -2221,6 +2446,10 @@ menu	&Tray icon	Ikona e &sirtarit
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	&Udhëzues
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&Zhbëj
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2435,6 +2664,15 @@ menu	Refresh download address	Rifresko adresën e shkarkimit
 #, machine
 menu	Remove	Hiq
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	Hiq me &skedarët
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	Hiq me skedarët
+#. menu command in the main window
 #, machine
 menu	Resume Download	Rifillo shkarkimin
 #. menu command in the main window
@@ -2454,7 +2692,7 @@ menu	S&top queue	Ndaloni &radhën
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	Planifiko
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	Zgjidh të gjith&a
@@ -2522,18 +2760,23 @@ menu	Turn of&f	Fik &atë
 #, machine
 menu	Verify checksum...	Verifiko shumën kontrolluese...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Downloads	S&hkarkimet
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&File	&Skedar
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Help	&Ndihmë
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Tasks	&Detyrat
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&Pamja
 #. toolbar button in the main window

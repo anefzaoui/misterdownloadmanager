@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} បៃ
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} ការទាញយក
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} កំពុងទាញយក
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ឯកសារ
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} បានជ្រើសរើស
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ដោយការនាំចូល
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	បោះបង់
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	ប្រភេទ
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	ថតឯកសារប្រភេទ
 #. text in categories.rs
 #, machine
 	Category properties	លក្ខណសម្បត្តិប្រភេទ
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	នាឡិកា៖
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	បិទ
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	ធ្នូ
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	បន្ថយ
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ចំនួនតំណភ្ជាប់អតិបរមា​លំនាំដើម
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	លុប
 #. message or event log entry in the main window
 #, machine
 	Delete category	លុបប្រភេទ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	លុបជួរ
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	លុបប្រភេទ "{category}" មែនទេ? ការទាញយករបស់វានឹងក្លាយជាទូទៅ; ឯកសាររបស់វានៅដដែល។
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	លុបជួរ "{queue}" មែនទេ? ការទាញយករបស់វានៅតែមាននៅក្នុងបញ្ជី។
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	កំពុងទាញយកបច្ចុប្បន្នភាព... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	ការទាញយក
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ការទាញយកត្រូវបានបញ្ឈប់ ហើយនឹងបន្តដោយស្វ័យប្រវត្តិនៅម៉ោង {time}។
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	អូសឯកសារ .torrent ឬបញ្ជីអាសយដ្ឋានមកទីនេះ
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	អូសតំណភ្ជាប់មកទីនេះដើម្បីទាញយក
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	តំណដែលបានទម្លាក់
 #. window title in a dialog box
 #, machine
 	Duplicate download link	តំណទាញយកស្ទួន
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	បញ្ចូលឈ្មោះជួរ
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	ឧទាហរណ៍៖ {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	សម្រាប់គណនីរបស់អ្នកតែប៉ុណ្ណោះ។ កម្មវិធីផ្សេងទៀតដែលបានកំណត់ជាលំនាំដើមនៅតែជាទីមួយ។
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	សម្រាប់គណនី Windows របស់អ្នកតែប៉ុណ្ណោះ។ កម្មវិធីផ្សេងទៀតដែលបានជ្រើសរើសនៅក្នុង "បើកជាមួយ" នៅតែជាកម្មវិធីដំបូង។
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ពីឯកសារ torrent
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	ពីត្រូវតែនៅមុនទៅ
 #. message or event log entry in the main window
 #, machine
 	from the browser	ពីកម្មវិធីរុករក
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	កំពុងទទួលយកបញ្ជីឯកសារពីមិត្តរួម... {n} វិនាទី
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	បន្តបន្ទាប់ពីការទាញយកបានបញ្ចប់
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	ផ្តាច់ម៉ូដឹមនៅពេលរួចរាល់
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	នៅក្នុងជួរ
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	នៅក្នុងបញ្ជី
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	បង្កើន
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	កំណត់ការទាញយកទាំងអស់រួមគ្នាទៅ
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	បញ្ជីអាសយដ្ឋាន
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	ចូល
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ស្វែងរក
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	ស្វែងរកអាសយដ្ឋានថ្មីជាមុនសិន
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	បាត់
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	រំកិលទំព័រឡើង/ចុះ
+#. text in the Scheduler window
+#, machine
+	Move down	ផ្លាស់ទីចុះក្រោម
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	ផ្លាស់ទី ឬប្ដូរឈ្មោះការទាញយកដែលបានជ្រើសរើស
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ផ្លាស់ទីទៅជួរ
+#. text in the Scheduler window
+#, machine
+	Move up	ផ្លាស់ទីឡើងលើ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	ផ្លាស់ទីដោយមិនផ្លាស់ប្ដូរជម្រើស
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ផ្លាស់ទី/ប្ដូរឈ្មោះ
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	កំពុងផ្លាស់ទីឯកសារ...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	យឺតជាងការតភ្ជាប់ផ្សេងទៀតច្រើន។ កំពុងភ្ជាប់ឡើងវិញ
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	មិនទាន់មានថតឯកសារនៅឡើយទេ
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	គ្មានភាសាណាត្រូវនឹងការស្វែងរកទេ
 #. text in langpick.rs
 #, machine
 	No language matches.	គ្មានភាសាណាត្រូវគ្នាទេ។
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	គ្មានកម្មវិធីអ៊ីមែលបានបើកទេ។
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	គ្មានកម្មវិធីអ៊ីមែលទេ៖ សារត្រូវបានចម្លង សូមបិទភ្ជាប់វានៅក្នុងអ៊ីមែលរបស់អ្នក។
 #. text in the Options window
 #, machine
 	No proxy/socks	គ្មានប្រូកស៊ី/SOCKS
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	ចំណាំ៖ ការកំណត់ទាំងនេះមិនទាក់ទងនឹងដំណើរការជួរទេ។
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	គ្មានអ្វីត្រូវទាញយកនៅក្នុង {item} ទេ៖ ទម្លាក់តំណ ឯកសារ .torrent ឬបញ្ជីអាសយដ្ឋាន (.txt, .ef2)។
 #. text in the Scheduler window
 #, machine
 	November	វិច្ឆិកា
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ការទាញយកម្ដង
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	មានតែការទាញយកដែលបានបញ្ចប់ ឬមិនទាន់ចាប់ផ្តើមទេ ទើបអាចផ្លាស់ទីបាន
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	មានតែការទាញយកដែលបានបញ្ចប់ ឬមិនទាន់ចាប់ផ្តើមទេ ទើបអាចផ្លាស់ទីបាន។ បញ្ឈប់វា ហើយបញ្ចប់វាជាមុនសិន។
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	តែនៅពេលខ្ញុំកំពុងប្រើកុំព្យូទ័រ
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	បើក
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	ផ្អាក
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	ផ្អាកការទាញយកជាមុនសិន
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	មើលជាមុន
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	ការមើលជាមុនមិនទាន់មាននៅឡើយទេ
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	អាសយដ្ឋានម៉ាស៊ីនមេប្រូកស៊ី
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	ដាក់ * នៅក្នុងអាសយដ្ឋានដែលលេខ ឬអក្សរត្រូវទៅ
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	លុបចេញ
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	លុបចេញពីជួរ
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	បានបន្ត
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	ព្យាយាមម្ដងទៀត
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	ឯកសារទីពីរ៖
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	ជ្រើសរើសថតឯកសារ
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	បង្ហាញនៅពេល torrent កំពុងទាញយក។
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	បិទម៉ាស៊ីន
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	ស្ថានភាព៖
+#. text in the Add torrent window
+#, machine
+	Stop	បញ្ឈប់
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	បញ្ឈប់ការទាញយកនៅម៉ោង
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	បញ្ឈប់ {queue}
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	បានបញ្ឈប់
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	ព្រហ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	នោះច្រើនជាង 100,000 ឯកសារ៖ ធ្វើឱ្យជួរតូចជាងមុន
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	គុណភាពល្អបំផុតត្រូវការ ffmpeg ដើម្បីបញ្ចូលវីដេអូ និងសំឡេង (ប្រហែល 80 MB)។
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	គុណភាពល្អបំផុតត្រូវការ ffmpeg៖ ដំឡើងវាជាមួយកម្មវិធីគ្រប់គ្រងកញ្ចប់ប្រព័ន្ធរបស់អ្នក (ឬ Homebrew)។
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	ក្ដារតម្បៀតខ្ទាស់រវល់៖ សូមព្យាយាមម្ដងទៀត។
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	កុំព្យូទ័រមិនអាចបិទបានទេ៖ {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	ថាសពេញ
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	ការទាញយកមិនទាន់បានបញ្ចប់នៅឡើយទេ
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	តំណទាញយកបានផុតកំណត់ (ធ្វើឱ្យអាសយដ្ឋានទាញយកស្រស់)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	បញ្ជីទាញយកមិនអាចរក្សាទុកបានទេ៖ {error}។ ការផ្លាស់ប្តូរត្រូវបានរក្សាទុកខណៈពេលដែល MDM កំពុងដំណើរការ។
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	កម្មវិធីគ្រប់គ្រងការទាញយកដែលអ្នកស្គាល់រួចហើយ ត្រូវបានបង្កើតឡើងវិញដើម្បីឱ្យលឿនជាងមុន។ ឥតគិតថ្លៃ និងប្រភពបើកចំហក្រោម GNU GPL, កំណែ 3 ឬក្រោយ។ វីដេអូត្រូវបានរកឃើញដោយ yt-dlp; torrents ដំណើរការលើ librqbit។
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	ឯកសារមិនអាចផ្លាស់ទីបានទេ៖ {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	ឯកសារមិនអាចអានបាន៖ {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	ប្រភេទឯកសារដែលមិនត្រូវបានរាយក្នុងប្រភេទផ្សេងទៀត
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	លេខសម្គាល់ឯកសារផ្ទាល់ខ្លួន
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ថតឯកសារនេះមិនមានទេ៖
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	ប្រព័ន្ធនេះគ្មានការតភ្ជាប់តាមទូរសព្ទដើម្បីព្យួរទេ
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	torrent នេះមាននៅក្នុងបញ្ជីទាញយករួចហើយ
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	ទៅ៖
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	ថ្ងៃនេះ៖ {date}
 #. text in errors.rs
 #, machine
 	too many redirects	ការបញ្ជូនបន្តច្រើនពេក
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	ការទាញយក Torrent (តំណ magnet និងឯកសារ .torrent)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	ឯកសារ Torrent
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	បិទ
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	បិទកុំព្យូទ័រ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	បិទកុំព្យូទ័រនៅពេលរួចរាល់
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	បើក
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	វាយអក្សរនៅក្នុង ពី និង ទៅ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	វាយលេខនៅក្នុង ពី និង ទៅ
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	វាយឈ្មោះប្រភេទ
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	វាយឈ្មោះឯកសារនៅក្នុង រក្សាទុកជា
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	វាយអ្វីដែលត្រូវស្វែងរក ហើយធីកយ៉ាងហោចណាស់មួយកន្លែងដើម្បីរកមើល
 #. text in a download's Properties window
 #, machine
 	Type:	ប្រភេទ៖
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	មិនស្គាល់
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	មិនស្គាល់
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	ប្រើ FTP ក្នុងរបៀប PASV
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	ប្រើ * តែមួយប៉ុណ្ណោះ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	ផ្ទៀងផ្ទាត់
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	ផ្ទៀងផ្ទាត់ Checksum
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ការកំណត់ការត្រួតពិនិត្យមេរោគ
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	កំពុងរង់ចាំ
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} មាន
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	ឯកសារ {ext}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} មិនអាចលុបចេញពីថាសបានទេ៖ {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} មិនអាចបើកបានទេ៖ {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	មិនអាចអាន {file} ដើម្បីពិនិត្យមើលបានទេ
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} លែងនៅកន្លែងដែលវាត្រូវបានរក្សាទុកទៀតហើយ (បានផ្លាស់ទី ឬលុប)។ ការទាញយកឡើងវិញ នៅក្នុងម៉ឺនុយចុចខាងស្តាំរបស់វា នឹងទទួលបានវាម្តងទៀត។
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}៖ ឯកសារមិនត្រូវគ្នានឹងលេខត្រួតពិនិត្យរបស់វាទេ ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}៖ ឯកសារត្រូវគ្នានឹងលេខត្រួតពិនិត្យរបស់វា ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	កាលបរិច្ឆេទសាកល្បងច�
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	ជួរ
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	អំពីកម្មវិធីគ្�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	បន្ថែមការទាញយកថ្មី(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	បន្ថ&មការទាញយកថ្មី...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	លុបចេញ(&R)
 #, machine
 menu	&Report a problem	រាយការណ៍បញ្ហា(&R)
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	កំណត់ជួរឈ&រឡើងវិញ
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	កម្មវិធីកំណត់ពេល និងជួរ(&S)
@@ -2221,6 +2446,10 @@ menu	&Tray icon	រូបតំណាងថាស(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	មេរៀន(&T)
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&មិនធ្វើវិញ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2435,6 +2664,15 @@ menu	Refresh download address	ផ្ទុកអាសយដ្ឋានទា�
 #, machine
 menu	Remove	លុបចេញ
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	លុបជាមួយ&ឯកសារ
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	លុបជាមួយឯកសារ
+#. menu command in the main window
 #, machine
 menu	Resume Download	បន្តការទាញយក
 #. menu command in the main window
@@ -2454,7 +2692,7 @@ menu	S&top queue	បញ្ឈប់ជួរ(&S)
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	កាលវិភាគ
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	ជ្រើសរើសទាំ&ងអស់
@@ -2522,18 +2760,23 @@ menu	Turn of&f	បិទ(&f)
 #, machine
 menu	Verify checksum...	ផ្ទៀងផ្ទាត់ checksum...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Downloads	កា&រទាញយក
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&File	&ឯកសារ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Help	&ជំនួយ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Tasks	&កិច្ចការ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&ទិដ្ឋភាព
 #. toolbar button in the main window

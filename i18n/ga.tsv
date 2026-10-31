@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} beart|{n} bhearta|{n} mbeart|{n} mbeart|{n} mbeart
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} íoslódáil|{n} íoslódáil|{n} íoslódáil|{n} íoslódáil|{n} íoslódáil
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} á íoslódáil|{n} á íoslódáil|{n} á íoslódáil|{n} á íoslódáil|{n} á íoslódáil
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} comhad|{n} chomhad|{n} gcomhad|{n} gcomhad|{n} gcomhad
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} roghnaithe|{n} roghnaithe|{n} roghnaithe|{n} roghnaithe|{n} roghnaithe
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	trí iompórtáil
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	Cealaigh
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	Catagóir
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	Fillteán catagóire
 #. text in categories.rs
 #, machine
 	Category properties	Airíonna catagóire
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	Clog:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	Dún
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	Nollaig
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	Laghdaigh
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Uimhir uas. ceangail réamhshocraithe
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	Scrios
 #. message or event log entry in the main window
 #, machine
 	Delete category	Scrios an chatagóir
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Scrios an scuaine
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	An bhfuil tú cinnte gur mian leat an chatagóir "{category}" a scriosadh? Éiríonn a híoslódálacha Ginearálta; fanann a gcuid comhad san áit a bhfuil siad.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	An bhfuil tú cinnte gur mian leat an scuaine "{queue}" a scriosadh? Fanann a híoslódálacha sa liosta.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Á íoslódáil an nuashonraithe... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	Íoslódálacha
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	Stopadh íoslódálacha agus atosóidh siad go huathoibríoch ag {time}.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	Tarraing comhaid .torrent nó liostaí seoltaí anseo
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	Tarraing naisc anseo chun iad a íoslódáil
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	Naisc thit
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Nasc íoslódála dúblach
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	Cuir isteach ainm scuaine
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	Mar shampla: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	Do do chuntas amháin. Fanann aip eile atá socraithe mar an réamhshocrú ar dtús.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	Do do chuntas Windows amháin. Fanann aip eile a roghnaíodh in "Oscail le" ar dtús.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ó chomhad torrent
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	Caithfidh 'Ó' teacht roimh 'Go dtí'
 #. message or event log entry in the main window
 #, machine
 	from the browser	ón mbrabhsálaí
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	Ag fáil liosta comhad ó chomhghleacaithe... {n} s
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	Leanann sé ar aghaidh tar éis don íoslódáil críochnú
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Croch suas móideim nuair a bhíonn sé déanta
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	I scuaine
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	sa liosta
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	Méadaigh
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Teorannaigh gach íoslódáil le chéile go
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	Liostaí seoltaí
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	Logáil isteach
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Cuardaigh
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	Cuardaigh an seoladh nua ar dtús
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	In easnamh
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Bog leathanach suas / síos
+#. text in the Scheduler window
+#, machine
+	Move down	Bog síos
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Bog nó athainmnigh an íoslódáil roghnaithe
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Bog go scuaine
+#. text in the Scheduler window
+#, machine
+	Move up	Bog suas
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	Bog gan an roghnú a athrú
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Bog/Athainmnigh
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	Ag bogadh an chomhaid...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	i bhfad níos moille ná na naisc eile; ag athcheangal
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Gan fillteáin fós
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	Níl aon teanga ag teacht leis an gcuardach
 #. text in langpick.rs
 #, machine
 	No language matches.	Níl aon teanga ag teacht leis.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	Níor osclaíodh aon aip ríomhphoist.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	Níl aon aip ríomhphoist: cóipeáiltear an teachtaireacht, greamaigh í i do ríomhphost.
 #. text in the Options window
 #, machine
 	No proxy/socks	Gan seachfhreastalaí/socks
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Nóta: Níl baint ag na socruithe seo le próiseáil scuaine
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Níl aon rud le híoslódáil in {item}: scaoil naisc, comhad .torrent, nó liosta seoltaí (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	Samhain
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Íoslódáil aonuaire
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	Ní féidir ach íoslódáil críochnaithe, nó ceann nár thosaigh fós, a bhogadh
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Ní féidir ach íoslódáil críochnaithe, nó ceann nár thosaigh fós, a bhogadh. Stop é agus críochnaigh é ar dtús.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Amháin fad is atáim ag úsáid an ríomhaire
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	Oscail
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	Sos
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	Cuir an íoslódáil ar sos ar dtús
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	Réamhamharc
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	Níl réamhamharc ar fáil fós
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Seoladh an fhreastalaí seachfhreastalaí
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	Cuir * sa seoladh ina dtéann na huimhreacha nó na litreacha
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	Bain
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	Bain den scuaine
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	Atosaíodh
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	Bain triail eile as
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	Dara comhad:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	Roghnaigh fillteán
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	Taispeántar é fad is atá an toirint á íoslódáil.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Múch
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	Stádas:
+#. text in the Add torrent window
+#, machine
+	Stop	Stop
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	Stop íoslódáil ag
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	Stop {queue}
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Stoptha
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	Dé
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	Tá sé sin níos mó ná 100,000 comhad: déan an raon níos lú
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Teastaíonn ffmpeg chun físeán agus fuaim a chumasc leis na cáilíochtaí is fearr (thart ar 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Teastaíonn ffmpeg ó na cáilíochtaí is fearr: suiteáil é le bainisteoir pacáiste do chórais (nó Homebrew).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	Tá an gearrthaisce gnóthach: bain triail eile as.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	Níorbh fhéidir an ríomhaire a mhúchadh: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	tá an diosca lán
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	Níl an íoslódáil críochnaithe fós
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	tá an nasc íoslódála imithe in éag (athnuaigh an seoladh íoslódála)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	Níorbh fhéidir an liosta íoslódálacha a shábháil: {error}. Coinnítear athruithe fad is a bhíonn MDM ag rith.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	An bainisteoir íoslódála atá ar eolas agat cheana féin, atógtha le bheith níos tapúla. Saor in aisce agus foinse oscailte faoin GNU GPL, leagan 3 nó níos déanaí. Faightear físeáin le yt-dlp; ritheann torrents ar librqbit.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	Níorbh fhéidir an comhad a bhogadh: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	Níorbh fhéidir an comhad a léamh: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	Na cineálacha comhaid nach bhfuil liostaithe in aon chatagóir eile
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	Seiceáilsuim an chomhaid féin
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Níl an fillteán seo ann:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	Níl aon naisc dhiailithe ag an gcóras seo le crochadh suas
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Tá an torrent seo sa liosta íoslódálacha cheana féin
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	Go dtí:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	Inniu: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	an iomarca atreoruithe
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	Íoslódálacha torrent (naisc mhaighnéadacha agus comhaid .torrent)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	Comhaid torrent
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	Múch
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	Múch an ríomhaire
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	Múch an ríomhaire nuair a bheidh sé déanta
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Cuir ar siúl
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	Clóscríobh litir in Ó agus in Go
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	Clóscríobh uimhir in Ó agus in Go
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	Clóscríobh ainm na catagóire
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	Clóscríobh ainm an chomhaid in Sábháil Mar
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	Clóscríobh cad atá le fáil, agus cuir tic le háit amháin ar a laghad le breathnú ann
 #. text in a download's Properties window
 #, machine
 	Type:	Cineál:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	Anaithnid
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	anaithnid
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Úsáid FTP i mód PASV
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	Bain úsáid as réiltín amháin * amháin
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	Fíoraigh
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	Fíoraigh seiceáil suime
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Socruithe seiceála víreas
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Ag fanacht
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	Tá {column} ann
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	Comhad {ext}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	Níorbh fhéidir {file} a scriosadh ón diosca: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	Níorbh fhéidir {file} a oscailt: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	Níorbh fhéidir {file} a léamh chun é a sheiceáil
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Níl {file} san áit ar sábháladh é a thuilleadh (bogtha nó scriosta). Faightear arís é le híoslódáil arís, ina roghchlár cliceáil ar dheis.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: NÍ hionann an comhad agus a sheiceáilsuim ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: Is ionann an comhad agus a sheiceáilsuim ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	Dáta na hIarrachta Deireanaí
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Scuaine
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	Ciú
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	&Maidir le Mister Download Manager
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	Íoslódáil nua &a chur leis
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	Íoslódáil nua &a chur leis...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	&Bain
 #, machine
 menu	&Report a problem	&Tuairiscigh fadhb
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	Athshocraigh na &colúin
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	&Sceidealóir agus scuainí
@@ -2221,6 +2446,10 @@ menu	&Tray icon	Deilbhín &tráidire
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	&Ranganna teagaisc
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&Cealaigh
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2435,6 +2664,15 @@ menu	Refresh download address	Athnuaigh seoladh íoslódála
 #, machine
 menu	Remove	Bain
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	Bain leis na &comhaid
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	Bain leis na comhaid
+#. menu command in the main window
 #, machine
 menu	Resume Download	Atosaigh Íoslódáil
 #. menu command in the main window
@@ -2454,7 +2692,7 @@ menu	S&top queue	Cu&r stad leis an scuaine
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	Sceideal
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	Roghnaigh &uile
@@ -2522,18 +2760,23 @@ menu	Turn of&f	Cuir &as
 #, machine
 menu	Verify checksum...	Fíoraigh seiceáil suime...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Downloads	Í&oslódálacha
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&File	&Comhad
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Help	Ca&bhair
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Tasks	&Tascanna
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&Amharc
 #. toolbar button in the main window

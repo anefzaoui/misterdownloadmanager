@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} బైట్|{n} బైట్‌లు
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} డౌన్‌లోడ్|{n} డౌన్‌లోడ్‌లు
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} డౌన్‌లోడ్ అవుతోంది|{n} డౌన్‌లోడ్ అవుతున్నాయి
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ఫైల్|{n} ఫైల్‌లు
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} ఎంపిక చేయబడింది|{n} ఎంపిక చేయబడ్డాయి
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	దిగుమతి ద్వారా
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	రద్దు చేయి
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	వర్గం
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	కేటగిరీ ఫోల్డర్
 #. text in categories.rs
 #, machine
 	Category properties	వర్గ లక్షణాలు
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	గడియారం:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	మూసివేయి
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	డిసెంబర్
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	తగ్గించు
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	డిఫాల్ట్ గరిష్ఠ. కనెక్షన్ సంఖ్య
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	తొలగించు
 #. message or event log entry in the main window
 #, machine
 	Delete category	వర్గాన్ని తొలగించు
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	క్యూను తొలగించు
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" వర్గాన్ని తొలగించాలా? దాని డౌన్‌లోడ్‌లు సాధారణంగా మారతాయి; వాటి ఫైల్‌లు ఉన్న చోటే ఉంటాయి.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" క్యూను తొలగించాలా? దాని డౌన్‌లోడ్‌లు జాబితాలో ఉంటాయి.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	అప్‌డేట్‌ను డౌన్‌లోడ్ చేస్తోంది... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	డౌన్‌లోడ్‌లు
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	డౌన్‌లోడ్‌లు ఆగిపోయాయి మరియు {time}కి స్వయంచాలకంగా పునఃప్రారంభమవుతాయి.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	.torrent ఫైల్‌లు లేదా అడ్రస్‌ల జాబితాలను ఇక్కడకు లాగండి
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	డౌన్‌లోడ్ చేయడానికి లింక్‌లను ఇక్కడకు లాగండి
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	డ్రాప్ చేయబడిన లింక్‌లు
 #. window title in a dialog box
 #, machine
 	Duplicate download link	నకిలీ డౌన్‌లోడ్ లింక్
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	క్యూ పేరును నమోదు చేయండి
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	ఉదాహరణకు: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	మీ ఖాతా కోసం మాత్రమే. డిఫాల్ట్‌గా సెట్ చేయబడిన మరొక యాప్ ముందు ఉంటుంది.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	మీ Windows ఖాతా కోసం మాత్రమే. "దీనితో తెరవండి"లో ఎంచుకున్న మరొక యాప్ మొదటి స్థానంలో ఉంటుంది.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	టొరెంట్ ఫైల్ నుండి
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	ఫ్రమ్ టూ కంటే ముందు ఉండాలి
 #. message or event log entry in the main window
 #, machine
 	from the browser	బ్రౌజర్ నుండి
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	పీర్‌ల నుండి ఫైల్ జాబితాను పొందుతోంది... {n} సె
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	డౌన్‌లోడ్ పూర్తయిన తర్వాత కొనసాగుతుంది
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	పూర్తయినప్పుడు మోడెమ్‌ను నిలిపివేయండి
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	క్యూలో ఉంది
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	జాబితాలో
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	పెంచు
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	అన్ని డౌన్‌లోడ్‌లను కలిపి దీనికి పరిమితం చేయండి
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	అడ్రస్‌ల జాబితాలు
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	లాగిన్
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	వెతకండి
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	ముందు కొత్త అడ్రస్‌ను వెతకండి
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	మిస్సింగ్
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	పేజీని పైకి/కిందకి తరలించు
+#. text in the Scheduler window
+#, machine
+	Move down	కిందికి తరలించు
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	ఎంచుకున్న డౌన్‌లోడ్‌ను తరలించు లేదా పేరు మార్చు
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	క్యూకు తరలించు
+#. text in the Scheduler window
+#, machine
+	Move up	పైకి తరలించు
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	ఎంపికను మార్చకుండా తరలించు
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	తరలించు/పేరు మార్చు
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	ఫైల్‌ను తరలిస్తోంది...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	ఇతర కనెక్షన్‌ల కంటే చాలా నెమ్మదిగా ఉంది; మళ్లీ కనెక్ట్ అవుతోంది
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	ఇంకా ఫోల్డర్‌లు లేవు
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	శోధనకు ఏ భాషా సరిపోలడం లేదు
 #. text in langpick.rs
 #, machine
 	No language matches.	ఏ భాషా సరిపోలడం లేదు.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	మెయిల్ యాప్ తెరవబడలేదు.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	మెయిల్ యాప్ లేదు: సందేశం కాపీ చేయబడింది, మీ మెయిల్‌లో పేస్ట్ చేయండి.
 #. text in the Options window
 #, machine
 	No proxy/socks	ప్రాక్సీ/SOCKS లేదు
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	గమనిక: ఈ సెట్టింగ్‌లు క్యూ ప్రాసెసింగ్‌కు సంబంధించినవి కావు
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item}లో డౌన్‌లోడ్ చేయడానికి ఏమీ లేదు: లింక్‌లు, .torrent ఫైల్ లేదా అడ్రస్‌ల జాబితాను (.txt, .ef2) డ్రాప్ చేయండి.
 #. text in the Scheduler window
 #, machine
 	November	నవంబర్
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ఒకసారి డౌన్‌లోడ్ చేయడం
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	పూర్తయిన డౌన్‌లోడ్ లేదా ఇంకా ప్రారంభించని డౌన్‌లోడ్‌ను మాత్రమే తరలించవచ్చు
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	పూర్తయిన డౌన్‌లోడ్ లేదా ఇంకా ప్రారంభించని డౌన్‌లోడ్‌ను మాత్రమే తరలించవచ్చు. ముందు దాన్ని ఆపి, పూర్తి చేయండి.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	నేను కంప్యూటర్‌ను ఉపయోగిస్తున్నప్పుడు మాత్రమే
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	తెరువు
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	పాజ్ చేయండి
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	ముందు డౌన్‌లోడ్‌ను పాజ్ చేయండి
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	ముందుగా చూడండి
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	ప్రివ్యూ ఇంకా అందుబాటులో లేదు
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ప్రాక్సీ సర్వర్ చిరునామా
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	సంఖ్యలు లేదా అక్షరాలు వెళ్ళే అడ్రస్‌లో *ని ఉంచండి
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	తీసివేయండి
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	క్యూ నుండి తీసివేయి
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	పునఃప్రారంభించబడింది
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	మళ్లీ ప్రయత్నించు
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	రెండవ ఫైల్:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	ఒక ఫోల్డర్‌ను ఎంచుకోండి
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	టొరెంట్ డౌన్‌లోడ్ అవుతున్నప్పుడు చూపబడుతుంది.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	షట్ డౌన్ చేయి
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	స్థితి:
+#. text in the Add torrent window
+#, machine
+	Stop	ఆపు
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	డౌన్‌లోడ్‌ను ఇక్కడ ఆపు
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} ఆపు
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	ఆపబడింది
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	గురు
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	అది 100,000 ఫైల్‌ల కంటే ఎక్కువ: పరిధిని తగ్గించండి
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	వీడియో మరియు ఆడియోను విలీనం చేయడానికి ఉత్తమ నాణ్యతలకు ffmpeg అవసరం (సుమారు 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	ఉత్తమ నాణ్యతలకు ffmpeg అవసరం: మీ సిస్టమ్ ప్యాకేజీ మేనేజర్ (లేదా Homebrew)తో దీన్ని ఇన్‌స్టాల్ చేయండి.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	క్లిప్‌బోర్డ్ బిజీగా ఉంది: మళ్లీ ప్రయత్నించండి.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	కంప్యూటర్‌ను ఆఫ్ చేయలేకపోయింది: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	డిస్క్ నిండిపోయింది
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	డౌన్‌లోడ్ ఇంకా పూర్తి కాలేదు
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	డౌన్‌లోడ్ లింక్ గడువు ముగిసింది (డౌన్‌లోడ్ చిరునామాను రిఫ్రెష్ చేయండి)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	డౌన్‌లోడ్ జాబితాను సేవ్ చేయలేకపోయింది: {error}. MDM నడుస్తున్నప్పుడు మార్పులు అలాగే ఉంటాయి.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	మీకు ఇప్పటికే తెలిసిన డౌన్‌లోడ్ మేనేజర్, వేగంగా ఉండేలా పునర్నిర్మించబడింది. GNU GPL, వెర్షన్ 3 లేదా తర్వాతి వెర్షన్ కింద ఉచితం మరియు ఓపెన్ సోర్స్. వీడియోలు yt-dlp ద్వారా కనుగొనబడతాయి; టోరెంట్లు librqbitలో నడుస్తాయి.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	ఫైల్‌ను తరలించలేకపోయింది: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	ఫైల్‌ను చదవలేకపోయింది: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	ఏ ఇతర వర్గంలోనూ జాబితా చేయబడని ఫైల్ రకాలు
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	ఫైల్ యొక్క స్వంత చెక్‌సమ్
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ఈ ఫోల్డర్ ఉనికిలో లేదు:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	ఈ సిస్టమ్‌లో హ్యాంగ్ అప్ చేయడానికి డయల్-అప్ కనెక్షన్‌లు లేవు
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ఈ టోరెంట్ ఇప్పటికే డౌన్‌లోడ్ జాబితాలో ఉంది
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	దీనికి:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	ఈరోజు: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	చాలా ఎక్కువ దారి మళ్లింపులు
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	టోరెంట్ డౌన్‌లోడ్‌లు (మాగ్నెట్ లింక్‌లు మరియు .torrent ఫైల్‌లు)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	టోరెంట్ ఫైల్‌లు
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	ఆఫ్ చేయండి
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	కంప్యూటర్‌ను ఆఫ్ చేయండి
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	పని పూర్తయిన తర్వాత కంప్యూటర్‌ను ఆఫ్ చేయండి
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ఆన్ చేయండి
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	ఫ్రమ్ మరియు టులో ఒక అక్షరాన్ని టైప్ చేయండి
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	ఫ్రమ్ మరియు టులో ఒక సంఖ్యను టైప్ చేయండి
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	వర్గం పేరును టైప్ చేయండి
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	సేవ్ యాజ్‌లో ఫైల్ పేరును టైప్ చేయండి
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	ఏమి కనుగొనాలో టైప్ చేయండి మరియు కనీసం ఒక స్థలాన్ని ఎంచుకోండి
 #. text in a download's Properties window
 #, machine
 	Type:	రకం:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	తెలియదు
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	తెలియదు
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV మోడ్‌లో FTPని ఉపయోగించండి
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	ఒక * మాత్రమే ఉపయోగించండి
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	ధృవీకరించండి
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	చెక్ సమ్‌ను ధృవీకరించండి
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	వైరస్ తనిఖీ సెట్టింగ్‌లు
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	వేచి ఉంది
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} కలిగి ఉంది
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ఫైల్
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} డిస్క్ నుండి తొలగించబడలేదు: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} తెరవబడలేదు: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file} తనిఖీ చేయడానికి చదవబడలేదు
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} అది సేవ్ చేయబడిన చోట లేదు (తరలించబడింది లేదా తొలగించబడింది). దాని కుడి-క్లిక్ మెనులో, మళ్లీ డౌన్‌లోడ్ చేయండి.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ఫైల్ దాని చెక్‌సమ్ ({algorithm})తో సరిపోలడం లేదు
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: ఫైల్ దాని చెక్‌సమ్ ({algorithm})తో సరిపోలుతుంది
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	చివరి ప్రయత్న తేదీ
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	క్యూ
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	క్యూ
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Mister Download Manager గు&రించ�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	కొత్త డౌన్‌లోడ్‌ను &జోడించండి
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	కొత్త డౌన్‌లోడ్‌ను &జోడించు...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	&తీసివేయండి
 #, machine
 menu	&Report a problem	సమస్యను &నివేదించండి
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	నిలువు వరుసలను &రీసెట్ చేయండి
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	&షెడ్యూలర్ మరియు క్యూలు
@@ -2221,6 +2446,10 @@ menu	&Tray icon	&ట్రే చిహ్నం
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	&ట్యుటోరియల్‌లు
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&అన్‌డూ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2435,6 +2664,15 @@ menu	Refresh download address	డౌన్‌లోడ్ చిరునామ�
 #, machine
 menu	Remove	తీసివేయండి
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	ఫైల్‌లతో &తొలగించు
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	ఫైల్‌లతో తొలగించు
+#. menu command in the main window
 #, machine
 menu	Resume Download	డౌన్‌లోడ్‌ను పునఃప్రారంభించండి
 #. menu command in the main window
@@ -2454,7 +2692,7 @@ menu	S&top queue	క్యూను ఆపండి(&p)
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	షెడ్యూల్
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	అన్నింటినీ ఎంచుకో(&a)
@@ -2522,18 +2760,23 @@ menu	Turn of&f	ఆఫ్ చేయండి(&f)
 #, machine
 menu	Verify checksum...	చెక్సమ్‌ను ధృవీకరించండి...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Downloads	&డౌన్‌లోడ్‌లు
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&File	&ఫైల్
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Help	&సహాయం
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Tasks	&పనులు
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&వీక్షణ
 #. toolbar button in the main window

@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} ಬೈಟ್|{n} ಬೈಟ್‌ಗಳು
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} ಡೌನ್‌ಲೋಡ್|{n} ಡೌನ್‌ಲೋಡ್‌ಗಳು
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ|{n} ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ಫೈಲ್|{n} ಫೈಲ್‌ಗಳು
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ|{n} ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ಆಮದು ಮೂಲಕ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	ರದ್ದುಮಾಡಿ
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	ವರ್ಗ
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	ವರ್ಗದ ಫೋಲ್ಡರ್
 #. text in categories.rs
 #, machine
 	Category properties	ವರ್ಗದ ಗುಣಲಕ್ಷಣಗಳು
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	ಗಡಿಯಾರ:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	ಮುಚ್ಚಿ
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	ಡಿಸೆಂಬರ್
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	ಕಡಿಮೆ ಮಾಡಿ
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ಡೀಫಾಲ್ಟ್ ಗರಿಷ್ಠ ಸಂಪರ್ಕ ಸಂಖ್ಯೆ
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	ಅಳಿಸು
 #. message or event log entry in the main window
 #, machine
 	Delete category	ವರ್ಗವನ್ನು ಅಳಿಸಿ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	ಕ್ಯೂ ಅಳಿಸಿ
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" ವರ್ಗವನ್ನು ಅಳಿಸುವುದೇ? ಅದರ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಸಾಮಾನ್ಯವಾಗುತ್ತವೆ; ಅವುಗಳ ಫೈಲ್‌ಗಳು ಅವುಗಳಿರುವ ಸ್ಥಳದಲ್ಲಿಯೇ ಉಳಿಯುತ್ತವೆ.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" ಕ್ಯೂ ಅನ್ನು ಅಳಿಸುವುದೇ? ಅದರ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಪಟ್ಟಿಯಲ್ಲಿ ಉಳಿಯುತ್ತವೆ.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	ಅಪ್‌ಡೇಟ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	ಡೌನ್‌ಲೋಡ್‌ಗಳು
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ನಿಲ್ಲಿಸಲಾಗಿದೆ ಮತ್ತು {time} ಕ್ಕೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪುನರಾರಂಭಗೊಳ್ಳುತ್ತದೆ.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	.torrent ಫೈಲ್‌ಗಳು ಅಥವಾ ವಿಳಾಸಗಳ ಪಟ್ಟಿಗಳನ್ನು ಇಲ್ಲಿಗೆ ಎಳೆಯಿರಿ
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಲಿಂಕ್‌ಗಳನ್ನು ಇಲ್ಲಿಗೆ ಎಳೆಯಿರಿ
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	ಬಿಡಲಾದ ಲಿಂಕ್‌ಗಳು
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ನಕಲಿ ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	ಕ್ಯೂ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	ಉದಾಹರಣೆಗೆ: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	ನಿಮ್ಮ ಖಾತೆಗಾಗಿ ಮಾತ್ರ. ಡೀಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಲಾದ ಇನ್ನೊಂದು ಅಪ್ಲಿಕೇಶನ್ ಮೊದಲ ಸ್ಥಾನದಲ್ಲಿ ಉಳಿಯುತ್ತದೆ.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	ನಿಮ್ಮ Windows ಖಾತೆಗಾಗಿ ಮಾತ್ರ. "ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ" ನಲ್ಲಿ ಆಯ್ಕೆಮಾಡಿದ ಇನ್ನೊಂದು ಅಪ್ಲಿಕೇಶನ್ ಮೊದಲ ಸ್ಥಾನದಲ್ಲಿ ಉಳಿಯುತ್ತದೆ.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ಟೊರೆಂಟ್ ಫೈಲ್‌ನಿಂದ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	ಇಂದ ಮೊದಲು ಇರಬೇಕು
 #. message or event log entry in the main window
 #, machine
 	from the browser	ಬ್ರೌಸರ್‌ನಿಂದ
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	ಪೀರ್‌ಗಳಿಂದ ಫೈಲ್ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ... {n} ಸೆ
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	ಡೌನ್‌ಲೋಡ್ ಮುಗಿದ ನಂತರ ಮುಂದುವರಿಯುತ್ತದೆ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	ಮುಗಿದ ನಂತರ ಮೋಡೆಮ್ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ಕ್ಯೂನಲ್ಲಿ
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	ಪಟ್ಟಿಯಲ್ಲಿ
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	ಹೆಚ್ಚಿಸಿ
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	ಎಲ್ಲಾ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಒಟ್ಟಾಗಿ ಇದಕ್ಕೆ ಸೀಮಿತಗೊಳಿಸಿ
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	ವಿಳಾಸಗಳ ಪಟ್ಟಿಗಳು
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	ಲಾಗಿನ್
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ಹುಡುಕಿ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	ಮೊದಲು ಹೊಸ ವಿಳಾಸವನ್ನು ಹುಡುಕಿ
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	ಕಾಣೆಯಾಗಿದೆ
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ಪುಟವನ್ನು ಮೇಲಕ್ಕೆ/ಕೆಳಕ್ಕೆ ಸರಿಸಿ
+#. text in the Scheduler window
+#, machine
+	Move down	ಕೆಳಗೆ ಸರಿಸಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	ಆಯ್ಕೆಮಾಡಿದ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಸರಿಸಿ ಅಥವಾ ಮರುಹೆಸರಿಸಿ
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ಕ್ಯೂಗೆ ಸರಿಸಿ
+#. text in the Scheduler window
+#, machine
+	Move up	ಮೇಲಕ್ಕೆ ಸರಿಸಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	ಆಯ್ಕೆಯನ್ನು ಬದಲಾಯಿಸದೆ ಸರಿಸಿ
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ಸರಿಸಿ/ಮರುಹೆಸರಿಸಿ
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	ಫೈಲ್ ಅನ್ನು ಸರಿಸಲಾಗುತ್ತಿದೆ...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	ಇತರ ಸಂಪರ್ಕಗಳಿಗಿಂತ ನಿಧಾನವಾಗಿದೆ; ಮರುಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	ಇನ್ನೂ ಯಾವುದೇ ಫೋಲ್ಡರ್‌ಗಳಿಲ್ಲ
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	ಯಾವುದೇ ಭಾಷೆಯು ಹುಡುಕಾಟಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
 #. text in langpick.rs
 #, machine
 	No language matches.	ಯಾವುದೇ ಭಾಷೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	ಯಾವುದೇ ಮೇಲ್ ಅಪ್ಲಿಕೇಶನ್ ತೆರೆಯಲಿಲ್ಲ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	ಯಾವುದೇ ಮೇಲ್ ಅಪ್ಲಿಕೇಶನ್ ಇಲ್ಲ: ಸಂದೇಶವನ್ನು ನಕಲಿಸಲಾಗಿದೆ, ಅದನ್ನು ನಿಮ್ಮ ಮೇಲ್‌ನಲ್ಲಿ ಅಂಟಿಸಿ.
 #. text in the Options window
 #, machine
 	No proxy/socks	ಯಾವುದೇ ಪ್ರಾಕ್ಸಿ/SOCKS ಇಲ್ಲ
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	ಗಮನಿಸಿ: ಈ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಕ್ಯೂ ಪ್ರಕ್ರಿಯೆಗೆ ಸಂಬಂಧಿಸಿಲ್ಲ
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item} ನಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಏನೂ ಇಲ್ಲ: ಲಿಂಕ್‌ಗಳು, .torrent ಫೈಲ್ ಅಥವಾ ವಿಳಾಸಗಳ ಪಟ್ಟಿಯನ್ನು (.txt, .ef2) ಬಿಡಿ.
 #. text in the Scheduler window
 #, machine
 	November	ನವೆಂಬರ್
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ಒಂದು-ಬಾರಿ ಡೌನ್‌ಲೋಡ್
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	ಮುಗಿದ ಡೌನ್‌ಲೋಡ್ ಅಥವಾ ಇನ್ನೂ ಪ್ರಾರಂಭಿಸದ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಮಾತ್ರ ಸರಿಸಬಹುದು
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ಮುಗಿದ ಡೌನ್‌ಲೋಡ್ ಅಥವಾ ಇನ್ನೂ ಪ್ರಾರಂಭಿಸದ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಮಾತ್ರ ಸರಿಸಬಹುದು. ಅದನ್ನು ನಿಲ್ಲಿಸಿ ಮತ್ತು ಮೊದಲು ಅದನ್ನು ಮುಗಿಸಿ.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ನಾನು ಕಂಪ್ಯೂಟರ್ ಬಳಸುತ್ತಿರುವಾಗ ಮಾತ್ರ
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	ತೆರೆಯಿರಿ
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	ವಿರಾಮ
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	ಮೊದಲು ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ವಿರಾಮಗೊಳಿಸಿ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	ಮುನ್ನೋಟ
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	ಪೂರ್ವವೀಕ್ಷಣೆ ಇನ್ನೂ ಲಭ್ಯವಿಲ್ಲ
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ಪ್ರಾಕ್ಸಿ ಸರ್ವರ್ ವಿಳಾಸ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	ಸಂಖ್ಯೆಗಳು ಅಥವಾ ಅಕ್ಷರಗಳು ಹೋಗುವ ವಿಳಾಸದಲ್ಲಿ * ಅನ್ನು ಹಾಕಿ
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	ತೆಗೆದುಹಾಕಿ
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	ಸಾಲಿನಿಂದ ತೆಗೆದುಹಾಕಿ
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	ಪುನರಾರಂಭಿಸಲಾಗಿದೆ
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	ಮರುಪ್ರಯತ್ನಿಸಿ
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	ಎರಡನೇ ಫೈಲ್:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	ಫೋಲ್ಡರ್ ಆಯ್ಕೆಮಾಡಿ
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	ಟೊರೆಂಟ್ ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿರುವಾಗ ತೋರಿಸಲಾಗುತ್ತದೆ.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	ಶಟ್ ಡೌನ್
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	ಸ್ಥಿತಿ:
+#. text in the Add torrent window
+#, machine
+	Stop	ನಿಲ್ಲಿಸಿ
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	ಡೌನ್‌ಲೋಡ್ ನಿಲ್ಲಿಸಿ
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} ನಿಲ್ಲಿಸಿ
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	ನಿಲ್ಲಿಸಲಾಗಿದೆ
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	ಗು
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	ಅದು 100,000 ಕ್ಕಿಂತ ಹೆಚ್ಚು ಫೈಲ್‌ಗಳು: ಶ್ರೇಣಿಯನ್ನು ಚಿಕ್ಕದಾಗಿಸಿ
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	ವೀಡಿಯೊ ಮತ್ತು ಆಡಿಯೊವನ್ನು ವಿಲೀನಗೊಳಿಸಲು ಉತ್ತಮ ಗುಣಮಟ್ಟಗಳಿಗೆ ffmpeg ಅಗತ್ಯವಿದೆ (ಸುಮಾರು 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	ಉತ್ತಮ ಗುಣಮಟ್ಟಗಳಿಗೆ ffmpeg ಅಗತ್ಯವಿದೆ: ನಿಮ್ಮ ಸಿಸ್ಟಮ್‌ನ ಪ್ಯಾಕೇಜ್ ಮ್ಯಾನೇಜರ್ (ಅಥವಾ Homebrew) ನೊಂದಿಗೆ ಅದನ್ನು ಸ್ಥಾಪಿಸಿ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್ ಕಾರ್ಯನಿರತವಾಗಿದೆ: ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	ಕಂಪ್ಯೂಟರ್ ಅನ್ನು ಆಫ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	ಡಿಸ್ಕ್ ತುಂಬಿದೆ
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	ಡೌನ್‌ಲೋಡ್ ಇನ್ನೂ ಪೂರ್ಣಗೊಂಡಿಲ್ಲ
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್ ಅವಧಿ ಮೀರಿದೆ (ಡೌನ್‌ಲೋಡ್ ವಿಳಾಸವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	ಡೌನ್‌ಲೋಡ್ ಪಟ್ಟಿಯನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}. MDM ಚಾಲನೆಯಲ್ಲಿರುವಾಗ ಬದಲಾವಣೆಗಳನ್ನು ಇರಿಸಲಾಗುತ್ತದೆ.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	ನಿಮಗೆ ಈಗಾಗಲೇ ತಿಳಿದಿರುವ ಡೌನ್‌ಲೋಡ್ ಮ್ಯಾನೇಜರ್, ವೇಗವಾಗಿರಲು ಮರುನಿರ್ಮಿಸಲಾಗಿದೆ. GNU GPL, ಆವೃತ್ತಿ 3 ಅಥವಾ ನಂತರದ ಅಡಿಯಲ್ಲಿ ಉಚಿತ ಮತ್ತು ಮುಕ್ತ ಮೂಲ. ವೀಡಿಯೊಗಳನ್ನು yt-dlp ಮೂಲಕ ಕಂಡುಹಿಡಿಯಲಾಗುತ್ತದೆ; ಟೊರೆಂಟ್‌ಗಳು librqbit ನಲ್ಲಿ ರನ್ ಆಗುತ್ತವೆ.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	ಫೈಲ್ ಅನ್ನು ಸರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	ಫೈಲ್ ಅನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	ಇತರ ಯಾವುದೇ ವರ್ಗದಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡದ ಫೈಲ್ ಪ್ರಕಾರಗಳು
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	ಫೈಲ್‌ನ ಸ್ವಂತ ಚೆಕ್‌ಸಮ್
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ಈ ಫೋಲ್ಡರ್ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	ಈ ಸಿಸ್ಟಮ್ ಡಯಲ್-ಅಪ್ ಸಂಪರ್ಕಗಳನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲು ಹೊಂದಿಲ್ಲ
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ಈ ಟೊರೆಂಟ್ ಈಗಾಗಲೇ ಡೌನ್‌ಲೋಡ್ ಪಟ್ಟಿಯಲ್ಲಿದೆ
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	ಗೆ:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	ಇಂದು: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	ಹೆಚ್ಚು ಮರುನಿರ್ದೇಶನಗಳು
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	ಟೊರೆಂಟ್ ಡೌನ್‌ಲೋಡ್‌ಗಳು (ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳು ಮತ್ತು .torrent ಫೈಲ್‌ಗಳು)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	ಟೊರೆಂಟ್ ಫೈಲ್‌ಗಳು
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	ಆಫ್ ಮಾಡಿ
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	ಕಂಪ್ಯೂಟರ್ ಆಫ್ ಮಾಡಿ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	ಮುಗಿದ ನಂತರ ಕಂಪ್ಯೂಟರ್ ಆಫ್ ಮಾಡಿ
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ಆನ್ ಮಾಡಿ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	From ಮತ್ತು To ನಲ್ಲಿ ಅಕ್ಷರವನ್ನು ಟೈಪ್ ಮಾಡಿ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	From ಮತ್ತು To ನಲ್ಲಿ ಸಂಖ್ಯೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	ವರ್ಗದ ಹೆಸರನ್ನು ಟೈಪ್ ಮಾಡಿ
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	Save As ನಲ್ಲಿ ಫೈಲ್‌ನ ಹೆಸರನ್ನು ಟೈಪ್ ಮಾಡಿ
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	ಏನು ಹುಡುಕಬೇಕೆಂದು ಟೈಪ್ ಮಾಡಿ, ಮತ್ತು ಹುಡುಕಲು ಕನಿಷ್ಠ ಒಂದು ಸ್ಥಳವನ್ನು ಗುರುತಿಸಿ
 #. text in a download's Properties window
 #, machine
 	Type:	ಪ್ರಕಾರ:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	ಅಜ್ಞಾತ
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	ಅಜ್ಞಾತ
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV ಮೋಡ್‌ನಲ್ಲಿ FTP ಬಳಸಿ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	ಒಂದು * ಮಾತ್ರ ಬಳಸಿ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	ಪರಿಶೀಲಿಸಿ
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	ಚೆಕ್‌ಸಮ್ ಪರಿಶೀಲಿಸಿ
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ವೈರಸ್ ಪರಿಶೀಲನೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	ಕಾಯಲಾಗುತ್ತಿದೆ
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} ಒಳಗೊಂಡಿದೆ
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ಫೈಲ್
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} ಅನ್ನು ಡಿಸ್ಕ್‌ನಿಂದ ಅಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} ಅನ್ನು ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file} ಅನ್ನು ಪರಿಶೀಲಿಸಲು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ಅನ್ನು ಉಳಿಸಿದ ಸ್ಥಳದಲ್ಲಿಲ್ಲ (ಸ್ಥಳಾಂತರಿಸಲಾಗಿದೆ ಅಥವಾ ಅಳಿಸಲಾಗಿದೆ). ಅದರ ರೈಟ್-ಕ್ಲಿಕ್ ಮೆನುವಿನಲ್ಲಿ, ಮರುಡೌನ್‌ಲೋಡ್ ಮಾಡಿ, ಅದನ್ನು ಮತ್ತೆ ಪಡೆಯುತ್ತದೆ.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ಫೈಲ್ ಅದರ ಚೆಕ್‌ಸಮ್‌ಗೆ ({algorithm}) ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: ಫೈಲ್ ಅದರ ಚೆಕ್‌ಸಮ್‌ಗೆ ({algorithm}) ಹೊಂದಿಕೆಯಾಗುತ್ತದೆ
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	ಕೊನೆಯ ಪ್ರಯತ್ನದ ದಿನಾಂಕ
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	ಕ್ಯೂ
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Mister Download Manager ಬಗ್ಗೆ(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	ಹೊಸ ಡೌನ್‌ಲೋಡ್ ಸೇರಿಸಿ(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	ಹೊಸ ಡೌನ್‌ಲೋಡ್ ಸೇರಿಸಿ(&A)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	ತೆಗೆದುಹಾಕಿ(&R)
 #, machine
 menu	&Report a problem	ಸಮಸ್ಯೆಯನ್ನು ವರದಿ ಮಾಡಿ(&R)
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	ಕಾಲಂಗಳನ್ನು ಮರುಹೊಂದಿಸಿ(&R)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	ವೇಳಾಪಟ್ಟಿ ಮತ್ತು ಕ್ಯೂಗಳು(&S)
@@ -2221,6 +2446,10 @@ menu	&Tray icon	ಟ್ರೇ ಐಕಾನ್(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	ಟ್ಯುಟೋರಿಯಲ್‌ಗಳು(&T)
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	ರದ್ದುಗೊಳಿಸಿ(&U)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2435,6 +2664,15 @@ menu	Refresh download address	ಡೌನ್‌ಲೋಡ್ ವಿಳಾಸ ರಿ
 #, machine
 menu	Remove	ತೆಗೆದುಹಾಕಿ
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	ಫೈಲ್‌ಗಳೊಂದಿಗೆ ತೆಗೆದುಹಾಕಿ(&F)
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	ಫೈಲ್‌ಗಳೊಂದಿಗೆ ತೆಗೆದುಹಾಕಿ
+#. menu command in the main window
 #, machine
 menu	Resume Download	ಡೌನ್‌ಲೋಡ್ ಪುನರಾರಂಭಿಸಿ
 #. menu command in the main window
@@ -2454,7 +2692,7 @@ menu	S&top queue	ಕ್ಯೂ ನಿಲ್ಲಿಸಿ(&S)
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	ಶೆಡ್ಯೂಲ್
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	ಎಲ್ಲವನ್ನೂ ಆ&ಯ್ಕೆಮಾಡಿ
@@ -2522,18 +2760,23 @@ menu	Turn of&f	ಆಫ್ ಮಾಡಿ(&f)
 #, machine
 menu	Verify checksum...	ಚೆಕ್‌ಸಮ್ ಪರಿಶೀಲಿಸಿ...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Downloads	&ಡೌನ್‌ಲೋಡ್‌ಗಳು
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&File	&ಫೈಲ್
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Help	&ಸಹಾಯ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Tasks	&ಕಾರ್ಯಗಳು
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&ವೀಕ್ಷಿಸಿ
 #. toolbar button in the main window

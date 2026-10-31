@@ -6,6 +6,14 @@ Every download, finished or not, has a row in the list. The categories on the le
 
 ![The main window](images/main-light.png)
 
+The strip under the list says how many downloads it shows and how many are selected, and while
+downloads run, how many and how fast in all (the tray icon's tip says the same). When the list
+is empty it says why: nothing in this category or queue, or the column filters hide everything
+(with **Clear all filters**).
+
+MDM opens where you left it: the window's place and size, the Categories pane, its open
+branches and the category or queue you were looking at.
+
 ## Columns
 
 | Column | What it shows |
@@ -23,8 +31,10 @@ Every download, finished or not, has a row in the list. The categories on the le
 
 - **Sort:** click a column title. Click again to reverse the order, and a third time to go back to the order of addition. **View → Arrange files** does the same from the menu.
 - **Move a column:** drag its title sideways.
-- **Resize a column:** drag the line between two titles.
-- **Choose columns:** right-click any column title and tick the ones you want.
+- **Resize a column:** drag the line between two titles; double-click it to fit the column to
+  its contents.
+- **Choose columns:** right-click any column title and tick the ones you want. **Reset columns**
+  in the same menu puts them back as they first were.
 
 MDM remembers the columns, their widths and the sort order.
 
@@ -55,7 +65,19 @@ Right-click a category for:
 - **Add category** — make your own, for example **Books** for `EPUB MOBI`. Give it a name, the file types (separated by spaces, `*` allowed) and a folder.
 - **Delete** — remove one of your own categories. Its downloads become General; their files stay where they are.
 
-**View → Hide categories** gives the list the whole window.
+The top branches show how many downloads they hold. **View → Hide categories** gives the list
+the whole window.
+
+## Dropping links and files
+
+Drag a link from a browser (or a page's text with links in it) onto the list to add it: one
+link opens **Download File Info**, several open **Import** to choose which to add. Drop a
+`.torrent` file to add the torrent, or a list of addresses (`.txt`, `.ef2`) to import it. The
+list is outlined while something you can drop is over it. On macOS and Linux, files can be
+dropped (links from a browser only on Windows).
+
+Right-click the list's blank space for **Add new download**, **Select all**, **Arrange files**,
+**Clear all filters** and **Delete All Completed**.
 
 ## Opening a download
 
@@ -108,7 +130,9 @@ Select one or more downloads and press **Delete**, click **Delete** on the toolb
 
 Click **Yes** to delete, or **No** to keep everything.
 
-**Shift+Delete** opens the same question with **Also delete the file from disk** already ticked. MDM remembers your last answer and ticks the box the same way next time.
+**Shift+Delete** opens the same question with **Also delete the file from disk** already ticked, for that time only. After a plain **Delete**, MDM remembers your answer and ticks the box the same way next time.
+
+After deleting, the next download in the list is selected, so you can press **Delete** again.
 
 A download that is running isn't deleted. Stop it first.
 

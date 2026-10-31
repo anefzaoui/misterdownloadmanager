@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} ਬਾਈਟ|{n} ਬਾਈਟ
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} ਡਾਊਨਲੋਡ|{n} ਡਾਊਨਲੋਡ
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ|{n} ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ਫਾਈਲ|{n} ਫਾਈਲਾਂ
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} ਚੁਣਿਆ ਗਿਆ|{n} ਚੁਣੇ ਗਏ
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ਆਯਾਤ ਦੁਆਰਾ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	ਰੱਦ ਕਰੋ
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	ਸ਼੍ਰੇਣੀ
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	ਸ਼੍ਰੇਣੀ ਫੋਲਡਰ
 #. text in categories.rs
 #, machine
 	Category properties	ਸ਼੍ਰੇਣੀ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	ਘੜੀ:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	ਬੰਦ ਕਰੋ
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	ਦਸੰਬਰ
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	ਘਟਾਓ
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ਡਿਫੌਲਟ ਅਧਿਕਤਮ ਕਨੈਕਸ਼ਨ ਨੰਬਰ
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	ਮਿਟਾਓ
 #. message or event log entry in the main window
 #, machine
 	Delete category	ਸ਼੍ਰੇਣੀ ਮਿਟਾਓ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	ਕਤਾਰ ਮਿਟਾਓ
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	ਸ਼੍ਰੇਣੀ "{category}" ਮਿਟਾਓ? ਇਸਦੇ ਡਾਊਨਲੋਡ ਆਮ ਹੋ ਜਾਣਗੇ; ਉਹਨਾਂ ਦੀਆਂ ਫਾਈਲਾਂ ਉੱਥੇ ਹੀ ਰਹਿਣਗੀਆਂ ਜਿੱਥੇ ਉਹ ਹਨ।
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	ਕਤਾਰ "{queue}" ਮਿਟਾਓ? ਇਸਦੇ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿੱਚ ਰਹਿਣਗੇ।
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	ਅੱਪਡੇਟ ਡਾਊਨਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	ਡਾਊਨਲੋਡ
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ਡਾਊਨਲੋਡ ਬੰਦ ਹੋ ਗਏ ਹਨ ਅਤੇ {time} ਵਜੇ ਆਪਣੇ ਆਪ ਮੁੜ ਸ਼ੁਰੂ ਹੋ ਜਾਣਗੇ।
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	.torrent ਫਾਈਲਾਂ ਜਾਂ ਪਤਿਆਂ ਦੀਆਂ ਸੂਚੀਆਂ ਇੱਥੇ ਖਿੱਚੋ
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਲਿੰਕ ਇੱਥੇ ਖਿੱਚੋ
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	ਛੱਡੇ ਗਏ ਲਿੰਕ
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ਡੁਪਲੀਕੇਟ ਡਾਊਨਲੋਡ ਲਿੰਕ
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	ਕਤਾਰ ਦਾ ਨਾਮ ਦਾਖਲ ਕਰੋ
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	ਉਦਾਹਰਨ ਲਈ: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	ਸਿਰਫ਼ ਤੁਹਾਡੇ ਖਾਤੇ ਲਈ। ਡਿਫੌਲਟ ਵਜੋਂ ਸੈੱਟ ਕੀਤੀ ਗਈ ਕੋਈ ਹੋਰ ਐਪ ਪਹਿਲਾਂ ਰਹਿੰਦੀ ਹੈ।
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	ਸਿਰਫ਼ ਤੁਹਾਡੇ Windows ਖਾਤੇ ਲਈ। "ਇਸ ਨਾਲ ਖੋਲ੍ਹੋ" ਵਿੱਚ ਚੁਣੀ ਗਈ ਕੋਈ ਹੋਰ ਐਪ ਪਹਿਲਾਂ ਰਹਿੰਦੀ ਹੈ।
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ਇੱਕ ਟੋਰੈਂਟ ਫਾਈਲ ਤੋਂ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	ਤੋਂ ਪਹਿਲਾਂ ਤੱਕ ਆਉਣਾ ਚਾਹੀਦਾ ਹੈ
 #. message or event log entry in the main window
 #, machine
 	from the browser	ਬ੍ਰਾਊਜ਼ਰ ਤੋਂ
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	ਪੀਅਰਾਂ ਤੋਂ ਫਾਈਲ ਸੂਚੀ ਪ੍ਰਾਪਤ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ... {n} s
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	ਡਾਊਨਲੋਡ ਖਤਮ ਹੋਣ ਤੋਂ ਬਾਅਦ ਜਾਰੀ ਰਹਿੰਦਾ ਹੈ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	ਹੋ ਜਾਣ 'ਤੇ ਮਾਡਮ ਹੈਂਗ ਅੱਪ ਕਰੋ
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ਇੱਕ ਕਤਾਰ ਵਿੱਚ
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	ਸੂਚੀ ਵਿੱਚ
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	ਵਧਾਓ
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	ਸਾਰੇ ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਇਕੱਠੇ ਇਸ ਤੱਕ ਸੀਮਤ ਕਰੋ
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	ਪਤਿਆਂ ਦੀਆਂ ਸੂਚੀਆਂ
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	ਲੌਗਇਨ
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ਖੋਜੋ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	ਪਹਿਲਾਂ ਨਵਾਂ ਪਤਾ ਲੱਭੋ
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	ਗੁੰਮ
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ਇੱਕ ਪੰਨਾ ਉੱਪਰ/ਹੇਠਾਂ ਭੇਜੋ
+#. text in the Scheduler window
+#, machine
+	Move down	ਹੇਠਾਂ ਲੈ ਜਾਓ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	ਚੁਣੀ ਗਈ ਡਾਊਨਲੋਡ ਨੂੰ ਭੇਜੋ ਜਾਂ ਨਾਮ ਬਦਲੋ
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ਕਤਾਰ ਵਿੱਚ ਭੇਜੋ
+#. text in the Scheduler window
+#, machine
+	Move up	ਉੱਪਰ ਲੈ ਜਾਓ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	ਚੋਣ ਬਦਲੇ ਬਿਨਾਂ ਭੇਜੋ
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ਭੇਜੋ/ਨਾਮ ਬਦਲੋ
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	ਫਾਈਲ ਮੂਵ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	ਦੂਜੇ ਕਨੈਕਸ਼ਨਾਂ ਨਾਲੋਂ ਬਹੁਤ ਹੌਲੀ; ਮੁੜ-ਕਨੈਕਟ ਕਰ ਰਿਹਾ ਹੈ
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	ਕੋਈ ਫੋਲਡਰ ਨਹੀਂ ਹਨ
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	ਕੋਈ ਭਾਸ਼ਾ ਖੋਜ ਨਾਲ ਮੇਲ ਨਹੀਂ ਖਾਂਦੀ
 #. text in langpick.rs
 #, machine
 	No language matches.	ਕੋਈ ਭਾਸ਼ਾ ਮੇਲ ਨਹੀਂ ਖਾਂਦੀ।
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	ਕੋਈ ਮੇਲ ਐਪ ਨਹੀਂ ਖੁੱਲ੍ਹੀ।
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	ਕੋਈ ਮੇਲ ਐਪ ਨਹੀਂ: ਸੁਨੇਹਾ ਕਾਪੀ ਕੀਤਾ ਗਿਆ ਹੈ, ਇਸਨੂੰ ਆਪਣੀ ਮੇਲ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।
 #. text in the Options window
 #, machine
 	No proxy/socks	ਕੋਈ ਪ੍ਰੌਕਸੀ/SOCKS ਨਹੀਂ
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	ਨੋਟ: ਇਹ ਸੈਟਿੰਗਾਂ ਕਤਾਰ ਪ੍ਰੋਸੈਸਿੰਗ ਨਾਲ ਸਬੰਧਤ ਨਹੀਂ ਹਨ
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item} ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ ਹੈ: ਲਿੰਕ, ਇੱਕ .torrent ਫਾਈਲ, ਜਾਂ ਪਤਿਆਂ ਦੀ ਸੂਚੀ (.txt, .ef2) ਛੱਡੋ।
 #. text in the Scheduler window
 #, machine
 	November	ਨਵੰਬਰ
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ਇੱਕ ਵਾਰੀ ਡਾਊਨਲੋਡ ਕਰਨਾ
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	ਸਿਰਫ਼ ਇੱਕ ਪੂਰਾ ਹੋਇਆ ਡਾਊਨਲੋਡ, ਜਾਂ ਇੱਕ ਜੋ ਅਜੇ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋਇਆ ਹੈ, ਨੂੰ ਮੂਵ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ਸਿਰਫ਼ ਇੱਕ ਪੂਰਾ ਹੋਇਆ ਡਾਊਨਲੋਡ, ਜਾਂ ਇੱਕ ਜੋ ਅਜੇ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋਇਆ ਹੈ, ਨੂੰ ਮੂਵ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਇਸਨੂੰ ਪਹਿਲਾਂ ਰੋਕੋ ਅਤੇ ਪੂਰਾ ਕਰੋ।
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ਸਿਰਫ਼ ਜਦੋਂ ਮੈਂ ਕੰਪਿਊਟਰ ਦੀ ਵਰਤੋਂ ਕਰ ਰਿਹਾ ਹੋਵਾਂ
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	ਖੋਲ੍ਹੋ
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	ਰੋਕੋ
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	ਪਹਿਲਾਂ ਡਾਊਨਲੋਡ ਨੂੰ ਰੋਕੋ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	ਪੂਰਵਦਰਸ਼ਨ
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	ਪੂਰਵਦਰਸ਼ਨ ਅਜੇ ਉਪਲਬਧ ਨਹੀਂ ਹੈ
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ਪ੍ਰੌਕਸੀ ਸਰਵਰ ਪਤਾ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	ਪਤੇ ਵਿੱਚ ਇੱਕ * ਪਾਓ ਜਿੱਥੇ ਨੰਬਰ ਜਾਂ ਅੱਖਰ ਜਾਂਦੇ ਹਨ
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	ਹਟਾਓ
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	ਕਤਾਰ ਵਿੱਚੋਂ ਹਟਾਓ
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਗਿਆ
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	ਦੂਜੀ ਫਾਈਲ:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	ਇੱਕ ਫੋਲਡਰ ਚੁਣੋ
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	ਟੋਰੈਂਟ ਡਾਊਨਲੋਡ ਹੋਣ ਦੌਰਾਨ ਦਿਖਾਇਆ ਗਿਆ।
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	ਬੰਦ ਕਰੋ
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	ਸਥਿਤੀ:
+#. text in the Add torrent window
+#, machine
+	Stop	ਰੋਕੋ
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	ਡਾਊਨਲੋਡ ਬੰਦ ਕਰੋ
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} ਬੰਦ ਕਰੋ
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	ਰੋਕਿਆ ਗਿਆ
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	ਵੀਰ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	ਇਹ 100,000 ਤੋਂ ਵੱਧ ਫਾਈਲਾਂ ਹਨ: ਰੇਂਜ ਨੂੰ ਛੋਟਾ ਕਰੋ
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	ਵੀਡੀਓ ਅਤੇ ਆਡੀਓ ਨੂੰ ਮਿਲਾਉਣ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾਵਾਂ ਲਈ ffmpeg (ਲਗਭਗ 80 MB) ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ ਲਈ ffmpeg ਦੀ ਲੋੜ ਹੈ: ਇਸਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਦੇ ਪੈਕੇਜ ਮੈਨੇਜਰ (ਜਾਂ Homebrew) ਨਾਲ ਸਥਾਪਿਤ ਕਰੋ।
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	ਕਲਿੱਪਬੋਰਡ ਰੁੱਝਿਆ ਹੋਇਆ ਹੈ: ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	ਕੰਪਿਊਟਰ ਬੰਦ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	ਡਿਸਕ ਭਰੀ ਹੋਈ ਹੈ
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	ਡਾਊਨਲੋਡ ਅਜੇ ਪੂਰਾ ਨਹੀਂ ਹੋਇਆ ਹੈ
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	ਡਾਊਨਲੋਡ ਲਿੰਕ ਦੀ ਮਿਆਦ ਪੁੱਗ ਗਈ ਹੈ (ਡਾਊਨਲੋਡ ਪਤੇ ਨੂੰ ਤਾਜ਼ਾ ਕਰੋ)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	ਡਾਊਨਲੋਡ ਸੂਚੀ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ: {error}। MDM ਚੱਲਣ ਤੱਕ ਤਬਦੀਲੀਆਂ ਰੱਖੀਆਂ ਜਾਂਦੀਆਂ ਹਨ।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	ਡਾਊਨਲੋਡ ਮੈਨੇਜਰ ਜਿਸਨੂੰ ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਜਾਣਦੇ ਹੋ, ਤੇਜ਼ ਹੋਣ ਲਈ ਦੁਬਾਰਾ ਬਣਾਇਆ ਗਿਆ। GNU GPL, ਸੰਸਕਰਣ 3 ਜਾਂ ਬਾਅਦ ਦੇ ਅਧੀਨ ਮੁਫਤ ਅਤੇ ਓਪਨ ਸੋਰਸ। ਵੀਡੀਓ yt-dlp ਦੁਆਰਾ ਲੱਭੇ ਜਾਂਦੇ ਹਨ; ਟੋਰੈਂਟ librqbit 'ਤੇ ਚੱਲਦੇ ਹਨ।
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	ਫਾਈਲ ਮੂਵ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	ਫਾਈਲ ਪੜ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕੀ: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	ਫਾਈਲ ਕਿਸਮਾਂ ਜੋ ਕਿਸੇ ਹੋਰ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਸੂਚੀਬੱਧ ਨਹੀਂ ਹਨ
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	ਫਾਈਲ ਦਾ ਆਪਣਾ ਚੈੱਕਸਮ
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ਇਹ ਫੋਲਡਰ ਮੌਜੂਦ ਨਹੀਂ ਹੈ:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	ਇਸ ਸਿਸਟਮ ਵਿੱਚ ਹੈਂਗ ਅੱਪ ਕਰਨ ਲਈ ਕੋਈ ਡਾਇਲ-ਅੱਪ ਕਨੈਕਸ਼ਨ ਨਹੀਂ ਹਨ
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ਇਹ ਟੋਰੈਂਟ ਪਹਿਲਾਂ ਹੀ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿੱਚ ਹੈ
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	ਇਸ 'ਤੇ:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	ਅੱਜ: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	ਬਹੁਤ ਜ਼ਿਆਦਾ ਰੀਡਾਇਰੈਕਟਸ
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	ਟੋਰੈਂਟ ਡਾਊਨਲੋਡ (ਮੈਗਨੈਟ ਲਿੰਕ ਅਤੇ .torrent ਫਾਈਲਾਂ)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	ਟੋਰੈਂਟ ਫਾਈਲਾਂ
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	ਬੰਦ ਕਰੋ
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	ਕੰਪਿਊਟਰ ਬੰਦ ਕਰੋ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	ਹੋਣ 'ਤੇ ਕੰਪਿਊਟਰ ਬੰਦ ਕਰੋ
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ਚਾਲੂ ਕਰੋ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	ਫਰੌਮ ਅਤੇ ਟੂ ਵਿੱਚ ਇੱਕ ਅੱਖਰ ਟਾਈਪ ਕਰੋ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	ਫਰੌਮ ਅਤੇ ਟੂ ਵਿੱਚ ਇੱਕ ਨੰਬਰ ਟਾਈਪ ਕਰੋ
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	ਸ਼੍ਰੇਣੀ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	ਇਸ ਤਰ੍ਹਾਂ ਸੁਰੱਖਿਅਤ ਕਰੋ ਵਿੱਚ ਫਾਈਲ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	ਕੀ ਲੱਭਣਾ ਹੈ, ਟਾਈਪ ਕਰੋ ਅਤੇ ਲੱਭਣ ਲਈ ਘੱਟੋ-ਘੱਟ ਇੱਕ ਥਾਂ 'ਤੇ ਨਿਸ਼ਾਨ ਲਗਾਓ
 #. text in a download's Properties window
 #, machine
 	Type:	ਕਿਸਮ:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	ਅਣਜਾਣ
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	ਅਣਜਾਣ
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV ਮੋਡ ਵਿੱਚ FTP ਦੀ ਵਰਤੋਂ ਕਰੋ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	ਸਿਰਫ਼ ਇੱਕ * ਦੀ ਵਰਤੋਂ ਕਰੋ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	ਪ੍ਰਮਾਣਿਤ ਕਰੋ
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	ਚੈੱਕਸਮ ਪ੍ਰਮਾਣਿਤ ਕਰੋ
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ਵਾਇਰਸ ਜਾਂਚ ਸੈਟਿੰਗਾਂ
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} ਵਿੱਚ ਸ਼ਾਮਲ ਹੈ
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ਫਾਈਲ
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} ਨੂੰ ਡਿਸਕ ਤੋਂ ਮਿਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} ਨੂੰ ਖੋਲ੍ਹਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file} ਨੂੰ ਜਾਂਚਣ ਲਈ ਪੜ੍ਹਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ਹੁਣ ਉੱਥੇ ਨਹੀਂ ਹੈ ਜਿੱਥੇ ਇਸਨੂੰ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਸੀ (ਮੂਵ ਕੀਤਾ ਗਿਆ ਜਾਂ ਮਿਟਾਇਆ ਗਿਆ)। ਇਸਦੇ ਸੱਜੇ-ਕਲਿੱਕ ਮੀਨੂ ਵਿੱਚ, ਮੁੜ-ਡਾਊਨਲੋਡ ਕਰੋ, ਇਸਨੂੰ ਦੁਬਾਰਾ ਪ੍ਰਾਪਤ ਕਰਦਾ ਹੈ।
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ਫਾਈਲ ਇਸਦੇ ਚੈੱਕਸਮ ({algorithm}) ਨਾਲ ਮੇਲ ਨਹੀਂ ਖਾਂਦੀ
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: ਫਾਈਲ ਇਸਦੇ ਚੈੱਕਸਮ ({algorithm}) ਨਾਲ ਮੇਲ ਖਾਂਦੀ ਹੈ
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	ਆਖਰੀ ਕੋਸ਼ਿਸ਼ ਦੀ ਮਿਤੀ
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	ਕਿਊ
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	ਕਤਾਰ
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Mister Download Manager ਬਾਰੇ(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	ਨਵਾਂ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	ਨਵਾਂ ਡਾਊਨਲੋਡ &ਸ਼ਾਮਲ ਕਰੋ...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	ਹਟਾਓ(&R)
 #, machine
 menu	&Report a problem	ਇੱਕ ਸਮੱਸਿਆ ਦੀ ਰਿਪੋਰਟ ਕਰੋ(&R)
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	ਕਾਲਮ &ਰੀਸੈਟ ਕਰੋ
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	ਸ਼ਡਿਊਲਰ ਅਤੇ ਕਤਾਰਾਂ(&S)
@@ -2221,6 +2446,10 @@ menu	&Tray icon	ਟਰੇ ਆਈਕਨ(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	ਟਿਊਟੋਰਿਅਲ(&T)
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&ਅਨਡੂ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2435,6 +2664,15 @@ menu	Refresh download address	ਡਾਊਨਲੋਡ ਪਤਾ ਤਾਜ਼ਾ �
 #, machine
 menu	Remove	ਹਟਾਓ
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	ਫਾਈਲਾਂ ਸਹਿਤ &ਹਟਾਓ
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	ਫਾਈਲਾਂ ਸਹਿਤ ਹਟਾਓ
+#. menu command in the main window
 #, machine
 menu	Resume Download	ਡਾਊਨਲੋਡ ਮੁੜ-ਚਾਲੂ ਕਰੋ
 #. menu command in the main window
@@ -2454,7 +2692,7 @@ menu	S&top queue	ਕਤਾਰ ਰੋਕੋ(&p)
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	ਸਮਾਂ-ਸਾਰਣੀ
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	ਸਾਰੇ ਚੁਣੋ(&A)
@@ -2522,18 +2760,23 @@ menu	Turn of&f	ਬੰਦ ਕਰੋ(&f)
 #, machine
 menu	Verify checksum...	ਚੈੱਕਸਮ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Downloads	&ਡਾਊਨਲੋਡ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&File	&ਫਾਈਲ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Help	&ਮਦਦ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&Tasks	&ਕਾਰਜ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&ਵੇਖੋ
 #. toolbar button in the main window
