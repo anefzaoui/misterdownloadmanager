@@ -1328,8 +1328,19 @@ pub fn text_right_within(
 /// which erases 1 × 1 rects and softens 1 px lines).
 pub fn solid(p: &Painter, rc: Rect, c: Color32) {
     let mut mesh = egui::Mesh::default();
-    mesh.add_colored_rect(rc, c);
+    mesh.add_colored_rect(snap(p.pixels_per_point(), rc), c);
     p.add(egui::Shape::mesh(mesh));
+}
+
+/// `rc` on whole screen pixels at `ppp` pixels a point (125 %, 150 % scaling put a 1 pt line
+/// across two pixels, blurred or uneven), never thinner than one pixel. At 100 % it is `rc`.
+fn snap(ppp: f32, rc: Rect) -> Rect {
+    let round = |v: f32| (v * ppp).round() / ppp;
+    let (x0, y0) = (round(rc.min.x), round(rc.min.y));
+    let one = 1.0 / ppp;
+    let x1 = round(rc.max.x).max(x0 + if rc.width() > 0.0 { one } else { 0.0 });
+    let y1 = round(rc.max.y).max(y0 + if rc.height() > 0.0 { one } else { 0.0 });
+    Rect::from_min_max(pos2(x0, y0), pos2(x1, y1))
 }
 
 /// Fill inclusive pixel coordinates `x0..=x1, y0..=y1`.
@@ -4006,6 +4017,19 @@ mod tests {
             found.is_empty(),
             "context asked inside its own lock: {found:?}"
         );
+    }
+
+    #[test]
+    fn lines_land_on_whole_pixels_at_any_scaling() {
+        let r = Rect::from_min_max(pos2(10.0, 3.0), pos2(11.0, 4.0));
+        assert_eq!(snap(1.0, r), r);
+        // 125 %: a 1 pt line at x 10 → pixels 12.5..13.75: one whole pixel, on the grid.
+        let s = snap(1.25, r);
+        assert_eq!(
+            ((s.min.x * 1.25).fract(), (s.max.x * 1.25).fract()),
+            (0.0, 0.0)
+        );
+        assert!(s.width() * 1.25 >= 1.0);
     }
 
     #[test]
