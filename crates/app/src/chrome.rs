@@ -398,7 +398,9 @@ pub enum PopupResult<C> {
 /// this system shows it: macOS's symbols (⌘N, ⇧⌦), elsewhere the translated key names.
 pub fn key_label(spec: &'static str) -> String {
     if cfg!(target_os = "macos") {
-        spec.replace("Ctrl+", "\u{2318}")
+        // Translated first ("Drag on blank space", "Home / End"...), then the Mac's symbols.
+        crate::i18n::tc("key", spec)
+            .replace("Ctrl+", "\u{2318}")
             .replace("Shift+", "\u{21e7}")
             .replace("Alt+", "\u{2325}")
             .replace("Delete", "\u{2326}")

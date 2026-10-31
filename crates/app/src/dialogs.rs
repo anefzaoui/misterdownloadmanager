@@ -1280,6 +1280,16 @@ pub fn grow_extra(ctx: &egui::Context, key: &str) -> f32 {
         .unwrap_or(0.0)
 }
 
+/// Records that dialog `key` needs `extra` px more than its layout planned ([`grow_extra`]):
+/// for what grows by other steps than whole lines (a row of links that wraps).
+pub fn grow_px(ctx: &egui::Context, key: &str, extra: f32) {
+    let extra = extra.max(0.0).ceil();
+    if extra != grow_extra(ctx, key) {
+        ctx.data_mut(|d| d.insert_temp(egui::Id::unique(("grow", key)), extra));
+        ctx.request_repaint();
+    }
+}
+
 /// Records that paragraph `key` took `lines` lines where `planned` fit (see [`grow_extra`]); a
 /// change draws again at once, at the new size.
 pub fn grow_to(ctx: &egui::Context, key: &str, lines: usize, planned: usize) {

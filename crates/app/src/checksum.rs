@@ -19,6 +19,8 @@ pub struct ChecksumDialog {
     file: Option<PathBuf>,
     check: Option<Check>,
     focused: bool,
+    /// The window closed (a check still running tells its verdict through the app).
+    gone: Arc<std::sync::atomic::AtomicBool>,
 }
 
 impl ChecksumDialog {
@@ -30,6 +32,7 @@ impl ChecksumDialog {
             file,
             check: None,
             focused: false,
+            gone: Default::default(),
         }
     }
 
@@ -175,8 +178,19 @@ impl ChecksumDialog {
                     (crate::i18n::mark("OK"), crate::i18n::mark("Cancel"))
                 };
                 let go =
-                    winui::button_light(ui, r(o, 265.0, 87.0, 73.0, 21.0), primary, kind, false)
-                        .clicked();
+                    winui::button_light(ui, r(o, 265.0, 87.0, 73.0, 21.0), primary, kind, false);
+                let go = winui::why_disabled(
+                    go,
+                    !valid,
+                    if checking {
+                        // i18n: why Verify is greyed: the file is being checked
+                        "Checking the file..."
+                    } else {
+                        // i18n: why Verify / OK is greyed in Verify checksum
+                        "Paste the checksum the download's page gives"
+                    },
+                )
+                .clicked();
                 let close = winui::button_light(
                     ui,
                     r(o, 346.0, 87.0, 73.0, 21.0),
@@ -198,9 +212,35 @@ impl ChecksumDialog {
                         Some(file) => {
                             let slot: Check = Arc::new(Mutex::new(None));
                             let (out, file, ctx) = (slot.clone(), file.clone(), ui.ctx().clone());
+                            let gone = self.gone.clone();
                             std::thread::spawn(move || {
                                 let r = mdm_engine::verify::digest(&file, h.algo)
                                     .map_err(|e| e.to_string());
+                                // Closed while it checked: the verdict comes anyway (a large
+                                // file's was lost).
+                                if gone.load(std::sync::atomic::Ordering::Relaxed) {
+                                    let name = crate::i18n::isolate(
+                                        &file.file_name().unwrap_or_default().to_string_lossy(),
+                                    );
+                                    let said = match &r {
+                                        Ok(v) if *v == h.value => crate::i18n::t(
+                                            "{file}: the file matches its checksum ({algorithm})",
+                                        ),
+                                        Ok(_) => crate::i18n::t(
+                                            "{file}: the file does NOT match its checksum ({algorithm})",
+                                        ),
+                                        Err(_) => {
+                                            crate::i18n::t("{file} could not be read to check it")
+                                        }
+                                    };
+                                    crate::dialogs::tell(
+                                        crate::i18n::mark("Verify checksum"),
+                                        crate::i18n::fmt(
+                                            said,
+                                            &[("file", &name), ("algorithm", h.algo.name())],
+                                        ),
+                                    );
+                                }
                                 *out.lock().unwrap() = Some(r);
                                 ctx.request_repaint();
                             });
@@ -213,6 +253,15 @@ impl ChecksumDialog {
                 }
             },
         );
+        // Closed while a check runs: its thread tells the verdict when it comes.
+        if !matches!(out, Outcome::Open)
+            && self
+                .check
+                .as_ref()
+                .is_some_and(|c| c.lock().unwrap().is_none())
+        {
+            self.gone.store(true, std::sync::atomic::Ordering::Relaxed);
+        }
         // The window's ×: as Close.
         match (out, Hash::parse(&self.text), &self.check) {
             (Outcome::Closed, Some(h), Some(_)) => Outcome::Done(h),

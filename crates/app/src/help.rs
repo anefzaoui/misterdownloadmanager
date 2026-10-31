@@ -357,7 +357,10 @@ impl Updates {
                     }
                 }
                 // Under the answer: how Update now is going, else the weekly switch.
-                let status_rc = r(o, 11.0, bottom, 255.0, 21.0);
+                // In English, as the text pens take it (a right-to-left window placed the status
+                // over its buttons when given the mirrored rect).
+                let status_rc =
+                    egui::Rect::from_min_size(o + vec2(11.0, bottom), vec2(255.0, 21.0));
                 if let Some(job) = &self.job {
                     let fraction = job.progress.fraction();
                     let line = crate::i18n::fmt(
@@ -371,10 +374,10 @@ impl Updates {
                     winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);
                     winui::progress_bar(
                         &p,
-                        egui::Rect::from_min_size(
+                        winui::rect(egui::Rect::from_min_size(
                             pos2(status_rc.left(), status_rc.top() + 15.0),
                             vec2(status_rc.width(), 4.0),
-                        ),
+                        )),
                         fraction,
                         ui.input(|i| i.time),
                     );
@@ -550,11 +553,13 @@ pub struct About;
 
 impl About {
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
+        // A long translation pushes the links and OK down; the window grows with them.
+        let extra = crate::dialogs::grow_extra(ctx, "about");
         window(
             ctx,
             "about",
             "About Mister Download Manager",
-            [420.0, 214.0],
+            [420.0, 214.0 + extra],
             false,
             winui::BG(),
             |ui, o| {
@@ -623,20 +628,18 @@ impl About {
                 ) {
                     let _ = open::that_detached(format!("{REPO}/blob/main/ATTRIBUTION.md"));
                 }
+                // The links' last row ends above OK (at 182 when it fits as planned).
+                crate::dialogs::grow_px(ui.ctx(), "about", y + 12.0 - (o.y + 172.0));
                 let ok = winui::button(
                     ui,
-                    r(o, 336.0, 182.0, 73.0, 21.0),
+                    r(o, 336.0, 182.0 + extra, 73.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
                     None,
                 )
                 .clicked();
-                if ok
-                    || ui.input(|i| {
-                        i.key_pressed(egui::Key::Escape) || i.key_pressed(egui::Key::Enter)
-                    })
-                {
+                if ok || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
                     Outcome::Closed
                 } else {
                     Outcome::Open
@@ -755,12 +758,13 @@ impl Shortcuts {
 // Tell a friend
 
 pub struct TellFriend {
-    copied: bool,
+    /// What became of Copy or Email: the line under the message, and whether it is a failure.
+    said: Option<(&'static str, bool)>,
 }
 
 impl TellFriend {
     pub fn new() -> Self {
-        TellFriend { copied: false }
+        TellFriend { said: None }
     }
 
     fn message() -> String {
@@ -774,11 +778,13 @@ impl TellFriend {
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let message = Self::message();
+        // The message's box grows with a long translation, the window with it.
+        let extra = crate::dialogs::grow_extra(ctx, "tell-a-friend");
         window(
             ctx,
             "tell-a-friend",
             "Tell a friend",
-            [420.0, 168.0],
+            [420.0, 168.0 + extra],
             false,
             winui::BG(),
             |ui, o| {
@@ -793,7 +799,7 @@ impl TellFriend {
                 );
                 let rect = egui::Rect::from_min_max(
                     pos2(o.x + 11.0, o.y + 30.0),
-                    pos2(o.x + 409.0, o.y + 106.0),
+                    pos2(o.x + 409.0, o.y + 106.0 + extra),
                 );
                 // English, as the paragraph is laid out; made where it is on screen.
                 p.rect_filled(winui::rect(rect), 0.0, winui::FIELD());
@@ -803,7 +809,7 @@ impl TellFriend {
                     Stroke::new(1.0, winui::FIELD_EDGE()),
                     egui::StrokeKind::Inside,
                 );
-                winui::paragraph(
+                let lines = winui::paragraph(
                     &p,
                     rect.left() + 6.0,
                     rect.top() + 17.0,
@@ -812,15 +818,22 @@ impl TellFriend {
                     rect.right() - 6.0,
                     13.0,
                 );
-                if self.copied {
+                crate::dialogs::grow_to(ui.ctx(), "tell-a-friend", lines, 5);
+                let o = o + vec2(0.0, extra);
+                if let Some((said, failed)) = self.said {
                     // Short of the buttons beside it (a long translation: "...", whole on hover).
+                    let c = if failed {
+                        winui::ERROR()
+                    } else {
+                        winui::MUTED()
+                    };
                     winui::fit(
                         ui,
                         &p,
                         o.x + 11.0,
                         o.y + 150.0,
-                        crate::i18n::t("Copied to the clipboard."),
-                        winui::MUTED(),
+                        crate::i18n::t(said),
+                        c,
                         o.x + 166.0,
                         "copied",
                     );
@@ -853,11 +866,20 @@ impl TellFriend {
                     None,
                 )
                 .clicked();
+                // The user asked for it: the message goes to the clipboard (a busy clipboard
+                // says so; it showed nothing).
+                let to_clipboard = |text: &str| {
+                    arboard::Clipboard::new()
+                        .and_then(|mut c| c.set_text(text.to_owned()))
+                        .is_ok()
+                };
                 if copy {
-                    // The user asked for it: the message goes to the clipboard.
-                    self.copied = arboard::Clipboard::new()
-                        .and_then(|mut c| c.set_text(message.clone()))
-                        .is_ok();
+                    self.said = Some(if to_clipboard(&message) {
+                        (crate::i18n::mark("Copied to the clipboard."), false)
+                    } else {
+                        // i18n: Tell a friend: Copy failed (another program holds the clipboard)
+                        (crate::i18n::mark("The clipboard is busy: try again."), true)
+                    });
                 }
                 if email {
                     let enc = |s: &str| {
@@ -866,11 +888,26 @@ impl TellFriend {
                             .replace('+', "%20")
                     };
                     let subject = crate::i18n::t("Mister Download Manager");
-                    let _ = open::that_detached(format!(
+                    let opened = open::that_detached(format!(
                         "mailto:?subject={}&body={}",
                         enc(subject),
                         enc(&message)
                     ));
+                    // No mail program: the message is copied instead, and said so.
+                    if opened.is_err() {
+                        self.said = Some(if to_clipboard(&message) {
+                            // i18n: Tell a friend: Email found no mail program, so the message was copied
+                            (
+                                crate::i18n::mark(
+                                    "No mail app: the message is copied, paste it in your mail.",
+                                ),
+                                false,
+                            )
+                        } else {
+                            // i18n: Tell a friend: Email found no mail program
+                            (crate::i18n::mark("No mail app opened."), true)
+                        });
+                    }
                 }
                 if close || winui::escape_pressed(ui) {
                     Outcome::Closed
