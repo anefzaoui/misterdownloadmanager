@@ -1111,8 +1111,23 @@ pub fn row_list(
             (egui::Key::ArrowUp, (at - 1).max(0)),
             (egui::Key::Home, 0),
             (egui::Key::End, last),
-            (egui::Key::PageDown, at + step),
-            (egui::Key::PageUp, at - step),
+            // As Explorer: first to the last (first) row in view, then a page on.
+            (
+                egui::Key::PageDown,
+                if at < (st.first + page) as isize - 1 {
+                    (st.first + page) as isize - 1
+                } else {
+                    at + step
+                },
+            ),
+            (
+                egui::Key::PageUp,
+                if at > st.first as isize {
+                    st.first as isize
+                } else {
+                    at - step
+                },
+            ),
         ];
         for (key, to) in keys {
             if take_key(ui, key) {
@@ -1453,20 +1468,26 @@ pub fn edit(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool, password: 
 /// A text box's focus, as Windows 11 shows it: an accent line along its bottom edge.
 pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
     if resp.has_focus() {
-        // Inside the rounded corners.
-        let inset = if crate::theme::dark() {
-            1.0
-        } else {
-            control_radius()
-        };
+        focus_bottom(ui.painter(), rc);
+    }
+}
+
+/// The 2 px accent along a focused box's bottom edge. Light: the bottom of its rounded
+/// frame, curving into the corners as Windows 11 draws it; dark: IDM's straight line.
+fn focus_bottom(p: &Painter, rc: Rect) {
+    if crate::theme::dark() {
         fill(
-            ui.painter(),
-            rc.left() + inset,
+            p,
+            rc.left() + 1.0,
             rc.bottom() - 2.0,
-            rc.right() - inset - 1.0,
+            rc.right() - 2.0,
             rc.bottom() - 1.0,
             accent(),
         );
+    } else {
+        let strip = Rect::from_min_max(pos2(rc.left(), rc.bottom() - 2.0), rc.max);
+        p.with_clip_rect(strip)
+            .rect_filled(rc, control_radius(), accent());
     }
 }
 
@@ -1902,13 +1923,9 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
     // Light: the text box's rounded frame (an accent border while focused), the chevron.
     if !crate::theme::dark() {
         edit_frame(p, rc, true);
+        // Focused as a text box is: the accent along its bottom (an editable drop-down is one).
         if focused {
-            p.rect_stroke(
-                rc,
-                control_radius(),
-                Stroke::new(1.0, accent()),
-                StrokeKind::Inside,
-            );
+            focus_bottom(p, rc);
         }
         combo_chevron(p, rc);
         return;
@@ -3000,7 +3017,8 @@ fn fluent_box_in(state: State, dark: bool) -> (Option<Color32>, Color32) {
         (_, false) => (Some(rgb(0xf3, 0xf3, 0xf3)), rgb(0x62, 0x62, 0x62)),
         (State::Disabled, true) => (None, rgb(0x5a, 0x5a, 0x5a)),
         (State::Hot, true) => (Some(rgb(0x3a, 0x3a, 0x3a)), rgb(0xa0, 0xa0, 0xa0)),
-        (State::Pressed, true) => (Some(rgb(0x26, 0x26, 0x26)), rgb(0x70, 0x70, 0x70)),
+        // Pressed lighter still, as Windows 11's dark boxes (it went darker, the wrong way).
+        (State::Pressed, true) => (Some(rgb(0x47, 0x47, 0x47)), rgb(0x70, 0x70, 0x70)),
         (_, true) => (Some(rgb(0x2b, 0x2b, 0x2b)), rgb(0x9b, 0x9b, 0x9b)),
     }
 }
@@ -3072,6 +3090,10 @@ pub fn radio_light_until(
             p.circle_filled(c, 6.0, f);
         }
         p.circle_stroke(c, 6.0, Stroke::new(1.0, ring));
+        // Pressed, Windows 11 shows the dot to come.
+        if state == State::Pressed {
+            p.circle_filled(c, 2.1, ring);
+        }
     }
     let color = if enabled {
         LIGHT_TEXT()
@@ -3917,15 +3939,15 @@ mod tests {
         );
         // Windows 11 boxes: deeper under the pointer, deeper still pressed.
         // Light: darker under the pointer, darker still pressed. Dark: lighter under the
-        // pointer, darker pressed. Either way the three differ, and a disabled box is empty.
+        // pointer, lighter still pressed (Windows 11). The three differ; disabled is empty.
         let fill = |s, dark| fluent_box_in(s, dark).0.unwrap().r();
         assert!(
             fill(State::Pressed, false) < fill(State::Hot, false)
                 && fill(State::Hot, false) < fill(State::Normal, false)
         );
         assert!(
-            fill(State::Pressed, true) < fill(State::Normal, true)
-                && fill(State::Normal, true) < fill(State::Hot, true)
+            fill(State::Normal, true) < fill(State::Hot, true)
+                && fill(State::Hot, true) < fill(State::Pressed, true)
         );
         for dark in [false, true] {
             assert_eq!(fluent_box_in(State::Disabled, dark).0, None);

@@ -392,5 +392,22 @@ pub fn apply(ctx: &egui::Context) {
         w.corner_radius = r;
     }
     l.window_corner_radius = CornerRadius::same(0);
+    // Tooltips as Windows 11's: 4 px corners, a hairline border, roomy padding, wrapped at
+    // 320 px.
+    l.menu_corner_radius = CornerRadius::same(4);
+    l.window_stroke = Stroke::new(1.0, Color32::from_gray(0xe5));
     ctx.set_visuals_of(egui::Theme::Light, l);
+    ctx.style_mut_of(egui::Theme::Dark, |s| {
+        s.visuals.menu_corner_radius = CornerRadius::same(4);
+        s.visuals.window_stroke = Stroke::new(1.0, Color32::from_gray(0x1a));
+    });
+    ctx.all_styles_mut(|s| {
+        s.spacing.tooltip_width = 320.0;
+        s.spacing.menu_margin = egui::Margin {
+            left: 9,
+            right: 9,
+            top: 6,
+            bottom: 7,
+        };
+    });
 }
