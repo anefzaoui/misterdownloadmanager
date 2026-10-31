@@ -487,6 +487,9 @@
 #. {address} = an example web address with a * in the file name
 	For example:  {address}	For example:  {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+	For your account only. Another app set as the default stays first.	For your account only. Another app set as the default stays first.
+#. text in the Add torrent window
 	For your Windows account only. Another app chosen in "Open with" stays first.	For your Windows account only. Another app chosen in "Open with" stays first.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Force processes to terminate	Force processes to terminate
@@ -523,6 +526,9 @@
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
 	Getting the file list from peers...  {n} s	Getting the file list from peers...  {n} s
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+	Goes on after the download finishes	Goes on after the download finishes
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	Hang up modem when done
 #. text in a download's progress window
@@ -623,8 +629,11 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 	Login	Login
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 	Look up	Look up
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+	Look up the new address first	Look up the new address first
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Looking the page up...
@@ -1110,6 +1119,8 @@
 #. text in a download's Properties window
 #. label before the download's state
 	Status:	Status:
+#. text in the Add torrent window
+	Stop	Stop
 #. checkbox in the Scheduler window
 	Stop download at	Stop download at
 #. text in the tray icon's menu
@@ -1147,6 +1158,9 @@
 	The address must be an http(s) or ftp(s) address	The address must be an http(s) or ftp(s) address
 #. text in the Download video window
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	The best qualities need ffmpeg to merge video and audio (about 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 	The computer will go to sleep in {n} seconds.	The computer will go to sleep in {n} seconds.

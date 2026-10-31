@@ -54,6 +54,8 @@ pub struct TorrentDialog {
     known: HashSet<String>,
     host: Host,
     lookup: Option<Slot>,
+    /// The look-up running (Stop ends it).
+    lookup_task: Option<tokio::task::JoinHandle<()>>,
     /// When the lookup started (the loading state counts the seconds).
     started: Option<Instant>,
     meta: Option<Meta>,
@@ -124,6 +126,7 @@ impl TorrentDialog {
             known,
             host,
             lookup: None,
+            lookup_task: None,
             started: None,
             meta: None,
             chosen: Vec::new(),
@@ -144,19 +147,12 @@ impl TorrentDialog {
 
     fn look_up(&mut self, rt: &tokio::runtime::Handle, ctx: &egui::Context) {
         let text = self.source.trim().to_owned();
-        let src = match Source::magnet(&text) {
-            Some(m) => m,
-            None => match std::fs::read(text.trim_matches('"')) {
-                Ok(bytes) => Source::File(bytes),
-                Err(_) => {
-                    self.error = Some(
-                        crate::i18n::t("Enter a magnet link or choose a .torrent file").into(),
-                    );
-                    return;
-                }
-            },
-        };
-        self.from_magnet = matches!(src, Source::Magnet(_));
+        let magnet = Source::magnet(&text);
+        self.from_magnet = magnet.is_some();
+        // A .torrent file is read with the rest of the look-up, off the window's thread (a
+        // path on a slow share froze every window).
+        let path = text.trim_matches('"').to_owned();
+        let not_found = crate::i18n::t("Enter a magnet link or choose a .torrent file").to_owned();
         let slot: Slot = Arc::new(Mutex::new(None));
         let (out, host, known, ctx) = (
             slot.clone(),
@@ -164,7 +160,18 @@ impl TorrentDialog {
             self.known.clone(),
             ctx.clone(),
         );
-        rt.spawn(async move {
+        let task = rt.spawn(async move {
+            let src = match magnet {
+                Some(m) => m,
+                None => match tokio::fs::read(&path).await {
+                    Ok(bytes) => Source::File(bytes),
+                    Err(_) => {
+                        *out.lock().unwrap() = Some(Err(not_found));
+                        ctx.request_repaint();
+                        return;
+                    }
+                },
+            };
             let res = match host.session(known).await {
                 Ok(t) => t
                     .metadata(&src, METADATA_WAIT)
@@ -176,6 +183,7 @@ impl TorrentDialog {
             ctx.request_repaint();
         });
         self.lookup = Some(slot);
+        self.lookup_task = Some(task);
         self.started = Some(Instant::now());
         self.meta = None;
         self.rows = Default::default();
@@ -307,17 +315,32 @@ impl TorrentDialog {
             self.look_up(rt, ui.ctx());
         }
         let can_look = !busy && !self.source.trim().is_empty();
+        // While it looks up, the button stops it (a magnet with no peers took up to 3 minutes).
         let look = winui::button(
             ui,
             r(o, 514.0, 9.0, 75.0, 21.0),
-            "Look up",
-            kind(can_look, self.meta.is_none()),
+            // i18n: button: stop looking the torrent up
+            if busy {
+                crate::i18n::mark("Stop")
+            } else {
+                crate::i18n::mark("Look up")
+            },
+            kind(can_look || busy, self.meta.is_none()),
             false,
             None,
         )
         .clicked()
-            || (edit.has_focus() && winui::enter_pressed(ui) && can_look);
-        if look && can_look {
+            || (edit.has_focus()
+                && can_look
+                && winui::enter_pressed(ui)
+                && winui::take_key(ui, egui::Key::Enter));
+        if look && busy {
+            if let Some(t) = self.lookup_task.take() {
+                t.abort();
+            }
+            self.lookup = None;
+            self.started = None;
+        } else if look && can_look {
             self.look_up(rt, ui.ctx());
         }
 
@@ -470,7 +493,8 @@ impl TorrentDialog {
             false,
             None,
         )
-        .clicked();
+        .clicked()
+            || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
             r(o, 401.0, 428.0, 91.0, 21.0),
@@ -728,9 +752,18 @@ impl TorrentSettings {
                     &p,
                     o.x + 32.0,
                     o.y + 88.0,
-                    crate::i18n::t(
-                        "For your Windows account only. Another app chosen in \"Open with\" stays first.",
-                    ),
+                    // What the switch does is the system's: Windows asks per account, macOS and
+                    // Linux register MDM as the handler.
+                    if cfg!(windows) {
+                        crate::i18n::t(
+                            "For your Windows account only. Another app chosen in \"Open with\" stays first.",
+                        )
+                    } else {
+                        // i18n: Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+                        crate::i18n::t(
+                            "For your account only. Another app set as the default stays first.",
+                        )
+                    },
                     winui::MUTED(),
                 );
                 let ok = winui::button(
@@ -901,11 +934,8 @@ fn expander(p: &egui::Painter, at: Pos2, open: bool) {
 
 /// The "some chosen" mark over an unticked checkbox glyph.
 fn mixed_mark(p: &egui::Painter, glyph: Pos2) {
-    let c = if crate::theme::dark() {
-        Color32::BLACK
-    } else {
-        rgb(0x00, 0x5f, 0xb8)
-    };
+    // The accent in both modes (black on the dark unticked box could not be seen).
+    let c = winui::accent();
     // `glyph` is English, as the check box's.
     p.rect_filled(
         winui::rect(Rect::from_min_size(

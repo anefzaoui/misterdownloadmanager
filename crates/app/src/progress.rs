@@ -76,6 +76,8 @@ pub struct Progress {
     pending_limit: Option<(Option<u64>, bool)>,
     remember: bool,
     show_complete: bool,
+    /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
+    pub keep_sharing: bool,
     /// Options on completion, used when "Show download complete dialog" is off.
     hang_up: bool,
     exit: bool,
@@ -111,6 +113,7 @@ impl Progress {
             pending_limit: None,
             remember: false,
             show_complete,
+            keep_sharing: false,
             hang_up: false,
             exit: false,
             turn_off_on: false,
@@ -1109,7 +1112,12 @@ impl Progress {
                     vec![
                         // i18n: noun: sharing the torrent with others after it is downloaded
                         t("Sharing"),
-                        t("Stops when the download finishes"),
+                        if self.keep_sharing {
+                            // i18n: a torrent's sharing, when Torrent settings keep it on
+                            t("Goes on after the download finishes")
+                        } else {
+                            t("Stops when the download finishes")
+                        },
                     ],
                 ];
                 table(

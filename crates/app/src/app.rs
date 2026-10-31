@@ -4822,6 +4822,7 @@ impl App {
         self.finish_stopped();
         let mut actions = Vec::new();
         for p in &mut self.progress {
+            p.keep_sharing = self.settings.torrent_keep_sharing;
             if let Some(item) = self.items.iter().find(|i| i.id == p.id) {
                 actions.push((p.id, p.show(ctx, item, item.snap.as_ref())));
             }

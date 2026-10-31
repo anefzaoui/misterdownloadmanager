@@ -36,6 +36,10 @@ pub struct VideoDialog {
     name: String,
     lookup: Option<Slot<Video>>,
     install: Option<(Tool, Slot<mdm_tools::Installed>)>,
+    /// The helpers found (read again when an install ends, not every frame: it reads files).
+    tools: Option<Tools>,
+    /// The address the choices were looked up for (an edited one needs Look up again).
+    looked_up: String,
     video: Option<(Video, Vec<Choice>)>,
     chosen: usize,
     /// First choice shown (the list scrolls by whole rows).
@@ -100,6 +104,8 @@ impl VideoDialog {
             name: String::new(),
             lookup: None,
             install: None,
+            tools: None,
+            looked_up: String::new(),
             video: None,
             chosen: 0,
             rows: Default::default(),
@@ -122,7 +128,7 @@ impl VideoDialog {
 
     /// The choices for a looked-up video: merged qualities when ffmpeg is there.
     fn set_video(&mut self, v: Video) {
-        let merge = tools().2.is_some();
+        let merge = self.tools.get_or_insert_with(tools).2.is_some();
         let choices = mdm_tools::resolve::choices(&v, merge);
         self.chosen = 0;
         self.rows = Default::default();
@@ -149,6 +155,7 @@ impl VideoDialog {
             .and_then(|(t, s)| s.lock().unwrap().take().map(|r| (*t, r)));
         if let Some((tool, res)) = installed {
             self.install = None;
+            self.tools = None;
             match res {
                 Err(e) => {
                     let what = if tool == Tool::YtDlp {
@@ -237,7 +244,7 @@ impl VideoDialog {
 
     fn body(&mut self, ui: &mut Ui, o: Pos2, rt: &tokio::runtime::Handle) -> Outcome<()> {
         let p = ui.painter().clone();
-        let (dir, ytdlp, ffmpeg) = tools();
+        let (dir, ytdlp, ffmpeg) = self.tools.get_or_insert_with(tools).clone();
         text(
             &p,
             o.x + 11.0,
@@ -273,7 +280,10 @@ impl VideoDialog {
             None,
         )
         .clicked()
-            || (edit.has_focus() && winui::enter_pressed(ui) && can_look);
+            || (edit.has_focus()
+                && can_look
+                && winui::enter_pressed(ui)
+                && winui::take_key(ui, egui::Key::Enter));
         // Opened for a page: look it up as soon as yt-dlp is there.
         let look = look || (can_look && std::mem::take(&mut self.auto_look));
         if look
@@ -293,6 +303,7 @@ impl VideoDialog {
                 ctx.request_repaint();
             });
             self.lookup = Some(slot);
+            self.looked_up = self.page.trim().to_owned();
             self.video = None;
             self.error = None;
         }
@@ -309,12 +320,22 @@ impl VideoDialog {
                     "Video lookups use yt-dlp (about 23 MB, checked against its signature).",
                 ),
             )),
-            (Some(_), None) => Some((
+            // MDM installs ffmpeg on Windows only (its builds are Windows ones); elsewhere the
+            // system's package manager has it, and the note says so instead of a button.
+            (Some(_), None) if cfg!(windows) => Some((
                 Tool::Ffmpeg,
                 // i18n: button: download and install the ffmpeg program
                 crate::i18n::mark("Install ffmpeg"),
                 crate::i18n::t(
                     "The best qualities need ffmpeg to merge video and audio (about 80 MB).",
+                ),
+            )),
+            (Some(_), None) => Some((
+                Tool::Ffmpeg,
+                "",
+                // i18n: in Download video, on macOS and Linux (no button: the system installs it)
+                crate::i18n::t(
+                    "The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).",
                 ),
             )),
             _ => None,
@@ -355,6 +376,7 @@ impl VideoDialog {
             );
         }
         if let Some((tool, label, _)) = offer
+            && !label.is_empty()
             && installing.is_none()
             && winui::button(
                 ui,
@@ -456,9 +478,13 @@ impl VideoDialog {
             false,
         );
 
+        // The choices belong to the address looked up: an edited address is looked up first
+        // (it downloaded the new page with the old one's format and name).
+        let stale = self.video.is_some() && self.page.trim() != self.looked_up;
         let ready = self.video.as_ref().is_some_and(|(_, c)| !c.is_empty())
             && !self.name.trim().is_empty()
-            && !busy;
+            && !busy
+            && !stale;
         let kind = |default: bool| match (ready, default) {
             (false, _) => ButtonKind::Disabled,
             (true, true) => ButtonKind::Default,
@@ -471,8 +497,10 @@ impl VideoDialog {
             kind(true),
             false,
             None,
-        )
-        .clicked();
+        );
+        // i18n: why Download Now is greyed: the page address was changed after the look-up
+        let now = winui::why_disabled(now, stale, "Look up the new address first").clicked()
+            || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
             r(o, 335.0, 327.0, 73.0, 21.0),
