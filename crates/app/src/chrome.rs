@@ -666,15 +666,16 @@ pub fn popup<C: Clone>(
         && (lost_focus
             || ctx.input(|i| i.key_pressed(egui::Key::Escape) || i.pointer.any_pressed()))
     {
+        // Closed by a press: where it was, so the control that opened it doesn't take that
+        // press's click (on release) as opening it again (winui::opener_click). Read before
+        // the data lock (asking the context inside it deadlocks).
+        let press = ctx.input(|i| i.pointer.press_origin().filter(|_| i.pointer.any_pressed()));
+        let dismissed = dismissed_at_key(ctx);
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
-            // Closed by a press: where it was, so the control that opened it doesn't take that
-            // press's click (on release) as opening it again (winui::opener_click).
-            if let Some(at) =
-                ctx.input(|i| i.pointer.press_origin().filter(|_| i.pointer.any_pressed()))
-            {
-                d.insert_temp(dismissed_at_key(ctx), at);
+            if let Some(at) = press {
+                d.insert_temp(dismissed, at);
             }
         });
         return PopupResult::Dismissed;

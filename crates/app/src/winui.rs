@@ -210,7 +210,53 @@ pub fn galley(p: &Painter, font: FontId, s: &str, color: Color32) -> std::sync::
 /// Draw `s` with its pen (its start) at English `x` and its baseline (last cap row) at
 /// `baseline`. Returns the text's advance rect on screen.
 pub fn text(p: &Painter, x: f32, baseline: f32, s: &str, color: Color32) -> Rect {
-    text_font(p, tahoma(), x, baseline, s, color)
+    let drawn = text_font(p, tahoma(), x, baseline, s, color);
+    note_caption(p, s, drawn);
+    drawn
+}
+
+/// The caption painted last in this window (text, where, which pass): the next text box or
+/// drop-down beside or under it takes it as its name for screen readers ([`caption_for`]).
+fn caption_key(ctx: &egui::Context) -> egui::Id {
+    egui::Id::unique(("last-caption", ctx.viewport_id()))
+}
+
+fn note_caption(p: &Painter, s: &str, drawn: Rect) {
+    let s = s.trim();
+    if s.is_empty() || s.chars().count() > 80 {
+        return;
+    }
+    let ctx = p.ctx();
+    // The key first: asking the context inside its lock deadlocks.
+    let (key, pass) = (caption_key(ctx), ctx.cumulative_pass_nr());
+    ctx.data_mut(|d| d.insert_temp(key, (s.to_owned(), drawn, pass)));
+}
+
+/// The caption that names `control` (screen rect): painted this pass just before it, at its
+/// leading side on the same row or right above it. Taken once.
+fn caption_for(ctx: &egui::Context, control: Rect) -> Option<String> {
+    let key = caption_key(ctx);
+    let (s, at, pass) = ctx.data(|d| d.get_temp::<(String, Rect, u64)>(key))?;
+    if pass != ctx.cumulative_pass_nr() {
+        return None;
+    }
+    // In English (a right-to-left window has its captions at the right).
+    let (c, b) = (rect(control), rect(at));
+    let same_row = b.right() <= c.left() + 4.0 && b.bottom() > c.top() && b.top() < c.bottom();
+    let above = b.bottom() <= c.top() + 3.0 && b.bottom() >= c.top() - 24.0 && b.left() < c.right();
+    if !(same_row || above) {
+        return None;
+    }
+    ctx.data_mut(|d| d.remove::<(String, Rect, u64)>(key));
+    Some(s.trim_end_matches(':').trim().replace('&', ""))
+}
+
+/// A text box's or drop-down's name for screen readers, from its caption ([`caption_for`]).
+fn name_from_caption(resp: &Response) {
+    if let Some(name) = caption_for(&resp.ctx, resp.rect) {
+        resp.ctx
+            .accesskit_node_builder(resp.id, |node| node.set_label(name));
+    }
 }
 
 /// Segoe UI −12: menu bar, toolbar labels.
@@ -1480,6 +1526,8 @@ fn edit_text_with(
         ui.visuals_mut().text_cursor.stroke.color = color;
         ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
     });
+    // Named for screen readers by its caption.
+    name_from_caption(&resp);
     // Tab into a box selects its text, as in Windows (a click places the caret instead).
     if resp.gained_focus() && !ui.input(|i| i.pointer.any_down()) {
         let mut state = egui::text_edit::TextEditState::load(ui.ctx(), edit_id).unwrap_or_default();
@@ -1856,7 +1904,7 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
 pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
     let resp = opener_click(ui, resp);
-    expose(&resp, egui::Role::ComboBox, value, true, None);
+    expose_value(&resp, egui::Role::ComboBox, value, true);
     combo_frame(ui.painter(), rc, resp.has_focus());
     // The arrow zone (always white) shows the state.
     tint_part(
@@ -2938,6 +2986,18 @@ pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on:
     });
 }
 
+/// [`expose`] for a control showing a value (a drop-down): named by its caption, the value read
+/// after it.
+pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: bool) {
+    let name = caption_for(&resp.ctx, resp.rect).unwrap_or_default();
+    let value = value.to_owned();
+    resp.widget_info(|| {
+        let mut info = egui::WidgetInfo::labeled(role, enabled, &name);
+        info.current_text_value = Some(value.clone());
+        info
+    });
+}
+
 /// The click of a control that opens a popup, except the one ending the press that just closed
 /// that popup (it went down on the control): a click on an open list's arrow closes it, not
 /// closes and opens it again.
@@ -3374,7 +3434,7 @@ pub fn combo_light(
     };
     // Items are shown in the interface language (data such as numbers passes through as is).
     let full = crate::i18n::t(items.get(selected).copied().unwrap_or(""));
-    expose(&resp, egui::Role::ComboBox, full, enabled, None);
+    expose_value(&resp, egui::Role::ComboBox, full, enabled);
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
     let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0);
     let drawn = text_start(
