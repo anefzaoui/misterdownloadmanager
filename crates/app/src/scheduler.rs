@@ -1443,7 +1443,8 @@ fn date_picker(
     if ui.input(|i| i.pointer.any_pressed()) && !ui.rect_contains_pointer(rc) && sel.is_some() {
         focus.at = None;
     }
-    if let Some(f) = sel {
+    // The fields' keys wait while the calendar is open (it has its own).
+    if let Some(f) = sel.filter(|_| !open) {
         let (step, typed, mv) = picker_keys(ui, hover.hovered());
         if step != 0 {
             *date = match f {
@@ -1477,34 +1478,78 @@ fn date_picker(
             }
         }
     }
-    if open && let Some(picked) = calendar(ui, key, rc, *date) {
-        *date = picked;
-        open = false;
+    if open {
+        let (picked, over) = calendar(ui, key, rc, *date);
+        if let Some(picked) = picked {
+            *date = picked;
+            open = false;
+        }
+        // The calendar answers Escape itself (the Scheduler under it doesn't close), and a
+        // click anywhere else closes it.
+        let outside =
+            ui.input(|i| i.pointer.any_pressed()) && !over && !ui.rect_contains_pointer(rc);
+        if winui::take_key(ui, egui::Key::Escape) || outside {
+            open = false;
+        }
     }
-    // The calendar answers Escape itself (the Scheduler under it doesn't close).
-    if open && winui::take_key(ui, egui::Key::Escape) {
-        open = false;
+    if !open {
+        // Opened again, it shows the chosen date's month.
+        ui.data_mut(|d| {
+            d.remove::<NaiveDate>(key.with("month"));
+            d.remove::<NaiveDate>(key.with("cursor"));
+        });
     }
     ui.data_mut(|d| d.insert_temp(key, open));
 }
 
-/// The month calendar under a date picker. Returns the day clicked.
-fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<NaiveDate> {
+/// The month calendar under a date picker, as Windows' has it: the arrows move a day cursor
+/// (Left / Right a day, Up / Down a week), Page Up / Down a month, Enter picks it, and Today
+/// at the bottom. Returns the day picked, and whether the pointer is over the calendar.
+fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option<NaiveDate>, bool) {
     let month_key = key.with("month");
+    let cursor_key = key.with("cursor");
+    let mut cursor: NaiveDate = ui.data(|d| d.get_temp(cursor_key)).unwrap_or(date);
     let mut month: NaiveDate = ui
         .data(|d| d.get_temp(month_key))
         .unwrap_or_else(|| date.with_day(1).unwrap_or(date));
     let (cw, ch) = (28.0, 19.0);
-    let size = vec2(cw * 7.0 + 12.0, 26.0 + 18.0 + ch * 6.0 + 8.0);
+    let size = vec2(cw * 7.0 + 12.0, 26.0 + 18.0 + ch * 6.0 + 8.0 + 18.0);
     let mut picked = None;
     let today = Local::now().date_naive();
+    // The keys (the week runs from the right in RTL: Left and Right swap there).
+    let back = if winui::rtl() { 1 } else { -1 };
+    let moves = [
+        (egui::Key::ArrowLeft, Days::days(1), back),
+        (egui::Key::ArrowRight, Days::days(1), -back),
+        (egui::Key::ArrowUp, Days::days(7), -1),
+        (egui::Key::ArrowDown, Days::days(7), 1),
+    ];
+    let before = cursor;
+    for (k, by, dir) in moves {
+        if winui::take_key(ui, k) {
+            cursor = if dir > 0 { cursor + by } else { cursor - by };
+        }
+    }
+    if winui::take_key(ui, egui::Key::PageUp) {
+        cursor = add_months(cursor, -1);
+    }
+    if winui::take_key(ui, egui::Key::PageDown) {
+        cursor = add_months(cursor, 1);
+    }
+    if winui::take_key(ui, egui::Key::Enter) {
+        picked = Some(cursor);
+    }
+    // A moved cursor brings its month.
+    if cursor != before {
+        month = cursor.with_day(1).unwrap_or(month);
+    }
     // Under the picker's leading edge; the month laid out in English (the week from the right
     // in RTL), each part made where it is on screen.
     let at = winui::at(
         pos2(winui::rect(under).left(), under.bottom() + 1.0),
         size.x,
     );
-    egui::Area::new(key.with("calendar"))
+    let area = egui::Area::new(key.with("calendar"))
         .order(egui::Order::Foreground)
         .fixed_pos(at)
         .show(ui.ctx(), |ui| {
@@ -1589,6 +1634,9 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                         egui::StrokeKind::Inside,
                     );
                 }
+                if day == cursor && cursor != date {
+                    winui::focus_ring(&p, mark);
+                }
                 let c = if chosen {
                     Color32::WHITE
                 } else if day.month() != month.month() {
@@ -1607,13 +1655,38 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                     picked = Some(day);
                 }
             }
+            // Today, under the month: a click picks it.
+            let label = crate::i18n::fmt(
+                // i18n: link under the calendar: {date} = today's date
+                crate::i18n::t("Today: {date}"),
+                &[(
+                    "date",
+                    &crate::i18n::ltr(&crate::regional::short_date(today)),
+                )],
+            );
+            let ty = y0 + 18.0 + ch * 6.0 + 16.0;
+            let tw = winui::text_width(&p, &label);
+            if winui::link(
+                ui,
+                &p,
+                (rect.center().x - tw / 2.0).round(),
+                ty,
+                &label,
+                "cal-today",
+            ) {
+                picked = Some(today);
+            }
         });
+    let over = area.response.contains_pointer();
     if picked.is_some() {
         ui.data_mut(|d| d.remove::<NaiveDate>(month_key));
     } else {
-        ui.data_mut(|d| d.insert_temp(month_key, month));
+        ui.data_mut(|d| {
+            d.insert_temp(month_key, month);
+            d.insert_temp(cursor_key, cursor);
+        });
     }
-    picked
+    (picked, over)
 }
 
 #[cfg(test)]

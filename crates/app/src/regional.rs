@@ -124,17 +124,27 @@ pub fn short_date_time(t: chrono::NaiveDateTime) -> String {
 
 /// [`short_date_time`] in the formats `f`.
 pub fn format_with(f: Formats, t: chrono::NaiveDateTime) -> String {
-    use chrono::{Datelike, Timelike};
+    use chrono::Timelike;
+    format!(
+        "{} {}",
+        date_with(f, t.date()),
+        time_text(t.hour(), t.minute(), t.second(), f.clock24)
+    )
+}
+
+/// A date alone, in the current formats: `31/10/2026`.
+pub fn short_date(d: chrono::NaiveDate) -> String {
+    date_with(current(), d)
+}
+
+fn date_with(f: Formats, t: chrono::NaiveDate) -> String {
+    use chrono::Datelike;
     let (y, m, d) = (t.year(), t.month(), t.day());
-    let date = match f.order {
+    match f.order {
         DateOrder::Dmy => format!("{d:02}/{m:02}/{y}"),
         DateOrder::Mdy => format!("{m:02}/{d:02}/{y}"),
         DateOrder::Ymd => format!("{y}-{m:02}-{d:02}"),
-    };
-    format!(
-        "{date} {}",
-        time_text(t.hour(), t.minute(), t.second(), f.clock24)
-    )
+    }
 }
 
 /// A time of day: `21:41:00`, or `9:41:00 PM` (AM and PM translated).

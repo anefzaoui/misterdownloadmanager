@@ -476,7 +476,7 @@ fn menu_keys(i: &egui::InputState) -> Vec<egui::Key> {
 }
 
 /// Keys for an open menu (pressed in the main window or in the menu's own windows): Up and Down
-/// move the highlight, Right opens a submenu or the next menu, Left closes a submenu or opens
+/// move the highlight (Home / End to the first / last), Right opens a submenu or the next menu, Left closes a submenu or opens
 /// the previous menu, Enter or an item's underlined letter runs it, Escape closes a submenu.
 fn keyboard<C: Clone>(
     ctx: &egui::Context,
@@ -523,6 +523,11 @@ fn keyboard<C: Clone>(
         match key {
             egui::Key::ArrowDown | egui::Key::ArrowUp => {
                 let n = step(level, hl, if key == egui::Key::ArrowDown { 1 } else { -1 });
+                if in_sub { hl1 = n } else { hl0 = n }
+            }
+            // Home / End: the first / last item, as Windows' menus have them.
+            egui::Key::Home | egui::Key::End => {
+                let n = step(level, None, if key == egui::Key::Home { 1 } else { -1 });
                 if in_sub { hl1 = n } else { hl0 = n }
             }
             egui::Key::Escape if in_sub => {
