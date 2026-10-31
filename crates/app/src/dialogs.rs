@@ -5,7 +5,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
-use egui::{Color32, Pos2, Ui, ViewportBuilder, ViewportId, vec2};
+use egui::{Pos2, Ui, ViewportBuilder, ViewportId, vec2};
 use mdm_engine::{Options, ProbeInfo};
 use url::Url;
 
@@ -172,7 +172,7 @@ fn dialog_window<T>(
         let framed = key.with("framed");
         let scale = ctx.input_for(ViewportId::from_hash_of(id), |i| i.pixels_per_point);
         if !ctx.data(|d| d.get_temp::<bool>(framed).unwrap_or(false))
-            && crate::win32::dialog_frame(title, client, bg == winui::LIGHT_BG, scale)
+            && crate::win32::dialog_frame(title, client, !crate::theme::dark(), scale)
         {
             ctx.data_mut(|d| d.insert_temp(framed, true));
         }
@@ -182,7 +182,8 @@ fn dialog_window<T>(
         ViewportId::from_hash_of(id),
         key,
         title,
-        bg != winui::LIGHT_BG,
+        // Every dialog follows the mode (the light dialogs too).
+        crate::theme::dark(),
         matches!(out, Outcome::Open),
     );
     // A question takes the focus once it is shown (not while hidden for its theme).
@@ -377,7 +378,7 @@ impl AddUrl {
                 )
                 .clicked();
                 if let Some(e) = &self.error {
-                    let red = egui::Color32::from_rgb(0xff, 0x80, 0x80);
+                    let red = winui::ERROR();
                     // Ends before the OK / Cancel buttons; whole on hover when cut.
                     let (rect, cut) =
                         winui::text_fit(&p, o.x + 140.0, o.y + 49.0, e, red, o.x + 465.0);
@@ -780,10 +781,7 @@ impl FileInfo {
                         .show(ui.ctx(), |ui| {
                             egui::Frame::new()
                                 .fill(winui::BG())
-                                .stroke(egui::Stroke::new(
-                                    1.0,
-                                    egui::Color32::from_rgb(0x8d, 0x8d, 0x8d),
-                                ))
+                                .stroke(egui::Stroke::new(1.0, winui::FIELD_EDGE()))
                                 .show(ui, |ui| {
                                     ui.set_width(cat_rect.width() - 2.0);
                                     // Items from the leading edge (the right in RTL).
@@ -922,11 +920,11 @@ impl Complete {
                 if grip.drag_started() && self.path.exists() {
                     let _ = crate::win32::drag_file_out("Download complete", &self.path);
                 }
-                p.rect_filled(handle, 0.0, egui::Color32::WHITE);
+                p.rect_filled(handle, 0.0, winui::FIELD());
                 p.rect_stroke(
                     handle,
                     0.0,
-                    egui::Stroke::new(1.0, egui::Color32::from_rgb(0x82, 0x87, 0x90)),
+                    egui::Stroke::new(1.0, winui::FIELD_EDGE()),
                     egui::StrokeKind::Inside,
                 );
                 crate::icons::Icon::DragOut.image(true).paint_at(
@@ -997,10 +995,10 @@ impl SpeedSettings {
             "Speed Limiter settings",
             [453.0, 197.0 + extra],
             false,
-            winui::LIGHT_BG,
+            winui::LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
-                let black = winui::LIGHT_TEXT;
+                let black = winui::LIGHT_TEXT();
                 // The label ends where `text_right(265)` ended it: at 266.
                 let kb_box = winui::sentence(
                     ui,
@@ -1056,7 +1054,7 @@ impl SpeedSettings {
                     true,
                 );
                 self.global_kb.retain(|c| c.is_ascii_digit());
-                let c = if on { black } else { winui::LIGHT_DISABLED };
+                let c = if on { black } else { winui::LIGHT_DISABLED() };
                 // i18n: unit after an input box: kilobytes per second
                 winui::text(
                     &p,
@@ -1118,7 +1116,7 @@ pub fn message(ctx: &egui::Context, id: &str, title: &str, text: &str) -> Outcom
         title,
         [width, 80.0],
         false,
-        winui::LIGHT_BG,
+        winui::LIGHT_BG(),
         |ui, o| {
             let p = ui.painter().clone();
             let (rect, cut) = winui::text_fit(
@@ -1126,7 +1124,7 @@ pub fn message(ctx: &egui::Context, id: &str, title: &str, text: &str) -> Outcom
                 o.x + 16.0,
                 o.y + 24.0,
                 text,
-                winui::LIGHT_TEXT,
+                winui::LIGHT_TEXT(),
                 o.x + width - 16.0,
             );
             if cut {
@@ -1197,7 +1195,7 @@ impl LimitNotice {
             "Download limits",
             [420.0, 90.0],
             false,
-            winui::LIGHT_BG,
+            winui::LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 for (i, line) in self.lines.iter().enumerate() {
@@ -1206,7 +1204,7 @@ impl LimitNotice {
                         o.x + 11.0,
                         o.y + 21.0 + 13.0 * i as f32,
                         line,
-                        winui::LIGHT_TEXT,
+                        winui::LIGHT_TEXT(),
                         o.x + 409.0,
                     );
                 }
@@ -1271,10 +1269,10 @@ impl TurnOffCountdown {
             "Mister Download Manager",
             [374.0, 100.0],
             false,
-            winui::LIGHT_BG,
+            winui::LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
-                let black = winui::LIGHT_TEXT;
+                let black = winui::LIGHT_TEXT();
                 winui::text(
                     &p,
                     o.x + 11.0,
@@ -1414,10 +1412,10 @@ impl ConfirmDelete {
             "Confirm deletion of downloads",
             [374.0, 146.0],
             false,
-            winui::LIGHT_BG,
+            winui::LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
-                let black = winui::LIGHT_TEXT;
+                let black = winui::LIGHT_TEXT();
                 let text = if n == 1 && self.unfinished {
                     crate::i18n::t(
                         "The selected download is not complete. Are you sure you want to delete
@@ -1540,10 +1538,6 @@ pub fn open_with(path: &Path) {
     }
 }
 
-crate::theme::themed! {
-    ASK_ERROR = egui::Color32::from_rgb(0xff, 0x80, 0x80), egui::Color32::from_rgb(0xc4, 0x2b, 0x1c);
-}
-
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a
 /// duplicate download link is added: Show a dialog and ask what to do"). `Done` with the
 /// choice, numbered as Options lists them (1 numbered name, 2 overwrite, 3 open or resume).
@@ -1564,10 +1558,10 @@ impl Duplicate {
             "Duplicate download link",
             [460.0, 156.0],
             false,
-            winui::LIGHT_BG,
+            winui::LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
-                let ink = winui::LIGHT_TEXT;
+                let ink = winui::LIGHT_TEXT();
                 winui::text(
                     &p,
                     o.x + 11.0,
@@ -1642,7 +1636,7 @@ impl QueuePick {
             "Download later",
             [340.0, 110.0],
             false,
-            winui::LIGHT_BG,
+            winui::LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 winui::text_right(
@@ -1650,7 +1644,7 @@ impl QueuePick {
                     o.x + 92.0,
                     o.y + 26.0,
                     crate::i18n::t("Add to queue:"),
-                    winui::LIGHT_TEXT,
+                    winui::LIGHT_TEXT(),
                 );
                 let names: Vec<&str> = self.names.iter().map(String::as_str).collect();
                 if let Some(i) = winui::combo_light(
@@ -1808,7 +1802,7 @@ impl CreateFolder {
                 );
                 if let Some(e) = &self.error {
                     let (rect, cut) =
-                        winui::text_fit(&p, o.x + 11.0, o.y + 75.0, e, ASK_ERROR(), o.x + 409.0);
+                        winui::text_fit(&p, o.x + 11.0, o.y + 75.0, e, winui::ERROR(), o.x + 409.0);
                     if cut {
                         winui::full_on_hover(ui, rect, "create-folder-error", e);
                     }

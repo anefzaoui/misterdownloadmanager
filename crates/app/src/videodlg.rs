@@ -14,11 +14,7 @@ use crate::winui::{self, ButtonKind, r, text};
 
 type Slot<T> = Arc<Mutex<Option<Result<T, String>>>>;
 
-crate::theme::themed! {
-    LIST_BG = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
-    ERROR = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
-    MUTED = rgb(0xa0, 0xa0, 0xa0), rgb(0x6d, 0x6d, 0x6d);
-}
+crate::theme::themed! {}
 
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
@@ -352,7 +348,7 @@ impl VideoDialog {
                 winui::full_on_hover(ui, rect, "video-title", &v.title);
             }
         } else if let Some((_, _, msg)) = offer {
-            winui::text_fit(&p, o.x + 11.0, line_y, msg, MUTED(), o.x + 390.0);
+            winui::text_fit(&p, o.x + 11.0, line_y, msg, winui::MUTED(), o.x + 390.0);
         }
         if let Some((tool, label, _)) = offer
             && installing.is_none()
@@ -370,7 +366,8 @@ impl VideoDialog {
             self.install(tool, dir, rt, ui.ctx());
         }
         if let Some(e) = &self.error {
-            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, o.y + 86.0, e, ERROR(), o.x + 489.0);
+            let (rect, cut) =
+                winui::text_fit(&p, o.x + 11.0, o.y + 86.0, e, winui::ERROR(), o.x + 489.0);
             if cut {
                 winui::full_on_hover(ui, rect, "video-error", e);
             }
@@ -379,7 +376,7 @@ impl VideoDialog {
         // The choices.
         let list = r(o, 11.0, 94.0, 478.0, 150.0);
         winui::solid(&p, list, rgb(0x82, 0x87, 0x90));
-        p.rect_filled(list.shrink(1.0), 0.0, LIST_BG());
+        p.rect_filled(list.shrink(1.0), 0.0, winui::FIELD());
         let mut picked = None;
         if let Some((_, choices)) = &self.video {
             // Whole rows only, scrolled by the wheel; a thin bar when they don't all fit.
@@ -440,7 +437,7 @@ impl VideoDialog {
                 let len = ((b - t) * page as f32 / choices.len() as f32).max(12.0);
                 let y0 = t + (b - t - len) * self.first as f32 / max_first as f32;
                 let x = list.right() - 9.0;
-                winui::fill_l(&p, x - 1.0, y0, x, y0 + len, MUTED());
+                winui::fill_l(&p, x - 1.0, y0, x, y0 + len, winui::MUTED());
             }
         }
         if let Some(i) = picked {

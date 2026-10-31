@@ -12,11 +12,6 @@ const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
 
-/// A colour from its `0xRRGGBB` value, as the specs write them.
-pub const fn rgb_hex(v: u32) -> Color32 {
-    rgb((v >> 16) as u8, (v >> 8) as u8, v as u8)
-}
-
 crate::theme::themed! {
     /// Dialog background (light: light-dialogs.md).
     pub BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
@@ -1170,6 +1165,9 @@ fn edit_text_with(
         .password(password)
         .desired_width(inner.width());
     let resp = ui.put(inner, |ui: &mut Ui| {
+        // The caret in the box's own ink: egui's default (a pale blue in its dark style) was
+        // all but invisible on a light box.
+        ui.visuals_mut().text_cursor.stroke.color = color;
         ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
     });
     if enabled {
@@ -1340,11 +1338,13 @@ pub fn subtle_fill(state: State, dark_surface: bool) -> Option<Color32> {
 }
 
 /// The blue highlight of a calendar's days and arrows (Win32's month calendar) in `state`:
-/// #e5f1fb under the pointer, #cce4f7 pressed.
-pub fn highlight_fill(state: State) -> Option<Color32> {
-    match state {
-        State::Hot => Some(rgb(0xe5, 0xf1, 0xfb)),
-        State::Pressed | State::Open => Some(rgb(0xcc, 0xe4, 0xf7)),
+/// #e5f1fb under the pointer, #cce4f7 pressed; deep blues on a dark surface.
+pub fn highlight_fill(state: State, dark_surface: bool) -> Option<Color32> {
+    match (state, dark_surface) {
+        (State::Hot, false) => Some(rgb(0xe5, 0xf1, 0xfb)),
+        (State::Pressed | State::Open, false) => Some(rgb(0xcc, 0xe4, 0xf7)),
+        (State::Hot, true) => Some(rgb(0x2d, 0x4a, 0x60)),
+        (State::Pressed | State::Open, true) => Some(rgb(0x23, 0x3d, 0x52)),
         _ => None,
     }
 }
@@ -1654,7 +1654,7 @@ pub fn checkbox_until(
         State::Disabled => rgb(0xf0, 0xf0, 0xf0),
         // Under the pointer and pressed: the shared highlight (a classic box has no hot look
         // of its own; without one it didn't answer the pointer at all).
-        _ => highlight_fill(state).unwrap_or(Color32::WHITE),
+        _ => highlight_fill(state, false).unwrap_or(Color32::WHITE),
     };
     solid(&p, Rect::from_min_size(box_min, vec2(13.0, 13.0)), interior);
     hline(&p, l, rr - 1.0, t, rgb(0xa0, 0xa0, 0xa0));
@@ -1745,9 +1745,31 @@ pub fn small_button(ui: &mut Ui, rc: Rect, glyph: &str) -> Response {
 // ---- light dialogs (Speed Limiter, Scheduler, Options) ------------------------------------
 // notes/ui-spec/scheduler-and-misc.md "Light dialog control styles".
 
-pub const LIGHT_BG: Color32 = rgb(0xf0, 0xf0, 0xf0);
-pub const LIGHT_TEXT: Color32 = rgb(0x00, 0x00, 0x00);
-pub const LIGHT_DISABLED: Color32 = rgb(0x6d, 0x6d, 0x6d);
+crate::theme::themed! {
+    /// The "light dialogs" (Options, Scheduler, File Properties…): IDM draws them light in both
+    /// modes; here they follow the mode, dark the dark dialogs' colours.
+    pub LIGHT_BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
+    pub LIGHT_TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
+    pub LIGHT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x6d, 0x6d, 0x6d);
+    /// A text box's or a list's inside.
+    pub FIELD = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
+    /// A list's or a box's outline.
+    pub FIELD_EDGE = rgb(0x5a, 0x5a, 0x5a), rgb(0x82, 0x87, 0x90);
+    /// Grid lines between a list's rows, and header dividers.
+    pub GRID = rgb(0x40, 0x40, 0x40), rgb(0xf0, 0xf0, 0xf0);
+    pub HEADER_LINE = rgb(0x4e, 0x4e, 0x4e), rgb(0xe5, 0xe5, 0xe5);
+    /// Etched separators: the shadow line and the highlight beside it.
+    pub ETCH_SHADOW = rgb(0x22, 0x22, 0x22), rgb(0xa0, 0xa0, 0xa0);
+    pub ETCH_LIGHT = rgb(0x50, 0x50, 0x50), rgb(0xff, 0xff, 0xff);
+    /// A selected row in a list without the focus.
+    pub SELECTED_INACTIVE = rgb(0x4a, 0x4a, 0x4a), rgb(0xd9, 0xd9, 0xd9);
+    /// Error text.
+    pub ERROR = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
+    /// Secondary text (notes, sizes, versions).
+    pub MUTED = rgb(0xa0, 0xa0, 0xa0), rgb(0x6d, 0x6d, 0x6d);
+    /// Success text (a matching checksum).
+    pub SUCCESS = rgb(0x6c, 0xcb, 0x5f), rgb(0x0f, 0x7b, 0x0f);
+}
 
 /// Light edit: the same Win11 border, white fill, black text.
 pub fn edit_light(
@@ -1757,7 +1779,7 @@ pub fn edit_light(
     enabled: bool,
     align_right: bool,
 ) -> Response {
-    edit_light_on(ui, rc, value, enabled, align_right, LIGHT_BG)
+    edit_light_on(ui, rc, value, enabled, align_right, LIGHT_BG())
 }
 
 /// [`edit_light`] on a surface `parent` (a disabled edit shows it: `#f9f9f9` on a tab page).
@@ -1782,7 +1804,7 @@ fn edit_light_with(
     parent: Color32,
 ) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    let fill_c = if enabled { Color32::WHITE } else { parent };
+    let fill_c = if enabled { FIELD() } else { parent };
     fill(
         ui.painter(),
         rc.left() + 2.0,
@@ -1791,7 +1813,11 @@ fn edit_light_with(
         rc.bottom() - 3.0,
         fill_c,
     );
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+    let color = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
     // A number keeps to the end (the left in RTL), text to the start.
     let align = if align_right {
         end_align()
@@ -1805,7 +1831,47 @@ fn edit_light_with(
 
 /// A light password box: dots, and no Cut or Copy in its menu.
 pub fn password_light(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> Response {
-    edit_light_with(ui, rc, value, enabled, false, true, LIGHT_BG)
+    password_light_on(ui, rc, value, enabled, LIGHT_BG())
+}
+
+/// [`password_light`] on a surface `parent` (shown inside it while disabled).
+pub fn password_light_on(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    enabled: bool,
+    parent: Color32,
+) -> Response {
+    edit_light_with(ui, rc, value, enabled, false, true, parent)
+}
+
+/// A multi-line text box (lists of sites, notes) that wraps its text and scrolls, with the
+/// shared frame, caret, focus line and edit menu. `id` keeps its scroll place.
+pub fn multiline_light(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) -> Response {
+    edit_frame(ui.painter(), rc, true);
+    ui.painter().rect_filled(rc.shrink(2.0), 0.0, FIELD());
+    let inner = Rect::from_min_max(rc.min + vec2(4.0, 2.0), rc.max - vec2(3.0, 3.0));
+    let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).id_salt(id));
+    child.visuals_mut().text_cursor.stroke.color = LIGHT_TEXT();
+    let resp = egui::ScrollArea::vertical()
+        .id_salt((id, "scroll"))
+        .max_height(inner.height())
+        .show(&mut child, |ui| {
+            let resp = ui.add(
+                egui::TextEdit::multiline(value)
+                    .font(tahoma())
+                    .text_color(LIGHT_TEXT())
+                    .frame(egui::Frame::NONE)
+                    .margin(egui::Margin::ZERO)
+                    .desired_width(inner.width() - 14.0)
+                    .desired_rows(3),
+            );
+            edit_menu(&resp, value, false, true);
+            resp
+        })
+        .inner;
+    edit_focus_line(ui, &resp, rc);
+    resp
 }
 
 /// Light push button: #fdfdfd fill, radius 3; border #d0d0d0 (bottom #bababa), default
@@ -1964,7 +2030,7 @@ fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
             text: match state {
                 State::Disabled => rgb(0x83, 0x83, 0x83),
                 State::Pressed => rgb(0x5d, 0x5d, 0x5d),
-                _ => LIGHT_TEXT,
+                _ => LIGHT_TEXT(),
             },
         }
     };
@@ -2084,26 +2150,12 @@ pub fn checkbox_light_until(
         *checked = !*checked;
     }
     let rc = Rect::from_min_size(glyph, vec2(13.0, 13.0));
-    let state = State::of(&resp, enabled);
-    if *checked {
-        let accent = fluent_accent(state);
-        p.rect_filled(rc, 2.0, accent);
-        p.line(
-            vec![
-                pos2(rc.left() + 3.0, rc.top() + 6.5),
-                pos2(rc.left() + 5.5, rc.top() + 9.0),
-                pos2(rc.left() + 10.0, rc.top() + 3.5),
-            ],
-            Stroke::new(1.4, Color32::WHITE),
-        );
+    check_box_glyph(&p, rc, *checked, State::of(&resp, enabled));
+    let color = if enabled {
+        LIGHT_TEXT()
     } else {
-        let (fill_c, border) = fluent_box(state);
-        if let Some(f) = fill_c {
-            p.rect_filled(rc, 2.0, f);
-        }
-        p.rect_stroke(rc, 2.0, Stroke::new(1.0, border), StrokeKind::Inside);
-    }
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+        LIGHT_DISABLED()
+    };
     text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
         resp.on_hover_text(caption)
@@ -2112,28 +2164,91 @@ pub fn checkbox_light_until(
     }
 }
 
-/// Tab page body.
-pub const LIGHT_PAGE: Color32 = rgb(0xf9, 0xf9, 0xf9);
+crate::theme::themed! {
+    /// Tab page body.
+    pub LIGHT_PAGE = rgb(0x40, 0x40, 0x40), rgb(0xf9, 0xf9, 0xf9);
+    /// An unselected tab, and the page's shadow.
+    pub TAB_UNSELECTED = rgb(0x33, 0x33, 0x33), rgb(0xf3, 0xf3, 0xf3);
+    pub TAB_HOT = rgb(0x46, 0x46, 0x46), rgb(0xfd, 0xfd, 0xfd);
+    CHEVRON = rgb(0xc8, 0xc8, 0xc8), rgb(0x6f, 0x6f, 0x6f);
+    CHEVRON_DISABLED = rgb(0x6a, 0x6a, 0x6a), rgb(0xbe, 0xbe, 0xbe);
+    /// Small controls' outline (spinners, icon buttons).
+    CONTROL_EDGE = rgb(0x5a, 0x5a, 0x5a), rgb(0xd2, 0xd2, 0xd2);
+}
+
+/// A small control's face in `state` (spinner arrows, icon buttons): the shared tints over its
+/// resting face.
+fn subtle_or(state: State) -> Color32 {
+    let dark = crate::theme::dark();
+    match state {
+        State::Disabled if dark => rgb(0x30, 0x30, 0x30),
+        State::Disabled => rgb(0xf3, 0xf3, 0xf3),
+        _ => subtle_fill(state, dark).unwrap_or(if dark {
+            rgb(0x33, 0x33, 0x33)
+        } else {
+            rgb(0xfa, 0xfa, 0xfa)
+        }),
+    }
+}
+
+/// A Windows 11 check box's 13 × 13 box in `rc`, ticked or not, in `state`: the one look of
+/// check boxes and of the check lists (Options → Browsers, Sounds).
+pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
+    if checked {
+        p.rect_filled(rc, 2.0, fluent_accent(state));
+        p.line(
+            vec![
+                pos2(rc.left() + 3.0, rc.top() + 6.5),
+                pos2(rc.left() + 5.5, rc.top() + 9.0),
+                pos2(rc.left() + 10.0, rc.top() + 3.5),
+            ],
+            Stroke::new(1.4, fluent_mark()),
+        );
+    } else {
+        let (fill_c, border) = fluent_box(state);
+        if let Some(f) = fill_c {
+            p.rect_filled(rc, 2.0, f);
+        }
+        p.rect_stroke(rc, 2.0, Stroke::new(1.0, border), StrokeKind::Inside);
+    }
+}
 
 /// A checked Windows 11 check box's or radio's accent in `state`: lighter under the pointer,
 /// lighter still while pressed, grey when disabled.
 fn fluent_accent(state: State) -> Color32 {
-    match state {
-        State::Disabled => rgb(0xc3, 0xc3, 0xc3),
-        State::Hot => rgb(0x19, 0x6e, 0xbf),
-        State::Pressed => rgb(0x33, 0x7f, 0xc6),
-        _ => rgb(0x00, 0x5f, 0xb8),
+    match (state, crate::theme::dark()) {
+        (State::Disabled, false) => rgb(0xc3, 0xc3, 0xc3),
+        (State::Hot, false) => rgb(0x19, 0x6e, 0xbf),
+        (State::Pressed, false) => rgb(0x33, 0x7f, 0xc6),
+        (_, false) => rgb(0x00, 0x5f, 0xb8),
+        (State::Disabled, true) => rgb(0x5a, 0x5a, 0x5a),
+        (State::Hot, true) => rgb(0x5a, 0xbc, 0xe8),
+        (State::Pressed, true) => rgb(0x52, 0xa6, 0xcc),
+        (_, true) => rgb(0x60, 0xcd, 0xff),
+    }
+}
+
+/// The mark on a checked box or radio (white on the light accent's blue, dark on the dark's).
+fn fluent_mark() -> Color32 {
+    if crate::theme::dark() {
+        rgb(0x00, 0x00, 0x00)
+    } else {
+        Color32::WHITE
     }
 }
 
 /// An unchecked Windows 11 check box's or radio's fill (none when disabled) and border in
 /// `state`: darker fill under the pointer, darker still and a fainter border while pressed.
 fn fluent_box(state: State) -> (Option<Color32>, Color32) {
-    match state {
-        State::Disabled => (None, rgb(0xc3, 0xc3, 0xc3)),
-        State::Hot => (Some(rgb(0xea, 0xea, 0xea)), rgb(0x62, 0x62, 0x62)),
-        State::Pressed => (Some(rgb(0xdd, 0xdd, 0xdd)), rgb(0x9a, 0x9a, 0x9a)),
-        _ => (Some(rgb(0xf3, 0xf3, 0xf3)), rgb(0x62, 0x62, 0x62)),
+    match (state, crate::theme::dark()) {
+        (State::Disabled, false) => (None, rgb(0xc3, 0xc3, 0xc3)),
+        (State::Hot, false) => (Some(rgb(0xea, 0xea, 0xea)), rgb(0x62, 0x62, 0x62)),
+        (State::Pressed, false) => (Some(rgb(0xdd, 0xdd, 0xdd)), rgb(0x9a, 0x9a, 0x9a)),
+        (_, false) => (Some(rgb(0xf3, 0xf3, 0xf3)), rgb(0x62, 0x62, 0x62)),
+        (State::Disabled, true) => (None, rgb(0x5a, 0x5a, 0x5a)),
+        (State::Hot, true) => (Some(rgb(0x3a, 0x3a, 0x3a)), rgb(0xa0, 0xa0, 0xa0)),
+        (State::Pressed, true) => (Some(rgb(0x26, 0x26, 0x26)), rgb(0x70, 0x70, 0x70)),
+        (_, true) => (Some(rgb(0x2b, 0x2b, 0x2b)), rgb(0x9b, 0x9b, 0x9b)),
     }
 }
 
@@ -2188,7 +2303,7 @@ pub fn radio_light_until(
             State::Pressed => 2.1,
             _ => 2.6,
         };
-        p.circle_filled(c, dot, Color32::WHITE);
+        p.circle_filled(c, dot, fluent_mark());
     } else {
         let (fill_c, ring) = fluent_box(state);
         if let Some(f) = fill_c {
@@ -2196,7 +2311,11 @@ pub fn radio_light_until(
         }
         p.circle_stroke(c, 6.0, Stroke::new(1.0, ring));
     }
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+    let color = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
     text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
         resp.on_hover_text(caption)
@@ -2209,17 +2328,17 @@ pub fn radio_light_until(
 /// white line 1 px longer so it covers the far end.
 pub fn etched_h(p: &Painter, x: f32, y: f32, w: f32) {
     let x = rect(Rect::from_min_size(pos2(x, y), vec2(w, 2.0))).left();
-    hline(p, x, x + w - 2.0, y, rgb(0xa0, 0xa0, 0xa0));
-    px(p, x + w - 1.0, y, Color32::WHITE);
-    hline(p, x, x + w - 1.0, y + 1.0, Color32::WHITE);
+    hline(p, x, x + w - 2.0, y, ETCH_SHADOW());
+    px(p, x + w - 1.0, y, ETCH_LIGHT());
+    hline(p, x, x + w - 1.0, y + 1.0, ETCH_LIGHT());
 }
 
 /// Etched vertical separator in English rect `x, y, 2 × h`.
 pub fn etched_v(p: &Painter, x: f32, y: f32, h: f32) {
     let x = rect(Rect::from_min_size(pos2(x, y), vec2(2.0, h))).left();
-    vline(p, x, y, y + h - 2.0, rgb(0xa0, 0xa0, 0xa0));
-    px(p, x, y + h - 1.0, Color32::WHITE);
-    vline(p, x + 1.0, y, y + h - 1.0, Color32::WHITE);
+    vline(p, x, y, y + h - 2.0, ETCH_SHADOW());
+    px(p, x, y + h - 1.0, ETCH_LIGHT());
+    vline(p, x + 1.0, y, y + h - 1.0, ETCH_LIGHT());
 }
 
 /// [`fill`] in English pixels (inclusive): on screen in a mirrored surface.
@@ -2309,8 +2428,8 @@ pub fn tabs_light(
     selected: usize,
 ) -> Option<usize> {
     let p = ui.painter().clone();
-    let border = rgb(0xe5, 0xe5, 0xe5);
-    let shadow = rgb(0xf3, 0xf3, 0xf3);
+    let border = HEADER_LINE();
+    let shadow = TAB_UNSELECTED();
     // Pane: x rc.left ..= right − 3, y top + 20 ..= bottom − 2, then a 2 px / 1 px shadow.
     let (l, t, rr, b) = (
         rc.left(),
@@ -2318,7 +2437,7 @@ pub fn tabs_light(
         rc.right() - 3.0,
         rc.bottom() - 2.0,
     );
-    fill(&p, l, t, rr, b, LIGHT_PAGE);
+    fill(&p, l, t, rr, b, LIGHT_PAGE());
     hline(&p, l, rr, t, border);
     hline(&p, l, rr, b, border);
     vline(&p, l, t, b, border);
@@ -2363,9 +2482,9 @@ pub fn tabs_light(
             clicked = Some(i);
         }
         let face = if sel {
-            LIGHT_PAGE
+            LIGHT_PAGE()
         } else if resp.hovered() {
-            rgb(0xfd, 0xfd, 0xfd)
+            TAB_HOT()
         } else {
             shadow
         };
@@ -2375,7 +2494,7 @@ pub fn tabs_light(
         vline(&p, x1, y0 + 1.0, t, border);
         if sel {
             // Open at the bottom: the pane's top line stops at the tab.
-            hline(&p, x0 + 1.0, x1 - 1.0, t, LIGHT_PAGE);
+            hline(&p, x0 + 1.0, x1 - 1.0, t, LIGHT_PAGE());
         } else {
             hline(&p, x0, x1, t, border);
         }
@@ -2385,7 +2504,7 @@ pub fn tabs_light(
             rc.top() + 15.0
         };
         let full = crate::i18n::t(tab.label);
-        let drawn = text(&p, o.x + label_x, base, shown, LIGHT_TEXT);
+        let drawn = text(&p, o.x + label_x, base, shown, LIGHT_TEXT());
         if shown != full {
             full_on_hover(ui, drawn, ("tab-light-label", i), full);
         }
@@ -2402,9 +2521,9 @@ pub fn tabs_light(
 /// The 8 × 5 "v" of drop-downs, its top-left at `at`.
 pub fn chevron_light(p: &Painter, at: Pos2, enabled: bool) {
     let c = if enabled {
-        rgb(0x6f, 0x6f, 0x6f)
+        CHEVRON()
     } else {
-        rgb(0xbe, 0xbe, 0xbe)
+        CHEVRON_DISABLED()
     };
     p.line(
         vec![
@@ -2477,7 +2596,11 @@ pub fn combo_light(
     }
     let p = ui.painter().clone();
     dropdown_frame_light(&p, rc, State::of(&resp, enabled).open_if(open));
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+    let color = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
     // Items are shown in the interface language (data such as numbers passes through as is).
     let full = crate::i18n::t(items.get(selected).copied().unwrap_or(""));
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
@@ -2524,11 +2647,11 @@ pub fn combo_light(
             .fixed_pos(list.min)
             .show(ui.ctx(), |ui| {
                 let (_, lp) = ui.allocate_painter(list.size(), Sense::hover());
-                lp.rect_filled(list, 0.0, Color32::WHITE);
+                lp.rect_filled(list, 0.0, FIELD());
                 lp.rect_stroke(
                     list,
                     0.0,
-                    Stroke::new(1.0, rgb(0x76, 0x76, 0x76)),
+                    Stroke::new(1.0, FIELD_EDGE()),
                     StrokeKind::Inside,
                 );
                 for (i, item) in items.iter().enumerate() {
@@ -2539,9 +2662,9 @@ pub fn combo_light(
                     let r = ui.interact(row, key.with(("item", i)), pointer_only());
                     let hot = r.hovered() || (!ui.rect_contains_pointer(list) && i == selected);
                     if hot {
-                        lp.rect_filled(row, 0.0, rgb(0x00, 0x78, 0xd7));
+                        lp.rect_filled(row, 0.0, SELECTION);
                     }
-                    let c = if hot { Color32::WHITE } else { LIGHT_TEXT };
+                    let c = if hot { Color32::WHITE } else { LIGHT_TEXT() };
                     text_start(
                         &lp,
                         tahoma(),
@@ -2582,26 +2705,26 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
         };
         let r = ui.interact(part, widget_id(ui, ("updown-light", id, i)), sense);
         let face = if !enabled {
-            rgb(0xf3, 0xf3, 0xf3)
+            subtle_or(State::Disabled)
         } else if r.is_pointer_button_down_on() {
-            rgb(0xe8, 0xe8, 0xe8)
+            subtle_or(State::Pressed)
         } else if r.hovered() {
-            rgb(0xf0, 0xf0, 0xf0)
+            subtle_or(State::Hot)
         } else {
-            rgb(0xfa, 0xfa, 0xfa)
+            subtle_or(State::Normal)
         };
         let border = if enabled {
-            rgb(0xd2, 0xd2, 0xd2)
+            CONTROL_EDGE()
         } else {
-            rgb(0xe5, 0xe5, 0xe5)
+            HEADER_LINE()
         };
         p.rect_filled(part, 1.0, face);
         p.rect_stroke(part, 1.0, Stroke::new(1.0, border), StrokeKind::Inside);
         let c = part.center();
         let arrow = if enabled {
-            rgb(0x1a, 0x1a, 0x1a)
+            LIGHT_TEXT()
         } else {
-            rgb(0x9b, 0x9b, 0x9b)
+            CHEVRON_DISABLED()
         };
         let pts = if dir > 0 {
             vec![c + vec2(-3.0, 1.5), c + vec2(3.0, 1.5), c + vec2(0.0, -1.5)]
@@ -2630,12 +2753,12 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Resp
     let resp = ui.interact(rc, widget_id(ui, ("icon-button-light", id)), sense);
     show_focus(ui, &resp, rc.shrink(2.0));
     let p = ui.painter();
-    let face = subtle_fill(State::of(&resp, enabled), false).unwrap_or(rgb(0xfb, 0xfb, 0xfb));
+    let face = subtle_or(State::of(&resp, enabled));
     p.rect_filled(rc, 2.0, face);
     p.rect_stroke(
         rc,
         2.0,
-        Stroke::new(1.0, rgb(0xd3, 0xd3, 0xd3)),
+        Stroke::new(1.0, CONTROL_EDGE()),
         StrokeKind::Inside,
     );
     resp
@@ -2693,7 +2816,8 @@ mod tests {
             );
         }
         assert!(
-            highlight_fill(State::Pressed).unwrap().r() < highlight_fill(State::Hot).unwrap().r()
+            highlight_fill(State::Pressed, false).unwrap().r()
+                < highlight_fill(State::Hot, false).unwrap().r()
         );
         // Windows 11 boxes: deeper under the pointer, deeper still pressed.
         let fill = |s| fluent_box(s).0.unwrap().r();

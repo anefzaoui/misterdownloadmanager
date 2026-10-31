@@ -3,7 +3,7 @@
 
 use std::path::{Path, PathBuf};
 
-use egui::{Pos2, Ui, pos2, vec2};
+use egui::{Pos2, Ui, vec2};
 
 use crate::chrome::{IconKey, ShellIcons};
 use crate::dialogs::{Outcome, window};
@@ -61,7 +61,7 @@ impl Properties {
             "File Properties",
             [477.0, 400.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, item),
         );
         match outcome {
@@ -97,7 +97,8 @@ impl Properties {
             .unwrap_or_default();
         icons.paint(ui, IconKey::ExtLarge(ext.clone()), o + vec2(11.0, 11.0));
         let fit = |ui: &mut Ui, x: f32, base: f32, s: &str| {
-            let (rect, cut) = winui::text_fit(&p, o.x + x, o.y + base, s, LIGHT_TEXT, o.x + 466.0);
+            let (rect, cut) =
+                winui::text_fit(&p, o.x + x, o.y + base, s, LIGHT_TEXT(), o.x + 466.0);
             if cut {
                 winui::full_on_hover(ui, rect, ("props", base as i32), s);
             }
@@ -143,7 +144,7 @@ impl Properties {
                 o.x + 11.0,
                 o.y + base,
                 crate::i18n::t(label),
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
             );
             fit(ui, col, base, &value);
         }
@@ -153,7 +154,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 135.0,
             crate::i18n::t("Save To:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         let dest = match &self.move_to {
             Some(dir) => dir.join(&item.file_name),
@@ -194,7 +195,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 166.0,
             crate::i18n::t("Address:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         if editable {
             winui::edit_light(
@@ -212,7 +213,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 197.0,
             crate::i18n::t("Description:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
@@ -227,7 +228,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 231.0,
             crate::i18n::t("The web page from which this file was obtained:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         // i18n: the web page is not known
         let page = item
@@ -243,7 +244,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 288.0,
             crate::i18n::t("Referer:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
@@ -258,7 +259,7 @@ impl Properties {
             o.x + 110.0,
             o.y + 316.0,
             crate::i18n::t("Login"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
@@ -272,7 +273,7 @@ impl Properties {
             o.x + 110.0,
             o.y + 343.0,
             crate::i18n::t("Password"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         password(
             ui,
@@ -300,7 +301,7 @@ impl Properties {
                     crate::i18n::t("Result: {result}"),
                     &[("result", &result)],
                 ),
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
                 x1,
             );
             if cut {
@@ -308,14 +309,7 @@ impl Properties {
             }
         }
         if let Some(e) = &self.error {
-            winui::text_fit(
-                &p,
-                o.x + 11.0,
-                o.y + 395.0,
-                e,
-                winui::rgb_hex(0xc42b1c),
-                o.x + 250.0,
-            );
+            winui::text_fit(&p, o.x + 11.0, o.y + 395.0, e, winui::ERROR(), o.x + 250.0);
         }
         let open = winui::button_light(
             ui,
@@ -382,7 +376,7 @@ fn file_type(name: &str, ext: &str) -> String {
 /// A read-only field holding a path or an address (left-to-right data).
 fn readonly(ui: &mut Ui, rc: egui::Rect, value: &str) {
     winui::edit_frame(ui.painter(), rc, true);
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, LIGHT_BG);
+    ui.painter().rect_filled(rc.shrink(2.0), 0.0, LIGHT_BG());
     let p = ui.painter().clone();
     // From the field's leading edge (an English pen in its English rect).
     let e = winui::rect(rc);
@@ -395,38 +389,12 @@ fn readonly(ui: &mut Ui, rc: egui::Rect, value: &str) {
     } else {
         shown
     };
-    let rect = winui::text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT);
+    let rect = winui::text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
     if cut {
         winui::full_on_hover(ui, rect, ("props-readonly", rc.top() as i32), value);
     }
 }
 
 fn password(ui: &mut Ui, rc: egui::Rect, value: &mut String, enabled: bool) {
-    winui::edit_frame(ui.painter(), rc, enabled);
-    let fill = if enabled {
-        egui::Color32::WHITE
-    } else {
-        LIGHT_BG
-    };
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, fill);
-    let inner = egui::Rect::from_min_max(
-        pos2(rc.left() + 4.0, rc.top() + 3.0),
-        rc.max - vec2(3.0, 3.0),
-    );
-    let resp = ui
-        .add_enabled_ui(enabled, |ui| {
-            ui.put(
-                inner,
-                egui::TextEdit::singleline(value)
-                    .password(true)
-                    .font(winui::tahoma())
-                    .text_color(LIGHT_TEXT)
-                    .frame(egui::Frame::NONE)
-                    .margin(egui::Margin::ZERO),
-            )
-        })
-        .inner;
-    if enabled {
-        winui::edit_menu(&resp, value, true, false);
-    }
+    winui::password_light_on(ui, rc, value, enabled, LIGHT_BG());
 }

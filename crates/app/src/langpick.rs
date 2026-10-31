@@ -9,11 +9,7 @@ use egui::{Color32, Rect, Sense, pos2, vec2};
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
 
-crate::theme::themed! {
-    LIST_BG = Color32::from_rgb(0x1f, 0x1f, 0x1f), Color32::from_rgb(0xff, 0xff, 0xff);
-    LIST_EDGE = Color32::from_rgb(0x5a, 0x5a, 0x5a), Color32::from_rgb(0x82, 0x87, 0x90);
-    MUTED = Color32::from_rgb(0xa0, 0xa0, 0xa0), Color32::from_rgb(0x6d, 0x6d, 0x6d);
-}
+crate::theme::themed! {}
 
 const W: f32 = 380.0;
 const H: f32 = 452.0;
@@ -128,11 +124,11 @@ impl Picker {
                     self.selected = first;
                 }
                 let shown_list = r(o, LIST[0], LIST[1], LIST[2], LIST[3]);
-                p.rect_filled(shown_list, 0.0, LIST_BG());
+                p.rect_filled(shown_list, 0.0, winui::FIELD());
                 p.rect_stroke(
                     shown_list,
                     0.0,
-                    egui::Stroke::new(1.0, LIST_EDGE()),
+                    egui::Stroke::new(1.0, winui::FIELD_EDGE()),
                     egui::StrokeKind::Inside,
                 );
                 // Rows laid out in English, made where they are on screen: the flag and the
@@ -240,7 +236,7 @@ impl Picker {
                     let (fg, muted) = if on {
                         (Color32::WHITE, Color32::from_gray(0xe0))
                     } else {
-                        (ink, MUTED())
+                        (ink, winui::MUTED())
                     };
                     let code = entry.unwrap_or_else(|| crate::i18n::system_code());
                     let info = crate::i18n::info(code);
@@ -297,7 +293,7 @@ impl Picker {
                         list.left() + 10.0,
                         list.top() + 20.0,
                         crate::i18n::t("No language matches."),
-                        MUTED(),
+                        winui::MUTED(),
                     );
                 }
                 if need_bar {

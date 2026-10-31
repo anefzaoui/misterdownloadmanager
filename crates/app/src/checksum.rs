@@ -41,7 +41,7 @@ impl ChecksumDialog {
             "Verify checksum",
             [430.0, 118.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 text(
@@ -49,7 +49,7 @@ impl ChecksumDialog {
                     o.x + 11.0,
                     o.y + 21.0,
                     crate::i18n::t("Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):"),
-                    LIGHT_TEXT,
+                    LIGHT_TEXT(),
                 );
                 let edit = winui::edit_light(
                     ui,
@@ -69,34 +69,34 @@ impl ChecksumDialog {
                 let (line, color) = match (&hash, &self.check) {
                     (None, _) if !self.text.trim().is_empty() => (
                         crate::i18n::t("Not a checksum this can read").to_owned(),
-                        winui::rgb_hex(0xc42b1c),
+                        winui::ERROR(),
                     ),
-                    (None, _) => (String::new(), LIGHT_TEXT),
+                    (None, _) => (String::new(), LIGHT_TEXT()),
                     (Some(h), Some(c)) => match &*c.lock().unwrap() {
                         None => (
                             crate::i18n::t("Checking...").to_owned(),
-                            winui::LIGHT_DISABLED,
+                            winui::LIGHT_DISABLED(),
                         ),
                         Some(Ok(true)) => (
                             crate::i18n::fmt(
                                 crate::i18n::t("The file matches ({algorithm})"),
                                 &[("algorithm", h.algo.name())],
                             ),
-                            winui::rgb_hex(0x0f7b0f),
+                            winui::SUCCESS(),
                         ),
                         Some(Ok(false)) => (
                             crate::i18n::fmt(
                                 crate::i18n::t("The file does NOT match ({algorithm})"),
                                 &[("algorithm", h.algo.name())],
                             ),
-                            winui::rgb_hex(0xc42b1c),
+                            winui::ERROR(),
                         ),
                         Some(Err(e)) => (
                             crate::i18n::fmt(
                                 crate::i18n::t("Cannot read the file: {error}"),
                                 &[("error", &e.to_string())],
                             ),
-                            winui::rgb_hex(0xc42b1c),
+                            winui::ERROR(),
                         ),
                     },
                     (Some(h), None) if self.file.is_none() => (
@@ -104,14 +104,14 @@ impl ChecksumDialog {
                             crate::i18n::t("{algorithm}: checked when the download finishes"),
                             &[("algorithm", h.algo.name())],
                         ),
-                        LIGHT_TEXT,
+                        LIGHT_TEXT(),
                     ),
                     (Some(h), None) => (
                         crate::i18n::fmt(
                             crate::i18n::t("{algorithm} checksum"),
                             &[("algorithm", h.algo.name())],
                         ),
-                        LIGHT_TEXT,
+                        LIGHT_TEXT(),
                     ),
                 };
                 winui::text_fit(&p, o.x + 11.0, o.y + 72.0, &line, color, o.x + 419.0);

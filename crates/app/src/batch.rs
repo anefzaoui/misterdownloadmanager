@@ -92,7 +92,7 @@ impl Batch {
             "Batch download",
             [474.0, 387.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| self.body(ui, o, &urls),
         );
         match outcome {
@@ -116,7 +116,7 @@ impl Batch {
             crate::i18n::t(
                 "It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.",
             ),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
             o.x + 470.0,
             13.0,
         );
@@ -132,7 +132,7 @@ impl Batch {
                     &crate::i18n::ltr("http://www.example.com/pictures/img*.jpg"),
                 )],
             ),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         // i18n: noun: the web address (URL) pattern
         text(
@@ -140,7 +140,7 @@ impl Batch {
             o.x + 11.0,
             o.y + 86.0,
             crate::i18n::t("Address"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         let edit = winui::edit_light(
             ui,
@@ -163,7 +163,7 @@ impl Batch {
             r(o, 11.0, 110.0, 453.0, 82.0),
             Some((o.x + 18.0, o.x + 22.0 + cw)),
         );
-        text(&p, o.x + 20.0, o.y + 114.0, caption, LIGHT_TEXT);
+        text(&p, o.x + 20.0, o.y + 114.0, caption, LIGHT_TEXT());
         // i18n: the * in the address runs through numbers
         if winui::radio_light(ui, o + vec2(23.0, 129.0), !self.letters, "Numbers", true).clicked()
             && self.letters
@@ -186,7 +186,7 @@ impl Batch {
             o.x + 17.0,
             o.y + 173.0,
             crate::i18n::t("From:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         self.spin(ui, o, 80.0, 115.0, "from");
         // i18n: label before the last value of the range (an input box follows)
@@ -195,7 +195,7 @@ impl Batch {
             o.x + 161.0,
             o.y + 173.0,
             crate::i18n::t("To:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         self.spin(ui, o, 204.0, 239.0, "to");
         // A longer translation starts earlier instead of running into the box (down to just
@@ -206,7 +206,7 @@ impl Batch {
             o.x + 334.0,
             o.y + 173.0,
             size_label,
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
             o.x + 402.0,
             o.x + 270.0,
         );
@@ -278,7 +278,7 @@ impl Batch {
             ),
         ];
         for (label, base, y, value) in rows {
-            text(&p, o.x + 11.0, o.y + base, label, LIGHT_TEXT);
+            text(&p, o.x + 11.0, o.y + base, label, LIGHT_TEXT());
             let rc = r(o, 102.0, y, 362.0, 18.0);
             preview(&p, rc);
             // An address, from the field's leading edge (an English pen in its English rect).
@@ -289,18 +289,18 @@ impl Batch {
                 e.left() + 4.0,
                 e.top() + 13.0,
                 &value,
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
                 e.right() - 3.0,
             );
             if cut {
                 winui::full_on_hover(ui, rect, ("batch-preview", y as i32), &value);
             }
         }
-        text(&p, o.x + 23.0, o.y + 317.0, "...", LIGHT_TEXT);
+        text(&p, o.x + 23.0, o.y + 317.0, "...", LIGHT_TEXT());
         if urls.len() > 2 {
             // i18n: how many files the pattern gives in all
             let more = crate::i18n::tn(urls.len() as u64, "{n} file", "{n} files");
-            text(&p, o.x + 102.0, o.y + 317.0, &more, LIGHT_TEXT);
+            text(&p, o.x + 102.0, o.y + 317.0, &more, LIGHT_TEXT());
         }
 
         let valid = !urls.is_empty();
@@ -372,21 +372,21 @@ impl Batch {
 /// A classic disabled static: `#a0a0a0` with a white copy at (+1, +1).
 fn embossed(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool) {
     if enabled {
-        text(p, x, base, s, LIGHT_TEXT);
+        text(p, x, base, s, LIGHT_TEXT());
     } else {
-        text(p, x + 1.0, base + 1.0, s, egui::Color32::WHITE);
-        text(p, x, base, s, winui::rgb_hex(0xa0a0a0));
+        text(p, x + 1.0, base + 1.0, s, winui::ETCH_LIGHT());
+        text(p, x, base, s, winui::TEXT_DISABLED());
     }
 }
 
 /// A sunken preview field (WS_EX_STATICEDGE): `#a0a0a0` top/left, white bottom/right.
 fn preview(p: &egui::Painter, rc: egui::Rect) {
     let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
-    winui::fill(p, l, t, rr, b, LIGHT_BG);
-    winui::fill(p, l, t, rr, t, winui::rgb_hex(0xa0a0a0));
-    winui::fill(p, l, t, l, b, winui::rgb_hex(0xa0a0a0));
-    winui::fill(p, l, b, rr, b, egui::Color32::WHITE);
-    winui::fill(p, rr, t, rr, b, egui::Color32::WHITE);
+    winui::fill(p, l, t, rr, b, LIGHT_BG());
+    winui::fill(p, l, t, rr, t, winui::ETCH_SHADOW());
+    winui::fill(p, l, t, l, b, winui::ETCH_SHADOW());
+    winui::fill(p, l, b, rr, b, winui::ETCH_LIGHT());
+    winui::fill(p, rr, t, rr, b, winui::ETCH_LIGHT());
 }
 
 #[cfg(test)]

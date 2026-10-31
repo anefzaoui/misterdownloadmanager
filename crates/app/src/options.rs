@@ -108,7 +108,7 @@ impl OptionsDialog {
             "Mister Download Manager Configuration",
             [430.0, 506.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 if let Some(p) = tabs(ui, o, self.page) {
                     self.page = p;
@@ -287,17 +287,17 @@ impl OptionsDialog {
             }
             let glyph = pos2(list.left() + 6.0, top + 2.0);
             check_glyph(&clip, glyph, *on, true);
-            text(&clip, glyph.x + 18.0, top + 12.0, name, LIGHT_TEXT);
+            text(&clip, glyph.x + 18.0, top + 12.0, name, LIGHT_TEXT());
         }
         if overflow > 0.0 {
             // Track #f0f0f0; the thumb a 2 px #858585 line (arrows hidden, 17 px ends).
             let track = Rect::from_min_max(pos2(rows_right, inner.top()), inner.max);
-            p.rect_filled(winui::rect(track), 0.0, winui::rgb_hex(0xf0f0f0));
+            p.rect_filled(winui::rect(track), 0.0, winui::GRID());
             let span = track.height() - 34.0;
             let len = (span * inner.height() / content).max(12.0);
             let y0 = track.top() + 17.0 + (span - len) * off / overflow;
             let x = track.center().x.floor();
-            fill(&p, x - 1.0, y0, x, y0 + len, winui::rgb_hex(0x858585));
+            fill(&p, x - 1.0, y0, x, y0 + len, winui::FIELD_EDGE());
         } // Adding browsers, keys, and the browser menu / panel editors are the extension's
         // settings (M8): shown as IDM has them, not yet available.
         let off = |ui: &mut Ui, rc: Rect, label: &str| {
@@ -316,7 +316,7 @@ impl OptionsDialog {
             o.x + 313.0,
             o.y + 379.0,
             label,
-            LIGHT_DISABLED,
+            LIGHT_DISABLED(),
             o.x + 22.0,
         );
         if cut {
@@ -328,7 +328,7 @@ impl OptionsDialog {
             crate::i18n::mark("Keys..."),
         );
         let label = crate::i18n::t("Customize MDM menu items in context menu of browsers");
-        let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 419.0, label, LIGHT_DISABLED);
+        let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 419.0, label, LIGHT_DISABLED());
         if cut {
             winui::full_on_hover(ui, rect, ("general-right", 419), label);
         }
@@ -336,7 +336,7 @@ impl OptionsDialog {
         off(ui, r(o, 319.0, 406.0, 73.0, 21.0), "Edit...");
         // The download button over videos in the browsers (our own panel, Sub::Panels).
         let label = crate::i18n::t("Customize MDM Download panels in browsers");
-        let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 452.0, label, LIGHT_TEXT);
+        let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 452.0, label, LIGHT_TEXT());
         if cut {
             winui::full_on_hover(ui, rect, ("general-right", 452), label);
         }
@@ -374,7 +374,7 @@ impl OptionsDialog {
             o.x + 21.0,
             o.y + 103.0,
             crate::i18n::t("Automatically start downloading the following file types:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         multiline(
             ui,
@@ -399,7 +399,7 @@ impl OptionsDialog {
             o.x + 21.0,
             o.y + 222.0,
             crate::i18n::t("Don't start downloading automatically from the following sites:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         multiline(
             ui,
@@ -412,7 +412,7 @@ impl OptionsDialog {
             o.x + 21.0,
             o.y + 293.0,
             crate::i18n::t("(separate names by spaces)"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         if winui::button_light(
             ui,
@@ -431,7 +431,7 @@ impl OptionsDialog {
             o.x + 21.0,
             o.y + 327.0,
             crate::i18n::t("Don't start downloading automatically from the following addresses:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         // The address list editor belongs to browser capture (M8).
         winui::button_light(
@@ -462,7 +462,7 @@ impl OptionsDialog {
             o.x + 30.0,
             o.y + 127.0,
             crate::i18n::t("Category"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         // IDM's, Torrents and the user's (the registry follows this dialog's edits).
         let cats = Category::all();
@@ -517,20 +517,20 @@ impl OptionsDialog {
         let line = with_category(crate::i18n::t(
             "Automatically put in \"{category}\" category the following file types:",
         ));
-        winui::text_in_window(ui, &p, o.x + 31.0, o.y + 178.0, &line, LIGHT_TEXT);
+        winui::text_in_window(ui, &p, o.x + 31.0, o.y + 178.0, &line, LIGHT_TEXT());
         let types = cat.types_text();
         readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
         let dir_line = with_category(crate::i18n::t(
             "Default download directory for \"{category}\" category",
         ));
-        winui::text_in_window(ui, &p, o.x + 30.0, o.y + 230.0, &dir_line, LIGHT_TEXT);
+        winui::text_in_window(ui, &p, o.x + 30.0, o.y + 230.0, &dir_line, LIGHT_TEXT());
         winui::edit_light_on(
             ui,
             r(o, 31.0, 239.0, 281.0, 23.0),
             &mut self.cat_dir,
             true,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         if winui::button_light(
             ui,
@@ -586,7 +586,7 @@ impl OptionsDialog {
             crate::i18n::t(
                 "Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.",
             ),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
             o.x + 426.0,
             13.0,
         );
@@ -624,7 +624,7 @@ impl OptionsDialog {
             o.x + 306.0,
             o.y + 104.0,
             crate::i18n::t("Customize \"Download progress\" dialog"),
-            LIGHT_DISABLED,
+            LIGHT_DISABLED(),
         );
         // The progress dialog customisation dialog is not built yet.
         winui::button_light(
@@ -662,7 +662,7 @@ impl OptionsDialog {
             o.x + 31.0,
             o.y + 191.0,
             crate::i18n::t("Note: These settings don't relate to queue processing"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::etched_h(&p, o.x + 21.0, o.y + 198.0, 381.0);
         winui::checkbox_light(
@@ -699,7 +699,7 @@ impl OptionsDialog {
             o.x + 21.0,
             o.y + 334.0,
             crate::i18n::t("If a duplicate download link is added:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         if let Some(i) = winui::combo_light(
             ui,
@@ -717,7 +717,7 @@ impl OptionsDialog {
             o.x + 21.0,
             o.y + 388.0,
             crate::i18n::t("User-Agent for manually added downloads:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
@@ -732,7 +732,7 @@ impl OptionsDialog {
             o.x + 302.0,
             o.y + 451.0,
             crate::i18n::t("Virus checking settings"),
-            LIGHT_DISABLED,
+            LIGHT_DISABLED(),
         );
         winui::button_light(
             ui,
@@ -763,7 +763,7 @@ impl OptionsDialog {
             o.x + 130.0,
             o.y + 126.0,
             label,
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
             o.x + 268.0,
             o.x + 30.0,
         );
@@ -793,7 +793,7 @@ impl OptionsDialog {
             o.x + 33.0,
             o.y + 158.0,
             crate::i18n::t("Exceptions:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         // The user's exceptions, then the caps the engine learned (read-only "(auto)" rows).
         let rows: Vec<Vec<String>> = self
@@ -897,8 +897,8 @@ impl OptionsDialog {
             &[("mb", vec2(36.0, 20.0)), ("hours", vec2(36.0, 20.0))],
             |p, x, baseline, s| embossed(p, x, baseline, s, on),
         );
-        winui::edit_light_on(ui, boxes[0], &mut self.mb, on, false, LIGHT_PAGE);
-        winui::edit_light_on(ui, boxes[1], &mut self.hours, on, false, LIGHT_PAGE);
+        winui::edit_light_on(ui, boxes[0], &mut self.mb, on, false, LIGHT_PAGE());
+        winui::edit_light_on(ui, boxes[1], &mut self.hours, on, false, LIGHT_PAGE());
         winui::checkbox_light(
             ui,
             o + vec2(37.0, 376.0),
@@ -954,7 +954,7 @@ impl OptionsDialog {
             crate::i18n::t(
                 "Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser",
             ),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
             o.x + 426.0,
             13.0,
         );
@@ -1000,7 +1000,7 @@ impl OptionsDialog {
             &mut s.proxy_script,
             script,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         let manual = s.proxy_mode == 3;
         disabled_label(
@@ -1020,7 +1020,7 @@ impl OptionsDialog {
             &mut s.proxy_host,
             manual,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         winui::edit_light_on(
             ui,
@@ -1028,7 +1028,7 @@ impl OptionsDialog {
             &mut s.proxy_port,
             manual,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         s.proxy_port.retain(|c| c.is_ascii_digit());
         winui::edit_light_on(
@@ -1037,7 +1037,7 @@ impl OptionsDialog {
             &mut s.proxy_user,
             manual,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         password(
             ui,
@@ -1192,7 +1192,7 @@ impl OptionsDialog {
         // Each choice: its label right-aligned before its box.
         let row = |ui: &mut Ui, y: f32, label: &str, items: &[&str], at: usize, id: &str| {
             let label = crate::i18n::t(label);
-            let color = if on { LIGHT_TEXT } else { LIGHT_DISABLED };
+            let color = if on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
             let (rect, cut) =
                 winui::text_right_within(&p, o.x + 186.0, o.y + y + 15.0, label, color, o.x + 48.0);
             if cut {
@@ -1267,7 +1267,7 @@ impl OptionsDialog {
         let sample = crate::regional::format_with(crate::regional::effective(reg), now);
         // i18n: label before an example date and time written the chosen way
         let label = crate::i18n::t("Example:");
-        text(&p, o.x + 48.0, o.y + 290.0, label, LIGHT_TEXT);
+        text(&p, o.x + 48.0, o.y + 290.0, label, LIGHT_TEXT());
         let lw = winui::text_width(&p, label);
         winui::text_in_window(
             ui,
@@ -1275,7 +1275,7 @@ impl OptionsDialog {
             o.x + 48.0 + lw + 8.0,
             o.y + 290.0,
             &crate::i18n::ltr(&sample),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         // i18n: a note under the date and time choices
         winui::text_in_window(
@@ -1284,7 +1284,7 @@ impl OptionsDialog {
             o.x + 30.0,
             o.y + 320.0,
             crate::i18n::t("Used by the list of downloads and the Scheduler."),
-            LIGHT_DISABLED,
+            LIGHT_DISABLED(),
         );
     }
 
@@ -1319,7 +1319,7 @@ impl OptionsDialog {
             list.left() + 8.0,
             head_y + 16.0,
             crate::i18n::t("Event"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         fill(
             &p,
@@ -1327,17 +1327,17 @@ impl OptionsDialog {
             head_y + 1.0,
             o.x + 224.0,
             head_y + 23.0,
-            winui::rgb_hex(0xe5e5e5),
+            winui::HEADER_LINE(),
         );
         text(
             &p,
             o.x + 231.0,
             head_y + 16.0,
             crate::i18n::t("Sound file"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         let body_top = head_y + 25.0;
-        let grid = winui::rgb_hex(0xf0f0f0);
+        let grid = winui::GRID();
         for k in 0..13 {
             let y = body_top + 17.0 * k as f32 + 16.0;
             if y < list.bottom() - 2.0 {
@@ -1385,13 +1385,13 @@ impl OptionsDialog {
                     top,
                     row.right() - 1.0,
                     top + 15.0,
-                    winui::rgb_hex(0x0078d7),
+                    winui::SELECTION,
                 );
             }
             let c = if self.sound_sel == Some(i) {
                 Color32::WHITE
             } else {
-                LIGHT_TEXT
+                LIGHT_TEXT()
             };
             check_glyph(&p, glyph, *on, true);
             let event = crate::i18n::t(event);
@@ -1457,7 +1457,7 @@ impl OptionsDialog {
                     title,
                     [300.0, 150.0],
                     false,
-                    LIGHT_BG,
+                    LIGHT_BG(),
                     |ui, o| {
                         let p = ui.painter().clone();
                         // i18n: label before a web address (site and folder)
@@ -1466,7 +1466,7 @@ impl OptionsDialog {
                             o.x + 70.0,
                             o.y + 26.0,
                             crate::i18n::t("Site/path:"),
-                            LIGHT_TEXT,
+                            LIGHT_TEXT(),
                         );
                         winui::edit_light(
                             ui,
@@ -1481,7 +1481,7 @@ impl OptionsDialog {
                             o.x + 70.0,
                             o.y + 57.0,
                             crate::i18n::t("User:"),
-                            LIGHT_TEXT,
+                            LIGHT_TEXT(),
                         );
                         winui::edit_light(
                             ui,
@@ -1495,7 +1495,7 @@ impl OptionsDialog {
                             o.x + 70.0,
                             o.y + 88.0,
                             crate::i18n::t("Password:"),
-                            LIGHT_TEXT,
+                            LIGHT_TEXT(),
                         );
                         password(ui, r(o, 78.0, 74.0, 210.0, 23.0), &mut pass, true);
                         ok_cancel(ui, o, 136.0, 117.0, !site.trim().is_empty())
@@ -1525,7 +1525,7 @@ impl OptionsDialog {
                     title,
                     [300.0, 118.0],
                     false,
-                    LIGHT_BG,
+                    LIGHT_BG(),
                     |ui, o| {
                         let p = ui.painter().clone();
                         // i18n: noun: label before a server name
@@ -1534,7 +1534,7 @@ impl OptionsDialog {
                             o.x + 70.0,
                             o.y + 26.0,
                             crate::i18n::t("Server:"),
-                            LIGHT_TEXT,
+                            LIGHT_TEXT(),
                         );
                         winui::edit_light(
                             ui,
@@ -1549,7 +1549,7 @@ impl OptionsDialog {
                             o.x + 70.0,
                             o.y + 57.0,
                             crate::i18n::t("Connections:"),
-                            LIGHT_TEXT,
+                            LIGHT_TEXT(),
                         );
                         winui::edit_light(
                             ui,
@@ -1585,7 +1585,7 @@ impl OptionsDialog {
                     "Download panels",
                     [380.0, 190.0],
                     false,
-                    LIGHT_BG,
+                    LIGHT_BG(),
                     |ui, o| {
                         let p = ui.painter().clone();
                         winui::checkbox_light(
@@ -1601,7 +1601,7 @@ impl OptionsDialog {
                             o.x + 14.0,
                             o.y + 55.0,
                             crate::i18n::t("Never show it on these sites:"),
-                            if on { LIGHT_TEXT } else { LIGHT_DISABLED },
+                            if on { LIGHT_TEXT() } else { LIGHT_DISABLED() },
                         );
                         multiline(ui, r(o, 14.0, 62.0, 352.0, 55.0), &mut sites, "panel-sites");
                         winui::text_in_window(
@@ -1610,7 +1610,7 @@ impl OptionsDialog {
                             o.x + 14.0,
                             o.y + 133.0,
                             crate::i18n::t("(separate names by spaces)"),
-                            LIGHT_TEXT,
+                            LIGHT_TEXT(),
                         );
                         ok_cancel(ui, o, 212.0, 157.0, true)
                     },
@@ -1753,7 +1753,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         (9, crate::i18n::mark("Regional"), 316.0, 419.0, 343.0),
     ];
     let p = ui.painter().clone();
-    let border = winui::rgb_hex(0xe5e5e5);
+    let border = winui::HEADER_LINE();
     let (g, pr) = (tab_row(&p, &G), tab_row(&p, &P));
     let (front, back): (&[_], &[_]) = if page < 5 { (&g, &pr) } else { (&pr, &g) };
     let mut clicked = None;
@@ -1778,11 +1778,11 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             clicked = Some(i);
         }
         let face = if sel {
-            LIGHT_PAGE
+            LIGHT_PAGE()
         } else if resp.hovered() {
-            winui::rgb_hex(0xfdfdfd)
+            winui::TAB_HOT()
         } else {
-            winui::rgb_hex(0xf3f3f3)
+            winui::TAB_UNSELECTED()
         };
         fill(&p, o.x + x0, o.y + top, o.x + x1, o.y + bottom, face);
         fill(
@@ -1814,11 +1814,11 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         let full = crate::i18n::t(label);
         let shown = winui::ellipsize(&p, &winui::tahoma(), full, x1 - x0 - 6.0);
         if shown == full {
-            text(&p, o.x + lx, o.y + base, full, LIGHT_TEXT);
+            text(&p, o.x + lx, o.y + base, full, LIGHT_TEXT());
         } else {
             let w = winui::text_width(&p, &shown);
             let lx = x0 + ((x1 - x0 - w) / 2.0).floor();
-            let rc = text(&p, o.x + lx, o.y + base, &shown, LIGHT_TEXT);
+            let rc = text(&p, o.x + lx, o.y + base, &shown, LIGHT_TEXT());
             winui::full_on_hover(ui, rc, ("opt-tab-label", i), full);
         }
     };
@@ -1835,7 +1835,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         o.y + 45.0,
         o.x + 421.0,
         o.y + 468.0,
-        LIGHT_PAGE,
+        LIGHT_PAGE(),
     );
     fill(&p, o.x + 6.0, o.y + 45.0, o.x + 421.0, o.y + 45.0, border);
     fill(&p, o.x + 6.0, o.y + 468.0, o.x + 421.0, o.y + 468.0, border);
@@ -1848,7 +1848,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         o.y + 468.0,
         border,
     );
-    let shadow = winui::rgb_hex(0xf3f3f3);
+    let shadow = winui::TAB_UNSELECTED();
     fill(
         &p,
         o.x + 422.0,
@@ -1897,7 +1897,7 @@ fn page_title(p: &egui::Painter, font: egui::FontId, x: f32, baseline: f32, engl
         let end = x + winui::text_width_font(p, font.clone(), english);
         end - winui::text_width_font(p, font.clone(), shown)
     };
-    winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT);
+    winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT());
 }
 
 /// Group box (`#dcdcdc` frame) with its caption (translated here) at x + 9.
@@ -1912,7 +1912,7 @@ fn group(ui: &Ui, o: Pos2, x: f32, y: f32, w: f32, h: f32, caption: &str) {
         r(o, x, y, w, h),
         Some((o.x + x + 7.0, o.x + x + 9.0 + cw + 2.0)),
     );
-    let rc = text(p, o.x + x + 9.0, o.y + y + 4.0, &caption, LIGHT_TEXT);
+    let rc = text(p, o.x + x + 9.0, o.y + y + 4.0, &caption, LIGHT_TEXT());
     if caption != full {
         winui::full_on_hover(ui, rc, ("group", caption.as_str()), full);
     }
@@ -1933,19 +1933,19 @@ fn disabled_label(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool, 
 /// [`disabled_label`]'s look for text already translated.
 fn embossed(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool) {
     if enabled {
-        text(p, x, base, s, LIGHT_TEXT);
+        text(p, x, base, s, LIGHT_TEXT());
     } else {
-        text(p, x + 1.0, base + 1.0, s, Color32::WHITE);
-        text(p, x, base, s, winui::rgb_hex(0xa0a0a0));
+        text(p, x + 1.0, base + 1.0, s, winui::ETCH_LIGHT());
+        text(p, x, base, s, winui::TEXT_DISABLED());
     }
 }
 
 pub(crate) fn list_frame(p: &egui::Painter, rc: Rect) {
-    p.rect_filled(rc, 0.0, Color32::WHITE);
+    p.rect_filled(rc, 0.0, winui::FIELD());
     p.rect_stroke(
         rc,
         0.0,
-        egui::Stroke::new(1.0, winui::rgb_hex(0x828790)),
+        egui::Stroke::new(1.0, winui::FIELD_EDGE()),
         egui::StrokeKind::Inside,
     );
 }
@@ -1954,31 +1954,12 @@ pub(crate) fn list_frame(p: &egui::Painter, rc: Rect) {
 /// (placed on screen; the check keeps its shape).
 pub(crate) fn check_glyph(p: &egui::Painter, at: Pos2, on: bool, enabled: bool) {
     let rc = winui::rect(Rect::from_min_size(at, vec2(13.0, 13.0)));
-    let at = rc.min;
-    if on {
-        let c = if enabled {
-            winui::rgb_hex(0x005fb8)
-        } else {
-            winui::rgb_hex(0xc3c3c3)
-        };
-        p.rect_filled(rc, 2.0, c);
-        p.line(
-            vec![
-                at + vec2(3.0, 6.5),
-                at + vec2(5.5, 9.0),
-                at + vec2(10.0, 3.5),
-            ],
-            egui::Stroke::new(1.4, Color32::WHITE),
-        );
+    let state = if enabled {
+        winui::State::Normal
     } else {
-        p.rect_filled(rc, 2.0, winui::rgb_hex(0xf3f3f3));
-        p.rect_stroke(
-            rc,
-            2.0,
-            egui::Stroke::new(1.0, winui::rgb_hex(0x626262)),
-            egui::StrokeKind::Inside,
-        );
-    }
+        winui::State::Disabled
+    };
+    winui::check_box_glyph(p, rc, on, state);
 }
 
 /// A report list (header 25 px, rows 17 px): `cols` are (title, right edge in client x).
@@ -2000,13 +1981,13 @@ fn report(
     let rc = winui::rect(rc);
     let left = rc.left();
     let head = rc.top() + 1.0;
-    let divider = winui::rgb_hex(0xe5e5e5);
+    let divider = winui::HEADER_LINE();
     let mut x0 = left;
     for (i, (title, right)) in cols.iter().enumerate() {
         let title = crate::i18n::t(title);
         let right = o.x + right;
         let tx = if i == 0 { x0 + 8.0 } else { x0 + 7.0 };
-        let (rect, cut) = winui::text_fit(&p, tx, head + 16.0, title, LIGHT_TEXT, right - 3.0);
+        let (rect, cut) = winui::text_fit(&p, tx, head + 16.0, title, LIGHT_TEXT(), right - 3.0);
         if cut {
             winui::full_on_hover(ui, rect, (id, "head", i), title);
         }
@@ -2018,7 +1999,7 @@ fn report(
         pos2(rc.right() - 1.0, rc.bottom() - 1.0),
     );
     let clip = p.with_clip_rect(winui::rect(body));
-    let gridc = winui::rgb_hex(0xf0f0f0);
+    let gridc = winui::GRID();
     let mut double = false;
     let n = ((body.height()) / 17.0).ceil() as usize;
     for k in 0..n {
@@ -2055,10 +2036,14 @@ fn report(
                 line.top(),
                 line.right() - 1.0,
                 line.bottom() - 1.0,
-                winui::rgb_hex(0x0078d7),
+                winui::SELECTION,
             );
         }
-        let c = if selected { Color32::WHITE } else { LIGHT_TEXT };
+        let c = if selected {
+            Color32::WHITE
+        } else {
+            LIGHT_TEXT()
+        };
         let mut cx = left;
         for (i, (_, right)) in cols.iter().enumerate() {
             let right = o.x + right;
@@ -2082,34 +2067,15 @@ fn report(
     double
 }
 
-/// A multi-line edit (white, Win11 border) that wraps its text.
+/// A multi-line edit that wraps its text (the shared one).
 fn multiline(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) {
-    winui::edit_frame(ui.painter(), rc, true);
-    ui.painter()
-        .rect_filled(rc.shrink(2.0), 0.0, Color32::WHITE);
-    let inner = Rect::from_min_max(rc.min + vec2(4.0, 2.0), rc.max - vec2(3.0, 3.0));
-    let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).id_salt(id));
-    egui::ScrollArea::vertical()
-        .id_salt((id, "scroll"))
-        .max_height(inner.height())
-        .show(&mut child, |ui| {
-            let resp = ui.add(
-                egui::TextEdit::multiline(value)
-                    .font(winui::tahoma())
-                    .text_color(LIGHT_TEXT)
-                    .frame(egui::Frame::NONE)
-                    .margin(egui::Margin::ZERO)
-                    .desired_width(inner.width() - 14.0)
-                    .desired_rows(3),
-            );
-            winui::edit_menu(&resp, value, false, true);
-        });
+    winui::multiline_light(ui, rc, value, id);
 }
 
 /// A read-only field (the page colour, as IDM's).
 fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
     winui::edit_frame(ui.painter(), rc, true);
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, LIGHT_PAGE);
+    ui.painter().rect_filled(rc.shrink(2.0), 0.0, LIGHT_PAGE());
     let p = ui.painter().clone();
     // The value from the field's leading edge (an English pen in its English rect).
     let e = winui::rect(rc);
@@ -2118,7 +2084,7 @@ fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
         e.left() + 5.0,
         e.top() + 15.0,
         value,
-        LIGHT_TEXT,
+        LIGHT_TEXT(),
         e.right() - 4.0,
     );
     if cut {
@@ -2131,20 +2097,7 @@ fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
     }
 }
 
-/// A password edit (characters shown as bullets).
+/// A password edit (characters shown as bullets): the shared one, on the tab page.
 fn password(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) {
-    winui::edit_frame(ui.painter(), rc, enabled);
-    let fill_c = if enabled { Color32::WHITE } else { LIGHT_PAGE };
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, fill_c);
-    let inner = Rect::from_min_max(rc.min + vec2(4.0, 4.0), rc.max - vec2(3.0, 3.0));
-    let edit = egui::TextEdit::singleline(value)
-        .password(true)
-        .font(winui::tahoma())
-        .text_color(if enabled { LIGHT_TEXT } else { LIGHT_DISABLED })
-        .frame(egui::Frame::NONE)
-        .margin(egui::Margin::ZERO);
-    let resp = ui.add_enabled_ui(enabled, |ui| ui.put(inner, edit)).inner;
-    if enabled {
-        winui::edit_menu(&resp, value, true, false);
-    }
+    winui::password_light_on(ui, rc, value, enabled, LIGHT_PAGE());
 }

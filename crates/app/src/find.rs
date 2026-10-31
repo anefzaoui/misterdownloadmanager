@@ -98,7 +98,7 @@ impl Find {
             "Find file",
             [345.0, 241.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 let q = &mut self.query;
@@ -107,7 +107,7 @@ impl Find {
                     o.x + 11.0,
                     o.y + 21.0,
                     crate::i18n::t("Find:"),
-                    LIGHT_TEXT,
+                    LIGHT_TEXT(),
                 );
                 let edit =
                     winui::edit_light(ui, r(o, 11.0, 31.0, 324.0, 23.0), &mut q.text, true, false);

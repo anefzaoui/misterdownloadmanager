@@ -148,7 +148,7 @@ impl ImportDialog {
             "Import downloads",
             [560.0, 360.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 let line = crate::i18n::fmt(
@@ -156,7 +156,7 @@ impl ImportDialog {
                     &[("file", &self.source)],
                 );
                 let (rect, cut) =
-                    winui::text_fit(&p, o.x + 11.0, o.y + 20.0, &line, LIGHT_TEXT, o.x + 549.0);
+                    winui::text_fit(&p, o.x + 11.0, o.y + 20.0, &line, LIGHT_TEXT(), o.x + 549.0);
                 if cut {
                     winui::full_on_hover(ui, rect, "import-source", &line);
                 }
@@ -166,11 +166,11 @@ impl ImportDialog {
                     vec2(538.0, ROWS as f32 * ROW_H + 4.0),
                 );
                 let shown = winui::rect(list);
-                p.rect_filled(shown, 0.0, LIGHT_PAGE);
+                p.rect_filled(shown, 0.0, LIGHT_PAGE());
                 p.rect_stroke(
                     shown,
                     0.0,
-                    egui::Stroke::new(1.0, egui::Color32::from_rgb(0x82, 0x87, 0x90)),
+                    egui::Stroke::new(1.0, winui::FIELD_EDGE()),
                     egui::StrokeKind::Inside,
                 );
                 // The wheel scrolls by whole rows.
@@ -199,7 +199,7 @@ impl ImportDialog {
                         list.left() + 26.0,
                         y + 13.0,
                         &url,
-                        LIGHT_TEXT,
+                        LIGHT_TEXT(),
                         list.right() - 6.0,
                     );
                     if cut {
@@ -214,7 +214,7 @@ impl ImportDialog {
                         ("total", &crate::i18n::integer(self.found.len() as u64)),
                     ],
                 );
-                winui::text(&p, o.x + 11.0, list.bottom() + 20.0, &count, LIGHT_TEXT);
+                winui::text(&p, o.x + 11.0, list.bottom() + 20.0, &count, LIGHT_TEXT());
                 if winui::button_light(
                     ui,
                     r(o, 196.0, 296.0, 82.0, 21.0),

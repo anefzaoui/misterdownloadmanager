@@ -24,11 +24,8 @@ const ROW: f32 = 17.0;
 type Slot = Arc<Mutex<Option<Result<Meta, String>>>>;
 
 crate::theme::themed! {
-    LIST_BG = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
     LIST_HEAD = rgb(0x19, 0x19, 0x19), rgb(0xf3, 0xf3, 0xf3);
     LIST_LINE = rgb(0x4a, 0x4a, 0x4a), rgb(0xe5, 0xe5, 0xe5);
-    ERROR = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
-    MUTED = rgb(0xa0, 0xa0, 0xa0), rgb(0x6d, 0x6d, 0x6d);
     THUMB = rgb(0x95, 0x95, 0x95), rgb(0x85, 0x85, 0x85);
 }
 
@@ -341,7 +338,7 @@ impl TorrentDialog {
             };
             text(&p, o.x + 31.0, line, &msg, winui::TEXT());
         } else if let Some(e) = &self.error {
-            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, line, e, ERROR(), o.x + 589.0);
+            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, line, e, winui::ERROR(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-error", e);
             }
@@ -459,7 +456,7 @@ impl TorrentDialog {
                 &[("folder", &crate::i18n::ltr(&goes.display().to_string()))],
             );
             let (rect, cut) =
-                winui::text_fit(&p, o.x + 70.0, o.y + 402.0, &s, MUTED(), o.x + 589.0);
+                winui::text_fit(&p, o.x + 70.0, o.y + 402.0, &s, winui::MUTED(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-goes", &s);
             }
@@ -524,7 +521,7 @@ impl TorrentDialog {
         // leading edge.
         let list = winui::rect(list);
         let inner = list.shrink(1.0);
-        p.rect_filled(winui::rect(inner), 0.0, LIST_BG());
+        p.rect_filled(winui::rect(inner), 0.0, winui::FIELD());
         let head = Rect::from_min_size(inner.min, vec2(inner.width(), 20.0));
         p.rect_filled(winui::rect(head), 0.0, LIST_HEAD());
         fill(
@@ -564,7 +561,7 @@ impl TorrentDialog {
                 crate::i18n::t("Reading the file list...")
             };
             let w = winui::text_width(&p, note);
-            text(&p, c.x - w / 2.0, c.y + 22.0, note, MUTED());
+            text(&p, c.x - w / 2.0, c.y + 22.0, note, winui::MUTED());
             return;
         }
         if self.meta.is_none() {
@@ -577,7 +574,7 @@ impl TorrentDialog {
                 body.center().x - w / 2.0,
                 body.center().y + 4.0,
                 note,
-                MUTED(),
+                winui::MUTED(),
             );
             return;
         }
@@ -645,7 +642,11 @@ impl TorrentDialog {
             let name = crate::i18n::isolate(&node.name);
             let shown = winui::ellipsize(&p, &winui::tahoma(), &name, max);
             text(&p, left, top + 12.0, &shown, winui::TEXT());
-            let size_color = if is_dir { MUTED() } else { winui::TEXT() };
+            let size_color = if is_dir {
+                winui::MUTED()
+            } else {
+                winui::TEXT()
+            };
             winui::text_right(&p, right - 8.0, top + 12.0, &size, size_color);
             if shown != name {
                 resp.on_hover_text(node.name.clone());
@@ -710,7 +711,7 @@ impl TorrentSettings {
                     o.x + 32.0,
                     o.y + 44.0,
                     crate::i18n::t("Off: a finished torrent stops, like any download."),
-                    MUTED(),
+                    winui::MUTED(),
                 );
                 winui::checkbox(
                     ui,
@@ -726,7 +727,7 @@ impl TorrentSettings {
                     crate::i18n::t(
                         "For your Windows account only. Another app chosen in \"Open with\" stays first.",
                     ),
-                    MUTED(),
+                    winui::MUTED(),
                 );
                 let ok = winui::button(
                     ui,
@@ -880,7 +881,7 @@ fn visible_rows(tree: &[Node], open: &[bool]) -> Vec<usize> {
 /// A tree expander at English point `at`: ▸ when closed (pointing into the row: ◂ in RTL), ▾
 /// when open.
 fn expander(p: &egui::Painter, at: Pos2, open: bool) {
-    let c = MUTED();
+    let c = winui::MUTED();
     let pts = if open {
         vec![at, pos2(at.x + 8.0, at.y), pos2(at.x + 4.0, at.y + 5.0)]
     } else {

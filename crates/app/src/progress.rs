@@ -642,8 +642,22 @@ impl Progress {
             "Show download complete dialog",
             true,
         );
-        fill(&p, o.x + 33.0, o.y + 74.0, o.x + 505.0, o.y + 74.0, SHADOW);
-        fill(&p, o.x + 33.0, o.y + 75.0, o.x + 506.0, o.y + 75.0, HILIGHT);
+        fill(
+            &p,
+            o.x + 33.0,
+            o.y + 74.0,
+            o.x + 505.0,
+            o.y + 74.0,
+            winui::ETCH_SHADOW(),
+        );
+        fill(
+            &p,
+            o.x + 33.0,
+            o.y + 75.0,
+            o.x + 506.0,
+            o.y + 75.0,
+            winui::ETCH_LIGHT(),
+        );
         text(
             &p,
             o.x + 33.0,
@@ -689,7 +703,7 @@ impl Progress {
             o.x + 273.0,
             o.y + 147.0,
             crate::i18n::t("Shut down"),
-            rgb(0x6d, 0x6d, 0x6d),
+            winui::LIGHT_DISABLED(),
         );
         hide_tab(ui, o)
     }
@@ -702,7 +716,7 @@ fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
     p.rect_stroke(
         ring,
         0.0,
-        egui::Stroke::new(1.0, rgb(0xf9, 0xf9, 0xf9)),
+        egui::Stroke::new(1.0, winui::LIGHT_PAGE()),
         egui::StrokeKind::Inside,
     );
     winui::button(

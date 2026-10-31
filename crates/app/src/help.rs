@@ -20,9 +20,6 @@ pub const CHECK_EVERY: i64 = 7 * 24 * 3600;
 
 crate::theme::themed! {
     LINK = Color32::from_rgb(0x99, 0xc8, 0xff), Color32::from_rgb(0x00, 0x66, 0xcc);
-    BOX = Color32::from_rgb(0x1f, 0x1f, 0x1f), Color32::from_rgb(0xff, 0xff, 0xff);
-    BOX_EDGE = Color32::from_rgb(0x5a, 0x5a, 0x5a), Color32::from_rgb(0x82, 0x87, 0x90);
-    MUTED = Color32::from_rgb(0xa0, 0xa0, 0xa0), Color32::from_rgb(0x6d, 0x6d, 0x6d);
 }
 
 /// Open a page of the user guide (`"README.md"`, `"video.md"`, `"README.md#tutorials"`…, in
@@ -340,7 +337,7 @@ impl Updates {
                             crate::i18n::t("You have version {version}."),
                             &[("version", VERSION)],
                         );
-                        winui::text(&p, o.x + 11.0, o.y + 42.0, &have, MUTED());
+                        winui::text(&p, o.x + 11.0, o.y + 42.0, &have, winui::MUTED());
                         winui::text(
                             &p,
                             o.x + 11.0,
@@ -353,11 +350,11 @@ impl Updates {
                             pos2(right, o.y + 206.0),
                         );
                         // English, as the paragraph is laid out; made where it is on screen.
-                        p.rect_filled(winui::rect(notes), 0.0, BOX());
+                        p.rect_filled(winui::rect(notes), 0.0, winui::FIELD());
                         p.rect_stroke(
                             winui::rect(notes),
                             0.0,
-                            Stroke::new(1.0, BOX_EDGE()),
+                            Stroke::new(1.0, winui::FIELD_EDGE()),
                             egui::StrokeKind::Inside,
                         );
                         // Release notes run longer than the box: it scrolls (issue #5).
@@ -578,7 +575,7 @@ impl About {
                     crate::i18n::t("Version {version} ({commit})"),
                     &[("version", VERSION), ("commit", COMMIT)],
                 );
-                winui::text(&p, o.x + 80.0, o.y + 46.0, &version, MUTED());
+                winui::text(&p, o.x + 80.0, o.y + 46.0, &version, winui::MUTED());
                 let lines = winui::paragraph(
                     &p,
                     o.x + 80.0,
@@ -777,11 +774,11 @@ impl TellFriend {
                     pos2(o.x + 409.0, o.y + 106.0),
                 );
                 // English, as the paragraph is laid out; made where it is on screen.
-                p.rect_filled(winui::rect(rect), 0.0, BOX());
+                p.rect_filled(winui::rect(rect), 0.0, winui::FIELD());
                 p.rect_stroke(
                     winui::rect(rect),
                     0.0,
-                    Stroke::new(1.0, BOX_EDGE()),
+                    Stroke::new(1.0, winui::FIELD_EDGE()),
                     egui::StrokeKind::Inside,
                 );
                 winui::paragraph(
@@ -799,7 +796,7 @@ impl TellFriend {
                         o.x + 11.0,
                         o.y + 150.0,
                         crate::i18n::t("Copied to the clipboard."),
-                        MUTED(),
+                        winui::MUTED(),
                     );
                 }
                 let copy = winui::button(

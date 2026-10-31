@@ -253,7 +253,7 @@ impl Scheduler {
             "Scheduler",
             [651.0, 465.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, items, running, actions, naming),
         );
         if self.naming.is_some() {
@@ -292,7 +292,7 @@ impl Scheduler {
             o.x + 74.0,
             o.y + 34.0,
             crate::i18n::t("Queues"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         let tree = r(o, 11.0, 44.0, 173.0, 379.0);
         self.tree(ui, &p, icons, tree, pressed, pointer);
@@ -331,7 +331,7 @@ impl Scheduler {
                 (o.x + 412.0 - w / 2.0).max(o.x + 203.0).round(),
                 o.y + 15.0,
                 &name,
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
                 o.x + 640.0,
             );
             if cut {
@@ -438,11 +438,11 @@ impl Scheduler {
         pressed: bool,
         pointer: Option<Pos2>,
     ) {
-        p.rect_filled(rc, 0.0, Color32::WHITE);
+        p.rect_filled(rc, 0.0, winui::FIELD());
         p.rect_stroke(
             rc,
             0.0,
-            egui::Stroke::new(1.0, winui::rgb_hex(0x828790)),
+            egui::Stroke::new(1.0, winui::FIELD_EDGE()),
             egui::StrokeKind::Inside,
         );
         if pressed && pointer.is_some_and(|q| !rc.contains(q)) {
@@ -477,16 +477,16 @@ impl Scheduler {
             let w = winui::text_width(&clip, label);
             if i == self.selected {
                 let bg = if self.tree_focused {
-                    winui::rgb_hex(0x0078d7)
+                    winui::SELECTION
                 } else {
-                    LIGHT_BG
+                    winui::SELECTED_INACTIVE()
                 };
                 fill(&clip, x - 1.0, top, x + w + 2.0, top + 15.0, bg);
             }
             let c = if i == self.selected && self.tree_focused {
                 Color32::WHITE
             } else {
-                LIGHT_TEXT
+                LIGHT_TEXT()
             };
             let (trect, cut) = winui::text_fit(&clip, x, top + 11.0, label, c, rc.right() - 3.0);
             if cut {
@@ -647,7 +647,7 @@ impl Scheduler {
             &mut f.retries,
             f.retries_on,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         f.retries.retain(|c| c.is_ascii_digit());
         f.retries.truncate(4);
@@ -665,7 +665,7 @@ impl Scheduler {
             &mut f.open_file,
             f.open_on,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         let browse = winui::button_light(
             ui,
@@ -752,11 +752,18 @@ impl Scheduler {
             }],
             &[("files", vec2(39.0, 23.0))],
             |p, x, baseline, s| {
-                text(p, x, baseline, s, LIGHT_TEXT);
+                text(p, x, baseline, s, LIGHT_TEXT());
             },
         );
         let f = &mut self.forms[self.selected];
-        winui::edit_light_on(ui, boxes[0], &mut f.files_at_once, true, false, LIGHT_PAGE);
+        winui::edit_light_on(
+            ui,
+            boxes[0],
+            &mut f.files_at_once,
+            true,
+            false,
+            LIGHT_PAGE(),
+        );
         f.files_at_once.retain(|c| c.is_ascii_digit());
         f.files_at_once.truncate(2);
         // The up-down buddy inside the box's right end (IDM's: 318, 54 for the box at 297, 53).
@@ -773,11 +780,11 @@ impl Scheduler {
 
         // The queue's files: File Name, Size, Status, Time left.
         let list = r(o, 229.0, 82.0, 396.0, 294.0);
-        p.rect_filled(list, 0.0, Color32::WHITE);
+        p.rect_filled(list, 0.0, winui::FIELD());
         p.rect_stroke(
             list,
             0.0,
-            egui::Stroke::new(1.0, winui::rgb_hex(0x828790)),
+            egui::Stroke::new(1.0, winui::FIELD_EDGE()),
             egui::StrokeKind::Inside,
         );
         if pressed && pointer.is_some_and(|q| !list.contains(q)) {
@@ -791,17 +798,17 @@ impl Scheduler {
             (crate::i18n::mark("Status"), 488.0, 540.0),
             (crate::i18n::mark("Time left"), 540.0, 607.0),
         ];
-        let grid = winui::rgb_hex(0xf0f0f0);
+        let grid = winui::GRID();
         for (title, x0, x1) in cols {
             let title = crate::i18n::t(title);
-            text(&p, o.x + x0 + 6.0, o.y + 99.0, title, LIGHT_TEXT);
+            text(&p, o.x + x0 + 6.0, o.y + 99.0, title, LIGHT_TEXT());
             fill(
                 &p,
                 o.x + x1,
                 o.y + 83.0,
                 o.x + x1,
                 o.y + 106.0,
-                winui::rgb_hex(0xe5e5e5),
+                winui::HEADER_LINE(),
             );
         }
         let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0));
@@ -836,9 +843,9 @@ impl Scheduler {
             let sel = self.file_sel == Some(k);
             if sel {
                 let bg = if self.files_focused {
-                    winui::rgb_hex(0x0078d7)
+                    winui::SELECTION
                 } else {
-                    LIGHT_BG
+                    winui::SELECTED_INACTIVE()
                 };
                 fill(
                     &clip,
@@ -852,7 +859,7 @@ impl Scheduler {
             let c = if sel && self.files_focused {
                 Color32::WHITE
             } else {
-                LIGHT_TEXT
+                LIGHT_TEXT()
             };
             let cells = [
                 // Its own direction (an Arabic name right to left in any window).
@@ -902,14 +909,11 @@ impl Scheduler {
             icons.paint(ui, IconKey::Silk(icon), img);
             if !enabled {
                 // Disabled: wash the icon out.
-                fill(
-                    &p,
-                    img.x,
-                    img.y,
-                    img.x + 15.0,
-                    img.y + 15.0,
-                    Color32::from_rgba_unmultiplied(0xfb, 0xfb, 0xfb, 170),
-                );
+                fill(&p, img.x, img.y, img.x + 15.0, img.y + 15.0, {
+                    // The dialog's colour over the icon: greyed.
+                    let b = LIGHT_BG();
+                    Color32::from_rgba_unmultiplied(b.r(), b.g(), b.b(), 170)
+                });
             }
             if !(clicked && enabled) {
                 continue;
@@ -947,7 +951,7 @@ impl Scheduler {
         let p = ui.painter().clone();
         let l = &mut self.limits;
         winui::checkbox_light(ui, o + vec2(239.0, 33.0), &mut l.on, LIMITS_LABEL, true);
-        let c = if l.on { LIGHT_TEXT } else { LIGHT_DISABLED };
+        let c = if l.on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
         // The labels end where `text_right(380)` ended them: at 381.
         let line = |y: f32, baseline: f32, gap: f32| winui::SentenceLine {
             lead: winui::Lead::Right(o.x + 381.0),
@@ -992,7 +996,7 @@ impl Scheduler {
             "Enter queue name",
             [279.0, 120.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 text(
@@ -1000,14 +1004,14 @@ impl Scheduler {
                     o.x + 11.0,
                     o.y + 20.0,
                     crate::i18n::t("Enter a name for the new queue that will be"),
-                    LIGHT_TEXT,
+                    LIGHT_TEXT(),
                 );
                 text(
                     &p,
                     o.x + 11.0,
                     o.y + 33.0,
                     crate::i18n::t("displayed in the list of queues"),
-                    LIGHT_TEXT,
+                    LIGHT_TEXT(),
                 );
                 let edit =
                     winui::edit_light(ui, r(o, 11.0, 46.0, 258.0, 23.0), &mut name, true, false);
@@ -1080,12 +1084,12 @@ fn field(p: &egui::Painter, x: f32, base: f32, s: &str, selected: bool, enabled:
         pos2(x + w + 1.0, base + 3.0),
     ));
     if selected && enabled {
-        p.rect_filled(rc, 0.0, winui::rgb_hex(0x0078d7));
+        p.rect_filled(rc, 0.0, winui::SELECTION);
     }
     let c = match (enabled, selected) {
-        (false, _) => LIGHT_DISABLED,
+        (false, _) => LIGHT_DISABLED(),
         (true, true) => Color32::WHITE,
-        (true, false) => LIGHT_TEXT,
+        (true, false) => LIGHT_TEXT(),
     };
     text(p, x, base, s, c);
     rc
@@ -1199,7 +1203,11 @@ fn time_picker(
         x,
         base,
         ":",
-        if enabled { LIGHT_TEXT } else { LIGHT_DISABLED },
+        if enabled {
+            LIGHT_TEXT()
+        } else {
+            LIGHT_DISABLED()
+        },
     );
     x += colon;
     rects.push(field(
@@ -1216,7 +1224,11 @@ fn time_picker(
         x,
         base,
         ":",
-        if enabled { LIGHT_TEXT } else { LIGHT_DISABLED },
+        if enabled {
+            LIGHT_TEXT()
+        } else {
+            LIGHT_DISABLED()
+        },
     );
     x += colon;
     rects.push(field(
@@ -1472,7 +1484,7 @@ fn date_picker(
         &p,
         drop.shrink(1.0),
         winui::State::of(&drop_resp, true).open_if(open),
-        false,
+        crate::theme::dark(),
         |p| winui::chevron_light(p, chevron, true),
     );
     if drop_resp.clicked() {
@@ -1556,11 +1568,11 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
         .show(ui.ctx(), |ui| {
             let (rect, p) = ui.allocate_painter(size, Sense::hover());
             let shown = rect.rect;
-            p.rect_filled(shown, 4.0, Color32::WHITE);
+            p.rect_filled(shown, 4.0, winui::FIELD());
             p.rect_stroke(
                 shown,
                 4.0,
-                egui::Stroke::new(1.0, winui::rgb_hex(0xc8c8c8)),
+                egui::Stroke::new(1.0, winui::FIELD_EDGE()),
                 egui::StrokeKind::Inside,
             );
             let rect = winui::rect(shown);
@@ -1578,15 +1590,17 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                 (rect.center().x - tw / 2.0).round(),
                 rect.top() + 17.0,
                 &title,
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
             );
             for (dir, x, glyph) in [(-1, rect.left() + 8.0, "<"), (1, rect.right() - 22.0, ">")] {
                 let b = Rect::from_min_size(pos2(x, rect.top() + 5.0), vec2(14.0, 16.0));
                 let r = ui.interact(winui::rect(b), key.with(("cal-nav", dir)), Sense::click());
-                if let Some(c) = winui::highlight_fill(winui::State::of(&r, true)) {
+                if let Some(c) =
+                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::dark())
+                {
                     p.rect_filled(winui::rect(b), 2.0, c);
                 }
-                text(&p, b.left() + 4.0, b.top() + 12.0, glyph, LIGHT_TEXT);
+                text(&p, b.left() + 4.0, b.top() + 12.0, glyph, LIGHT_TEXT());
                 if r.clicked() {
                     month = add_months(month, dir);
                 }
@@ -1603,7 +1617,7 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                     x0 + cw * i as f32 + (cw - w) / 2.0,
                     y0 + 12.0,
                     d,
-                    LIGHT_DISABLED,
+                    LIGHT_DISABLED(),
                 );
             }
             let lead = (month.weekday().num_days_from_sunday() as i64 + 7 - start as i64) % 7;
@@ -1619,24 +1633,26 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                 let chosen = day == date;
                 let mark = winui::rect(cell.shrink(1.0));
                 if chosen {
-                    p.rect_filled(mark, 3.0, winui::rgb_hex(0x0078d7));
-                } else if let Some(c) = winui::highlight_fill(winui::State::of(&r, true)) {
+                    p.rect_filled(mark, 3.0, winui::SELECTION);
+                } else if let Some(c) =
+                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::dark())
+                {
                     p.rect_filled(mark, 3.0, c);
                 }
                 if day == today && !chosen {
                     p.rect_stroke(
                         mark,
                         3.0,
-                        egui::Stroke::new(1.0, winui::rgb_hex(0x0078d7)),
+                        egui::Stroke::new(1.0, winui::SELECTION),
                         egui::StrokeKind::Inside,
                     );
                 }
                 let c = if chosen {
                     Color32::WHITE
                 } else if day.month() != month.month() {
-                    winui::rgb_hex(0xa0a0a0)
+                    winui::TEXT_DISABLED()
                 } else {
-                    LIGHT_TEXT
+                    LIGHT_TEXT()
                 };
                 text(
                     &p,

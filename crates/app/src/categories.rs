@@ -74,11 +74,11 @@ impl CategoryDialog {
             title,
             [420.0, 196.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 let label = |y: f32, s: &str| {
-                    winui::text_right(&p, o.x + 90.0, o.y + y, crate::i18n::t(s), LIGHT_TEXT)
+                    winui::text_right(&p, o.x + 90.0, o.y + y, crate::i18n::t(s), LIGHT_TEXT())
                 };
                 label(26.0, crate::i18n::mark("Name:"));
                 winui::edit_light(
@@ -101,7 +101,7 @@ impl CategoryDialog {
                     o.x + 98.0,
                     o.y + 80.0,
                     crate::i18n::t("Extensions separated by spaces, for example MP4 MKV R0*"),
-                    LIGHT_DISABLED,
+                    LIGHT_DISABLED(),
                 );
                 label(112.0, crate::i18n::mark("Folder:"));
                 winui::edit_light(
@@ -133,13 +133,7 @@ impl CategoryDialog {
                         .any(|n| n.eq_ignore_ascii_case(name) && !n.eq_ignore_ascii_case(&own));
                 if taken {
                     let e = crate::i18n::t("There is already a category with this name");
-                    winui::text(
-                        &p,
-                        o.x + 98.0,
-                        o.y + 142.0,
-                        e,
-                        egui::Color32::from_rgb(0xc4, 0x2b, 0x1c),
-                    );
+                    winui::text(&p, o.x + 98.0, o.y + 142.0, e, winui::ERROR());
                 }
                 let valid = built_in || (!name.is_empty() && !taken);
                 let ok = winui::button_light(
