@@ -15,6 +15,7 @@ mdm-cli = { path = "crates/cli" }
 mdm-engine = { path = "crates/engine" }
 mdm-ipc = { path = "crates/ipc" }
 mdm-labserver = { path = "crates/labserver" }
+mdm-mcp = { path = "crates/mcp" }
 mdm-tools = { path = "crates/tools" }
 mdm-torrent = { path = "crates/torrent" }
 
@@ -77,6 +78,9 @@ reqwest = { version = "0.13.5", default-features = false, features = ["rustls", 
 suppaftp = { version = "12.2.1", default-features = false, features = ["tokio-rustls-aws-lc-rs", "deprecated"] }
 rustls = { version = "0.23.46", default-features = false, features = ["aws-lc-rs", "std", "tls12", "logging"] }
 rustls-platform-verifier = "0.7.1"
+# The MCP server (crates/mcp): the official Rust SDK, stdio only.
+rmcp = { version = "3.8.0", default-features = false, features = ["server", "macros", "transport-io"] }
+schemars = "1.2.3"
 tokio-rustls = { version = "0.26.6", default-features = false, features = ["aws-lc-rs", "tls12", "logging"] }
 # The lab FTP server's test certificates.
 rcgen = { version = "0.14", default-features = false, features = ["crypto", "aws_lc_rs", "pem"] }

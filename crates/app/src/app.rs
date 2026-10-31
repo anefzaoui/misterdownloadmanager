@@ -1663,8 +1663,12 @@ impl App {
             return serde_json::json!({ "api": on }).to_string();
         }
         if !self.settings.automation_api {
-            return serde_json::json!({ "error": "the automation API is off (misterdownloadmanager-cli api on)" })
-                .to_string();
+            // "code": for programs (the MCP server), the text may change.
+            return serde_json::json!({
+                "error": "the automation API is off (misterdownloadmanager-cli api on)",
+                "code": "api-off",
+            })
+            .to_string();
         }
         if let Some(action) = cmd.action.as_deref() {
             return self.act(action, &cmd.ids).to_string();

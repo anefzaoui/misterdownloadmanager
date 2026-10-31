@@ -31,6 +31,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **Address** (Add URL) and **Save As** (Download File Info) list the last 20 addresses and folders
   from their arrows; **...** beside Save As chooses a folder, **+** beside Category makes one.
 - Help → Keyboard shortcuts shows the Mac's keys on a Mac.
+- **AI assistants**: `misterdownloadmanager-mcp`, an MCP server that comes with MDM, lets Claude,
+  Cursor, VS Code and other MCP assistants list, add, pause, resume and remove the running
+  app's downloads and start its queue, through the automation API
+  ([how to set it up](docs/ai-assistants.md)).
+- The automation API's "it is off" answer carries `"code": "api-off"` for programs to check.
 
 ## [0.1.0] - 2026-10-30
 

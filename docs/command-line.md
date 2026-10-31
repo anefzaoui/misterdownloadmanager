@@ -6,7 +6,7 @@ MDM can be driven without its window in three ways:
 
 - **The app's own command line**, the same switches as IDM's: hand a download to the running app from a script, a batch file or another program.
 - **`misterdownloadmanager-cli`**, a separate command-line tool: download files, videos and torrents in a terminal, with progress, without the app.
-- **The automation API**: other programs list the running app's downloads (as JSON) and pause, start, remove or delete them, over a local, token-protected channel.
+- **The automation API**: other programs list the running app's downloads (as JSON) and pause, start, remove or delete them, over a local, token-protected channel. AI assistants use it through MDM's MCP server: see [AI assistants](ai-assistants.md).
 
 The examples use Windows' paths; on macOS and Linux the programs have the same names without `.exe`.
 
@@ -88,7 +88,7 @@ Other programs can ask the running app what it is downloading, and pause, start,
 | `{"url": "https://…", "dir": "D:\\Files", "name": "a.zip", "silent": true}` | Adds a download, as the command line's `/d /p /f /n` do (`"later": true` is `/a`); `ok`. Also with the API off, like the command line. |
 | `{"start_queue": true}` | Starts the main download queue; `ok`. |
 
-An unknown question or action is answered `{"error": "…"}`, as is a question while the API is off. A wrong token is answered `denied`.
+An unknown question or action is answered `{"error": "…"}`, as is a question while the API is off (then with `"code": "api-off"`, for programs to check: the error text may change). A wrong token is answered `denied`.
 
 ### Examples
 
