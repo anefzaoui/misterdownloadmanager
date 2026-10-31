@@ -275,6 +275,9 @@ pub struct Row {
 
 #[derive(Default)]
 pub struct ListResponse {
+    /// The rows' area (under the header, inside the scroll bars), English: where an empty
+    /// list's message goes.
+    pub body: Option<Rect>,
     /// How the selection changes (a click, a key, a selection box).
     pub pick: Option<Pick>,
     /// Double-click on this row.
@@ -461,7 +464,9 @@ pub fn show(
     let menu_key = keyboard(ui, st, rows, focus, client_h, &mut out);
     let (mut need_v, mut need_h) = (false, false);
     for _ in 0..2 {
-        need_h = content_w > client_w - if need_v { scrollbar::THICK } else { 0.0 };
+        // An empty list has nothing to scroll to (its empty state is centred in the view).
+        need_h = !rows.is_empty()
+            && content_w > client_w - if need_v { scrollbar::THICK } else { 0.0 };
         need_v = rows_h > client_h - HEADER_H - if need_h { scrollbar::THICK } else { 0.0 };
     }
     // Inclusive right edge of the header and rows, and bottom of the rows.
@@ -682,6 +687,7 @@ pub fn show(
     let p = p_all;
     let body_top = ct + HEADER_H;
     let body = Rect::from_min_max(pos2(cl, body_top), pos2(rr + 1.0, rb + 1.0));
+    out.body = Some(body);
     let resp = ui.interact(
         screen(body),
         egui::Id::unique("download-list"),
@@ -841,13 +847,16 @@ pub fn show(
             } else {
                 ROW_H - 1.0
             };
-        fill(&bp, cl, gy, rr, gy, GRID_H());
+        // An empty list has no grid (the empty state stands alone).
+        if !rows.is_empty() {
+            fill(&bp, cl, gy, rr, gy, GRID_H());
+        }
     }
     if let Some(full) = cut_under_pointer {
         resp.clone().on_hover_text(full);
     }
     filter_box(ui, st);
-    for (_, _, x1) in &cols {
+    for (_, _, x1) in cols.iter().filter(|_| !rows.is_empty()) {
         if crate::theme::dark() {
             fill(&bp, x1 - 1.0, body_top, x1 - 1.0, rb, GRID_V_LEFT());
             fill(&bp, *x1, body_top, *x1, rb, GRID_V_RIGHT());
@@ -858,7 +867,11 @@ pub fn show(
     }
     // Dark only: IDM draws a 2 px sliver right of the last column in every body row (spec
     // "Artifact"); light mode has none.
-    for k in 0..if crate::theme::dark() { visible } else { 0 } {
+    for k in 0..if crate::theme::dark() && !rows.is_empty() {
+        visible
+    } else {
+        0
+    } {
         let top = body_top + k as f32 * ROW_H - offset;
         fill(
             &bp,

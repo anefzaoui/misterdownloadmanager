@@ -141,6 +141,8 @@ enum Cmd {
     ClearFilters,
     /// Every download the list shows (Ctrl+A).
     SelectAll,
+    /// The All Downloads view (an empty list's link).
+    ShowAll,
     /// Header right-click → Reset columns.
     ResetColumns,
     None,
@@ -628,22 +630,69 @@ impl App {
             .collect()
     }
 
-    /// Under an empty list: why (nothing in this view, or the column filters hide it all),
-    /// with Clear filters when they do. True when Clear filters is clicked.
-    fn empty_note(&self, ui: &Ui, outer: egui::Rect) -> bool {
+    /// An empty list's message, centred in its rows' area `body` (English): an icon, what is
+    /// empty, why, and the one thing to do about it (clear the filters, show every download,
+    /// add one). Returns that command when it is clicked.
+    fn empty_state(&self, ui: &Ui, body: egui::Rect) -> Option<Cmd> {
         let p = ui.painter();
-        let x = outer.left() + 12.0;
-        let y = outer.top() + list::HEADER_H + 24.0;
         let filtered = self.list.filters.iter().any(Option::is_some) && !self.view_ids().is_empty();
-        let note = if filtered {
-            // i18n: in the empty download list, when the column filters hide every download
-            crate::i18n::t("The column filters hide every download here.")
+        let (title, why, action, cmd) = if filtered {
+            (
+                // i18n: title in the empty download list, when the column filters hide every download
+                "No downloads match the filters",
+                // i18n: in the empty download list, under its title
+                "The column filters hide every download in this view.",
+                "Clear all filters",
+                Cmd::ClearFilters,
+            )
+        } else if !self.items.is_empty() {
+            (
+                // i18n: title in the empty download list (this category or queue has no downloads)
+                "No downloads here",
+                // i18n: in the empty download list, under its title
+                "This category or queue holds no downloads yet.",
+                // i18n: link in the empty download list: go to the All Downloads view
+                "Show all downloads",
+                Cmd::ShowAll,
+            )
         } else {
-            // i18n: in the empty download list (this category or queue has no downloads)
-            crate::i18n::t("No downloads here.")
+            (
+                // i18n: title in the empty download list when there are no downloads at all
+                "No downloads yet",
+                // i18n: in the empty download list, under its title
+                "The downloads you add, or drop on this window, show here.",
+                // i18n: link in the empty download list: opens Add URL
+                "Add new download",
+                Cmd::AddUrl,
+            )
         };
-        winui::text(p, x, y, note, winui::MUTED());
-        filtered && winui::link(ui, p, x, y + 18.0, "Clear all filters", "empty-clear")
+        let (title, why) = (crate::i18n::t(title), crate::i18n::t(why));
+        let title_font = winui::tahoma_bold();
+        let tw = winui::text_width_font(p, title_font.clone(), title);
+        let ww = winui::text_width(p, why);
+        let aw = winui::text_width(p, crate::i18n::t(action));
+        // The block: icon 40, title, reason, link; in the middle, or under the header when
+        // the list is short.
+        let block_h = 40.0 + 14.0 + 16.0 + 8.0 + 13.0 + 14.0 + 13.0;
+        let top = (body.center().y - block_h / 2.0).max(body.top() + 16.0);
+        let cx = body.center().x;
+        // A download glyph in the muted ink (outlined, as the toolbar's icons are).
+        let ink = egui::Stroke::new(1.5, winui::MUTED());
+        let c = winui::rect(egui::Rect::from_center_size(
+            pos2(cx, top + 20.0),
+            egui::vec2(1.0, 1.0),
+        ))
+        .center();
+        p.circle_stroke(c, 19.0, ink);
+        p.line_segment([c + egui::vec2(0.0, -10.0), c + egui::vec2(0.0, 9.0)], ink);
+        p.line_segment([c + egui::vec2(-7.0, 2.0), c + egui::vec2(0.0, 9.0)], ink);
+        p.line_segment([c + egui::vec2(7.0, 2.0), c + egui::vec2(0.0, 9.0)], ink);
+        let y = top + 40.0 + 14.0 + 12.0;
+        winui::text_font(p, title_font, cx - tw / 2.0, y, title, winui::TEXT());
+        let y = y + 8.0 + 13.0;
+        winui::text(p, cx - ww / 2.0, y, why, winui::MUTED());
+        let y = y + 14.0 + 13.0;
+        winui::link(ui, p, cx - aw / 2.0, y, action, "empty-action").then_some(cmd)
     }
 
     /// The strip under the list: how many downloads are shown and selected, how many run and
@@ -2487,6 +2536,7 @@ impl App {
             Cmd::Arrange(col) => self.list.sort = col.map(|c| (c, true)),
             Cmd::ClearFilters => self.list.filters = vec![None; list::COLS],
             Cmd::ResetColumns => self.list.reset_columns(),
+            Cmd::ShowAll => self.view = View::All,
             Cmd::SelectAll => {
                 let ids = self.shown_ids();
                 self.selection.apply(crate::selection::Pick::All, &ids);
@@ -3491,8 +3541,10 @@ impl App {
                 egui::StrokeKind::Inside,
             );
         }
-        if ids.is_empty() && self.empty_note(ui, outer) {
-            chosen = Some((Cmd::ClearFilters, None));
+        if ids.is_empty()
+            && let Some(cmd) = self.empty_state(ui, r.body.unwrap_or(outer))
+        {
+            chosen = Some((cmd, None));
         }
         self.status_strip(ui, o, w, h, ids.len());
         if let Some((i, pos)) = r.context {
