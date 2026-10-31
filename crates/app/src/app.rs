@@ -238,6 +238,8 @@ pub struct App {
     show_categories: bool,
     /// The node the list was last drawn for (a new one starts at the top).
     list_view: View,
+    /// The Categories tree has the keys (else the list; Tab moves between them).
+    tree_keys: bool,
     /// The app's context, to reach its windows from anywhere (bring one to the front).
     ui_ctx: egui::Context,
     /// The language screen readers were last told.
@@ -574,6 +576,7 @@ impl App {
             maximized: None,
             a11y_lang: "",
             ui_ctx: cc.egui_ctx.clone(),
+            tree_keys: false,
             list_view: view,
             add_url: None,
             about: None,
@@ -3664,9 +3667,69 @@ impl App {
             if sr.drag_stopped() {
                 self.dirty = true;
             }
-            if let Some(ev) =
-                chrome::categories(ui, &mut self.icons, o, o.y + h - STRIP_H, right, &tree)
+            // The tree's keys while it has them (Tab moves between it and the list): Up / Down
+            // through the nodes, Left / Right close and open a branch, Home / End.
+            let free = self.popup.is_none()
+                && self.open_menu.is_none()
+                && ctx.memory(|m| m.focused().is_none());
+            if free
+                && ctx.input_mut(|i| {
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::Tab)
+                        || i.consume_key(egui::Modifiers::SHIFT, egui::Key::Tab)
+                })
             {
+                self.tree_keys = !self.tree_keys;
+                self.list.set_keys(!self.tree_keys);
+                crate::chrome::show_cues(&ctx);
+            }
+            let mut tree_event = None;
+            if free && self.tree_keys {
+                let at = rows
+                    .iter()
+                    .position(|(_, v, _)| *v == Some(self.view))
+                    .unwrap_or(0);
+                let with_view: Vec<usize> =
+                    (0..rows.len()).filter(|k| rows[*k].1.is_some()).collect();
+                let pos = with_view.iter().position(|k| *k == at).unwrap_or(0);
+                let key = |k| ctx.input_mut(|i| i.consume_key(egui::Modifiers::NONE, k));
+                let to = if key(egui::Key::ArrowDown) {
+                    with_view.get(pos + 1).copied()
+                } else if key(egui::Key::ArrowUp) {
+                    pos.checked_sub(1).and_then(|p| with_view.get(p).copied())
+                } else if key(egui::Key::Home) {
+                    with_view.first().copied()
+                } else if key(egui::Key::End) {
+                    with_view.last().copied()
+                } else {
+                    None
+                };
+                if let Some(k) = to {
+                    tree_event = Some(TreeEvent::Select(k));
+                }
+                let open = rows[at].0.expander;
+                let (left, right) = if winui::rtl() {
+                    (egui::Key::ArrowRight, egui::Key::ArrowLeft)
+                } else {
+                    (egui::Key::ArrowLeft, egui::Key::ArrowRight)
+                };
+                if (open == Some(true) && key(left)) || (open == Some(false) && key(right)) {
+                    tree_event = Some(TreeEvent::Toggle(at));
+                }
+            }
+            if let Some(ev) = chrome::categories(
+                ui,
+                &mut self.icons,
+                o,
+                o.y + h - STRIP_H,
+                right,
+                &tree,
+                self.tree_keys && free,
+            )
+            .or(tree_event)
+            {
+                // A click in the tree gives it the keys.
+                self.tree_keys = true;
+                self.list.set_keys(false);
                 match ev {
                     TreeEvent::Close => self.show_categories = false,
                     TreeEvent::Select(k) => match rows[k].1 {
@@ -3721,6 +3784,9 @@ impl App {
             &mut self.icons,
             &tip,
         );
+        if self.list.has_keys() {
+            self.tree_keys = false;
+        }
         if let Some(pick) = r.pick {
             self.selection.apply(pick, &ids);
         }

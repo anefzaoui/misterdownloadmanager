@@ -1369,6 +1369,8 @@ pub fn categories(
     bottom: f32,
     right: f32,
     rows: &[TreeRow<'_>],
+    // The tree has the keys (its chosen node shows the focus).
+    keys: bool,
 ) -> Option<TreeEvent> {
     let p = ui.painter().clone();
     let y0 = o.y + pane_top() + MENU_H; // frame top
@@ -1588,6 +1590,15 @@ pub fn categories(
             crate::i18n::t(&r.label),
             TEXT(),
         );
+        if keys && r.selected {
+            winui::focus_ring(
+                &tp,
+                winui::rect(Rect::from_min_max(
+                    pos2(text_x - 3.0, top),
+                    pos2(text_x + ext + 3.0, top + 16.0),
+                )),
+            );
+        }
         if let Some(n) = r.count {
             let count = count_text(n);
             text_font(

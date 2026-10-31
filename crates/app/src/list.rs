@@ -187,7 +187,8 @@ impl Default for ListState {
             scroll: 0.0,
             hscroll: 0.0,
             drag: None,
-            focused: false,
+            // The list has the keys from the start (as Explorer's does), not after a click.
+            focused: true,
             scroll_to: None,
             filters: vec![None; COLS],
             filter_open: None,
@@ -211,6 +212,17 @@ pub struct Layout {
 }
 
 impl ListState {
+    /// Does the list have the keys? (A click elsewhere, or Tab to the Categories tree,
+    /// takes them.)
+    pub fn has_keys(&self) -> bool {
+        self.focused
+    }
+
+    /// Give the list the keys, or take them (the tree has them).
+    pub fn set_keys(&mut self, on: bool) {
+        self.focused = on;
+    }
+
     /// Columns as they first were: order, widths, every one shown.
     pub fn reset_columns(&mut self) {
         let fresh = ListState::default();
