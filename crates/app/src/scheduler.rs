@@ -716,13 +716,15 @@ impl Scheduler {
         {
             f.open_file = path.display().to_string();
         }
-        winui::checkbox_light(
+        // Dial-up is hung up through Windows' rasdial; macOS and Linux have no such command.
+        let hang_up = winui::checkbox_light(
             ui,
             at(228.0, 348.0),
             &mut f.hang_up,
             "Hang up modem when done",
-            true,
+            cfg!(windows),
         );
+        winui::why_disabled(hang_up, !cfg!(windows), crate::progress::NO_DIAL_UP);
         winui::checkbox_light(
             ui,
             at(228.0, 366.0),

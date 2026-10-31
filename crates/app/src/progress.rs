@@ -59,6 +59,9 @@ enum TTab {
     General,
 }
 
+/// Why "Hang up modem when done" is greyed off Windows.
+pub const NO_DIAL_UP: &str = crate::i18n::mark("This system has no dial-up connections to hang up");
+
 pub struct Progress {
     pub id: u64,
     details: bool,
@@ -95,7 +98,8 @@ pub enum Action {
 }
 
 impl Progress {
-    pub fn new(id: u64) -> Self {
+    /// `show_complete`: Options' "Show download complete dialog", this file's first state.
+    pub fn new(id: u64, show_complete: bool) -> Self {
         Progress {
             id,
             details: true,
@@ -106,7 +110,7 @@ impl Progress {
             limit_init: false,
             pending_limit: None,
             remember: false,
-            show_complete: true,
+            show_complete,
             hang_up: false,
             exit: false,
             turn_off_on: false,
@@ -714,13 +718,15 @@ impl Progress {
         );
         // Used when the complete dialog is off (it asks what to do itself).
         let on = !self.show_complete;
-        winui::checkbox(
+        // Dial-up is hung up through Windows' rasdial; macOS and Linux have no such command.
+        let hang_up = winui::checkbox(
             ui,
             o + vec2(33.0, 96.0),
             &mut self.hang_up,
             "Hang up modem when done",
-            on,
+            on && cfg!(windows),
         );
+        winui::why_disabled(hang_up, on && !cfg!(windows), NO_DIAL_UP);
         winui::checkbox(
             ui,
             o + vec2(33.0, 114.0),

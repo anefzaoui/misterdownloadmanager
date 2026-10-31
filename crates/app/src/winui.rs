@@ -974,7 +974,7 @@ pub struct RowEvents {
     /// The selection moved to this row (a click, the keys).
     pub picked: Option<usize>,
     pub double_clicked: Option<usize>,
-    /// Enter on the selected row.
+    /// Enter on the selected row (not taken: [`take_key`] it to keep it from the dialog).
     pub entered: Option<usize>,
     /// Space on the selected row (a list of check boxes ticks it).
     pub space: Option<usize>,
@@ -1051,7 +1051,9 @@ pub fn row_list(
             }
         }
         if let Some(s) = st.selected {
-            if take_key(ui, egui::Key::Enter) {
+            // Reported, not taken: a list that ignores it leaves Enter to the dialog's
+            // default button (a caller that acts on it takes it).
+            if ui.input(|i| i.key_pressed(egui::Key::Enter) && i.modifiers.is_none()) {
                 ev.entered = Some(s);
             }
             if take_key(ui, egui::Key::Space) {
@@ -2349,9 +2351,10 @@ fn button_face(
     } else {
         Sense::hover()
     };
+    // Keyed by its place, not its label: Pause becoming Resume keeps the focus.
     let resp = ui.interact(
         rc,
-        widget_id(ui, ("button", label, rc.min.x as i32, rc.min.y as i32)),
+        widget_id(ui, ("button", rc.min.x as i32, rc.min.y as i32)),
         sense,
     );
     // A focused button answers Enter itself (egui clicks it): the dialog's default button,
@@ -3010,12 +3013,13 @@ pub fn tabs_light(
         let (x0, x1) = (a.min(b), a.max(b));
         let y0 = if sel { rc.top() } else { rc.top() + 2.0 };
         let hit = Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, t));
+        // Keyed by the control's place and the tab's index: its x changes when it is chosen,
+        // and the focus must stay on it.
         let resp = ui.interact(
             hit,
-            widget_id(ui, ("tab-light", tab.label, x0 as i32)),
+            widget_id(ui, ("tab-light", rc.min.x as i32, rc.min.y as i32, i)),
             Sense::click(),
         );
-        show_focus(ui, &resp, hit.shrink(2.0));
         if resp.clicked() && !sel {
             clicked = Some(i);
         }
@@ -3043,6 +3047,8 @@ pub fn tabs_light(
         };
         let full = crate::i18n::t(tab.label);
         let drawn = text(&p, o.x + label_x, base, shown, LIGHT_TEXT());
+        // Over the tab's face (drawn before it, the face hid it).
+        show_focus(ui, &resp, hit.shrink(2.0));
         if shown != full {
             full_on_hover(ui, drawn, ("tab-light-label", i), full);
         }
@@ -3127,7 +3133,6 @@ pub fn combo_light(
         Sense::hover()
     };
     let resp = ui.interact(rc, key.with("button"), sense);
-    show_focus(ui, &resp, rc.shrink(3.0));
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
     // The row the keys point at while the list is open (the choice when it opens).
     let hl_key = key.with("highlight");
@@ -3199,6 +3204,8 @@ pub fn combo_light(
         rc.right() - 13.0
     };
     chevron_light(&p, pos2(chevron_x, rc.top() + 8.0), enabled);
+    // Over the face (drawn before it, the face hid it).
+    show_focus(ui, &resp, rc.shrink(3.0));
     if open {
         // The list: rows of 15 px under the combo, the hovered row in the accent colour.
         let row_h = 15.0;
@@ -3340,7 +3347,6 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
         Sense::hover()
     };
     let resp = ui.interact(rc, widget_id(ui, ("icon-button-light", id)), sense);
-    show_focus(ui, &resp, rc.shrink(2.0));
     let p = ui.painter();
     let face = subtle_or(State::of(&resp, enabled));
     p.rect_filled(rc, 2.0, face);
@@ -3350,6 +3356,7 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
         Stroke::new(1.0, CONTROL_EDGE()),
         StrokeKind::Inside,
     );
+    show_focus(ui, &resp, rc.shrink(2.0));
     // No label of its own: its tooltip says what it does (translated).
     resp.on_hover_text(crate::i18n::t(tip))
 }

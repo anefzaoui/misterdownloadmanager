@@ -2045,7 +2045,10 @@ fn report(
             }
         },
     );
-    // A double-click or Enter edits; Delete removes.
+    // A double-click or Enter edits (Enter taken: not the dialog's OK too); Delete removes.
+    if ev.entered.is_some() {
+        winui::take_key(ui, egui::Key::Enter);
+    }
     (
         ev.double_clicked.or(ev.entered).is_some(),
         ev.delete.is_some(),

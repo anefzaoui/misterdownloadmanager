@@ -170,6 +170,8 @@ pub struct ListState {
     marquee: Option<(Pos2, bool)>,
     /// Type-ahead: the letters typed so far and when the last one came (seconds).
     typed: String,
+    /// A menu is open: its keys (and letters) are its own, not the list's.
+    pub menu_open: bool,
     typed_at: f64,
 }
 
@@ -189,6 +191,7 @@ impl Default for ListState {
             filter_open: None,
             marquee: None,
             typed: String::new(),
+            menu_open: false,
             typed_at: 0.0,
         }
     }
@@ -312,7 +315,7 @@ fn keyboard(
     out: &mut ListResponse,
 ) -> bool {
     let n = rows.len();
-    if n == 0 || ui.ctx().memory(|m| m.focused().is_some()) {
+    if n == 0 || st.menu_open || ui.ctx().memory(|m| m.focused().is_some()) {
         return false;
     }
     if ui.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::A)) {

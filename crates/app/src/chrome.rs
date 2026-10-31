@@ -1510,14 +1510,15 @@ pub fn categories(
                 egui::StrokeKind::Inside,
             );
         } else if r.selected {
-            // Light (tree not focused): flat #f0f0f0 behind the label only.
+            // Light: the inactive selection grey behind the label (#f0f0f0 on the white tree
+            // could not be seen).
             winui::fill_l(
                 &tp,
                 text_x - 2.0,
                 top,
                 text_x + ext + 1.0,
                 top + 15.0,
-                grey(0xf0),
+                winui::SELECTED_INACTIVE(),
             );
         }
         if let Some(open) = r.expander {

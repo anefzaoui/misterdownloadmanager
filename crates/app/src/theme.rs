@@ -369,5 +369,25 @@ pub fn apply(ctx: &egui::Context) {
     v.widgets.inactive.weak_bg_fill = Color32::from_rgb(0x3a, 0x3a, 0x3a);
     v.widgets.inactive.bg_stroke = Stroke::new(1.0, Color32::from_rgb(0x6a, 0x6a, 0x6a));
     v.window_corner_radius = CornerRadius::same(0);
-    ctx.set_visuals(v);
+    // Each egui theme its own visuals (the mode switches between them): set into the theme
+    // current at start only, the other side kept egui's stock look, and which one depended on
+    // the system's mode at launch (tooltips, a multi-line box's scroll bar).
+    ctx.set_visuals_of(egui::Theme::Dark, v);
+    let mut l = Visuals::light();
+    l.panel_fill = Color32::from_gray(0xf0);
+    l.window_fill = Color32::from_gray(0xf9);
+    l.override_text_color = Some(Color32::BLACK);
+    l.selection.bg_fill = crate::winui::SELECTION;
+    l.selection.stroke = Stroke::new(1.0, Color32::WHITE);
+    for w in [
+        &mut l.widgets.noninteractive,
+        &mut l.widgets.inactive,
+        &mut l.widgets.hovered,
+        &mut l.widgets.active,
+        &mut l.widgets.open,
+    ] {
+        w.corner_radius = r;
+    }
+    l.window_corner_radius = CornerRadius::same(0);
+    ctx.set_visuals_of(egui::Theme::Light, l);
 }

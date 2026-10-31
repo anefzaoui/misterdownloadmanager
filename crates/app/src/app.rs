@@ -231,6 +231,8 @@ pub struct App {
     selection: crate::selection::Selection,
     view: View,
     show_categories: bool,
+    /// The node the list was last drawn for (a new one starts at the top).
+    list_view: View,
     /// Maximized as last seen (the saved size is the restored window's, not the screen's).
     maximized: Option<bool>,
     all_open: bool,
@@ -558,6 +560,7 @@ impl App {
             finished_open,
             queues_open,
             maximized: None,
+            list_view: view,
             add_url: None,
             about: None,
             updates: None,
@@ -971,7 +974,8 @@ impl App {
             } else if !live {
                 self.start(id, true);
             } else if !self.progress.iter().any(|p| p.id == id) {
-                self.progress.push(Progress::new(id));
+                self.progress
+                    .push(Progress::new(id, self.settings.show_complete));
             }
         } else {
             // Later: paused, its data kept for the queue to resume.
@@ -1091,7 +1095,8 @@ impl App {
                 if let Some(id) = last
                     && !self.progress.iter().any(|p| p.id == id)
                 {
-                    self.progress.push(Progress::new(id));
+                    self.progress
+                        .push(Progress::new(id, self.settings.show_complete));
                 }
             }
             "options" => {
@@ -1343,7 +1348,8 @@ impl App {
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -1824,7 +1830,8 @@ impl App {
         }
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -1937,7 +1944,8 @@ impl App {
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -2324,7 +2332,8 @@ impl App {
         if i.status == Status::Complete {
             let _ = open::that_detached(&i.dest);
         } else if !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -3527,13 +3536,14 @@ impl App {
             (
                 Icon::StartQueue,
                 "Start Queue",
-                self.queues.iter().any(|q| !q.running),
+                // The button acts on the main queue (the others: its arrow, the menus).
+                self.queues.first().is_some_and(|q| !q.running),
                 Cmd::StartQueue(0),
             ),
             (
                 Icon::StopQueue,
                 "Stop Queue",
-                self.queues.iter().any(|q| q.running),
+                self.queues.first().is_some_and(|q| q.running),
                 Cmd::StopQueue(0),
             ),
         ];
@@ -3610,6 +3620,12 @@ impl App {
             pos2(o.x + list_left, o.y + chrome::MENU_H + chrome::pane_top()),
             pos2(o.x + w - 7.0, o.y + h - STRIP_H - 4.0),
         );
+        self.list.menu_open = self.popup.is_some() || self.open_menu.is_some();
+        // Another node shows from its top (its rows aren't the last one's).
+        if self.list_view != self.view {
+            self.list.scroll = 0.0;
+            self.list_view = self.view;
+        }
         let r = list::show(
             ui,
             outer,
@@ -3897,7 +3913,8 @@ impl App {
         } else if i.live.is_none() {
             self.start(id, true);
         } else if !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
