@@ -138,8 +138,8 @@ impl ChecksumDialog {
                     false,
                 )
                 .clicked();
-                let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
-                if close || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                let enter = winui::enter_pressed(ui);
+                if close || winui::escape_pressed(ui) {
                     // A checked file keeps its hash with the download.
                     match (hash, &self.check) {
                         (Some(h), Some(_)) => Outcome::Done(h),

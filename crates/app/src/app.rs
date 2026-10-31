@@ -2999,6 +2999,8 @@ impl App {
             } else {
                 if alt && !self.alt_down {
                     self.alt_alone = true;
+                    // The keyboard is in use: access letters show (light mode too).
+                    crate::chrome::show_cues(&ctx);
                 }
                 if alt && other {
                     self.alt_alone = false;

@@ -337,9 +337,9 @@ impl Properties {
         .clicked();
         let address_ok = !editable
             || url::Url::parse(self.address.trim()).is_ok_and(|u| mdm_engine::supported(&u));
-        if ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+        if winui::escape_pressed(ui) {
             Outcome::Closed
-        } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+        } else if ok || winui::enter_pressed(ui) {
             if address_ok {
                 Outcome::Done(())
             } else {

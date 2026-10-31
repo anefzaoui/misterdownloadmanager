@@ -430,7 +430,7 @@ impl Updates {
                     crate::i18n::mark("OK")
                 };
                 // Enter presses the default button, as in the other dialogs.
-                let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
+                let enter = winui::enter_pressed(ui);
                 if let Some(rel) = &download {
                     // Update now when this copy's file is in the signed release (and it
                     // hasn't just failed); else Download opens the release's page.
@@ -477,10 +477,7 @@ impl Updates {
                     None,
                 )
                 .clicked();
-                if close
-                    || ui.input(|i| i.key_pressed(egui::Key::Escape))
-                    || (enter && download.is_none())
-                {
+                if close || winui::escape_pressed(ui) || (enter && download.is_none()) {
                     Outcome::Closed
                 } else {
                     Outcome::Open
@@ -807,7 +804,8 @@ impl TellFriend {
                     false,
                     None,
                 )
-                .clicked();
+                .clicked()
+                    || winui::enter_pressed(ui);
                 let email = winui::button(
                     ui,
                     r(o, 254.0, 136.0, 73.0, 21.0),
@@ -845,7 +843,7 @@ impl TellFriend {
                         enc(&message)
                     ));
                 }
-                if close || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if close || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else {
                     Outcome::Open

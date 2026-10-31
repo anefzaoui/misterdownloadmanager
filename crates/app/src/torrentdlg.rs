@@ -317,7 +317,7 @@ impl TorrentDialog {
             None,
         )
         .clicked()
-            || (edit.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) && can_look);
+            || (edit.lost_focus() && winui::enter_pressed(ui) && can_look);
         if look && can_look {
             self.look_up(rt, ui.ctx());
         }
@@ -491,7 +491,7 @@ impl TorrentDialog {
             None,
         )
         .clicked();
-        if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+        if cancel || winui::escape_pressed(ui) {
             return Outcome::Closed;
         }
         if ready && (now || later) {
@@ -747,9 +747,9 @@ impl TorrentSettings {
                     None,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if ok || winui::enter_pressed(ui) {
                     Outcome::Done((self.share, self.assoc))
                 } else {
                     Outcome::Open

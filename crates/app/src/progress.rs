@@ -145,7 +145,7 @@ impl Progress {
                 if ui.ctx().input(|i| i.viewport().close_requested()) {
                     return Action::Close;
                 }
-                egui::CentralPanel::no_frame()
+                let action = egui::CentralPanel::no_frame()
                     .frame(egui::Frame::new().fill(winui::BG()))
                     .show(ui, |ui| {
                         let o = ui.max_rect().min;
@@ -153,7 +153,13 @@ impl Progress {
                         let _surface = winui::Surface::enter(o.x, o.x + client[0]);
                         self.body(ui, o, item, snap, frac)
                     })
-                    .inner
+                    .inner;
+                // Escape hides the window (the download goes on), as the × does.
+                if matches!(action, Action::None) && winui::escape_pressed(ui) {
+                    Action::Close
+                } else {
+                    action
+                }
             },
         );
         // Apply IDM's thin frame once, and again whenever the client size changes (details).

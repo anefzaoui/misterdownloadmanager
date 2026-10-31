@@ -420,7 +420,11 @@ impl Scheduler {
         if stop && on_queue {
             actions.push(Action::Stop(self.queues[self.selected].name.clone()));
         }
-        let escape = self.focus.at.is_none() && ui.input(|i| i.key_pressed(egui::Key::Escape));
+        // Escape first leaves a selected time or date field, then closes the window.
+        if self.focus.at.is_some() && winui::take_key(ui, egui::Key::Escape) {
+            self.focus.at = None;
+        }
+        let escape = winui::escape_pressed(ui);
         if close || escape {
             Outcome::Closed
         } else {
@@ -1038,9 +1042,9 @@ impl Scheduler {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if ok || winui::enter_pressed(ui) {
                     Outcome::Done(())
                 } else {
                     Outcome::Open
@@ -1540,7 +1544,8 @@ fn date_picker(
         *date = picked;
         open = false;
     }
-    if open && ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+    // The calendar answers Escape itself (the Scheduler under it doesn't close).
+    if open && winui::take_key(ui, egui::Key::Escape) {
         open = false;
     }
     ui.data_mut(|d| d.insert_temp(key, open));

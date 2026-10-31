@@ -1867,6 +1867,10 @@ pub fn multiline_light(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) -> R
                     .desired_rows(3),
             );
             edit_menu(&resp, value, false, true);
+            // Enter here is a new line, not the dialog's OK.
+            if resp.has_focus() {
+                take_key(ui, egui::Key::Enter);
+            }
             resp
         })
         .inner;
@@ -2062,6 +2066,24 @@ pub fn mnemonic_pressed(ui: &Ui, letter: char) -> bool {
             .position(|e| matches!(e, egui::Event::Text(t) if alt && t.to_lowercase() == lower));
         at.map(|k| i.events.remove(k)).is_some()
     })
+}
+
+/// Enter, without a modifier, that no control took first: a dialog's default button. A control
+/// that answers Enter itself (an open list, a multi-line box) takes it with [`take_key`] before
+/// the dialog asks.
+pub fn enter_pressed(ui: &Ui) -> bool {
+    ui.input(|i| i.key_pressed(egui::Key::Enter) && i.modifiers.is_none())
+}
+
+/// Escape that no control took first (an open list or picker closes itself): a dialog's Cancel.
+pub fn escape_pressed(ui: &Ui) -> bool {
+    ui.input(|i| i.key_pressed(egui::Key::Escape))
+}
+
+/// Take `key` (without modifiers) for a control that answers it, so the dialog under it doesn't
+/// too: Escape closes an open list, not the window; Enter in a multi-line box is a new line.
+pub fn take_key(ui: &Ui, key: egui::Key) -> bool {
+    ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, key))
 }
 
 /// A part clicked by the pointer that never takes the keyboard focus (egui's `click()` is also
@@ -2681,7 +2703,12 @@ pub fn combo_light(
         let outside = ui.input(|i| i.pointer.any_pressed())
             && !area.response.contains_pointer()
             && !resp.contains_pointer();
-        if chosen.is_some() || outside || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+        // An open list answers Escape and Enter itself (the dialog under it doesn't).
+        if chosen.is_some()
+            || outside
+            || take_key(ui, egui::Key::Escape)
+            || take_key(ui, egui::Key::Enter)
+        {
             open = false;
         }
     }

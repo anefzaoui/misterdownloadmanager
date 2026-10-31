@@ -310,8 +310,8 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
         }
         let drawn = text_font(&p, winui::segoe(), o.x + tx, o.y + 13.0, label, TEXT());
         // Dark mode always underlines mnemonics (1 px under the first letter's advance);
-        // light mode follows the Windows rule (only after Alt) — not drawn.
-        if crate::theme::dark() {
+        // light mode follows the Windows rule: once the keyboard is in use (`cues`).
+        if cues(ui.ctx()) {
             let (x0, x1) = winui::char_span(&p, &winui::segoe(), label, 0, drawn);
             fill(&p, x0, o.y + 15.0, x1, o.y + 15.0, TEXT());
         }
@@ -410,8 +410,21 @@ fn without_shortcut(text: &str) -> &str {
 
 /// Open a menu from the keyboard: its first item is highlighted.
 pub fn start_keyboard(ctx: &egui::Context, id: &str) {
+    show_cues(ctx);
     let kb = egui::Id::unique(("popup-sub", id)).with("kb");
     ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(usize::MAX), None)));
+}
+
+/// Keyboard cues on: the user reached for the keyboard (Alt, F10, a menu opened by keys), so
+/// light mode underlines access letters from now on, the Windows rule (dark mode always does).
+pub fn show_cues(ctx: &egui::Context) {
+    ctx.data_mut(|d| d.insert_temp(egui::Id::unique("keyboard-cues"), true));
+}
+
+/// Whether access letters are underlined: always in dark mode, after [`show_cues`] in light.
+pub fn cues(ctx: &egui::Context) -> bool {
+    crate::theme::dark()
+        || ctx.data(|d| d.get_temp::<bool>(egui::Id::unique("keyboard-cues")).unwrap_or(false))
 }
 
 /// The next item of `level` from `from` in direction `dir`, skipping separators (wraps).
@@ -911,9 +924,9 @@ fn popup_level<C: Clone>(
                     TEXT_DISABLED_MENU(),
                 );
             }
-            // Underlined mnemonics in dark mode only (light: the Windows rule, after Alt).
+            // Underlined mnemonics: always in dark mode, once the keyboard is in use in light.
             if let Some(m) = mn
-                && crate::theme::dark()
+                && cues(ctx)
             {
                 let (x0, x1) = winui::char_span(&painter, &winui::segoe(), &t, m, drawn);
                 fill(&painter, x0, y + 16.0, x1, y + 16.0, color);

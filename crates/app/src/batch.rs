@@ -324,9 +324,9 @@ impl Batch {
             false,
         )
         .clicked();
-        if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+        if cancel || winui::escape_pressed(ui) {
             Outcome::Closed
-        } else if valid && (ok || ui.input(|i| i.key_pressed(egui::Key::Enter))) {
+        } else if valid && (ok || winui::enter_pressed(ui)) {
             Outcome::Done(())
         } else {
             Outcome::Open

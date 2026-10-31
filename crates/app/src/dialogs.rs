@@ -310,7 +310,7 @@ impl AddUrl {
                 }
                 // Enter presses the default button (OK), as in IDM, wherever the focus is.
                 let _ = &addr;
-                let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
+                let enter = winui::enter_pressed(ui);
 
                 winui::group_box(
                     &p,
@@ -387,7 +387,7 @@ impl AddUrl {
                     }
                 }
                 // Escape closes an open drop list first, then the dialog.
-                if cancel || (!list_was_open && ui.input(|i| i.key_pressed(egui::Key::Escape))) {
+                if cancel || (!list_was_open && winui::escape_pressed(ui)) {
                     return Outcome::Closed;
                 }
                 if ok || (enter && !list_was_open) {
@@ -932,7 +932,8 @@ impl Complete {
                     egui::Rect::from_center_size(handle.center(), vec2(16.0, 16.0)),
                 );
 
-                if open.clicked() {
+                // Enter: Open, the default button (as in the other dialogs).
+                if open.clicked() || winui::enter_pressed(ui) {
                     let _ = open::that_detached(&self.path);
                     Outcome::Done(())
                 } else if with.clicked() {
@@ -941,7 +942,7 @@ impl Complete {
                 } else if folder.clicked() {
                     show_in_folder(&self.path);
                     Outcome::Done(())
-                } else if close.clicked() || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                } else if close.clicked() || winui::escape_pressed(ui) {
                     Outcome::Done(())
                 } else {
                     Outcome::Open
@@ -1086,9 +1087,9 @@ impl SpeedSettings {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if ok || winui::enter_pressed(ui) {
                     Outcome::Done(SpeedChoice {
                         kb: self.kb.parse().unwrap_or(10).max(1),
                         on_startup: self.on_startup,
@@ -1304,7 +1305,8 @@ impl TurnOffCountdown {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                // Enter: Cancel, the default button.
+                if cancel || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
                     Outcome::Closed
                 } else if now || left.is_zero() {
                     Outcome::Done(())
@@ -1487,9 +1489,9 @@ it from Mister Download Manager list of downloads?",
                     "Don't show this dialog again",
                     true,
                 );
-                if no || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if no || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if yes || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if yes || winui::enter_pressed(ui) {
                     Outcome::Done((self.files, self.dont_show))
                 } else {
                     Outcome::Open
@@ -1599,9 +1601,9 @@ impl Duplicate {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if ok || winui::enter_pressed(ui) {
                     Outcome::Done(self.choice)
                 } else {
                     Outcome::Open
@@ -1680,9 +1682,9 @@ impl QueuePick {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if ok || winui::enter_pressed(ui) {
                     Outcome::Done((self.chosen, self.start))
                 } else {
                     Outcome::Open
@@ -1741,9 +1743,9 @@ impl Confirm {
                     None,
                 )
                 .clicked();
-                if no || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if no || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if yes || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if yes || winui::enter_pressed(ui) {
                     Outcome::Done(())
                 } else {
                     Outcome::Open
@@ -1825,9 +1827,9 @@ impl CreateFolder {
                     None,
                 )
                 .clicked();
-                if no || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if no || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if yes || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if yes || winui::enter_pressed(ui) {
                     match std::fs::create_dir_all(&self.folder) {
                         Ok(()) => Outcome::Done(()),
                         Err(e) => {
