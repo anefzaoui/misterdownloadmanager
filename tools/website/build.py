@@ -316,7 +316,7 @@ def footer() -> str:
           <ul>
             <li><a href="{REPO}">Source code</a></li>
             <li><a href="{REPO}/issues">Issues</a></li>
-            <li><a href="{REPO}/issues/new">Report a bug</a></li>
+            <li><a href="{REPO}/issues/new?template=bug.yml">Report a bug</a></li>
             <li><a href="{REPO}/releases">Releases</a></li>
             <li><a href="/news.html">What's new</a></li>
             <li><a href="/contributing.html">Contributing</a></li>
@@ -452,8 +452,8 @@ def page_head(title: str, lede: str = "", trail: list[tuple[str, str]] | None = 
 def page_tools(src: str, path: str, title: str) -> str:
     """Under an article written in the repository: edit its source, or report a problem with it."""
     q = urllib.parse.quote
-    issue = (f"{REPO}/issues/new?title={q('Website: ' + title)}"
-             f"&body={q(f'Page: {SITE}{path}' + chr(10) + chr(10) + 'What is wrong or missing:' + chr(10))}")
+    # The Website problem form (.github/ISSUE_TEMPLATE/website.yml), its page filled in.
+    issue = f"{REPO}/issues/new?template=website.yml&title={q('Website: ' + title)}&page={q(SITE + path)}"
     return f"""<div class="page-tools">
           <a href="{REPO}/edit/main/{src}"><svg aria-hidden="true"><use href="#i-edit"/></svg>Edit this page on GitHub</a>
           <a href="{issue}"><svg aria-hidden="true"><use href="#i-issue"/></svg>Report a problem with this page</a>
@@ -783,7 +783,7 @@ def build_repo_pages() -> None:
     body = f"""{page_head("Contribute to Mister Download Manager", lede, trail)}
     <div class="wrap narrow prose" style="padding:40px 24px 96px">
       <div class="contrib-ways">
-        <a href="{REPO}/issues/new"><b>Report a bug</b><span>Something broken or odd? Tell us what you saw.</span></a>
+        <a href="{REPO}/issues/new?template=bug.yml"><b>Report a bug</b><span>Something broken or odd? Tell us what you saw.</span></a>
         <a href="/languages.html"><b>Fix a translation</b><span>Five minutes on GitHub, no programming.</span></a>
         <a href="{REPO}/issues"><b>Pick an issue</b><span>See what's open and lend a hand.</span></a>
         <a href="{REPO}"><b>Star the project</b><span>It helps other people find it.</span></a>

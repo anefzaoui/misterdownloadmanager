@@ -19,7 +19,7 @@ Every version is on the [Releases](https://github.com/anefzaoui/misterdownloadma
 
 The files marked `-experimental` are fresh builds for macOS (Apple Silicon and Intel) and Linux.
 We haven't tried them ourselves yet, so you'd be among the first: please
-[tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new), good or bad.
+[tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose), good or bad.
 
 | File | What it is |
 |---|---|

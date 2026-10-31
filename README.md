@@ -97,7 +97,7 @@ one:
 
 Fresh builds for **macOS** (Apple Silicon and Intel) and **Linux** are on the same download page,
 marked `-experimental`: they're brand new and we haven't tried them ourselves yet. Give them a go
-and [tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new); you'll
+and [tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose); you'll
 help make them as solid as the Windows version.
 
 | File | For |
