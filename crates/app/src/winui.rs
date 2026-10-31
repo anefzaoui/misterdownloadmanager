@@ -3974,6 +3974,12 @@ mod tests {
     }
 
     #[test]
+    fn a_paste_into_one_line_is_one_clean_line() {
+        assert_eq!(single_line("https://x/a.zip\r\n"), "https://x/a.zip");
+        assert_eq!(single_line("a\r\nb\tc\u{7}"), "a b c");
+    }
+
+    #[test]
     fn a_pressed_button_looks_pressed_in_both_themes() {
         // Issue #7: pressed was #f5f5f5 against hot #f6f6f6, the same to the eye.
         for dark in [false, true] {
