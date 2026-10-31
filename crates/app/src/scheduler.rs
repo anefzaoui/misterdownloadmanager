@@ -670,16 +670,15 @@ impl Scheduler {
             true,
             Some(o.x + 541.0),
         );
-        winui::edit_light_on(
+        winui::number_field(
             ui,
             r(o, 541.0, 260.0, 48.0, 23.0),
             &mut f.retries,
+            1,
+            9999,
             f.retries_on,
-            false,
             LIGHT_PAGE(),
         );
-        f.retries.retain(|c| c.is_ascii_digit());
-        f.retries.truncate(4);
         winui::etched_h(&p, o.x + 229.0, o.y + 290.0, 398.0);
         winui::checkbox_light(
             ui,
@@ -779,16 +778,15 @@ impl Scheduler {
             },
         );
         let f = &mut self.forms[self.selected];
-        winui::edit_light_on(
+        winui::number_field(
             ui,
             boxes[0],
             &mut f.files_at_once,
+            1,
+            99,
             true,
-            false,
             LIGHT_PAGE(),
         );
-        f.files_at_once.retain(|c| c.is_ascii_digit());
-        f.files_at_once.truncate(2);
         // The up-down buddy inside the box's right end (IDM's: 318, 54 for the box at 297, 53).
         let english_box = winui::rect(boxes[0]);
         let spin = winui::rect(Rect::from_min_size(
@@ -977,8 +975,24 @@ impl Scheduler {
                 text(p, x, baseline, s, c);
             },
         );
-        winui::edit_light(ui, boxes[0], &mut self.limits_mb, l.on, false);
-        winui::edit_light(ui, boxes[1], &mut self.limits_hours, l.on, false);
+        winui::number_field(
+            ui,
+            boxes[0],
+            &mut self.limits_mb,
+            1,
+            999_999,
+            l.on,
+            LIGHT_BG(),
+        );
+        winui::number_field(
+            ui,
+            boxes[1],
+            &mut self.limits_hours,
+            1,
+            999,
+            l.on,
+            LIGHT_BG(),
+        );
         winui::checkbox_light(
             ui,
             o + vec2(239.0, 127.0),

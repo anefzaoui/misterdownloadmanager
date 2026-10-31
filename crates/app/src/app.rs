@@ -1404,8 +1404,22 @@ impl App {
             if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
                 self.torrent_host.forget(&self.rt, &spec.hash, files);
             } else if files && let Some(i) = self.items.iter().find(|i| i.id == id) {
-                if i.status == Status::Complete {
-                    let _ = std::fs::remove_file(&i.dest);
+                // The file itself: one that can't go (open in a player) is said, not skipped
+                // silently; the row still leaves the list.
+                if i.status == Status::Complete
+                    && let Err(e) = std::fs::remove_file(&i.dest)
+                    && e.kind() != std::io::ErrorKind::NotFound
+                {
+                    dialogs::tell(
+                        crate::i18n::mark("Delete"),
+                        crate::i18n::fmt(
+                            crate::i18n::t("{file} could not be deleted from the disk: {error}"),
+                            &[
+                                ("file", &crate::i18n::isolate(&i.file_name)),
+                                ("error", &e.to_string()),
+                            ],
+                        ),
+                    );
                 }
                 let _ = std::fs::remove_file(mdm_engine::naming::part_path(&i.dest));
                 let _ = std::fs::remove_file(state_path(&i.dest));
@@ -2333,7 +2347,7 @@ impl App {
             return;
         };
         if i.status == Status::Complete {
-            let _ = open::that_detached(&i.dest);
+            crate::dialogs::open_file(&i.dest);
         } else if !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
@@ -4825,6 +4839,10 @@ impl eframe::App for App {
             }
         }
         self.poll(&ctx);
+        // What failed in any window, told here (dialogs::tell).
+        if let Some((title, text)) = dialogs::told().pop() {
+            self.notice = Some((title, text));
+        }
         self.drop_target(&ctx);
         self.main_drops(&ctx);
         self.remember_layout(&ctx);

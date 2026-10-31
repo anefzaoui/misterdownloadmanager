@@ -261,7 +261,7 @@
 	Default download settings	Default download settings
 #. text in the Options window
 	Default max. conn. number	Default max. conn. number
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 	Delete	Delete
 #. message or event log entry in the main window
@@ -781,7 +781,8 @@
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 	Open	Open
 #. checkbox in the Add torrent window
@@ -1433,6 +1434,14 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+	{file} could not be deleted from the disk: {error}	{file} could not be deleted from the disk: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+	{file} could not be opened: {error}	{file} could not be opened: {error}
+#. text in a dialog box
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)

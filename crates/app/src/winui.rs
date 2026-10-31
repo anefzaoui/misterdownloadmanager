@@ -2297,6 +2297,61 @@ pub fn edit_light(
     edit_light_on(ui, rc, value, enabled, align_right, LIGHT_BG())
 }
 
+/// A whole number in `min..=max` typed in a box (the one number box of the dialogs): digits
+/// only, no longer than `max` has; Up / Down step it by 1, Page Up / Down by 10; out of range,
+/// its frame is red while typed and it comes back into range, visibly, when the box is left.
+/// [`number_in`] reads it.
+#[allow(clippy::too_many_arguments)]
+pub fn number_field(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    min: u64,
+    max: u64,
+    enabled: bool,
+    parent: Color32,
+) -> Response {
+    let resp = edit_light_on(ui, rc, value, enabled, false, parent);
+    value.retain(|c| c.is_ascii_digit());
+    value.truncate(max.to_string().len());
+    if resp.has_focus() {
+        keep_keys(ui, &resp, false, true, false);
+        let n = value.parse::<u64>().unwrap_or(min) as i64;
+        let step = if take_key(ui, egui::Key::ArrowUp) {
+            1
+        } else if take_key(ui, egui::Key::ArrowDown) {
+            -1
+        } else if take_key(ui, egui::Key::PageUp) {
+            10
+        } else if take_key(ui, egui::Key::PageDown) {
+            -10
+        } else {
+            0
+        };
+        if step != 0 {
+            *value = (n + step).clamp(min as i64, max as i64).to_string();
+        }
+    }
+    if resp.lost_focus() {
+        *value = number_in(value, min, max).to_string();
+    }
+    let ok = value.parse::<u64>().is_ok_and(|n| (min..=max).contains(&n));
+    if enabled && !ok {
+        ui.painter().rect_stroke(
+            rc,
+            control_radius(),
+            Stroke::new(1.0, ERROR()),
+            StrokeKind::Inside,
+        );
+    }
+    resp
+}
+
+/// The number in a [`number_field`], brought into `min..=max` (empty: `min`).
+pub fn number_in(value: &str, min: u64, max: u64) -> u64 {
+    value.parse::<u64>().unwrap_or(min).clamp(min, max)
+}
+
 /// [`edit_light`] on a surface `parent` (a disabled edit shows it: `#f9f9f9` on a tab page).
 pub fn edit_light_on(
     ui: &mut Ui,

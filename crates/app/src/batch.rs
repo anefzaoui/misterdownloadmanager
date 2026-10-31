@@ -349,13 +349,19 @@ impl Batch {
             "to" => &mut self.to,
             _ => &mut self.size,
         };
-        winui::edit_light(ui, r(o, x, 154.0, spin_x - x, 26.0), value, true, false);
+        let rc = r(o, x, 154.0, spin_x - x, 26.0);
+        // The wildcard size runs 1 to 10 (what expand() makes); from and to, any number.
+        let (min, max) = if which == "size" {
+            (1, 10)
+        } else {
+            (0, 999_999_999)
+        };
         if letters {
+            winui::edit_light(ui, rc, value, true, false);
             value.retain(|c| c.is_ascii_alphabetic());
             value.truncate(1);
         } else {
-            value.retain(|c| c.is_ascii_digit());
-            value.truncate(if which == "size" { 2 } else { 9 });
+            winui::number_field(ui, rc, value, min, max, true, winui::LIGHT_BG());
         }
         let step = winui::updown_light(
             ui,
@@ -376,8 +382,7 @@ impl Batch {
                 (n as char).to_string()
             } else {
                 let n = value.parse::<i64>().unwrap_or(0) + step as i64;
-                let min = if which == "size" { 1 } else { 0 };
-                n.max(min).to_string()
+                n.clamp(min as i64, max as i64).to_string()
             };
         }
     }

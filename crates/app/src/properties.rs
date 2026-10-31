@@ -354,7 +354,7 @@ impl Properties {
         )
         .clicked();
         if open && complete {
-            let _ = open::that_detached(&item.dest);
+            crate::dialogs::open_file(&item.dest);
         }
         let ok = winui::button_light(
             ui,

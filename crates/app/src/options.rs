@@ -881,8 +881,8 @@ impl OptionsDialog {
             &[("mb", vec2(36.0, 20.0)), ("hours", vec2(36.0, 20.0))],
             |p, x, baseline, s| embossed(p, x, baseline, s, on),
         );
-        winui::edit_light_on(ui, boxes[0], &mut self.mb, on, false, LIGHT_PAGE());
-        winui::edit_light_on(ui, boxes[1], &mut self.hours, on, false, LIGHT_PAGE());
+        winui::number_field(ui, boxes[0], &mut self.mb, 1, 999_999, on, LIGHT_PAGE());
+        winui::number_field(ui, boxes[1], &mut self.hours, 1, 999, on, LIGHT_PAGE());
         winui::checkbox_light(
             ui,
             o + vec2(37.0, 376.0),
@@ -890,8 +890,6 @@ impl OptionsDialog {
             "Show warning before stopping downloads",
             on,
         );
-        self.mb.retain(|c| c.is_ascii_digit());
-        self.hours.retain(|c| c.is_ascii_digit());
     }
 
     fn proxy(&mut self, ui: &mut Ui, o: Pos2) {
@@ -1017,15 +1015,15 @@ impl OptionsDialog {
             false,
             LIGHT_PAGE(),
         );
-        winui::edit_light_on(
+        winui::number_field(
             ui,
             r(o, 172.0, 286.0, 51.0, 24.0),
             &mut s.proxy_port,
+            1,
+            65535,
             manual,
-            false,
             LIGHT_PAGE(),
         );
-        s.proxy_port.retain(|c| c.is_ascii_digit());
         winui::edit_light_on(
             ui,
             r(o, 229.0, 286.0, 78.0, 24.0),

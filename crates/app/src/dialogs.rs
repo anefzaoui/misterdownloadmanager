@@ -1028,8 +1028,8 @@ impl Complete {
                 );
 
                 // Enter: Open, the default button (as in the other dialogs).
-                if open.clicked() || winui::enter_pressed(ui) {
-                    let _ = open::that_detached(&self.path);
+                // A file that can't open says why (the box stays for Open folder).
+                if (open.clicked() || winui::enter_pressed(ui)) && open_file(&self.path) {
                     Outcome::Done(())
                 } else if with.clicked() {
                     open_with(&self.path);
@@ -1113,8 +1113,15 @@ impl SpeedSettings {
                         winui::text(p, x, baseline, s, black);
                     },
                 );
-                winui::edit_light(ui, kb_box[0], &mut self.kb, true, true);
-                self.kb.retain(|c| c.is_ascii_digit());
+                winui::number_field(
+                    ui,
+                    kb_box[0],
+                    &mut self.kb,
+                    1,
+                    9_999_999,
+                    true,
+                    winui::LIGHT_BG(),
+                );
                 let note = crate::i18n::t(
                     "Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n\"resume\" feature.",
                 );
@@ -1142,14 +1149,15 @@ impl SpeedSettings {
                     Some(o.x + 196.0),
                 );
                 let on = self.global_on;
-                winui::edit_light(
+                winui::number_field(
                     ui,
                     r(o, 196.0, 116.0, 60.0, 23.0),
                     &mut self.global_kb,
+                    1,
+                    9_999_999,
                     on,
-                    true,
+                    winui::LIGHT_BG(),
                 );
-                self.global_kb.retain(|c| c.is_ascii_digit());
                 let c = if on { black } else { winui::LIGHT_DISABLED() };
                 // i18n: unit after an input box: kilobytes per second
                 winui::text(
@@ -1186,10 +1194,10 @@ impl SpeedSettings {
                     Outcome::Closed
                 } else if ok || winui::enter_pressed(ui) {
                     Outcome::Done(SpeedChoice {
-                        kb: self.kb.parse().unwrap_or(10).max(1),
+                        kb: winui::number_in(&self.kb, 1, 9_999_999),
                         on_startup: self.on_startup,
                         global_on: self.global_on,
-                        global_kb: self.global_kb.parse().unwrap_or(500).max(1),
+                        global_kb: winui::number_in(&self.global_kb, 1, 9_999_999),
                         only_active: self.only_active,
                     })
                 } else {
@@ -1618,6 +1626,44 @@ it from Mister Download Manager list of downloads?",
 
 /// Select the file in Explorer (Finder, the Linux file manager). A file that is gone: its
 /// folder, if that is still there.
+/// Something that failed, to tell the user (the app shows it in its notice): from any window,
+/// without a handle on the app.
+static TOLD: std::sync::Mutex<Vec<(&'static str, String)>> = std::sync::Mutex::new(Vec::new());
+
+/// Tell the user `text` under the window title `title` (English, marked; the text translated).
+pub fn tell(title: &'static str, text: String) {
+    TOLD.lock().unwrap().push((title, text));
+}
+
+/// What [`tell`] was given since the last call (the app shows it).
+pub fn told() -> Vec<(&'static str, String)> {
+    std::mem::take(&mut *TOLD.lock().unwrap())
+}
+
+/// Open a downloaded file with its program, or say why not (moved or deleted since, no
+/// program for it): it did nothing at all. True when it was handed to the system.
+pub fn open_file(path: &Path) -> bool {
+    let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
+    let failed = if !path.exists() {
+        crate::i18n::fmt(
+            crate::i18n::t(
+                "{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.",
+            ),
+            &[("file", &name)],
+        )
+    } else if let Err(e) = open::that_detached(path) {
+        crate::i18n::fmt(
+            crate::i18n::t("{file} could not be opened: {error}"),
+            &[("file", &name), ("error", &e.to_string())],
+        )
+    } else {
+        return true;
+    };
+    // i18n: title of the message when a downloaded file can't be opened
+    tell(crate::i18n::mark("Open"), failed);
+    false
+}
+
 pub fn show_in_folder(path: &Path) {
     #[cfg(windows)]
     {
