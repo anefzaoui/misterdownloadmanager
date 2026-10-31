@@ -2417,12 +2417,29 @@ pub fn password_light_on(
 
 /// A multi-line text box (lists of sites, notes) that wraps its text and scrolls, with the
 /// shared frame, caret, focus line and edit menu. `id` keeps its scroll place.
-pub fn multiline_light(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) -> Response {
-    edit_frame(ui.painter(), rc, true);
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, FIELD());
+/// `enabled`: off, it is greyed and can't be typed in (its switch is off).
+pub fn multiline_light(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    id: &str,
+    enabled: bool,
+) -> Response {
+    edit_frame(ui.painter(), rc, enabled);
+    if enabled {
+        ui.painter().rect_filled(rc.shrink(2.0), 0.0, FIELD());
+    }
+    let ink = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
     let inner = Rect::from_min_max(rc.min + vec2(4.0, 2.0), rc.max - vec2(3.0, 3.0));
     let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).id_salt(id));
     child.visuals_mut().text_cursor.stroke.color = LIGHT_TEXT();
+    if !enabled {
+        child.disable();
+    }
     let resp = egui::ScrollArea::vertical()
         .id_salt((id, "scroll"))
         .max_height(inner.height())
@@ -2430,7 +2447,7 @@ pub fn multiline_light(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) -> R
             let resp = ui.add(
                 egui::TextEdit::multiline(value)
                     .font(tahoma())
-                    .text_color(LIGHT_TEXT())
+                    .text_color(ink)
                     .frame(egui::Frame::NONE)
                     .margin(egui::Margin::ZERO)
                     .desired_width(inner.width() - 14.0)
@@ -2854,6 +2871,30 @@ fn subtle_or(state: State) -> Color32 {
 
 /// A Windows 11 check box's 13 × 13 box in `rc`, ticked or not, in `state`: the one look of
 /// check boxes and of the check lists (Options → Browsers, Sounds).
+/// A check box in a list's row ([`row_list`]): its 13 × 13 box at English `at`, ticked by a
+/// click (hot and pressed as any check box), not a Tab stop of its own (the list is: Space
+/// ticks the selected row). `salt` names the item, so the box stays its own while the list
+/// scrolls. True when clicked.
+pub fn row_check(
+    ui: &Ui,
+    p: &Painter,
+    at: Pos2,
+    on: &mut bool,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> bool {
+    let rc = rect(Rect::from_min_size(at, vec2(13.0, 13.0)));
+    let resp = ui.interact(
+        rc.expand(2.0),
+        widget_id(ui, ("row-check", salt)),
+        pointer_only(),
+    );
+    if resp.clicked() {
+        *on = !*on;
+    }
+    check_box_glyph(p, rc, *on, State::of(&resp, true));
+    resp.clicked()
+}
+
 pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
     if checked {
         p.rect_filled(rc, 2.0, fluent_accent(state));

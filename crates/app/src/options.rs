@@ -2,7 +2,7 @@
 //! in a two-row tab control (notes/ui-spec/options-dialog.md). Light in both modes, as IDM's.
 //! It edits a copy of the settings: OK applies it, the close box and Escape discard it.
 
-use egui::{Color32, Pos2, Rect, Sense, Ui, pos2, vec2};
+use egui::{Pos2, Rect, Sense, Ui, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::icons::Icon;
@@ -57,7 +57,8 @@ pub struct OptionsDialog {
     /// The exceptions' and site logins' lists: scroll and selection.
     exc_rows: winui::RowList,
     login_rows: winui::RowList,
-    sound_sel: Option<usize>,
+    /// The Sounds list's scroll and selection.
+    sound_rows: winui::RowList,
     sub: Option<Sub>,
     /// Save to → New / Edit...: the category editor (D-021).
     cat_edit: Option<crate::categories::CategoryDialog>,
@@ -99,7 +100,7 @@ impl OptionsDialog {
             category: 0,
             exc_rows: Default::default(),
             login_rows: Default::default(),
-            sound_sel: None,
+            sound_rows: Default::default(),
             sub: None,
             cat_edit: None,
             learned,
@@ -270,9 +271,17 @@ impl OptionsDialog {
             browsers.len(),
             17.0,
             &mut self.browser_rows,
-            |ui, _, i, row, _| {
+            |ui, clip, i, row, look| {
                 let (name, on) = &mut browsers[i];
-                winui::checkbox_light(ui, pos2(row.left() + 5.0, row.top() + 2.0), on, name, true);
+                winui::row_check(
+                    ui,
+                    clip,
+                    pos2(row.left() + 5.0, row.top() + 2.0),
+                    on,
+                    ("browser", i),
+                );
+                // Its name in the row's ink (white on the selection).
+                text(clip, row.left() + 23.0, row.top() + 12.0, name, look.ink);
             },
         );
         if let Some(i) = ev.space {
@@ -361,6 +370,7 @@ impl OptionsDialog {
             r(o, 22.0, 110.0, 380.0, 59.0),
             &mut self.s.auto_types,
             "auto-types",
+            true,
         );
         if winui::button_light(
             ui,
@@ -386,6 +396,7 @@ impl OptionsDialog {
             r(o, 22.0, 229.0, 380.0, 49.0),
             &mut self.s.excluded_sites,
             "excluded-sites",
+            true,
         );
         text(
             &p,
@@ -1329,85 +1340,69 @@ impl OptionsDialog {
             crate::i18n::t("Sound file"),
             LIGHT_TEXT(),
         );
-        let body_top = head_y + 25.0;
-        let grid = winui::GRID();
-        for k in 0..13 {
-            let y = body_top + 17.0 * k as f32 + 16.0;
-            if y < list.bottom() - 2.0 {
-                fill(&p, list.left() + 2.0, y, list.right() - 3.0, y, grid);
-            }
-        }
-        fill(
-            &p,
-            o.x + 225.0,
-            body_top,
-            o.x + 225.0,
-            list.bottom() - 3.0,
-            grid,
+        // The events: the shared row list under the header (its frame on the list's). Space
+        // ticks one, a double-click or Enter chooses its file, Delete clears it.
+        let body = Rect::from_min_max(
+            pos2(list.left() + 1.0, head_y + 25.0),
+            pos2(list.right() - 1.0, list.bottom() - 1.0),
         );
-        for (i, event) in SOUND_EVENTS.iter().enumerate() {
-            let top = body_top + 17.0 * i as f32;
-            let row =
-                Rect::from_min_size(pos2(list.left() + 2.0, top), vec2(list.width() - 4.0, 16.0));
-            let glyph = pos2(o.x + 39.0, top + 2.0);
-            let (on, file) = &mut self.s.sounds[i];
-            let box_hit = winui::rect(Rect::from_min_size(glyph, vec2(13.0, 13.0)));
-            if ui
-                .interact(
-                    box_hit,
-                    egui::Id::unique(("sound-check", i)),
-                    winui::pointer_only(),
-                )
-                .clicked()
-            {
-                *on = !*on;
-            } else if ui
-                .interact(
-                    winui::rect(row),
-                    egui::Id::unique(("sound-row", i)),
-                    winui::pointer_only(),
-                )
-                .clicked()
-            {
-                self.sound_sel = Some(i);
-            }
-            if self.sound_sel == Some(i) {
-                fill(
-                    &p,
-                    glyph.x + 16.0,
-                    top,
-                    row.right() - 1.0,
-                    top + 15.0,
-                    winui::SELECTION,
+        let grid = winui::GRID();
+        let sounds = &mut self.s.sounds;
+        let ev = winui::row_list(
+            ui,
+            "sounds",
+            winui::rect(body.expand(1.0)),
+            SOUND_EVENTS.len(),
+            17.0,
+            &mut self.sound_rows,
+            |ui, clip, i, row, look| {
+                let top = row.top();
+                fill(clip, row.left(), top + 16.0, row.right(), top + 16.0, grid);
+                fill(clip, o.x + 225.0, top, o.x + 225.0, top + 16.0, grid);
+                let (on, file) = &mut sounds[i];
+                winui::row_check(ui, clip, pos2(o.x + 39.0, top + 2.0), on, ("sound", i));
+                let event = crate::i18n::t(SOUND_EVENTS[i]);
+                winui::fit(
+                    ui,
+                    clip,
+                    o.x + 57.0,
+                    top + 12.0,
+                    event,
+                    look.ink,
+                    o.x + 221.0,
+                    ("sound-event", i),
                 );
-            }
-            let c = if self.sound_sel == Some(i) {
-                Color32::WHITE
-            } else {
-                LIGHT_TEXT()
-            };
-            check_glyph(&p, glyph, *on, true);
-            let event = crate::i18n::t(event);
-            let (rect, cut) = winui::text_fit(&p, o.x + 57.0, top + 12.0, event, c, o.x + 221.0);
-            if cut {
-                winui::full_on_hover(ui, rect, ("sound-event", i), event);
-            }
-            let name = std::path::Path::new(file.as_str())
-                .file_name()
-                .map(|n| n.to_string_lossy().into_owned())
-                .unwrap_or_default();
-            winui::fit(
-                ui,
-                &p,
-                o.x + 231.0,
-                top + 12.0,
-                &name,
-                c,
-                list.right() - 4.0,
-                ("sound-file", i),
-            );
+                let name = std::path::Path::new(file.as_str())
+                    .file_name()
+                    .map(|n| n.to_string_lossy().into_owned())
+                    .unwrap_or_default();
+                let drawn = winui::fit(
+                    ui,
+                    clip,
+                    o.x + 231.0,
+                    top + 12.0,
+                    &name,
+                    look.ink,
+                    row.right() - 4.0,
+                    ("sound-file", i),
+                );
+                // The whole path on hover (the name alone says little).
+                if !file.is_empty() {
+                    winui::copyable(ui, drawn, ("sound-path", i), file, true);
+                }
+            },
+        );
+        if let Some(i) = ev.space {
+            sounds[i].0 = !sounds[i].0;
         }
-        let sel = self.sound_sel;
+        if let Some(i) = ev.delete {
+            sounds[i] = (false, String::new());
+        }
+        let pick_file = ev.double_clicked.or(ev.entered);
+        if pick_file.is_some() {
+            winui::take_key(ui, egui::Key::Enter);
+        }
+        let sel = self.sound_rows.selected;
         let kind = if sel.is_some() {
             ButtonKind::Normal
         } else {
@@ -1427,7 +1422,7 @@ impl OptionsDialog {
             winui::button_light(ui, r(o, 241.0, 371.0, 73.0, 21.0), "Play", play_kind, false)
                 .clicked();
         if let Some(i) = sel {
-            if browse
+            if (browse || pick_file == Some(i))
                 && let Some(f) = rfd::FileDialog::new()
                     .set_title(crate::i18n::t(SOUND_EVENTS[i]))
                     // i18n: the kind of file the Open dialog lists (sound files)
@@ -1605,7 +1600,13 @@ impl OptionsDialog {
                             crate::i18n::t("Never show it on these sites:"),
                             if on { LIGHT_TEXT() } else { LIGHT_DISABLED() },
                         );
-                        multiline(ui, r(o, 14.0, 62.0, 352.0, 55.0), &mut sites, "panel-sites");
+                        multiline(
+                            ui,
+                            r(o, 14.0, 62.0, 352.0, 55.0),
+                            &mut sites,
+                            "panel-sites",
+                            on,
+                        );
                         winui::text_in_window(
                             ui,
                             &p,
@@ -1993,18 +1994,6 @@ pub(crate) fn list_frame(p: &egui::Painter, rc: Rect) {
     );
 }
 
-/// A 13 × 13 check glyph (as in `checkbox_light`) without a label, its top-left at English `at`
-/// (placed on screen; the check keeps its shape).
-pub(crate) fn check_glyph(p: &egui::Painter, at: Pos2, on: bool, enabled: bool) {
-    let rc = winui::rect(Rect::from_min_size(at, vec2(13.0, 13.0)));
-    let state = if enabled {
-        winui::State::Normal
-    } else {
-        winui::State::Disabled
-    };
-    winui::check_box_glyph(p, rc, on, state);
-}
-
 /// A report list (header 25 px, rows 17 px): `cols` are (title, right edge in client x).
 /// Returns true on a double click of a row.
 #[allow(clippy::too_many_arguments)]
@@ -2095,8 +2084,8 @@ fn report(
 }
 
 /// A multi-line edit that wraps its text (the shared one).
-fn multiline(ui: &mut Ui, rc: Rect, value: &mut String, id: &str) {
-    winui::multiline_light(ui, rc, value, id);
+fn multiline(ui: &mut Ui, rc: Rect, value: &mut String, id: &str, enabled: bool) {
+    winui::multiline_light(ui, rc, value, id, enabled);
 }
 
 /// A read-only field (the page colour, as IDM's): the shared one, so it can be copied.

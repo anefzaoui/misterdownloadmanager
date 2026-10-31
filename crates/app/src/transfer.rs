@@ -191,12 +191,12 @@ impl ImportDialog {
                     &mut self.rows,
                     |ui, clip, i, row, look| {
                         let (d, on) = &mut found[i];
-                        winui::checkbox_light(
+                        winui::row_check(
                             ui,
+                            clip,
                             pos2(row.left() + 5.0, row.top() + 2.0),
                             on,
-                            "",
-                            true,
+                            ("import", &d.url),
                         );
                         // One in the download list already says so at the row's end.
                         let mut right = row.right() - 6.0;

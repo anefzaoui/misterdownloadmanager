@@ -636,7 +636,7 @@ impl TorrentDialog {
                 let state = tri_state(node, chosen);
                 let glyph = pos2(x + 16.0, top + 2.0);
                 let mut on = state == Tri::All;
-                if winui::checkbox(ui, glyph, &mut on, "", true).clicked() {
+                if winui::row_check(ui, clip, glyph, &mut on, ("torrent-node", n)) {
                     toggle = Some(n);
                 }
                 if state == Tri::Some {
