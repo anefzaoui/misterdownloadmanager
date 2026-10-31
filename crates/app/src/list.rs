@@ -165,6 +165,8 @@ pub struct ListState {
     pub filters: Vec<Option<Filter>>,
     /// The open filter box: column and its top-left.
     filter_open: Option<(usize, Pos2)>,
+    /// The sideways scroll when it opened (it closes when the list moves).
+    filter_hscroll: f32,
     /// A selection box being dragged: where it started (x in content, y in rows' space) and
     /// whether Ctrl adds it to the selection.
     marquee: Option<(Pos2, bool)>,
@@ -189,6 +191,7 @@ impl Default for ListState {
             scroll_to: None,
             filters: vec![None; COLS],
             filter_open: None,
+            filter_hscroll: 0.0,
             marquee: None,
             typed: String::new(),
             menu_open: false,
@@ -579,6 +582,7 @@ pub fn show(
             Some((c, _)) if c == col => None,
             _ => Some((col, pos2(at.x.min(outer.right() - FILTER_W), ct + HEADER_H))),
         };
+        st.filter_hscroll = st.hscroll;
     }
     if hresp.clicked()
         && funnel_click.is_none()
@@ -1222,12 +1226,20 @@ fn filter_box(ui: &mut Ui, st: &mut ListState) {
     let shown = winui::rect(rect);
     let r = winui::rect;
     let mut close = ui.input(|i| i.key_pressed(egui::Key::Escape));
+    // A press anywhere else closes it (the toolbar, the menu bar, another header too), except
+    // on its own funnel, whose click toggles it; so does the list scrolling sideways (it
+    // stayed where the column was).
+    let on_funnel =
+        |pp: Pos2| pp.y <= at.y && pp.y >= at.y - HEADER_H && (pp.x - at.x).abs() <= 24.0;
     if ui.input(|i| i.pointer.any_pressed())
         && ui
             .ctx()
             .pointer_interact_pos()
-            .is_some_and(|pp| !shown.contains(pp) && pp.y > at.y)
+            .is_some_and(|pp| !shown.contains(pp) && !on_funnel(pp))
     {
+        close = true;
+    }
+    if st.hscroll != st.filter_hscroll {
         close = true;
     }
     egui::Area::new(egui::Id::unique(("list-filter", col)))

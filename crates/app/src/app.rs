@@ -238,6 +238,8 @@ pub struct App {
     show_categories: bool,
     /// The node the list was last drawn for (a new one starts at the top).
     list_view: View,
+    /// The app's context, to reach its windows from anywhere (bring one to the front).
+    ui_ctx: egui::Context,
     /// The language screen readers were last told.
     a11y_lang: &'static str,
     /// Maximized as last seen (the saved size is the restored window's, not the screen's).
@@ -571,6 +573,7 @@ impl App {
             queues_open,
             maximized: None,
             a11y_lang: "",
+            ui_ctx: cc.egui_ctx.clone(),
             list_view: view,
             add_url: None,
             about: None,
@@ -1644,6 +1647,10 @@ impl App {
     /// Open (or bring back) the File Properties of a download.
     fn properties(&mut self, id: u64) {
         if self.properties.iter().any(|p| p.id == id) {
+            dialogs::raise(
+                &self.ui_ctx,
+                dialogs::dialog_viewport(&format!("properties-{id}")),
+            );
             return;
         }
         if let Some(item) = self.items.iter().find(|i| i.id == id) {
@@ -2382,6 +2389,12 @@ impl App {
         } else if !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
+        } else {
+            // Open already, behind: to the front.
+            dialogs::raise(
+                &self.ui_ctx,
+                egui::ViewportId::from_hash_of(("progress", id)),
+            );
         }
     }
 
@@ -2552,6 +2565,8 @@ impl App {
             Cmd::Find => {
                 if self.find.is_none() {
                     self.find = Some(crate::find::Find::new(self.last_find.as_ref()));
+                } else {
+                    dialogs::raise(ctx, dialogs::dialog_viewport("find"));
                 }
             }
             Cmd::FindNext => match self.last_find.clone() {
@@ -2607,6 +2622,8 @@ impl App {
                         &self.downloads,
                         self.host_limits.learned(),
                     ));
+                } else {
+                    dialogs::raise(ctx, dialogs::dialog_viewport("options"));
                 }
             }
             Cmd::Scheduler => {
@@ -2615,6 +2632,8 @@ impl App {
                         &self.queues,
                         &self.settings,
                     ));
+                } else {
+                    dialogs::raise(ctx, dialogs::dialog_viewport("scheduler"));
                 }
             }
             Cmd::EditQueue(_) | Cmd::ScheduleQueue(_) | Cmd::NewQueue => {

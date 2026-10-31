@@ -1652,6 +1652,18 @@ it from Mister Download Manager list of downloads?",
 
 /// Select the file in Explorer (Finder, the Linux file manager). A file that is gone: its
 /// folder, if that is still there.
+/// Bring an open window to the front (and back from the taskbar): asked for again, it came
+/// to nothing while it sat behind the main window.
+pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
+    ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
+    ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
+}
+
+/// A dialog's window ([`window`], [`question`]) by its id.
+pub fn dialog_viewport(id: &str) -> ViewportId {
+    ViewportId::from_hash_of(id)
+}
+
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
 /// without a handle on the app.
 static TOLD: std::sync::Mutex<Vec<(&'static str, String)>> = std::sync::Mutex::new(Vec::new());
