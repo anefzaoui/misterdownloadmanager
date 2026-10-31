@@ -1532,7 +1532,9 @@ impl TurnOffCountdown {
                 TurnOff::ShutDown => cmd.args(["/s", "/t", "0"]),
                 TurnOff::Hibernate => cmd.arg("/h"),
                 TurnOff::Sleep => {
-                    crate::win32::sleep(self.force);
+                    if !crate::win32::sleep(self.force) {
+                        tell_turn_off_failed("Windows refused".to_owned());
+                    }
                     return;
                 }
             };
@@ -1541,7 +1543,8 @@ impl TurnOffCountdown {
                 cmd.arg("/f");
             }
             // No console window flashing up (CREATE_NO_WINDOW).
-            let _ = cmd.creation_flags(0x0800_0000).spawn();
+            cmd.creation_flags(0x0800_0000);
+            run_or_tell(cmd);
         }
         // Linux: systemd, as the desktop's own menu does; forcing ignores the programs that ask
         // to delay it (inhibitors).
@@ -1557,7 +1560,7 @@ impl TurnOffCountdown {
             if self.force {
                 cmd.arg("--ignore-inhibitors");
             }
-            let _ = cmd.spawn();
+            run_or_tell(cmd);
         }
         // macOS: through System Events, as the Apple menu does (macOS has no separate
         // hibernate: its sleep writes memory to disk as set up); apps can still object.
@@ -1569,9 +1572,9 @@ impl TurnOffCountdown {
                     "tell application \"System Events\" to sleep"
                 }
             };
-            let _ = std::process::Command::new("osascript")
-                .args(["-e", script])
-                .spawn();
+            let mut cmd = std::process::Command::new("osascript");
+            cmd.args(["-e", script]);
+            run_or_tell(cmd);
             let _ = self.force;
         }
     }
@@ -1714,6 +1717,34 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
 /// A dialog's window ([`window`], [`question`]) by its id.
 pub fn dialog_viewport(id: &str) -> ViewportId {
     ViewportId::from_hash_of(id)
+}
+
+/// Run a shut down / sleep command and say when it fails (hibernation off, a program
+/// holding it up): it did nothing, silently.
+fn run_or_tell(mut cmd: std::process::Command) {
+    std::thread::spawn(move || match cmd.output() {
+        Ok(out) if out.status.success() => {}
+        Ok(out) => {
+            let why = String::from_utf8_lossy(&out.stderr).trim().to_owned();
+            tell_turn_off_failed(if why.is_empty() {
+                out.status.to_string()
+            } else {
+                why
+            });
+        }
+        Err(e) => tell_turn_off_failed(e.to_string()),
+    });
+}
+
+fn tell_turn_off_failed(why: String) {
+    tell(
+        // i18n: title of the message when shutting down / sleep / hibernate failed
+        crate::i18n::mark("Turn off computer"),
+        crate::i18n::fmt(
+            crate::i18n::t("The computer could not be turned off: {error}"),
+            &[("error", &why)],
+        ),
+    );
 }
 
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
