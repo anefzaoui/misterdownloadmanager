@@ -346,16 +346,15 @@ impl Updates {
                             Stroke::new(1.0, BOX_EDGE()),
                             egui::StrokeKind::Inside,
                         );
-                        let text = plain_notes(&rel.notes);
-                        let painter = p.with_clip_rect(winui::rect(notes.shrink(2.0)));
-                        winui::paragraph(
-                            &painter,
-                            notes.left() + 6.0,
-                            notes.top() + 16.0,
-                            &text,
+                        // Release notes run longer than the box: it scrolls (issue #5).
+                        winui::scroll_text(
+                            ui,
+                            egui::Id::unique("update-notes"),
+                            notes,
+                            &plain_notes(&rel.notes),
                             ink,
-                            notes.right() - 6.0,
                             13.0,
+                            true,
                         );
                         download = Some(rel.page.clone());
                     }
@@ -412,19 +411,56 @@ impl Updates {
     }
 }
 
-/// Release notes (Markdown) as plain lines: headings, bullets and emphasis marks dropped.
+/// Release notes (Markdown) as plain lines: headings, bullets, emphasis marks and link
+/// addresses dropped (a link keeps its text). A paragraph or bullet wrapped over several lines
+/// in the Markdown is one line again (the box wraps it to its own width).
 fn plain_notes(md: &str) -> String {
-    md.lines()
-        .map(|l| {
-            let l = l.trim_end().trim_start_matches('#').trim_start();
-            let l = l
-                .strip_prefix("- ")
-                .or_else(|| l.strip_prefix("* "))
-                .map_or(l.to_owned(), |b| format!("• {b}"));
-            l.replace("**", "").replace('`', "")
-        })
-        .collect::<Vec<_>>()
-        .join("\n")
+    let mut out: Vec<String> = Vec::new();
+    let mut joinable = false;
+    for raw in md.lines() {
+        let l = raw.trim();
+        if l.is_empty() {
+            out.push(String::new());
+            joinable = false;
+            continue;
+        }
+        let heading = l.starts_with('#');
+        let bullet = l.strip_prefix("- ").or_else(|| l.strip_prefix("* "));
+        let text = link_texts(l.trim_start_matches('#').trim_start())
+            .replace("**", "")
+            .replace('`', "");
+        match (bullet, out.last_mut()) {
+            (None, Some(last)) if joinable && !heading => {
+                last.push(' ');
+                last.push_str(&text);
+            }
+            (Some(b), _) => {
+                let b = link_texts(b).replace("**", "").replace('`', "");
+                out.push(format!("• {b}"));
+            }
+            _ => out.push(text),
+        }
+        joinable = !heading;
+    }
+    out.join("\n")
+}
+
+/// `[text](address)` becomes `text`.
+fn link_texts(line: &str) -> String {
+    let mut out = String::new();
+    let mut rest = line;
+    while let Some(open) = rest.find('[') {
+        let after = &rest[open + 1..];
+        let Some(close) = after.find("](") else { break };
+        let Some(end) = after[close + 2..].find(')') else {
+            break;
+        };
+        out.push_str(&rest[..open]);
+        out.push_str(&after[..close]);
+        rest = &after[close + 2 + end + 1..];
+    }
+    out.push_str(rest);
+    out
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -780,6 +816,16 @@ mod tests {
         assert_eq!(
             plain_notes("## New\n- **Faster** `x`\n* b"),
             "New\n• Faster x\n• b"
+        );
+        assert_eq!(
+            plain_notes("Tell us in an [issue](https://x/issues), or [the guide](docs/a.md#b)."),
+            "Tell us in an issue, or the guide."
+        );
+        assert_eq!(plain_notes("[not a link] and [x]"), "[not a link] and [x]");
+        // Hard-wrapped Markdown: one line per paragraph and per bullet.
+        assert_eq!(
+            plain_notes("Fixes for\nthe Mac.\n\n### Fixed\n\n- **Menus** did\n  nothing.\n- Paste"),
+            "Fixes for the Mac.\n\nFixed\n\n• Menus did nothing.\n• Paste"
         );
     }
 

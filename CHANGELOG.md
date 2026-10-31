@@ -5,6 +5,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [0.2.1] - 2026-10-31
 
+### Fixed
+
+- **Ghost windows while a menu is open** (issue #4): faded copies of the main window titled
+  "egui window" opened and closed with every redraw of an open menu, and the toolbar's hover
+  flickered under them. On a Mac in full screen they opened a space of their own and froze MDM
+  (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window
+  that wasn't open, and that made one.
+- **Check for updates**: the release notes scroll (the wheel, a trackpad, their scroll bar, and
+  the arrow, Page and Home/End keys); their lines no longer break mid-sentence, and links show
+  as their text (issue #5).
+
 ### Changed
 
 - **Help → Report a problem** opens GitHub's new bug report form with your MDM version, your

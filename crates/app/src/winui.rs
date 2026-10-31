@@ -543,6 +543,98 @@ fn no_line_start(c: char) -> bool {
         .contains(c)
 }
 
+/// Read-only text that scrolls inside `area` (English coordinates, the box's own frame drawn by
+/// the caller): the wheel or a trackpad over it, its scroll bar when the text is longer than the
+/// box, and with `keys` the window's Up, Down, Page Up, Page Down, Home and End. Where it is
+/// scrolled to is kept under `id`.
+#[allow(clippy::too_many_arguments)]
+pub fn scroll_text(
+    ui: &mut Ui,
+    id: egui::Id,
+    area: Rect,
+    s: &str,
+    color: Color32,
+    line_h: f32,
+    keys: bool,
+) {
+    use crate::scrollbar;
+    const PAD: f32 = 6.0;
+    let p = ui.painter().clone();
+    let visible = ((area.height() - 6.0) / line_h).floor().max(1.0);
+    // Laid out first where nothing shows: the bar takes room only when the text needs it.
+    let measure = p.with_clip_rect(Rect::NOTHING);
+    let lines = |right: f32| paragraph(&measure, area.left() + PAD, 0.0, s, color, right, line_h);
+    let mut total = lines(area.right() - PAD) as f32;
+    let bar = total > visible;
+    let text_right = if bar {
+        let right = area.right() - 1.0 - scrollbar::THICK - 3.0;
+        total = lines(right) as f32;
+        right
+    } else {
+        area.right() - PAD
+    };
+    let max_top = (total - visible).max(0.0);
+    let mut top: f32 = ui.data(|d| d.get_temp(id)).unwrap_or(0.0);
+    // The wheel scrolls three lines a notch, as Windows text boxes do.
+    if ui
+        .interact(rect(area), id.with("area"), Sense::hover())
+        .hovered()
+    {
+        top -= ui.input(|i| i.smooth_scroll_delta.y) / 40.0 * 3.0;
+    }
+    if keys {
+        let page = (visible - 1.0).max(1.0);
+        ui.input(|i| {
+            for (key, by) in [
+                (egui::Key::ArrowUp, -1.0),
+                (egui::Key::ArrowDown, 1.0),
+                (egui::Key::PageUp, -page),
+                (egui::Key::PageDown, page),
+                (egui::Key::Home, -total),
+                (egui::Key::End, total),
+            ] {
+                if i.key_pressed(key) {
+                    top += by;
+                }
+            }
+        });
+    }
+    top = top.clamp(0.0, max_top);
+    // Moved by the wheel or a key: draw the new place now, not at the next event.
+    if ui.data(|d| d.get_temp::<f32>(id)).is_some_and(|was| was != top) {
+        ui.ctx().request_repaint();
+    }
+    let clip = p.with_clip_rect(rect(area.shrink(2.0)));
+    paragraph(
+        &clip,
+        area.left() + PAD,
+        area.top() + 16.0 - top * line_h,
+        s,
+        color,
+        text_right,
+        line_h,
+    );
+    if bar {
+        let track = rect(Rect::from_min_max(
+            pos2(area.right() - 1.0 - scrollbar::THICK, area.top() + 1.0),
+            pos2(area.right() - 1.0, area.bottom() - 1.0),
+        ));
+        if scrollbar::bar(
+            ui,
+            id.with("bar"),
+            track,
+            true,
+            total,
+            visible,
+            1.0,
+            &mut top,
+        ) {
+            ui.ctx().request_repaint();
+        }
+    }
+    ui.data_mut(|d| d.insert_temp(id, top));
+}
+
 /// A paragraph from `x` to `right`, first baseline at `baseline`, `line_h` apart; returns the
 /// lines drawn. English keeps its line breaks (broken where IDM breaks it); a translation's
 /// copy of them is flowed again (`reflow`). A line too long for the room wraps at spaces, or
