@@ -759,14 +759,17 @@ impl FileInfo {
                         .map(Path::to_path_buf)
                         .unwrap_or_default();
                     // i18n: title of the folder picker
-                    let mut pick =
-                        rfd::FileDialog::new().set_title(crate::i18n::t("Select a folder"));
-                    if now.is_dir() {
-                        pick = pick.set_directory(&now);
-                    }
-                    if let Some(dir) = pick.pick_folder() {
-                        self.set_folder(&dir);
-                    }
+                    let title = crate::i18n::t("Select a folder").to_owned();
+                    winui::start_pick(ui.ctx(), "file-info-folder", move || {
+                        let mut pick = rfd::FileDialog::new().set_title(title);
+                        if now.is_dir() {
+                            pick = pick.set_directory(&now);
+                        }
+                        pick.pick_folder()
+                    });
+                }
+                if let Some(dir) = winui::picked(ui.ctx(), "file-info-folder") {
+                    self.set_folder(&dir);
                 }
 
                 let caption = crate::i18n::fmt(

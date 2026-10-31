@@ -238,6 +238,8 @@ pub struct App {
     show_categories: bool,
     /// The node the list was last drawn for (a new one starts at the top).
     list_view: View,
+    /// The download Move/Rename's dialog is for (winui::start_pick answers later).
+    move_rename_for: Option<u64>,
     /// The Categories tree has the keys (else the list; Tab moves between them).
     tree_keys: bool,
     /// The app's context, to reach its windows from anywhere (bring one to the front).
@@ -577,6 +579,7 @@ impl App {
             a11y_lang: "",
             ui_ctx: cc.egui_ctx.clone(),
             tree_keys: false,
+            move_rename_for: None,
             list_view: view,
             add_url: None,
             about: None,
@@ -2605,13 +2608,14 @@ impl App {
                 }
             }
             Cmd::OpenTorrentFile => {
-                if let Some(f) = rfd::FileDialog::new()
-                    .add_filter(crate::i18n::t("Torrent files"), &["torrent"])
-                    .set_title(crate::i18n::t("Open torrent file"))
-                    .pick_file()
-                {
-                    self.open_torrent_dialog(Some(f.display().to_string()), ctx);
-                }
+                let kind = crate::i18n::t("Torrent files").to_owned();
+                let title = crate::i18n::t("Open torrent file").to_owned();
+                winui::start_pick(ctx, "app-torrent-file", move || {
+                    rfd::FileDialog::new()
+                        .add_filter(kind, &["torrent"])
+                        .set_title(title)
+                        .pick_file()
+                });
             }
             Cmd::Batch(clipboard) => {
                 if self.batch.is_none() {
@@ -4135,20 +4139,29 @@ impl App {
         } else {
             ("txt", "downloads.txt")
         };
-        let Some(path) = rfd::FileDialog::new()
-            .set_title(crate::i18n::t("Export"))
-            .add_filter(ext.to_ascii_uppercase(), &[ext])
-            .set_file_name(name)
-            .save_file()
-        else {
-            return;
+        let title = crate::i18n::t("Export").to_owned();
+        let key = if ef2 {
+            "app-export-ef2"
+        } else {
+            "app-export-txt"
         };
+        winui::start_pick(&self.ui_ctx, key, move || {
+            rfd::FileDialog::new()
+                .set_title(title)
+                .add_filter(ext.to_ascii_uppercase(), &[ext])
+                .set_file_name(name)
+                .save_file()
+        });
+    }
+
+    /// Tasks → Export, the file chosen: the addresses written to it.
+    fn export_to(&mut self, path: &std::path::Path, ef2: bool) {
         let text = if ef2 {
             crate::transfer::export_ef2(&self.items)
         } else {
             crate::transfer::export_text(&self.items)
         };
-        if let Err(e) = std::fs::write(&path, text) {
+        if let Err(e) = std::fs::write(path, text) {
             self.notice = Some((
                 crate::i18n::mark("Export"),
                 crate::i18n::fmt(
@@ -4309,23 +4322,41 @@ impl App {
 
     /// Tasks → Import: read a file and show the addresses found, to check before adding.
     fn import(&mut self, ef2: bool) {
-        let mut dialog = rfd::FileDialog::new().set_title(crate::i18n::t("Import"));
-        dialog = if ef2 {
-            dialog.add_filter("EF2", &["ef2"])
-        } else {
-            // i18n: the kind of file the Import dialog lists (text files with addresses)
-            dialog.add_filter(
-                crate::i18n::t("Lists of addresses"),
-                &["txt", "htm", "html", "csv"],
-            )
-        };
-        let Some(path) = dialog
-            .add_filter(crate::i18n::t("All files"), &["*"])
-            .pick_file()
-        else {
-            return;
-        };
-        self.import_file(&path);
+        let title = crate::i18n::t("Import").to_owned();
+        // i18n: the kind of file the Import dialog lists (text files with addresses)
+        let lists = crate::i18n::t("Lists of addresses").to_owned();
+        let all = crate::i18n::t("All files").to_owned();
+        winui::start_pick(&self.ui_ctx, "app-import", move || {
+            let dialog = rfd::FileDialog::new().set_title(title);
+            let dialog = if ef2 {
+                dialog.add_filter("EF2", &["ef2"])
+            } else {
+                dialog.add_filter(lists, &["txt", "htm", "html", "csv"])
+            };
+            dialog.add_filter(all, &["*"]).pick_file()
+        });
+    }
+
+    /// The system dialogs opened from the main window, answered (winui::start_pick): their
+    /// work goes on.
+    fn poll_picks(&mut self, ctx: &egui::Context) {
+        if let Some(f) = winui::picked(ctx, "app-torrent-file") {
+            self.open_torrent_dialog(Some(f.display().to_string()), ctx);
+        }
+        if let Some(path) = winui::picked(ctx, "app-export-ef2") {
+            self.export_to(&path, true);
+        }
+        if let Some(path) = winui::picked(ctx, "app-export-txt") {
+            self.export_to(&path, false);
+        }
+        if let Some(path) = winui::picked(ctx, "app-import") {
+            self.import_file(&path);
+        }
+        if let Some(target) = winui::picked(ctx, "app-move-rename")
+            && let Some(id) = self.move_rename_for.take()
+        {
+            self.start_move(id, target);
+        }
     }
 
     /// The addresses in a list file, shown in Import to tick before adding.
@@ -4449,15 +4480,21 @@ impl App {
             ));
             return;
         }
-        let Some(target) = rfd::FileDialog::new()
-            .set_title(crate::i18n::t("Move/Rename"))
-            .set_directory(item.dest.parent().unwrap_or(std::path::Path::new(".")))
-            .set_file_name(&item.file_name)
-            .save_file()
-        else {
-            return;
-        };
-        self.start_move(id, target);
+        let title = crate::i18n::t("Move/Rename").to_owned();
+        let from = item
+            .dest
+            .parent()
+            .unwrap_or(std::path::Path::new("."))
+            .to_path_buf();
+        let name = item.file_name.clone();
+        self.move_rename_for = Some(id);
+        winui::start_pick(&self.ui_ctx, "app-move-rename", move || {
+            rfd::FileDialog::new()
+                .set_title(title)
+                .set_directory(from)
+                .set_file_name(name)
+                .save_file()
+        });
     }
 
     /// Delete a queue of the user's (not the two built-in ones); its downloads stay in the list.
@@ -5021,6 +5058,7 @@ impl eframe::App for App {
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));
         }
+        self.poll_picks(&ctx);
         self.drop_target(&ctx);
         self.main_drops(&ctx);
         self.remember_layout(&ctx);

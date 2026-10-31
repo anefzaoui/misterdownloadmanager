@@ -762,12 +762,13 @@ impl Scheduler {
             false,
         )
         .clicked();
-        if browse
-            && f.open_on
-            && let Some(path) = rfd::FileDialog::new()
-                .set_title(crate::i18n::t("Open the following file when done"))
-                .pick_file()
-        {
+        if browse && f.open_on {
+            let title = crate::i18n::t("Open the following file when done").to_owned();
+            winui::start_pick(ui.ctx(), "sched-open-file", move || {
+                rfd::FileDialog::new().set_title(title).pick_file()
+            });
+        }
+        if let Some(path) = winui::picked(ui.ctx(), "sched-open-file") {
             f.open_file = path.display().to_string();
         }
         // Dial-up is hung up through Windows' rasdial; macOS and Linux have no such command.

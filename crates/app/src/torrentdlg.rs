@@ -303,14 +303,18 @@ impl TorrentDialog {
             None,
         )
         .clicked();
-        if browse
-            && !busy
-            && let Some(f) = rfd::FileDialog::new()
-                // i18n: the kind of file the Open dialog lists
-                .add_filter(crate::i18n::t("Torrent files"), &["torrent"])
-                .set_title(crate::i18n::t("Open torrent file"))
-                .pick_file()
-        {
+        if browse && !busy {
+            // i18n: the kind of file the Open dialog lists
+            let kind = crate::i18n::t("Torrent files").to_owned();
+            let title = crate::i18n::t("Open torrent file").to_owned();
+            winui::start_pick(ui.ctx(), "torrent-file", move || {
+                rfd::FileDialog::new()
+                    .add_filter(kind, &["torrent"])
+                    .set_title(title)
+                    .pick_file()
+            });
+        }
+        if let Some(f) = winui::picked(ui.ctx(), "torrent-file") {
             self.source = f.display().to_string();
             self.look_up(rt, ui.ctx());
         }
@@ -463,10 +467,13 @@ impl TorrentDialog {
             None,
         )
         .clicked()
-            && let Some(d) = rfd::FileDialog::new()
-                .set_directory(&self.folder)
-                .pick_folder()
         {
+            let from = self.folder.clone();
+            winui::start_pick(ui.ctx(), "torrent-folder", move || {
+                rfd::FileDialog::new().set_directory(from).pick_folder()
+            });
+        }
+        if let Some(d) = winui::picked(ui.ctx(), "torrent-folder") {
             self.folder = d.display().to_string();
             self.folder_edited = true;
         }

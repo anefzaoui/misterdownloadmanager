@@ -134,16 +134,19 @@ impl CategoryDialog {
                 .clicked()
                 {
                     // i18n: title of the folder picker of the category dialog
-                    let mut pick =
-                        rfd::FileDialog::new().set_title(crate::i18n::t("Category folder"));
+                    let title = crate::i18n::t("Category folder").to_owned();
                     // From the folder typed, when there is one.
-                    let typed = Path::new(self.folder.trim());
-                    if typed.is_dir() {
-                        pick = pick.set_directory(typed);
-                    }
-                    if let Some(dir) = pick.pick_folder() {
-                        self.folder = dir.display().to_string();
-                    }
+                    let typed = Path::new(self.folder.trim()).to_path_buf();
+                    winui::start_pick(ui.ctx(), "category-folder", move || {
+                        let mut pick = rfd::FileDialog::new().set_title(title);
+                        if typed.is_dir() {
+                            pick = pick.set_directory(&typed);
+                        }
+                        pick.pick_folder()
+                    });
+                }
+                if let Some(dir) = winui::picked(ui.ctx(), "category-folder") {
+                    self.folder = dir.display().to_string();
                 }
                 let name = self.name.trim();
                 // An empty name only greys OK; a name in use says so.

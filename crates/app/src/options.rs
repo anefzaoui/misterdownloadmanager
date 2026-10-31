@@ -536,11 +536,16 @@ impl OptionsDialog {
             false,
         )
         .clicked()
-            && let Some(dir) = rfd::FileDialog::new()
-                .set_title(dir_line.clone())
-                .set_directory(&self.cat_dir)
-                .pick_folder()
         {
+            let (title, from) = (dir_line.clone(), self.cat_dir.clone());
+            winui::start_pick(ui.ctx(), "options-category-folder", move || {
+                rfd::FileDialog::new()
+                    .set_title(title)
+                    .set_directory(from)
+                    .pick_folder()
+            });
+        }
+        if let Some(dir) = winui::picked(ui.ctx(), "options-category-folder") {
             self.cat_dir = display_dir(&dir);
         }
         self.commit_cat_dir(downloads);
@@ -1432,13 +1437,18 @@ impl OptionsDialog {
             winui::button_light(ui, r(o, 241.0, 371.0, 73.0, 21.0), "Play", play_kind, false)
                 .clicked();
         if let Some(i) = sel {
-            if (browse || pick_file == Some(i))
-                && let Some(f) = rfd::FileDialog::new()
-                    .set_title(crate::i18n::t(SOUND_EVENTS[i]))
-                    // i18n: the kind of file the Open dialog lists (sound files)
-                    .add_filter(crate::i18n::t("Sounds"), &["wav"])
-                    .pick_file()
-            {
+            if browse || pick_file == Some(i) {
+                let title = crate::i18n::t(SOUND_EVENTS[i]).to_owned();
+                // i18n: the kind of file the Open dialog lists (sound files)
+                let kind = crate::i18n::t("Sounds").to_owned();
+                winui::start_pick(ui.ctx(), &format!("sound-{i}"), move || {
+                    rfd::FileDialog::new()
+                        .set_title(title)
+                        .add_filter(kind, &["wav"])
+                        .pick_file()
+                });
+            }
+            if let Some(f) = winui::picked(ui.ctx(), &format!("sound-{i}")) {
                 self.s.sounds[i] = (true, f.display().to_string());
             }
             if play && has_file {
