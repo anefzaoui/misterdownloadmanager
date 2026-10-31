@@ -43,7 +43,7 @@ Browser integration is set up by the Windows installer only for now.
    - **Create a desktop shortcut** (off unless you tick it)
 5. Click **Install**, then **Finish** to start MDM.
 
-If MDM is already running, the setup asks it to save and close first. To update, run the setup of the new version; your list and settings stay.
+If MDM is already running, the setup asks it to save and close first. To update, use **Help → Check for updates → Update now**, or run the setup of the new version; your list and settings stay.
 
 Browser integration needs one more step in each browser: loading the extension. [Browser integration](browser-integration.md) shows how.
 

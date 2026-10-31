@@ -288,7 +288,7 @@ impl AddUrl {
                     addr.request_focus();
                 }
                 // The arrow: the addresses entered before.
-                if winui::combo_arrow(ui, addr_rc, "add-url").clicked()
+                if winui::combo_arrow(ui, addr_rc, "add-url", self.list_open).clicked()
                     || winui::combo_keys(ui, &addr)
                 {
                     self.list_open = !self.list_open;
@@ -627,7 +627,7 @@ impl FileInfo {
                     self.edited = true;
                 }
                 // The arrow: the folders saved to before.
-                if winui::combo_arrow(ui, save_rc, "save-as").clicked()
+                if winui::combo_arrow(ui, save_rc, "save-as", self.folders_open).clicked()
                     || winui::combo_keys(ui, &save)
                 {
                     self.folders_open = !self.folders_open;

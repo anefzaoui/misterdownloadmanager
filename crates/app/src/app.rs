@@ -3772,10 +3772,20 @@ impl App {
             self.about = None;
         }
         let mut weekly = self.settings.update_check;
-        if let Some(d) = &mut self.updates
-            && !matches!(d.show(ctx, &mut weekly), Outcome::Open)
-        {
-            self.updates = None;
+        let mut close_for_update = false;
+        if let Some(d) = &mut self.updates {
+            match d.show(ctx, &self.rt, &mut weekly) {
+                Outcome::Open => {}
+                // Update now: the new copy is going in place; MDM saves and closes for it.
+                Outcome::Done(true) => {
+                    self.updates = None;
+                    close_for_update = true;
+                }
+                _ => self.updates = None,
+            }
+        }
+        if close_for_update {
+            self.run(Cmd::Exit, None, ctx);
         }
         if weekly != self.settings.update_check {
             self.settings.update_check = weekly;

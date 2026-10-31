@@ -31,7 +31,7 @@ Your download list, settings, logins you save in **Sites Logins**, the history o
 
 - **The servers you download from.** To download a file, MDM connects to the server that holds it and sends what any browser would: the request, and the cookies, referrer and browser identification the extension passed along, so downloads that need you to be signed in keep working. Those servers see your IP address, as they would if your browser downloaded the file.
 - **Your proxy**, if you set one in **Options → Proxy / Socks**, and your network's proxy auto-config script, if you point MDM at one.
-- **GitHub, to check for updates.** Once a week MDM asks GitHub's public API for the latest release of MDM (`api.github.com/repos/anefzaoui/misterdownloadmanager/releases/latest`). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in **Help → Check for updates**. GitHub's own privacy statement applies to that request.
+- **GitHub, to check for updates.** Once a week MDM asks GitHub's public API for the latest release of MDM (`api.github.com/repos/anefzaoui/misterdownloadmanager/releases/latest`). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in **Help → Check for updates**. If you choose **Update now**, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.
 - **GitHub, for video helpers.** If you use **Download video from a page**, MDM downloads yt-dlp (and ffmpeg, if you want merged qualities) from their official GitHub releases, checks them, and once per session asks GitHub whether yt-dlp has a newer release. yt-dlp then talks to the video site you asked for, as your browser would.
 - **Torrent peers and trackers.** When you download a torrent, MDM connects to the trackers listed in the torrent, to the BitTorrent DHT network and to other peers, who see your IP address and which pieces you have. To accept connections it may ask your router to open a port (UPnP). This is how BitTorrent works; it ends when the torrent stops.
 - **Your AI assistant, only if you connect one.** MDM's MCP server (`misterdownloadmanager-mcp`) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see [AI assistants](/help/ai-assistants.html).
@@ -40,7 +40,7 @@ MDM has **no analytics, no crash reporting, no telemetry and no advertising**. I
 
 ### Reporting a problem
 
-**Help → Report a problem** opens a new GitHub issue in your browser with MDM's version, your Windows version and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.
+**Help → Report a problem** opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.
 
 ### The automation API
 

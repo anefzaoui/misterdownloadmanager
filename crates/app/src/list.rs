@@ -574,12 +574,31 @@ pub fn show(
     let p = p.with_clip_rect(screen(header));
     fill(&p, cl, ct, rr, ct + HEADER_H - 1.0, HEADER_BG());
     for (c, x0, x1) in &cols {
+        let hovered = hresp
+            .hover_pos()
+            .map(english)
+            .is_some_and(|h| h.x >= *x0 && h.x <= *x1 && st.drag.is_none());
+        // The column under the pointer, and pressed while the mouse button is held on it (as
+        // Windows' headers); the shared tint (winui::subtle_fill).
+        let state = match (hovered, hresp.is_pointer_button_down_on()) {
+            (false, _) => winui::State::Normal,
+            (true, false) => winui::State::Hot,
+            (true, true) => winui::State::Pressed,
+        };
+        let tint = winui::subtle_fill(state, crate::theme::dark());
         // The sorted column: highlighted header and a chevron at its right edge (▲ ascending,
         // ▼ descending).
         if let Some((sc, asc)) = st.sort
             && sc == *c
         {
-            fill(&p, *x0, ct, x1 - 1.0, ct + HEADER_H - 1.0, SORTED_BG());
+            fill(
+                &p,
+                *x0,
+                ct,
+                x1 - 1.0,
+                ct + HEADER_H - 1.0,
+                tint.unwrap_or(SORTED_BG()),
+            );
             // At the cell's right edge, vertically centred in the header.
             let cx = x1 - 9.0;
             let mid = ct + (HEADER_H / 2.0).floor() - 2.0;
@@ -588,6 +607,8 @@ pub fn show(
                 let half = i as f32;
                 fill(&p, cx - half, y, cx + half, y, SORT_ARROW());
             }
+        } else if let Some(t) = tint {
+            fill(&p, *x0, ct, x1 - 1.0, ct + HEADER_H - 1.0, t);
         }
         fill(&p, *x1, ct, *x1, ct + HEADER_H - 1.0, HEADER_SEP());
         let mut arrow_room = if st.sort.is_some_and(|(sc, _)| sc == *c) {
@@ -599,10 +620,6 @@ pub fn show(
         // its box is open; blue while the column is filtered. A column too narrow for a label
         // and the funnel (Q) shows it only under the pointer.
         let filtered = st.filters[*c].is_some();
-        let hovered = hresp
-            .hover_pos()
-            .map(english)
-            .is_some_and(|h| h.x >= *x0 && h.x <= *x1 && st.drag.is_none());
         let open = st.filter_open.is_some_and(|(fc, _)| fc == *c);
         let roomy = x1 - x0 >= 44.0;
         if roomy || filtered || hovered || open {

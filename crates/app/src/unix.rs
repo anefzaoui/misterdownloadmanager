@@ -118,6 +118,28 @@ pub fn play_sound(file: &str) {
     }
 }
 
+/// The system and its version, for problem reports: "macOS 15.1" (sw_vers), or the Linux
+/// distribution's name from /etc/os-release ("Ubuntu 24.04.1 LTS").
+pub fn os_version() -> String {
+    if cfg!(target_os = "macos") {
+        let v = Command::new("sw_vers")
+            .arg("-productVersion")
+            .output()
+            .ok()
+            .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_owned())
+            .unwrap_or_default();
+        return format!("macOS {v}").trim_end().to_owned();
+    }
+    std::fs::read_to_string("/etc/os-release")
+        .ok()
+        .and_then(|t| {
+            t.lines()
+                .find_map(|l| l.strip_prefix("PRETTY_NAME="))
+                .map(|v| v.trim_matches('"').to_owned())
+        })
+        .unwrap_or_else(|| "Linux".into())
+}
+
 /// Show the file selected in the file manager (macOS: Finder; Linux: the desktop's file
 /// manager through D-Bus, else its folder opened).
 pub fn show_in_folder(path: &Path) {

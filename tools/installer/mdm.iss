@@ -8,7 +8,7 @@
 ; whether to keep the download list and settings.
 
 #ifndef AppVersion
-  #define AppVersion "0.2.0"
+  #define AppVersion "0.2.1"
 #endif
 #define AppName "Mister Download Manager"
 #define AppExe "misterdownloadmanager.exe"
@@ -117,6 +117,9 @@ Root: HKA; Subkey: "Software\Classes\magnet\shell\open\command"; ValueType: stri
 Filename: "{app}\{#HostExe}"; Parameters: "--register"; Flags: runhidden; Tasks: browser; Check: not IsAdminInstallMode
 Filename: "{app}\{#HostExe}"; Parameters: "--register --all-users"; Flags: runhidden; Tasks: browser; Check: IsAdminInstallMode
 Filename: "{app}\{#AppExe}"; Description: "{cm:Launch}"; Flags: nowait postinstall skipifsilent
+; Update now in MDM runs this setup silently with /relaunch=1: MDM starts again once installed,
+; as the user (not as the administrator an all-users update asked for).
+Filename: "{app}\{#AppExe}"; Parameters: "/updated"; Flags: nowait runasoriginaluser; Check: Relaunch
 
 [UninstallRun]
 Filename: "{app}\{#HostExe}"; Parameters: "--unregister"; Flags: runhidden; RunOnceId: "UnregisterUser"; Check: not IsAdminInstallMode
@@ -128,6 +131,12 @@ Type: files; Name: "{app}\com.misterdownloadmanager.host*.json"
 [Code]
 const
   RunningMutex = 'MisterDownloadManager.Running';
+
+{ /relaunch=1 on the command line (MDM's Update now): start MDM again after installing. }
+function Relaunch: Boolean;
+begin
+  Result := ExpandConstant('{param:relaunch|0}') = '1';
+end;
 
 { Ask a running MDM to save and quit, and wait up to 15 s for it. }
 procedure ExitRunningApp(Exe: String);

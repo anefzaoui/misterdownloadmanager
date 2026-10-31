@@ -9,6 +9,7 @@ pub mod pages;
 pub mod proc;
 pub mod resolve;
 pub mod servers;
+pub mod update;
 pub mod video;
 
 use std::io::Cursor;
@@ -20,6 +21,10 @@ use sha2::{Digest, Sha256};
 
 /// yt-dlp's release signing key, from its repository (`public.key`).
 const YTDLP_KEY: &str = include_str!("../keys/yt-dlp.asc");
+/// Mister Download Manager's release signing key (Ed25519, fingerprint
+/// 5826D399249DE856EA087D802E293C28E8A69D74): release.yml signs each release's SHA256SUMS.txt
+/// with it (the MDM_RELEASE_KEY secret), and MDM updates itself only from a list it signed.
+const MDM_KEY: &str = include_str!("../keys/mdm-release.asc");
 /// Where releases come from.
 const RELEASES: &str = "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest";
 
@@ -29,7 +34,7 @@ pub enum Error {
     Http(#[from] reqwest::Error),
     #[error("disk: {0}")]
     Io(#[from] std::io::Error),
-    #[error("the release's checksum list is not signed by yt-dlp's key")]
+    #[error("the release's checksum list is not signed by its publisher's key")]
     BadSignature,
     #[error("the downloaded program doesn't match its signed checksum")]
     BadChecksum,
@@ -65,17 +70,81 @@ pub fn ytdlp_asset() -> &'static str {
 /// Whether `sums` carries a valid signature `sig` (binary OpenPGP) by yt-dlp's key or one of its
 /// subkeys.
 pub fn signed_by_ytdlp(sums: &[u8], sig: &[u8]) -> bool {
-    let Ok((key, _)) = SignedPublicKey::from_armor_single(Cursor::new(YTDLP_KEY)) else {
+    signed_by(YTDLP_KEY, sums, sig)
+}
+
+/// Whether `sums` (a release's SHA256SUMS.txt) carries a valid signature `sig` by Mister
+/// Download Manager's release key.
+pub fn signed_by_mdm(sums: &[u8], sig: &[u8]) -> bool {
+    signed_by(MDM_KEY, sums, sig)
+}
+
+/// Whether `data` carries a valid detached signature `sig` (binary OpenPGP) by the armored
+/// public `key` or one of its subkeys.
+pub fn signed_by(key: &str, data: &[u8], sig: &[u8]) -> bool {
+    let Ok((key, _)) = SignedPublicKey::from_armor_single(Cursor::new(key)) else {
         return false;
     };
     let Ok(sig) = DetachedSignature::from_bytes(Cursor::new(sig)) else {
         return false;
     };
-    sig.verify(&key, sums).is_ok()
+    sig.verify(&key, data).is_ok()
         || key
             .public_subkeys
             .iter()
-            .any(|sub| sig.verify(&sub.key, sums).is_ok())
+            .any(|sub| sig.verify(&sub.key, data).is_ok())
+}
+
+/// `url`'s body.
+pub(crate) async fn get_bytes(client: &reqwest::Client, url: &str) -> Result<Vec<u8>, Error> {
+    Ok(client
+        .get(url)
+        .send()
+        .await?
+        .error_for_status()?
+        .bytes()
+        .await?
+        .to_vec())
+}
+
+/// A release's checksum list (`hash  name` lines), fetched with its detached signature and
+/// accepted only when `signed` (the publisher's key) says so.
+pub(crate) async fn signed_list(
+    client: &reqwest::Client,
+    sums_url: &str,
+    sig_url: &str,
+    signed: fn(&[u8], &[u8]) -> bool,
+) -> Result<String, Error> {
+    let sums = get_bytes(client, sums_url).await?;
+    let sig = get_bytes(client, sig_url).await?;
+    if !signed(&sums, &sig) {
+        return Err(Error::BadSignature);
+    }
+    Ok(String::from_utf8_lossy(&sums).into_owned())
+}
+
+/// Download `url` into `path`, hashing it as it arrives (and counting it into `progress`).
+/// Returns its SHA-256.
+pub(crate) async fn download_hashed(
+    client: &reqwest::Client,
+    url: &str,
+    path: &Path,
+    progress: Option<&update::Progress>,
+) -> Result<[u8; 32], Error> {
+    use std::io::Write;
+    let mut resp = client.get(url).send().await?.error_for_status()?;
+    if let (Some(p), Some(n)) = (progress, resp.content_length()) {
+        p.total.store(n, std::sync::atomic::Ordering::Relaxed);
+    }
+    let mut file = std::fs::File::create(path)?;
+    let mut hash = Sha256::new();
+    while let Some(chunk) = resp.chunk().await? {
+        hash.update(&chunk);
+        file.write_all(&chunk)?;
+        update::add(progress, chunk.len() as u64);
+    }
+    file.flush()?;
+    Ok(hash.finalize().into())
 }
 
 /// The SHA-256 a `hash  name` list gives for `name`.
@@ -142,31 +211,18 @@ pub async fn install_latest(dir: &Path) -> Result<Installed, Error> {
             .map(|a| a.browser_download_url.clone())
             .ok_or_else(|| Error::Missing(name.to_owned()))
     };
-    let fetch = |u: String| {
-        let client = client.clone();
-        async move {
-            Ok::<_, Error>(
-                client
-                    .get(u)
-                    .send()
-                    .await?
-                    .error_for_status()?
-                    .bytes()
-                    .await?,
-            )
-        }
-    };
-    let sums = fetch(url("SHA2-256SUMS")?).await?;
-    let sig = fetch(url("SHA2-256SUMS.sig")?).await?;
-    if !signed_by_ytdlp(&sums, &sig) {
-        return Err(Error::BadSignature);
-    }
-    let sums = String::from_utf8_lossy(&sums);
+    let sums = signed_list(
+        &client,
+        &url("SHA2-256SUMS")?,
+        &url("SHA2-256SUMS.sig")?,
+        signed_by_ytdlp,
+    )
+    .await?;
     let asset = ytdlp_asset();
     let expected =
         sum_for(&sums, asset).ok_or_else(|| Error::Missing(format!("checksum for {asset}")))?;
     let exe_url = url(asset)?;
-    let program = fetch(exe_url.clone()).await?;
+    let program = get_bytes(&client, &exe_url).await?;
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }
@@ -255,6 +311,19 @@ mod tests {
     #[test]
     fn a_real_release_checksum_list_is_signed_by_the_pinned_key() {
         assert!(signed_by_ytdlp(SUMS, SIG));
+    }
+
+    #[test]
+    fn mdm_releases_are_checked_against_mdms_own_key() {
+        let sums = include_bytes!("../tests/fixtures/mdm-SHA256SUMS.txt");
+        let sig = include_bytes!("../tests/fixtures/mdm-SHA256SUMS.txt.sig");
+        assert!(signed_by_mdm(sums, sig));
+        let mut forged = sums.to_vec();
+        forged[0] = if forged[0] == b'0' { b'1' } else { b'0' };
+        assert!(!signed_by_mdm(&forged, sig));
+        // Each key signs for itself only.
+        assert!(!signed_by_ytdlp(sums, sig));
+        assert!(!signed_by_mdm(SUMS, SIG));
     }
 
     #[test]

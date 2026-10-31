@@ -187,6 +187,7 @@ jobs:
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
+          MDM_RELEASE_KEY: ${{ secrets.MDM_RELEASE_KEY }}
         shell: pwsh
         run: |
           # One SHA256SUMS.txt for every file (each build wrote its own).
@@ -194,6 +195,22 @@ jobs:
           $files = Get-ChildItem dist -File | Sort-Object Name
           $sums = $files | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" }
           Set-Content -Encoding ascii dist/SHA256SUMS.txt $sums
+          # Signed with MDM's release key (fingerprint 5826D399249DE856EA087D802E293C28E8A69D74, the
+          # MDM_RELEASE_KEY secret): MDM updates itself only from a list it signed
+          # (crates/tools/src/update.rs; the public key is crates/tools/keys/mdm-release.asc).
+          if ($env:MDM_RELEASE_KEY) {
+            $key = Join-Path $env:RUNNER_TEMP "mdm-release.asc"
+            Set-Content -Encoding ascii $key $env:MDM_RELEASE_KEY
+            gpg --batch --quiet --import $key
+            Remove-Item $key
+            gpg --batch --yes --detach-sign --local-user 5826D399249DE856EA087D802E293C28E8A69D74 `
+              --output dist/SHA256SUMS.txt.sig dist/SHA256SUMS.txt
+            if ($LASTEXITCODE) { throw "signing SHA256SUMS.txt failed" }
+            gpg --batch --verify dist/SHA256SUMS.txt.sig dist/SHA256SUMS.txt
+            if ($LASTEXITCODE) { throw "the signature of SHA256SUMS.txt doesn't verify" }
+          } else {
+            Write-Warning "MDM_RELEASE_KEY isn't set: this release is unsigned, and MDM won't update to it by itself."
+          }
           # Notes: the version's section of CHANGELOG.md ("## [X.Y.Z]" up to the next "## "),
           # else GitHub's list of changes since the last tag; first, the invitation to try the
           # macOS and Linux builds when they are there.

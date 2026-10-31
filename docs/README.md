@@ -54,7 +54,7 @@ These pages explain each part of the program. The tutorials walk through the thi
 
 - **[Troubleshooting](troubleshooting.md)** — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.
 - **[Releases](https://github.com/anefzaoui/misterdownloadmanager/releases)** — download the latest version.
-- **[Report a problem](https://github.com/anefzaoui/misterdownloadmanager/issues)** — or use **Help → Report a problem** in MDM, which fills in your version and Windows for you.
+- **[Report a problem](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose)** — or use **Help → Report a problem** in MDM, which fills in your version, system and how MDM was installed for you.
 
 ---
 

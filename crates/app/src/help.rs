@@ -36,19 +36,52 @@ pub fn open_page(path: &str) {
     let _ = open::that_detached(url);
 }
 
-/// A new GitHub issue, its form filled with what helps: this version, Windows, the language.
+/// A new GitHub issue on the Bug report form (.github/ISSUE_TEMPLATE/bug.yml), filled with
+/// what MDM knows: its version, the system and its version, how it was installed, the
+/// language. The parameters are the form's field ids; a dropdown takes an option's text.
 pub fn report_problem() {
-    #[cfg(windows)]
-    let windows = crate::win32::windows_version();
-    #[cfg(not(windows))]
-    let windows = std::env::consts::OS.to_owned();
-    let body = format!(
-        "**What happened**\n\n\n**What you expected**\n\n\n**Steps to make it happen**\n1. \n\n---\n\
-         Mister Download Manager {VERSION} ({COMMIT}) · {windows} · language {}\n",
-        crate::i18n::code()
-    );
     let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
-    let _ = open::that_detached(format!("{REPO}/issues/new?body={}", enc(&body)));
+    let url = report_fields().iter().fold(
+        format!("{REPO}/issues/new?template=bug.yml"),
+        |url, (k, v)| format!("{url}&{k}={}", enc(v)),
+    );
+    let _ = open::that_detached(url);
+}
+
+/// The Bug report form's fields MDM fills in: (field id, value).
+fn report_fields() -> Vec<(&'static str, String)> {
+    #[cfg(windows)]
+    let os_version = crate::win32::windows_version();
+    #[cfg(unix)]
+    let os_version = crate::unix::os_version();
+    let os = if cfg!(windows) {
+        if os_version.contains("Windows 10") {
+            "Windows 10"
+        } else {
+            "Windows 11"
+        }
+    } else if cfg!(target_os = "macos") {
+        if cfg!(target_arch = "aarch64") {
+            "macOS (Apple Silicon)"
+        } else {
+            "macOS (Intel)"
+        }
+    } else if cfg!(target_os = "linux") {
+        "Linux"
+    } else {
+        "Other"
+    };
+    let mut fields = vec![
+        ("os", os.to_owned()),
+        ("os-version", os_version),
+        ("version", format!("{VERSION} ({COMMIT})")),
+        ("language", crate::i18n::code().to_owned()),
+    ];
+    fields.push((
+        "install",
+        mdm_tools::update::Install::detect().label().to_owned(),
+    ));
+    fields
 }
 
 /// Text that opens something when clicked: link colour, underlined under the pointer.
@@ -76,8 +109,10 @@ pub struct Release {
     /// `YYYY-MM-DD`.
     pub date: String,
     pub notes: String,
-    /// The release's page (the download is there; nothing installs by itself).
+    /// The release's page (its files are there too).
     pub page: String,
+    /// Its files: (name, download address); Update now takes this copy's from them.
+    pub assets: Vec<(String, String)>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -107,7 +142,9 @@ async fn latest() -> Result<Found, String> {
         .build()
         .map_err(|e| e.to_string())?;
     let resp = client
-        .get(LATEST)
+        // MDM_UPDATE_FEED: another address for the latest release (tests of Update now, as
+        // MDM_DATA_DIR is for a separate list).
+        .get(std::env::var("MDM_UPDATE_FEED").unwrap_or_else(|_| LATEST.to_owned()))
         .header("Accept", "application/vnd.github+json")
         .send()
         .await
@@ -143,6 +180,19 @@ fn parse_release(json: &str, current: &str) -> Result<Found, String> {
         date: s("published_at").chars().take(10).collect(),
         notes: s("body"),
         page: s("html_url"),
+        assets: v["assets"]
+            .as_array()
+            .map(|a| {
+                a.iter()
+                    .filter_map(|x| {
+                        Some((
+                            x["name"].as_str()?.to_owned(),
+                            x["browser_download_url"].as_str()?.to_owned(),
+                        ))
+                    })
+                    .collect()
+            })
+            .unwrap_or_default(),
     }))
 }
 
@@ -169,6 +219,17 @@ pub fn newer(a: &str, b: &str) -> bool {
 pub struct Updates {
     slot: Option<Slot>,
     result: Option<Result<Found, String>>,
+    /// Update now: the release file on its way (crate::update).
+    job: Option<crate::update::Job>,
+    /// What Update now came to, when it didn't close MDM.
+    status: Option<UpdateStatus>,
+}
+
+#[derive(Clone, Debug)]
+enum UpdateStatus {
+    Failed(String),
+    /// A .deb or .rpm, opened in the system's package installer.
+    Opened,
 }
 
 impl Updates {
@@ -176,6 +237,8 @@ impl Updates {
         Updates {
             slot: Some(check(rt, ctx)),
             result: None,
+            job: None,
+            status: None,
         }
     }
 
@@ -184,14 +247,35 @@ impl Updates {
         Updates {
             slot: None,
             result: Some(Ok(Found::Newer(release))),
+            job: None,
+            status: None,
         }
     }
 
-    /// `weekly`: the once-a-week check (its switch is here, under the answer).
-    pub fn show(&mut self, ctx: &egui::Context, weekly: &mut bool) -> Outcome<()> {
+    /// `weekly`: the once-a-week check (its switch is here, under the answer). `Done(true)`:
+    /// the update is going in place, MDM closes for it (and starts again).
+    pub fn show(
+        &mut self,
+        ctx: &egui::Context,
+        rt: &tokio::runtime::Handle,
+        weekly: &mut bool,
+    ) -> Outcome<bool> {
         if let Some(r) = self.slot.as_ref().and_then(|s| s.lock().unwrap().take()) {
             self.result = Some(r);
             self.slot = None;
+        }
+        let install = mdm_tools::update::Install::detect();
+        // The release file arrived (checked): put it in place.
+        if let Some(res) = self.job.as_ref().and_then(crate::update::Job::result) {
+            self.job = None;
+            match res.and_then(|file| crate::update::apply(install, &file)) {
+                Ok(crate::update::Next::Restart) => return Outcome::Done(true),
+                Ok(crate::update::Next::Opened) => self.status = Some(UpdateStatus::Opened),
+                Err(e) => self.status = Some(UpdateStatus::Failed(e)),
+            }
+        }
+        if self.job.is_some() {
+            ctx.request_repaint_after(std::time::Duration::from_millis(100));
         }
         let result = self.result.clone();
         // Compact unless there are release notes to show (then a window of its own size).
@@ -276,46 +360,110 @@ impl Updates {
                             Stroke::new(1.0, BOX_EDGE()),
                             egui::StrokeKind::Inside,
                         );
-                        let text = plain_notes(&rel.notes);
-                        let painter = p.with_clip_rect(winui::rect(notes.shrink(2.0)));
-                        winui::paragraph(
-                            &painter,
-                            notes.left() + 6.0,
-                            notes.top() + 16.0,
-                            &text,
+                        // Release notes run longer than the box: it scrolls (issue #5).
+                        winui::scroll_text(
+                            ui,
+                            egui::Id::unique("update-notes"),
+                            notes,
+                            &plain_notes(&rel.notes),
                             ink,
-                            notes.right() - 6.0,
                             13.0,
+                            true,
                         );
-                        download = Some(rel.page.clone());
+                        download = Some(rel.clone());
                     }
                 }
-                winui::checkbox(
-                    ui,
-                    o + vec2(11.0, bottom + 4.0),
-                    weekly,
-                    "Check for updates once a week",
-                    true,
-                );
+                // Under the answer: how Update now is going, else the weekly switch.
+                let status_rc = r(o, 11.0, bottom, 255.0, 21.0);
+                if let Some(job) = &self.job {
+                    let fraction = job.progress.fraction();
+                    let line = crate::i18n::fmt(
+                        // i18n: Check for updates, while Update now downloads; {percent} like "42%"
+                        crate::i18n::t("Downloading the update... {percent}"),
+                        &[(
+                            "percent",
+                            &fraction.map_or(String::new(), |f| format!("{:.0}%", f * 100.0)),
+                        )],
+                    );
+                    winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);
+                    winui::progress_bar(
+                        &p,
+                        egui::Rect::from_min_size(
+                            pos2(status_rc.left(), status_rc.top() + 15.0),
+                            vec2(status_rc.width(), 4.0),
+                        ),
+                        fraction,
+                        ui.input(|i| i.time),
+                    );
+                } else if let Some(status) = &self.status {
+                    let line = match status {
+                        UpdateStatus::Failed(e) => crate::i18n::fmt(
+                            crate::i18n::t("The update couldn't be installed: {error}"),
+                            &[("error", e)],
+                        ),
+                        UpdateStatus::Opened => {
+                            crate::i18n::t("The update is open in your system's package installer.")
+                                .to_owned()
+                        }
+                    };
+                    let (rect, cut) = winui::text_fit(
+                        &p,
+                        status_rc.left(),
+                        status_rc.top() + 14.0,
+                        &line,
+                        ink,
+                        status_rc.right(),
+                    );
+                    if cut {
+                        winui::full_on_hover(ui, rect, "update-status", &line);
+                    }
+                } else {
+                    winui::checkbox(
+                        ui,
+                        o + vec2(11.0, bottom + 4.0),
+                        weekly,
+                        "Check for updates once a week",
+                        true,
+                    );
+                }
                 let close_label = if download.is_some() {
                     // i18n: button: not now (download the update later)
                     crate::i18n::mark("Later")
                 } else {
                     crate::i18n::mark("OK")
                 };
-                if let Some(page) = &download {
-                    let get = winui::button(
-                        ui,
-                        r(o, 274.0, bottom, 73.0, 21.0),
-                        "Download",
-                        ButtonKind::Default,
-                        false,
-                        None,
-                    )
-                    .clicked();
-                    if get {
-                        let _ = open::that_detached(page);
-                        return Outcome::Done(());
+                // Enter presses the default button, as in the other dialogs.
+                let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
+                if let Some(rel) = &download {
+                    // Update now when this copy's file is in the signed release (and it
+                    // hasn't just failed); else Download opens the release's page.
+                    let asset = crate::update::asset_for(install, &rel.version, &rel.assets)
+                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))));
+                    let at = r(o, 274.0, bottom, 73.0, 21.0);
+                    if let Some(asset) = asset {
+                        let idle = self.job.is_none();
+                        let kind = if idle {
+                            ButtonKind::Default
+                        } else {
+                            ButtonKind::Disabled
+                        };
+                        // i18n: button: download and install the new version, then restart
+                        let update = winui::button(ui, at, "Update now", kind, false, None);
+                        if update.clicked() || (enter && idle) {
+                            self.status = None;
+                            self.job = Some(crate::update::Job::start(
+                                rt,
+                                ui.ctx(),
+                                rel.assets.clone(),
+                                asset,
+                            ));
+                        }
+                    } else if winui::button(ui, at, "Download", ButtonKind::Default, false, None)
+                        .clicked()
+                        || enter
+                    {
+                        let _ = open::that_detached(&rel.page);
+                        return Outcome::Done(false);
                     }
                 }
                 let kind = if download.is_some() {
@@ -332,7 +480,10 @@ impl Updates {
                     None,
                 )
                 .clicked();
-                if close || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if close
+                    || ui.input(|i| i.key_pressed(egui::Key::Escape))
+                    || (enter && download.is_none())
+                {
                     Outcome::Closed
                 } else {
                     Outcome::Open
@@ -342,19 +493,56 @@ impl Updates {
     }
 }
 
-/// Release notes (Markdown) as plain lines: headings, bullets and emphasis marks dropped.
+/// Release notes (Markdown) as plain lines: headings, bullets, emphasis marks and link
+/// addresses dropped (a link keeps its text). A paragraph or bullet wrapped over several lines
+/// in the Markdown is one line again (the box wraps it to its own width).
 fn plain_notes(md: &str) -> String {
-    md.lines()
-        .map(|l| {
-            let l = l.trim_end().trim_start_matches('#').trim_start();
-            let l = l
-                .strip_prefix("- ")
-                .or_else(|| l.strip_prefix("* "))
-                .map_or(l.to_owned(), |b| format!("• {b}"));
-            l.replace("**", "").replace('`', "")
-        })
-        .collect::<Vec<_>>()
-        .join("\n")
+    let mut out: Vec<String> = Vec::new();
+    let mut joinable = false;
+    for raw in md.lines() {
+        let l = raw.trim();
+        if l.is_empty() {
+            out.push(String::new());
+            joinable = false;
+            continue;
+        }
+        let heading = l.starts_with('#');
+        let bullet = l.strip_prefix("- ").or_else(|| l.strip_prefix("* "));
+        let text = link_texts(l.trim_start_matches('#').trim_start())
+            .replace("**", "")
+            .replace('`', "");
+        match (bullet, out.last_mut()) {
+            (None, Some(last)) if joinable && !heading => {
+                last.push(' ');
+                last.push_str(&text);
+            }
+            (Some(b), _) => {
+                let b = link_texts(b).replace("**", "").replace('`', "");
+                out.push(format!("• {b}"));
+            }
+            _ => out.push(text),
+        }
+        joinable = !heading;
+    }
+    out.join("\n")
+}
+
+/// `[text](address)` becomes `text`.
+fn link_texts(line: &str) -> String {
+    let mut out = String::new();
+    let mut rest = line;
+    while let Some(open) = rest.find('[') {
+        let after = &rest[open + 1..];
+        let Some(close) = after.find("](") else { break };
+        let Some(end) = after[close + 2..].find(')') else {
+            break;
+        };
+        out.push_str(&rest[..open]);
+        out.push_str(&after[..close]);
+        rest = &after[close + 2 + end + 1..];
+    }
+    out.push_str(rest);
+    out
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -691,7 +879,8 @@ mod tests {
     #[test]
     fn a_release_is_read_from_github() {
         let json = r###"{"tag_name":"v0.2.0","published_at":"2026-11-05T10:00:00Z",
-            "html_url":"https://github.com/x/y/releases/tag/v0.2.0","body":"## New\n- Faster"}"###;
+            "html_url":"https://github.com/x/y/releases/tag/v0.2.0","body":"## New\n- Faster",
+            "assets":[{"name":"SHA256SUMS.txt","browser_download_url":"https://x/SHA256SUMS.txt"}]}"###;
         assert_eq!(
             parse_release(json, "0.1.0").unwrap(),
             Found::Newer(Release {
@@ -699,6 +888,7 @@ mod tests {
                 date: "2026-11-05".into(),
                 notes: "## New\n- Faster".into(),
                 page: "https://github.com/x/y/releases/tag/v0.2.0".into(),
+                assets: vec![("SHA256SUMS.txt".into(), "https://x/SHA256SUMS.txt".into())],
             })
         );
         assert_eq!(parse_release(json, "0.2.0").unwrap(), Found::Latest);
@@ -711,5 +901,44 @@ mod tests {
             plain_notes("## New\n- **Faster** `x`\n* b"),
             "New\n• Faster x\n• b"
         );
+        assert_eq!(
+            plain_notes("Tell us in an [issue](https://x/issues), or [the guide](docs/a.md#b)."),
+            "Tell us in an issue, or the guide."
+        );
+        assert_eq!(plain_notes("[not a link] and [x]"), "[not a link] and [x]");
+        // Hard-wrapped Markdown: one line per paragraph and per bullet.
+        assert_eq!(
+            plain_notes("Fixes for\nthe Mac.\n\n### Fixed\n\n- **Menus** did\n  nothing.\n- Paste"),
+            "Fixes for the Mac.\n\nFixed\n\n• Menus did nothing.\n• Paste"
+        );
+    }
+
+    #[test]
+    fn the_report_fills_fields_the_bug_form_has() {
+        let form = include_str!("../../../.github/ISSUE_TEMPLATE/bug.yml").replace("\r\n", "\n");
+        let has = |line: String| form.contains(&format!("{line}\n"));
+        let fields = report_fields();
+        for (id, value) in &fields {
+            assert!(has(format!("id: {id}")), "no field {id} in bug.yml");
+            // A dropdown takes one of its options' text.
+            if matches!(*id, "os" | "install") {
+                assert!(has(format!("- {value}")), "{id}: {value:?} isn't an option");
+            }
+        }
+        assert!(fields.iter().any(|(id, _)| *id == "install"));
+        // Every value Install::label() and report_fields() can give, on any system.
+        for install in mdm_tools::update::Install::ALL {
+            assert!(has(format!("- {}", install.label())), "{}", install.label());
+        }
+        for option in [
+            "Windows 11",
+            "Windows 10",
+            "macOS (Apple Silicon)",
+            "macOS (Intel)",
+            "Linux",
+            "Other",
+        ] {
+            assert!(has(format!("- {option}")), "{option}");
+        }
     }
 }

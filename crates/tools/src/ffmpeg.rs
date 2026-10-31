@@ -4,11 +4,9 @@
 //! asset, its `bin/` unpacked into `tools/ffmpeg/<version>/`, switched to atomically, the previous
 //! version kept.
 
-use std::io::Write;
 use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
-use sha2::{Digest, Sha256};
 
 use crate::{Error, Installed, make_current, mark_downloaded, newer, sum_for};
 
@@ -137,20 +135,9 @@ pub async fn install_latest(dir: &Path) -> Result<Installed, Error> {
     let root = dir.join("ffmpeg");
     std::fs::create_dir_all(&root)?;
     let zip_path = root.join(format!("{version}.zip.part"));
-    let mut file = std::fs::File::create(&zip_path)?;
-    let mut hash = Sha256::new();
-    let mut resp = client
-        .get(&asset.browser_download_url)
-        .send()
-        .await?
-        .error_for_status()?;
-    while let Some(chunk) = resp.chunk().await? {
-        hash.update(&chunk);
-        file.write_all(&chunk)?;
-    }
-    file.flush()?;
-    drop(file);
-    if hash.finalize().as_slice() != expected {
+    let hash =
+        crate::download_hashed(&client, &asset.browser_download_url, &zip_path, None).await?;
+    if hash != expected {
         let _ = std::fs::remove_file(&zip_path);
         return Err(Error::BadChecksum);
     }
@@ -231,6 +218,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let zip_path = dir.path().join("b.zip");
         {
+            use std::io::Write;
             let mut w = zip::ZipWriter::new(std::fs::File::create(&zip_path).unwrap());
             let opts = zip::write::SimpleFileOptions::default();
             for (name, data) in [

@@ -443,37 +443,37 @@ fn entry_label<C>(e: &MenuEntry<C>) -> Option<(&'static str, bool)> {
     }
 }
 
+/// The keys an open menu takes from `i` (without Ctrl or Command: those are shortcuts).
+fn menu_keys(i: &egui::InputState) -> Vec<egui::Key> {
+    i.events
+        .iter()
+        .filter_map(|e| match e {
+            egui::Event::Key {
+                key,
+                pressed: true,
+                modifiers,
+                ..
+            } if !modifiers.command && !modifiers.ctrl => Some(*key),
+            _ => None,
+        })
+        .collect()
+}
+
 /// Keys for an open menu (pressed in the main window or in the menu's own windows): Up and Down
 /// move the highlight, Right opens a submenu or the next menu, Left closes a submenu or opens
 /// the previous menu, Enter or an item's underlined letter runs it, Escape closes a submenu.
 fn keyboard<C: Clone>(
     ctx: &egui::Context,
-    id: &str,
     entries: &[MenuEntry<C>],
     sub_key: egui::Id,
 ) -> Option<PopupResult<C>> {
     let kb_key = sub_key.with("kb");
-    let mut keys: Vec<egui::Key> = Vec::new();
-    let mut grab = |i: &egui::InputState| {
-        for e in &i.events {
-            if let egui::Event::Key {
-                key,
-                pressed: true,
-                modifiers,
-                ..
-            } = e
-                && !modifiers.command
-                && !modifiers.ctrl
-            {
-                keys.push(*key);
-            }
-        }
-    };
-    ctx.input(&mut grab);
-    for depth in 0..2 {
-        let vid = egui::ViewportId::from_hash_of(("menu", id, depth));
-        ctx.input_for(vid, &mut grab);
-    }
+    let mut keys = ctx.input(menu_keys);
+    // Pressed in the menu's own windows: popup_level noted them as those windows drew.
+    keys.extend(
+        ctx.data_mut(|d| d.remove_temp::<Vec<egui::Key>>(sub_key.with("window-keys")))
+            .unwrap_or_default(),
+    );
     let (mut hl0, mut hl1): (Option<usize>, Option<usize>) =
         ctx.data(|d| d.get_temp(kb_key)).unwrap_or_default();
     if hl0 == Some(usize::MAX) {
@@ -591,7 +591,7 @@ pub fn popup<C: Clone>(
     hint: &dyn Fn(&C) -> Option<&'static str>,
 ) -> PopupResult<C> {
     let sub_key = egui::Id::unique(("popup-sub", id));
-    if let Some(r) = keyboard(ctx, id, entries, sub_key) {
+    if let Some(r) = keyboard(ctx, entries, sub_key) {
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
@@ -602,6 +602,9 @@ pub fn popup<C: Clone>(
         .input(|i| i.viewport().inner_rect)
         .map_or(Pos2::ZERO, |r| r.min);
     let mut result = None;
+    // Set by the menu's windows as they draw (popup_level) when one of them has the focus.
+    let window_focus = sub_key.with("window-focus");
+    ctx.data_mut(|d| d.insert_temp(window_focus, false));
     popup_level(
         ctx,
         id,
@@ -628,10 +631,7 @@ pub fn popup<C: Clone>(
     // Focus in the menu's own windows is still ours: on macOS and Linux a click in a menu window
     // gives that window the focus, and must not count as clicking away.
     let focused = ctx.input(|i| i.viewport().focused) == Some(true)
-        || (0..2).any(|depth| {
-            let vid = egui::ViewportId::from_hash_of(("menu", id, depth));
-            ctx.input_for(vid, |i| i.viewport().focused) == Some(true)
-        });
+        || ctx.data(|d| d.get_temp::<bool>(window_focus).unwrap_or(false));
     // (first pass, last pass, focused since): focus is only *lost* if it was had.
     let (first, lost_focus) = ctx.data_mut(|d| {
         let (first, last, had) = d
@@ -786,7 +786,26 @@ fn popup_level<C: Clone>(
     // (index, slot top) of the submenu to show beside this menu.
     let mut sub_at: Option<(usize, f32)> = None;
     let vid = egui::ViewportId::from_hash_of(("menu", id, depth));
+    let parent_vid = ctx.viewport_id();
     ctx.show_viewport_immediate(vid, builder, |ui, _| {
+        // What happens in this window, for popup() and keyboard(), which run in the parent's
+        // pass: they must not ask egui about a menu window by its id, which creates one when it
+        // isn't open (a submenu, mostly): an untitled copy of the main window, opened and closed
+        // every frame (issues #4 and #5: fading windows; on a full-screen Mac, a new space).
+        let (focused, keys) = ui.input(|i| (i.viewport().focused == Some(true), menu_keys(i)));
+        ui.ctx().data_mut(|d| {
+            if focused {
+                d.insert_temp(sub_key.with("window-focus"), true);
+            }
+            if !keys.is_empty() {
+                d.get_temp_mut_or_default::<Vec<egui::Key>>(sub_key.with("window-keys"))
+                    .extend(keys.iter().copied());
+            }
+        });
+        if !keys.is_empty() {
+            // keyboard() takes them on the parent's next pass.
+            ui.ctx().request_repaint_of(parent_vid);
+        }
         let w = size.x;
         let painter = ui.painter().clone();
         let o = ui.max_rect().min;
@@ -1318,8 +1337,8 @@ pub fn categories(
         vec2(16.0, 15.0),
     ));
     let cr = ui.interact(close, egui::Id::unique("cat-close"), Sense::click());
-    if cr.hovered() {
-        p.rect_filled(close, 2.0, grey(0x50));
+    if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::dark()) {
+        p.rect_filled(close, 2.0, c);
     }
     text_font(
         &p,

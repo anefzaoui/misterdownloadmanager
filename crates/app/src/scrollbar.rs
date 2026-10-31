@@ -6,6 +6,15 @@ use egui::{Color32, Pos2, Rect, Sense, Ui, pos2};
 
 use crate::winui::{fill, px};
 
+/// A part of the bar, for the one held down.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Part {
+    First,
+    Second,
+    Thumb,
+    Track,
+}
+
 /// Bar thickness and arrow-zone length (SM_CXVSCROLL at 96 DPI).
 pub const THICK: f32 = 17.0;
 use crate::theme::themed;
@@ -16,6 +25,9 @@ themed! {
     TRACK = Color32::from_gray(0x17), Color32::from_gray(0xf0);
     pub CORNER = Color32::from_gray(0x38), Color32::from_gray(0xf0);
     INK_C = Color32::from_gray(0x95), Color32::from_gray(0x85);
+    /// A pressed arrow or thumb (a dragged thumb too): brighter on the dark track, darker on
+    /// the light one, as Windows 11's bars answer a press.
+    INK_PRESSED = Color32::from_gray(0xc8), Color32::from_gray(0x5c);
 }
 
 /// Measured glyphs over the #17 track, columns = across the bar from v 5 (up/down) or rows =
@@ -154,8 +166,29 @@ pub fn bar(
     let span = |a: Pos2, b: Pos2, c: Color32| fill(&p, a.x.min(b.x), a.y, a.x.max(b.x), b.y, c);
     // Measured greys over the dark track (#17 → ink #95) become coverage, so the same grids
     // draw in both modes.
-    let ink = INK_C();
-    let dot = |u: f32, v: f32, g: u8| {
+    // The part held down: the first arrow, the second, or the thumb (also while dragged).
+    let held = (resp.is_pointer_button_down_on() || resp.dragged())
+        .then(|| resp.interact_pointer_pos().map(along))
+        .flatten()
+        .map(|u| {
+            if resp.dragged() || (u >= s && u <= e && u >= THICK && u < len - THICK) {
+                Part::Thumb
+            } else if u < THICK {
+                Part::First
+            } else if u >= len - THICK {
+                Part::Second
+            } else {
+                Part::Track
+            }
+        });
+    let ink_of = |part: Part| {
+        if held == Some(part) {
+            INK_PRESSED()
+        } else {
+            INK_C()
+        }
+    };
+    let dot = |u: f32, v: f32, g: u8, ink: Color32| {
         if g != 0x17 {
             let a = ((g as f32 - 23.0) / (149.0 - 23.0)).clamp(0.0, 1.0);
             let q = at(u, v);
@@ -166,10 +199,11 @@ pub fn bar(
     if thumb > 0.0 {
         if expanded {
             // 6 px thumb at v 6..11 with rounded caps.
+            let ink = ink_of(Part::Thumb);
             for (i, row) in CAP.iter().enumerate() {
                 for (j, g) in row.iter().enumerate() {
-                    dot(s + i as f32, 6.0 + j as f32, *g);
-                    dot(e - i as f32, 6.0 + j as f32, *g);
+                    dot(s + i as f32, 6.0 + j as f32, *g, ink);
+                    dot(e - i as f32, 6.0 + j as f32, *g, ink);
                 }
             }
             span(at(s + 4.0, 6.0), at(e - 4.0, 11.0), ink);
@@ -177,16 +211,22 @@ pub fn bar(
             let first = if vertical { 6.0 } else { 5.0 };
             for (i, row) in UP.iter().enumerate() {
                 for (j, g) in row.iter().enumerate() {
-                    dot(first + i as f32, 5.0 + j as f32, *g);
-                    dot(len - 6.0 - i as f32, 5.0 + j as f32, *g);
+                    dot(first + i as f32, 5.0 + j as f32, *g, ink_of(Part::First));
+                    dot(
+                        len - 6.0 - i as f32,
+                        5.0 + j as f32,
+                        *g,
+                        ink_of(Part::Second),
+                    );
                 }
             }
         } else {
             // 2 px line at v 8..9, one #85 pixel at each end.
+            let ink = INK_C();
             span(at(s, 8.0), at(e, 9.0), ink);
             for v in [8.0, 9.0] {
-                dot(s, v, 0x85);
-                dot(e, v, 0x85);
+                dot(s, v, 0x85, ink);
+                dot(e, v, 0x85, ink);
             }
         }
     }

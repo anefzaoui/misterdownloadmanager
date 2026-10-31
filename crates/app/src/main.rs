@@ -34,6 +34,7 @@ mod transfer;
 mod tray;
 #[cfg(unix)]
 mod unix;
+mod update;
 mod videodlg;
 #[cfg(windows)]
 mod win32;
@@ -94,19 +95,30 @@ fn main() -> eframe::Result {
     // IDM-style command line; hand it to a running instance if there is one.
     let args: Vec<String> = std::env::args().skip(1).collect();
     let cmd = mdm_ipc::parse_args(&args);
-    if mdm_ipc::send(&cmd.clone().unwrap_or_default()).is_ok()
-        || cmd.as_ref().is_some_and(|c| c.exit)
+    // Started by an update (update.rs): the old copy may still be closing; this one waits for
+    // it rather than handing it anything.
+    let after_update = args.iter().any(|a| a.eq_ignore_ascii_case(update::UPDATED));
+    if !after_update
+        && (mdm_ipc::send(&cmd.clone().unwrap_or_default()).is_ok()
+            || cmd.as_ref().is_some_and(|c| c.exit))
     {
         return Ok(());
     }
     // No instance answered. Only one launch may become the instance (two started together
     // would both get here); the other forwards its command once the winner listens.
-    let Some(_instance) = mdm_ipc::instance_lock() else {
+    let lock = if after_update {
+        update::lock_after_update()
+    } else {
+        mdm_ipc::instance_lock()
+    };
+    let Some(_instance) = lock else {
         let _ = mdm_ipc::send_waiting(&cmd.unwrap_or_default(), std::time::Duration::from_secs(10));
         return Ok(());
     };
     #[cfg(windows)]
     win32::mark_running();
+    // What an earlier update set aside (old programs, a Mac's old app, downloaded files).
+    update::tidy();
 
     // Downloads run on a Tokio runtime; the UI thread only reads snapshots.
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
