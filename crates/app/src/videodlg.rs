@@ -426,6 +426,13 @@ impl VideoDialog {
                 winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
             },
         );
+        if ev.focused
+            && self.rows.type_to(ui, "video-choices", choices.len(), |i| {
+                choices[i].label.clone()
+            })
+        {
+            picked = self.rows.selected;
+        }
         if let Some(i) = ev.picked {
             picked = Some(i);
         }

@@ -677,6 +677,12 @@ impl TorrentDialog {
         if let Some(k) = ev.space {
             toggle = Some(rows[k]);
         }
+        if ev.focused {
+            let tree = &self.tree;
+            self.rows.type_to(ui, "torrent-tree", rows.len(), |k| {
+                tree[rows[k]].name.clone()
+            });
+        }
         // Right opens the selected folder, Left closes it.
         if ev.focused
             && let Some(k) = self.rows.selected.filter(|k| *k < rows.len() && is_dir(*k))

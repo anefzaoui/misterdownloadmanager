@@ -536,6 +536,20 @@ impl Scheduler {
                 );
             },
         );
+        let queues = &self.queues;
+        if ev.focused
+            && self.tree_rows.type_to(ui, "sched-tree", n, |i| {
+                queues
+                    .get(i)
+                    .map_or(crate::i18n::t(LIMITS_LABEL).to_owned(), |q| {
+                        crate::i18n::t(&q.name).to_owned()
+                    })
+            })
+            && let Some(i) = self.tree_rows.selected
+        {
+            self.selected = i;
+            self.files_rows = Default::default();
+        }
         if let Some(i) = ev.picked {
             self.selected = i;
             self.files_rows = Default::default();
@@ -919,6 +933,10 @@ impl Scheduler {
         );
         // Delete on a file: Remove from the queue.
         let delete_key = ev.delete.is_some();
+        if ev.focused {
+            self.files_rows
+                .type_to(ui, "sched-files", rows.len(), |i| rows[i].file_name.clone());
+        }
 
         // Move down, move up, remove from the queue.
         let sel = self.files_rows.selected;

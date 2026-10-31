@@ -228,6 +228,10 @@ impl ImportDialog {
                 if let Some(i) = ev.space.or(ev.double_clicked) {
                     found[i].1 = !found[i].1;
                 }
+                if ev.focused {
+                    self.rows
+                        .type_to(ui, "import-list", found.len(), |i| found[i].0.url.clone());
+                }
                 let ticked = self.found.iter().filter(|(_, on)| *on).count();
                 let count = crate::i18n::fmt(
                     crate::i18n::t("{n} of {total} selected"),

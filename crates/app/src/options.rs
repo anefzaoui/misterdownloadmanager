@@ -287,6 +287,10 @@ impl OptionsDialog {
         if let Some(i) = ev.space {
             browsers[i].1 = !browsers[i].1;
         }
+        if ev.focused {
+            self.browser_rows
+                .type_to(ui, "browsers", browsers.len(), |i| browsers[i].0.clone());
+        }
         // Adding browsers, keys, and the browser menu / panel editors are the extension's
         // settings (M8): shown as IDM has them, not yet available.
         let off = |ui: &mut Ui, rc: Rect, label: &str| {
@@ -1395,6 +1399,12 @@ impl OptionsDialog {
         if let Some(i) = ev.space {
             sounds[i].0 = !sounds[i].0;
         }
+        if ev.focused {
+            self.sound_rows
+                .type_to(ui, "sounds", SOUND_EVENTS.len(), |i| {
+                    crate::i18n::t(SOUND_EVENTS[i]).to_owned()
+                });
+        }
         if let Some(i) = ev.delete {
             sounds[i] = (false, String::new());
         }
@@ -2073,6 +2083,11 @@ fn report(
             }
         },
     );
+    if ev.focused {
+        st.type_to(ui, id, rows.len(), |i| {
+            rows[i].first().cloned().unwrap_or_default()
+        });
+    }
     // A double-click or Enter edits (Enter taken: not the dialog's OK too); Delete removes.
     if ev.entered.is_some() {
         winui::take_key(ui, egui::Key::Enter);

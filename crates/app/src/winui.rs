@@ -1000,11 +1000,33 @@ pub fn full_on_hover(
 pub struct RowList {
     pub first: usize,
     pub selected: Option<usize>,
+    /// The selection was set from outside (typing, the caller): scrolled into view next draw.
+    pending: bool,
     /// Wheel travel not yet a whole row.
     wheel: f32,
 }
 
 impl RowList {
+    /// Typing selects the row whose `label` starts with what was typed ([`typed_match`]);
+    /// call after [`row_list`] while it has the keys (`RowEvents::focused`).
+    pub fn type_to(
+        &mut self,
+        ui: &Ui,
+        list: &str,
+        n: usize,
+        label: impl Fn(usize) -> String,
+    ) -> bool {
+        let key = widget_id(ui, ("row-list-typed", list));
+        match typed_match(ui, key, n, self.selected, label) {
+            Some(i) => {
+                self.selected = Some(i);
+                self.pending = true;
+                true
+            }
+            None => false,
+        }
+    }
+
     /// Scroll so row `i` shows (whole), `page` rows being visible.
     pub fn show_row(&mut self, i: usize, page: usize) {
         if i < self.first {
@@ -1113,6 +1135,11 @@ pub fn row_list(
                 ev.delete = Some(s);
             }
         }
+    }
+    if std::mem::take(&mut st.pending)
+        && let Some(s) = st.selected
+    {
+        st.show_row(s, page);
     }
     st.first = st.first.min(max_first);
     ev.focused = focused;
@@ -1631,6 +1658,7 @@ pub fn readonly_field(
     };
     text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
     let resp = ui.interact(rc, widget_id(ui, ("readonly", id)), Sense::click());
+    focus_on_press(&resp);
     expose(&resp, egui::Role::TextInput, value, true, None);
     show_focus(ui, &resp, rc.shrink(2.0));
     copy_menu(&resp, value);
@@ -2161,6 +2189,7 @@ pub fn checkbox_until(
         sense,
     );
     let resp = enter_is_not_a_click(ui, resp);
+    focus_on_press(&resp);
     show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
@@ -2526,6 +2555,7 @@ fn button_face(
         enabled,
         None,
     );
+    focus_on_press(&resp);
     // A focused button answers Enter itself (egui clicks it): the dialog's default button,
     // read after it, doesn't run as well.
     if resp.has_focus() {
@@ -2832,6 +2862,7 @@ pub fn checkbox_light_until(
         sense,
     );
     let resp = enter_is_not_a_click(ui, resp);
+    focus_on_press(&resp);
     show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
@@ -3015,6 +3046,7 @@ pub fn radio_light_until(
         sense,
     );
     let resp = enter_is_not_a_click(ui, resp);
+    focus_on_press(&resp);
     show_focus(ui, &resp, hit.expand(1.0));
     expose(
         &resp,
@@ -3128,6 +3160,15 @@ pub fn opener_click(ui: &Ui, mut resp: Response) -> Response {
     resp
 }
 
+/// A press gives a control the keys, as in Windows (egui focuses only text boxes on a click):
+/// the arrows work in a radio group clicked, Ctrl+C in a field clicked. Its ring shows only
+/// once the keyboard is used ([`keyboard_in_use`]).
+pub fn focus_on_press(resp: &Response) {
+    if resp.is_pointer_button_down_on() && !resp.has_focus() && resp.sense.senses_click() {
+        resp.request_focus();
+    }
+}
+
 /// egui clicks a focused control on Enter as on Space. A check box, radio button or tab answers
 /// Space only, as in Windows: Enter is the dialog's default button (it ticked the box and
 /// pressed OK). Links do open on Enter.
@@ -3155,6 +3196,56 @@ pub fn keep_keys(ui: &Ui, resp: &Response, horizontal: bool, vertical: bool, esc
             )
         });
     }
+}
+
+/// Type-ahead, as Windows lists and drop-downs have it: letters typed while it has the keys
+/// pick the next of its `n` items whose `label` starts with them (typed within a second of
+/// each other; one letter again and again goes through the items starting with it). `key`
+/// keeps what was typed. Returns the item to choose.
+pub fn typed_match(
+    ui: &Ui,
+    key: egui::Id,
+    n: usize,
+    current: Option<usize>,
+    label: impl Fn(usize) -> String,
+) -> Option<usize> {
+    let typed: String = ui.input(|i| {
+        if i.modifiers.ctrl || i.modifiers.alt || i.modifiers.command {
+            return String::new();
+        }
+        i.events
+            .iter()
+            .filter_map(|e| match e {
+                egui::Event::Text(t) => Some(t.as_str()),
+                _ => None,
+            })
+            .collect::<String>()
+    });
+    let typed: String = typed.chars().filter(|c| !c.is_control()).collect();
+    // Space alone is a key of its own (it ticks a row), not a name's first letter.
+    if typed.trim().is_empty() || n == 0 {
+        return None;
+    }
+    let now = ui.input(|i| i.time);
+    let (mut buf, at) = ui
+        .data(|d| d.get_temp::<(String, f64)>(key))
+        .unwrap_or_default();
+    if now - at > 1.0 {
+        buf.clear();
+    }
+    buf.push_str(&typed.to_lowercase());
+    ui.data_mut(|d| d.insert_temp(key, (buf.clone(), now)));
+    let first = buf.chars().next().unwrap_or_default();
+    let repeated = buf.chars().all(|c| c == first);
+    // The same letter again: the next item with it; else the first from here with the prefix.
+    let (needle, start) = if repeated {
+        (first.to_string(), current.map_or(0, |c| c + 1))
+    } else {
+        (buf, current.unwrap_or(0))
+    };
+    (0..n)
+        .map(|k| (start + k) % n)
+        .find(|&i| label(i).to_lowercase().starts_with(&needle))
 }
 
 /// A tab control's keys, as Windows has them: Ctrl+Tab / Ctrl+Page Down the next of its `n`
@@ -3355,6 +3446,7 @@ pub fn tabs_light(
         let id_of =
             |ui: &Ui, k: usize| widget_id(ui, ("tab-light", rc.min.x as i32, rc.min.y as i32, k));
         let resp = ui.interact(hit, id_of(ui, i), sense);
+        focus_on_press(&resp);
         expose(
             &resp,
             egui::Role::Tab,
@@ -3500,6 +3592,7 @@ pub fn combo_light(
     };
     let resp = ui.interact(rc, key.with("button"), sense);
     let resp = opener_click(ui, resp);
+    focus_on_press(&resp);
     keep_keys(ui, &resp, false, true, false);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
     let popup_id = format!("combo-light-{}", key.short_debug_format());
@@ -3532,8 +3625,12 @@ pub fn combo_light(
         } else {
             None
         };
+        // Typing picks the item starting with it (the arrows change the choice too).
+        let typed = typed_match(ui, key.with("typed"), items.len(), Some(selected), |i| {
+            crate::i18n::t(items[i]).to_owned()
+        });
         // Closed: the arrows change the choice itself.
-        if let Some(i) = to.filter(|i| *i != selected) {
+        if let Some(i) = to.or(typed).filter(|i| *i != selected) {
             chosen = Some(i);
         }
     }
