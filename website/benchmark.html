@@ -39,21 +39,51 @@
       </div>
     </section>
 
-    <section class="sec tight flush">
+    <section class="sec tight flush" aria-labelledby="race-title">
       <div class="wrap">
-        <div class="stats">
-          <article class="stat">
-            <p class="num"><span class="grad">5.4×</span><small>faster on 1 GiB</small></p>
-            <p>1.0 s against IDM 6.42's 5.5 s over a fast link.</p>
-          </article>
-          <article class="stat">
-            <p class="num"><span class="grad">106×</span><small>on a 256 KiB file</small></p>
-            <p>30 ms against 3.1 s, nearly all of it before IDM's first request.</p>
-          </article>
-          <article class="stat">
-            <p class="num"><span class="grad">2</span><small>connections, not 480</small></p>
-            <p>On a server that allows two, MDM keeps to two and still finishes first.</p>
-          </article>
+        <h2 id="race-title" class="sr-only">The race</h2>
+        <div class="race" data-race data-race-src>
+          <div class="race-head">
+            <div class="race-tabs" role="tablist" aria-label="Benchmark scenario"></div>
+            <button class="race-replay" type="button" data-race-replay aria-label="Replay" title="Replay"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button>
+          </div>
+          <div class="lane" data-lane="mdm">
+            <div class="lane-name"><img src="/assets/logo-64.png" width="22" height="22" alt=""><b>Mister Download Manager</b></div>
+            <div class="lane-bar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="lane-time"><span data-time>0.00 s</span><small data-state>Ready</small></div>
+          </div>
+          <div class="lane idm" data-lane="idm">
+            <div class="lane-name"><span class="lane-dot"></span><b>Internet Download Manager 6.42</b></div>
+            <div class="lane-bar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="lane-time"><span data-time>0.00 s</span><small data-state>Ready</small></div>
+          </div>
+          <div class="race-foot">
+            <p class="race-big"><span data-ratio>1.0×</span><small data-ratio-label>faster</small></p>
+            <p class="race-note" data-note>Played in real time from the medians.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="speedup" aria-labelledby="speedup-title">
+      <div class="wrap">
+        <div class="sec-center">
+          <h2 id="speedup-title">Faster in every scenario.</h2>
+          <p>How many times faster MDM finished, from command to finished file. The whisker is the 95% interval of the ratio; the scale is logarithmic.</p>
+        </div>
+        <div class="speedup" data-speedup></div>
+      </div>
+    </section>
+
+    <section class="sec" id="connections" aria-labelledby="conn-title">
+      <div class="wrap">
+        <div class="sec-center">
+          <h2 id="conn-title">480 connections against 2.</h2>
+          <p>A server that allows two connections at a time. Every square is one connection it saw in a typical run.</p>
+        </div>
+        <div class="conn-race" data-conns>
+          <div class="conn-col"><div class="conn-head"><img src="/assets/logo-64.png" width="22" height="22" alt=""><b>MDM</b><span data-conn-count="mdm">0</span></div><div class="conn-grid" data-conn-grid="mdm"></div><p>Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.</p></div>
+          <div class="conn-col idm"><div class="conn-head"><span class="lane-dot"></span><b>IDM 6.42</b><span data-conn-count="idm">0</span></div><div class="conn-grid" data-conn-grid="idm"></div><p>Retried about 250 times a second against the refusals. Finished in 15.9 s.</p></div>
         </div>
       </div>
     </section>
@@ -62,7 +92,7 @@
       <div class="wrap">
         <div class="sec-head">
           <h2 id="bench-title">Every run is a dot.</h2>
-          <p>Seven downloads, each run at least seven times by both apps.</p>
+          <p>Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.</p>
         </div>
         <div class="bench-switch" role="group" aria-label="What to compare">
           <button type="button" data-metric="transfer_ms" aria-pressed="true">Transfer: first request to last byte</button>
@@ -73,6 +103,7 @@
         <div class="bench-grid" data-bench-grid></div>
 
         <h3 class="bench-h">Where the time goes</h3>
+        <p class="fine">Median startup (command to first request), transfer and finish of each app, per scenario.</p>
         <div class="bench-wide" data-bench-phases></div>
 
         <h3 class="bench-h">What it costs the computer</h3>

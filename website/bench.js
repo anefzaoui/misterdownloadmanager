@@ -30,6 +30,25 @@
     if (v >= 1000) return (v / 1000).toFixed(2) + " s";
     return (v >= 100 ? v.toFixed(0) : v.toFixed(1)) + " ms";
   }
+  var FONT = "Inter, ui-sans-serif, system-ui, sans-serif";
+  var SHORT = { "fast-1g": "1 GiB", "capped-100m": "2 MB/s per connection", "latency-100m": "150 ms latency",
+                "slowconn-32m": "A crawling connection", "maxconns-50m": "2 connections allowed",
+                "drops-50m": "Cut connections", "small-256k": "A small file" };
+  function onView(node, fn, threshold) {
+    if (!("IntersectionObserver" in window)) return fn();
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { io.disconnect(); fn(); }
+    }, { threshold: threshold || 0.25 });
+    io.observe(node);
+  }
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Bars grow, dots fall in one after another.
+  function motion(extra) {
+    var o = { textStyle: { fontFamily: FONT }, animation: !still, animationDuration: 1100, animationEasing: "cubicOut",
+              animationDurationUpdate: 600, animationEasingUpdate: "cubicInOut" };
+    for (var k in extra) o[k] = extra[k];
+    return o;
+  }
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -91,11 +110,12 @@
 
       var clients = ["IDM", "MDM"];
       var stats = clients.map(function (c) { return sc.clients[c].stats[metric]; });
+      var far = clients.map(function (c) { return Math.max.apply(null, values(sc, c, metric).concat([0])); });
+      onView(box, function () {
       var chart = echarts.init(box, null, { renderer: "svg" });
       charts.push(chart);
-      chart.setOption({
-        animation: false,
-        grid: { left: 44, right: 64, top: 8, bottom: 26 },
+      chart.setOption(motion({
+        grid: { left: 44, right: 70, top: 8, bottom: 26 },
         xAxis: {
           type: "value",
           min: 0,
@@ -138,8 +158,8 @@
                     style: { fill: color, opacity: 0.22 } },
                   { type: "rect", shape: { x: xm - 1.5, y: y - h / 2 - 3, width: 3, height: h + 6 },
                     style: { fill: color } },
-                  { type: "text", x: Math.max(xm, x3) + 8, y: y,
-                    style: { text: fmtMs(s.median), fill: p.ink, font: "600 12px Cascadia Mono, Consolas, ui-monospace, monospace",
+                  { type: "text", x: Math.max(xm, x3, api.coord([far[i], i])[0]) + 10, y: y,
+                    style: { text: fmtMs(s.median), fill: p.ink, font: "600 12px " + FONT,
                              verticalAlign: "middle", backgroundColor: p.surface, padding: [1, 3], borderRadius: 3 },
                     z2: 10 },
                 ],
@@ -147,6 +167,7 @@
             },
             data: [[0], [1]],
             z: 1,
+            animationDelay: 500,
           },
           {
             type: "scatter",
@@ -157,8 +178,10 @@
               values(sc, "MDM", metric).map(function (v) { return { name: "MDM", value: [v, 1], itemStyle: { color: p.mdm } }; })
             ),
             itemStyle: { opacity: 0.85 },
+            animationDelay: function (i) { return i * 45; },
           },
         ],
+      }));
       });
     });
   }
@@ -171,31 +194,34 @@
     var parts = { startup_ms: [], transfer_ms: [], finish_ms: [] };
     data.scenarios.forEach(function (sc) {
       ["IDM", "MDM"].forEach(function (c) {
-        cats.push(c + " · " + sc.id);
+        cats.push((SHORT[sc.id] || sc.id) + " · " + c);
         Object.keys(parts).forEach(function (m) {
           var s = sc.clients[c].stats[m];
           parts[m].push(s ? Math.max(0, s.median) : 0);
         });
       });
     });
+    onView(box, function () {
     var chart = echarts.init(box, null, { renderer: "svg" });
     charts.push(chart);
     var names = { startup_ms: "Startup (command → first request)", transfer_ms: "Transfer (first request → last byte)",
                   finish_ms: "Finish (last byte → file ready)" };
     var colors = { startup_ms: p.startup, transfer_ms: p.transfer, finish_ms: p.finish };
-    chart.setOption({
-      animation: false,
+    chart.setOption(motion({
       legend: { top: 0, textStyle: { color: p.ink2 }, itemWidth: 12, itemHeight: 12 },
-      grid: { left: 150, right: 30, top: 40, bottom: 30 },
+      grid: { left: 190, right: 40, top: 44, bottom: 30 },
       tooltip: { trigger: "axis", axisPointer: { type: "shadow" },
                  valueFormatter: function (v) { return fmtMs(v); } },
       xAxis: { type: "log", logBase: 10, min: 1, axisLabel: { color: p.ink3, formatter: function (v) { return fmtMs(v); } },
-               splitLine: { lineStyle: { color: p.line } }, name: "ms, log scale", nameTextStyle: { color: p.ink3 } },
+               splitLine: { lineStyle: { color: p.line } } },
       yAxis: { type: "category", data: cats, inverse: true,
                axisLabel: { color: p.ink2, fontSize: 11 }, axisLine: { lineStyle: { color: p.line } }, axisTick: { show: false } },
       series: Object.keys(parts).map(function (m) {
-        return { name: names[m], type: "bar", stack: "t", data: parts[m], itemStyle: { color: colors[m] }, barWidth: 12 };
+        return { name: names[m], type: "bar", stack: "t", data: parts[m], barWidth: 12,
+                 itemStyle: { color: colors[m], borderRadius: m === "finish_ms" ? [0, 3, 3, 0] : 0 },
+                 animationDelay: function (i) { return i * 60 + (m === "transfer_ms" ? 250 : m === "finish_ms" ? 500 : 0); } };
       }),
+    }));
     });
   }
 
@@ -203,20 +229,21 @@
   function drawResources() {
     var box = root.querySelector("[data-bench-res]");
     var p = palette();
-    var ids = data.scenarios.map(function (s) { return s.id; });
+    var ids = data.scenarios.map(function (s) { return SHORT[s.id] || s.id; });
     var med = function (c, m) {
       return data.scenarios.map(function (s) { var st = s.clients[c].stats[m]; return st ? st.median : null; });
     };
+    onView(box, function () {
     var chart = echarts.init(box, null, { renderer: "svg" });
     charts.push(chart);
-    chart.setOption({
-      animation: false,
+    var first = function (i) { return i * 80; }, second = function (i) { return 600 + i * 80; };
+    chart.setOption(motion({
       legend: { top: 0, textStyle: { color: p.ink2 } },
       tooltip: { trigger: "axis" },
       grid: [{ left: 60, right: 20, top: 40, height: "32%" }, { left: 60, right: 20, top: "60%", height: "30%" }],
       xAxis: [
         { type: "category", data: ids, gridIndex: 0, axisLabel: { show: false }, axisLine: { lineStyle: { color: p.line } } },
-        { type: "category", data: ids, gridIndex: 1, axisLabel: { color: p.ink2, fontSize: 10, rotate: 20 },
+        { type: "category", data: ids, gridIndex: 1, axisLabel: { color: p.ink2, fontSize: 11, interval: 0, width: 120, overflow: "break" },
           axisLine: { lineStyle: { color: p.line } } },
       ],
       yAxis: [
@@ -226,11 +253,12 @@
           axisLabel: { color: p.ink3 }, splitLine: { lineStyle: { color: p.line } } },
       ],
       series: [
-        { name: "IDM", type: "bar", data: med("IDM", "cpu_ms"), itemStyle: { color: p.idm }, xAxisIndex: 0, yAxisIndex: 0 },
-        { name: "MDM", type: "bar", data: med("MDM", "cpu_ms"), itemStyle: { color: p.mdm }, xAxisIndex: 0, yAxisIndex: 0 },
-        { name: "IDM", type: "bar", data: med("IDM", "peak_ws_mb"), itemStyle: { color: p.idm }, xAxisIndex: 1, yAxisIndex: 1 },
-        { name: "MDM", type: "bar", data: med("MDM", "peak_ws_mb"), itemStyle: { color: p.mdm }, xAxisIndex: 1, yAxisIndex: 1 },
+        { name: "IDM", type: "bar", data: med("IDM", "cpu_ms"), itemStyle: { color: p.idm, borderRadius: [3, 3, 0, 0] }, xAxisIndex: 0, yAxisIndex: 0, animationDelay: first },
+        { name: "MDM", type: "bar", data: med("MDM", "cpu_ms"), itemStyle: { color: p.mdm, borderRadius: [3, 3, 0, 0] }, xAxisIndex: 0, yAxisIndex: 0, animationDelay: first },
+        { name: "IDM", type: "bar", data: med("IDM", "peak_ws_mb"), itemStyle: { color: p.idm, borderRadius: [3, 3, 0, 0] }, xAxisIndex: 1, yAxisIndex: 1, animationDelay: second },
+        { name: "MDM", type: "bar", data: med("MDM", "peak_ws_mb"), itemStyle: { color: p.mdm, borderRadius: [3, 3, 0, 0] }, xAxisIndex: 1, yAxisIndex: 1, animationDelay: second },
       ],
+    }));
     });
   }
 
@@ -282,9 +310,113 @@
     }
   }
 
+  function final(sc) { return sc.compare && !sc.provisional; }
+  var raceDone = false;
+  function drawRace() {
+    var box = document.querySelector("[data-race-src]");
+    if (!box || raceDone || !window.mdmRace) return;
+    raceDone = true;
+    var races = data.scenarios.filter(final).map(function (sc) {
+      var ph = function (c) {
+        var st = sc.clients[c].stats;
+        return ["startup_ms", "transfer_ms", "finish_ms"].map(function (m) { return Math.max(1, st[m] ? st[m].median : 0); });
+      };
+      var two = sc.id === "maxconns-50m";
+      return { tab: SHORT[sc.id] || sc.title, note: sc.title + ".", mdm: ph("MDM"), idm: ph("IDM"),
+               e2e: [sc.clients.MDM.stats.e2e_ms.median, sc.clients.IDM.stats.e2e_ms.median],
+               ratio: sc.compare.ratio_idm_over_mdm, conns: two ? [2, 2] : [8, 8] };
+    });
+    window.mdmRace(box, races);
+  }
+
+  // Speed-up per scenario: a bar from 1x on a log scale, its 95% interval, a counter.
+  function fmtRatio(v) { return (v >= 10 ? Math.round(v) : v.toFixed(v < 2 ? 2 : 1)) + "\u00d7"; }
+  function countUp(node, to, ms, delay) {
+    if (still) { node.textContent = fmtRatio(to); return; }
+    setTimeout(function () {
+      var t0 = performance.now();
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+        // Grows on the same log scale as the bar beside it.
+        node.textContent = fmtRatio(Math.exp(Math.log(to) * e));
+        if (k < 1) requestAnimationFrame(step);
+      })(t0);
+    }, delay);
+  }
+  function drawSpeedup() {
+    var box = document.querySelector("[data-speedup]");
+    if (!box || box.childNodes.length) return;
+    var top = 200, lg = function (v) { return Math.log(Math.max(1, v)) / Math.log(top); };
+    var rows = data.scenarios.filter(final)
+      .sort(function (a, b) { return b.compare.ratio_idm_over_mdm - a.compare.ratio_idm_over_mdm; });
+    var axis = el("div", "su-axis");
+    [1, 2, 5, 10, 20, 50, 100, 200].forEach(function (v) {
+      var t = el("span", null, v + "\u00d7"); t.style.left = (lg(v) * 100) + "%"; axis.appendChild(t);
+    });
+    box.appendChild(axis);
+    var nums = [];
+    rows.forEach(function (sc, i) {
+      var c = sc.compare, row = el("div", "su-row");
+      row.style.setProperty("--d", (i * 110) + "ms");
+      var name = el("div", "su-name");
+      name.appendChild(el("b", null, SHORT[sc.id] || sc.title));
+      name.appendChild(el("small", null, sc.title));
+      var track = el("div", "su-track");
+      var bar = el("i", "su-bar"); bar.style.setProperty("--w", (lg(c.ratio_idm_over_mdm) * 100) + "%");
+      var ci = el("i", "su-ci");
+      ci.style.left = (lg(c.ratio_ci95[0]) * 100) + "%";
+      ci.style.width = Math.max(0.4, (lg(c.ratio_ci95[1]) - lg(c.ratio_ci95[0])) * 100) + "%";
+      [2, 5, 10, 20, 50, 100].forEach(function (v) {
+        var t = el("i", "su-tick"); t.style.left = (lg(v) * 100) + "%"; track.appendChild(t);
+      });
+      track.appendChild(bar); track.appendChild(ci);
+      var val = el("div", "su-val"), num = el("b", null, "1.00\u00d7");
+      val.appendChild(num);
+      val.appendChild(el("small", null, "p " + (c.mann_whitney_p < 0.001 ? "< 0.001" : c.mann_whitney_p)));
+      row.appendChild(name); row.appendChild(track); row.appendChild(val);
+      box.appendChild(row);
+      nums.push([num, c.ratio_idm_over_mdm]);
+    });
+    onView(box, function () {
+      box.classList.add("in");
+      nums.forEach(function (n, i) { countUp(n[0], n[1], 1300, i * 110); });
+    }, 0.2);
+  }
+
+  // The server that allows two connections: one square per connection it saw (median run).
+  function drawConns() {
+    var box = document.querySelector("[data-conns]");
+    if (!box || box.getAttribute("data-done")) return;
+    var sc = data.scenarios.filter(function (s) { return s.id === "maxconns-50m"; })[0];
+    if (!sc) return;
+    box.setAttribute("data-done", "1");
+    var n = { mdm: Math.round(sc.clients.MDM.stats.connections.median), idm: Math.round(sc.clients.IDM.stats.connections.median) };
+    Object.keys(n).forEach(function (k) {
+      var grid = box.querySelector('[data-conn-grid="' + k + '"]');
+      for (var i = 0; i < n[k]; i++) { var q = el("i"); q.style.setProperty("--i", i); grid.appendChild(q); }
+    });
+    onView(box, function () {
+      box.classList.add("in");
+      Object.keys(n).forEach(function (k) {
+        var out = box.querySelector('[data-conn-count="' + k + '"]');
+        if (still) { out.textContent = n[k]; return; }
+        // Squares appear 6 ms apart (the CSS delay); the counter keeps pace with them.
+        var t0 = performance.now(), ms = Math.max(300, n[k] * 6);
+        (function step(now) {
+          var v = Math.min(n[k], Math.ceil((now - t0) / ms * n[k]));
+          out.textContent = v;
+          if (v < n[k]) requestAnimationFrame(step);
+        })(t0);
+      });
+    }, 0.3);
+  }
+
   function drawAll() {
     if (!data || !window.echarts) return;
     dispose();
+    drawRace();
+    drawSpeedup();
+    drawConns();
     drawStatus();
     drawScenarios();
     drawPhases();

@@ -37,41 +37,40 @@
       </div>
     </section>
 
-    <section class="download" style="padding-top:48px">
+    <section class="sec flush" style="padding-top:48px">
       <div class="wrap">
-        <div class="os-cards">
-          <article class="os-card" id="windows" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows" data-sub="Free · 64-bit · Windows 10 and 11">
-            <svg class="os-big" aria-hidden="true"><use href="#os-windows"/></svg>
-            <h2 class="h3like">Windows</h2>
-            <span class="tag stable">Windows 10 and 11 · 64-bit</span>
-            <ul class="files">
-              <li><a href="{{FILE_SETUP}}"><code>setup.exe</code></a> — recommended: installs MDM, connects your browser, asks your language</li>
-              <li><a href="{{FILE_PORTABLE}}"><code>portable.zip</code></a> — unzip anywhere, a USB stick too; everything stays in its folder</li>
-              <li><a href="{{FILE_ZIP}}"><code>x64.zip</code></a> — the programs without an installer</li>
-            </ul>
-            <a class="btn btn-primary" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
+        <div class="plans os-cards">
+          <article class="plan os-card" id="windows" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows">
+            <header><h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Windows</h2><span class="plan-tag">10 and 11 · 64-bit</span></header>
+            <div class="plan-tags"><span class="tag stable">Stable</span><span class="tag">Recommended</span></div>
+            <span class="label">Files</span>
+            <dl>
+              <div><dt><a href="{{FILE_SETUP}}">setup.exe</a></dt><dd>Installs MDM, connects your browsers, asks your language</dd></div>
+              <div><dt><a href="{{FILE_PORTABLE}}">portable.zip</a></dt><dd>Unzip anywhere, a USB stick too; everything stays in its folder</dd></div>
+              <div><dt><a href="{{FILE_ZIP}}">x64.zip</a></dt><dd>The programs without an installer</dd></div>
+            </dl>
+            <a class="btn btn-primary btn-h11" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
           </article>
-          <article class="os-card" id="macos" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS" data-sub="Free · Apple Silicon and Intel · experimental">
-            <svg class="os-big" aria-hidden="true"><use href="#os-macos"/></svg>
-            <h2 class="h3like">macOS</h2>
-            <span class="tag try">Experimental · Apple Silicon and Intel</span>
-            <ul class="files">
-              <li><a href="{{FILE_DMG}}"><code>.dmg</code></a> — one universal download for every Mac</li>
-              <li>Not notarized by Apple yet: the first time, right-click the app and choose Open (macOS 15 and later: System Settings → Privacy &amp; Security → Open Anyway)</li>
-            </ul>
-            <a class="btn btn-primary" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
+          <article class="plan os-card" id="macos" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS">
+            <header><h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> macOS</h2><span class="plan-tag">11 and later</span></header>
+            <div class="plan-tags"><span class="tag try">Experimental</span></div>
+            <span class="label">Files</span>
+            <dl>
+              <div><dt><a href="{{FILE_DMG}}">.dmg</a></dt><dd>One universal download for Apple Silicon and Intel</dd></div>
+              <div><dt>First start</dt><dd>Not notarized by Apple yet: right-click the app and choose Open (macOS 15 and later: System Settings → Privacy &amp; Security → Open Anyway)</dd></div>
+            </dl>
+            <a class="btn btn-primary btn-h11" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
           </article>
-          <article class="os-card" id="linux" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux" data-sub="Free · AppImage, .deb, .rpm · experimental">
-            <svg class="os-big" aria-hidden="true"><use href="#os-linux"/></svg>
-            <h2 class="h3like">Linux</h2>
-            <span class="tag try">Experimental · x86-64</span>
-            <ul class="files">
-              <li><a href="{{FILE_APPIMAGE}}"><code>.AppImage</code></a> — any distribution: make it executable and run it</li>
-              <li><a href="{{FILE_DEB}}"><code>.deb</code></a> — Debian, Ubuntu, Linux Mint, Pop!_OS</li>
-              <li><a href="{{FILE_RPM}}"><code>.rpm</code></a> — Fedora, openSUSE, RHEL</li>
-              <li><a href="{{FILE_TAR}}"><code>.tar.gz</code></a> — the programs, to unpack anywhere</li>
-            </ul>
-            <a class="btn btn-primary" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
+          <article class="plan os-card" id="linux" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux">
+            <header><h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Linux</h2><span class="plan-tag">x86-64</span></header>
+            <div class="plan-tags"><span class="tag try">Experimental</span></div>
+            <span class="label">Files</span>
+            <dl>
+              <div><dt><a href="{{FILE_APPIMAGE}}">.AppImage</a></dt><dd>Any distribution: make it executable and run it</dd></div>
+              <div><dt><a href="{{FILE_DEB}}">.deb</a> · <a href="{{FILE_RPM}}">.rpm</a></dt><dd>Debian, Ubuntu, Mint · Fedora, openSUSE, RHEL</dd></div>
+              <div><dt><a href="{{FILE_TAR}}">.tar.gz</a></dt><dd>The programs, to unpack anywhere</dd></div>
+            </dl>
+            <a class="btn btn-primary btn-h11" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
           </article>
         </div>
         <p class="fine" data-mobile-note hidden>It's a desktop app: open this page on your computer to download it.</p>
@@ -83,7 +82,7 @@
       </div>
     </section>
 
-    <div class="wrap narrow prose" style="padding:0 24px 96px">
+    <div class="wrap narrow prose" style="padding:24px 20px 96px">
       <h2 id="extension">The browser extension</h2>
       <p>It hands your browser's downloads to MDM with their cookies, adds <b>Download with Mister Download Manager</b> to the right-click menu and puts a <b>Download video</b> button over videos. It comes with the app, in its <code>extension</code> folder, and on its own:</p>
       <ul>
