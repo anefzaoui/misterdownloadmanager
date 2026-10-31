@@ -424,7 +424,10 @@ pub fn show_cues(ctx: &egui::Context) {
 /// Whether access letters are underlined: always in dark mode, after [`show_cues`] in light.
 pub fn cues(ctx: &egui::Context) -> bool {
     crate::theme::dark()
-        || ctx.data(|d| d.get_temp::<bool>(egui::Id::unique("keyboard-cues")).unwrap_or(false))
+        || ctx.data(|d| {
+            d.get_temp::<bool>(egui::Id::unique("keyboard-cues"))
+                .unwrap_or(false)
+        })
 }
 
 /// The next item of `level` from `from` in direction `dir`, skipping separators (wraps).

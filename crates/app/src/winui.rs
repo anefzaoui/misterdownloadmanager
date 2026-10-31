@@ -1956,14 +1956,18 @@ fn button_face(
     if let Some(before) = mnemonic
         && let Some(letter) = shown[before.len()..].chars().next()
     {
-        let (x0, x1) = char_span(p, &tahoma(), &shown, before.chars().count(), drawn);
-        hline(
-            p,
-            x0,
-            x1,
-            baseline + if dark { 2.0 } else { 3.0 },
-            face.text,
-        );
+        // Underlined as the menus are (always dark; light once the keyboard is in use), while
+        // Alt+letter always works.
+        if crate::chrome::cues(ui.ctx()) {
+            let (x0, x1) = char_span(p, &tahoma(), &shown, before.chars().count(), drawn);
+            hline(
+                p,
+                x0,
+                x1,
+                baseline + if dark { 2.0 } else { 3.0 },
+                face.text,
+            );
+        }
         pressed_by_key = enabled && mnemonic_pressed(ui, letter);
     }
     let resp = if pressed_by_key {
@@ -2262,7 +2266,11 @@ fn fluent_mark() -> Color32 {
 /// An unchecked Windows 11 check box's or radio's fill (none when disabled) and border in
 /// `state`: darker fill under the pointer, darker still and a fainter border while pressed.
 fn fluent_box(state: State) -> (Option<Color32>, Color32) {
-    match (state, crate::theme::dark()) {
+    fluent_box_in(state, crate::theme::dark())
+}
+
+fn fluent_box_in(state: State, dark: bool) -> (Option<Color32>, Color32) {
+    match (state, dark) {
         (State::Disabled, false) => (None, rgb(0xc3, 0xc3, 0xc3)),
         (State::Hot, false) => (Some(rgb(0xea, 0xea, 0xea)), rgb(0x62, 0x62, 0x62)),
         (State::Pressed, false) => (Some(rgb(0xdd, 0xdd, 0xdd)), rgb(0x9a, 0x9a, 0x9a)),
@@ -2847,9 +2855,20 @@ mod tests {
                 < highlight_fill(State::Hot, false).unwrap().r()
         );
         // Windows 11 boxes: deeper under the pointer, deeper still pressed.
-        let fill = |s| fluent_box(s).0.unwrap().r();
-        assert!(fill(State::Pressed) < fill(State::Hot) && fill(State::Hot) < fill(State::Normal));
-        assert_eq!(fluent_box(State::Disabled).0, None);
+        // Light: darker under the pointer, darker still pressed. Dark: lighter under the
+        // pointer, darker pressed. Either way the three differ, and a disabled box is empty.
+        let fill = |s, dark| fluent_box_in(s, dark).0.unwrap().r();
+        assert!(
+            fill(State::Pressed, false) < fill(State::Hot, false)
+                && fill(State::Hot, false) < fill(State::Normal, false)
+        );
+        assert!(
+            fill(State::Pressed, true) < fill(State::Normal, true)
+                && fill(State::Normal, true) < fill(State::Hot, true)
+        );
+        for dark in [false, true] {
+            assert_eq!(fluent_box_in(State::Disabled, dark).0, None);
+        }
     }
 
     /// 6 px per character: a stand-in for the font.
