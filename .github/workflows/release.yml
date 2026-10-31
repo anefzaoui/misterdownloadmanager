@@ -168,6 +168,9 @@ jobs:
           path: target/dist/*
 
   publish:
+    permissions:
+      contents: write # the release
+      actions: write # rebuilding the website
     if: >-
       always() && startsWith(github.ref, 'refs/tags/') && needs.windows.result == 'success' &&
       needs.extension.result == 'success'
@@ -216,3 +219,6 @@ jobs:
             Set-Content -Encoding utf8 notes.md $invite
             gh release create "${{ github.ref_name }}" --latest --title $title --notes-file notes.md --generate-notes $all
           }
+          # The website links to the latest published release: rebuild it now that the files are
+          # there (a release made with this token starts no workflow by itself).
+          gh workflow run pages.yml --ref main
