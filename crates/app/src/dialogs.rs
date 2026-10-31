@@ -322,6 +322,8 @@ impl AddUrl {
                     self.address = self.history[i].clone();
                     self.error = None;
                 }
+                // While its list is open, Escape closes the list and the box keeps the keys.
+                winui::keep_keys(ui, &addr, false, true, self.list_open);
                 let list_was_open = self.list_open;
                 if self.list_open
                     && let Some(i) = winui::drop_list(
@@ -729,6 +731,7 @@ impl FileInfo {
                     self.set_folder(&folder);
                     self.edited = true;
                 }
+                winui::keep_keys(ui, &save, false, true, self.folders_open);
                 let folders_were_open = self.folders_open;
                 if self.folders_open {
                     let shown: Vec<String> = self

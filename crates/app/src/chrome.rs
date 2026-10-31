@@ -1026,10 +1026,27 @@ fn popup_level<C: Clone>(
                     }
                 }
                 MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => {
-                    // Hovering another item of the root closes an open submenu.
+                    // Resting on another item of the root closes an open submenu, after
+                    // Windows' menu delay: a pointer crossing it on the way into the submenu
+                    // (diagonally) doesn't close it.
+                    let since_key = sub_key.with(("leave-since", i));
                     if depth == 0 && hovered && open_sub.is_some() {
-                        ui.ctx().data_mut(|d| d.remove::<usize>(sub_key));
-                        sub_at = None;
+                        let now = ui.input(|inp| inp.time);
+                        let since = ui
+                            .ctx()
+                            .data_mut(|d| *d.get_temp_mut_or_insert_with(since_key, || now));
+                        if now - since >= 0.35 {
+                            ui.ctx().data_mut(|d| {
+                                d.remove::<usize>(sub_key);
+                                d.remove::<f64>(since_key);
+                            });
+                            sub_at = None;
+                        } else {
+                            ui.ctx()
+                                .request_repaint_after(std::time::Duration::from_millis(60));
+                        }
+                    } else if depth == 0 {
+                        ui.ctx().data_mut(|d| d.remove::<f64>(since_key));
                     }
                     if hovered && clicked && enabled {
                         *result = Some(c.clone());
