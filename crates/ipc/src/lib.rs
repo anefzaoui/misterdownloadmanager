@@ -4,6 +4,7 @@
 //! or the browser's native messaging host sends one JSON line per command, carrying the token.
 //! Only connections from 127.0.0.1 with the right token are accepted.
 
+pub mod api;
 pub mod capture;
 
 use std::io::{BufRead, BufReader, Write};
@@ -15,7 +16,7 @@ use std::time::Duration;
 use serde::{Deserialize, Serialize};
 
 /// A request to the running app.
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize, schemars::JsonSchema)]
 #[serde(default)]
 pub struct Command {
     /// The URL to download (`/d`).
@@ -75,8 +76,11 @@ struct Endpoint {
     token: String,
 }
 
-#[derive(Serialize, Deserialize)]
+/// One request line: the token from ipc.json and the command's fields.
+#[derive(Serialize, Deserialize, schemars::JsonSchema)]
+#[schemars(rename = "Request")]
 struct Envelope {
+    /// The `token` from ipc.json (it changes at every start of the app).
     token: String,
     #[serde(flatten)]
     cmd: Command,

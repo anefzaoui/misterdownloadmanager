@@ -58,6 +58,10 @@ FILES = {
 
 # Every page built, for the sitemap: (path, priority).
 PAGES: list[tuple[str, str]] = []
+# For llms.txt and llms-full.txt: the help pages as Markdown (path, title, description, text)
+# and the FAQ (question, path, answer), as the builders read them.
+DOCS_MD: list[tuple[str, str, str, str]] = []
+FAQ_MD: list[tuple[str, str, str]] = []
 
 # The visit counter (privacy.md says what it records). Statcounter's own code, as given.
 STATCOUNTER = """<!-- Default Statcounter code for Mister Download Manager
@@ -474,7 +478,7 @@ SOFTWARE_LD = {
         "Crash-safe resume", "HTTP, HTTPS, FTP and FTPS", "BitTorrent and magnet links",
         "Video downloads from web pages (yt-dlp)", "Browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox",
         "Queues and scheduler", "Speed limiter", "86 interface languages", "Portable mode",
-        "Command line and automation API",
+        "Command line and automation API", "MCP server for AI assistants",
     ],
     "inLanguage": "en",
     "isAccessibleForFree": True,
@@ -491,6 +495,7 @@ ON_SITE = {
     "CHANGELOG.md": "/news.html",
     "docs/bench/run5/REPORT.md": "/benchmark.html#report",
     "docs/bench": "/benchmark.html",
+    "docs/automation-api.schema.json": "/automation-api.schema.json",
 }
 
 
@@ -579,6 +584,11 @@ def build_help() -> None:
         {cta_band()}
       </article>
     </div>"""
+        md_path = "/help/index.md" if is_index else f"/help/{f.stem}.md"
+        text_md = re.sub(r"\]\((/[^)\s]*)\)", lambda m: f"]({SITE}{m.group(1)})", f"# {heading}\n{rest}")
+        (OUT / md_path.lstrip("/")).parent.mkdir(parents=True, exist_ok=True)
+        (OUT / md_path.lstrip("/")).write_text(text_md.strip() + "\n", "utf-8", newline="\n")
+        DOCS_MD.append((md_path, heading, desc, text_md))
         ld = [crumbs_ld(trail)]
         if not is_index:
             ld.append({"@context": "https://schema.org", "@type": "TechArticle", "headline": heading,
@@ -586,7 +596,8 @@ def build_help() -> None:
                        "about": {"@type": "SoftwareApplication", "name": NAME},
                        "author": {"@type": "Person", "name": "Ahmed Nefzaoui"}})
         write(path, title, desc, body, section="help", jsonld=ld, og_type="article",
-              priority="0.7" if f.stem.startswith("guide-") or is_index else "0.6")
+              priority="0.7" if f.stem.startswith("guide-") or is_index else "0.6",
+              extra=f'\n  <link rel="alternate" type="text/markdown" href="{md_path}">')
     dst = OUT / "help" / "images"
     for name in used_images:
         src = ROOT / "docs" / "images" / name
@@ -615,6 +626,7 @@ def build_faq() -> None:
             groups[-1][1].append((q[0], q[1], block.strip()))
             q = None
     allq = [x for _, qs in groups for x in qs]
+    FAQ_MD.extend((question, f"/faq/{s}.html", a) for question, s, a in allq)
     trail = [("Home", "/"), ("FAQ", "/faq/")]
     parts = []
     for g, qs in groups:
@@ -850,6 +862,36 @@ def build_templated(name: str, path: str, section: str, priority: str) -> None:
         PAGES.append((path, priority))
 
 
+# ---- For AI assistants and search: llms.txt, llms-full.txt (llmstxt.org) ----------------------
+
+def build_llms() -> None:
+    """llms.txt: website/llms.txt (what MDM is, the main pages) and, made here, every help page
+    (as Markdown) and question. llms-full.txt: all of it in one file. Built from the same
+    sources as the pages, so it never drifts from them."""
+    head_md = (WEB / "llms.txt").read_text("utf-8").strip()
+    order = [p for _, pages in doc_sections() for _, p in pages]
+    rank = {f"/help/{p[:-3]}.md": i for i, p in enumerate(order)}
+    docs = sorted((d for d in DOCS_MD if d[0] in rank), key=lambda d: rank[d[0]])
+    lines = [head_md, "", "## Help pages", ""]
+    lines += [f"- [{t}]({SITE}{p}): {d}" for p, t, d, _ in docs]
+    lines += ["", "## Questions and answers", ""]
+    lines += [f"- [{q}]({SITE}{p})" for q, p, _ in FAQ_MD]
+    lines += ["", "## Optional", "",
+              f"- [Everything above in one file]({SITE}/llms-full.txt): the help pages and answers, as Markdown"]
+    if (OUT / "automation-api.schema.json").is_file():
+        lines.append(f"- [Automation API schema]({SITE}/automation-api.schema.json): JSON Schema of the local "
+                     "channel other programs use to list, add and control downloads")
+    (OUT / "llms.txt").write_text("\n".join(lines) + "\n", "utf-8", newline="\n")
+    full = [head_md, ""]
+    for p, _, _, text in docs:
+        full += ["", "---", "", f"Source: {SITE}{p}", "", text.strip(), ""]
+    full += ["", "---", "", "# Questions and answers", ""]
+    for q, p, a in FAQ_MD:
+        a = re.sub(r"\]\((/[^)\s]*)\)", lambda m: f"]({SITE}{m.group(1)})", a.replace("{{REPO}}", REPO))
+        full += [f"## {q}", "", f"Source: {SITE}{p}", "", a.strip(), ""]
+    (OUT / "llms-full.txt").write_text("\n".join(full) + "\n", "utf-8", newline="\n")
+
+
 # ---- Static files, sitemap, robots ------------------------------------------------------------
 
 def copy_static() -> None:
@@ -865,6 +907,10 @@ def copy_static() -> None:
         else:
             shutil.copy2(item, OUT / item.name)
     shutil.copy2(ROOT / "docs" / "images" / "social-preview.png", OUT / "assets" / "social.png")
+    # The automation API's JSON Schema, at the address its "$id" names.
+    schema = ROOT / "docs" / "automation-api.schema.json"
+    if schema.is_file():
+        shutil.copy2(schema, OUT / "automation-api.schema.json")
     (OUT / "CNAME").write_text("misterdownloadmanager.com\n", "utf-8")
     (OUT / ".nojekyll").write_text("", "utf-8")
     (OUT / "site.webmanifest").write_text(json.dumps({
@@ -916,6 +962,7 @@ def main() -> None:
     build_languages()
     build_repo_pages()
     build_content_pages()
+    build_llms()
     finish()
     print(f"{len(PAGES)} pages -> {OUT}")
     if "--serve" in sys.argv:

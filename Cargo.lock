@@ -4713,7 +4713,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-app"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "arboard",
  "base64 0.23.1",
@@ -4748,7 +4748,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-cli"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -4758,6 +4758,7 @@ dependencies = [
  "mdm-tools",
  "mdm-torrent",
  "reqwest",
+ "serde_json",
  "tempfile",
  "tokio",
  "url",
@@ -4765,7 +4766,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-engine"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "base64 0.23.1",
  "boa_engine",
@@ -4800,17 +4801,18 @@ dependencies = [
 
 [[package]]
 name = "mdm-ipc"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "craft-atomic",
  "dirs",
+ "schemars 1.2.3",
  "serde",
  "serde_json",
 ]
 
 [[package]]
 name = "mdm-labserver"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "axum",
@@ -4831,7 +4833,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-mcp"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "mdm-ipc",
  "rmcp",
@@ -4845,7 +4847,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-nmhost"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "mdm-ipc",
  "serde",
@@ -4854,7 +4856,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-tools"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "craft-atomic",
  "hex",
@@ -4873,7 +4875,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-torrent"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "librqbit",
  "tempfile",

@@ -1,0 +1,312 @@
+{
+  "$defs": {
+    "ActAnswer": {
+      "description": "`{\"action\": …, \"ids\": […]}`: what was done, and what was skipped and why.",
+      "properties": {
+        "done": {
+          "items": {
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "skipped": {
+          "items": {
+            "$ref": "#/$defs/Skipped"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "done",
+        "skipped"
+      ],
+      "type": "object"
+    },
+    "ApiAnswer": {
+      "description": "`{\"api\": true}` / `{\"api\": false}`: the API's new state.",
+      "properties": {
+        "api": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "api"
+      ],
+      "type": "object"
+    },
+    "DownloadInfo": {
+      "description": "One download of the list.",
+      "properties": {
+        "added": {
+          "description": "When it was added, as the list shows it; null for downloads from before that column.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "downloaded": {
+          "description": "Bytes downloaded so far.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "error": {
+          "description": "Why it failed, for a download in `Error`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "file": {
+          "description": "The file's name.",
+          "type": "string"
+        },
+        "id": {
+          "description": "What the actions take (`ids`); never reused.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "path": {
+          "description": "Where it is saved: the file, or a torrent's folder.",
+          "type": "string"
+        },
+        "size": {
+          "description": "Its size in bytes; null while unknown.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "speed": {
+          "description": "Bytes per second; 0 when it isn't running.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "status": {
+          "description": "`Queued` (added, never started), `Downloading`, `Stopped`, `Complete` or `Error`.",
+          "type": "string"
+        },
+        "url": {
+          "description": "Its address (a video's page, a torrent's magnet link).",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "file",
+        "url",
+        "path",
+        "status",
+        "downloaded",
+        "speed"
+      ],
+      "type": "object"
+    },
+    "ErrorAnswer": {
+      "description": "An unknown question or action, or a question while the API is off.",
+      "properties": {
+        "code": {
+          "description": "For programs: `\"api-off\"` while the API is off.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "error": {
+          "description": "For people; its wording may change.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "error"
+      ],
+      "type": "object"
+    },
+    "ListAnswer": {
+      "description": "`{\"query\": \"list\"}`: every download, and the total speed.",
+      "properties": {
+        "downloads": {
+          "items": {
+            "$ref": "#/$defs/DownloadInfo"
+          },
+          "type": "array"
+        },
+        "speed": {
+          "description": "The total download speed, bytes per second.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "downloads",
+        "speed"
+      ],
+      "type": "object"
+    },
+    "Request": {
+      "description": "One request line: the token from ipc.json and the command's fields.",
+      "properties": {
+        "action": {
+          "default": null,
+          "description": "Automation API: `\"pause\"`, `\"start\"`, `\"remove\"` (off the list, its file kept) or\n`\"delete\"` (with its file) the downloads `ids`; answered with what was done and skipped.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "api": {
+          "default": null,
+          "description": "Automation API: turn it on or off.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "cookies": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dir": {
+          "default": null,
+          "description": "Save folder (`/p`) and file name (`/f`).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exit": {
+          "default": false,
+          "description": "`/exit` (beyond IDM): the running app saves and quits (the installer, before an upgrade\nor an uninstall). Starts nothing when no app runs.",
+          "type": "boolean"
+        },
+        "ids": {
+          "default": [],
+          "items": {
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "later": {
+          "default": false,
+          "description": "`/a`: add to the main queue, don't start.",
+          "type": "boolean"
+        },
+        "name": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "panel_hide_site": {
+          "default": null,
+          "description": "From that button's menu: never show it on this site (a host name) again.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "query": {
+          "default": null,
+          "description": "Automation API (off by default, beyond IDM): `\"list\"` asks for every download as JSON.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "referer": {
+          "default": null,
+          "description": "From the browser: request context to reuse.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "show": {
+          "default": null,
+          "description": "`/show <window>` (beyond IDM): the running app opens one of its windows by name, for\nscreenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,\n`scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,\n`progress`, `options[:general|types|saveto|downloads|connection|proxy|logins|sounds|regional|panels]`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "silent": {
+          "default": false,
+          "description": "`/n`: silent — no Download File Info dialog.",
+          "type": "boolean"
+        },
+        "start_queue": {
+          "default": false,
+          "description": "`/s`: start the main queue.",
+          "type": "boolean"
+        },
+        "token": {
+          "description": "The `token` from ipc.json (it changes at every start of the app).",
+          "type": "string"
+        },
+        "url": {
+          "default": null,
+          "description": "The URL to download (`/d`).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "user_agent": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "video_page": {
+          "default": null,
+          "description": "From the browser's download button over a video: open the Download video window for this\npage (its address; an embedded player's own).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "type": "object"
+    },
+    "Skipped": {
+      "properties": {
+        "id": {
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "why": {
+          "description": "\"no such download\", \"not running\", \"already running\", \"complete\" or \"running: pause it\nfirst\".",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "why"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://misterdownloadmanager.com/automation-api.schema.json",
+  "$ref": "#/$defs/Request",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "One JSON line to the port in ipc.json (on 127.0.0.1), one line back. A request is `Request`. A command (an address to add, start_queue) is answered `ok`; a question is answered with the JSON object for it (`ListAnswer`, `ActAnswer`, `ApiAnswer`) or an `ErrorAnswer`. A wrong token is answered `denied`, an app that doesn't answer within 2 seconds `timeout`. Guide: https://misterdownloadmanager.com/help/command-line.html#the-automation-api",
+  "title": "Mister Download Manager automation API"
+}

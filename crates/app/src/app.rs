@@ -1653,43 +1653,44 @@ impl App {
         self.dirty = true;
     }
 
-    /// The automation API's answer (a JSON line): `api` turns it on or off; `query: "list"`
-    /// gives every download and the total speed, `action` acts on downloads ([`App::act`]) —
-    /// only while it is on.
+    /// The automation API's answer (a JSON line, shaped by `ipc::api`): `api` turns it on or
+    /// off; `query: "list"` gives every download and the total speed, `action` acts on
+    /// downloads ([`App::act`]) — only while it is on.
     fn answer(&mut self, cmd: &ipc::Command) -> String {
+        use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
         if let Some(on) = cmd.api {
             self.settings.automation_api = on;
             self.dirty = true;
-            return serde_json::json!({ "api": on }).to_string();
+            return line(&ApiAnswer { api: on });
         }
         if !self.settings.automation_api {
-            // "code": for programs (the MCP server), the text may change.
-            return serde_json::json!({
-                "error": "the automation API is off (misterdownloadmanager-cli api on)",
-                "code": "api-off",
-            })
-            .to_string();
+            return line(&ErrorAnswer {
+                error: "the automation API is off (misterdownloadmanager-cli api on)".into(),
+                code: Some(ipc::api::API_OFF.into()),
+            });
         }
         if let Some(action) = cmd.action.as_deref() {
-            return self.act(action, &cmd.ids).to_string();
+            return match self.act(action, &cmd.ids) {
+                Ok(done) => line(&done),
+                Err(e) => line(&e),
+            };
         }
         match cmd.query.as_deref() {
             Some("list") => {
-                let downloads: Vec<serde_json::Value> = self
+                let downloads = self
                     .items
                     .iter()
-                    .map(|i| {
-                        serde_json::json!({
-                            "id": i.id,
-                            "file": i.file_name,
-                            "url": i.url.as_str(),
-                            "path": i.dest,
-                            "status": format!("{:?}", i.status),
-                            "size": i.size,
-                            "downloaded": i.downloaded,
-                            "speed": if i.live.is_some() { i.rate() as u64 } else { 0 },
-                            "added": i.added,
-                        })
+                    .map(|i| DownloadInfo {
+                        id: i.id,
+                        file: i.file_name.clone(),
+                        url: i.url.to_string(),
+                        path: i.dest.to_string_lossy().into_owned(),
+                        status: format!("{:?}", i.status),
+                        size: i.size,
+                        downloaded: i.downloaded,
+                        speed: if i.live.is_some() { i.rate() as u64 } else { 0 },
+                        added: i.added.clone(),
+                        error: i.error.clone().filter(|_| i.status == Status::Error),
                     })
                     .collect();
                 let speed: f64 = self
@@ -1698,24 +1699,39 @@ impl App {
                     .filter(|i| i.live.is_some())
                     .map(|i| i.rate())
                     .sum();
-                serde_json::json!({ "downloads": downloads, "speed": speed as u64 }).to_string()
+                line(&ListAnswer {
+                    downloads,
+                    speed: speed as u64,
+                })
             }
-            other => serde_json::json!({ "error": format!("unknown query {other:?}") }).to_string(),
+            other => line(&ErrorAnswer {
+                error: format!("unknown query {other:?}"),
+                code: None,
+            }),
         }
     }
 
     /// The automation API's actions on downloads by id: pause one running, start one stopped,
     /// queued or failed, remove one (its file kept) or delete it with its file; one that runs
-    /// is paused first by the caller. `{"done": [ids], "skipped": [{"id", "why"}]}`.
-    fn act(&mut self, action: &str, ids: &[u64]) -> serde_json::Value {
+    /// is paused first by the caller.
+    fn act(
+        &mut self,
+        action: &str,
+        ids: &[u64],
+    ) -> Result<ipc::api::ActAnswer, ipc::api::ErrorAnswer> {
         if !matches!(action, "pause" | "start" | "remove" | "delete") {
-            return serde_json::json!({ "error": format!("unknown action {action:?}") });
+            return Err(ipc::api::ErrorAnswer {
+                error: format!("unknown action {action:?}"),
+                code: None,
+            });
         }
-        let mut done = Vec::new();
-        let mut skipped = Vec::new();
+        let mut answer = ipc::api::ActAnswer::default();
         for &id in ids {
             let Some(item) = self.item(id) else {
-                skipped.push(serde_json::json!({ "id": id, "why": "no such download" }));
+                answer.skipped.push(ipc::api::Skipped {
+                    id,
+                    why: "no such download".into(),
+                });
                 continue;
             };
             let running = item.live.is_some();
@@ -1742,11 +1758,14 @@ impl App {
                 }
             };
             match why {
-                Some(why) => skipped.push(serde_json::json!({ "id": id, "why": why })),
-                None => done.push(id),
+                Some(why) => answer.skipped.push(ipc::api::Skipped {
+                    id,
+                    why: why.into(),
+                }),
+                None => answer.done.push(id),
             }
         }
-        serde_json::json!({ "done": done, "skipped": skipped })
+        Ok(answer)
     }
 
     /// Options → OK: keep the new settings and act on what changed.

@@ -6,17 +6,14 @@
 use std::sync::Arc;
 
 use mdm_ipc::Command;
+use mdm_ipc::api::{API_OFF as API_OFF_CODE, DownloadInfo, ErrorAnswer, ListAnswer, STATUSES};
 use rmcp::handler::server::{router::tool::ToolRouter, wrapper::Parameters};
 use rmcp::{ServerHandler, tool, tool_handler, tool_router};
 use schemars::JsonSchema;
 use serde::Deserialize;
-use serde_json::Value;
 
 /// How a tool reaches the app: [`mdm_ipc::request`] in the program, a stand-in in tests.
 pub type Ask = Arc<dyn Fn(&Command) -> Result<String, String> + Send + Sync>;
-
-/// The statuses the app reports (`Status` in crates/app/src/model.rs).
-const STATUSES: [&str; 5] = ["Queued", "Downloading", "Stopped", "Complete", "Error"];
 
 /// Downloads listed when the assistant doesn't say how many.
 const DEFAULT_LIMIT: usize = 100;
@@ -115,8 +112,9 @@ impl Server {
     #[tool(
         description = "Lists Mister Download Manager's downloads, newest first: id, file, url, \
                        path, status (Queued, Downloading, Stopped, Complete or Error), size and \
-                       downloaded (bytes; size 0 while unknown), speed (bytes per second) and \
-                       when it was added; with the total speed and how many there are.",
+                       downloaded (bytes; size null while unknown), speed (bytes per second), \
+                       when it was added and, for a failed one, why (error); with the total \
+                       speed and how many match.",
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn list_downloads(
@@ -276,16 +274,12 @@ fn explain(answer: Result<String, String>) -> Result<String, String> {
         }
         _ => {}
     }
-    if let Ok(v) = serde_json::from_str::<Value>(&answer)
-        && let Some(e) = v.get("error").and_then(Value::as_str)
-    {
-        return Err(
-            if v.get("code").and_then(Value::as_str) == Some("api-off") {
-                API_OFF.into()
-            } else {
-                format!("Mister Download Manager: {e}")
-            },
-        );
+    if let Ok(e) = serde_json::from_str::<ErrorAnswer>(&answer) {
+        return Err(if e.code.as_deref() == Some(API_OFF_CODE) {
+            API_OFF.into()
+        } else {
+            format!("Mister Download Manager: {}", e.error)
+        });
     }
     Ok(answer)
 }
@@ -302,9 +296,10 @@ fn addable(url: &str) -> bool {
         .is_ok_and(|u| matches!(u.scheme(), "http" | "https" | "ftp" | "ftps") && u.has_host())
 }
 
-/// The list answer cut to what was asked for, newest (highest id) first, with the total.
+/// The list answer cut to what was asked for, newest (highest id) first, with how many match.
 fn filter_list(answer: &str, args: &ListArgs) -> Result<String, String> {
-    let v: Value = serde_json::from_str(answer).map_err(|e| format!("unreadable answer: {e}"))?;
+    let list: ListAnswer =
+        serde_json::from_str(answer).map_err(|e| format!("unreadable answer: {e}"))?;
     let status = match args
         .status
         .as_deref()
@@ -324,28 +319,23 @@ fn filter_list(answer: &str, args: &ListArgs) -> Result<String, String> {
         .as_deref()
         .map(|s| s.trim().to_lowercase())
         .filter(|s| !s.is_empty());
-    let field = |d: &Value, k: &str| d.get(k).and_then(Value::as_str).unwrap_or("").to_owned();
-    let mut downloads: Vec<Value> = v
-        .get("downloads")
-        .and_then(Value::as_array)
-        .cloned()
-        .unwrap_or_default()
+    let mut downloads: Vec<DownloadInfo> = list
+        .downloads
         .into_iter()
-        .filter(|d| status.is_none_or(|s| field(d, "status") == s))
+        .filter(|d| status.is_none_or(|s| d.status == s))
         .filter(|d| {
             search.as_ref().is_none_or(|q| {
-                field(d, "file").to_lowercase().contains(q)
-                    || field(d, "url").to_lowercase().contains(q)
+                d.file.to_lowercase().contains(q) || d.url.to_lowercase().contains(q)
             })
         })
         .collect();
-    let total = downloads.len();
-    downloads.sort_by_key(|d| std::cmp::Reverse(d.get("id").and_then(Value::as_u64)));
+    let matching = downloads.len();
+    downloads.sort_by_key(|d| std::cmp::Reverse(d.id));
     downloads.truncate(args.limit.unwrap_or(DEFAULT_LIMIT));
     Ok(serde_json::json!({
         "downloads": downloads,
-        "matching": total,
-        "speed": v.get("speed").cloned().unwrap_or(Value::from(0)),
+        "matching": matching,
+        "speed": list.speed,
     })
     .to_string())
 }
@@ -353,11 +343,12 @@ fn filter_list(answer: &str, args: &ListArgs) -> Result<String, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::Value;
 
     const LIST: &str = r#"{"downloads":[
-        {"id":1,"file":"ubuntu.iso","url":"https://releases.ubuntu.com/ubuntu.iso","status":"Complete"},
-        {"id":2,"file":"7z.exe","url":"https://www.7-zip.org/a/7z.exe","status":"Downloading"},
-        {"id":3,"file":"report.pdf","url":"https://example.com/report.pdf","status":"Stopped"}
+        {"id":1,"file":"ubuntu.iso","url":"https://releases.ubuntu.com/ubuntu.iso","status":"Complete","path":"/downloads/f","size":100,"downloaded":50,"speed":0,"added":null},
+        {"id":2,"file":"7z.exe","url":"https://www.7-zip.org/a/7z.exe","status":"Downloading","path":"/downloads/f","size":100,"downloaded":50,"speed":0,"added":null},
+        {"id":3,"file":"report.pdf","url":"https://example.com/report.pdf","status":"Stopped","path":"/downloads/f","size":100,"downloaded":50,"speed":0,"added":null}
     ],"speed":1234}"#;
 
     fn ids(answer: &str) -> Vec<u64> {

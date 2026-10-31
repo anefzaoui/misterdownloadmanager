@@ -30,8 +30,8 @@ fn fake_app(dir: &std::path::Path, api_on: bool) -> Arc<Mutex<Vec<Value>>> {
                 json!({ "error": "the automation API is off", "code": "api-off" }).to_string()
             } else if req["query"] == "list" {
                 json!({ "downloads": [
-                    { "id": 1, "file": "old.zip", "url": "https://example.com/old.zip", "status": "Complete" },
-                    { "id": 2, "file": "new.iso", "url": "https://example.com/new.iso", "status": "Downloading" },
+                    { "id": 1, "file": "old.zip", "url": "https://example.com/old.zip", "status": "Complete", "path": "/downloads/f", "size": 100, "downloaded": 50, "speed": 0, "added": null },
+                    { "id": 2, "file": "new.iso", "url": "https://example.com/new.iso", "status": "Downloading", "path": "/downloads/f", "size": 100, "downloaded": 50, "speed": 0, "added": null },
                 ], "speed": 1000 })
                 .to_string()
             } else if req["action"].is_string() {
