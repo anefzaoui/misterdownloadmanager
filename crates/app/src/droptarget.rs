@@ -151,8 +151,9 @@ impl DropTarget {
                 });
             #[cfg(not(windows))]
             for f in ui.ctx().input(|i| i.raw.dropped_files.clone()) {
-                if let Some(path) = f.path {
-                    events.push(Event::Drop(path.display().to_string()));
+                let path = f.path().display().to_string();
+                if !path.is_empty() {
+                    events.push(Event::Drop(path));
                 }
             }
             if resp.drag_started() {

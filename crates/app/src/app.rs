@@ -4240,7 +4240,8 @@ impl App {
             i.raw
                 .dropped_files
                 .iter()
-                .filter_map(|f| f.path.as_ref().map(|p| p.display().to_string()))
+                .map(|f| f.path().display().to_string())
+                .filter(|p| !p.is_empty())
                 .collect::<Vec<_>>()
         }));
         if !got.is_empty() {
