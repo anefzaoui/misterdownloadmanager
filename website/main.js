@@ -38,52 +38,82 @@
     if (e.key === "Escape") each(".split-more[open], .menu[open]", function (d) { d.open = false; d.querySelector("summary").focus(); });
   });
 
-  // ---- "What do you download?": tabs switch the words and the screenshot, and move on by
-  // themselves (data-auto) when a tab's line has filled; hover or focus pauses them.
-  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  each("[data-picker]", function (picker) {
-    var tabs = Array.prototype.slice.call(picker.querySelectorAll('[role="tab"]'));
-    var auto = picker.hasAttribute("data-auto") && !still;
-    function show(tab) {
-      tabs.forEach(function (t) {
-        var on = t === tab;
-        var id = t.getAttribute("aria-controls");
-        t.setAttribute("aria-selected", on ? "true" : "false");
-        t.tabIndex = on ? 0 : -1;
-        var panel = document.getElementById(id);
-        if (panel) panel.hidden = !on;
-        // One screenshot per kind (two where it has a day and a night version).
-        var shots = picker.querySelectorAll('[data-for="' + id + '"]');
-        for (var j = 0; j < shots.length; j++) shots[j].hidden = !on;
+  // ---- The benchmark, replayed in real time ------------------------------------------------
+  // Medians from docs/bench/run5/REPORT.md: startup (command to first request), transfer and
+  // finish, in milliseconds. Each lane's eight parts fill as the connections would; a lane
+  // whose server allows two connections fills two parts at a time.
+  var RACES = [
+    { label: "faster", note: "1 GiB over a fast link. IDM spends 3 s before its first request reaches the server.",
+      mdm: [14, 438, 556], idm: [3076, 1831, 545], e2e: [1009, 5456], ratio: 5.41, conns: [8, 8] },
+    { label: "faster", note: "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
+      mdm: [14, 7, 8], idm: [3090, 25, 32], e2e: [30, 3141], ratio: 105.9, conns: [4, 4] },
+    { label: "faster", note: "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
+      mdm: [14, 12546, 9], idm: [3069, 12733, 48], e2e: [12568, 15864], ratio: 1.26, conns: [2, 2] }
+  ];
+  each("[data-race]", function (box) {
+    var lanes = { mdm: box.querySelector('[data-lane="mdm"]'), idm: box.querySelector('[data-lane="idm"]') };
+    var tabs = box.querySelectorAll("[data-scenario]");
+    var ratioEl = box.querySelector("[data-ratio]"), noteEl = box.querySelector("[data-note]");
+    var frame = 0, current = 0;
+    function total(t) { return t[0] + t[1] + t[2]; }
+    // The phases' medians don't add up exactly to the end-to-end medians: scale them so the
+    // finish times are the report's.
+    RACES.forEach(function (r) {
+      ["mdm", "idm"].forEach(function (k, n) {
+        var f = r.e2e[n] / total(r[k]);
+        r[k] = r[k].map(function (v) { return v * f; });
       });
-      // Restart the selected tab's line.
-      var bar = tab.querySelector(".job-bar i");
-      if (bar) { bar.style.animation = "none"; void bar.offsetWidth; bar.style.animation = ""; }
-    }
-    function next(from) { return tabs[(tabs.indexOf(from) + 1) % tabs.length]; }
-    tabs.forEach(function (tab) {
-      tab.addEventListener("click", function () { show(tab); });
-      tab.addEventListener("keydown", function (e) {
-        var k = tabs.indexOf(tab);
-        var to = e.key === "ArrowRight" ? tabs[(k + 1) % tabs.length]
-          : e.key === "ArrowLeft" ? tabs[(k - 1 + tabs.length) % tabs.length] : null;
-        if (to) { e.preventDefault(); show(to); to.focus(); }
-      });
-      var bar = tab.querySelector(".job-bar i");
-      if (bar && auto) {
-        bar.addEventListener("animationend", function () {
-          if (tab.getAttribute("aria-selected") === "true") show(next(tab));
-        });
-      }
     });
-    if (auto) {
-      picker.classList.add("is-auto");
-      picker.addEventListener("mouseenter", function () { picker.classList.add("is-paused"); });
-      picker.addEventListener("mouseleave", function () { picker.classList.remove("is-paused"); });
-      picker.addEventListener("focusin", function () { picker.classList.add("is-paused"); });
-      picker.addEventListener("focusout", function () { picker.classList.remove("is-paused"); });
+    function fmt(ms) { return ms < 1000 ? Math.round(ms) + " ms" : (ms / 1000).toFixed(2) + " s"; }
+    function paint(lane, t, conns, now) {
+      var parts = lane.querySelectorAll(".lane-bar i");
+      var start = t[0], xfer = t[1], all = total(t);
+      var p = Math.max(0, Math.min(1, (now - start) / xfer));
+      for (var i = 0; i < parts.length; i++) {
+        // Connections work on `conns` parts at a time; each part in its turn.
+        var wave = Math.floor(i / conns), waves = Math.ceil(parts.length / conns);
+        var v = Math.max(0, Math.min(1, p * waves - wave));
+        parts[i].style.setProperty("--p", v.toFixed(3));
+      }
+      var done = now >= all;
+      lane.classList.toggle("waiting", now > 0 && now < start);
+      lane.classList.toggle("done", done);
+      lane.querySelector("[data-time]").textContent = fmt(Math.min(now, all));
+      lane.querySelector("[data-state]").textContent = done ? "Done" : now < start ? "Starting…" : now < start + xfer ? "Downloading" : "Finishing";
     }
-    show(tabs[0]);
+    function run(k) {
+      cancelAnimationFrame(frame);
+      current = k;
+      var r = RACES[k];
+      for (var i = 0; i < tabs.length; i++) tabs[i].setAttribute("aria-selected", i === k ? "true" : "false");
+      var end = Math.max(total(r.mdm), total(r.idm));
+      // The report's ratio of medians (docs/bench/run5/REPORT.md).
+      var ratio = r.ratio;
+      noteEl.textContent = r.note;
+      ratioEl.textContent = "1.0×";
+      var t0 = performance.now();
+      (function tick(now) {
+        var ms = now - t0;
+        paint(lanes.mdm, r.mdm, r.conns[0], ms);
+        paint(lanes.idm, r.idm, r.conns[1], ms);
+        // The ratio grows as IDM keeps going after MDM has finished.
+        var shown = ms >= end ? ratio : ms <= total(r.mdm) ? 1 : Math.min(ratio, ms / total(r.mdm));
+        ratioEl.textContent = (shown >= 10 ? Math.round(shown) : shown < 2 && ms >= end ? shown.toFixed(2) : shown.toFixed(1)) + "×";
+        if (ms < end) frame = requestAnimationFrame(tick);
+        else ratioEl.textContent = (ratio >= 10 ? Math.round(ratio) : ratio < 2 ? ratio.toFixed(2) : ratio.toFixed(1)) + "×";
+      })(t0);
+    }
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].addEventListener("click", function () { run(+this.getAttribute("data-scenario")); });
+    }
+    box.querySelector("[data-race-replay]").addEventListener("click", function () { run(current); });
+    // Start when it comes into view; at once where the browser can't tell.
+    if ("IntersectionObserver" in window) {
+      var seen = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { seen.disconnect(); run(0); }
+      }, { threshold: 0.4 });
+      seen.observe(box);
+    } else run(0);
   });
 
   // ---- Hello in the app's languages: each word written in, its chip lit -----------------------

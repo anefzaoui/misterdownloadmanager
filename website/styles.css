@@ -411,8 +411,11 @@ figure.window { width: fit-content; max-width: 100%; border: 1px solid var(--lin
 .jobs { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 56px; align-items: start; }
 .job-tabs { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--line); }
 .job-tab { position: relative; display: block; width: 100%; padding: 14px 6px 18px; border: 0; background: none; color: var(--fg-muted); font: 500 15px/1.3 var(--font); text-align: left; cursor: pointer; transition: color .2s; }
+.job-tab[aria-selected="true"] { font-weight: 600; }
 .job-tab:hover, .job-tab[aria-selected="true"] { color: var(--fg); }
 .job-bar { position: absolute; left: 0; right: 12px; bottom: -1px; height: 2px; overflow: hidden; background: transparent; }
+/* The selected tab always shows its line; the fill on it is the time to the next tab. */
+.job-tab[aria-selected="true"] .job-bar { background: color-mix(in oklab, var(--accent) 28%, transparent); }
 .job-bar i { display: block; width: 0; height: 100%; background: var(--accent); }
 .job-tab[aria-selected="true"] .job-bar i { width: 100%; }
 .is-auto .job-tab[aria-selected="true"] .job-bar i { width: auto; animation: job-fill 7s linear forwards; }
@@ -439,7 +442,55 @@ figure.window { width: fit-content; max-width: 100%; border: 1px solid var(--lin
 .tchip b { font-size: 15px; font-weight: 600; }
 .tchip-ico { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; flex: none; border-radius: 50%; background: color-mix(in oklab, var(--fg) 6%, transparent); color: var(--fg); }
 .tchip-ico svg { width: 17px; height: 17px; fill: currentColor; }
+.tchip-ico.logo { background: none; }
+.tchip-ico.logo img { width: 26px; height: 26px; }
 .tchip small { font-size: 13px; color: var(--fg-muted); }
+
+/* ---- Showcase: the app's windows, whole and still -------------------------------------------- */
+
+/* Each row shares its width in proportion to its windows' real widths (--gw), so every window
+   in a row shows at the same scale. */
+.gallery { display: grid; gap: 16px; }
+.g-row { display: flex; gap: 16px; }
+.g-row > .g-item { flex: var(--gw) 1 0; }
+.g-item { display: flex; flex-direction: column; margin: 0; min-width: 0; padding: 24px 24px 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg-raised); }
+.g-shot { flex: 1; display: flex; align-items: center; }
+.g-shot img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, .04), 0 28px 56px -28px rgba(0, 0, 0, .35); }
+.g-item figcaption { margin-top: 22px; font-size: 15px; color: var(--fg-muted); }
+.g-item figcaption b { color: var(--fg); font-weight: 600; margin-right: 6px; }
+
+/* ---- Speed: the benchmark replayed ------------------------------------------------------------ */
+
+.race { padding: 28px; border: 1px solid var(--line); border-radius: 24px; background: var(--bg-raised); }
+.race-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
+.race-tabs { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+.race-tabs button { padding: 9px 16px; border: 0; border-radius: 999px; background: none; color: var(--fg-muted); font: 500 14px/1 var(--font); cursor: pointer; }
+.race-tabs button[aria-selected="true"] { background: var(--fg); color: var(--bg); }
+.race-replay { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--fg); font: 500 14px/1 var(--font); cursor: pointer; }
+.race-replay svg { width: 16px; height: 16px; }
+.lane { display: grid; grid-template-columns: 290px minmax(0, 1fr) 140px; align-items: center; gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
+.lane-name { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.lane-name b { font-weight: 600; }
+.lane-dot { width: 22px; height: 22px; border-radius: 50%; background: color-mix(in oklab, var(--fg) 18%, transparent); }
+/* The app's own connection bar: eight parts, each filling its piece of the file. */
+.lane-bar { display: grid; grid-template-columns: repeat(8, 1fr); height: 22px; overflow: hidden; border: 1px solid #656b7b; border-radius: 3px; background: linear-gradient(var(--track-a), var(--track-b)); }
+.lane-bar i { position: relative; display: block; border-left: 2px solid #e0242a; }
+.lane-bar i:first-child { border-left: 0; }
+.lane-bar i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(var(--p, 0) * 100%); background: linear-gradient(#1a3db4, #3d6fe8 40%, #9ad3ff 55%, #2f63d8 70%, #1c45b9); }
+.lane.idm .lane-bar i::after { background: linear-gradient(#5b6270, #7d8590 40%, #c7ccd4 55%, #7a828d 70%, #5d6470); }
+.lane.waiting .lane-bar { animation: lane-wait 1s ease-in-out infinite; }
+@keyframes lane-wait { 50% { opacity: .55; } }
+.lane-time { text-align: right; font-variant-numeric: tabular-nums; }
+.lane-time span { display: block; font-size: 1.6rem; font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
+.lane-time small { display: block; margin-top: 2px; font-size: 12px; color: var(--fg-muted); }
+.lane.done .lane-time small { color: var(--accent); }
+.lane.idm.done .lane-time small { color: var(--fg-muted); }
+.race-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding-top: 22px; border-top: 1px solid var(--line); }
+.race-big { display: flex; align-items: baseline; gap: 10px; margin: 0; }
+.race-big span { font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 650; line-height: 1; letter-spacing: -.05em; background: linear-gradient(100deg, var(--accent), var(--accent-b)); -webkit-background-clip: text; background-clip: text; color: transparent; font-variant-numeric: tabular-nums; }
+.race-big small { font-size: 1rem; color: var(--fg-muted); }
+.race-note { flex: 1; min-width: 220px; margin: 0; font-size: 14px; line-height: 1.6; color: var(--fg-muted); }
+.tldr-late { margin-top: 64px; }
 
 /* ---- Measured -------------------------------------------------------------------------------- */
 
@@ -705,6 +756,9 @@ tr.is-provisional td, tr.is-provisional th { color: var(--fg-muted); }
   .community { flex-direction: column; align-items: stretch; gap: 32px; }
   .tldr-box { grid-template-columns: 1fr; }
   .plans, .os-cards, .repo-links { grid-template-columns: 1fr; }
+  .g-row { flex-direction: column; }
+  .lane { grid-template-columns: 1fr auto; }
+  .lane-bar { grid-column: 1 / -1; grid-row: 2; }
   .foot-cols { grid-template-columns: repeat(2, 1fr); }
   .foot-brand { grid-column: 1 / -1; }
   .partof-box { flex-direction: column; align-items: flex-start; gap: 16px; }
@@ -724,6 +778,10 @@ tr.is-provisional td, tr.is-provisional th { color: var(--fg-muted); }
   .split-main { flex: 1; }
   .split-menu { width: min(320px, calc(100vw - 32px)); }
   .with-row { grid-template-columns: 1fr; gap: 10px; }
+  .g-item { padding: 16px 16px 14px; border-radius: 16px; }
+  .race { padding: 18px; }
+  .race-tabs { width: 100%; border-radius: 16px; }
+  .race-tabs button { flex: 1 1 auto; }
   .job-tabs { display: flex; overflow-x: auto; scrollbar-width: none; }
   .job-tabs li { flex: none; }
   .job-tab { padding-right: 18px; white-space: nowrap; }
