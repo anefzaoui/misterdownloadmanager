@@ -3,6 +3,14 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [0.2.1] - 2026-10-31
+
+### Changed
+
+- **Help → Report a problem** opens GitHub's new bug report form with your MDM version, your
+  system and its version, how MDM was installed and its language filled in. Every report now
+  says which system and version it comes from.
+
 ## [0.2.0] - 2026-10-31
 
 Mac fixes from the first round of real use, found on every system and fixed there too; the

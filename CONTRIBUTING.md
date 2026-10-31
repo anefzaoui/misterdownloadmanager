@@ -68,8 +68,9 @@ for how the language list, the installer and the right-to-left layout fit togeth
 
 ## Reporting problems
 
-Use **Help → Report a problem** in the app: it opens a GitHub issue with your version, Windows
-and language filled in. Security problems: see [SECURITY.md](SECURITY.md).
+Use **Help → Report a problem** in the app: it opens the bug report form with your version,
+system, how MDM was installed and its language filled in. The form asks for the same when you
+open it yourself. Security problems: see [SECURITY.md](SECURITY.md).
 
 Pull requests are accepted under the project's licence, the
 [GNU GPL, version 3 or later](LICENSE).

@@ -133,4 +133,4 @@ Yes. MDM comes with an MCP server, `misterdownloadmanager-mcp`: add it to Claude
 
 ### How do I report a bug or ask for a feature? {#report-bug}
 
-Use **Help → Report a problem** in MDM: it opens a GitHub issue with your version, Windows and language filled in. Or [open an issue]({{REPO}}/issues) directly. Security problems go privately through the [security page](/security.html).
+Use **Help → Report a problem** in MDM: it opens the bug report form on GitHub with your version, system and language filled in. Or [open the form]({{REPO}}/issues/new?template=bug.yml) yourself. Security problems go privately through the [security page](/security.html).

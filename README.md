@@ -368,8 +368,8 @@ MDM is an early preview: the engine and the main window are solid, some corners 
 - Not yet: code signing, Firefox out of testing. The macOS and Linux builds are untested.
 
 Bug reports and ideas are welcome in
-[Issues](https://github.com/anefzaoui/misterdownloadmanager/issues): **Help → Report a problem**
-in the app fills in your version and Windows. Pull requests are accepted under the same licence: start with [CONTRIBUTING.md](CONTRIBUTING.md).
+[Issues](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose): **Help → Report a problem**
+in the app fills in your version and system. Pull requests are accepted under the same licence: start with [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Licence and credits
 

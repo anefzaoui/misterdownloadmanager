@@ -36,19 +36,89 @@ pub fn open_page(path: &str) {
     let _ = open::that_detached(url);
 }
 
-/// A new GitHub issue, its form filled with what helps: this version, Windows, the language.
+/// A new GitHub issue on the Bug report form (.github/ISSUE_TEMPLATE/bug.yml), filled with
+/// what MDM knows: its version, the system and its version, how it was installed, the
+/// language. The parameters are the form's field ids; a dropdown takes an option's text.
 pub fn report_problem() {
-    #[cfg(windows)]
-    let windows = crate::win32::windows_version();
-    #[cfg(not(windows))]
-    let windows = std::env::consts::OS.to_owned();
-    let body = format!(
-        "**What happened**\n\n\n**What you expected**\n\n\n**Steps to make it happen**\n1. \n\n---\n\
-         Mister Download Manager {VERSION} ({COMMIT}) · {windows} · language {}\n",
-        crate::i18n::code()
-    );
     let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
-    let _ = open::that_detached(format!("{REPO}/issues/new?body={}", enc(&body)));
+    let url = report_fields().iter().fold(
+        format!("{REPO}/issues/new?template=bug.yml"),
+        |url, (k, v)| format!("{url}&{k}={}", enc(v)),
+    );
+    let _ = open::that_detached(url);
+}
+
+/// The Bug report form's fields MDM fills in: (field id, value).
+fn report_fields() -> Vec<(&'static str, String)> {
+    #[cfg(windows)]
+    let os_version = crate::win32::windows_version();
+    #[cfg(unix)]
+    let os_version = crate::unix::os_version();
+    let os = if cfg!(windows) {
+        if os_version.contains("Windows 10") {
+            "Windows 10"
+        } else {
+            "Windows 11"
+        }
+    } else if cfg!(target_os = "macos") {
+        if cfg!(target_arch = "aarch64") {
+            "macOS (Apple Silicon)"
+        } else {
+            "macOS (Intel)"
+        }
+    } else if cfg!(target_os = "linux") {
+        "Linux"
+    } else {
+        "Other"
+    };
+    let mut fields = vec![
+        ("os", os.to_owned()),
+        ("os-version", os_version),
+        ("version", format!("{VERSION} ({COMMIT})")),
+        ("language", crate::i18n::code().to_owned()),
+    ];
+    if let Some(install) = installed_with() {
+        fields.push(("install", install.to_owned()));
+    }
+    fields
+}
+
+/// How this copy was installed, as the Bug report form's "Installed with" words it; `None`
+/// when it can't tell.
+fn installed_with() -> Option<&'static str> {
+    if cfg!(debug_assertions) {
+        return Some("Built from source");
+    }
+    if mdm_ipc::portable_dir().is_some() {
+        return Some("The portable zip");
+    }
+    let exe = std::env::current_exe().ok()?;
+    let dir = exe.parent()?;
+    if cfg!(windows) {
+        // The installer leaves its uninstaller next to the program; the plain zip doesn't.
+        return Some(if dir.join("unins000.exe").is_file() {
+            "The installer (setup.exe)"
+        } else {
+            "The plain zip"
+        });
+    }
+    if cfg!(target_os = "macos") {
+        return exe
+            .to_string_lossy()
+            .contains(".app/Contents/MacOS")
+            .then_some("The .dmg");
+    }
+    if std::env::var_os("APPIMAGE").is_some() {
+        return Some("The AppImage");
+    }
+    if dir == std::path::Path::new("/usr/bin") {
+        return Some(if std::path::Path::new("/etc/debian_version").exists() {
+            "The .deb"
+        } else {
+            "The .rpm"
+        });
+    }
+    Some("The .tar.gz")
 }
 
 /// Text that opens something when clicked: link colour, underlined under the pointer.
@@ -711,5 +781,40 @@ mod tests {
             plain_notes("## New\n- **Faster** `x`\n* b"),
             "New\n• Faster x\n• b"
         );
+    }
+
+    #[test]
+    fn the_report_fills_fields_the_bug_form_has() {
+        let form = include_str!("../../../.github/ISSUE_TEMPLATE/bug.yml").replace("\r\n", "\n");
+        let has = |line: String| form.contains(&format!("{line}\n"));
+        let fields = report_fields();
+        for (id, value) in &fields {
+            assert!(has(format!("id: {id}")), "no field {id} in bug.yml");
+            // A dropdown takes one of its options' text.
+            if matches!(*id, "os" | "install") {
+                assert!(has(format!("- {value}")), "{id}: {value:?} isn't an option");
+            }
+        }
+        assert!(fields.iter().any(|(id, _)| *id == "install"));
+        // Every value installed_with() and report_fields() can give, on any system.
+        for option in [
+            "The installer (setup.exe)",
+            "The portable zip",
+            "The plain zip",
+            "The .dmg",
+            "The AppImage",
+            "The .deb",
+            "The .rpm",
+            "The .tar.gz",
+            "Built from source",
+            "Windows 11",
+            "Windows 10",
+            "macOS (Apple Silicon)",
+            "macOS (Intel)",
+            "Linux",
+            "Other",
+        ] {
+            assert!(has(format!("- {option}")), "{option}");
+        }
     }
 }

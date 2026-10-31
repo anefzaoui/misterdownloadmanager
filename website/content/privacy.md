@@ -40,7 +40,7 @@ MDM has **no analytics, no crash reporting, no telemetry and no advertising**. I
 
 ### Reporting a problem
 
-**Help → Report a problem** opens a new GitHub issue in your browser with MDM's version, your Windows version and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.
+**Help → Report a problem** opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.
 
 ### The automation API
 

@@ -76,9 +76,9 @@ To back up your list, quit MDM (**Tasks → Exit**) and copy `downloads.json`.
 
 ## Reporting a problem
 
-Choose **Help → Report a problem**. It opens a new report on GitHub with your MDM version, Windows version and interface language already filled in. Describe what you did, what happened and what you expected. For a download, include the address if you can share it, and the reason shown under **Status**.
+Choose **Help → Report a problem**. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under **Status**.
 
-You can also go straight to [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues).
+You can also [open the form yourself](https://github.com/anefzaoui/misterdownloadmanager/issues/new?template=bug.yml); it asks for the same details.
 
 ## Next steps
 
