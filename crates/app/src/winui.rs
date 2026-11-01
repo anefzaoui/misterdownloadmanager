@@ -16,13 +16,20 @@ crate::theme::themed! {
     /// Dialog background (light: light-dialogs.md).
     pub BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
     pub TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
+    /// A group box's frame (it was #dcdcdc in dark too: brighter than the separators in it).
+    pub GROUP_LINE = rgb(0x50, 0x50, 0x50), rgb(0xdc, 0xdc, 0xdc);
+    /// A list's column headers (the main list's): every list and table has the same (they had
+    /// four: none, #f3f3f3, white).
+    pub LIST_HEADER = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff);
     /// Light: embossed #a0a0a0 statics (drawn flat here).
-    pub TEXT_DISABLED = rgb(0x80, 0x80, 0x80), rgb(0xa0, 0xa0, 0xa0);
+    /// Disabled text, the one grey of every control and label (there were five).
+    pub TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x8a, 0x8a, 0x8a);
     /// A greyed text box's text (dark: #8a8a8a, readable on the dark dialog; #6d6d6d was not).
-    pub EDIT_TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x6d, 0x6d, 0x6d);
+    pub EDIT_TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x8a, 0x8a, 0x8a);
 }
-pub const GROUP_LINE: Color32 = rgb(0xdc, 0xdc, 0xdc);
-pub const SELECTION: Color32 = rgb(0x00, 0x78, 0xd7);
+
+/// A selection's fill (rows, a chosen day, selected text): Windows' accent, white text on it.
+pub const SELECTION: Color32 = rgb(0x00, 0x78, 0xd4);
 
 /// Tahoma −11 ("MS Shell Dlg 2", 8 pt): every dialog body text.
 pub fn tahoma() -> FontId {
@@ -593,7 +600,7 @@ pub fn progress_bar(p: &Painter, rc: Rect, fraction: Option<f32>, time: f64) {
     let (track, accent) = if dark {
         (rgb(0x9a, 0x9a, 0x9a), rgb(0x60, 0xcd, 0xff))
     } else {
-        (rgb(0x86, 0x86, 0x86), rgb(0x00, 0x5f, 0xb8))
+        (rgb(0x86, 0x86, 0x86), rgb(0x00, 0x78, 0xd4))
     };
     let r = rc.height() / 2.0;
     // The track is a 1 px line through the middle, as Windows 11 draws it.
@@ -1368,103 +1375,117 @@ pub fn control_radius() -> f32 {
     if crate::theme::dark() { 4.0 } else { 3.0 }
 }
 
-/// A text box's frame. Light: Windows 11's, rounded as the buttons are, a subtle border with a
-/// darker bottom line (flat when disabled). Dark: IDM's 2 px light border around a dark fill
-/// (height 23), its corner pixels measured.
-pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
-    if !crate::theme::dark() {
-        let radius = control_radius();
-        let (fill_c, border, bottom) = if enabled {
+/// What a text box allows: typing, nothing (greyed), or reading and copying.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum FieldLook {
+    Editable,
+    Disabled,
+    ReadOnly,
+}
+
+/// A text box's frame, in both themes Windows 11's: rounded as the buttons are, a quiet 1 px
+/// border and, while it can be typed in, a stronger bottom line (the focus turns it into the
+/// accent: [`focus_bottom`]). Disabled and read-only boxes are flat: a disabled one dims its
+/// text, a read-only one keeps it (it can be read and copied) on a light grey. The frame paints
+/// the box's inside too, so every kind of text box agrees (they had three insides between them,
+/// and dark mode drew IDM's bright 2 px border round every box, disabled ones included).
+pub fn field_frame(p: &Painter, rc: Rect, look: FieldLook) {
+    let radius = control_radius();
+    let (inside, border, bottom) = match (crate::theme::dark(), look) {
+        (false, FieldLook::Editable) => {
             (Color32::WHITE, rgb(0xe5, 0xe5, 0xe5), rgb(0x86, 0x86, 0x86))
-        } else {
-            (
-                rgb(0xf9, 0xf9, 0xf9),
-                rgb(0xe9, 0xe9, 0xe9),
-                rgb(0xe9, 0xe9, 0xe9),
-            )
-        };
-        p.rect_filled(rc, radius, fill_c);
-        p.rect_stroke(rc, radius, Stroke::new(1.0, border), StrokeKind::Inside);
-        hline(
-            p,
-            rc.left() + radius,
-            rc.right() - radius - 1.0,
-            rc.bottom() - 1.0,
-            bottom,
-        );
-        return;
+        }
+        (false, FieldLook::Disabled) => (
+            rgb(0xf9, 0xf9, 0xf9),
+            rgb(0xe9, 0xe9, 0xe9),
+            rgb(0xe9, 0xe9, 0xe9),
+        ),
+        (false, FieldLook::ReadOnly) => (
+            rgb(0xf3, 0xf3, 0xf3),
+            rgb(0xe2, 0xe2, 0xe2),
+            rgb(0xe2, 0xe2, 0xe2),
+        ),
+        (true, FieldLook::Editable) => (FIELD(), rgb(0x4b, 0x4b, 0x4b), rgb(0x9a, 0x9a, 0x9a)),
+        (true, FieldLook::Disabled) => (
+            rgb(0x33, 0x33, 0x33),
+            rgb(0x44, 0x44, 0x44),
+            rgb(0x44, 0x44, 0x44),
+        ),
+        (true, FieldLook::ReadOnly) => (
+            rgb(0x30, 0x30, 0x30),
+            rgb(0x4b, 0x4b, 0x4b),
+            rgb(0x4b, 0x4b, 0x4b),
+        ),
+    };
+    p.rect_filled(rc, radius, inside);
+    p.rect_stroke(rc, radius, Stroke::new(1.0, border), StrokeKind::Inside);
+    hline(
+        p,
+        rc.left() + radius,
+        rc.right() - radius - 1.0,
+        rc.bottom() - 1.0,
+        bottom,
+    );
+}
+
+/// How far along something is, as IDM shows a download: its green fill on a track (themed: the
+/// track was light in dark mode too), the controls' rounded corners. `fraction` in 0..=1.
+pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
+    let radius = control_radius().min(rc.height() / 4.0).floor();
+    let (track, edge) = if crate::theme::dark() {
+        (rgb(0x2b, 0x2b, 0x2b), rgb(0x4b, 0x4b, 0x4b))
+    } else {
+        (rgb(0xe6, 0xe6, 0xe6), rgb(0xbc, 0xbc, 0xbc))
+    };
+    p.rect_filled(rc, radius, track);
+    let inner = rc.shrink(1.0);
+    let w = (fraction.clamp(0.0, 1.0) * inner.width()).floor();
+    if w > 0.0 {
+        let done = Rect::from_min_size(inner.min, vec2(w, inner.height()));
+        p.rect_filled(done, (radius - 1.0).max(0.0), rgb(0x0f, 0x7b, 0x0f));
     }
-    let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
-    // Dark: the dialog colour. Light: white when editable, #f0f0f0 read-only/disabled.
-    let fill_c = match (crate::theme::dark(), enabled) {
-        (true, _) => BG(),
-        (false, true) => Color32::WHITE,
-        (false, false) => rgb(0xf0, 0xf0, 0xf0),
-    };
-    p.rect_filled(rc, 0.0, fill_c);
-    let outer = rgb(0xec, 0xec, 0xec);
-    hline(p, l + 1.0, rr - 1.0, t, outer);
-    vline(p, l, t + 1.0, b - 1.0, outer);
-    vline(
+    p.rect_stroke(rc, radius, Stroke::new(1.0, edge), StrokeKind::Inside);
+}
+
+/// A box whose value is wrong (a number out of range, an address that isn't one, a schedule
+/// that can't start): the error colour round it, on the control's own corners (it was drawn
+/// three ways).
+pub fn error_frame(p: &Painter, rc: Rect) {
+    p.rect_stroke(
+        rc,
+        control_radius(),
+        Stroke::new(1.0, ERROR()),
+        StrokeKind::Inside,
+    );
+}
+
+/// A control's caption or a label beside it: the text colour, or the one disabled grey (no
+/// classic embossed shadow: Windows 11 has none).
+pub fn label(p: &Painter, x: f32, baseline: f32, s: &str, enabled: bool) -> Rect {
+    text(
         p,
-        rr,
-        t + 1.0,
-        b - 1.0,
+        x,
+        baseline,
+        s,
         if enabled {
-            rgb(0xe6, 0xe6, 0xe6)
+            LIGHT_TEXT()
         } else {
-            outer
+            TEXT_DISABLED()
+        },
+    )
+}
+
+/// [`field_frame`] of a box that can be typed in, or not.
+pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
+    field_frame(
+        p,
+        rc,
+        if enabled {
+            FieldLook::Editable
+        } else {
+            FieldLook::Disabled
         },
     );
-    hline(
-        p,
-        l + 1.0,
-        rr - 1.0,
-        b,
-        if enabled {
-            rgb(0x83, 0x83, 0x83)
-        } else {
-            outer
-        },
-    );
-    let inner = if enabled {
-        rgb(0xfe, 0xfe, 0xfe)
-    } else {
-        rgb(0xfb, 0xfb, 0xfb)
-    };
-    hline(
-        p,
-        l + 1.0,
-        rr - 1.0,
-        t + 1.0,
-        if enabled {
-            inner
-        } else {
-            rgb(0xf8, 0xf8, 0xf8)
-        },
-    );
-    vline(p, l + 1.0, t + 1.0, b - 1.0, inner);
-    vline(
-        p,
-        rr - 1.0,
-        t + 1.0,
-        b - 1.0,
-        if enabled {
-            rgb(0xf7, 0xf7, 0xf7)
-        } else {
-            inner
-        },
-    );
-    hline(p, l + 1.0, rr - 1.0, b - 1.0, inner);
-    let (ct, cb) = if enabled {
-        (rgb(0x6f, 0x6f, 0x6f), rgb(0x79, 0x79, 0x79))
-    } else {
-        (rgb(0x72, 0x72, 0x73), rgb(0x77, 0x77, 0x77))
-    };
-    px(p, l, t, ct);
-    px(p, rr, t, ct);
-    px(p, l, b, cb);
-    px(p, rr, b, cb);
 }
 
 /// A single-line edit: frame + egui text editing positioned so text starts at x+5 with its
@@ -1485,7 +1506,7 @@ pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
 
 /// The 2 px accent along a focused box's bottom edge. Light: the bottom of its rounded
 /// frame, curving into the corners as Windows 11 draws it; dark: IDM's straight line.
-fn focus_bottom(p: &Painter, rc: Rect) {
+pub fn focus_bottom(p: &Painter, rc: Rect) {
     if crate::theme::dark() {
         fill(
             p,
@@ -1556,10 +1577,12 @@ fn edit_text_with(
     color: Color32,
     align: egui::Align,
 ) -> Response {
-    // Tahoma −11: ascent 11, so the text cell top is baseline − 10 = top + 3.
+    // Tahoma −11: ascent 11, so the text cell top is baseline − 10 (top + 3 in a 21 px box),
+    // the line centred in the box at any height (baseline_in).
+    let base = baseline_in(rc.top(), rc.height());
     let inner = Rect::from_min_max(
-        pos2(rc.left() + inset, rc.top() + 3.0),
-        pos2(rc.right() - inset, rc.top() + 16.0),
+        pos2(rc.left() + inset, base - 10.0),
+        pos2(rc.right() - inset, base + 3.0),
     );
     // The whole drawn box takes clicks (the text itself fills only a strip inside it): first,
     // so the text on top still gets its own; a click elsewhere in the box focuses it.
@@ -1734,8 +1757,9 @@ pub fn readonly_field(
     ltr: bool,
     id: impl std::hash::Hash + std::fmt::Debug,
 ) -> Response {
-    edit_frame(ui.painter(), rc, true);
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, fill);
+    // `fill`: the surface it sits on (kept for its callers; the read-only look has its own).
+    let _ = fill;
+    field_frame(ui.painter(), rc, FieldLook::ReadOnly);
     let p = ui.painter().clone();
     // From the field's leading edge (an English pen in its English rect).
     let e = rect(rc);
@@ -1746,11 +1770,20 @@ pub fn readonly_field(
     } else {
         shown
     };
-    text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
+    text(
+        &p,
+        e.left() + 5.0,
+        baseline_in(e.top(), e.height()),
+        &shown,
+        LIGHT_TEXT(),
+    );
     let resp = ui.interact(rc, widget_id(ui, ("readonly", id)), Sense::click());
     focus_on_press(&resp);
     expose(&resp, egui::Role::TextInput, value, true, None);
-    show_focus(ui, &resp, rc.shrink(2.0));
+    // Focused as every text box shows it: the accent along its bottom.
+    if resp.has_focus() {
+        focus_bottom(&p, rc);
+    }
     copy_menu(&resp, value);
     if cut { resp.on_hover_text(value) } else { resp }
 }
@@ -1994,43 +2027,10 @@ fn combo_chevron(p: &Painter, rc: Rect) {
 /// Combo frame. Dark: 1 px border (#8d8d8d, or #0078d4 when focused), 2 px white ring, dark
 /// text area, white 19 px arrow zone with a grey chevron. Height 21.
 pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
-    // Light: the text box's rounded frame (an accent border while focused), the chevron.
-    if !crate::theme::dark() {
-        edit_frame(p, rc, true);
-        // Focused as a text box is: the accent along its bottom (an editable drop-down is one).
-        if focused {
-            focus_bottom(p, rc);
-        }
-        combo_chevron(p, rc);
-        return;
-    }
-    let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
-    let border = if focused {
-        rgb(0x00, 0x78, 0xd4)
-    } else {
-        rgb(0x8d, 0x8d, 0x8d)
-    };
-    p.rect_filled(rc, 0.0, Color32::WHITE);
-    p.rect_stroke(rc, 0.0, Stroke::new(1.0, border), StrokeKind::Inside);
-    let (c1, c2) = if focused {
-        (rgb(0x26, 0x4f, 0x6e), rgb(0x04, 0x73, 0xc8))
-    } else {
-        (rgb(0x56, 0x56, 0x56), rgb(0x86, 0x86, 0x86))
-    };
-    for (x, y) in [(l, t), (rr, t), (l, b), (rr, b)] {
-        px(p, x, y, c1);
-    }
-    let _ = c2;
-    // Dark text area inside the ring, before the arrow zone (light: all white); the arrow zone
-    // at the trailing edge (the left in RTL).
-    let arrow_left = if rtl() { l + 1.0 } else { rr - 19.0 };
-    if crate::theme::dark() {
-        let text_area = if rtl() {
-            Rect::from_min_max(pos2(l + 20.0, t + 3.0), pos2(rr - 2.0, b - 2.0))
-        } else {
-            Rect::from_min_max(pos2(l + 3.0, t + 3.0), pos2(arrow_left, b - 2.0))
-        };
-        p.rect_filled(text_area, 0.0, BG());
+    // A text box with the drop-down's chevron (an editable drop-down is one), in both themes.
+    edit_frame(p, rc, true);
+    if focused {
+        focus_bottom(p, rc);
     }
     combo_chevron(p, rc);
 }
@@ -2040,15 +2040,11 @@ pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
     let resp = opener_click(ui, resp);
     expose_value(&resp, egui::Role::ComboBox, value, true);
-    combo_frame(ui.painter(), rc, resp.has_focus());
-    // The arrow zone (always white) shows the state.
-    tint_part(
-        ui.painter(),
-        combo_zone(rc),
-        State::of(&resp, true),
-        false,
-        |p| combo_chevron(p, rc),
-    );
+    // A drop-down list is drawn as Windows 11 draws them (and as combo_light does): a button's
+    // face, its state across the whole of it, focus shown as a button's.
+    dropdown_frame_light(ui.painter(), rc, State::of(&resp, true));
+    combo_chevron(ui.painter(), rc);
+    show_focus(ui, &resp, rc.shrink(2.0));
     // Short of the arrow zone: a longer value ends in "..." and shows whole on hover.
     let shown = ellipsize(ui.painter(), &tahoma(), value, rc.width() - 5.0 - 22.0);
     text_start(
@@ -2084,8 +2080,11 @@ pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String) -> Response {
         )
     };
     let resp = edit_text(ui, child, value, true, false, 2.0);
-    if resp.has_focus() != was {
-        ui.data_mut(|d| d.insert_temp(key, resp.has_focus()));
+    // Read before the data lock: has_focus asks the context too, and inside it hung the app
+    // the moment the box took the focus (0.2.2: Add URL froze as it opened).
+    let focused = resp.has_focus();
+    if focused != was {
+        ui.data_mut(|d| d.insert_temp(key, focused));
         ui.ctx().request_repaint();
     }
     resp
@@ -2278,98 +2277,16 @@ pub fn checkbox_until(
     enabled: bool,
     until: Option<f32>,
 ) -> Response {
-    let caption = crate::i18n::t(caption);
-    // Light: the Windows 11 themed checkbox, caption at glyph + 16 (light-dialogs.md).
-    if !crate::theme::dark() {
-        return checkbox_light_until(ui, box_min, checked, caption, enabled, until);
-    }
-    let p = ui.painter().clone();
-    // A caption longer than its room ends in "..." at the edge, whole on hover (UI rule).
-    let (shown, cut) = fit_caption_until(&p, box_min.x + 18.0, caption, until);
-    let w = text_width(&p, &shown);
-    // `box_min` is English; the box and its caption (after it) are placed on screen.
-    let english = box_min;
-    let hit = rect(Rect::from_min_size(
-        english,
-        vec2(13.0 + 5.0 + w + 2.0, 13.0),
-    ));
-    let box_min = at(english, 13.0);
-    let sense = if enabled {
-        Sense::click()
-    } else {
-        Sense::hover()
-    };
-    let resp = ui.interact(
-        hit,
-        // By place, not caption: a caption that changes keeps the focus.
-        widget_id(ui, ("check", box_min.x as i32, box_min.y as i32)),
-        sense,
-    );
-    pass_focus_on(ui, &resp, enabled);
-    let resp = enter_is_not_a_click(ui, resp);
-    focus_on_press(&resp);
-    show_focus(ui, &resp, hit.expand(1.0));
-    if resp.clicked() {
-        *checked = !*checked;
-    }
-    expose(
-        &resp,
-        egui::Role::CheckBox,
-        caption,
+    // Windows 11's check box in both themes (dark mode drew a classic white 3-D box beside the
+    // Windows 11 ones of the same window).
+    checkbox_light_until(
+        ui,
+        box_min,
+        checked,
+        crate::i18n::t(caption),
         enabled,
-        Some(*checked),
-    );
-    let (l, t) = (box_min.x, box_min.y);
-    let (rr, b) = (l + 12.0, t + 12.0);
-    // Interior: white, or #f0f0f0 when disabled (spec "Checkbox").
-    let state = State::of(&resp, enabled);
-    let interior = match state {
-        State::Disabled => rgb(0xf0, 0xf0, 0xf0),
-        // Under the pointer and pressed: the shared highlight (a classic box has no hot look
-        // of its own; without one it didn't answer the pointer at all).
-        _ => highlight_fill(state, false).unwrap_or(Color32::WHITE),
-    };
-    solid(&p, Rect::from_min_size(box_min, vec2(13.0, 13.0)), interior);
-    hline(&p, l, rr - 1.0, t, rgb(0xa0, 0xa0, 0xa0));
-    vline(&p, l, t, b - 1.0, rgb(0xa0, 0xa0, 0xa0));
-    hline(&p, l, rr, b, Color32::WHITE);
-    vline(&p, rr, t, b, Color32::WHITE);
-    hline(&p, l + 1.0, rr - 2.0, t + 1.0, rgb(0x69, 0x69, 0x69));
-    vline(&p, l + 1.0, t + 1.0, b - 2.0, rgb(0x69, 0x69, 0x69));
-    hline(&p, l + 1.0, rr - 1.0, b - 1.0, rgb(0xe3, 0xe3, 0xe3));
-    vline(&p, rr - 1.0, t + 1.0, b - 1.0, rgb(0xe3, 0xe3, 0xe3));
-    if *checked {
-        // The classic check mark, row by row from the interior's top-left (spec "Check mark").
-        let ink = if enabled {
-            Color32::BLACK
-        } else {
-            rgb(0x80, 0x80, 0x80)
-        };
-        let (ox, oy) = (l + 2.0, t + 2.0);
-        let rows: [&[(f32, f32)]; 7] = [
-            &[(7.0, 7.0)],
-            &[(6.0, 7.0)],
-            &[(1.0, 1.0), (5.0, 7.0)],
-            &[(1.0, 2.0), (4.0, 6.0)],
-            &[(1.0, 5.0)],
-            &[(2.0, 4.0)],
-            &[(3.0, 3.0)],
-        ];
-        for (i, spans) in rows.iter().enumerate() {
-            for (a, b) in spans.iter() {
-                hline(&p, ox + a, ox + b, oy + 1.0 + i as f32, ink);
-            }
-        }
-    }
-    if !caption.is_empty() {
-        let color = if enabled { TEXT() } else { TEXT_DISABLED() };
-        text(&p, english.x + 13.0 + 5.0, t + 10.0, &shown, color);
-    }
-    if cut {
-        resp.on_hover_text(caption)
-    } else {
-        resp
-    }
+        until,
+    )
 }
 
 /// The gap a check box at English `x` leaves in a group box's top line for its caption (English
@@ -2386,7 +2303,9 @@ pub fn caption_gap(
     if shown == caption {
         return (x, english_end);
     }
-    let lead = if light { 16.0 } else { 18.0 };
+    // Every check box's caption starts 16 px after it (`light`: kept for its callers).
+    let _ = light;
+    let lead = 16.0;
     (x, x + lead + text_width(p, shown) + 2.0)
 }
 
@@ -2400,14 +2319,14 @@ pub fn group_box(p: &Painter, rc: Rect, gap: Option<(f32, f32)>) {
     });
     match gap {
         Some((g0, g1)) => {
-            hline(p, l, g0 - 1.0, t, GROUP_LINE);
-            hline(p, g1 + 1.0, rr, t, GROUP_LINE);
+            hline(p, l, g0 - 1.0, t, GROUP_LINE());
+            hline(p, g1 + 1.0, rr, t, GROUP_LINE());
         }
-        None => hline(p, l, rr, t, GROUP_LINE),
+        None => hline(p, l, rr, t, GROUP_LINE()),
     }
-    vline(p, l, t, b, GROUP_LINE);
-    vline(p, rr, t, b, GROUP_LINE);
-    hline(p, l, rr, b, GROUP_LINE);
+    vline(p, l, t, b, GROUP_LINE());
+    vline(p, rr, t, b, GROUP_LINE());
+    hline(p, l, rr, b, GROUP_LINE());
 }
 
 /// The 22 × 21 "+" / "..." buttons.
@@ -2423,7 +2342,7 @@ crate::theme::themed! {
     /// modes; here they follow the mode, dark the dark dialogs' colours.
     pub LIGHT_BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
     pub LIGHT_TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
-    pub LIGHT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x6d, 0x6d, 0x6d);
+    pub LIGHT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x8a, 0x8a, 0x8a);
     /// A text box's or a list's inside.
     pub FIELD = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
     /// A list's or a box's outline.
@@ -2436,7 +2355,7 @@ crate::theme::themed! {
     pub ETCH_LIGHT = rgb(0x50, 0x50, 0x50), rgb(0xff, 0xff, 0xff);
     /// A selected row in a focused list ([`row_list`]; the download list's colours), white
     /// text on it.
-    pub ROW_SELECTED = rgb(0x2d, 0x4b, 0x63), rgb(0x00, 0x78, 0xd7);
+    pub ROW_SELECTED = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
     /// Text that opens something ([`link`]).
     pub LINK = rgb(0x99, 0xc8, 0xff), rgb(0x00, 0x66, 0xcc);
     /// A selected row in a list without the focus.
@@ -2474,7 +2393,105 @@ pub fn number_field(
     enabled: bool,
     parent: Color32,
 ) -> Response {
-    let resp = edit_light_on(ui, rc, value, enabled, false, parent);
+    let _ = parent;
+    edit_frame(ui.painter(), rc, enabled);
+    let resp = number_text(ui, rc, value, min, max, enabled);
+    let ok = value.parse::<u64>().is_ok_and(|n| (min..=max).contains(&n));
+    if enabled && !ok {
+        error_frame(ui.painter(), rc);
+    }
+    edit_focus_line(ui, &resp, rc);
+    resp
+}
+
+/// A spin box (Windows 11's number box): a whole number in `min..=max` with its up and down
+/// arrows inside the box's trailing end, one control (they were two buttons beside a box).
+/// Typing, the keys and the range as [`number_field`]; the arrows step by 1, held they repeat.
+#[allow(clippy::too_many_arguments)]
+pub fn spin_box(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    min: u64,
+    max: u64,
+    enabled: bool,
+    id: &str,
+) -> Response {
+    let (resp, step) = spin_frame(ui, rc, enabled, id, |ui, text| {
+        number_text(ui, text, value, min, max, enabled)
+    });
+    if step != 0 {
+        let n = value.parse::<i64>().unwrap_or(min as i64) + step as i64;
+        *value = n.clamp(min as i64, max as i64).to_string();
+    }
+    let ok = value.parse::<u64>().is_ok_and(|n| (min..=max).contains(&n));
+    if enabled && !ok {
+        error_frame(ui.painter(), rc);
+    }
+    resp
+}
+
+/// A spin box's frame and arrows round `content` (its text, drawn in the room left of the
+/// arrows: given that rect): the one look of every box with arrows (numbers, a letter, a
+/// time). Returns the content's response and the arrows' step (+1, −1, 0).
+pub fn spin_frame(
+    ui: &mut Ui,
+    rc: Rect,
+    enabled: bool,
+    id: &str,
+    content: impl FnOnce(&mut Ui, Rect) -> Response,
+) -> (Response, i32) {
+    edit_frame(ui.painter(), rc, enabled);
+    let zone = spin_zone(rc);
+    let text = if rtl() {
+        Rect::from_min_max(pos2(zone.right(), rc.top()), rc.max)
+    } else {
+        Rect::from_min_max(rc.min, pos2(zone.left(), rc.bottom()))
+    };
+    let resp = content(ui, text);
+    let step = spin_arrows(ui, zone, enabled, id);
+    edit_focus_line(ui, &resp, rc);
+    (resp, step)
+}
+
+/// The arrows' place inside a spin box (on screen): its trailing 18 px within the border (the
+/// leading ones in a right-to-left interface).
+pub fn spin_zone(rc: Rect) -> Rect {
+    if rtl() {
+        Rect::from_min_max(
+            pos2(rc.left() + 1.0, rc.top() + 1.0),
+            pos2(rc.left() + 19.0, rc.bottom() - 1.0),
+        )
+    } else {
+        Rect::from_min_max(
+            pos2(rc.right() - 19.0, rc.top() + 1.0),
+            pos2(rc.right() - 1.0, rc.bottom() - 1.0),
+        )
+    }
+}
+
+/// A plain line of text in a box drawn by its caller (a spin box's letter): the text boxes'
+/// typing, caret and menu without a frame of its own.
+pub fn field_text(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> Response {
+    let color = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
+    edit_text_with(ui, rc, value, enabled, false, 5.0, color, start_align())
+}
+
+/// A number box's text and keys: digits only, no longer than `max` has; Up / Down step it by 1,
+/// Page Up / Down by 10; left, it comes back into `min..=max`.
+fn number_text(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    min: u64,
+    max: u64,
+    enabled: bool,
+) -> Response {
+    let resp = field_text(ui, rc, value, enabled);
     value.retain(|c| c.is_ascii_digit());
     value.truncate(max.to_string().len());
     if resp.has_focus() {
@@ -2497,15 +2514,6 @@ pub fn number_field(
     }
     if resp.lost_focus() {
         *value = number_in(value, min, max).to_string();
-    }
-    let ok = value.parse::<u64>().is_ok_and(|n| (min..=max).contains(&n));
-    if enabled && !ok {
-        ui.painter().rect_stroke(
-            rc,
-            control_radius(),
-            Stroke::new(1.0, ERROR()),
-            StrokeKind::Inside,
-        );
     }
     resp
 }
@@ -2536,16 +2544,9 @@ fn edit_light_with(
     password: bool,
     parent: Color32,
 ) -> Response {
+    // `parent`: the surface a box sits on (kept for its callers; the frame paints the inside).
+    let _ = parent;
     edit_frame(ui.painter(), rc, enabled);
-    let fill_c = if enabled { FIELD() } else { parent };
-    fill(
-        ui.painter(),
-        rc.left() + 2.0,
-        rc.top() + 2.0,
-        rc.right() - 3.0,
-        rc.bottom() - 3.0,
-        fill_c,
-    );
     let color = if enabled {
         LIGHT_TEXT()
     } else {
@@ -2589,9 +2590,6 @@ pub fn multiline_light(
     enabled: bool,
 ) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    if enabled {
-        ui.painter().rect_filled(rc.shrink(2.0), 0.0, FIELD());
-    }
     let ink = if enabled {
         LIGHT_TEXT()
     } else {
@@ -2672,6 +2670,25 @@ pub fn multiline_light(
     ui.data_mut(|d| d.insert_temp(off_key, off_now));
     edit_focus_line(ui, &resp, rc);
     resp
+}
+
+/// The baseline (last row of the capitals) of Tahoma −11 text centred in a control `height` tall
+/// at `top`: its 8-row capitals start at `top + floor((height − 8) / 2)`. At 21 px that is the
+/// measured `top + 13` of Windows' controls; every painter that centres a line of text in its box
+/// (buttons, text boxes, read-only fields) uses it, so they agree at any height (a fixed `+ 13`
+/// put text 1–3 px high in the 22–26 px ones).
+pub fn baseline_in(top: f32, height: f32) -> f32 {
+    top + ((height - 8.0) / 2.0).floor() + 7.0
+}
+
+/// A button label's baseline below the button's top: as measured on Windows' buttons at their
+/// usual heights (13; dark 20–23 px: 14), centred ([`baseline_in`]) in taller ones.
+fn button_baseline(height: f32, dark: bool) -> f32 {
+    match height {
+        h if dark && h > 19.0 && h <= 23.0 => 14.0,
+        h if h <= 21.0 => 13.0,
+        h => baseline_in(0.0, h),
+    }
 }
 
 /// Light push button: #fdfdfd fill, radius 3; border #d0d0d0 (bottom #bababa), default
@@ -2755,12 +2772,12 @@ fn button_face(
     let mnemonic = mnemonic.filter(|_| !cut);
     let w = text_width(p, &shown);
     let x = (rc.center().x - w / 2.0 - if dark { 1.0 } else { 0.0 }).round();
-    let baseline = rc.top()
-        + if dark && rc.height() > 19.0 {
-            14.0
-        } else {
-            13.0
-        };
+    // "..." sits on the baseline (no capitals above it): the dots themselves centred.
+    let baseline = if shown.trim() == "..." {
+        rc.top() + (rc.height() / 2.0).round() + 1.0
+    } else {
+        rc.top() + button_baseline(rc.height(), dark)
+    };
     // Centred in a rect on screen: placed by its left, not by an English pen.
     let drawn = text_at(p, tahoma(), x, baseline, &shown, face.text);
     let mut pressed_by_key = false;
@@ -2812,21 +2829,25 @@ struct Face {
 fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
     let pressed = state == State::Pressed;
     let face = if dark {
+        // Windows 11's dark buttons: a face a little lighter than the window, a quiet border (it
+        // was IDM's bright one, white round the default button), the default button outlined in
+        // the accent as in light mode.
         let (border, bottom) = match kind {
-            ButtonKind::Normal => (rgb(0x9b, 0x9b, 0x9b), rgb(0x89, 0x89, 0x89)),
-            ButtonKind::Default => (rgb(0xff, 0xff, 0xff), rgb(0xe5, 0xe5, 0xe5)),
-            ButtonKind::Disabled => (rgb(0x40, 0x40, 0x40), rgb(0x40, 0x40, 0x40)),
+            ButtonKind::Normal => (rgb(0x55, 0x55, 0x55), rgb(0x4b, 0x4b, 0x4b)),
+            ButtonKind::Default => (accent(), rgb(0x4f, 0xb5, 0xe4)),
+            ButtonKind::Disabled => (rgb(0x46, 0x46, 0x46), rgb(0x46, 0x46, 0x46)),
         };
         Face {
             fill: match state {
-                State::Pressed => rgb(0x26, 0x26, 0x26),
-                State::Hot => rgb(0x45, 0x45, 0x45),
-                _ => rgb(0x33, 0x33, 0x33),
+                State::Disabled => rgb(0x3d, 0x3d, 0x3d),
+                State::Pressed => rgb(0x3c, 0x3c, 0x3c),
+                State::Hot => rgb(0x4b, 0x4b, 0x4b),
+                _ => rgb(0x44, 0x44, 0x44),
             },
             border,
             bottom,
             text: match state {
-                State::Disabled => rgb(0x80, 0x80, 0x80),
+                State::Disabled => TEXT_DISABLED(),
                 State::Pressed => rgb(0xc8, 0xc8, 0xc8),
                 _ => TEXT(),
             },
@@ -2847,7 +2868,7 @@ fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
             border,
             bottom,
             text: match state {
-                State::Disabled => rgb(0x83, 0x83, 0x83),
+                State::Disabled => TEXT_DISABLED(),
                 State::Pressed => rgb(0x5d, 0x5d, 0x5d),
                 _ => LIGHT_TEXT(),
             },
@@ -3063,23 +3084,6 @@ crate::theme::themed! {
     pub TAB_HOT = rgb(0x46, 0x46, 0x46), rgb(0xfd, 0xfd, 0xfd);
     CHEVRON = rgb(0xc8, 0xc8, 0xc8), rgb(0x6f, 0x6f, 0x6f);
     CHEVRON_DISABLED = rgb(0x6a, 0x6a, 0x6a), rgb(0xbe, 0xbe, 0xbe);
-    /// Small controls' outline (spinners, icon buttons).
-    CONTROL_EDGE = rgb(0x5a, 0x5a, 0x5a), rgb(0xd2, 0xd2, 0xd2);
-}
-
-/// A small control's face in `state` (spinner arrows, icon buttons): the shared tints over its
-/// resting face.
-fn subtle_or(state: State) -> Color32 {
-    let dark = crate::theme::dark();
-    match state {
-        State::Disabled if dark => rgb(0x30, 0x30, 0x30),
-        State::Disabled => rgb(0xf3, 0xf3, 0xf3),
-        _ => subtle_fill(state, dark).unwrap_or(if dark {
-            rgb(0x33, 0x33, 0x33)
-        } else {
-            rgb(0xfa, 0xfa, 0xfa)
-        }),
-    }
 }
 
 /// A Windows 11 check box's 13 × 13 box in `rc`, ticked or not, in `state`: the one look of
@@ -3128,14 +3132,25 @@ pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
     }
 }
 
+/// A Windows 11 check box that is partly ticked (a folder with some of its files chosen): the
+/// accent box with a dash, as Windows draws it (a square sat on the unticked box before).
+pub fn check_box_mixed(p: &Painter, rc: Rect, state: State) {
+    p.rect_filled(rc, 2.0, fluent_accent(state));
+    let y = rc.center().y.floor() + 0.5;
+    p.line_segment(
+        [pos2(rc.left() + 3.0, y), pos2(rc.right() - 3.0, y)],
+        Stroke::new(1.4, fluent_mark()),
+    );
+}
+
 /// A checked Windows 11 check box's or radio's accent in `state`: lighter under the pointer,
 /// lighter still while pressed, grey when disabled.
 fn fluent_accent(state: State) -> Color32 {
     match (state, crate::theme::dark()) {
         (State::Disabled, false) => rgb(0xc3, 0xc3, 0xc3),
-        (State::Hot, false) => rgb(0x19, 0x6e, 0xbf),
-        (State::Pressed, false) => rgb(0x33, 0x7f, 0xc6),
-        (_, false) => rgb(0x00, 0x5f, 0xb8),
+        (State::Hot, false) => rgb(0x1a, 0x86, 0xd9),
+        (State::Pressed, false) => rgb(0x33, 0x92, 0xdc),
+        (_, false) => rgb(0x00, 0x78, 0xd4),
         (State::Disabled, true) => rgb(0x5a, 0x5a, 0x5a),
         (State::Hot, true) => rgb(0x5a, 0xbc, 0xe8),
         (State::Pressed, true) => rgb(0x52, 0xa6, 0xcc),
@@ -3803,6 +3818,34 @@ pub fn chevron_light(p: &Painter, at: Pos2, enabled: bool) {
 
 /// The frame of a light drop-down (combo or date picker): rounded `#c8c8c8` border, `#fefefe`
 /// fill; enabled ones darken on hover and take the accent border while open.
+/// A small button's face (a spin box's halves, the icon buttons): a push button's colours in
+/// every state ([`button_colors`]): they had their own, and a disabled one looked hovered.
+pub fn button_like(p: &Painter, rc: Rect, state: State) {
+    let kind = if state == State::Disabled {
+        ButtonKind::Disabled
+    } else {
+        ButtonKind::Normal
+    };
+    let face = button_colors(kind, state, crate::theme::dark());
+    let radius = control_radius().min((rc.height() / 3.0).floor());
+    p.rect_filled(rc, radius, face.fill);
+    p.rect_stroke(
+        rc,
+        radius,
+        Stroke::new(1.0, face.border),
+        StrokeKind::Inside,
+    );
+    if rc.height() >= 14.0 {
+        hline(
+            p,
+            rc.left() + radius,
+            rc.right() - radius - 1.0,
+            rc.bottom() - 1.0,
+            face.bottom,
+        );
+    }
+}
+
 pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
     // Drawn as a button (Windows 11 draws its drop-downs so): the same faces and states, in
     // the current theme; open, the accent border and no bottom edge (its list is out).
@@ -3967,9 +4010,10 @@ pub fn combo_light(
     chosen
 }
 
-/// Up-down buddy in `rc` (the right part of an edit): two `#fafafa` buttons with `#d2d2d2`
-/// borders and 5 × 3 arrows. Returns +1 / −1 for a click (held: repeats), 0 otherwise.
-pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
+/// A spin box's arrows in `zone` ([`spin_zone`]): up and down halves inside the box, without
+/// borders of their own, tinted under the pointer and pressed as the box's other parts are.
+/// Returns +1 / −1 for a click (held: repeats), 0 otherwise.
+pub fn spin_arrows(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
     let p = ui.painter().clone();
     let half = (rc.height() / 2.0).floor();
     let up = Rect::from_min_size(rc.min, vec2(rc.width(), half));
@@ -3991,22 +4035,18 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
             crate::i18n::t("Decrease")
         };
         expose(&r, egui::Role::Button, name, enabled, None);
-        let face = if !enabled {
-            subtle_or(State::Disabled)
+        let state = if !enabled {
+            State::Disabled
         } else if r.is_pointer_button_down_on() {
-            subtle_or(State::Pressed)
+            State::Pressed
         } else if r.hovered() {
-            subtle_or(State::Hot)
+            State::Hot
         } else {
-            subtle_or(State::Normal)
+            State::Normal
         };
-        let border = if enabled {
-            CONTROL_EDGE()
-        } else {
-            HEADER_LINE()
-        };
-        p.rect_filled(part, 1.0, face);
-        p.rect_stroke(part, 1.0, Stroke::new(1.0, border), StrokeKind::Inside);
+        if let Some(tint) = subtle_fill(state, crate::theme::dark()) {
+            p.rect_filled(part.shrink(1.0), 2.0, tint);
+        }
         let c = part.center();
         let arrow = if enabled {
             LIGHT_TEXT()
@@ -4049,14 +4089,7 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
         None,
     );
     let p = ui.painter();
-    let face = subtle_or(State::of(&resp, enabled));
-    p.rect_filled(rc, 2.0, face);
-    p.rect_stroke(
-        rc,
-        2.0,
-        Stroke::new(1.0, CONTROL_EDGE()),
-        StrokeKind::Inside,
-    );
+    button_like(p, rc, State::of(&resp, enabled));
     show_focus(ui, &resp, rc.shrink(2.0));
     // No label of its own: its tooltip says what it does (translated).
     resp.on_hover_text(crate::i18n::t(tip))
@@ -4118,7 +4151,14 @@ mod tests {
             ".memory_mut(|",
             ".input(|",
             ".input_mut(|",
+            ".options(|",
+            ".options_mut(|",
+            ".fonts(|",
+            ".fonts_mut(|",
         ];
+        // What asks the context again: its own methods, and a Response's that read its memory
+        // (`d.insert_temp(key, resp.has_focus())` froze every editable drop-down as it took the
+        // focus: 0.2.2's Add URL).
         let inner = [
             "ctx()",
             ".viewport_id()",
@@ -4126,6 +4166,19 @@ mod tests {
             "_key(ctx",
             "_key(ui",
             "_key(&",
+            ".has_focus()",
+            ".gained_focus()",
+            ".lost_focus()",
+            ".request_focus()",
+            ".surrender_focus()",
+            "ui.data(",
+            "ui.data_mut(",
+            "ui.memory(",
+            "ui.memory_mut(",
+            "ui.input(",
+            "ui.input_mut(",
+            "keyboard_in_use(",
+            "widget_id(",
         ];
         let mut found = Vec::new();
         for entry in std::fs::read_dir(&dir).unwrap() {
@@ -4168,6 +4221,22 @@ mod tests {
             found.is_empty(),
             "context asked inside its own lock: {found:?}"
         );
+    }
+
+    #[test]
+    fn button_labels_stay_centred_in_taller_buttons() {
+        // The measured heights keep their measured baselines.
+        assert_eq!(button_baseline(21.0, false), 13.0);
+        assert_eq!(button_baseline(19.0, false), 13.0);
+        assert_eq!(button_baseline(23.0, true), 14.0);
+        assert_eq!(button_baseline(21.0, true), 14.0);
+        // Taller: the label moves down by half the extra height.
+        assert_eq!(button_baseline(25.0, false), 15.0);
+        assert_eq!(button_baseline(27.0, true), 16.0);
+        // Text boxes and read-only fields centre the same way.
+        assert_eq!(baseline_in(100.0, 21.0), 113.0);
+        assert_eq!(baseline_in(100.0, 23.0), 114.0);
+        assert_eq!(baseline_in(100.0, 26.0), 116.0);
     }
 
     #[test]

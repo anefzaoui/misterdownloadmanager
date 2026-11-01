@@ -119,6 +119,8 @@ try {
     ',"category_dirs":[' + ($dirs -join ",") + ']}}')
 
   $srv = Start-Process -PassThru -WindowStyle Hidden $Server -ArgumentList "--bind 127.0.0.1:$Port"
+  # /show crash-test:freeze for the crash report window's shot.
+  $env:MDM_CRASH_TEST = "1"
   $env:MDM_DATA_DIR = "$work\data"
   $env:MDM_ZOOM = "$Zoom"
   $env:MDM_OFFSCREEN = "1"
@@ -199,10 +201,28 @@ try {
     if ($Only.Count -eq 1) { Start-Sleep 10 }
     if (Want $name) { Shot $app.Id $main $name }
   }
+  # The crash report window, from a freeze on purpose (MDM_CRASH_TEST): last, as it leaves MDM
+  # frozen. The window is the crash monitor's, a process of its own, found by its title.
+  $crashShot = if ($dark) { "crash-report-dark" } else { "crash-report" }
+  if (Want $crashShot) {
+    & $Exe /show "crash-test:freeze" | Out-Null
+    $title = "Mister Download Manager crash report"
+    $mon = 0
+    for ($i = 0; $i -lt 60 -and -not $mon; $i++) {
+      Start-Sleep -Milliseconds 500
+      $mon = (Get-Process misterdownloadmanager -ErrorAction SilentlyContinue |
+        Where-Object { $_.Id -ne $app.Id -and (Titles $_.Id) -contains $title } | Select-Object -First 1).Id
+    }
+    if (-not $mon) { throw "no crash report window" }
+    # The dump read and GitHub searched.
+    Start-Sleep 8
+    Shot $mon $title $crashShot
+    Stop-Process -Id $mon -ErrorAction SilentlyContinue
+  }
 } finally {
   if ($app) { Stop-Process -Id $app.Id -ErrorAction SilentlyContinue }
   if ($srv) { Stop-Process -Id $srv.Id -ErrorAction SilentlyContinue }
-  Remove-Item Env:MDM_DATA_DIR, Env:MDM_ZOOM, Env:MDM_OFFSCREEN -ErrorAction SilentlyContinue
+  Remove-Item Env:MDM_DATA_DIR, Env:MDM_ZOOM, Env:MDM_OFFSCREEN, Env:MDM_CRASH_TEST -ErrorAction SilentlyContinue
   # The downloads (a 6 GB file partly fetched) don't stay behind.
   Start-Sleep 1
   Remove-Item $work -Recurse -Force -ErrorAction SilentlyContinue

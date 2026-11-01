@@ -32,6 +32,10 @@ mkdir -p "$tree/usr/bin" "$tree/usr/share/applications" \
   "$tree/usr/share/icons/hicolor/256x256/apps" "$tree/usr/share/misterdownloadmanager" \
   "$tree/usr/share/doc/misterdownloadmanager"
 for p in "${programs[@]}"; do install -m 755 "$bin/$p" "$tree/usr/bin/$p"; done
+# Crash reports: the release's symbols from the programs' debug info (the -symbols zip), then the
+# programs without it (the build id that matches them to the symbols stays).
+python3 "$root/tools/installer/symbols.py" linux-x86_64 "$version" "$dist" "${programs[@]/#/$bin/}"
+for p in "${programs[@]}"; do strip --strip-debug "$tree/usr/bin/$p"; done
 cp -r "$root/target/extension/chromium" "$tree/usr/share/misterdownloadmanager/extension-chromium"
 cp "$root/target/extension/mdm-firefox.xpi" "$tree/usr/share/misterdownloadmanager/"
 cp "$root/LICENSE" "$root/ATTRIBUTION.md" "$tree/usr/share/doc/misterdownloadmanager/"

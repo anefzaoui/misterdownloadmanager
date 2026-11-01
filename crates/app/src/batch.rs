@@ -304,7 +304,7 @@ impl Batch {
         );
         let on = self.auth;
         // i18n: noun: the user name for the server (an input box follows)
-        embossed(&p, o.x + 85.0, o.y + 236.0, crate::i18n::t("Login"), on);
+        winui::label(&p, o.x + 85.0, o.y + 236.0, crate::i18n::t("Login"), on);
         winui::edit_light(
             ui,
             r(o, 116.0, 221.0, 117.0, 23.0),
@@ -312,7 +312,7 @@ impl Batch {
             on,
             false,
         );
-        embossed(&p, o.x + 290.0, o.y + 236.0, crate::i18n::t("Password"), on);
+        winui::label(&p, o.x + 290.0, o.y + 236.0, crate::i18n::t("Password"), on);
         winui::password_light(ui, r(o, 342.0, 221.0, 113.0, 23.0), &mut self.password, on);
 
         // Preview: first, second and last file.
@@ -345,24 +345,21 @@ impl Batch {
                 },
             ),
         ];
-        for (label, base, y, value) in rows {
-            text(&p, o.x + 11.0, o.y + base, label, LIGHT_TEXT());
+        for (label, _, y, value) in rows {
             let rc = r(o, 102.0, y, 362.0, 18.0);
-            preview(&p, rc);
-            // An address, from the field's leading edge (an English pen in its English rect).
-            let e = winui::rect(rc);
-            let value = crate::i18n::ltr(&value);
-            let (rect, cut) = winui::text_fit(
-                &p,
-                e.left() + 4.0,
-                e.top() + 13.0,
+            // The caption on the field's text line.
+            let base = winui::baseline_in(o.y + y, 18.0);
+            text(&p, o.x + 11.0, base, label, LIGHT_TEXT());
+            // The shared read-only field (it was a hand-drawn Windows 7 sunken box): the address
+            // can be selected and copied, and screen readers read it.
+            winui::readonly_field(
+                ui,
+                rc,
                 &value,
-                LIGHT_TEXT(),
-                e.right() - 3.0,
+                LIGHT_BG(),
+                true,
+                ("batch-preview", y as i32),
             );
-            if cut {
-                winui::full_on_hover(ui, rect, ("batch-preview", y as i32), &value);
-            }
         }
         text(&p, o.x + 23.0, o.y + 317.0, "...", LIGHT_TEXT());
         if urls.len() > 2 {
@@ -409,28 +406,26 @@ impl Batch {
             "to" => &mut self.to,
             _ => &mut self.size,
         };
-        let rc = r(o, x, 154.0, spin_x - x, 26.0);
+        // One box, its arrows inside (they were a separate up-down beside it).
+        let rc = r(o, x, 154.0, spin_x + 18.0 - x, 26.0);
+        let id = format!("batch-{which}");
         // The wildcard size runs 1 to 10 (what expand() makes); from and to, any number.
         let (min, max) = if which == "size" {
             (1, 10)
         } else {
             (0, 999_999_999)
         };
-        if letters {
-            winui::edit_light(ui, rc, value, true, false);
-            value.retain(|c| c.is_ascii_alphabetic());
-            value.truncate(1);
-        } else {
-            winui::number_field(ui, rc, value, min, max, true, winui::LIGHT_BG());
+        if !letters {
+            winui::spin_box(ui, rc, value, min, max, true, &id);
+            return;
         }
-        let step = winui::updown_light(
-            ui,
-            r(o, spin_x, 154.0, 18.0, 26.0),
-            true,
-            &format!("batch-{which}"),
-        );
+        let (_, step) = winui::spin_frame(ui, rc, true, &id, |ui, text| {
+            winui::field_text(ui, text, value, true)
+        });
+        value.retain(|c| c.is_ascii_alphabetic());
+        value.truncate(1);
         if step != 0 {
-            *value = if letters {
+            *value = {
                 let c = value.chars().next().unwrap_or('a');
                 // Within the letter's own case.
                 let (lo, hi) = if c.is_ascii_uppercase() {
@@ -440,32 +435,9 @@ impl Batch {
                 };
                 let n = (c as u8 as i32 + step).clamp(lo as i32, hi as i32) as u8;
                 (n as char).to_string()
-            } else {
-                let n = value.parse::<i64>().unwrap_or(0) + step as i64;
-                n.clamp(min as i64, max as i64).to_string()
             };
         }
     }
-}
-
-/// A classic disabled static: `#a0a0a0` with a white copy at (+1, +1).
-fn embossed(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool) {
-    if enabled {
-        text(p, x, base, s, LIGHT_TEXT());
-    } else {
-        text(p, x + 1.0, base + 1.0, s, winui::ETCH_LIGHT());
-        text(p, x, base, s, winui::TEXT_DISABLED());
-    }
-}
-
-/// A sunken preview field (WS_EX_STATICEDGE): `#a0a0a0` top/left, white bottom/right.
-fn preview(p: &egui::Painter, rc: egui::Rect) {
-    let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
-    winui::fill(p, l, t, rr, b, LIGHT_BG());
-    winui::fill(p, l, t, rr, t, winui::ETCH_SHADOW());
-    winui::fill(p, l, t, l, b, winui::ETCH_SHADOW());
-    winui::fill(p, l, b, rr, b, winui::ETCH_LIGHT());
-    winui::fill(p, rr, t, rr, b, winui::ETCH_LIGHT());
 }
 
 #[cfg(test)]

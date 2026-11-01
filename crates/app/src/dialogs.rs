@@ -152,6 +152,7 @@ fn dialog_window<T>(
     if let Some(p) = place(ctx, key, client) {
         builder = builder.with_position(p);
     }
+    crate::crash::window(id);
     let out = ctx.show_viewport_immediate(ViewportId::from_hash_of(id), builder, |ui, _| {
         if ui.ctx().input(|i| i.viewport().close_requested()) {
             return Outcome::Closed;
@@ -209,6 +210,21 @@ fn dialog_window<T>(
         ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
     }
     out
+}
+
+/// Bring dialog `id` to the front with the keyboard focus once it shows (a window that opens by
+/// itself with news, such as a new version found at start, as apps announce theirs). Call every
+/// frame while it should; true once done. Off-screen test runs never take the focus.
+pub fn focus_when_shown(ctx: &egui::Context, id: &str) -> bool {
+    let key = egui::Id::unique(("dialog-pos", id));
+    let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
+    if !shown {
+        return false;
+    }
+    if !crate::offscreen() {
+        raise(ctx, ViewportId::from_hash_of(id));
+    }
+    true
 }
 
 /// How many times the current window has closed (its text boxes' ids include it).
@@ -667,12 +683,7 @@ impl FileInfo {
                     self.url_edited(ui.ctx());
                 }
                 if self.url_bad {
-                    p.rect_stroke(
-                        url_rc,
-                        0.0,
-                        egui::Stroke::new(1.0, winui::ERROR()),
-                        egui::StrokeKind::Inside,
-                    );
+                    winui::error_frame(&p, url_rc);
                 }
 
                 // i18n: noun: label before the list of categories
@@ -2174,5 +2185,43 @@ pub fn ensure_folder<T>(
         Outcome::Done(()) => asking
             .take()
             .map_or(Outcome::Open, |(_, v)| Outcome::Done(v)),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Add URL opens and its address box takes the focus, frame after frame, without the app
+    /// hanging (0.2.2 froze here: an editable drop-down asked egui's context inside its lock).
+    #[test]
+    fn add_url_opens_and_takes_the_focus() {
+        let (tx, rx) = std::sync::mpsc::channel();
+        std::thread::spawn(move || {
+            for (address, history) in [
+                ("", vec![]),
+                ("https://example.com/file.zip", vec![]),
+                (
+                    "https://example.com/file.zip",
+                    vec!["https://a.example/x.zip".to_owned()],
+                ),
+            ] {
+                let ctx = egui::Context::default();
+                let mut dlg = AddUrl {
+                    address: address.to_owned(),
+                    history,
+                    ..AddUrl::default()
+                };
+                for _ in 0..6 {
+                    let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+                        let _ = dlg.show(ui.ctx());
+                    });
+                    out.textures_delta.clear();
+                }
+            }
+            tx.send(()).unwrap();
+        });
+        rx.recv_timeout(std::time::Duration::from_secs(20))
+            .expect("Add URL hung");
     }
 }

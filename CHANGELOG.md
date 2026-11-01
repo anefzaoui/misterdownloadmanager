@@ -3,6 +3,43 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [0.2.3] - 2026-11-01
+
+A fix for 0.2.2, which froze on every system as soon as Add URL opened, and crash reports, so the
+next problem like it is caught and fixed sooner.
+
+### Added
+
+- **Crash reports.** If MDM closes unexpectedly or stops responding, a report window opens. It
+  shows what happened and where in MDM's code, lets you read the whole report, and **Send on
+  GitHub** opens a crash report form in your browser, filled in. Nothing is sent by itself. When
+  the same problem was already reported, it takes you to that issue instead. A frozen MDM can be
+  ended and restarted from there. Reports leave out your download addresses and file names. See
+  [Crash reports](docs/crash-reports.md).
+- **A log**, kept in MDM's data folder (`logs`), so a report can show what led to a problem.
+- **MDM checks for updates every time it starts** (it was once a week), and once a day while it
+  stays open; a new version's window opens in front. **Check for updates at every start** in
+  that window turns it off.
+
+### Changed
+
+- **One look for every kind of control**, in both themes: text boxes, read-only fields, check
+  boxes, buttons, drop-downs, tabs, lists and their headers, popups and progress bars are each
+  drawn one way everywhere (dark mode drew some windows' controls in an older style, with bright
+  borders). A number and its arrows are one box now, as Windows 11's are; text is centred in
+  controls of any height; one blue for selection and focus.
+- **A tour of the features** on the website instead of a wall of screenshots.
+
+### Fixed
+
+- **The window froze for seconds while a big download was writing**: MDM saved its list on the
+  window's thread, and the save waited for the disk. It saves on a thread of its own now (the
+  new crash reports caught it).
+- **Add URL froze MDM** (Tasks → Add new download, the toolbar's Add URL, Ctrl+N), and so did
+  Download File Info: their address and Save As boxes took the keyboard focus and MDM waited on
+  itself. Everything clicked after that seemed to do nothing. A test now opens Add URL the way
+  you do, and a stricter check looks for this kind of hang in the whole app.
+
 ## [0.2.2] - 2026-11-01
 
 A sweep through every window for the small things that make a program feel finished: how each

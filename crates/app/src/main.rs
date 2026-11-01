@@ -5,6 +5,8 @@ mod batch;
 mod categories;
 mod checksum;
 mod chrome;
+mod crash;
+mod crashui;
 mod dialogs;
 mod droptarget;
 mod errors;
@@ -81,6 +83,13 @@ pub fn quiet(builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
 }
 
 fn main() -> eframe::Result {
+    // MDM's crash monitor (crash.rs started it): the report window when the app crashes or
+    // freezes; it never becomes MDM's instance.
+    let all: Vec<String> = std::env::args().collect();
+    if let Some(m) = mdm_crash::MonitorArgs::parse(&all) {
+        return crashui::monitor_main(m);
+    }
+
     // A windowed app has no console: record panics in %APPDATA%\misterdownloadmanager\crash.log.
     let default_hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |info| {
@@ -132,6 +141,22 @@ fn main() -> eframe::Result {
     let z = zoom.unwrap_or(1.0);
     // The list and settings, read before the window opens: it comes back where it was left.
     let loaded = store::load();
+    // The log (release builds too) and the crash monitor.
+    if let Some(data) = mdm_ipc::data_dir() {
+        mdm_crash::logs::init(&data, mdm_crash::logs::APP);
+        tracing::info!(
+            "Mister Download Manager {} ({}) starting",
+            help::VERSION,
+            help::COMMIT
+        );
+        crash::start(
+            &data,
+            crash::session(
+                loaded.settings.language.as_deref().unwrap_or("system"),
+                loaded.settings.dark_mode_support,
+            ),
+        );
+    }
     #[cfg(unix)]
     use unix::on_a_screen;
     #[cfg(windows)]
@@ -160,7 +185,7 @@ fn main() -> eframe::Result {
         viewport,
         ..Default::default()
     };
-    eframe::run_native(
+    let result = eframe::run_native(
         "misterdownloadmanager",
         opts,
         Box::new(move |cc| {
@@ -169,5 +194,7 @@ fn main() -> eframe::Result {
             }
             Ok(Box::new(app::App::new(cc, handle, cmd, loaded)))
         }),
-    )
+    );
+    crash::clean_exit();
+    result
 }

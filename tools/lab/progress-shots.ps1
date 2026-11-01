@@ -18,7 +18,9 @@ param(
   [string[]]$Only = @(),
   # The torrent's other details tabs too ("peers", "trackers", "pieces", "general"), each
   # as progress-torrent-<tab>.png (/show progress:<tab>).
-  [string[]]$TorrentTabs = @()
+  [string[]]$TorrentTabs = @(),
+  # Dark mode (Windows' app mode must be dark too, as MDM follows it); the same file names.
+  [switch]$Dark
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -72,7 +74,7 @@ function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$pre
   $list = [ordered]@{
     next_id = 2; version = 2; items = @($item)
     settings = [ordered]@{
-      language = "en"; language_asked = $true; dark_mode_support = $false; category_dirs = $dirs
+      language = "en"; language_asked = $true; dark_mode_support = [bool]$Dark; category_dirs = $dirs
     }
   }
   if ($prepare) { & $prepare $dir }

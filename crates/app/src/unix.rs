@@ -1,7 +1,8 @@
 //! Linux and macOS counterparts of what `win32` does through Windows (experimental builds):
 //! starting with the session, the browsers' host registration, sounds, showing a file in its
 //! folder, and the torrent link handler. Each runs the system's own tool, so nothing here needs
-//! a library.
+//! a library; the crash reports (at the end) are the exception: signals and Mach exceptions
+//! through crash-handler, thread and process ids through libc.
 
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
@@ -203,4 +204,85 @@ pub fn wheel_lines() -> Option<f32> {
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {
     true
+}
+
+// ---- Crash reports (crash.rs, mdm-crash) -------------------------------------------------------
+
+static CRASH_HANDLER: std::sync::OnceLock<mdm_crash::crash_handler::CrashHandler> =
+    std::sync::OnceLock::new();
+
+/// Catch native crashes (SIGSEGV, SIGBUS, SIGILL, SIGFPE, SIGABRT on Linux; Mach exceptions on
+/// macOS) and have `reporter`'s monitor dump this process when one comes. On Linux only the
+/// monitor may read this process (ptrace).
+#[allow(unsafe_code)]
+pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter>) -> bool {
+    use mdm_crash::crash_handler::{CrashEventResult, CrashHandler, make_crash_event};
+    #[cfg(target_os = "linux")]
+    let monitor = reporter.monitor_pid();
+    // SAFETY: the closure runs in the signal / exception handler; it only sends the dump request
+    // over the already-open socket.
+    let event = unsafe { make_crash_event(move |cc| CrashEventResult::Handled(reporter.dump(cc))) };
+    match CrashHandler::attach(event) {
+        Ok(h) => {
+            #[cfg(target_os = "linux")]
+            h.set_ptracer(monitor);
+            CRASH_HANDLER.set(h).is_ok()
+        }
+        Err(e) => {
+            tracing::warn!("crash handler not attached: {e}");
+            false
+        }
+    }
+}
+
+/// Have the monitor dump this process now (a panic, a freeze): every thread, this one asking.
+/// The process goes on.
+pub fn dump_now() -> bool {
+    use mdm_crash::crash_handler::CrashEventResult;
+    CRASH_HANDLER.get().is_some_and(|h| {
+        #[cfg(target_os = "linux")]
+        return matches!(
+            h.simulate_signal(libc::SIGUSR2 as u32),
+            CrashEventResult::Handled(true)
+        );
+        #[cfg(target_os = "macos")]
+        return h.simulate_exception(None);
+        #[allow(unreachable_code)]
+        {
+            let _ = (h, CrashEventResult::Handled(false));
+            false
+        }
+    })
+}
+
+/// This thread's id as the dump knows it: the tid on Linux; on macOS none (the dump's ids are
+/// Mach port names of the monitor's own; the window thread is found as the main thread).
+#[allow(unsafe_code)]
+pub fn thread_id() -> u32 {
+    #[cfg(target_os = "linux")]
+    // SAFETY: a plain query.
+    return unsafe { libc::gettid() } as u32;
+    #[allow(unreachable_code)]
+    0
+}
+
+/// Is process `pid` still running?
+#[allow(unsafe_code)]
+pub fn process_alive(pid: u32) -> bool {
+    // SAFETY: signal 0 only checks that the process exists.
+    unsafe { libc::kill(pid as libc::pid_t, 0) == 0 }
+}
+
+/// End process `pid` (a frozen MDM the user chose to close from the crash report).
+#[allow(unsafe_code)]
+pub fn end_process(pid: u32) -> bool {
+    // SAFETY: a signal to a process id we were given.
+    unsafe { libc::kill(pid as libc::pid_t, libc::SIGKILL) == 0 }
+}
+
+/// The crash test's segmentation fault (MDM_CRASH_TEST=1, `/show crash-test:crash`).
+#[allow(unsafe_code)]
+pub fn crash_now() {
+    // SAFETY: none: a write through a null pointer, on purpose, to test the crash reports.
+    unsafe { std::ptr::write_volatile(std::ptr::null_mut::<u32>(), 1) };
 }

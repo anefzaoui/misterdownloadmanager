@@ -33,8 +33,8 @@ themed! {
     MENUBAR_HOT = rgb(0x50, 0x50, 0x50), grey(0xf5);
     MENUBAR_LINE = rgb(0xf0, 0xf0, 0xf0), grey(0xf0);
     POPUP_BG = rgb(0x2b, 0x2b, 0x2b), grey(0xf9);
-    // The native menu window's frame (Windows draws menus in their own window).
-    #[cfg_attr(not(windows), allow(dead_code))]
+    // The native menu window's frame (Windows draws menus in their own window), and every
+    // in-window popup's (popup_surface).
     POPUP_BORDER = rgb(0x3e, 0x3e, 0x3e), grey(0xe5);
     POPUP_SEP = rgb(0x3e, 0x3e, 0x3e), grey(0xd7);
     /// Light: #f0f0f0, rounded, captured 2026-10-30.
@@ -739,6 +739,18 @@ pub fn start_at(ctx: &egui::Context, id: &str, i: usize) {
     ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(i), None)));
 }
 
+/// The surface of a popup drawn inside a window (the date picker's calendar, a column's filter
+/// box): the menus' colours and border, rounded as Windows 11's flyouts (they had their own).
+pub fn popup_surface(p: &egui::Painter, rc: egui::Rect) {
+    p.rect_filled(rc, 6.0, POPUP_BG());
+    p.rect_stroke(
+        rc,
+        6.0,
+        egui::Stroke::new(1.0, POPUP_BORDER()),
+        egui::StrokeKind::Inside,
+    );
+}
+
 /// A menu label's width as Win32 sizes menus: GDI's whole-pixel width (egui's advances differ
 /// by up to a pixel either way: IDM's menus are 236, 291 wide where egui gives 237, 290), or the
 /// width it is drawn at when that is wider by more (a script drawn in a fallback font, such as
@@ -1261,7 +1273,8 @@ pub fn toolbar(
         // Placed, not mirrored: an icon keeps its look.
         icon.image(*enabled).paint_at(ui, winui::rect(icon_rect));
         // Label: x = btn.x + floor((w − ext)/2); dark: −1 for enabled normal buttons, last ink
-        // row at band y 59; light: +1 for drop-downs, last ink row 58. Drop-downs 1 px lower.
+        // row at band y 59; light: +1 for drop-downs, last ink row 58. Every label on one line
+        // (IDM draws the drop-downs' 1 px lower: in one row it read as a mistake).
         let mut lx = x + ((bw - ext) / 2.0).floor();
         if dark && *enabled && !dropdown {
             lx -= 1.0;
@@ -1269,7 +1282,7 @@ pub fn toolbar(
         if !dark && dropdown {
             lx += 1.0;
         }
-        let ly = top + if dark { 59.0 } else { 58.0 } + if dropdown { 1.0 } else { 0.0 };
+        let ly = top + if dark { 59.0 } else { 58.0 };
         text_font(
             &p,
             font.clone(),

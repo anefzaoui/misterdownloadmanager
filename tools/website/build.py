@@ -652,7 +652,7 @@ def build_faq() -> None:
     write("/faq/", f"Questions and answers — {NAME}",
           f"Answers about {NAME}: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
           f"""{page_head("Questions and answers", "Short answers to what people ask most, each with a link to the full guide.", trail)}
-    <div class="wrap narrow prose" style="padding:40px 24px 96px">
+    <div class="wrap narrow prose page-body">
       {"".join(parts)}
       {page_tools("website/content/faq.md", "/faq/", "Questions and answers")}
       {cta_band()}
@@ -668,7 +668,7 @@ def build_faq() -> None:
                                  "mainEntity": {"@type": "Question", "name": question, "answerCount": 1,
                                                 "acceptedAnswer": {"@type": "Answer", "text": plain(md(answer))}}}]
             write(path, f"{question} — {NAME}", clip(md(answer)), f"""{page_head(esc(question), trail=t)}
-    <div class="wrap narrow prose" style="padding:40px 24px 96px">
+    <div class="wrap narrow prose page-body">
       {md(answer)}
       {rel}
       {page_tools("website/content/faq.md", path, question)}
@@ -700,7 +700,7 @@ def build_news() -> None:
     write("/news.html", f"What's new — {NAME} version history",
           f"Every {NAME} release and what it changed, newest first: new features, fixes and downloads.",
           f"""{page_head("What's new", f"Every release and what it changed, newest first. Follow along with the <a href=\"/news.xml\">news feed</a> or watch the project on GitHub.", trail)}
-    <div class="wrap narrow prose" style="padding:40px 24px 96px">
+    <div class="wrap narrow prose page-body">
       {"".join(parts)}
       {page_tools("CHANGELOG.md", "/news.html", "What's new")}
       {cta_band()}
@@ -748,7 +748,7 @@ def build_languages() -> None:
         items.append(f'<li>{img}<span><a href="{tsv}" lang="{esc(code)}">{esc(native)}</a><small>{esc(english)}</small></span></li>')
     trail = [("Home", "/"), ("Languages", "/languages.html")]
     body = f"""{page_head(f"{NAME} in {len(rows)} languages", "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.", trail)}
-    <div class="wrap prose" style="padding:40px 24px 96px;max-width:1180px">
+    <div class="wrap prose page-body" style="max-width:1180px">
       <h2>Every language</h2>
       <ul class="lang-grid">{"".join(items)}</ul>
       <h2>Help translate</h2>
@@ -781,7 +781,7 @@ def build_repo_pages() -> None:
     lede = ("Bug reports, ideas, translation fixes and pull requests are all welcome. "
             f'Everything happens in the open on <a href="{REPO}">GitHub</a>.')
     body = f"""{page_head("Contribute to Mister Download Manager", lede, trail)}
-    <div class="wrap narrow prose" style="padding:40px 24px 96px">
+    <div class="wrap narrow prose page-body">
       <div class="contrib-ways">
         <a href="{REPO}/issues/new?template=bug.yml"><b>Report a bug</b><span>Something broken or odd? Tell us what you saw.</span></a>
         <a href="/languages.html"><b>Fix a translation</b><span>Five minutes on GitHub, no programming.</span></a>
@@ -826,7 +826,7 @@ def build_content_pages() -> None:
         path = f"/{f.stem}.html"
         trail = [("Home", "/"), (meta["title"], path)]
         body = f"""{page_head(esc(meta["title"]), meta.get("lede", ""), trail, meta.get("fine", ""))}
-    <div class="wrap narrow prose" style="padding:40px 24px 96px">
+    <div class="wrap narrow prose page-body">
       {md(text)}
       {page_tools(f"website/content/{f.name}", path, meta["title"])}
     </div>"""

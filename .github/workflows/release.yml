@@ -77,6 +77,17 @@ jobs:
           MDM_SIGN_COMMAND: ${{ steps.cert.outputs.command }}
         run: ./tools/installer/build.ps1
 
+      # Crash reports: the release's symbols (dump_syms reads each program's .pdb beside it; no
+      # download includes the .pdb files themselves).
+      - name: Symbols
+        shell: pwsh
+        run: |
+          $v = [regex]::Match((Get-Content Cargo.toml -Raw), '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
+          $exes = "misterdownloadmanager", "misterdownloadmanager-nmhost", "misterdownloadmanager-cli", "misterdownloadmanager-mcp" |
+            ForEach-Object { "target/release/$_.exe" }
+          python tools/installer/symbols.py windows-x64 $v target/dist @exes
+          if ($LASTEXITCODE) { throw "symbols failed" }
+
       - uses: actions/upload-artifact@v4
         with:
           name: windows

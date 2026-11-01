@@ -80,6 +80,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< விவரங்களை மறை
+#. text in crashui.rs
+#. crash report window: what the report is and what Send does
+#, machine
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ஒரு அறிக்கை சேமிக்கப்பட்டது. அதை GitHub இல் உள்ள டெவலப்பர்களுக்கு அனுப்புவது இதைச் சரிசெய்ய அவர்களுக்கு உதவுகிறது; அதில் உள்ள அனைத்தையும் நீங்கள் முதலில் கீழே படிக்கலாம். எதுவும் தானாக அனுப்பப்படாது: அனுப்பு பொத்தான் உங்கள் உலாவியில் அறிக்கை படிவத்தைத் திறந்து, அதை நிரப்பி, நீங்கள் சரிபார்த்து சமர்ப்பிக்க உதவுகிறது.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager பற்றி
@@ -143,6 +147,14 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ஏற்கனவே பதிவிறக்கப்பட்டு வருகிறது: {path}
+#. text in crashui.rs
+#. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
+#, machine
+	Already reported as issue #{number}: {title}	#{number}: {title} என்ற சிக்கலாக ஏற்கனவே புகாரளிக்கப்பட்டது
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	கிராஷ் தரவையும் (.dmp) இணைக்கவும்: MDM நினைவகத்தில் வைத்திருந்த முகவரிகளை இது கொண்டிருக்கலாம்
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	வட்டில் இருந்து கோப்பையும் நீக்கவும்
@@ -245,8 +257,9 @@
 #, machine
 	Check for updates	புதுப்பிப்புகளைச் சரிபார்க்கவும்
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates once a week	வாரத்திற்கு ஒருமுறை புதுப்பிப்புகளைச் சரிபார்க்கவும்
+	Check for updates at every start	ஒவ்வொரு தொடக்கத்திலும் புதுப்பிப்புகளைச் சரிபார்க்கவும்
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -272,7 +285,7 @@
 #. text in the Options window
 #, machine
 	Clock:	கடிகாரம்:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -316,6 +329,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	நகலெடு
+#. button in crashui.rs
+#. crash report window button: copy the report's text
+#, machine
+	Copy report	அறிக்கையை நகலெடு
 #. window title in a dialog box
 #, machine
 	Create folder	கோப்புறையை உருவாக்கு
@@ -895,6 +912,10 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	முதலில் புதிய முகவரியைத் தேடுங்கள்
+#. text in crashui.rs
+#. crash report window: looking on GitHub for an issue about the same problem
+#, machine
+	Looking for this problem on GitHub…	GitHub இல் இந்தச் சிக்கலைத் தேடுகிறது…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -905,6 +926,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	தேர்வை நீளமாக்கு அல்லது சுருக்கு
+#. text in crashui.rs
+#. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
+#, machine
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	அறிக்கையைப் படிக்கக்கூடியதாக மாற்றுகிறது: குறியீடுகளைப் பெறுகிறது ({total} MB இல் {done})…
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	கையேடு ப்ராக்ஸி/SOCKS உள்ளமைவு
@@ -938,9 +963,27 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM crashed and is gone
+#, machine
+	Mister Download Manager closed unexpectedly	Mister Download Manager எதிர்பாராத விதமாக மூடப்பட்டது
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	Mister Download Manager கட்டமைப்பு
+#. text in crashui.rs
+#, machine
+	Mister Download Manager crash report	Mister Download Manager கிராஷ் அறிக்கை
+#. text in crashui.rs
+#. crash report window heading: an internal error, MDM still running
+#, machine
+	Mister Download Manager hit an internal error	Mister Download Manager ஒரு உள் பிழையைச் சந்தித்தது
+#. text in crashui.rs
+#. crash report window heading: MDM's window doesn't answer (frozen)
+#, machine
+	Mister Download Manager stopped responding	Mister Download Manager பதிலளிப்பதை நிறுத்தியது
+#. text in crashui.rs
+#, machine
+	Mister Download Manager stopped responding for a while	Mister Download Manager சிறிது நேரம் பதிலளிப்பதை நிறுத்தியது
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1143,6 +1186,10 @@
 #. verb: opens the file
 #, machine
 	Open	திற
+#. button in crashui.rs
+#. crash report window button: show the report's file in its folder
+#, machine
+	Open folder	கோப்புறையைத் திற
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager உடன் மேக்னட் இணைப்புகள் மற்றும் .torrent கோப்புகளைத் திற
@@ -1169,6 +1216,7 @@
 #, machine
 	Options	விருப்பங்கள்
 #. text in a download's progress window
+#. tab title: what happens when the download finishes
 #, machine
 	Options on completion	முடிந்ததும் விருப்பங்கள்
 #. text in the Download video window
@@ -1264,6 +1312,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	வரிசைகள்
+#. text in crashui.rs
+#. crash report window: shown while the crash dump is being read
+#, machine
+	Reading the crash data…	கிராஷ் தரவைப் படிக்கிறது…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1742,6 +1794,10 @@
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	{path} கோப்புறை கிடைக்கவில்லை (இயக்கி அகற்றப்பட்டதா அல்லது நெட்வொர்க் பகிர்வு ஆஃப்லைனில் உள்ளதா?)
+#. text in crashui.rs
+#. crash report window: after Send opened the browser
+#, machine
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	படிவம் உங்கள் உலாவியில் திறக்கப்பட்டது. அறிக்கையின் கோப்பை (மற்றும் .dmp, நீங்கள் தேர்வுசெய்தால்) அதில் இழுத்து விடுங்கள், பின்னர் சமர்ப்பிக்கவும்.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -1757,6 +1813,17 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	வெளியீட்டில் பதிப்பு இல்லை
+#. text in crashui.rs
+#. crash report window: label above the report's text
+#, machine
+	The report	அறிக்கை
+#. text in crashui.rs
+#. crash report window: after Copy report
+#, machine
+	The report is on your clipboard.	அறிக்கை உங்கள் கிளிப்போர்டில் உள்ளது.
+#. text in crashui.rs
+#, machine
+	The report is on your clipboard: paste it in a comment on the issue.	அறிக்கை உங்கள் கிளிப்போர்டில் உள்ளது: சிக்கல் குறித்த கருத்தில் அதை ஒட்டவும்.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -1786,6 +1853,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	சேவையகம் கோப்பின் எதிர்பாராத பகுதியை அனுப்பியது ({detail})
+#. text in crashui.rs
+#. crash report window: the symbols couldn't be downloaded; the report still works
+#, machine
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	குறியீடுகளைப் பெற முடியவில்லை: அறிக்கையின் சில வரிகள் பெயர்களுக்குப் பதிலாக முகவரிகளைக் காட்டுகின்றன (டெவலப்பர்கள் இன்னும் அவற்றைப் படிக்கலாம்).
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2041,6 +2112,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	புதன்
+#. text in crashui.rs
+#. crash report window: label of the box where the user describes what they did
+#, machine
+	What were you doing when it happened? (optional)	இது நடந்தபோது நீங்கள் என்ன செய்து கொண்டிருந்தீர்கள்? (விரும்பினால்)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	புதியது என்ன:

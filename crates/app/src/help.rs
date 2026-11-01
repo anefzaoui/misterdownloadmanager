@@ -1,11 +1,11 @@
 //! The Help menu (D-020): the user guide in the repository's docs/, the home page, problem reports on GitHub
-//! (pre-filled), update checks against GitHub Releases (on demand and weekly, as IDM checks its
-//! site once a week), About, Keyboard shortcuts and Tell a friend.
+//! (pre-filled), update checks against GitHub Releases (on demand, and at every start and once
+//! a day while running), About, Keyboard shortcuts and Tell a friend.
 
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use egui::{Stroke, pos2, vec2};
+use egui::{pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -15,8 +15,10 @@ pub const REPO: &str = "https://github.com/anefzaoui/misterdownloadmanager";
 const LATEST: &str = "https://api.github.com/repos/anefzaoui/misterdownloadmanager/releases/latest";
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const COMMIT: &str = env!("MDM_COMMIT");
-/// The weekly check: at most this often.
-pub const CHECK_EVERY: i64 = 7 * 24 * 3600;
+/// While MDM runs, the automatic check comes again this often (it also checks at every start).
+pub const CHECK_EVERY: i64 = 24 * 3600;
+/// The check at start waits this long (the window, the list and the downloads first).
+pub const CHECK_AFTER_START: std::time::Duration = std::time::Duration::from_secs(5);
 
 /// Open a page of the user guide (`"README.md"`, `"video.md"`, `"README.md#tutorials"`…, in
 /// the repository's docs/) in the browser; `""` is the home page (the repository).
@@ -193,7 +195,7 @@ pub fn newer(a: &str, b: &str) -> bool {
     ka > kb
 }
 
-/// Help → Check for updates... (and the weekly check when it finds one).
+/// Help → Check for updates... (and the automatic check when it finds one).
 pub struct Updates {
     slot: Option<Slot>,
     result: Option<Result<Found, String>>,
@@ -220,7 +222,7 @@ impl Updates {
         }
     }
 
-    /// The weekly check found `release`.
+    /// The automatic check found `release`.
     pub fn found(release: Release) -> Self {
         Updates {
             slot: None,
@@ -230,7 +232,7 @@ impl Updates {
         }
     }
 
-    /// `weekly`: the once-a-week check (its switch is here, under the answer). `Done(true)`:
+    /// `weekly`: the automatic check (its switch is here, under the answer). `Done(true)`:
     /// the update is going in place, MDM closes for it (and starts again).
     pub fn show(
         &mut self,
@@ -337,13 +339,8 @@ impl Updates {
                             pos2(right, o.y + 206.0),
                         );
                         // English, as the paragraph is laid out; made where it is on screen.
-                        p.rect_filled(winui::rect(notes), 0.0, winui::FIELD());
-                        p.rect_stroke(
-                            winui::rect(notes),
-                            0.0,
-                            Stroke::new(1.0, winui::FIELD_EDGE()),
-                            egui::StrokeKind::Inside,
-                        );
+                        // Read-only text: the read-only field's look (it drew a square box of its own).
+                        winui::field_frame(&p, winui::rect(notes), winui::FieldLook::ReadOnly);
                         // Release notes run longer than the box: it scrolls (issue #5).
                         winui::scroll_text(
                             ui,
@@ -357,7 +354,7 @@ impl Updates {
                         download = Some(rel.clone());
                     }
                 }
-                // Under the answer: how Update now is going, else the weekly switch.
+                // Under the answer: how Update now is going, else the automatic check's switch.
                 // In English, as the text pens take it (a right-to-left window placed the status
                 // over its buttons when given the mirrored rect).
                 let status_rc =
@@ -405,12 +402,15 @@ impl Updates {
                         winui::full_on_hover(ui, rect, "update-status", &line);
                     }
                 } else {
-                    winui::checkbox(
+                    // Its caption stops before the buttons (a longer translation ends in "...").
+                    winui::checkbox_until(
                         ui,
                         o + vec2(11.0, bottom + 4.0),
                         weekly,
-                        "Check for updates once a week",
+                        // i18n: check box in the update window: look for a new version every time MDM starts
+                        "Check for updates at every start",
                         true,
+                        Some(o.x + 266.0),
                     );
                 }
                 let close_label = if self.job.is_some() {
@@ -803,13 +803,8 @@ impl TellFriend {
                     pos2(o.x + 409.0, o.y + 106.0 + extra),
                 );
                 // English, as the paragraph is laid out; made where it is on screen.
-                p.rect_filled(winui::rect(rect), 0.0, winui::FIELD());
-                p.rect_stroke(
-                    winui::rect(rect),
-                    0.0,
-                    Stroke::new(1.0, winui::FIELD_EDGE()),
-                    egui::StrokeKind::Inside,
-                );
+                // Read-only text: the read-only field's look (it drew a square box of its own).
+                winui::field_frame(&p, winui::rect(rect), winui::FieldLook::ReadOnly);
                 let lines = winui::paragraph(
                     &p,
                     rect.left() + 6.0,

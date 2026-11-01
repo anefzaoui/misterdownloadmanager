@@ -76,8 +76,8 @@
           <div class="device">
             <span class="device-cam"></span>
             <div class="device-screen">
-              <img class="for-light" src="/assets/screens/main-light.webp" width="930" height="485" fetchpriority="high" alt="Mister Download Manager's main window in day mode: web and torrent downloads in one list, with categories, sizes, progress, speeds and dates.">
-              <img class="for-dark" src="/assets/screens/main-dark.webp" width="930" height="485" alt="Mister Download Manager's main window in night mode: web and torrent downloads in one list.">
+              <img class="for-light" src="/assets/screens/main-light.webp" width="930" height="500" fetchpriority="high" alt="Mister Download Manager's main window in day mode: web and torrent downloads in one list, with categories, sizes, progress, speeds and dates.">
+              <img class="for-dark" src="/assets/screens/main-dark.webp" width="930" height="500" alt="Mister Download Manager's main window in night mode: web and torrent downloads in one list.">
             </div>
           </div>
           <figcaption>The real app, version {{VERSION}} on Windows 11 · every screenshot on this site is unretouched.</figcaption>
@@ -85,52 +85,70 @@
       </div>
     </section>
 
-    <!-- Showcase: the app's windows, whole and still. -->
+    <!-- Showcase: a tour of the app, one feature at a time (main.js: tabs that move on by themselves). -->
     <section class="sec showcase" id="features" aria-labelledby="features-title">
       <div class="wrap">
         <div class="sec-center">
           <h2 id="features-title">Every window, rebuilt.</h2>
           <p>The one you know, down to the pixel. With torrents, video and 86 languages it never had.</p>
         </div>
-        <div class="gallery" data-lightbox>
-          <div class="g-row">
-            <figure class="g-item" style="--gw:548">
-              <div class="g-shot"><img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="427" loading="lazy" alt="The download progress window: a file at 49 percent over eight connections."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="427" loading="lazy" alt="The download progress window: a file at 49 percent over eight connections."></div>
-              <figcaption><b>Download progress</b> Every connection, live.</figcaption>
-            </figure>
-            <figure class="g-item" style="--gw:600">
-              <div class="g-shot"><img class="for-light" src="/assets/screens/add-torrent-light.webp" width="600" height="472" loading="lazy" alt="The Add torrent window: a folder tree with a checkbox at every level."><img class="for-dark" src="/assets/screens/add-torrent-dark.webp" width="600" height="472" loading="lazy" alt="The Add torrent window: a folder tree with a checkbox at every level."></div>
-              <figcaption><b>Add torrent</b> Pick the files, skip the rest.</figcaption>
-            </figure>
+        <div class="tour" data-tour>
+          <div class="tour-tabs" role="tablist" aria-label="Features" aria-orientation="vertical">
+            <button type="button" class="tour-tab" role="tab" id="tour-tab-progress" aria-controls="tour-progress" aria-selected="true" tabindex="0">
+              <span class="tour-title">Every connection, live</span>
+              <span class="tour-text">Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</span>
+              <span class="tour-bar" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="tour-tab" role="tab" id="tour-tab-torrents" aria-controls="tour-torrents" aria-selected="false" tabindex="-1">
+              <span class="tour-title">Torrents, built in</span>
+              <span class="tour-text">Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.</span>
+              <span class="tour-bar" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="tour-tab" role="tab" id="tour-tab-video" aria-controls="tour-video" aria-selected="false" tabindex="-1">
+              <span class="tour-title">Video from a page</span>
+              <span class="tour-text">Paste a page's address and choose a quality, up to 4K, from YouTube, Vimeo and thousands of other sites.</span>
+              <span class="tour-bar" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="tour-tab" role="tab" id="tour-tab-scheduler" aria-controls="tour-scheduler" aria-selected="false" tabindex="-1">
+              <span class="tour-title">Downloads on a schedule</span>
+              <span class="tour-text">Queues that start at 2 a.m., stop by 7 and turn the computer off when they're done.</span>
+              <span class="tour-bar" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="tour-tab" role="tab" id="tour-tab-languages" aria-controls="tour-languages" aria-selected="false" tabindex="-1">
+              <span class="tour-title">86 languages, right to left too</span>
+              <span class="tour-text">It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</span>
+              <span class="tour-bar" aria-hidden="true"><i></i></span>
+            </button>
+            <button type="button" class="tour-tab" role="tab" id="tour-tab-options" aria-controls="tour-options" aria-selected="false" tabindex="-1">
+              <span class="tour-title">Options where you expect them</span>
+              <span class="tour-text">Every setting where an IDM user looks first: connections, proxies, folders, sounds.</span>
+              <span class="tour-bar" aria-hidden="true"><i></i></span>
+            </button>
           </div>
-          <div class="g-row">
-            <figure class="g-item" style="--gw:500">
-              <div class="g-shot"><img class="for-light" src="/assets/screens/video-light.webp" width="500" height="372" loading="lazy" alt="Download video from a page: qualities from 2160p 60fps down, with sizes."><img class="for-dark" src="/assets/screens/video-dark.webp" width="500" height="372" loading="lazy" alt="Download video from a page: qualities from 2160p 60fps down, with sizes."></div>
-              <figcaption><b>Video from a page</b> Every quality, up to 4K.</figcaption>
+          <div class="tour-stage" data-lightbox>
+            <figure class="tour-panel" role="tabpanel" id="tour-progress" aria-labelledby="tour-tab-progress" data-on>
+              <img class="for-light" src="/assets/screens/progress-light.webp" width="548" height="442" alt="The download progress window: a file over eight connections, each one's share drawn as it fills."><img class="for-dark" src="/assets/screens/progress-dark.webp" width="548" height="442" alt="The download progress window: a file over eight connections, each one's share drawn as it fills.">
+              <figcaption class="sr-only"><b>Every connection, live</b> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</figcaption>
             </figure>
-            <figure class="g-item" style="--gw:548">
-              <div class="g-shot"><img class="for-light" src="/assets/screens/torrent-light.webp" width="548" height="427" loading="lazy" alt="A torrent's progress window with its pieces map."><img class="for-dark" src="/assets/screens/torrent-dark.webp" width="548" height="427" loading="lazy" alt="A torrent's progress window with its pieces map."></div>
-              <figcaption><b>Torrent pieces</b> The swarm, piece by piece.</figcaption>
+            <figure class="tour-panel" role="tabpanel" id="tour-torrents" aria-labelledby="tour-tab-torrents" aria-hidden="true">
+              <img class="for-light" src="/assets/screens/torrent-light.webp" width="548" height="448" loading="lazy" alt="A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here."><img class="for-dark" src="/assets/screens/torrent-dark.webp" width="548" height="448" loading="lazy" alt="A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.">
+              <figcaption class="sr-only"><b>Torrents, built in</b> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.</figcaption>
             </figure>
-          </div>
-          <div class="g-row">
-            <figure class="g-item" style="--gw:930">
-              <div class="g-shot"><img src="/assets/screens/arabic-main.webp" width="930" height="485" loading="lazy" alt="The main window in Arabic, laid out right to left."></div>
-              <figcaption><b>Right to left</b> Arabic, Hebrew, Persian, Urdu, Uyghur.</figcaption>
+            <figure class="tour-panel" role="tabpanel" id="tour-video" aria-labelledby="tour-tab-video" aria-hidden="true">
+              <img class="for-light" src="/assets/screens/video-light.webp" width="500" height="372" loading="lazy" alt="Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes."><img class="for-dark" src="/assets/screens/video-dark.webp" width="500" height="372" loading="lazy" alt="Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.">
+              <figcaption class="sr-only"><b>Video from a page</b> Paste a page's address and choose a quality, up to 4K, from YouTube, Vimeo and thousands of other sites.</figcaption>
             </figure>
-            <figure class="g-item" style="--gw:380">
-              <div class="g-shot"><img src="/assets/win/language-picker.webp" width="380" height="464" loading="lazy" alt="The language picker with a flag for each language."></div>
-              <figcaption><b>86 languages</b> Chosen by flag.</figcaption>
+            <figure class="tour-panel" role="tabpanel" id="tour-scheduler" aria-labelledby="tour-tab-scheduler" aria-hidden="true">
+              <img class="for-light" src="/assets/screens/scheduler-light.webp" width="651" height="490" loading="lazy" alt="The Scheduler: a queue started and stopped by the clock."><img class="for-dark" src="/assets/screens/scheduler-dark.webp" width="651" height="490" loading="lazy" alt="The Scheduler: a queue started and stopped by the clock.">
+              <figcaption class="sr-only"><b>Downloads on a schedule</b> Queues that start at 2 a.m., stop by 7 and turn the computer off when they're done.</figcaption>
             </figure>
-          </div>
-          <div class="g-row">
-            <figure class="g-item" style="--gw:651">
-              <div class="g-shot"><img src="/assets/win/scheduler.webp" width="651" height="477" loading="lazy" alt="The Scheduler: a queue started and stopped by the clock."></div>
-              <figcaption><b>Scheduler</b> Tonight at 2, done by 7.</figcaption>
+            <figure class="tour-panel" role="tabpanel" id="tour-languages" aria-labelledby="tour-tab-languages" aria-hidden="true">
+              <img src="/assets/screens/arabic-main.webp" width="930" height="500" loading="lazy" alt="The main window in Arabic, laid out right to left.">
+              <figcaption class="sr-only"><b>86 languages, right to left too</b> It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</figcaption>
             </figure>
-            <figure class="g-item" style="--gw:430">
-              <div class="g-shot"><img src="/assets/win/options-connection.webp" width="430" height="518" loading="lazy" alt="Options, Connection: connections per download and per-server exceptions."></div>
-              <figcaption><b>Options</b> Where you expect them.</figcaption>
+            <figure class="tour-panel" role="tabpanel" id="tour-options" aria-labelledby="tour-tab-options" aria-hidden="true">
+              <img class="for-light" src="/assets/screens/options-light.webp" width="430" height="531" loading="lazy" alt="Options, Connection: connections per download and per-server exceptions."><img class="for-dark" src="/assets/screens/options-dark.webp" width="430" height="531" loading="lazy" alt="Options, Connection: connections per download and per-server exceptions.">
+              <figcaption class="sr-only"><b>Options where you expect them</b> Every setting where an IDM user looks first: connections, proxies, folders, sounds.</figcaption>
             </figure>
           </div>
         </div>

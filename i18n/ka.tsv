@@ -80,6 +80,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< დეტალების დამალვა
+#. text in crashui.rs
+#. crash report window: what the report is and what Send does
+#, machine
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ანგარიში შენახულია. მისი GitHub-ზე დეველოპერებისთვის გაგზავნა მათ ამ პრობლემის გამოსწორებაში დაეხმარება; შეგიძლიათ ჯერ წაიკითხოთ ყველაფერი, რაც მასშია. არაფერი იგზავნება თავისით: გაგზავნა ხსნის ანგარიშის ფორმას თქვენს ბრაუზერში, შევსებულს, რათა შეამოწმოთ და გააგზავნოთ.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-ის შესახებ
@@ -143,6 +147,14 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	უკვე იტვირთება: {path}
+#. text in crashui.rs
+#. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
+#, machine
+	Already reported as issue #{number}: {title}	უკვე მოხსენებულია, როგორც საკითხი #{number}: {title}
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	ასევე დაურთეთ ავარიის მონაცემები (.dmp): მას შეიძლება შეიცავდეს მისამართებს, რომლებიც MDM-ს მეხსიერებაში ჰქონდა
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	ასევე წაშალეთ ფაილი დისკიდან
@@ -245,8 +257,9 @@
 #, machine
 	Check for updates	განახლებების შემოწმება
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates once a week	განახლებების შემოწმება კვირაში ერთხელ
+	Check for updates at every start	ყოველი გაშვებისას შეამოწმეთ განახლებები
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -272,7 +285,7 @@
 #. text in the Options window
 #, machine
 	Clock:	საათი:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -316,6 +329,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	კოპირება
+#. button in crashui.rs
+#. crash report window button: copy the report's text
+#, machine
+	Copy report	ანგარიშის კოპირება
 #. window title in a dialog box
 #, machine
 	Create folder	საქაღალდის შექმნა
@@ -895,6 +912,10 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	ჯერ მოძებნეთ ახალი მისამართი
+#. text in crashui.rs
+#. crash report window: looking on GitHub for an issue about the same problem
+#, machine
+	Looking for this problem on GitHub…	ამ პრობლემის ძიება GitHub-ზე…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -905,6 +926,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	არჩევანის გაგრძელება ან შემცირება
+#. text in crashui.rs
+#. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
+#, machine
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	ანგარიშის წაკითხვადი გახდომა: სიმბოლოების მოძიება ({done} / {total} მბ)…
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	მექანიკური პროქსი/SOCKS კონფიგურაცია
@@ -938,9 +963,27 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM crashed and is gone
+#, machine
+	Mister Download Manager closed unexpectedly	Mister Download Manager მოულოდნელად დაიხურა
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	Mister Download Manager-ის კონფიგურაცია
+#. text in crashui.rs
+#, machine
+	Mister Download Manager crash report	Mister Download Manager ავარიის ანგარიში
+#. text in crashui.rs
+#. crash report window heading: an internal error, MDM still running
+#, machine
+	Mister Download Manager hit an internal error	Mister Download Manager-ში შიდა შეცდომა მოხდა
+#. text in crashui.rs
+#. crash report window heading: MDM's window doesn't answer (frozen)
+#, machine
+	Mister Download Manager stopped responding	Mister Download Manager აღარ პასუხობს
+#. text in crashui.rs
+#, machine
+	Mister Download Manager stopped responding for a while	Mister Download Manager ცოტა ხნით აღარ პასუხობდა
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1143,6 +1186,10 @@
 #. verb: opens the file
 #, machine
 	Open	გახსნა
+#. button in crashui.rs
+#. crash report window button: show the report's file in its folder
+#, machine
+	Open folder	ფოლდერის გახსნა
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	გახსენით მაგნიტური ბმულები და .torrent ფაილები Mister Download Manager-ით
@@ -1169,6 +1216,7 @@
 #, machine
 	Options	პარამეტრები
 #. text in a download's progress window
+#. tab title: what happens when the download finishes
 #, machine
 	Options on completion	პარამეტრები დასრულებისას
 #. text in the Download video window
@@ -1264,6 +1312,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	რიგები
+#. text in crashui.rs
+#. crash report window: shown while the crash dump is being read
+#, machine
+	Reading the crash data…	ავარიის მონაცემების კითხვა…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1742,6 +1794,10 @@
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	საქაღალდე {path} არ არის ხელმისაწვდომი (დისკი ამოღებულია თუ ქსელური რესურსი ხაზგარეშეა?)
+#. text in crashui.rs
+#. crash report window: after Send opened the browser
+#, machine
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	ფორმა გაიხსნა თქვენს ბრაუზერში. გადაიტანეთ ანგარიშის ფაილი (და .dmp, თუ აირჩიეთ) მასში, შემდეგ გააგზავნეთ.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -1757,6 +1813,17 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	გამოცემას არ აქვს ვერსია
+#. text in crashui.rs
+#. crash report window: label above the report's text
+#, machine
+	The report	ანგარიში
+#. text in crashui.rs
+#. crash report window: after Copy report
+#, machine
+	The report is on your clipboard.	ანგარიში თქვენს ბუფერშია.
+#. text in crashui.rs
+#, machine
+	The report is on your clipboard: paste it in a comment on the issue.	ანგარიში თქვენს ბუფერშია: ჩასვით ის კომენტარში საკითხზე.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -1786,6 +1853,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	სერვერმა ფაილის მოულოდნელი ნაწილი გამოაგზავნა ({detail})
+#. text in crashui.rs
+#. crash report window: the symbols couldn't be downloaded; the report still works
+#, machine
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	სიმბოლოების მოძიება ვერ მოხერხდა: ანგარიშის ზოგიერთი ხაზი სახელების ნაცვლად მისამართებს აჩვენებს (დეველოპერებს მაინც შეუძლიათ მათი წაკითხვა).
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2041,6 +2112,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	ოთხშაბათი
+#. text in crashui.rs
+#. crash report window: label of the box where the user describes what they did
+#, machine
+	What were you doing when it happened? (optional)	რას აკეთებდით, როცა ეს მოხდა? (არასავალდებულო)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	რა არის ახალი:

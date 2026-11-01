@@ -90,7 +90,7 @@ A few settings live outside this window:
 - **Downloads → Speed Limiter → Settings...** — speed limits. See [Connections and speed](connections-and-speed.md#speed-limiter).
 - **Tasks → Torrent settings...** — sharing and file associations. See [Torrents](torrents.md#torrent-settings).
 - **View → Dark Mode support** and **View → Language**.
-- **Help → Check for updates...** — **Check for updates once a week** is in that window.
+- **Help → Check for updates...** — **Check for updates at every start** is in that window.
 
 ## Next steps
 

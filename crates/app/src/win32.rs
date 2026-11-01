@@ -1385,3 +1385,81 @@ pub fn mark_running() {
         CreateMutexW(std::ptr::null(), 0, name.as_ptr());
     }
 }
+
+// ---- Crash reports (crash.rs, mdm-crash) -------------------------------------------------------
+
+static CRASH_HANDLER: std::sync::OnceLock<mdm_crash::crash_handler::CrashHandler> =
+    std::sync::OnceLock::new();
+
+/// Catch native crashes (access violations, stack overflows, … : Windows' structured exceptions)
+/// and have `reporter`'s monitor dump this process when one comes. False when it can't attach.
+pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter>) -> bool {
+    use mdm_crash::crash_handler::{CrashEventResult, CrashHandler, make_crash_event};
+    // SAFETY: the closure runs in the exception's context; it only sends the dump request over
+    // the already-open socket (no allocation needed by minidumper's request).
+    let event = unsafe { make_crash_event(move |cc| CrashEventResult::Handled(reporter.dump(cc))) };
+    match CrashHandler::attach(event) {
+        Ok(h) => CRASH_HANDLER.set(h).is_ok(),
+        Err(e) => {
+            tracing::warn!("crash handler not attached: {e}");
+            false
+        }
+    }
+}
+
+/// Have the monitor dump this process now (a panic, a freeze): every thread, this one asking.
+/// The process goes on.
+pub fn dump_now() -> bool {
+    CRASH_HANDLER.get().is_some_and(|h| {
+        matches!(
+            h.simulate_exception(None),
+            mdm_crash::crash_handler::CrashEventResult::Handled(true)
+        )
+    })
+}
+
+/// This thread's id as Windows (and so the dump) knows it.
+pub fn thread_id() -> u32 {
+    // SAFETY: a plain query.
+    unsafe { windows_sys::Win32::System::Threading::GetCurrentThreadId() }
+}
+
+/// Is process `pid` still running?
+pub fn process_alive(pid: u32) -> bool {
+    use windows_sys::Win32::Foundation::{CloseHandle, WAIT_TIMEOUT};
+    use windows_sys::Win32::System::Threading::{
+        OpenProcess, PROCESS_SYNCHRONIZE, WaitForSingleObject,
+    };
+    // SAFETY: the handle is checked and closed.
+    unsafe {
+        let h = OpenProcess(PROCESS_SYNCHRONIZE, 0, pid);
+        if h.is_null() {
+            return false;
+        }
+        let running = WaitForSingleObject(h, 0) == WAIT_TIMEOUT;
+        CloseHandle(h);
+        running
+    }
+}
+
+/// End process `pid` (a frozen MDM the user chose to close from the crash report).
+pub fn end_process(pid: u32) -> bool {
+    use windows_sys::Win32::Foundation::CloseHandle;
+    use windows_sys::Win32::System::Threading::{OpenProcess, PROCESS_TERMINATE, TerminateProcess};
+    // SAFETY: the handle is checked and closed.
+    unsafe {
+        let h = OpenProcess(PROCESS_TERMINATE, 0, pid);
+        if h.is_null() {
+            return false;
+        }
+        let ok = TerminateProcess(h, 1) != 0;
+        CloseHandle(h);
+        ok
+    }
+}
+
+/// The crash test's access violation (MDM_CRASH_TEST=1, `/show crash-test:crash`).
+pub fn crash_now() {
+    // SAFETY: none: a write through a null pointer, on purpose, to test the crash reports.
+    unsafe { std::ptr::write_volatile(std::ptr::null_mut::<u32>(), 1) };
+}

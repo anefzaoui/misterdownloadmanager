@@ -3,7 +3,7 @@ resolver = "3"
 members = ["crates/*"]
 
 [workspace.package]
-version = "0.2.2"
+version = "0.2.3"
 edition = "2024"
 rust-version = "1.95"
 license = "GPL-3.0-or-later"
@@ -12,6 +12,7 @@ publish = false
 
 [workspace.dependencies]
 mdm-cli = { path = "crates/cli" }
+mdm-crash = { path = "crates/crash" }
 mdm-engine = { path = "crates/engine" }
 mdm-ipc = { path = "crates/ipc" }
 mdm-labserver = { path = "crates/labserver" }
@@ -107,6 +108,10 @@ all = { level = "warn", priority = -1 }
 
 [profile.release]
 lto = "thin"
+# Function names and file:line for crash reports. The debug info doesn't ship: CI turns it into the
+# release's symbols zip (tools/installer/symbols.py); Windows keeps it in the .pdb, which no
+# download includes, and Linux and macOS strip it from the programs they ship.
+debug = "line-tables-only"
 
 # Hashing is unusably slow unoptimised (a 3 MiB SHA-256 took seconds in debug tests): build
 # the checksum crates optimised in dev too.

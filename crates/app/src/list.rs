@@ -18,11 +18,12 @@ pub const ROW_H: f32 = 17.0;
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
-const FRAME: Color32 = rgb(0x82, 0x87, 0x90);
 themed! {
+    /// The list's border (it was #828790 in dark too): the lists' and tables' one edge.
+    FRAME = rgb(0x5a, 0x5a, 0x5a), rgb(0x82, 0x87, 0x90);
     /// Inner ring and row background.
     BG = rgb(0x39, 0x39, 0x39), rgb(0xff, 0xff, 0xff);
-    HEADER_BG = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff);
+    HEADER_BG = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff); // = winui::LIST_HEADER
     HEADER_SEP = rgb(0x63, 0x63, 0x63), rgb(0xe5, 0xe5, 0xe5);
     /// Sort indicator (an addition: IDM's header shows none).
     SORTED_BG = rgb(0x26, 0x26, 0x26), rgb(0xf0, 0xf0, 0xf0);
@@ -34,12 +35,13 @@ themed! {
     /// Selected row (list focused). Dark: #2d4b63 fill, 1 px black outline, #466279 right edge
     /// (measured). Light: classic #0066cc with white text and a dotted focus outline in its
     /// inverse, #ff9933 (captured 2026-10-30).
-    SELECTED = rgb(0x2d, 0x4b, 0x63), rgb(0x00, 0x66, 0xcc);
-    SELECTED_EDGE = rgb(0x00, 0x00, 0x00), rgb(0x00, 0x66, 0xcc);
-    SELECTED_RIGHT = rgb(0x46, 0x62, 0x79), rgb(0x00, 0x66, 0xcc);
+    // A selected row: Windows' accent, as every list's (one blue across MDM).
+    SELECTED = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
+    SELECTED_EDGE = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
+    SELECTED_RIGHT = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
     TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
     /// A filtered column's funnel.
-    FILTER_ON = rgb(0x4c, 0xc2, 0xff), rgb(0x00, 0x78, 0xd7);
+    FILTER_ON = rgb(0x60, 0xcd, 0xff), rgb(0x00, 0x78, 0xd4);
 }
 
 /// Columns, by their fixed data slot in [`Row::cells`]: IDM's eight, then the user's additions:
@@ -474,7 +476,7 @@ pub fn show(
         outer.right() - 1.0,
         outer.bottom() - 1.0,
     );
-    winui::solid(&p, screen(outer), FRAME);
+    winui::solid(&p, screen(outer), FRAME());
     fill(&p, l + 1.0, t + 1.0, r - 1.0, b - 1.0, BG());
     let (cl, ct, cr, cb) = (l + 2.0, t + 2.0, r - 2.0, b - 2.0);
     let font = winui::tahoma();
@@ -755,6 +757,7 @@ pub fn show(
     let visible = (body.height() / ROW_H).ceil() as usize + 1;
     let last_right = cols.last().map_or(cl, |s| s.2);
     let mut cut_under_pointer = None;
+    let keys_in_use = winui::keyboard_in_use(ui.ctx());
     for k in 0..visible {
         let idx = first + k;
         let top = body_top + k as f32 * ROW_H - offset;
@@ -785,7 +788,9 @@ pub fn show(
                     });
                 });
             let sel = picked && st.focused;
-            let has_focus = focus == Some(idx) && st.focused;
+            // The focused row's dotted outline only once the keyboard is in use, as every
+            // control's focus (winui::keyboard_in_use).
+            let has_focus = focus == Some(idx) && st.focused && keys_in_use;
             if (sel || has_focus) && !crate::theme::dark() {
                 // Light: the row above its grid line; the focused row has a dotted outline
                 // (every other pixel), in the fill's inverse on a selected row.
@@ -986,7 +991,7 @@ pub fn show(
             ct,
             mark,
             ct + HEADER_H - 1.0,
-            rgb(0x00, 0x78, 0xd7),
+            winui::accent(),
         );
     }
 
@@ -1301,13 +1306,7 @@ fn filter_box(ui: &mut Ui, st: &mut ListState) {
         .show(ui.ctx(), |ui| {
             let (_, _) = ui.allocate_exact_size(rect.size(), Sense::hover());
             let p = ui.painter().clone();
-            p.rect_filled(shown, 0.0, winui::BG());
-            p.rect_stroke(
-                shown,
-                0.0,
-                egui::Stroke::new(1.0, FRAME),
-                egui::StrokeKind::Inside,
-            );
+            crate::chrome::popup_surface(&p, shown);
             let o = rect.min;
             match values {
                 Some(vals) => {

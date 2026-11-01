@@ -1,7 +1,7 @@
 //! The per-download progress dialog, painted to IDM 6.42's pixels
 //! (notes/ui-spec/progress-dialog.md). Coordinates are client pixels from the spec.
 
-use egui::{Color32, Pos2, Rect, Sense, Ui, ViewportBuilder, ViewportId, pos2, vec2};
+use egui::{Color32, Pos2, Ui, ViewportBuilder, ViewportId, vec2};
 use mdm_engine::Snapshot;
 use mdm_engine::download::ConnStatus;
 
@@ -14,11 +14,6 @@ use crate::winui::{self, ButtonKind, fill_l as fill, px_l as px, r, text};
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
-const HILIGHT: Color32 = rgb(0xff, 0xff, 0xff);
-const LIGHT: Color32 = rgb(0xe3, 0xe3, 0xe3);
-const SHADOW: Color32 = rgb(0xa0, 0xa0, 0xa0);
-const DKSHADOW: Color32 = rgb(0x69, 0x69, 0x69);
-const TAB_CORNER: Color32 = rgb(0xf0, 0xf0, 0xf0);
 const DISABLED: Color32 = rgb(0x80, 0x80, 0x80);
 
 /// Segment bar interior rows (top → bottom): not downloaded, downloaded, start marker.
@@ -40,6 +35,18 @@ const SEG_ROWS: [(u32, u32, u32); 13] = [
 
 fn hex(v: u32) -> Color32 {
     rgb((v >> 16) as u8, (v >> 8) as u8, v as u8)
+}
+
+/// A segment / piece bar row's colour: IDM's; in dark mode its "not here yet" rows are the
+/// same gradient dimmed (they were a bright white strip in the dark window).
+fn seg(v: u32, missing: bool) -> Color32 {
+    let c = hex(v);
+    if missing && crate::theme::dark() {
+        let dim = |x: u8| (x as f32 * 0.22 + 22.0) as u8;
+        rgb(dim(c.r()), dim(c.g()), dim(c.b()))
+    } else {
+        c
+    }
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -140,6 +147,7 @@ impl Progress {
     }
 
     pub fn show(&mut self, ctx: &egui::Context, item: &Item, snap: Option<&Snapshot>) -> Action {
+        crate::crash::window("progress");
         let frac = item
             .size
             .filter(|t| *t > 0)
@@ -254,33 +262,8 @@ impl Progress {
             }
         }
 
-        // Progress bar: #bcbcbc border, #e6e6e6 track, #0f7b0f fill of floor(f × 511) px.
-        let bar = r(o, 17.0, 180.0, 513.0, 16.0);
-        p.rect_stroke(
-            bar,
-            0.0,
-            egui::Stroke::new(1.0, rgb(0xbc, 0xbc, 0xbc)),
-            egui::StrokeKind::Inside,
-        );
-        fill(
-            &p,
-            o.x + 18.0,
-            o.y + 181.0,
-            o.x + 528.0,
-            o.y + 194.0,
-            rgb(0xe6, 0xe6, 0xe6),
-        );
-        let w = (frac * 511.0).floor() as f32;
-        if w > 0.0 {
-            fill(
-                &p,
-                o.x + 18.0,
-                o.y + 181.0,
-                o.x + 17.0 + w,
-                o.y + 194.0,
-                rgb(0x0f, 0x7b, 0x0f),
-            );
-        }
+        // The progress bar: IDM's green on the shared, themed track.
+        winui::meter(&p, r(o, 17.0, 180.0, 513.0, 16.0), frac as f32);
 
         let mut action = Action::None;
         let details_label = if self.details {
@@ -365,205 +348,31 @@ impl Progress {
 
     /// Classic 3-D tabs over a raised page frame (spec "Tab strip").
     fn tabs(&mut self, ui: &mut Ui, o: Pos2) {
-        let order = [Tab::Status, Tab::Limiter, Tab::Completion];
-        let current = order.iter().position(|t| *t == self.tab).unwrap_or(0);
-        if let Some(i) = winui::tab_keys(ui, order.len(), current) {
-            self.tab = order[i];
-        }
-        let p = ui.painter().clone();
+        // The shared tab strip (the torrent tabs' too): one look in both themes, one Tab stop with
+        // the arrows, sized to the translated labels. It had two of its own (classic 3-D in dark).
         let tabs = [
             // i18n: tab title: how the download is going
-            (Tab::Status, crate::i18n::t("Download status"), 20.0, 111.0),
+            (Tab::Status, crate::i18n::mark("Download status")),
             // i18n: tab title: the tool that limits the download speed
-            (Tab::Limiter, crate::i18n::t("Speed Limiter"), 112.0, 187.0),
+            (Tab::Limiter, crate::i18n::mark("Speed Limiter")),
             // i18n: tab title: what happens when the download finishes
-            (
-                Tab::Completion,
-                crate::i18n::t("Options on completion"),
-                188.0,
-                305.0,
-            ),
+            (Tab::Completion, crate::i18n::mark("Options on completion")),
         ];
-        // A translation sizes the tabs to their labels, within the page (cut with "..." only
-        // when the row can't hold them, whole on hover).
-        let english = crate::i18n::code() == "en";
-        let row = if english {
-            tabs.map(|(_, label, x0, x1)| (x0, x1, label.to_owned()))
-                .to_vec()
-        } else {
-            winui::tab_row(&p, &tabs.map(|t| t.1), 20.0, 525.0, 1.0, 6.0)
-        };
-        for ((_, full, ..), (x0, x1, shown)) in tabs.iter().zip(&row) {
-            if shown != full {
-                let tab = r(o, *x0, 8.0, x1 - x0 + 1.0, 20.0);
-                winui::full_on_hover(ui, tab, ("progress-tab-label", *x0 as i32), full);
-            }
-        }
-        let tabs: [(Tab, &str, f32, f32); 3] = std::array::from_fn(|i| {
-            let (x0, x1, shown) = &row[i];
-            (tabs[i].0, shown.as_str(), *x0, *x1)
-        });
-        if !crate::theme::dark() {
-            self.tabs_light(ui, o, &tabs, english);
-            return;
-        }
-        // Page frame (EDGE_RAISED), x 18..529, y 28..171.
-        let (l, t, rr, b) = (o.x + 18.0, o.y + 28.0, o.x + 529.0, o.y + 171.0);
-        fill(&p, l, t, rr, t, HILIGHT);
-        fill(&p, l + 1.0, t + 1.0, rr - 1.0, t + 1.0, LIGHT);
-        fill(&p, l, t, l, b, HILIGHT);
-        fill(&p, l + 1.0, t + 1.0, l + 1.0, b - 1.0, LIGHT);
-        fill(&p, rr, t, rr, b, DKSHADOW);
-        fill(&p, rr - 1.0, t + 1.0, rr - 1.0, b - 1.0, SHADOW);
-        fill(&p, l, b, rr, b, DKSHADOW);
-        fill(&p, l + 1.0, b - 1.0, rr - 1.0, b - 1.0, SHADOW);
-        for (tab, label, x0, x1) in tabs {
-            let sel = tab == self.tab;
-            let (x0, x1, y0) = if sel {
-                (o.x + x0 - 2.0, o.x + x1 + 2.0, o.y + 8.0)
-            } else {
-                (o.x + x0, o.x + x1, o.y + 10.0)
-            };
-            let y1 = o.y + 27.0;
-            let hit = winui::rect(Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, y1 + 1.0)));
-            let resp = ui.interact(
-                hit,
-                egui::Id::unique(("progress-tab", label)),
-                Sense::click(),
-            );
-            // An unselected tab under the pointer: lighter (the torrent tabs' hover grey).
-            let body = if !sel && resp.hovered() {
-                rgb(0x45, 0x45, 0x45)
-            } else {
-                winui::BG()
-            };
-            fill(&p, x0, y0, x1, y1 + if sel { 2.0 } else { 0.0 }, body);
-            px(&p, x0, y0, TAB_CORNER);
-            px(&p, x0 + 1.0, y0, TAB_CORNER);
-            fill(&p, x0 + 2.0, y0, x1 - 2.0, y0, HILIGHT);
-            px(&p, x1 - 1.0, y0, TAB_CORNER);
-            px(&p, x1, y0, TAB_CORNER);
-            px(&p, x0, y0 + 1.0, TAB_CORNER);
-            px(&p, x0 + 1.0, y0 + 1.0, HILIGHT);
-            fill(&p, x0 + 2.0, y0 + 1.0, x1 - 2.0, y0 + 1.0, LIGHT);
-            px(&p, x1 - 1.0, y0 + 1.0, DKSHADOW);
-            px(&p, x1, y0 + 1.0, TAB_CORNER);
-            let bottom = y1 + if sel { 1.0 } else { 0.0 };
-            fill(&p, x0, y0 + 2.0, x0, bottom, HILIGHT);
-            fill(&p, x0 + 1.0, y0 + 2.0, x0 + 1.0, bottom, LIGHT);
-            fill(&p, x1 - 1.0, y0 + 2.0, x1 - 1.0, y1, SHADOW);
-            fill(&p, x1, y0 + 2.0, x1, y1, DKSHADOW);
-            let base_x = if sel { x0 + 2.0 } else { x0 };
-            text(
-                &p,
-                base_x + 5.0,
-                o.y + if sel { 22.0 } else { 21.0 },
-                label,
-                winui::TEXT(),
-            );
-            winui::show_focus(ui, &resp, hit.shrink(3.0));
-            if resp.clicked() {
-                self.tab = tab;
-            }
-        }
-    }
-
-    /// Light mode's themed tabs (light-dialogs.md §6): flat #e5e5e5 borders with small rounded
-    /// top corners, selected #f9f9f9 (inflated 2 px left, open into the page), unselected
-    /// #f3f3f3; tabs share borders at x 113 and 187; text x as in dark, baselines selected 21 /
-    /// unselected 23.
-    fn tabs_light(
-        &mut self,
-        ui: &mut Ui,
-        o: Pos2,
-        tabs: &[(Tab, &str, f32, f32); 3],
-        english: bool,
-    ) {
         let p = ui.painter().clone();
-        let border = rgb(0xe5, 0xe5, 0xe5);
-        let (sel_fill, unsel_fill) = (rgb(0xf9, 0xf9, 0xf9), rgb(0xf3, 0xf3, 0xf3));
-        // Page: 1 px border x 18 / 527, y 28 / 170, body #f9f9f9, #f3f3f3 shadow right (2 px)
-        // and bottom (1 px).
-        let (l, t, rr, b) = (o.x + 18.0, o.y + 28.0, o.x + 527.0, o.y + 170.0);
-        fill(&p, l, t, rr, b, sel_fill);
-        fill(&p, l, t, rr, t, border);
-        fill(&p, l, t, l, b, border);
-        fill(&p, rr, t, rr, b, border);
-        fill(&p, l, b, rr, b, border);
-        fill(&p, rr + 1.0, t, rr + 2.0, b + 1.0, unsel_fill);
-        fill(&p, l, b + 1.0, rr + 2.0, b + 1.0, unsel_fill);
-        // Tab boundaries (shared borders); a translation's from its tabs.
-        let edges = if english {
-            [20.0, 113.0, 187.0, 303.0]
-        } else {
-            [tabs[0].2, tabs[1].2, tabs[2].2, tabs[2].3]
-        };
-        let draw = |i: usize, sel: bool| {
-            let x0 = o.x + edges[i] - if sel { 2.0 } else { 0.0 };
-            let x1 = o.x + edges[i + 1];
-            let y0 = o.y + if sel { 8.0 } else { 10.0 };
-            let y1 = o.y + 27.0;
-            let bottom = if sel { o.y + 28.0 } else { y1 };
-            fill(
-                &p,
-                x0 + 1.0,
-                y0 + 1.0,
-                x1 - 1.0,
-                bottom,
-                if sel { sel_fill } else { unsel_fill },
-            );
-            fill(&p, x0 + 2.0, y0, x1 - 2.0, y0, border);
-            fill(&p, x0, y0 + 2.0, x0, bottom, border);
-            fill(&p, x1, y0 + 2.0, x1, bottom, border);
-            for (x, inward) in [(x0, 1.0), (x1, -1.0)] {
-                px(&p, x, y0, rgb(0xec, 0xec, 0xec));
-                px(&p, x + inward, y0, rgb(0xe6, 0xe6, 0xe6));
-                px(&p, x, y0 + 1.0, rgb(0xe6, 0xe6, 0xe6));
-                px(&p, x + inward, y0 + 1.0, rgb(0xf7, 0xf7, 0xf7));
-            }
-        };
-        let selected = tabs.iter().position(|t| t.0 == self.tab).unwrap_or(0);
-        for i in 0..3 {
-            if i != selected {
-                draw(i, false);
-            }
-        }
-        draw(selected, true);
-        for (i, (tab, label, dark_x0, _)) in tabs.iter().enumerate() {
-            let sel = i == selected;
-            let hit = winui::rect(Rect::from_min_max(
-                pos2(o.x + edges[i], o.y + 8.0),
-                pos2(o.x + edges[i + 1] + 1.0, o.y + 28.0),
-            ));
-            let resp = ui.interact(
-                hit,
-                egui::Id::unique(("progress-tab", *label)),
-                Sense::click(),
-            );
-            // An unselected tab under the pointer: lighter, as the shared light tabs.
-            if !sel && resp.hovered() {
-                fill(
-                    &p,
-                    o.x + edges[i] + 1.0,
-                    o.y + 11.0,
-                    o.x + edges[i + 1] - 1.0,
-                    o.y + 27.0,
-                    rgb(0xfd, 0xfd, 0xfd),
-                );
-            }
-            // Text x is the same as in dark mode (25 / 117 / 193).
-            let tx = o.x + dark_x0 + 5.0;
-            text(
-                &p,
-                tx,
-                o.y + if sel { 21.0 } else { 23.0 },
+        let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
+        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, 525.0, 2.0, 8.0)
+            .into_iter()
+            .zip(tabs.iter())
+            .map(|((x0, x1, _), (_, label))| winui::LightTab {
                 label,
-                winui::TEXT(),
-            );
-            winui::show_focus(ui, &resp, hit.shrink(3.0));
-            if resp.clicked() {
-                self.tab = *tab;
-            }
+                sel: (x0 - 2.0, x1 + 2.0),
+                unsel: (x0, x1),
+            })
+            .collect();
+        let current = tabs.iter().position(|t| t.0 == self.tab).unwrap_or(0);
+        // The page: x 18..529, y 28..171 (tabs_light's pane starts 20 px under its top).
+        if let Some(i) = winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0), &light, current) {
+            self.tab = tabs[i].0;
         }
     }
 
@@ -711,22 +520,7 @@ impl Progress {
             "Show download complete dialog",
             true,
         );
-        fill(
-            &p,
-            o.x + 33.0,
-            o.y + 74.0,
-            o.x + 505.0,
-            o.y + 74.0,
-            winui::ETCH_SHADOW(),
-        );
-        fill(
-            &p,
-            o.x + 33.0,
-            o.y + 75.0,
-            o.x + 506.0,
-            o.y + 75.0,
-            winui::ETCH_LIGHT(),
-        );
+        winui::etched_h(&p, o.x + 33.0, o.y + 74.0, 474.0);
         text(
             &p,
             o.x + 33.0,
@@ -785,14 +579,6 @@ impl Progress {
 
 /// "Hide tab" (401,135,96,21) with its 1 px #f9f9f9 focus ring.
 fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
-    let p = ui.painter().clone();
-    let ring = r(o, 400.0, 134.0, 98.0, 23.0);
-    p.rect_stroke(
-        ring,
-        0.0,
-        egui::Stroke::new(1.0, winui::LIGHT_PAGE()),
-        egui::StrokeKind::Inside,
-    );
     winui::button(
         ui,
         r(o, 401.0, 135.0, 96.0, 21.0),
@@ -1188,7 +974,7 @@ fn piece_bar(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
         for (row, cols) in SEG_ROWS.iter().enumerate() {
             let v = if on { cols.1 } else { cols.0 };
             let y = y0 + 1.0 + row as f32;
-            fill(p, ix + c as f32, y, ix + e as f32, y, hex(v));
+            fill(p, ix + c as f32, y, ix + e as f32, y, seg(v, !on));
         }
         c = e + 1;
     }
@@ -1289,14 +1075,14 @@ fn table(
     rows: &[Vec<String>],
 ) {
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
-    winui::solid(p, outer, rgb(0x82, 0x87, 0x90));
+    winui::solid(p, outer, winui::FIELD_EDGE());
     let dark = crate::theme::dark();
     let (bg, head, line) = if dark {
-        (winui::BG(), rgb(0x19, 0x19, 0x19), rgb(0x63, 0x63, 0x63))
+        (winui::FIELD(), winui::LIST_HEADER(), rgb(0x63, 0x63, 0x63))
     } else {
         (
             rgb(0xff, 0xff, 0xff),
-            rgb(0xf3, 0xf3, 0xf3),
+            winui::LIST_HEADER(),
             rgb(0xe5, 0xe5, 0xe5),
         )
     };
@@ -1335,16 +1121,22 @@ fn table(
             winui::copyable(ui, rect.intersect(body), (id, first + k, c), cell, cut);
         }
     }
+    // The shared scroll bar (it was a thumb drawn alone, that couldn't be dragged).
     if rows.len() > visible {
-        let track = 124.0 - 17.0;
-        let len = (track * visible as f32 / rows.len() as f32).max(17.0);
-        let y = o.y + 292.0 + (track - len) * first as f32 / max_first.max(1) as f32;
-        let thumb = if dark {
-            rgb(0x95, 0x95, 0x95)
-        } else {
-            rgb(0x85, 0x85, 0x85)
-        };
-        fill(p, o.x + 524.0, y, o.x + 525.0, y + len - 1.0, thumb);
+        let mut pos = first as f32;
+        if crate::scrollbar::bar(
+            ui,
+            key.with("bar"),
+            r(o, 511.0, 275.0, 17.0, 124.0),
+            true,
+            rows.len() as f32,
+            visible as f32,
+            1.0,
+            &mut pos,
+        ) {
+            let first = (pos.round().max(0.0) as usize).min(max_first);
+            ui.ctx().data_mut(|d| d.insert_temp(key, first));
+        }
     }
 }
 
@@ -1381,7 +1173,7 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>)
                 y0 + 1.0 + row as f32,
                 b,
                 y0 + 1.0 + row as f32,
-                hex(c),
+                seg(c, which == 0),
             );
         }
     };
@@ -1412,19 +1204,15 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>)
 /// The connections table (spec "Connections table"): N. · Downloaded · Info.
 fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>) {
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
-    winui::solid(p, outer, rgb(0x82, 0x87, 0x90));
+    winui::solid(p, outer, winui::FIELD_EDGE());
     fill(
         p,
         o.x + 18.0,
         o.y + 274.0,
         o.x + 528.0,
         o.y + 399.0,
-        // Light: the list background is mauve #beb4be (light-dialogs.md).
-        if crate::theme::dark() {
-            winui::BG()
-        } else {
-            rgb(0xbe, 0xb4, 0xbe)
-        },
+        // Every list's background (IDM's light one is mauve, #beb4be: the only one of its kind).
+        winui::FIELD(),
     );
     fill(
         p,
@@ -1432,11 +1220,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         o.y + 275.0,
         o.x + 510.0,
         o.y + 298.0,
-        if crate::theme::dark() {
-            rgb(0x19, 0x19, 0x19)
-        } else {
-            rgb(0xff, 0xff, 0xff)
-        },
+        winui::LIST_HEADER(),
     );
     for x in [48.0, 148.0, 498.0] {
         fill(
@@ -1568,34 +1352,21 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
             winui::full_on_hover(ui, rect.intersect(body), ("conn", c.id), &info);
         }
     }
-    // Thin scrollbar: #171717 track, 2 px #959595 thumb (light: #f0f0f0 / #858585).
-    fill(
-        p,
-        o.x + 511.0,
-        o.y + 275.0,
-        o.x + 527.0,
-        o.y + 398.0,
-        if crate::theme::dark() {
-            rgb(0x17, 0x17, 0x17)
-        } else {
-            rgb(0xf0, 0xf0, 0xf0)
-        },
-    );
+    // The shared scroll bar (a track and thumb were drawn here, the thumb not draggable).
     if conns.len() > visible {
-        let track = 124.0 - 17.0;
-        let len = (track * visible as f32 / conns.len() as f32).max(17.0);
-        let top = o.y + 292.0 + (track - len) * first as f32 / max_first.max(1) as f32;
-        fill(
-            p,
-            o.x + 519.0,
-            top,
-            o.x + 520.0,
-            top + len - 1.0,
-            if crate::theme::dark() {
-                rgb(0x95, 0x95, 0x95)
-            } else {
-                rgb(0x85, 0x85, 0x85)
-            },
-        );
+        let mut pos = first as f32;
+        if crate::scrollbar::bar(
+            ui,
+            key.with("bar"),
+            r(o, 511.0, 275.0, 17.0, 124.0),
+            true,
+            conns.len() as f32,
+            visible as f32,
+            1.0,
+            &mut pos,
+        ) {
+            let first = (pos.round().max(0.0) as usize).min(max_first);
+            ui.ctx().data_mut(|d| d.insert_temp(key, first));
+        }
     }
 }

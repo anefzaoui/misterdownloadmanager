@@ -24,7 +24,8 @@ const ROW: f32 = 17.0;
 type Slot = Arc<Mutex<Option<Result<Meta, String>>>>;
 
 crate::theme::themed! {
-    LIST_HEAD = rgb(0x19, 0x19, 0x19), rgb(0xf3, 0xf3, 0xf3);
+    // The lists' header colour (winui::LIST_HEADER).
+    LIST_HEAD = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff);
     LIST_LINE = rgb(0x4a, 0x4a, 0x4a), rgb(0xe5, 0xe5, 0xe5);
 }
 
@@ -92,7 +93,7 @@ pub(crate) fn spinner(ui: &Ui, center: Pos2, radius: f32) {
         .collect();
     let p = ui.painter();
     p.circle_stroke(center, radius, Stroke::new(2.0, LIST_LINE()));
-    p.line(points, Stroke::new(2.0, winui::SELECTION));
+    p.line(points, Stroke::new(2.0, winui::accent()));
     ui.ctx().request_repaint();
 }
 
@@ -545,7 +546,7 @@ impl TorrentDialog {
     /// on the right; scrolled by the wheel a row at a time. While looking up: a spinner.
     fn file_list(&mut self, ui: &mut Ui, list: Rect) {
         let p = ui.painter().clone();
-        winui::solid(&p, list, rgb(0x82, 0x87, 0x90));
+        winui::solid(&p, list, winui::FIELD_EDGE());
         // Laid out in English (`list` comes on screen); each part made where it is on screen:
         // names from the leading edge, sizes at the trailing one, folders indenting from the
         // leading edge.
@@ -945,18 +946,13 @@ fn expander(p: &egui::Painter, at: Pos2, open: bool) {
     p.add(egui::Shape::convex_polygon(pts, c, Stroke::NONE));
 }
 
-/// The "some chosen" mark over an unticked checkbox glyph.
+/// The "some chosen" state over the row's check box: the shared partly-ticked box.
 fn mixed_mark(p: &egui::Painter, glyph: Pos2) {
-    // The accent in both modes (black on the dark unticked box could not be seen).
-    let c = winui::accent();
     // `glyph` is English, as the check box's.
-    p.rect_filled(
-        winui::rect(Rect::from_min_size(
-            pos2(glyph.x + 3.0, glyph.y + 3.0),
-            vec2(7.0, 7.0),
-        )),
-        1.0,
-        c,
+    winui::check_box_mixed(
+        p,
+        winui::rect(Rect::from_min_size(glyph, vec2(13.0, 13.0))),
+        winui::State::Normal,
     );
 }
 

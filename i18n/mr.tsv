@@ -80,6 +80,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< तपशील लपवा
+#. text in crashui.rs
+#. crash report window: what the report is and what Send does
+#, machine
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	एक अहवाल सेव्ह केला गेला. तो GitHub वरील डेव्हलपर्सना पाठवल्याने त्यांना हे निश्चित करण्यात मदत होते; तुम्ही त्यात काय आहे ते खाली वाचू शकता. काहीही आपोआप पाठवले जात नाही: पाठवा (Send) तुमच्या ब्राउझरमध्ये अहवाल फॉर्म उघडतो, तो भरलेला असतो, तुम्हाला तो तपासण्यासाठी आणि सबमिट करण्यासाठी.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager बद्दल
@@ -143,6 +147,14 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	आधीच डाउनलोड केले जात आहे: {path}
+#. text in crashui.rs
+#. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
+#, machine
+	Already reported as issue #{number}: {title}	इश्यू #{number}: {title} म्हणून आधीच नोंदवले आहे
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	क्रॅश डेटा (.dmp) देखील संलग्न करा: त्यात MDM च्या मेमरीमधील पत्ते असू शकतात
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	डिस्कमधून फाइल देखील हटवा
@@ -245,8 +257,9 @@
 #, machine
 	Check for updates	अद्यतनांसाठी तपासा
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates once a week	आठवड्यातून एकदा अद्यतनांसाठी तपासा
+	Check for updates at every start	प्रत्येक सुरुवातीला अद्यतनांसाठी तपासा
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -272,7 +285,7 @@
 #. text in the Options window
 #, machine
 	Clock:	घड्याळ:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -316,6 +329,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	कॉपी करा
+#. button in crashui.rs
+#. crash report window button: copy the report's text
+#, machine
+	Copy report	अहवाल कॉपी करा
 #. window title in a dialog box
 #, machine
 	Create folder	फोल्डर तयार करा
@@ -895,6 +912,10 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	प्रथम नवीन पत्ता शोधा
+#. text in crashui.rs
+#. crash report window: looking on GitHub for an issue about the same problem
+#, machine
+	Looking for this problem on GitHub…	GitHub वर ही समस्या शोधत आहे…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -905,6 +926,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	निवड लांब किंवा लहान करा
+#. text in crashui.rs
+#. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
+#, machine
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	अहवाल वाचण्यायोग्य बनवत आहे: चिन्हे मिळवत आहे ({total} MB पैकी {done})…
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	मॅन्युअल प्रॉक्सी/SOCKS कॉन्फिगरेशन
@@ -938,9 +963,27 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM crashed and is gone
+#, machine
+	Mister Download Manager closed unexpectedly	Mister Download Manager अनपेक्षितपणे बंद झाले
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	Mister Download Manager कॉन्फिगरेशन
+#. text in crashui.rs
+#, machine
+	Mister Download Manager crash report	Mister Download Manager क्रॅश अहवाल
+#. text in crashui.rs
+#. crash report window heading: an internal error, MDM still running
+#, machine
+	Mister Download Manager hit an internal error	Mister Download Manager मध्ये अंतर्गत त्रुटी आली
+#. text in crashui.rs
+#. crash report window heading: MDM's window doesn't answer (frozen)
+#, machine
+	Mister Download Manager stopped responding	Mister Download Manager प्रतिसाद देणे थांबवले
+#. text in crashui.rs
+#, machine
+	Mister Download Manager stopped responding for a while	Mister Download Manager ने काही काळ प्रतिसाद देणे थांबवले
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1143,6 +1186,10 @@
 #. verb: opens the file
 #, machine
 	Open	उघडा
+#. button in crashui.rs
+#. crash report window button: show the report's file in its folder
+#, machine
+	Open folder	फोल्डर उघडा
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager सह मॅग्नेट लिंक्स आणि .torrent फाइल्स उघडा
@@ -1169,6 +1216,7 @@
 #, machine
 	Options	पर्याय
 #. text in a download's progress window
+#. tab title: what happens when the download finishes
 #, machine
 	Options on completion	पूर्ण झाल्यावर पर्याय
 #. text in the Download video window
@@ -1264,6 +1312,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	रांगा
+#. text in crashui.rs
+#. crash report window: shown while the crash dump is being read
+#, machine
+	Reading the crash data…	क्रॅश डेटा वाचत आहे…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1742,6 +1794,10 @@
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	फोल्डर {path} उपलब्ध नाही (ड्राइव्ह काढला आहे किंवा नेटवर्क शेअर ऑफलाइन आहे?)
+#. text in crashui.rs
+#. crash report window: after Send opened the browser
+#, machine
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	फॉर्म तुमच्या ब्राउझरमध्ये उघडला आहे. अहवाल फाइल (आणि तुम्ही निवडल्यास .dmp) त्यात ड्रॅग करा, नंतर सबमिट करा.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -1757,6 +1813,17 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	रिलीजमध्ये आवृत्ती नाही
+#. text in crashui.rs
+#. crash report window: label above the report's text
+#, machine
+	The report	अहवाल
+#. text in crashui.rs
+#. crash report window: after Copy report
+#, machine
+	The report is on your clipboard.	अहवाल तुमच्या क्लिपबोर्डवर आहे.
+#. text in crashui.rs
+#, machine
+	The report is on your clipboard: paste it in a comment on the issue.	अहवाल तुमच्या क्लिपबोर्डवर आहे: तो इश्यूवरील टिप्पणीमध्ये पेस्ट करा.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -1786,6 +1853,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	सर्व्हरने फाइलचा अनपेक्षित भाग पाठवला ({detail})
+#. text in crashui.rs
+#. crash report window: the symbols couldn't be downloaded; the report still works
+#, machine
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	चिन्हे मिळवता आली नाहीत: अहवालाच्या काही ओळी नावांच्या ऐवजी पत्ते दाखवतात (डेव्हलपर्स तरीही ते वाचू शकतात).
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2041,6 +2112,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	बुधवार
+#. text in crashui.rs
+#. crash report window: label of the box where the user describes what they did
+#, machine
+	What were you doing when it happened? (optional)	जेव्हा हे घडले तेव्हा तुम्ही काय करत होता? (ऐच्छिक)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	नवीन काय आहे:

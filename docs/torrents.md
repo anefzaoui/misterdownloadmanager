@@ -29,6 +29,8 @@ Double-click the torrent in the list to open its progress window. Besides the us
 
 ![A torrent's progress window, on its Files tab](images/progress-torrent.png)
 
+![The Pieces tab: a square for each piece, filled once it's here](images/progress-torrent-pieces.png)
+
 ## Torrent settings
 
 Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):

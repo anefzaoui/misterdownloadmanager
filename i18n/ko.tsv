@@ -80,6 +80,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< 세부 정보 숨기기
+#. text in crashui.rs
+#. crash report window: what the report is and what Send does
+#, machine
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	보고서가 저장되었습니다. GitHub의 개발자에게 보내면 문제를 해결하는 데 도움이 됩니다. 먼저 아래에서 보고서의 모든 내용을 읽을 수 있습니다. 아무것도 자동으로 전송되지 않습니다. 보내기를 클릭하면 브라우저에서 보고서 양식이 채워진 상태로 열리므로 확인하고 제출할 수 있습니다.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager 정보
@@ -143,6 +147,14 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	이미 다운로드 중: {path}
+#. text in crashui.rs
+#. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
+#, machine
+	Already reported as issue #{number}: {title}	문제 #{number}으로 이미 보고됨: {title}
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	크래시 데이터(.dmp)도 첨부: MDM이 메모리에 가지고 있던 주소를 포함할 수 있습니다.
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	디스크에서 파일도 삭제
@@ -245,8 +257,9 @@
 #, machine
 	Check for updates	업데이트 확인
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates once a week	일주일에 한 번 업데이트 확인
+	Check for updates at every start	시작할 때마다 업데이트 확인
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -272,7 +285,7 @@
 #. text in the Options window
 #, machine
 	Clock:	시계:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -316,6 +329,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	복사
+#. button in crashui.rs
+#. crash report window button: copy the report's text
+#, machine
+	Copy report	보고서 복사
 #. window title in a dialog box
 #, machine
 	Create folder	폴더 만들기
@@ -895,6 +912,10 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	새 주소를 먼저 찾아보세요.
+#. text in crashui.rs
+#. crash report window: looking on GitHub for an issue about the same problem
+#, machine
+	Looking for this problem on GitHub…	GitHub에서 이 문제 검색 중…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -905,6 +926,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	선택 영역을 길게 또는 짧게 만들기
+#. text in crashui.rs
+#. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
+#, machine
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	보고서를 읽을 수 있도록 만드는 중: 기호 가져오는 중({total}MB 중 {done}MB)…
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	수동 프록시/SOCKS 구성
@@ -938,9 +963,27 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM crashed and is gone
+#, machine
+	Mister Download Manager closed unexpectedly	Mister Download Manager이(가) 예기치 않게 종료되었습니다.
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	Mister Download Manager 구성
+#. text in crashui.rs
+#, machine
+	Mister Download Manager crash report	Mister Download Manager 크래시 보고서
+#. text in crashui.rs
+#. crash report window heading: an internal error, MDM still running
+#, machine
+	Mister Download Manager hit an internal error	Mister Download Manager에 내부 오류가 발생했습니다.
+#. text in crashui.rs
+#. crash report window heading: MDM's window doesn't answer (frozen)
+#, machine
+	Mister Download Manager stopped responding	Mister Download Manager이(가) 응답을 중지했습니다.
+#. text in crashui.rs
+#, machine
+	Mister Download Manager stopped responding for a while	Mister Download Manager이(가) 잠시 응답을 중지했습니다.
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1143,6 +1186,10 @@
 #. verb: opens the file
 #, machine
 	Open	열기
+#. button in crashui.rs
+#. crash report window button: show the report's file in its folder
+#, machine
+	Open folder	폴더 열기
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager로 마그넷 링크 및 .torrent 파일 열기
@@ -1169,6 +1216,7 @@
 #, machine
 	Options	옵션
 #. text in a download's progress window
+#. tab title: what happens when the download finishes
 #, machine
 	Options on completion	완료 시 옵션
 #. text in the Download video window
@@ -1264,6 +1312,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	대기열
+#. text in crashui.rs
+#. crash report window: shown while the crash dump is being read
+#, machine
+	Reading the crash data…	크래시 데이터 읽는 중…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1742,6 +1794,10 @@
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	폴더 {path}를 사용할 수 없습니다(드라이브 제거 또는 네트워크 공유 오프라인?).
+#. text in crashui.rs
+#. crash report window: after Send opened the browser
+#, machine
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	양식이 브라우저에서 열렸습니다. 보고서 파일(선택한 경우 .dmp도)을 양식으로 끌어다 놓은 다음 제출하세요.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -1757,6 +1813,17 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	릴리스에 버전이 없습니다.
+#. text in crashui.rs
+#. crash report window: label above the report's text
+#, machine
+	The report	보고서
+#. text in crashui.rs
+#. crash report window: after Copy report
+#, machine
+	The report is on your clipboard.	보고서가 클립보드에 있습니다.
+#. text in crashui.rs
+#, machine
+	The report is on your clipboard: paste it in a comment on the issue.	보고서가 클립보드에 있습니다. 문제에 대한 설명에 붙여넣으세요.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -1786,6 +1853,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	서버가 예상치 못한 파일 부분을 보냈습니다({detail}).
+#. text in crashui.rs
+#. crash report window: the symbols couldn't be downloaded; the report still works
+#, machine
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	기호를 가져올 수 없습니다. 보고서의 일부 줄에 이름 대신 주소가 표시됩니다(개발자는 여전히 읽을 수 있습니다).
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2041,6 +2112,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	수요일
+#. text in crashui.rs
+#. crash report window: label of the box where the user describes what they did
+#, machine
+	What were you doing when it happened? (optional)	문제가 발생했을 때 무엇을 하고 있었습니까? (선택 사항)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	새로운 기능:

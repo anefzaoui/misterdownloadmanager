@@ -684,12 +684,7 @@ impl Scheduler {
                 )
             };
             if bad {
-                p.rect_stroke(
-                    rc,
-                    3.0,
-                    egui::Stroke::new(1.0, winui::ERROR()),
-                    egui::StrokeKind::Inside,
-                );
+                winui::error_frame(&p, rc);
                 ui.interact(
                     rc,
                     egui::Id::unique(("start-warning", self.selected)),
@@ -834,35 +829,27 @@ impl Scheduler {
             },
         );
         let f = &mut self.forms[self.selected];
-        winui::number_field(
+        // A spin box: the number and its arrows, one control.
+        winui::spin_box(
             ui,
             boxes[0],
             &mut f.files_at_once,
             1,
             99,
             true,
-            LIGHT_PAGE(),
+            "files-at-once",
         );
-        // The up-down buddy inside the box's right end (IDM's: 318, 54 for the box at 297, 53).
-        let english_box = winui::rect(boxes[0]);
-        let spin = winui::rect(Rect::from_min_size(
-            english_box.min + vec2(21.0, 1.0),
-            vec2(17.0, 21.0),
-        ));
-        let step = winui::updown_light(ui, spin, true, "files-at-once");
-        if step != 0 {
-            let n = f.files_at_once.parse::<i32>().unwrap_or(4) + step;
-            f.files_at_once = n.clamp(1, 99).to_string();
-        }
 
         // The queue's files: File Name, Size, Status, Time left.
         let list = r(o, 229.0, 82.0, 396.0, 294.0);
-        p.rect_filled(list, 0.0, winui::FIELD());
-        p.rect_stroke(
-            list,
-            0.0,
-            egui::Stroke::new(1.0, winui::FIELD_EDGE()),
-            egui::StrokeKind::Inside,
+        crate::options::list_frame(&p, list);
+        fill(
+            &p,
+            o.x + 230.0,
+            o.y + 83.0,
+            o.x + 624.0,
+            o.y + 106.0,
+            winui::LIST_HEADER(),
         );
         let cols = [
             (crate::i18n::mark("File Name"), 230.0, 421.0),
@@ -1325,17 +1312,14 @@ fn time_picker(
         },
     );
     picker_focus(ui, &hover, id, focus);
-    winui::dropdown_frame_light(&p, rc, winui::State::of(&hover, enabled));
-    // A time reads left to right in every language: its fields are laid out on screen as they
-    // are; in RTL the up-down is at the left and the fields follow it.
-    let spin = if rtl {
-        Rect::from_min_size(rc.min + vec2(2.0, 2.0), vec2(17.0, rc.height() - 4.0))
-    } else {
-        Rect::from_min_size(
-            pos2(rc.right() - 19.0, rc.top() + 2.0),
-            vec2(17.0, rc.height() - 4.0),
-        )
-    };
+    // A spin box's look (the number boxes' too): a text box, its arrows inside its end; focused,
+    // the accent along its bottom. A time reads left to right in every language: its fields are
+    // laid out on screen as they are; in RTL the arrows are at the left and the fields follow.
+    winui::edit_frame(&p, rc, enabled);
+    if hover.has_focus() {
+        winui::focus_bottom(&p, rc);
+    }
+    let spin = winui::spin_zone(rc);
     let fields_left = if rtl { rc.left() + 17.0 } else { rc.left() };
     let _ltr = winui::Surface::enter_if(false, 0.0, 0.0);
     let sel = match focus.at {
@@ -1343,7 +1327,7 @@ fn time_picker(
         _ => None,
     };
     let h12 = if h % 12 == 0 { 12 } else { h % 12 };
-    let base = rc.top() + 15.0;
+    let base = winui::baseline_in(rc.top(), rc.height());
     let hs = if clock24 {
         format!("{h:02}")
     } else {
@@ -1399,7 +1383,7 @@ fn time_picker(
     if !clock24 {
         rects.push(field(&p, x, base, ampm, sel == Some(3), enabled));
     }
-    let step_btn = winui::updown_light(ui, spin, enabled, id);
+    let step_btn = winui::spin_arrows(ui, spin, enabled, id);
     if !enabled {
         return;
     }
@@ -1555,33 +1539,29 @@ fn date_picker(
     };
     let wd_comma = if order == DateOrder::Ymd { "" } else { "," };
     let day_comma = if order == DateOrder::Dmy { "" } else { "," };
-    // Where the fields start, from the box's leading edge: IDM's in English, month first;
-    // otherwise after the widest weekday and month (fixed-width fields, as Windows'), the box
-    // growing at its trailing edge when they need more room.
-    let mut xs: [f32; 4] = [2.0, 71.0, 121.0, 140.0];
-    if crate::i18n::code() != "en" || order != DateOrder::Mdy {
-        let widest = |names: &[&str], tail: &str| {
-            names
-                .iter()
-                .map(|n| winui::text_width(&p, &format!("{}{tail}", crate::i18n::t(n))).ceil())
-                .fold(0.0, f32::max)
+    // Where the fields start, from the box's leading edge: one after the other as the date reads
+    // (Windows' date picker flows its text too), from 5 px in as every text box's text, the box
+    // growing at its trailing edge when they need more room. IDM's fixed places let "September"
+    // (53 px) run into the day; fields sized for the widest names left gaps after short ones.
+    let mut xs: [f32; 4] = [5.0, 71.0, 121.0, 140.0];
+    {
+        let name = |n: &str, tail: &str| {
+            winui::text_width(&p, &format!("{}{tail}", crate::i18n::t(n))).ceil()
         };
         let widths = [
-            widest(&WEEKDAYS, wd_comma),
-            widest(&MONTHS, ""),
+            name(
+                WEEKDAYS[date.weekday().num_days_from_sunday() as usize],
+                wd_comma,
+            ),
+            name(MONTHS[date.month0() as usize], ""),
             winui::text_width(&p, &format!("00{day_comma}")).ceil(),
             winui::text_width(&p, "0000").ceil(),
         ];
         // The gap after each field (IDM's: 5 after the names, 4 after the numbers).
         let gaps = [5.0, 5.0, 4.0, 4.0];
-        let mut x = 2.0;
+        let mut x = 5.0;
         for &f in &visual {
-            // IDM's places where the order is IDM's and a translation fits them.
-            xs[f] = if order == DateOrder::Mdy {
-                xs[f].max(x)
-            } else {
-                x
-            };
+            xs[f] = x;
             x = xs[f] + widths[f] + gaps[f];
         }
         let need = x + 20.0;
@@ -1606,7 +1586,7 @@ fn date_picker(
         Some((fid, f)) if fid == id && enabled => Some(f),
         _ => None,
     };
-    let base = rc.top() + 15.0;
+    let base = winui::baseline_in(rc.top(), rc.height());
     let wd = format!(
         "{}{wd_comma}",
         crate::i18n::t(WEEKDAYS[date.weekday().num_days_from_sunday() as usize])
@@ -1788,13 +1768,7 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
         .show(ui.ctx(), |ui| {
             let (rect, p) = ui.allocate_painter(size, Sense::hover());
             let shown = rect.rect;
-            p.rect_filled(shown, 4.0, winui::FIELD());
-            p.rect_stroke(
-                shown,
-                4.0,
-                egui::Stroke::new(1.0, winui::FIELD_EDGE()),
-                egui::StrokeKind::Inside,
-            );
+            crate::chrome::popup_surface(&p, shown);
             let rect = winui::rect(shown);
             let title = crate::i18n::fmt(
                 // i18n: the calendar's title: {month} = a month's name, {year} = its year

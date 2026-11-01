@@ -261,6 +261,12 @@ pub struct App {
     lang_picker: Option<crate::langpick::Picker>,
     /// The weekly update check, while it runs.
     auto_update: Option<crate::help::Slot>,
+    /// The automatic check found a new version: its window comes to the front once shown.
+    raise_updates: bool,
+    /// When MDM started (the update check waits a few seconds after it).
+    started: Instant,
+    /// When this run last checked for updates by itself (seconds since the epoch).
+    update_checked_this_run: Option<i64>,
     progress: Vec<Progress>,
     complete: Vec<Complete>,
     settings: Settings,
@@ -342,6 +348,8 @@ pub struct App {
     downloads: PathBuf,
     dirty: bool,
     last_save: Instant,
+    /// Writes the list off the window's thread.
+    saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
     /// The main window's caption matches the mode.
@@ -586,6 +594,9 @@ impl App {
             tell_friend: None,
             lang_picker: ask_language.then(|| crate::langpick::Picker::new(true, None)),
             auto_update: None,
+            raise_updates: false,
+            started: Instant::now(),
+            update_checked_this_run: None,
             file_info: None,
             progress: Vec::new(),
             complete: Vec::new(),
@@ -635,6 +646,7 @@ impl App {
             downloads,
             dirty: false,
             last_save: Instant::now(),
+            saver: store::Saver::new(),
             theme_checked: None,
             caption_set: false,
             list,
@@ -750,7 +762,8 @@ impl App {
     fn status_strip(&self, ui: &Ui, o: Pos2, w: f32, h: f32, shown: usize) {
         let p = ui.painter();
         let top = o.y + h - STRIP_H;
-        let baseline = top + 14.0;
+        // Centred in the band it reads as: the strip and the 5 px gap above it, under the panes.
+        let baseline = winui::baseline_in(top - 5.0, STRIP_H + 5.0);
         let n = shown as u64;
         let mut left = crate::i18n::tn(n, "{n} download", "{n} downloads");
         let selected = self.selection.ids().len() as u64;
@@ -1114,6 +1127,8 @@ impl App {
         let (window, tab) = name.split_once(':').unwrap_or((name, ""));
         match window {
             "addurl" => self.run(Cmd::AddUrl, None, ctx),
+            // MDM_CRASH_TEST=1 only (crash.rs): the crash reports' own check.
+            "crash-test" => crate::crash::test(tab),
             "batch" => self.run(Cmd::Batch(false), None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
@@ -2412,6 +2427,8 @@ impl App {
     /// commands act on every selected download (or the right-clicked one outside the
     /// selection); the others on one download.
     fn run(&mut self, cmd: Cmd, target: Option<u64>, ctx: &egui::Context) {
+        // The log a crash report quotes: what was asked for (commands carry no addresses).
+        tracing::info!("command {cmd:?}");
         let many = self.targets(target);
         let target = target.or(self.selection.one());
         let dest = target
@@ -2819,19 +2836,32 @@ impl App {
             }
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
-            let saved = store::save(
+            // Written on the saver's thread (store::Saver); refused at once when the list
+            // couldn't be read at start.
+            if let Err(e) = self.saver.save(
                 self.next_id,
                 &self.items,
                 &self.list.layout(),
                 &self.settings,
                 &self.queues,
-            );
-            // A list that can't be saved says so, once for each reason (not every second);
-            // it was silent and a restart lost the changes.
-            match saved {
+            ) {
+                self.report_save(Err(e.to_string()));
+            }
+            self.dirty = false;
+            self.last_save = Instant::now();
+        }
+        if let Some(outcome) = self.saver.outcome() {
+            self.report_save(outcome);
+        }
+    }
+
+    /// A list that can't be saved says so, once for each reason (not every second); it was
+    /// silent and a restart lost the changes.
+    fn report_save(&mut self, outcome: Result<(), String>) {
+        {
+            match outcome {
                 Ok(()) => self.save_failed = None,
                 Err(e) => {
-                    let e = e.to_string();
                     if self.save_failed.as_ref() != Some(&e) {
                         self.notice = Some((
                             crate::i18n::mark("Mister Download Manager"),
@@ -2846,8 +2876,6 @@ impl App {
                     self.save_failed = Some(e);
                 }
             }
-            self.dirty = false;
-            self.last_save = Instant::now();
         }
     }
 
@@ -4503,15 +4531,37 @@ impl App {
 
     /// IDM looks for a new version once a week; so do we (off: the switch in Check for updates). Found: the
     /// update window says so; otherwise nothing shows.
-    fn weekly_update_check(&mut self, ctx: &egui::Context) {
+    /// The automatic update check: a few seconds after every start, then once a day while MDM
+    /// runs (it was at most once a week). A new version's window comes to the front, as apps
+    /// announce theirs. Not in off-screen test runs (their windows stay as asked).
+    fn auto_update_check(&mut self, ctx: &egui::Context) {
         let now = chrono::Utc::now().timestamp();
+        let first = self.update_checked_this_run.is_none()
+            && self.started.elapsed() >= crate::help::CHECK_AFTER_START;
+        let again = self
+            .update_checked_this_run
+            .is_some_and(|t| now - t >= crate::help::CHECK_EVERY);
         if self.auto_update.is_none()
             && self.settings.update_check
-            && now - self.settings.update_checked >= crate::help::CHECK_EVERY
+            // Off-screen test runs check only when told where (MDM_UPDATE_FEED: their own feed).
+            && (!crate::offscreen() || std::env::var_os("MDM_UPDATE_FEED").is_some())
+            && (first || again)
         {
+            self.update_checked_this_run = Some(now);
             self.settings.update_checked = now;
             self.dirty = true;
             self.auto_update = Some(crate::help::check(&self.rt, ctx));
+        }
+        if self.updates.is_some() {
+            if self.raise_updates && crate::dialogs::focus_when_shown(ctx, "updates") {
+                self.raise_updates = false;
+            }
+        } else {
+            self.raise_updates = false;
+        }
+        // Until the check at start is due.
+        if self.update_checked_this_run.is_none() && self.settings.update_check {
+            ctx.request_repaint_after(crate::help::CHECK_AFTER_START);
         }
         let done = self
             .auto_update
@@ -4520,7 +4570,9 @@ impl App {
         if let Some(res) = done {
             self.auto_update = None;
             if let (Ok(crate::help::Found::Newer(rel)), None) = (res, &self.updates) {
+                tracing::info!("update available: {}", rel.version);
                 self.updates = Some(crate::help::Updates::found(rel));
+                self.raise_updates = true;
             }
         }
     }
@@ -5029,6 +5081,9 @@ impl App {
 
 impl eframe::App for App {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
+        // The freeze watchdog times every frame (crash.rs).
+        crate::crash::frame_begin();
+        crate::crash::window("main");
         let ctx = ui.ctx().clone();
         dialogs::publish_main_rect(&ctx);
         while let Ok(inc) = self.commands.try_recv() {
@@ -5048,7 +5103,7 @@ impl eframe::App for App {
         self.drop_target(&ctx);
         self.main_drops(&ctx);
         self.remember_layout(&ctx);
-        self.weekly_update_check(&ctx);
+        self.auto_update_check(&ctx);
         self.apply_global_limit();
         self.watch_clipboard(&ctx);
         self.tray(&ctx);
@@ -5082,17 +5137,27 @@ impl eframe::App for App {
             if changed {
                 ctx.request_repaint();
             }
+            // For a crash report: what MDM has open and running (sent when it changes).
+            crate::crash::state(
+                self.items.len(),
+                self.items.iter().filter(|i| i.live.is_some()).count(),
+                self.queues.len(),
+                ctx.pixels_per_point(),
+            );
         }
         ctx.request_repaint_after(Duration::from_secs(2));
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
         self.dialogs(&ctx);
+        crate::crash::frame_end();
     }
 }
 
 impl Drop for App {
     fn drop(&mut self) {
+        // What the saver has in hand first, then the last state, written here and now.
+        self.saver.flush();
         let _ = store::save(
             self.next_id,
             &self.items,

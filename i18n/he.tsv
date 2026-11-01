@@ -68,6 +68,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< הסתר פרטים
+#. text in crashui.rs
+#. crash report window: what the report is and what Send does
+#, machine
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	דוח נשמר. שליחתו למפתחים ב-GitHub עוזרת להם לתקן זאת; באפשרותך לקרוא את כל מה שהוא מכיל למטה תחילה. שום דבר לא נשלח מעצמו: שלח פותח את טופס הדוח בדפדפן שלך, כשהוא מלא, כדי שתוכל לבדוק ולשלוח.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	אודות Mister Download Manager
@@ -131,6 +135,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	כבר מורד: {path}
+#. text in crashui.rs
+#. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
+#, machine
+	Already reported as issue #{number}: {title}	כבר דווח כבעיה #{number}: {title}
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	מחק גם את הקובץ מהדיסק
@@ -233,8 +241,9 @@
 #, machine
 	Check for updates	בדוק עדכונים
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates once a week	בדוק עדכונים פעם בשבוע
+	Check for updates at every start	בדוק עדכונים בכל הפעלה
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -260,7 +269,7 @@
 #. text in the Options window
 #, machine
 	Clock:	שעון:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -304,6 +313,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	העתק
+#. button in crashui.rs
+#. crash report window button: copy the report's text
+#, machine
+	Copy report	העתק דוח
 #. window title in a dialog box
 #, machine
 	Create folder	צור תיקיה
@@ -883,6 +896,10 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	חפש תחילה את הכתובת החדשה
+#. text in crashui.rs
+#. crash report window: looking on GitHub for an issue about the same problem
+#, machine
+	Looking for this problem on GitHub…	מחפש בעיה זו ב-GitHub…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -893,6 +910,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	הארך או קצר את הבחירה
+#. text in crashui.rs
+#. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
+#, machine
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	הפיכת הדוח לקריא: מאחזר את הסמלים ({done} מתוך {total} מ״ב)…
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	תצורת Proxy/SOCKS ידנית
@@ -926,9 +947,27 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM crashed and is gone
+#, machine
+	Mister Download Manager closed unexpectedly	Mister Download Manager נסגר באופן בלתי צפוי
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	תצורת Mister Download Manager
+#. text in crashui.rs
+#, machine
+	Mister Download Manager crash report	דוח קריסה של Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: an internal error, MDM still running
+#, machine
+	Mister Download Manager hit an internal error	אירעה שגיאה פנימית ב- Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM's window doesn't answer (frozen)
+#, machine
+	Mister Download Manager stopped responding	Mister Download Manager הפסיק להגיב
+#. text in crashui.rs
+#, machine
+	Mister Download Manager stopped responding for a while	Mister Download Manager הפסיק להגיב לזמן מה
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1131,6 +1170,10 @@
 #. verb: opens the file
 #, machine
 	Open	פתח
+#. button in crashui.rs
+#. crash report window button: show the report's file in its folder
+#, machine
+	Open folder	פתח תיקיה
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	פתח קישורי מגנט וקבצי .torrent באמצעות Mister Download Manager
@@ -1157,6 +1200,7 @@
 #, machine
 	Options	אפשרויות
 #. text in a download's progress window
+#. tab title: what happens when the download finishes
 #, machine
 	Options on completion	אפשרויות בסיום
 #. text in the Download video window
@@ -1252,6 +1296,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	תורים
+#. text in crashui.rs
+#. crash report window: shown while the crash dump is being read
+#, machine
+	Reading the crash data…	קורא את נתוני הקריסה…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1745,6 +1793,17 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	למהדורה אין גרסה
+#. text in crashui.rs
+#. crash report window: label above the report's text
+#, machine
+	The report	הדוח
+#. text in crashui.rs
+#. crash report window: after Copy report
+#, machine
+	The report is on your clipboard.	הדוח נמצא בלוח שלך.
+#. text in crashui.rs
+#, machine
+	The report is on your clipboard: paste it in a comment on the issue.	הדוח נמצא בלוח שלך: הדבק אותו בתגובה לבעיה.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -1774,6 +1833,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	השרת שלח חלק בלתי צפוי של הקובץ ({detail})
+#. text in crashui.rs
+#. crash report window: the symbols couldn't be downloaded; the report still works
+#, machine
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	לא ניתן היה לאחזר את הסמלים: שורות מסוימות בדוח מציגות כתובות במקום שמות (המפתחים עדיין יכולים לקרוא אותן).
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2029,6 +2092,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	יום רביעי
+#. text in crashui.rs
+#. crash report window: label of the box where the user describes what they did
+#, machine
+	What were you doing when it happened? (optional)	מה עשית כשזה קרה? (אופציונלי)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	מה חדש:
