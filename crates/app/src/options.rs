@@ -16,8 +16,6 @@ use crate::winui::{
     self, ButtonKind, LIGHT_BG, LIGHT_DISABLED, LIGHT_PAGE, LIGHT_TEXT, fill_l as fill, r, text,
 };
 
-/// IDM's "Default max. conn. number" choices.
-const CONNECTIONS: [u32; 7] = [1, 2, 4, 8, 16, 24, 32];
 pub const DUPLICATE: [&str; 4] = [
     crate::i18n::mark("Show a dialog and ask what to do."),
     crate::i18n::mark("Add the duplicate with a numbered file name"),
@@ -52,6 +50,8 @@ pub struct OptionsDialog {
     browser_rows: winui::RowList,
     category: usize,
     cat_dir: String,
+    /// Connection → "Default max. conn. number", as typed.
+    conns: String,
     mb: String,
     hours: String,
     /// The exceptions' and site logins' lists: scroll and selection.
@@ -93,6 +93,7 @@ impl OptionsDialog {
             from: s.clone(),
             browser_rows: Default::default(),
             cat_dir: display_dir(&s.category_dir(Category::General, downloads)),
+            conns: s.max_connections.clamp(1, s.connection_limit()).to_string(),
             mb: s.limits_mb.to_string(),
             hours: s.limits_hours.to_string(),
             s,
@@ -188,6 +189,11 @@ impl OptionsDialog {
         match outcome {
             Outcome::Done(()) => {
                 let mut s = self.s.clone();
+                s.max_connections = self
+                    .conns
+                    .parse()
+                    .unwrap_or(8)
+                    .clamp(1, s.connection_limit());
                 s.limits_mb = self.mb.parse().unwrap_or(200).max(1);
                 s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
                 Outcome::Done(s)
@@ -770,28 +776,45 @@ impl OptionsDialog {
         if cut {
             winui::full_on_hover(ui, rect, "max-conns", label);
         }
-        let labels: Vec<String> = CONNECTIONS.iter().map(|n| n.to_string()).collect();
-        let labels: Vec<&str> = labels.iter().map(String::as_str).collect();
-        let cur = CONNECTIONS
-            .iter()
-            .position(|n| *n == self.s.max_connections)
-            .unwrap_or(3);
-        if let Some(i) = winui::combo_light(
+        // Typed, or stepped with the arrows (IDM's drop-down offered 1 to 32; issue #12).
+        winui::spin_box(
             ui,
             r(o, 268.0, 112.0, 101.0, 21.0),
-            &labels,
-            cur,
+            &mut self.conns,
+            1,
+            u64::from(self.s.connection_limit()),
             true,
             "opt-conns",
-        ) {
-            self.s.max_connections = CONNECTIONS[i];
+        );
+        let locked = mdm_engine::download::MAX_CONNECTIONS;
+        let line = crate::i18n::fmt(
+            // i18n: checkbox under the number of connections per download; {n} is 32
+            crate::i18n::t("Allow more than {n} connections"),
+            &[("n", &locked.to_string())],
+        );
+        let was = self.s.many_connections;
+        winui::checkbox_light(
+            ui,
+            o + vec2(33.0, 142.0),
+            &mut self.s.many_connections,
+            &line,
+            true,
+        );
+        // Locked again: what went beyond comes back to the ceiling.
+        if was && !self.s.many_connections {
+            if self.conns.parse::<u32>().is_ok_and(|n| n > locked) {
+                self.conns = locked.to_string();
+            }
+            for (_, n) in &mut self.s.conn_exceptions {
+                *n = (*n).min(locked);
+            }
         }
-        winui::etched_h(&p, o.x + 30.0, o.y + 141.0, 359.0);
+        winui::etched_h(&p, o.x + 30.0, o.y + 163.0, 359.0);
         // i18n: plural noun: label before a list of exceptions
         text(
             &p,
             o.x + 33.0,
-            o.y + 158.0,
+            o.y + 180.0,
             crate::i18n::t("Exceptions:"),
             LIGHT_TEXT(),
         );
@@ -821,7 +844,7 @@ impl OptionsDialog {
         let (dbl, del_key) = report(
             ui,
             o,
-            r(o, 30.0, 162.0, 281.0, 122.0),
+            r(o, 30.0, 184.0, 281.0, 100.0),
             // i18n: column titles: the server, and the number of connections allowed to it
             &[
                 (crate::i18n::mark("Server"), 241.0),
@@ -839,7 +862,7 @@ impl OptionsDialog {
             .filter(|i| *i < self.s.conn_exceptions.len());
         let new = winui::button_light(
             ui,
-            r(o, 319.0, 173.0, 73.0, 21.0),
+            r(o, 319.0, 195.0, 73.0, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -852,12 +875,12 @@ impl OptionsDialog {
             ButtonKind::Disabled
         };
         // i18n: verb: delete the item
-        let del = winui::button_light(ui, r(o, 319.0, 202.0, 73.0, 21.0), "Delete", kind, false)
+        let del = winui::button_light(ui, r(o, 319.0, 224.0, 73.0, 21.0), "Delete", kind, false)
             .clicked()
             || del_key;
         let edit =
             // i18n: verb: edit the item
-            winui::button_light(ui, r(o, 319.0, 232.0, 73.0, 21.0), "Edit", kind, false).clicked();
+            winui::button_light(ui, r(o, 319.0, 254.0, 73.0, 21.0), "Edit", kind, false).clicked();
         if new {
             self.sub = Some(Sub::Exception(None, String::new(), "1".into()));
         }
@@ -1535,6 +1558,7 @@ impl OptionsDialog {
                 }
             }
             Sub::Exception(row, mut server, mut number) => {
+                let limit = self.s.connection_limit();
                 let title = if row.is_some() {
                     crate::i18n::mark("Edit exception")
                 } else {
@@ -1572,15 +1596,19 @@ impl OptionsDialog {
                             crate::i18n::t("Connections:"),
                             LIGHT_TEXT(),
                         );
-                        winui::edit_light(
+                        winui::spin_box(
                             ui,
-                            r(o, 78.0, 43.0, 50.0, 23.0),
+                            r(o, 78.0, 43.0, 60.0, 23.0),
                             &mut number,
+                            1,
+                            u64::from(limit),
                             true,
-                            false,
+                            "opt-exception-number",
                         );
-                        number.retain(|c| c.is_ascii_digit());
-                        ok_cancel(ui, o, 136.0, 85.0, !server.trim().is_empty())
+                        let in_range = number
+                            .parse::<u32>()
+                            .is_ok_and(|n| (1..=limit).contains(&n));
+                        ok_cancel(ui, o, 136.0, 85.0, !server.trim().is_empty() && in_range)
                     },
                 );
                 match out {
@@ -1588,7 +1616,7 @@ impl OptionsDialog {
                     Outcome::Done(()) => {
                         let entry = (
                             server.trim().to_owned(),
-                            number.parse().unwrap_or(1).clamp(1, 32),
+                            number.parse().unwrap_or(1).clamp(1, limit),
                         );
                         match row {
                             Some(i) => self.s.conn_exceptions[i] = entry,

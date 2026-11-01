@@ -242,10 +242,6 @@
    "source": "How do I report a bug or ask for a feature?",
    "text": "Làm cách nào để báo lỗi hoặc yêu cầu tính năng?"
   },
-  "06fc1bc448892347": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
-   "text": "Trình duyệt tải tệp qua một kết nối. MDM yêu cầu máy chủ gửi nhiều phần của tệp cùng lúc, tối đa 32 kết nối, và liên tục chia nhỏ lại: khi một kết nối hoàn thành phần của nó, nó sẽ tiếp quản một nửa phần lớn nhất còn lại, để không có kết nối chậm nào làm trì hoãn quá trình. Nó cũng ghi nhớ các máy chủ từ chối kết nối bổ sung và ngừng yêu cầu chúng. Xem Kết nối và tốc độ."
-  },
   "070c8fa6ee24507e": {
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "Tải xuống <g1>setup.exe</g1> ở trên và chạy nó. Windows có thể hỏi có cho phép hay không: trình cài đặt chưa được ký mã, vì vậy hãy chọn <g2>Thông tin thêm → Chạy dù sao</g2>."
@@ -1082,10 +1078,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "Nhấp vào <g1>Tải tiện ích tạm thời</g1> và chọn <x2/>."
   },
-  "20f9ef471d29f4c4": {
-   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "Mặc định là tám kết nối cho mỗi lượt tải, và tối đa 32 nếu bạn chọn trong <g1>Tùy chọn → Kết nối</g1>. MDM sẽ dùng ít hơn nếu máy chủ chỉ cho phép ít hơn, và chỉ dùng một kết nối nếu máy chủ không thể gửi từng phần của tệp."
-  },
   "20ff7c25a0a83544": {
    "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
    "text": "Đối với các chất lượng tốt nhất, MDM đề nghị cài đặt <g1>ffmpeg</g1> (khoảng 80 MB), công cụ này sẽ ghép hình ảnh và âm thanh. Nhấp vào <g2>Cài đặt ffmpeg</g2> nếu bạn muốn chúng. Nếu không có nó, bạn sẽ nhận được các chất lượng đi kèm với âm thanh của chúng."
@@ -1325,6 +1317,10 @@
   "28229ae295418c57": {
    "source": "Each language has its own catalog in the repository: <x1/>, for example <x2/> for German or <x3/> for Portuguese (Brazil). The codes are listed in <x4/>. Each catalog is a text file with one row per text, in three columns separated by tabs:",
    "text": "Mỗi ngôn ngữ có danh mục riêng trong kho lưu trữ: <x1/>, ví dụ <x2/> cho tiếng Đức hoặc <x3/> cho tiếng Bồ Đào Nha (Brazil). Các mã được liệt kê trong <x4/>. Mỗi danh mục là một tệp văn bản với một hàng cho mỗi văn bản, trong ba cột được phân tách bằng tab:"
+  },
+  "2825ed52113e5428": {
+   "source": "Up to 128 connections per file, re-split as they go",
+   "text": "Tối đa 128 kết nối cho mỗi tệp, tự động chia lại khi tải"
   },
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
@@ -1930,10 +1926,6 @@
    "source": "When every segment is done, the part file is checked against the expected size and renamed into place; the file's date can follow the server's.",
    "text": "Khi mọi phân đoạn hoàn tất, tệp tạm thời được kiểm tra với kích thước dự kiến và đổi tên vào đúng vị trí; ngày của tệp có thể theo ngày của máy chủ."
   },
-  "3a7b5cc8fa1e21f1": {
-   "source": "Download a file with up to 8 connections (<x1/>), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>), hiển thị tiến độ. <x2/> tạm dừng nó; <x3/> tiếp tục. <x4/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn được đặt tên (<x5/>)."
-  },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
    "text": "Khoảng 40, tải xuống riêng"
@@ -1977,10 +1969,6 @@
   "3bb7e0584ef41f9a": {
    "source": "Keyboard shortcuts — Mister Download Manager help",
    "text": "Phím tắt — Trợ giúp Mister Download Manager"
-  },
-  "3bd468019bd25247": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
-   "text": "Một trình duyệt tìm nạp một tệp qua một kết nối. MDM yêu cầu máy chủ nhiều phần của tệp cùng một lúc, lên đến 32 kết nối, và tiếp tục chia nhỏ lại: khi một kết nối hoàn thành phần của nó, nó sẽ tiếp quản một nửa phần lớn nhất còn lại, vì vậy không có kết nối chậm nào làm chậm quá trình kết thúc. Nó cũng ghi nhớ các máy chủ từ chối các kết nối bổ sung và ngừng yêu cầu chúng. Xem <g1>Kết nối và tốc độ</g1>."
   },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
@@ -2570,6 +2558,10 @@
    "source": "Choose <g1>Tasks → Import → From text file</g1>.",
    "text": "Chọn <g1>Tác vụ → Nhập → Từ tệp văn bản</g1>."
   },
+  "50b87de554adf9c4": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
+   "text": "Trình duyệt tải một tệp qua một kết nối. MDM yêu cầu máy chủ gửi nhiều phần của tệp cùng lúc, tối đa 32 kết nối (128 nếu bạn cho phép), và…"
+  },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "Giữ lại một phần tốc độ cho các việc khác — Trợ giúp Mister Download Manager"
@@ -2889,10 +2881,6 @@
   "5b6bfbfcf883179a": {
    "source": "Download for Mac",
    "text": "Tải xuống cho Mac"
-  },
-  "5bbb9009f1843aaf": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "Mặc định là tám kết nối cho mỗi lượt tải, và tối đa 32 nếu bạn chọn trong Tùy chọn → Kết nối. MDM sẽ dùng ít hơn nếu máy chủ chỉ cho phép ít hơn, và chỉ dùng một kết nối nếu máy chủ không thể gửi từng phần của tệp."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3265,6 +3253,10 @@
   "671b07a3edfa2c00": {
    "source": "MDM first shows a 30-second countdown. <g1>Cancel</g1> stops it; <g2>Turn off now</g2> goes ahead at once.",
    "text": "MDM trước tiên hiển thị đồng hồ đếm ngược 30 giây. <g1>Hủy</g1> dừng nó; <g2>Tắt ngay</g2> thực hiện ngay lập tức."
+  },
+  "67c6c31e6dedb216": {
+   "source": "Up to 32, or 128 if you allow it; re-split as they go",
+   "text": "Tối đa 32, hoặc 128 nếu bạn cho phép; tự động chia lại khi tải"
   },
   "680bde7ef29fb757": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> and <g3>Brave</g3>. <g4>Firefox</g4> support is still being tested.",
@@ -3910,6 +3902,10 @@
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24.1 MB</g2>"
   },
+  "7bde548eabfafc71": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "Mặc định là tám kết nối cho mỗi lượt tải xuống, và tối đa 32 nếu bạn chọn trong Tùy chọn → Kết nối, hoặc 128 sau khi đánh dấu vào Cho phép nhiều hơn 32 kết nối ở đó. MDM sẽ dùng ít hơn nếu máy chủ chỉ cho phép ít hơn, và chỉ dùng một nếu máy chủ không thể gửi từng phần của tệp."
+  },
   "7c03f8845fc81c12": {
    "source": "Torrents",
    "text": "Torrent"
@@ -3997,6 +3993,10 @@
   "7e0871a72049f943": {
    "source": "Done",
    "text": "Hoàn tất"
+  },
+  "7e0f0fb8c60306bf": {
+   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use, from 1 to 32 (8 by default). Type the number or use the arrows.",
+   "text": "<g1>Số kết nối tối đa mặc định</g1> — số kết nối mà mỗi lượt tải xuống có thể sử dụng, từ 1 đến 32 (mặc định là 8). Nhập số hoặc dùng các mũi tên."
   },
   "7e14bed7ced71013": {
    "source": "Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <g1>More</g1>",
@@ -4145,6 +4145,10 @@
   "824bc9d6c6ab7883": {
    "source": "The tools don't show up at all",
    "text": "Các công cụ không hiển thị gì cả"
+  },
+  "824f800df429a7d9": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
+   "text": "Trình duyệt tải một tệp qua một kết nối. MDM yêu cầu máy chủ gửi nhiều phần của tệp cùng lúc, tối đa 32 kết nối (128 nếu bạn cho phép), và tiếp tục chia nhỏ lại: khi một kết nối hoàn thành phần của nó, nó sẽ tiếp quản một nửa phần lớn nhất còn lại, để không có kết nối chậm nào làm chậm quá trình kết thúc. Nó cũng ghi nhớ các máy chủ từ chối kết nối bổ sung và ngừng yêu cầu chúng. Xem Kết nối và tốc độ."
   },
   "827d5df0769ca662": {
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (<g1>Options → General → Offer to download links copied to the clipboard</g1>, on by default). You can also paste links into <g2>Add URL</g2>, drag them onto the drop target, add a whole batch, or use the command line. See <g3>Adding downloads</g3>.",
@@ -4442,10 +4446,6 @@
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>Thanh công cụ.</g1> <g2>Thêm URL</g2>, <g3>Thêm Torrent</g3>, <g4>Tiếp tục</g4>, <g5>Dừng</g5>, <g6>Dừng tất cả</g6>, <g7>Xóa</g7>, <g8>Xóa đã hoàn tất</g8>, <g9>Tùy chọn</g9>, <g10>Bộ lập lịch</g10>, <g11>Bắt đầu hàng đợi</g11>, <g12>Dừng hàng đợi</g12>. Mũi tên nhỏ bên cạnh <g13>Thêm Torrent</g13>, <g14>Bắt đầu hàng đợi</g14> và <g15>Dừng hàng đợi</g15> mở thêm các lựa chọn."
   },
-  "8c7e4342b21a9867": {
-   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use: 1, 2, 4, 8 (the default), 16, 24 or 32.",
-   "text": "<g1>Số kết nối tối đa mặc định</g1> — mỗi lượt tải xuống có thể sử dụng bao nhiêu kết nối: 1, 2, 4, 8 (mặc định), 16, 24 hoặc 32."
-  },
   "8c8112d979f4447f": {
    "source": "General",
    "text": "Chung"
@@ -4729,6 +4729,10 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — chạy từ thư mục hoặc USB"
+  },
+  "96076440a6a16300": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
+   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>, từ 1 đến 128), hiển thị tiến độ. <x2/> tạm dừng; <x3/> tiếp tục. <x4/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn đặt tên (<x5/>)."
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -5061,10 +5065,6 @@
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
    "text": "Một cửa sổ egui được vẽ theo tọa độ pixel cố định, cộng với một khung nhìn tức thời cho mỗi hộp thoại. <x1/> giữ trạng thái (tải xuống, hàng đợi, cài đặt, lựa chọn danh sách) và biến các lệnh menu, thanh công cụ, phím và IPC thành hành động. Mỗi hộp thoại là một mô-đun riêng và trả về một <x2/> (mở, đóng, hoàn thành với một giá trị). Các cuộc gọi chỉ dành cho Windows được giới hạn trong <x3/> và các đối tác Linux và macOS của chúng trong <x4/> (bắt đầu với phiên, máy chủ của trình duyệt, âm thanh, hiển thị trong thư mục, trình xử lý sự cố); mọi tệp khác đều an toàn, Rust di động. Phông chữ đến từ hệ thống: thư mục Phông chữ của Windows, phông chữ hệ thống của macOS, fontconfig trên Linux (<x5/>)."
-  },
-  "a037f2038ab4ded4": {
-   "source": "Up to 32 connections per file, re-split as they go",
-   "text": "Tối đa 32 kết nối mỗi tệp, tự động chia lại khi đang tải"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6110,6 +6110,10 @@
    "source": "What's new",
    "text": "Có gì mới"
   },
+  "c2ef218c38582097": {
+   "source": "It uses <g1>8 connections</g1> by default. You can set 1 to 32 in <g2>Options → Connection → Default max. conn. number</g2>, or up to 128 after ticking <g3>Allow more than 32 connections</g3> there. More connections help only when the server sends each one at a limited speed and allows that many from one address; most servers allow far fewer.",
+   "text": "Theo mặc định, MDM sử dụng <g1>8 kết nối</g1>. Bạn có thể đặt từ 1 đến 32 trong <g2>Tùy chọn → Kết nối → Số kết nối tối đa mặc định</g2>, hoặc lên đến 128 sau khi chọn <g3>Cho phép nhiều hơn 32 kết nối</g3> ở đó. Nhiều kết nối hơn chỉ hữu ích khi máy chủ gửi mỗi kết nối với tốc độ giới hạn và cho phép nhiều kết nối như vậy từ một địa chỉ; hầu hết các máy chủ cho phép ít hơn nhiều."
+  },
   "c337f01f6c9f7565": {
    "source": "Lists your downloads, newest first: file, address, folder, status, size, how much is done, speed. It can list only one status (Queued, Downloading, Stopped, Complete, Error) or only names and addresses that contain some text.",
    "text": "Liệt kê các bản tải xuống của bạn, mới nhất trước: tệp, địa chỉ, thư mục, trạng thái, kích thước, đã hoàn thành bao nhiêu, tốc độ. Nó có thể chỉ liệt kê một trạng thái (Đang chờ, Đang tải xuống, Đã dừng, Hoàn tất, Lỗi) hoặc chỉ tên và địa chỉ có chứa một số văn bản."
@@ -6233,10 +6237,6 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
-  },
-  "c7a354bd345262c3": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server…",
-   "text": "Mặc định là tám kết nối cho mỗi lượt tải, và tối đa 32 nếu bạn chọn trong Tùy chọn → Kết nối. MDM sẽ dùng ít hơn nếu máy chủ chỉ cho phép ít hơn, và chỉ dùng một kết nối nếu máy chủ…"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -6370,6 +6370,10 @@
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own data folder, so…",
    "text": "Có. Bản tải xuống di động là một tệp zip: bạn giải nén nó ở bất cứ đâu, kể cả trên USB, rồi chạy. Danh sách tải xuống và cài đặt của bạn sẽ nằm trong thư mục dữ liệu riêng của nó, nên…"
   },
+  "cc626a36f8b140f5": {
+   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>, or 128 after ticking <g2>Allow more than 32 connections</g2> there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "Mặc định là tám kết nối cho mỗi lượt tải xuống, và tối đa 32 nếu bạn chọn trong <g1>Tùy chọn → Kết nối</g1>, hoặc 128 sau khi đánh dấu vào <g2>Cho phép nhiều hơn 32 kết nối</g2> ở đó. MDM sẽ dùng ít hơn nếu máy chủ chỉ cho phép ít hơn, và chỉ dùng một nếu máy chủ không thể gửi từng phần của tệp."
+  },
   "cc7193f7c38257a1": {
    "source": "Headless downloads with progress (<x1/>, <x2/>)",
    "text": "Tải xuống không giao diện với tiến trình (<x1/>, <x2/>)"
@@ -6381,6 +6385,10 @@
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "Chỉ mình bạn chịu trách nhiệm về các tệp bạn tải xuống và cách bạn sử dụng phần mềm."
+  },
+  "cd673e3701cb16c6": {
+   "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
+   "text": "<g1>Cho phép nhiều hơn 32 kết nối</g1> — tăng tối đa lên 128, cho số ở trên và cho các trường hợp ngoại lệ. Hầu hết các máy chủ chỉ cho phép ít kết nối hơn từ một địa chỉ; MDM sẽ nhận biết và yêu cầu ít hơn. Khi tắt lại, bất kỳ số nào cao hơn sẽ trở về 32."
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -6986,6 +6994,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "Làm thế nào để báo lỗi hoặc yêu cầu tính năng? — Mister Download Manager"
   },
+  "e3696cca91bc9263": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
+   "text": "Trình duyệt tải một tệp qua một kết nối. MDM yêu cầu máy chủ gửi nhiều phần của tệp cùng lúc, tối đa 32 kết nối (128 nếu bạn cho phép), và liên tục chia lại: khi một kết nối hoàn thành phần của nó, nó sẽ nhận một nửa của phần lớn nhất còn lại, để không có kết nối chậm nào làm chậm quá trình. Nó cũng ghi nhớ các máy chủ từ chối kết nối bổ sung và ngừng yêu cầu chúng. Xem <g1>Kết nối và tốc độ</g1>."
+  },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
    "text": "Tốc độ và kết nối"
@@ -7045,10 +7057,6 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>Máy khách.</g1> IDM và MDM, cả hai đều ở cài đặt mặc định (8 kết nối), mỗi máy được cấp quyền tải xuống thông qua cùng một dòng lệnh đã được ghi lại: <x2/>. Cả hai đều lưu vào ổ đĩa chứa thư mục tạm thời của IDM, vì vậy không bên nào phải trả phí sao chép giữa các ổ đĩa."
-  },
-  "e52b5461bc5bf605": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when…",
-   "text": "Trình duyệt tải tệp qua một kết nối. MDM yêu cầu máy chủ gửi nhiều phần của tệp cùng lúc, tối đa 32 kết nối, và liên tục chia nhỏ lại: khi…"
   },
   "e54c910b35908f87": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones.",
@@ -7614,6 +7622,10 @@
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>Nhanh hơn</g1><g2>1,0 lần</g2>"
   },
+  "fa1e28b3c6e2e46e": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
+   "text": "Mặc định là tám kết nối cho mỗi lượt tải xuống, và tối đa 32 nếu bạn chọn trong Tùy chọn → Kết nối, hoặc 128 sau khi đánh dấu vào Cho phép nhiều hơn 32 kết nối ở đó. MDM sẽ dùng ít hơn…"
+  },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
    "text": "Thay thế các chương trình trong thư mục của chúng (thư mục <x1/> của bản di động được giữ lại)."
@@ -7733,10 +7745,6 @@
   "fdf01d37915b1a04": {
    "source": "Browser extension",
    "text": "Tiện ích mở rộng trình duyệt"
-  },
-  "fdffc63b6c2566d5": {
-   "source": "It uses <g1>8 connections</g1> by default. You can choose 1, 2, 4, 8, 16, 24 or 32 in <g2>Options → Connection → Default max. conn. number</g2>.",
-   "text": "MDM sử dụng <g1>8 kết nối</g1> theo mặc định. Bạn có thể chọn 1, 2, 4, 8, 16, 24 hoặc 32 trong <g2>Tùy chọn → Kết nối → Số kết nối tối đa mặc định</g2>."
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

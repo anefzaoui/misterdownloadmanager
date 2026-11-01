@@ -73,11 +73,11 @@ Yes. Copy a link to a file and MDM offers to download it at once (**Options → 
 
 ### Why is MDM faster than a browser? {#why-faster}
 
-A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See [Connections and speed](/help/connections-and-speed.html).
+A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See [Connections and speed](/help/connections-and-speed.html).
 
 ### How many connections does it use? {#connections}
 
-Eight per download by default, and up to 32 if you choose in **Options → Connection**. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.
+Eight per download by default, and up to 32 if you choose in **Options → Connection**, or 128 after ticking **Allow more than 32 connections** there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.
 
 ### Can it resume broken downloads? {#resume}
 

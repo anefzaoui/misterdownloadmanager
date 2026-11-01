@@ -5,7 +5,7 @@ use std::time::{Duration, Instant};
 
 use anyhow::Context;
 use clap::{Parser, Subcommand};
-use mdm_engine::download::{ConnStatus, State};
+use mdm_engine::download::{ConnStatus, MAX_CONNECTIONS_UNLOCKED, State};
 use mdm_engine::{Destination, Download, Options, Proxy, Request};
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use serde_json::json;
@@ -36,8 +36,9 @@ enum Cmd {
         /// Folder to save into (name from the server), or a file path ending in a name.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
-        /// Maximum connections.
-        #[arg(short, long, default_value_t = Options::default().max_connections)]
+        /// Maximum connections (1 to 128).
+        #[arg(short, long, default_value_t = Options::default().max_connections,
+              value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
         /// Extra request header, e.g. "Referer: https://example.com/" (repeatable).
         #[arg(short = 'H', long = "header")]
@@ -133,8 +134,9 @@ enum Cmd {
     Resume {
         /// The `<file>.mdm.json` next to the unfinished download.
         state: PathBuf,
-        /// Maximum connections.
-        #[arg(short, long, default_value_t = Options::default().max_connections)]
+        /// Maximum connections (1 to 128).
+        #[arg(short, long, default_value_t = Options::default().max_connections,
+              value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
         /// Extra request header, e.g. "Cookie: id=1" (repeatable).
         #[arg(short = 'H', long = "header")]

@@ -145,7 +145,7 @@ impl Site {
             tls,
             epsv: AtomicBool::new(false),
             pool: Mutex::new(Vec::new()),
-            max_pool: opts.max_connections.max(1) as usize,
+            max_pool: opts.connections() as usize,
         })
     }
 

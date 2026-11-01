@@ -41,7 +41,7 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 
 | Command | What it does |
 |---|---|
-| `get URL [-o folder\|file] [-c connections] [-H "Header: value"]... [--checksum hash]` | Download a file with up to 8 connections (`-c`), showing progress. `Ctrl+C` pauses it; `resume` continues. `--checksum` checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (`sha256:…`). |
+| `get URL [-o folder\|file] [-c connections] [-H "Header: value"]... [--checksum hash]` | Download a file with up to 8 connections (`-c`, 1 to 128), showing progress. `Ctrl+C` pauses it; `resume` continues. `--checksum` checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (`sha256:…`). |
 | `resume file.mdm.json [-c connections] [-H ...]` | Continue a paused or broken download from the `.mdm.json` file next to it. |
 | `video-info URL` | What video a page holds (YouTube, Vimeo, ...), and the qualities to choose from. |
 | `video-get URL [-f selector] [-o folder]` | Download a video; `-f` takes a quality's selector from `video-info` (`b` = the best single file). |

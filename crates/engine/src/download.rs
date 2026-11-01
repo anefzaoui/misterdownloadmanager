@@ -5,7 +5,7 @@
 //! Range support is learned from the first range answer: 206 confirms it; 200 means the server
 //! ignores ranges, so the file goes back to the probe connection alone.
 //! One HTTP/1.1 client per download, shared by its connections: one pool (keep-alive sockets
-//! reused between segments, TLS sessions resumed) with at most `max_connections` requests at a
+//! reused between segments, TLS sessions resumed) with at most `connections()` requests at a
 //! time, since each worker has one request in flight.
 
 use std::fs::File;
@@ -49,10 +49,16 @@ const INITIAL_PIECE: u64 = 64 * 1024;
 /// sooner than PREEMPT_MIN).
 const PREEMPT_TTFB: u32 = 2;
 const PREEMPT_MIN: Duration = Duration::from_millis(20);
+/// The most connections a download offers to use (IDM's ceiling too).
+pub const MAX_CONNECTIONS: u32 = 32;
+/// The most connections once the user allows more than `MAX_CONNECTIONS` (issue #12); the
+/// engine never opens more, whatever it is given.
+pub const MAX_CONNECTIONS_UNLOCKED: u32 = 128;
 
 #[derive(Clone, Debug)]
 pub struct Options {
-    /// Max simultaneous connections. IDM's default is 8 (notes/ENGINE.md §4).
+    /// Max simultaneous connections. IDM's default is 8 (notes/ENGINE.md §4). Read through
+    /// [`Options::connections`], which keeps it in `1..=MAX_CONNECTIONS_UNLOCKED`.
     pub max_connections: u32,
     /// Smallest half a split may leave. IDM split pieces down to ≤ 12.6 KB (lab S4, D-007).
     pub min_split: u64,
@@ -155,6 +161,14 @@ impl Default for Options {
             ftp_passive: true,
             extra_roots: Vec::new(),
         }
+    }
+}
+
+impl Options {
+    /// The connections this download may open: `max_connections` in
+    /// `1..=MAX_CONNECTIONS_UNLOCKED` (a hand-edited setting can hold anything).
+    pub fn connections(&self) -> u32 {
+        self.max_connections.clamp(1, MAX_CONNECTIONS_UNLOCKED)
     }
 }
 
@@ -961,7 +975,7 @@ fn client(opts: &Options, url: &Url) -> Result<Client, Error> {
         .user_agent(&opts.user_agent)
         .connect_timeout(opts.connect_timeout)
         .read_timeout(opts.read_timeout)
-        .pool_max_idle_per_host(opts.max_connections.max(1) as usize)
+        .pool_max_idle_per_host(opts.connections() as usize)
         .pool_idle_timeout(POOL_IDLE)
         .tcp_nodelay(true)
         .build()?)
@@ -1718,13 +1732,12 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
     // No more connections than the host is known to allow.
     let host = ctx.target().url.host_str().unwrap_or("").to_owned();
     let learned = ctx.opts.host_limits.as_ref().and_then(|h| h.cap(&host));
-    if let Some(cap) = learned.filter(|c| *c < ctx.opts.max_connections) {
+    let wanted = ctx.opts.connections();
+    if let Some(cap) = learned.filter(|c| *c < wanted) {
         ctx.shared
             .event(format!("{host} allows {cap} connection(s) (learned)"));
     }
-    let max = learned.map_or(ctx.opts.max_connections, |c| {
-        c.min(ctx.opts.max_connections)
-    });
+    let max = learned.map_or(wanted, |c| c.min(wanted));
     // A small file starts with fewer connections (one per INITIAL_PIECE): opened all at once
     // they would cut it into slivers and fetch some twice (benchmark 2026-10-30: 256 KiB took
     // 13-19 requests; IDM, which ramps up in waves, took 4). Later splits still go down to
@@ -2354,6 +2367,17 @@ mod tests {
         assert_eq!(sync_bytes(24 << 20), 3 << 19);
         assert_eq!(sync_bytes(100 << 10), 1 << 20);
         assert_eq!(sync_bytes(10 << 30), 64 << 20);
+    }
+
+    #[test]
+    fn connections_stay_in_range() {
+        let with = |n| Options {
+            max_connections: n,
+            ..Options::default()
+        };
+        assert_eq!(with(0).connections(), 1);
+        assert_eq!(with(100).connections(), 100);
+        assert_eq!(with(5000).connections(), MAX_CONNECTIONS_UNLOCKED);
     }
 
     #[tokio::test]
