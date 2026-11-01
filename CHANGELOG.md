@@ -40,6 +40,10 @@ and a long list of fixes found by reviewing all of it (issue #7 and more).
 - **Things that fail say why**: opening a file that was moved, a file that can't be deleted or
   moved, the list that can't be saved, a computer that won't shut down, a check closed early.
 - **System file dialogs no longer freeze MDM's other windows** while they are open.
+- **The mouse wheel scrolls as many lines a notch as Windows' mouse settings say**, in every
+  list, tree and text box; Page Up / Page Down in the download list go to the edge of what's
+  shown first, as in Explorer; text boxes of several lines have the lists' scroll bar.
+- The toolbar's right-click menu is gone: it offered button sizes and styles that don't exist.
 
 ### Fixed
 
@@ -52,6 +56,13 @@ and a long list of fixes found by reviewing all of it (issue #7 and more).
 - **Download File Info** ignored an edited address and accepted an empty Save As.
 - **Find** could select a download hidden by the column filters; the selection vanished when
   the list lost focus; Delete now selects the next download.
+- **The keyboard focus got lost** when a button greyed itself or Escape closed a drop-down:
+  Tab started over at the top of the window. It now moves on, or comes back, as in Windows.
+- **Help → Report a problem** filled the form's System and Installed with only for a moment;
+  they stay filled now.
+- A torrent's progress window: its tabs touched the buttons above them, and Resume
+  capability's Yes / No stood apart from the other values. A long list of file types in
+  Options ran out under its box.
 - Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop
   Queue arrows always work.
 - Many more: the checksum dialog, the progress window's completion options and speed limit,
