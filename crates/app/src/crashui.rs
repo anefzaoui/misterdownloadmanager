@@ -160,6 +160,8 @@ struct ReportWindow {
     /// Something to tell under the report (copied, sent…).
     told: Option<String>,
     icon: Option<egui::TextureHandle>,
+    /// Windows' caption follows the window's theme (set once the window exists).
+    caption_set: bool,
 }
 
 impl ReportWindow {
@@ -175,6 +177,7 @@ impl ReportWindow {
             attach: false,
             told: None,
             icon: None,
+            caption_set: false,
         }
     }
 
@@ -270,6 +273,20 @@ fn set(shared: &Mutex<Shared>, ctx: &egui::Context, f: impl FnOnce(&mut Shared))
 
 impl eframe::App for ReportWindow {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
+        // The caption in the window's light or dark, as every MDM window's (Windows would draw
+        // it in its own app mode).
+        if !self.caption_set {
+            ui.ctx().send_viewport_cmd(egui::ViewportCommand::SetTheme(
+                crate::theme::system_theme(crate::theme::dark()),
+            ));
+            self.caption_set = true;
+        }
+        // Re-asserted as the main window does (winit can set it back from Windows' own mode).
+        #[cfg(windows)]
+        crate::win32::caption_dark(
+            crate::i18n::t("Mister Download Manager crash report"),
+            crate::theme::dark(),
+        );
         while let Ok(e) = self.events.try_recv() {
             if matches!(e, Event::Recovered) {
                 self.recovered = true;
