@@ -136,6 +136,11 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	הכול מוכן: בדף עם סרטון, השתמש במשימות ← הורד סרטון מדף.
+#. text in the Options window
+#. checkbox under the number of connections per download; {n} is 32
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Allow more than {n} connections	אפשר יותר מ-{n} חיבורים
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	כבר מורד: {path}
@@ -143,6 +148,10 @@
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
 	Already reported as issue #{number}: {title}	כבר דווח כבעיה #{number}: {title}
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	צרף גם את נתוני הקריסה (קובץ dmp.): הם עשויים להכיל כתובות שהיו בזיכרון של MDM
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	מחק גם את הקובץ מהדיסק
@@ -1892,6 +1901,10 @@
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	התיקיה {path} אינה זמינה (הכונן הוסר או שיתוף הרשת אינו מקוון?)
+#. text in crashui.rs
+#. crash report window: after Send opened the browser
+#, machine
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	הטופס נפתח בדפדפן שלך. גרור לתוכו את קובץ הדוח (ואת קובץ ה-dmp., אם בחרת בכך), ולאחר מכן שלח.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine

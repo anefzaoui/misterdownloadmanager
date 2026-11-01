@@ -242,10 +242,6 @@
    "source": "How do I report a bug or ask for a feature?",
    "text": "バグを報告したり、機能をリクエストするにはどうすればよいですか？"
   },
-  "06fc1bc448892347": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
-   "text": "ブラウザは1つの接続でファイルをダウンロードします。MDMは、最大32の接続を使い、サーバーにファイルの複数の部分を同時に要求し、分割を繰り返します。接続がその部分を完了すると、まだ残っている最大の半分を引き継ぐため、遅い接続が終了を妨げません。また、追加接続を拒否するサーバーを記憶し、それらへの要求を停止します。接続と速度を参照してください。"
-  },
   "070c8fa6ee24507e": {
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "上記の<g1>setup.exe</g1>をダウンロードして実行します。Windowsが許可を求める場合がありますが、インストーラーはまだコード署名されていないため、<g2>詳細情報 → 強制実行</g2>を選択してください。"
@@ -1082,10 +1078,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "<g1>一時的なアドオンを読み込む</g1>をクリックし、<x2/>を選択します。"
   },
-  "20f9ef471d29f4c4": {
-   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "デフォルトではダウンロードごとに8つですが、<g1>オプション → 接続</g1>で選択すれば最大32まで使用できます。サーバーが許可する数が少ない場合はMDMはそれより少なく使用し、サーバーがファイルの一部をまったく送信できない場合は1つだけ使用します。"
-  },
   "20ff7c25a0a83544": {
    "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
    "text": "最高の品質の場合、MDMは画像と音声を結合する<g1>ffmpeg</g1>（約80 MB）のインストールを提案します。それらが必要な場合は、<g2>ffmpeg をインストール</g2>をクリックしてください。これがない場合、音声付きの品質が得られます。"
@@ -1325,6 +1317,10 @@
   "28229ae295418c57": {
    "source": "Each language has its own catalog in the repository: <x1/>, for example <x2/> for German or <x3/> for Portuguese (Brazil). The codes are listed in <x4/>. Each catalog is a text file with one row per text, in three columns separated by tabs:",
    "text": "各言語にはリポジトリに独自のカタログがあります。<x1/>、例えばドイツ語は<x2/>、ポルトガル語（ブラジル）は<x3/>です。コードは<x4/>に記載されています。各カタログは、タブで区切られた3つの列に1行1テキストで記述されたテキストファイルです。"
+  },
+  "2825ed52113e5428": {
+   "source": "Up to 128 connections per file, re-split as they go",
+   "text": "1ファイルにつき最大128接続、進行中に再分割"
   },
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
@@ -1930,10 +1926,6 @@
    "source": "When every segment is done, the part file is checked against the expected size and renamed into place; the file's date can follow the server's.",
    "text": "すべてのセグメントが完了すると、部分ファイルは期待されるサイズと照合され、所定の場所に名前が変更されます。ファイルの作成日はサーバーの作成日に従うことができます。"
   },
-  "3a7b5cc8fa1e21f1": {
-   "source": "Download a file with up to 8 connections (<x1/>), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "最大8つの接続（<x1/>）でファイルをダウンロードし、進行状況を表示します。<x2/>で一時停止し、<x3/>で再開します。<x4/>で完了したファイルをチェックします。16進数のMD5、SHA-1、SHA-256、SHA-512、またはCRC32で、オプションで名前を付けられます（<x5/>）。"
-  },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
    "text": "約40、別途ダウンロード"
@@ -1977,10 +1969,6 @@
   "3bb7e0584ef41f9a": {
    "source": "Keyboard shortcuts — Mister Download Manager help",
    "text": "キーボード ショートカット — Mister Download Manager ヘルプ"
-  },
-  "3bd468019bd25247": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
-   "text": "ブラウザーは1つの接続でファイルをフェッチします。MDM はサーバーにファイルの複数の部分を一度に要求し、最大32の接続を使用し、再分割を続けます。接続がその部分を完了すると、残っている最大の半分を引き継ぐため、遅い接続が最後まで遅延させることはありません。また、追加の接続を拒否するサーバーを記憶し、それらに要求するのを停止します。<g1>接続と速度</g1>をご覧ください。"
   },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
@@ -2570,6 +2558,10 @@
    "source": "Choose <g1>Tasks → Import → From text file</g1>.",
    "text": "<g1>タスク → インポート → テキスト ファイルから</g1>を選択します。"
   },
+  "50b87de554adf9c4": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
+   "text": "ブラウザは1つの接続でファイルをダウンロードします。MDMは、最大32接続（許可すれば128接続）で、サーバーにファイルの複数の部分を同時に要求し、さらに…"
+  },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "他の作業のために速度を確保する — Mister Download Manager ヘルプ"
@@ -2889,10 +2881,6 @@
   "5b6bfbfcf883179a": {
    "source": "Download for Mac",
    "text": "Mac版をダウンロード"
-  },
-  "5bbb9009f1843aaf": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "デフォルトではダウンロードごとに8つですが、オプション → 接続で選択すれば最大32まで使用できます。サーバーが許可する数が少ない場合はMDMはそれより少なく使用し、サーバーがファイルの一部をまったく送信できない場合は1つだけ使用します。"
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3265,6 +3253,10 @@
   "671b07a3edfa2c00": {
    "source": "MDM first shows a 30-second countdown. <g1>Cancel</g1> stops it; <g2>Turn off now</g2> goes ahead at once.",
    "text": "MDMはまず30秒のカウントダウンを表示します。<g1>キャンセル</g1>で停止し、<g2>今すぐ電源を切る</g2>で直ちに実行します。"
+  },
+  "67c6c31e6dedb216": {
+   "source": "Up to 32, or 128 if you allow it; re-split as they go",
+   "text": "最大32、許可すれば128。ダウンロード中に再分割されます。"
   },
   "680bde7ef29fb757": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> and <g3>Brave</g3>. <g4>Firefox</g4> support is still being tested.",
@@ -3910,6 +3902,10 @@
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24.1 MB</g2>"
   },
+  "7bde548eabfafc71": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "デフォルトではダウンロードごとに8つ、オプション → 接続で選択すると最大32、さらに32以上の接続を許可にチェックを入れると128まで使用できます。MDMは、サーバーが許可する接続数が少ない場合はそれより少なく、サーバーがファイルの断片をまったく送信できない場合は1つだけ使用します。"
+  },
   "7c03f8845fc81c12": {
    "source": "Torrents",
    "text": "トレント"
@@ -3997,6 +3993,10 @@
   "7e0871a72049f943": {
    "source": "Done",
    "text": "完了"
+  },
+  "7e0f0fb8c60306bf": {
+   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use, from 1 to 32 (8 by default). Type the number or use the arrows.",
+   "text": "<g1>既定の最大接続数</g1> — 各ダウンロードで使用できる接続数。1から32まで（既定は8）。数字を入力するか、矢印を使用してください。"
   },
   "7e14bed7ced71013": {
    "source": "Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <g1>More</g1>",
@@ -4145,6 +4145,10 @@
   "824bc9d6c6ab7883": {
    "source": "The tools don't show up at all",
    "text": "ツールがまったく表示されません"
+  },
+  "824f800df429a7d9": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
+   "text": "ブラウザは1つの接続でファイルをダウンロードします。MDMは、最大32接続（許可すれば128接続）で、サーバーにファイルの複数の部分を同時に要求し、再分割を続けます。ある接続が自分の部分を完了すると、まだ残っている最大の部分の半分を引き継ぐため、遅い接続が最後まで待たせることはありません。また、追加接続を拒否するサーバーを記憶し、それらへの要求を停止します。「接続と速度」をご覧ください。"
   },
   "827d5df0769ca662": {
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (<g1>Options → General → Offer to download links copied to the clipboard</g1>, on by default). You can also paste links into <g2>Add URL</g2>, drag them onto the drop target, add a whole batch, or use the command line. See <g3>Adding downloads</g3>.",
@@ -4442,10 +4446,6 @@
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>ツールバー。</g1> <g2>URL を追加</g2>、<g3>Torrent を追加</g3>、<g4>再開</g4>、<g5>停止</g5>、<g6>すべて停止</g6>、<g7>削除</g7>、<g8>完了したものを削除</g8>、<g9>オプション</g9>、<g10>スケジューラ</g10>、<g11>キューの開始</g11>、<g12>キューの停止</g12>。<g13>Torrent を追加</g13>、<g14>キューの開始</g14>、<g15>キューの停止</g15>の横にある小さな矢印をクリックすると、さらに選択肢が開きます。"
   },
-  "8c7e4342b21a9867": {
-   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use: 1, 2, 4, 8 (the default), 16, 24 or 32.",
-   "text": "<g1>既定の最大接続数</g1> — 各ダウンロードで使用できる接続数: 1、2、4、8 (既定)、16、24、または 32。"
-  },
   "8c8112d979f4447f": {
    "source": "General",
    "text": "一般"
@@ -4729,6 +4729,10 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — フォルダーまたはUSBスティックから実行します"
+  },
+  "96076440a6a16300": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
+   "text": "最大8接続（<x1/>、1〜128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止し、<x3/>で再開します。<x4/>で完了したファイルをチェックします。オプションで名前を指定して（<x5/>）、MD5、SHA-1、SHA-256、SHA-512、またはCRC32の16進値をチェックします。"
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -5061,10 +5065,6 @@
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
    "text": "固定ピクセル座標に描画される1つのeguiウィンドウと、ダイアログごとに1つの即時ビューポート。<x1/> は状態 (ダウンロード、キュー、設定、リストの選択) を保持し、メニュー、ツールバー、キー、IPCコマンドをアクションに変換します。各ダイアログは独自のモジュールであり、<x2/> (開いている、閉じている、値で完了) を返します。Windows専用の呼び出しは <x3/> に、LinuxおよびmacOSの対応する呼び出しは <x4/> に限定されます (セッション、ブラウザのホスト、サウンド、フォルダで表示、クラッシュハンドラから始まります)。その他のファイルはすべて安全でポータブルなRustです。フォントはシステムから取得されます: WindowsのFontsフォルダ、macOSのシステムフォント、Linuxのfontconfig (<x5/>)。"
-  },
-  "a037f2038ab4ded4": {
-   "source": "Up to 32 connections per file, re-split as they go",
-   "text": "ファイルあたり最大32接続、進行中に再分割"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6110,6 +6110,10 @@
    "source": "What's new",
    "text": "新機能"
   },
+  "c2ef218c38582097": {
+   "source": "It uses <g1>8 connections</g1> by default. You can set 1 to 32 in <g2>Options → Connection → Default max. conn. number</g2>, or up to 128 after ticking <g3>Allow more than 32 connections</g3> there. More connections help only when the server sends each one at a limited speed and allows that many from one address; most servers allow far fewer.",
+   "text": "既定では<g1>8つの接続</g1>を使用します。<g2>オプション → 接続 → 既定の最大接続数</g2>で1から32まで設定できます。また、そこで<g3>32以上の接続を許可</g3>にチェックを入れると、最大128まで設定できます。接続数を増やしても、サーバーが各接続を制限された速度で送信し、かつ1つのアドレスからその数の接続を許可する場合にのみ役立ちます。ほとんどのサーバーははるかに少ない接続数しか許可しません。"
+  },
   "c337f01f6c9f7565": {
    "source": "Lists your downloads, newest first: file, address, folder, status, size, how much is done, speed. It can list only one status (Queued, Downloading, Stopped, Complete, Error) or only names and addresses that contain some text.",
    "text": "ダウンロードを新しい順にリスト表示します：ファイル、アドレス、フォルダー、ステータス、サイズ、完了量、速度。1つのステータス（キュー済み、ダウンロード中、停止済み、完了、エラー）のみ、または特定のテキストを含む名前とアドレスのみをリスト表示できます。"
@@ -6233,10 +6237,6 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
-  },
-  "c7a354bd345262c3": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server…",
-   "text": "デフォルトではダウンロードごとに8つですが、オプション → 接続で選択すれば最大32まで使用できます。サーバーが許可する数が少ない場合はMDMはそれより少なく使用し、サーバーが…"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -6370,6 +6370,10 @@
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own data folder, so…",
    "text": "はい。ポータブル版はzipファイルです。USBメモリを含むどこにでも解凍して実行してください。ダウンロードリストと設定は専用のデータフォルダに保存されるため、…"
   },
+  "cc626a36f8b140f5": {
+   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>, or 128 after ticking <g2>Allow more than 32 connections</g2> there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "デフォルトではダウンロードごとに8つ、<g1>オプション → 接続</g1>で選択すると最大32、さらに<g2>32以上の接続を許可</g2>にチェックを入れると128まで使用できます。MDMは、サーバーが許可する接続数が少ない場合はそれより少なく、サーバーがファイルの断片をまったく送信できない場合は1つだけ使用します。"
+  },
   "cc7193f7c38257a1": {
    "source": "Headless downloads with progress (<x1/>, <x2/>)",
    "text": "進行状況付きのヘッドレスダウンロード (<x1/>、<x2/>)"
@@ -6381,6 +6385,10 @@
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "ダウンロードするファイルおよび本ソフトウェアの使用方法については、お客様のみが責任を負います。"
+  },
+  "cd673e3701cb16c6": {
+   "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
+   "text": "<g1>32以上の接続を許可</g1> — 上記の数と例外のために最大数を128に増やします。ほとんどのサーバーは1つのアドレスからのはるかに少ない接続しか許可しません。MDMはそれを検知し、より少ない接続を要求します。再度オフにすると、それより高い数値は32に戻ります。"
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -6986,6 +6994,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "バグの報告または機能のリクエスト方法 — Mister Download Manager"
   },
+  "e3696cca91bc9263": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
+   "text": "ブラウザは1つの接続でファイルをダウンロードします。MDMはサーバーにファイルの複数の部分を同時に要求し、最大32接続（許可すれば128接続）を使用します。そして、接続がその部分を完了すると、まだ残っている最大の半分を引き継ぐため、遅い接続が完了を妨げることはありません。また、追加接続を拒否するサーバーを記憶し、それらに要求するのをやめます。<g1>接続と速度</g1>をご覧ください。"
+  },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
    "text": "速度と接続"
@@ -7045,10 +7057,6 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>クライアント。</g1> IDMとMDMはどちらもデフォルト設定（8接続）で、同じ文書化されたコマンドライン<x2/>を介してダウンロードを実行します。両方ともIDMの一時フォルダーがあるドライブに保存するため、クロスドライブコピーのコストはかかりません。"
-  },
-  "e52b5461bc5bf605": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when…",
-   "text": "ブラウザは1つの接続でファイルをダウンロードします。MDMは、最大32の接続を使い、サーバーにファイルの複数の部分を同時に要求し、分割を繰り返します。接続がその部分を完了すると、まだ残っている最大の半分を引き継ぐため、遅い接続が終了を妨げません。また、追加接続を拒否するサーバーを記憶し、それらへの要求を停止します。接続と速度を参照してください。"
   },
   "e54c910b35908f87": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones.",
@@ -7614,6 +7622,10 @@
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1.0倍</g1><g2>速い</g2>"
   },
+  "fa1e28b3c6e2e46e": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
+   "text": "デフォルトではダウンロードごとに8つ、オプション → 接続で選択すると最大32、さらに32以上の接続を許可にチェックを入れると128まで使用できます。MDMはそれより少なく…"
+  },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
    "text": "プログラムをそのフォルダーに置き換えます（ポータブルコピーの<x1/>フォルダーは保持されます）。"
@@ -7733,10 +7745,6 @@
   "fdf01d37915b1a04": {
    "source": "Browser extension",
    "text": "ブラウザ拡張機能"
-  },
-  "fdffc63b6c2566d5": {
-   "source": "It uses <g1>8 connections</g1> by default. You can choose 1, 2, 4, 8, 16, 24 or 32 in <g2>Options → Connection → Default max. conn. number</g2>.",
-   "text": "既定では<g1>8接続</g1>を使用します。「<g2>オプション → 接続 → 既定の最大接続数</g2>」で1、2、4、8、16、24、または32を選択できます。"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

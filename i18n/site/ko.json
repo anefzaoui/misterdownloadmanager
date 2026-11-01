@@ -242,10 +242,6 @@
    "source": "How do I report a bug or ask for a feature?",
    "text": "버그를 보고하거나 기능을 요청하려면 어떻게 해야 하나요?"
   },
-  "06fc1bc448892347": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
-   "text": "브라우저는 한 번에 한 연결로 파일을 가져옵니다. MDM은 서버에 파일의 여러 부분을 동시에 요청하며, 최대 32개의 연결을 사용하고 계속해서 재분할합니다. 연결이 자신의 부분을 완료하면, 아직 남아있는 가장 큰 부분의 절반을 가져가므로 느린 연결이 완료를 지연시키지 않습니다. 또한 추가 연결을 거부하는 서버를 기억하고 더 이상 요청하지 않습니다. 연결 및 속도를 참조하세요."
-  },
   "070c8fa6ee24507e": {
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "위에서 <g1>setup.exe</g1>를 다운로드하여 실행합니다. Windows에서 허용 여부를 물을 수 있습니다. 설치 프로그램은 아직 코드 서명이 되어 있지 않으므로 <g2>자세히 → 그래도 실행</g2>을 선택하세요."
@@ -1082,10 +1078,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "<g1>임시 부가 기능 로드</g1>를 클릭하고 <x2/>를 선택합니다."
   },
-  "20f9ef471d29f4c4": {
-   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "기본적으로 다운로드당 8개 연결을 사용하며, <g1>옵션 → 연결</g1>에서 선택하면 최대 32개까지 사용할 수 있습니다. 서버가 더 적은 연결을 허용하는 경우 MDM은 더 적은 연결을 사용하며, 서버가 파일의 일부를 전혀 보낼 수 없는 경우에는 단 하나의 연결만 사용합니다."
-  },
   "20ff7c25a0a83544": {
    "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
    "text": "최고 품질의 경우 MDM은 그림과 소리를 결합하는 <g1>ffmpeg</g1>(약 80MB) 설치를 제안합니다. 원하시면 <g2>ffmpeg 설치</g2>를 클릭하세요. 이것이 없으면 소리가 포함된 품질을 얻게 됩니다."
@@ -1325,6 +1317,10 @@
   "28229ae295418c57": {
    "source": "Each language has its own catalog in the repository: <x1/>, for example <x2/> for German or <x3/> for Portuguese (Brazil). The codes are listed in <x4/>. Each catalog is a text file with one row per text, in three columns separated by tabs:",
    "text": "각 언어는 저장소에 자체 카탈로그를 가지고 있습니다: <x1/>. 예를 들어 독일어는 <x2/>, 포르투갈어(브라질)는 <x3/>입니다. 코드는 <x4/>에 나열되어 있습니다. 각 카탈로그는 탭으로 구분된 세 개의 열에 텍스트당 한 줄씩 있는 텍스트 파일입니다."
+  },
+  "2825ed52113e5428": {
+   "source": "Up to 128 connections per file, re-split as they go",
+   "text": "파일당 최대 128개 연결, 진행 중 재분할"
   },
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
@@ -1930,10 +1926,6 @@
    "source": "When every segment is done, the part file is checked against the expected size and renamed into place; the file's date can follow the server's.",
    "text": "모든 세그먼트가 완료되면, 부분 파일은 예상 크기와 비교하여 확인되고 제자리에 이름이 변경됩니다. 파일 날짜는 서버의 날짜를 따를 수 있습니다."
   },
-  "3a7b5cc8fa1e21f1": {
-   "source": "Download a file with up to 8 connections (<x1/>), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "최대 8개의 연결(<x1/>)로 파일을 다운로드하고 진행 상황을 표시합니다. <x2/>는 일시 중지하고, <x3/>는 계속합니다. <x4/>는 완료된 파일을 확인합니다: 16진수 MD5, SHA-1, SHA-256, SHA-512 또는 CRC32, 선택적으로 이름 지정 가능(<x5/>)."
-  },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
    "text": "약 40개, 별도 다운로드"
@@ -1977,10 +1969,6 @@
   "3bb7e0584ef41f9a": {
    "source": "Keyboard shortcuts — Mister Download Manager help",
    "text": "바로 가기 키 — Mister Download Manager 도움말"
-  },
-  "3bd468019bd25247": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
-   "text": "브라우저는 하나의 연결을 통해 파일을 가져옵니다. MDM은 서버에 파일의 여러 부분을 한 번에 요청하며, 최대 32개의 연결을 사용하고 계속해서 분할합니다. 연결이 해당 부분을 완료하면 남아 있는 가장 큰 부분의 절반을 차지하므로 느린 연결이 끝을 지연시키지 않습니다. 또한 추가 연결을 거부하는 서버를 기억하고 더 이상 요청하지 않습니다. <g1>연결 및 속도</g1>를 참조하십시오."
   },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
@@ -2570,6 +2558,10 @@
    "source": "Choose <g1>Tasks → Import → From text file</g1>.",
    "text": "<g1>작업 → 가져오기 → 텍스트 파일에서</g1>를 선택합니다."
   },
+  "50b87de554adf9c4": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
+   "text": "브라우저는 한 번에 한 연결로 파일을 가져옵니다. MDM은 서버에 파일의 여러 부분을 동시에 요청하며, 최대 32개 연결(허용하면 128개)을 사용합니다. 그리고…"
+  },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "다른 작업에 속도 남겨두기 — Mister Download Manager 도움말"
@@ -2889,10 +2881,6 @@
   "5b6bfbfcf883179a": {
    "source": "Download for Mac",
    "text": "Mac용 다운로드"
-  },
-  "5bbb9009f1843aaf": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "기본적으로 다운로드당 8개 연결을 사용하며, 옵션 → 연결에서 선택하면 최대 32개까지 사용할 수 있습니다. 서버가 더 적은 연결을 허용하는 경우 MDM은 더 적은 연결을 사용하며, 서버가 파일의 일부를 전혀 보낼 수 없는 경우에는 단 하나의 연결만 사용합니다."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3265,6 +3253,10 @@
   "671b07a3edfa2c00": {
    "source": "MDM first shows a 30-second countdown. <g1>Cancel</g1> stops it; <g2>Turn off now</g2> goes ahead at once.",
    "text": "MDM은 먼저 30초 카운트다운을 표시합니다. <g1>취소</g1>는 카운트다운을 중지하고, <g2>지금 끄기</g2>는 즉시 진행합니다."
+  },
+  "67c6c31e6dedb216": {
+   "source": "Up to 32, or 128 if you allow it; re-split as they go",
+   "text": "최대 32개, 허용하면 128개; 진행하면서 재분할"
   },
   "680bde7ef29fb757": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> and <g3>Brave</g3>. <g4>Firefox</g4> support is still being tested.",
@@ -3910,6 +3902,10 @@
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24.1 MB</g2>"
   },
+  "7bde548eabfafc71": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "기본적으로 다운로드당 8개의 연결을 사용하며, 옵션 → 연결에서 선택하면 최대 32개, 32개 이상의 연결 허용을 선택하면 128개까지 사용할 수 있습니다. 서버에서 더 적은 연결을 허용하는 경우 MDM은 더 적게 사용하며, 서버가 파일의 일부를 전혀 보낼 수 없는 경우에는 단 하나만 사용합니다."
+  },
   "7c03f8845fc81c12": {
    "source": "Torrents",
    "text": "토렌트"
@@ -3997,6 +3993,10 @@
   "7e0871a72049f943": {
    "source": "Done",
    "text": "완료"
+  },
+  "7e0f0fb8c60306bf": {
+   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use, from 1 to 32 (8 by default). Type the number or use the arrows.",
+   "text": "<g1>기본 최대 연결 수</g1> — 각 다운로드에 사용할 수 있는 연결 수로, 1에서 32까지 (기본값은 8) 설정할 수 있습니다. 숫자를 입력하거나 화살표를 사용하세요."
   },
   "7e14bed7ced71013": {
    "source": "Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <g1>More</g1>",
@@ -4145,6 +4145,10 @@
   "824bc9d6c6ab7883": {
    "source": "The tools don't show up at all",
    "text": "도구가 전혀 나타나지 않습니다."
+  },
+  "824f800df429a7d9": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
+   "text": "브라우저는 한 번에 한 연결로 파일을 가져옵니다. MDM은 서버에 파일의 여러 부분을 동시에 요청하며, 최대 32개 연결(허용하면 128개)을 사용하고, 계속해서 재분할합니다. 한 연결이 자기 부분을 마치면, 아직 남은 가장 큰 부분의 절반을 가져가므로, 느린 연결 때문에 마지막이 지연되지 않습니다. 또한, 추가 연결을 거부하는 서버를 기억하고 더 이상 요청하지 않습니다. 연결 및 속도를 참조하세요."
   },
   "827d5df0769ca662": {
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (<g1>Options → General → Offer to download links copied to the clipboard</g1>, on by default). You can also paste links into <g2>Add URL</g2>, drag them onto the drop target, add a whole batch, or use the command line. See <g3>Adding downloads</g3>.",
@@ -4442,10 +4446,6 @@
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>도구 모음.</g1> <g2>URL 추가</g2>, <g3>토렌트 추가</g3>, <g4>다시 시작</g4>, <g5>중지</g5>, <g6>모두 중지</g6>, <g7>삭제</g7>, <g8>완료된 항목 삭제</g8>, <g9>옵션</g9>, <g10>예약 관리자</g10>, <g11>대기열 시작</g11>, <g12>대기열 중지</g12>. <g13>토렌트 추가</g13>, <g14>대기열 시작</g14> 및 <g15>대기열 중지</g15> 옆의 작은 화살표를 클릭하면 더 많은 옵션이 열립니다."
   },
-  "8c7e4342b21a9867": {
-   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use: 1, 2, 4, 8 (the default), 16, 24 or 32.",
-   "text": "<g1>기본 최대 연결 수</g1> — 각 다운로드에 사용할 수 있는 연결 수: 1, 2, 4, 8(기본값), 16, 24 또는 32."
-  },
   "8c8112d979f4447f": {
    "source": "General",
    "text": "일반"
@@ -4729,6 +4729,10 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — 폴더 또는 USB 드라이브에서 실행"
+  },
+  "96076440a6a16300": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
+   "text": "최대 8개 연결(<x1/>, 1~128개)로 파일을 다운로드하고 진행 상황을 표시합니다. <x2/>는 일시 중지하고, <x3/>는 계속합니다. <x4/>는 완료된 파일을 확인합니다: 16진수 MD5, SHA-1, SHA-256, SHA-512 또는 CRC32, 선택적으로 이름 지정(<x5/>)."
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -5061,10 +5065,6 @@
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
    "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트가 있습니다. <x1/>은 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료)를 반환합니다. Windows 전용 호출은 <x3/>에, Linux 및 macOS 해당 호출은 <x4/>에 국한됩니다(세션, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기부터 시작). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다: Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)."
-  },
-  "a037f2038ab4ded4": {
-   "source": "Up to 32 connections per file, re-split as they go",
-   "text": "파일당 최대 32개 연결, 진행 상황에 따라 재분할"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6110,6 +6110,10 @@
    "source": "What's new",
    "text": "새로운 기능"
   },
+  "c2ef218c38582097": {
+   "source": "It uses <g1>8 connections</g1> by default. You can set 1 to 32 in <g2>Options → Connection → Default max. conn. number</g2>, or up to 128 after ticking <g3>Allow more than 32 connections</g3> there. More connections help only when the server sends each one at a limited speed and allows that many from one address; most servers allow far fewer.",
+   "text": "MDM은 기본적으로 <g1>8개의 연결</g1>을 사용합니다. <g2>옵션 → 연결 → 기본 최대 연결 수</g2>에서 1개에서 32개까지 설정할 수 있으며, <g3>32개 이상의 연결 허용</g3>을 선택하면 최대 128개까지 설정할 수 있습니다. 연결 수가 많을수록 서버가 각 연결을 제한된 속도로 보내고 한 주소에서 많은 연결을 허용하는 경우에만 도움이 됩니다. 대부분의 서버는 훨씬 적은 연결을 허용합니다."
+  },
   "c337f01f6c9f7565": {
    "source": "Lists your downloads, newest first: file, address, folder, status, size, how much is done, speed. It can list only one status (Queued, Downloading, Stopped, Complete, Error) or only names and addresses that contain some text.",
    "text": "다운로드를 최신순으로 나열합니다: 파일, 주소, 폴더, 상태, 크기, 완료된 양, 속도. 하나의 상태(대기 중, 다운로드 중, 중지됨, 완료, 오류)만 나열하거나 특정 텍스트를 포함하는 이름과 주소만 나열할 수 있습니다."
@@ -6233,10 +6237,6 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
-  },
-  "c7a354bd345262c3": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server…",
-   "text": "기본적으로 다운로드당 8개 연결을 사용하며, 옵션 → 연결에서 선택하면 최대 32개까지 사용할 수 있습니다. 서버가 더 적은 연결을 허용하는 경우 MDM은 더 적은 연결을 사용하며, 서버가…"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -6370,6 +6370,10 @@
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own data folder, so…",
    "text": "예. 포터블 다운로드는 ZIP 파일입니다. USB 스틱을 포함하여 어디든 압축을 풀고 실행하세요. 다운로드 목록과 설정은 자체 데이터 폴더에 저장되므로…"
   },
+  "cc626a36f8b140f5": {
+   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>, or 128 after ticking <g2>Allow more than 32 connections</g2> there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "기본적으로 다운로드당 8개의 연결을 사용하며, <g1>옵션 → 연결</g1>에서 선택하면 최대 32개, <g2>32개 이상의 연결 허용</g2>을 선택하면 128개까지 사용할 수 있습니다. 서버에서 더 적은 연결을 허용하는 경우 MDM은 더 적게 사용하며, 서버가 파일의 일부를 전혀 보낼 수 없는 경우에는 단 하나만 사용합니다."
+  },
   "cc7193f7c38257a1": {
    "source": "Headless downloads with progress (<x1/>, <x2/>)",
    "text": "진행 상황이 표시되는 헤드리스 다운로드(<x1/>, <x2/>)"
@@ -6381,6 +6385,10 @@
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "다운로드하는 파일과 소프트웨어 사용 방식에 대한 책임은 전적으로 귀하에게 있습니다."
+  },
+  "cd673e3701cb16c6": {
+   "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
+   "text": "<g1>32개 이상의 연결 허용</g1> — 위 숫자와 예외에 대해 최대 연결 수를 128개로 늘립니다. 대부분의 서버는 한 주소에서 훨씬 적은 연결을 허용하며, MDM은 이를 감지하여 더 적은 연결을 요청합니다. 다시 끄면, 32보다 높은 숫자는 32로 돌아옵니다."
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -6986,6 +6994,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "버그 보고 또는 기능 요청 방법 — Mister Download Manager"
   },
+  "e3696cca91bc9263": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
+   "text": "브라우저는 한 번에 하나의 연결로 파일을 가져옵니다. MDM은 서버에 파일의 여러 부분을 동시에 요청하며, 최대 32개(허용하는 경우 128개)의 연결을 사용하고 계속해서 재분할합니다. 즉, 한 연결이 자신의 부분을 완료하면 아직 남아있는 가장 큰 부분의 절반을 가져가므로 느린 연결이 완료를 지연시키지 않습니다. 또한 추가 연결을 거부하는 서버를 기억하고 더 이상 요청하지 않습니다. <g1>연결 및 속도</g1>를 참조하십시오."
+  },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
    "text": "속도 및 연결"
@@ -7045,10 +7057,6 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>클라이언트.</g1> IDM과 MDM 모두 기본 설정(8개 연결)으로, 동일하게 문서화된 명령줄 <x2/>를 통해 다운로드를 수행했습니다. 둘 다 IDM의 임시 폴더가 있는 드라이브에 저장하므로, 교차 드라이브 복사 비용이 발생하지 않습니다."
-  },
-  "e52b5461bc5bf605": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when…",
-   "text": "브라우저는 한 번에 한 연결로 파일을 가져옵니다. MDM은 서버에 파일의 여러 부분을 동시에 요청하며, 최대 32개의 연결을 사용하고 계속해서 재분할합니다. 연결이…"
   },
   "e54c910b35908f87": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones.",
@@ -7614,6 +7622,10 @@
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1.0배</g1><g2>더 빠름</g2>"
   },
+  "fa1e28b3c6e2e46e": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
+   "text": "기본적으로 다운로드당 8개의 연결을 사용하며, 옵션 → 연결에서 선택하면 최대 32개, 32개 이상의 연결 허용을 선택하면 128개까지 사용할 수 있습니다. MDM은 더 적게 사용합니다…"
+  },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
    "text": "해당 폴더의 프로그램을 교체합니다(포터블 복사본의 <x1/> 폴더는 유지됩니다)."
@@ -7733,10 +7745,6 @@
   "fdf01d37915b1a04": {
    "source": "Browser extension",
    "text": "브라우저 확장"
-  },
-  "fdffc63b6c2566d5": {
-   "source": "It uses <g1>8 connections</g1> by default. You can choose 1, 2, 4, 8, 16, 24 or 32 in <g2>Options → Connection → Default max. conn. number</g2>.",
-   "text": "기본적으로 <g1>8개의 연결</g1>을 사용합니다. <g2>옵션 → 연결 → 기본 최대 연결 수</g2>에서 1, 2, 4, 8, 16, 24 또는 32를 선택할 수 있습니다."
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

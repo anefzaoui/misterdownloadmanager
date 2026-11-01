@@ -242,10 +242,6 @@
    "source": "How do I report a bug or ask for a feature?",
    "text": "如何报告错误或提出功能请求？"
   },
-  "06fc1bc448892347": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
-   "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多可达 32 个连接，并持续重新分配：当一个连接完成其部分后，它会接管剩余最大部分的一半，这样就不会有慢速连接拖延整个下载。它还会记住拒绝额外连接的服务器，并停止向它们请求。请参阅“连接和速度”。"
-  },
   "070c8fa6ee24507e": {
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "下载上方的<g1>setup.exe</g1>并运行。Windows 可能会询问是否允许运行：安装程序尚未进行代码签名，因此请选择<g2>更多信息 → 仍然运行</g2>。"
@@ -1082,10 +1078,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "点击<g1>加载临时附加组件</g1>，然后选择<x2/>。"
   },
-  "20f9ef471d29f4c4": {
-   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "默认情况下，每个下载使用八个连接，如果您在<g1>选项 → 连接</g1>中选择，最多可达32个。当服务器允许的连接数较少时，MDM会使用较少的连接；当服务器根本无法发送文件分段时，MDM只使用一个连接。"
-  },
   "20ff7c25a0a83544": {
    "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
    "text": "对于最佳画质，MDM 会提示安装<g1>ffmpeg</g1>（约 80 MB），它用于合并图像和声音。如果您需要它们，请点击<g2>安装 ffmpeg</g2>。如果没有它，您将获得自带声音的画质。"
@@ -1325,6 +1317,10 @@
   "28229ae295418c57": {
    "source": "Each language has its own catalog in the repository: <x1/>, for example <x2/> for German or <x3/> for Portuguese (Brazil). The codes are listed in <x4/>. Each catalog is a text file with one row per text, in three columns separated by tabs:",
    "text": "每种语言在存储库中都有自己的目录：<x1/>，例如德语的<x2/>或葡萄牙语（巴西）的<x3/>。代码列在<x4/>中。每个目录都是一个文本文件，每行一个文本，由制表符分隔的三列组成："
+  },
+  "2825ed52113e5428": {
+   "source": "Up to 128 connections per file, re-split as they go",
+   "text": "每个文件最多 128 个连接，下载时可重新分配"
   },
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
@@ -1930,10 +1926,6 @@
    "source": "When every segment is done, the part file is checked against the expected size and renamed into place; the file's date can follow the server's.",
    "text": "当所有分段完成后，部分文件会根据预期大小进行检查并重命名到位；文件的日期可以跟随服务器的日期。"
   },
-  "3a7b5cc8fa1e21f1": {
-   "source": "Download a file with up to 8 connections (<x1/>), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "下载文件，最多 8 个连接 (<x1/>)，显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名 (<x5/>)。"
-  },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
    "text": "约 40，需单独下载"
@@ -1977,10 +1969,6 @@
   "3bb7e0584ef41f9a": {
    "source": "Keyboard shortcuts — Mister Download Manager help",
    "text": "键盘快捷方式 — Mister Download Manager 帮助"
-  },
-  "3bd468019bd25247": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
-   "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多 32 个连接，并持续重新分割：当一个连接完成其部分时，它会接管剩余最大部分的一半，这样就不会有慢速连接拖慢整个过程。它还会记住拒绝额外连接的服务器，并停止向它们请求。请参阅<g1>连接和速度</g1>。"
   },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
@@ -2570,6 +2558,10 @@
    "source": "Choose <g1>Tasks → Import → From text file</g1>.",
    "text": "选择<g1>任务 → 导入 → 从文本文件</g1>。"
   },
+  "50b87de554adf9c4": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
+   "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多 32 个连接（如果允许，可达 128 个），并且…"
+  },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "为其他任务保留网速 — Mister Download Manager 帮助"
@@ -2889,10 +2881,6 @@
   "5b6bfbfcf883179a": {
    "source": "Download for Mac",
    "text": "下载 Mac 版"
-  },
-  "5bbb9009f1843aaf": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "默认情况下，每个下载使用八个连接，如果您在选项 → 连接中选择，最多可达32个。当服务器允许的连接数较少时，MDM会使用较少的连接；当服务器根本无法发送文件分段时，MDM只使用一个连接。"
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3265,6 +3253,10 @@
   "671b07a3edfa2c00": {
    "source": "MDM first shows a 30-second countdown. <g1>Cancel</g1> stops it; <g2>Turn off now</g2> goes ahead at once.",
    "text": "MDM 首先会显示 30 秒倒计时。<g1>取消</g1>会停止倒计时；<g2>立即关闭</g2>会立即执行。"
+  },
+  "67c6c31e6dedb216": {
+   "source": "Up to 32, or 128 if you allow it; re-split as they go",
+   "text": "最多 32 个，如果允许则为 128 个；下载时重新分配"
   },
   "680bde7ef29fb757": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> and <g3>Brave</g3>. <g4>Firefox</g4> support is still being tested.",
@@ -3910,6 +3902,10 @@
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24.1 MB</g2>"
   },
+  "7bde548eabfafc71": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "默认情况下，每个下载使用八个连接。如果您在选项 → 连接中选择，最多可达32个；勾选允许超过32个连接后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接；当服务器完全无法发送文件分段时，MDM只使用一个连接。"
+  },
   "7c03f8845fc81c12": {
    "source": "Torrents",
    "text": "种子"
@@ -3997,6 +3993,10 @@
   "7e0871a72049f943": {
    "source": "Done",
    "text": "完成"
+  },
+  "7e0f0fb8c60306bf": {
+   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use, from 1 to 32 (8 by default). Type the number or use the arrows.",
+   "text": "<g1>默认最大连接数</g1> — 每个下载可使用的连接数，从 1 到 32（默认为 8）。输入数字或使用箭头。"
   },
   "7e14bed7ced71013": {
    "source": "Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <g1>More</g1>",
@@ -4145,6 +4145,10 @@
   "824bc9d6c6ab7883": {
    "source": "The tools don't show up at all",
    "text": "工具根本没有显示"
+  },
+  "824f800df429a7d9": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
+   "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多 32 个连接（如果允许，可达 128 个），并持续重新拆分：当一个连接完成其部分后，它会接管剩余最大部分的一半，这样就不会有慢速连接拖延整个下载。它还会记住拒绝额外连接的服务器，并停止向它们请求。请参阅连接和速度。"
   },
   "827d5df0769ca662": {
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (<g1>Options → General → Offer to download links copied to the clipboard</g1>, on by default). You can also paste links into <g2>Add URL</g2>, drag them onto the drop target, add a whole batch, or use the command line. See <g3>Adding downloads</g3>.",
@@ -4442,10 +4446,6 @@
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>工具栏。</g1><g2>添加 URL</g2>、<g3>添加 Torrent</g3>、<g4>恢复</g4>、<g5>停止</g5>、<g6>停止所有</g6>、<g7>删除</g7>、<g8>删除已完成</g8>、<g9>选项</g9>、<g10>计划程序</g10>、<g11>启动队列</g11>、<g12>停止队列</g12>。<g13>添加 Torrent</g13>、<g14>启动队列</g14>和<g15>停止队列</g15>旁边的小箭头会打开更多选项。"
   },
-  "8c7e4342b21a9867": {
-   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use: 1, 2, 4, 8 (the default), 16, 24 or 32.",
-   "text": "<g1>默认最大连接数</g1> — 每个下载可使用的连接数：1、2、4、8（默认）、16、24 或 32。"
-  },
   "8c8112d979f4447f": {
    "source": "General",
    "text": "常规"
@@ -4729,6 +4729,10 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — 可从文件夹或 U 盘运行"
+  },
+  "96076440a6a16300": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
+   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。"
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -5061,10 +5065,6 @@
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
    "text": "一个绘制到固定像素坐标的 egui 窗口，加上每个对话框一个即时视口。<x1/> 保存状态（下载、队列、设置、列表选择）并将菜单、工具栏、按键和 IPC 命令转换为操作。每个对话框都是自己的模块，并返回一个 <x2/>（打开、关闭、带值完成）。仅限 Windows 的调用限制在 <x3/> 中，其 Linux 和 macOS 对应项限制在 <x4/> 中（从会话、浏览器主机、声音、在文件夹中显示、崩溃处理程序开始）；所有其他文件都是安全的、可移植的 Rust。字体来自系统：Windows 的 Fonts 文件夹、macOS 的系统字体、Linux 上的 fontconfig（<x5/>）。"
-  },
-  "a037f2038ab4ded4": {
-   "source": "Up to 32 connections per file, re-split as they go",
-   "text": "每个文件最多 32 个连接，下载过程中动态重新分配"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6110,6 +6110,10 @@
    "source": "What's new",
    "text": "新功能"
   },
+  "c2ef218c38582097": {
+   "source": "It uses <g1>8 connections</g1> by default. You can set 1 to 32 in <g2>Options → Connection → Default max. conn. number</g2>, or up to 128 after ticking <g3>Allow more than 32 connections</g3> there. More connections help only when the server sends each one at a limited speed and allows that many from one address; most servers allow far fewer.",
+   "text": "MDM 默认使用 <g1>8 个连接</g1>。您可以在<g2>选项 → 连接 → 默认最大连接数</g2>中设置 1 到 32 个连接，或者勾选<g3>允许超过 32 个连接</g3>后最多设置 128 个。只有当服务器以有限的速度发送每个连接并允许来自一个地址的多个连接时，更多的连接才会有帮助；大多数服务器允许的连接数要少得多。"
+  },
   "c337f01f6c9f7565": {
    "source": "Lists your downloads, newest first: file, address, folder, status, size, how much is done, speed. It can list only one status (Queued, Downloading, Stopped, Complete, Error) or only names and addresses that contain some text.",
    "text": "列出您的下载，最新优先：文件、地址、文件夹、状态、大小、已完成百分比、速度。它可以只列出一种状态（排队中、正在下载、已停止、完成、错误），或者只列出包含某些文本的名称和地址。"
@@ -6233,10 +6237,6 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
-  },
-  "c7a354bd345262c3": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server…",
-   "text": "默认情况下，每个下载使用八个连接，如果您在选项 → 连接中选择，最多可达32个。当服务器允许的连接数较少时，MDM会使用较少的连接；当服务器…"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -6370,6 +6370,10 @@
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own data folder, so…",
    "text": "是。便携版下载是一个zip文件：解压到任何地方，包括U盘，然后运行即可。您的下载列表和设置会保存在它自己的数据文件夹中，所以……"
   },
+  "cc626a36f8b140f5": {
+   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>, or 128 after ticking <g2>Allow more than 32 connections</g2> there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "默认情况下，每个下载使用八个连接。如果您在<g1>选项 → 连接</g1>中选择，最多可达32个；勾选<g2>允许超过32个连接</g2>后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接；当服务器完全无法发送文件分段时，MDM只使用一个连接。"
+  },
   "cc7193f7c38257a1": {
    "source": "Headless downloads with progress (<x1/>, <x2/>)",
    "text": "无界面下载，带进度（<x1/>，<x2/>）"
@@ -6381,6 +6385,10 @@
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "您独自对您下载的文件以及您如何使用本软件负责。"
+  },
+  "cd673e3701cb16c6": {
+   "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
+   "text": "<g1>允许超过 32 个连接</g1> — 将上述数字和例外情况的最大连接数提高到 128。大多数服务器允许来自一个地址的连接数远少于此；MDM 会注意到并请求更少的连接。如果再次关闭此选项，任何高于 32 的数字都将恢复到 32。"
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -6986,6 +6994,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "如何报告错误或提出功能请求？— Mister Download Manager"
   },
+  "e3696cca91bc9263": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
+   "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多 32 个连接（如果允许，可达 128 个），并持续重新分配：当一个连接完成其部分时，它会接管剩余最大部分的一半，这样就不会有慢速连接拖延整个下载。它还会记住拒绝额外连接的服务器，并停止向它们请求。请参阅<g1>连接和速度</g1>。"
+  },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
    "text": "速度和连接"
@@ -7045,10 +7057,6 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>客户端。</g1> IDM 和 MDM，均采用默认设置（8 个连接），每个下载都通过相同的命令行进行：<x2/>。两者都保存到 IDM 临时文件夹所在的驱动器，因此都不会产生跨驱动器复制的开销。"
-  },
-  "e52b5461bc5bf605": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when…",
-   "text": "浏览器通过一个连接获取文件。MDM 同时向服务器请求文件的多个部分，最多可达 32 个连接，并持续重新拆分：当…"
   },
   "e54c910b35908f87": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones.",
@@ -7614,6 +7622,10 @@
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1.0 倍</g1><g2>更快</g2>"
   },
+  "fa1e28b3c6e2e46e": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
+   "text": "默认情况下，每个下载使用八个连接。如果您在选项 → 连接中选择，最多可达32个；勾选允许超过32个连接后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接…"
+  },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
    "text": "替换其文件夹中的程序（便携版副本的<x1/>文件夹会保留）。"
@@ -7733,10 +7745,6 @@
   "fdf01d37915b1a04": {
    "source": "Browser extension",
    "text": "浏览器扩展"
-  },
-  "fdffc63b6c2566d5": {
-   "source": "It uses <g1>8 connections</g1> by default. You can choose 1, 2, 4, 8, 16, 24 or 32 in <g2>Options → Connection → Default max. conn. number</g2>.",
-   "text": "它默认使用<g1>8 个连接</g1>。您可以在<g2>选项 → 连接 → 默认最大连接数</g2>中选择 1、2、4、8、16、24 或 32。"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

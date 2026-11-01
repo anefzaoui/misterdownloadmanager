@@ -242,10 +242,6 @@
    "source": "How do I report a bug or ask for a feature?",
    "text": "मैं किसी बग की रिपोर्ट कैसे करूँ या किसी सुविधा का अनुरोध कैसे करूँ?"
   },
-  "06fc1bc448892347": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
-   "text": "एक ब्राउज़र एक ही कनेक्शन पर फ़ाइल प्राप्त करता है। MDM सर्वर से एक साथ फ़ाइल के कई हिस्से (32 कनेक्शन तक) मांगता है, और उन्हें लगातार फिर से विभाजित करता रहता है: जब एक कनेक्शन अपना हिस्सा पूरा कर लेता है, तो वह बचे हुए सबसे बड़े हिस्से का आधा हिस्सा ले लेता है, ताकि कोई भी धीमा कनेक्शन अंत में देरी न करे। यह उन सर्वरों को भी याद रखता है जो अतिरिक्त कनेक्शन से इनकार करते हैं और उनसे पूछना बंद कर देता है। कनेक्शन और गति देखें।"
-  },
   "070c8fa6ee24507e": {
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "ऊपर दिए गए <g1>setup.exe</g1> को डाउनलोड करें और चलाएँ। Windows पूछ सकता है कि क्या इसे अनुमति देनी है: इंस्टॉलर अभी कोड-साइन नहीं किया गया है, इसलिए <g2>अधिक जानकारी → फिर भी चलाएँ</g2> चुनें।"
@@ -1082,10 +1078,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "<g1>अस्थायी ऐड-ऑन लोड करें</g1> पर क्लिक करें और <x2/> चुनें।"
   },
-  "20f9ef471d29f4c4": {
-   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ, और यदि आप <g1>विकल्प → कनेक्शन</g1> में चुनते हैं तो 32 तक। MDM कम कनेक्शन का उपयोग करता है जब एक सर्वर कम की अनुमति देता है, और केवल एक का उपयोग करता है जब एक सर्वर फ़ाइल के हिस्सों को बिल्कुल भी नहीं भेज सकता।"
-  },
   "20ff7c25a0a83544": {
    "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
    "text": "सर्वोत्तम गुणवत्ता के लिए, MDM <g1>ffmpeg</g1> (लगभग 80 MB) इंस्टॉल करने की पेशकश करता है, जो चित्र और ध्वनि को जोड़ता है। यदि आप उन्हें चाहते हैं तो <g2>ffmpeg इंस्टॉल करें</g2> पर क्लिक करें। इसके बिना, आपको वे गुणवत्ताएँ मिलेंगी जो अपनी ध्वनि के साथ आती हैं।"
@@ -1325,6 +1317,10 @@
   "28229ae295418c57": {
    "source": "Each language has its own catalog in the repository: <x1/>, for example <x2/> for German or <x3/> for Portuguese (Brazil). The codes are listed in <x4/>. Each catalog is a text file with one row per text, in three columns separated by tabs:",
    "text": "प्रत्येक भाषा का रिपॉजिटरी में अपना कैटलॉग होता है: <x1/>, उदाहरण के लिए जर्मन के लिए <x2/> या पुर्तगाली (ब्राजील) के लिए <x3/>। कोड <x4/> में सूचीबद्ध हैं। प्रत्येक कैटलॉग एक टेक्स्ट फ़ाइल है जिसमें प्रति पाठ एक पंक्ति होती है, जो टैब द्वारा अलग किए गए तीन कॉलम में होती है:"
+  },
+  "2825ed52113e5428": {
+   "source": "Up to 128 connections per file, re-split as they go",
+   "text": "प्रति फ़ाइल 128 कनेक्शन तक, जो ज़रूरत के हिसाब से फिर से बँट जाते हैं"
   },
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
@@ -1930,10 +1926,6 @@
    "source": "When every segment is done, the part file is checked against the expected size and renamed into place; the file's date can follow the server's.",
    "text": "जब हर सेगमेंट पूरा हो जाता है, तो पार्ट फ़ाइल की अपेक्षित आकार के विरुद्ध जांच की जाती है और उसे सही जगह पर नाम बदला जाता है; फ़ाइल की तारीख सर्वर के अनुसार हो सकती है।"
   },
-  "3a7b5cc8fa1e21f1": {
-   "source": "Download a file with up to 8 connections (<x1/>), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "प्रगति दिखाते हुए, 8 कनेक्शन (<x1/>) तक के साथ एक फ़ाइल डाउनलोड करें। <x2/> इसे रोकता है; <x3/> जारी रखता है। <x4/> समाप्त फ़ाइल की जाँच करता है: हेक्स MD5, SHA-1, SHA-256, SHA-512 या CRC32, वैकल्पिक रूप से नामित (<x5/>)।"
-  },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
    "text": "लगभग 40, अलग डाउनलोड"
@@ -1977,10 +1969,6 @@
   "3bb7e0584ef41f9a": {
    "source": "Keyboard shortcuts — Mister Download Manager help",
    "text": "कीबोर्ड शॉर्टकट — Mister Download Manager सहायता"
-  },
-  "3bd468019bd25247": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
-   "text": "एक ब्राउज़र एक कनेक्शन पर एक फ़ाइल प्राप्त करता है। MDM सर्वर से एक साथ फ़ाइल के कई हिस्सों के लिए पूछता है, 32 कनेक्शन तक, और फिर से विभाजित करता रहता है: जब एक कनेक्शन अपना हिस्सा पूरा कर लेता है, तो वह अभी भी बचे हुए सबसे बड़े हिस्से का आधा हिस्सा ले लेता है, ताकि कोई धीमा कनेक्शन अंत को रोके न। यह उन सर्वरों को भी याद रखता है जो अतिरिक्त कनेक्शन से इनकार करते हैं और उनसे पूछना बंद कर देता है। <g1>कनेक्शन और गति</g1> देखें।"
   },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
@@ -2570,6 +2558,10 @@
    "source": "Choose <g1>Tasks → Import → From text file</g1>.",
    "text": "<g1>कार्य → आयात → टेक्स्ट फ़ाइल से</g1> चुनें।"
   },
+  "50b87de554adf9c4": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
+   "text": "एक ब्राउज़र एक कनेक्शन पर फ़ाइल लाता है। MDM सर्वर से एक साथ फ़ाइल के कई हिस्से मांगता है, 32 कनेक्शन तक (यदि आप अनुमति देते हैं तो 128), और…"
+  },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "बाकी सब के लिए कुछ गति रखें — Mister Download Manager सहायता"
@@ -2889,10 +2881,6 @@
   "5b6bfbfcf883179a": {
    "source": "Download for Mac",
    "text": "Mac के लिए डाउनलोड करें"
-  },
-  "5bbb9009f1843aaf": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ, और यदि आप विकल्प → कनेक्शन में चुनते हैं तो 32 तक। MDM कम कनेक्शन का उपयोग करता है जब एक सर्वर कम की अनुमति देता है, और केवल एक का उपयोग करता है जब एक सर्वर फ़ाइल के हिस्सों को बिल्कुल भी नहीं भेज सकता।"
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3265,6 +3253,10 @@
   "671b07a3edfa2c00": {
    "source": "MDM first shows a 30-second countdown. <g1>Cancel</g1> stops it; <g2>Turn off now</g2> goes ahead at once.",
    "text": "MDM पहले 30 सेकंड का काउंटडाउन दिखाता है। <g1>रद्द करें</g1> इसे रोकता है; <g2>अभी बंद करें</g2> तुरंत आगे बढ़ता है।"
+  },
+  "67c6c31e6dedb216": {
+   "source": "Up to 32, or 128 if you allow it; re-split as they go",
+   "text": "32 तक, या 128 यदि आप अनुमति देते हैं; डाउनलोड होते समय फिर से विभाजित होते हैं"
   },
   "680bde7ef29fb757": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> and <g3>Brave</g3>. <g4>Firefox</g4> support is still being tested.",
@@ -3910,6 +3902,10 @@
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24.1 MB</g2>"
   },
+  "7bde548eabfafc71": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ कनेक्शन, और यदि आप विकल्प → कनेक्शन में चुनते हैं तो 32 तक, या वहाँ 32 से अधिक कनेक्शन की अनुमति दें पर टिक करने के बाद 128 तक। MDM कम कनेक्शन का उपयोग करता है जब कोई सर्वर कम की अनुमति देता है, और केवल एक का उपयोग करता है जब कोई सर्वर फ़ाइल के हिस्सों को बिल्कुल भी नहीं भेज सकता।"
+  },
   "7c03f8845fc81c12": {
    "source": "Torrents",
    "text": "टॉरेंट"
@@ -3997,6 +3993,10 @@
   "7e0871a72049f943": {
    "source": "Done",
    "text": "हो गया"
+  },
+  "7e0f0fb8c60306bf": {
+   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use, from 1 to 32 (8 by default). Type the number or use the arrows.",
+   "text": "<g1>डिफ़ॉल्ट अधिकतम कनेक्शन संख्या</g1> — प्रत्येक डाउनलोड कितने कनेक्शन का उपयोग कर सकता है, 1 से 32 तक (डिफ़ॉल्ट रूप से 8)। संख्या टाइप करें या तीरों का उपयोग करें।"
   },
   "7e14bed7ced71013": {
    "source": "Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <g1>More</g1>",
@@ -4145,6 +4145,10 @@
   "824bc9d6c6ab7883": {
    "source": "The tools don't show up at all",
    "text": "टूल बिल्कुल नहीं दिखते"
+  },
+  "824f800df429a7d9": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
+   "text": "एक ब्राउज़र एक कनेक्शन पर फ़ाइल लाता है। MDM सर्वर से एक साथ फ़ाइल के कई हिस्से मांगता है, 32 कनेक्शन तक (यदि आप अनुमति देते हैं तो 128), और फिर से विभाजित करता रहता है: जब एक कनेक्शन अपना हिस्सा पूरा कर लेता है, तो वह बचे हुए सबसे बड़े हिस्से का आधा हिस्सा ले लेता है, ताकि कोई भी धीमा कनेक्शन अंत में देरी न करे। यह उन सर्वरों को भी याद रखता है जो अतिरिक्त कनेक्शन से इनकार करते हैं और उनसे पूछना बंद कर देता है। कनेक्शन और गति देखें।"
   },
   "827d5df0769ca662": {
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (<g1>Options → General → Offer to download links copied to the clipboard</g1>, on by default). You can also paste links into <g2>Add URL</g2>, drag them onto the drop target, add a whole batch, or use the command line. See <g3>Adding downloads</g3>.",
@@ -4442,10 +4446,6 @@
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>टूलबार।</g1> <g2>URL जोड़ें</g2>, <g3>टॉरेंट जोड़ें</g3>, <g4>फिर से शुरू करें</g4>, <g5>रोकें</g5>, <g6>सभी रोकें</g6>, <g7>हटाएँ</g7>, <g8>पूर्ण किए गए हटाएँ</g8>, <g9>विकल्प</g9>, <g10>शेड्यूलर</g10>, <g11>कतार शुरू करें</g11>, <g12>कतार रोकें</g12>। <g13>टॉरेंट जोड़ें</g13>, <g14>कतार शुरू करें</g14> और <g15>कतार रोकें</g15> के बगल में छोटा तीर अधिक विकल्प खोलता है।"
   },
-  "8c7e4342b21a9867": {
-   "source": "<g1>Default max. conn. number</g1> — how many connections each download may use: 1, 2, 4, 8 (the default), 16, 24 or 32.",
-   "text": "<g1>डिफ़ॉल्ट अधिकतम कनेक्शन संख्या</g1> — प्रत्येक डाउनलोड कितने कनेक्शन का उपयोग कर सकता है: 1, 2, 4, 8 (डिफ़ॉल्ट), 16, 24 या 32।"
-  },
   "8c8112d979f4447f": {
    "source": "General",
    "text": "सामान्य"
@@ -4729,6 +4729,10 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — एक फ़ोल्डर या USB स्टिक से चलता है"
+  },
+  "96076440a6a16300": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
+   "text": "8 कनेक्शन तक (<x1/>, 1 से 128) के साथ एक फ़ाइल डाउनलोड करें, प्रगति दिखाते हुए। <x2/> इसे रोकता है; <x3/> जारी रखता है। <x4/> समाप्त फ़ाइल की जाँच करता है: हेक्स MD5, SHA-1, SHA-256, SHA-512 या CRC32, वैकल्पिक रूप से नामित (<x5/>)।"
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -5061,10 +5065,6 @@
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
    "text": "एक egui विंडो जो निश्चित पिक्सेल निर्देशांक पर चित्रित होती है, साथ ही प्रति डायलॉग एक तत्काल व्यूपोर्ट। <x1/> स्थिति (डाउनलोड, कतारें, सेटिंग्स, सूची का चयन) रखता है और मेनू, टूलबार, कुंजी और IPC कमांड को क्रियाओं में बदलता है। प्रत्येक डायलॉग अपना मॉड्यूल है और एक <x2/> (खुला, बंद, एक मान के साथ किया गया) लौटाता है। Windows-केवल कॉल <x3/> तक सीमित हैं और उनके Linux और macOS समकक्ष <x4/> तक (सत्र से शुरू होकर, ब्राउज़र का होस्ट, ध्वनियाँ, फ़ोल्डर में दिखाएँ, क्रैश हैंडलर); हर दूसरी फ़ाइल सुरक्षित, पोर्टेबल Rust है। फ़ॉन्ट सिस्टम से आते हैं: Windows का फ़ॉन्ट फ़ोल्डर, macOS के सिस्टम फ़ॉन्ट, Linux पर fontconfig (<x5/>)।"
-  },
-  "a037f2038ab4ded4": {
-   "source": "Up to 32 connections per file, re-split as they go",
-   "text": "प्रति फ़ाइल 32 कनेक्शन तक, जैसे-जैसे वे आगे बढ़ते हैं, फिर से विभाजित होते हैं"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6110,6 +6110,10 @@
    "source": "What's new",
    "text": "नया क्या है"
   },
+  "c2ef218c38582097": {
+   "source": "It uses <g1>8 connections</g1> by default. You can set 1 to 32 in <g2>Options → Connection → Default max. conn. number</g2>, or up to 128 after ticking <g3>Allow more than 32 connections</g3> there. More connections help only when the server sends each one at a limited speed and allows that many from one address; most servers allow far fewer.",
+   "text": "यह डिफ़ॉल्ट रूप से <g1>8 कनेक्शन</g1> का उपयोग करता है। आप <g2>विकल्प → कनेक्शन → डिफ़ॉल्ट अधिकतम कनेक्शन संख्या</g2> में 1 से 32 तक सेट कर सकते हैं, या वहाँ <g3>32 से अधिक कनेक्शन की अनुमति दें</g3> पर टिक करने के बाद 128 तक सेट कर सकते हैं। अधिक कनेक्शन तभी मदद करते हैं जब सर्वर प्रत्येक को सीमित गति से भेजता है और एक पते से उतने की अनुमति देता है; अधिकांश सर्वर बहुत कम की अनुमति देते हैं।"
+  },
   "c337f01f6c9f7565": {
    "source": "Lists your downloads, newest first: file, address, folder, status, size, how much is done, speed. It can list only one status (Queued, Downloading, Stopped, Complete, Error) or only names and addresses that contain some text.",
    "text": "आपके डाउनलोड को सूचीबद्ध करता है, सबसे नए पहले: फ़ाइल, पता, फ़ोल्डर, स्थिति, आकार, कितना पूरा हुआ, गति। यह केवल एक स्थिति (कतारबद्ध, डाउनलोड हो रहा है, रोका गया, पूर्ण, त्रुटि) या केवल कुछ टेक्स्ट वाले नाम और पते सूचीबद्ध कर सकता है।"
@@ -6233,10 +6237,6 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
-  },
-  "c7a354bd345262c3": {
-   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server…",
-   "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ, और यदि आप विकल्प → कनेक्शन में चुनते हैं तो 32 तक। MDM कम का उपयोग करता है जब एक सर्वर कम की अनुमति देता है, और केवल एक का उपयोग करता है जब एक सर्वर…"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -6370,6 +6370,10 @@
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own data folder, so…",
    "text": "हाँ। पोर्टेबल डाउनलोड एक ज़िप फ़ाइल है: इसे कहीं भी अनज़िप करें, जिसमें USB स्टिक भी शामिल है, और इसे चलाएँ। आपकी डाउनलोड सूची और सेटिंग्स इसके अपने डेटा फ़ोल्डर में रहती हैं, इसलिए..."
   },
+  "cc626a36f8b140f5": {
+   "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>, or 128 after ticking <g2>Allow more than 32 connections</g2> there. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
+   "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ कनेक्शन, और यदि आप <g1>विकल्प → कनेक्शन</g1> में चुनते हैं तो 32 तक, या वहाँ <g2>32 से अधिक कनेक्शन की अनुमति दें</g2> पर टिक करने के बाद 128 तक। MDM कम कनेक्शन का उपयोग करता है जब कोई सर्वर कम की अनुमति देता है, और केवल एक का उपयोग करता है जब कोई सर्वर फ़ाइल के हिस्सों को बिल्कुल भी नहीं भेज सकता।"
+  },
   "cc7193f7c38257a1": {
    "source": "Headless downloads with progress (<x1/>, <x2/>)",
    "text": "प्रगति के साथ हेडलेस डाउनलोड (<x1/>, <x2/>)"
@@ -6381,6 +6385,10 @@
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "आप अकेले उन फ़ाइलों के लिए जिम्मेदार हैं जिन्हें आप डाउनलोड करते हैं और आप सॉफ्टवेयर का उपयोग कैसे करते हैं।"
+  },
+  "cd673e3701cb16c6": {
+   "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
+   "text": "<g1>32 से अधिक कनेक्शन की अनुमति दें</g1> — ऊपर की संख्या और अपवादों के लिए अधिकतम को 128 तक बढ़ाता है। अधिकांश सर्वर एक पते से बहुत कम की अनुमति देते हैं; MDM इसे पहचानता है और उनसे कम के लिए पूछता है। फिर से बंद करने पर, कोई भी उच्च संख्या 32 पर वापस आ जाती है।"
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -6986,6 +6994,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "मैं किसी बग की रिपोर्ट कैसे करूँ या किसी सुविधा के लिए कैसे पूछूँ? — Mister Download Manager"
   },
+  "e3696cca91bc9263": {
+   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
+   "text": "एक ब्राउज़र एक कनेक्शन पर फ़ाइल लाता है। MDM सर्वर से एक साथ फ़ाइल के कई हिस्से मांगता है, 32 कनेक्शन तक (यदि आप अनुमति देते हैं तो 128), और फिर से विभाजित करता रहता है: जब एक कनेक्शन अपना हिस्सा पूरा कर लेता है, तो वह सबसे बड़े बचे हुए हिस्से का आधा हिस्सा ले लेता है, ताकि कोई धीमा कनेक्शन अंत में देरी न करे। यह उन सर्वरों को भी याद रखता है जो अतिरिक्त कनेक्शन से इनकार करते हैं और उनसे पूछना बंद कर देता है। <g1>कनेक्शन और गति</g1> देखें।"
+  },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
    "text": "गति और कनेक्शन"
@@ -7045,10 +7057,6 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>क्लाइंट।</g1> IDM और MDM, दोनों डिफ़ॉल्ट सेटिंग्स (8 कनेक्शन) पर, प्रत्येक को उसी दस्तावेज़ित कमांड लाइन के माध्यम से डाउनलोड दिया गया: <x2/>। दोनों IDM के अस्थायी फ़ोल्डर वाली ड्राइव पर सहेजते हैं, इसलिए कोई भी क्रॉस-ड्राइव कॉपी का भुगतान नहीं करता है।"
-  },
-  "e52b5461bc5bf605": {
-   "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when…",
-   "text": "एक ब्राउज़र एक ही कनेक्शन पर फ़ाइल प्राप्त करता है। MDM सर्वर से एक साथ फ़ाइल के कई हिस्से (32 कनेक्शन तक) मांगता है, और उन्हें लगातार फिर से विभाजित करता रहता है: जब..."
   },
   "e54c910b35908f87": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones.",
@@ -7614,6 +7622,10 @@
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1.0×</g1><g2>तेज़</g2>"
   },
+  "fa1e28b3c6e2e46e": {
+   "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
+   "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ कनेक्शन, और यदि आप विकल्प → कनेक्शन में चुनते हैं तो 32 तक, या वहाँ 32 से अधिक कनेक्शन की अनुमति दें पर टिक करने के बाद 128 तक। MDM कम…"
+  },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
    "text": "उनके फ़ोल्डर में प्रोग्रामों को बदल देता है (एक पोर्टेबल कॉपी का <x1/> फ़ोल्डर रखा जाता है)।"
@@ -7733,10 +7745,6 @@
   "fdf01d37915b1a04": {
    "source": "Browser extension",
    "text": "ब्राउज़र एक्सटेंशन"
-  },
-  "fdffc63b6c2566d5": {
-   "source": "It uses <g1>8 connections</g1> by default. You can choose 1, 2, 4, 8, 16, 24 or 32 in <g2>Options → Connection → Default max. conn. number</g2>.",
-   "text": "यह डिफ़ॉल्ट रूप से <g1>8 कनेक्शन</g1> का उपयोग करता है। आप <g2>विकल्प → कनेक्शन → डिफ़ॉल्ट अधिकतम कनेक्शन संख्या</g2> में 1, 2, 4, 8, 16, 24 या 32 चुन सकते हैं।"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
