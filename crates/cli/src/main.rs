@@ -6,7 +6,7 @@ use std::time::{Duration, Instant};
 use anyhow::Context;
 use clap::{Parser, Subcommand};
 use mdm_engine::download::{ConnStatus, State};
-use mdm_engine::{Destination, Download, Options, Request};
+use mdm_engine::{Destination, Download, Options, Proxy, Request};
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use serde_json::json;
 
@@ -227,7 +227,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
         }
         Cmd::InstallYtdlp => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
-            let i = mdm_tools::install_latest(&dir).await?;
+            let i = mdm_tools::install_latest(&dir, &mdm_tools::net(Proxy::System), None).await?;
             if json {
                 emit(json!({ "tool": "yt-dlp", "version": i.version, "path": i.exe }));
             } else {
@@ -241,7 +241,8 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
         }
         Cmd::InstallFfmpeg => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
-            let i = mdm_tools::ffmpeg::install_latest(&dir).await?;
+            let i = mdm_tools::ffmpeg::install_latest(&dir, &mdm_tools::net(Proxy::System), None)
+                .await?;
             if json {
                 emit(json!({ "tool": "ffmpeg", "version": i.version, "path": i.exe }));
             } else {

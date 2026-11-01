@@ -136,13 +136,14 @@ impl Progress {
     }
 }
 
-/// Fetch release file `name` from `assets` (name, download address) into `dir`, after
-/// checking the release's SHA256SUMS.txt is signed by MDM's key, and check the file against
-/// it. Returns the file.
+/// Fetch release file `name` from `assets` (name, download address) into `dir` with MDM's own
+/// engine (`net`), after checking the release's SHA256SUMS.txt is signed by MDM's key, and check
+/// the file against it. Returns the file.
 pub async fn fetch(
     assets: &[(String, String)],
     name: &str,
     dir: &Path,
+    net: &mdm_engine::Options,
     progress: &Progress,
 ) -> Result<PathBuf, Error> {
     let url = |file: &str| {
@@ -153,7 +154,7 @@ pub async fn fetch(
             .ok_or_else(|| Error::Missing(file.to_owned()))
     };
     let client = reqwest::Client::builder()
-        .user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
+        .user_agent(crate::USER_AGENT)
         .build()?;
     let sums = crate::signed_list(
         &client,
@@ -166,23 +167,12 @@ pub async fn fetch(
         sum_for(&sums, name).ok_or_else(|| Error::Missing(format!("checksum for {name}")))?;
     std::fs::create_dir_all(dir)?;
     let file = dir.join(name);
-    let part = dir.join(format!("{name}.part"));
-    let got = crate::download_hashed(&client, &url(name)?, &part, Some(progress)).await;
-    match got {
-        Ok(hash) if hash == expected => {
-            std::fs::rename(&part, &file)?;
-            crate::mark_downloaded(&file, &url(name)?);
-            Ok(file)
-        }
-        Ok(_) => {
-            let _ = std::fs::remove_file(&part);
-            Err(Error::BadChecksum)
-        }
-        Err(e) => {
-            let _ = std::fs::remove_file(&part);
-            Err(e)
-        }
-    }
+    // Downloaded under a name of its own, renamed once it checks out.
+    let part = dir.join(format!("{name}.download"));
+    crate::fetch_verified(&url(name)?, &part, expected, net, Some(progress)).await?;
+    std::fs::rename(&part, &file)?;
+    crate::mark_downloaded(&file, &url(name)?);
+    Ok(file)
 }
 
 /// Unpack every file of `zip` into `dest`, keeping its folders (nothing can climb out of it).
@@ -263,13 +253,6 @@ pub fn remove_old(dir: &Path) {
     }
 }
 
-/// Bytes downloaded so far, for [`Progress`].
-pub(crate) fn add(progress: Option<&Progress>, n: u64) {
-    if let Some(p) = progress {
-        p.got.fetch_add(n, Ordering::Relaxed);
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -340,8 +323,10 @@ Connection: close
             (setup, "mdm-SHA256SUMS.txt"),
         ]);
         let dir = tempfile::tempdir().unwrap();
+        // Through MDM's own engine, as the app fetches it.
+        let net = crate::net(mdm_engine::Proxy::None);
         let progress = Progress::default();
-        let file = fetch(&assets(&base), zip, dir.path(), &progress)
+        let file = fetch(&assets(&base), zip, dir.path(), &net, &progress)
             .await
             .unwrap();
         let len = std::fs::metadata(&file).unwrap().len();
@@ -354,16 +339,31 @@ Connection: close
             b"new program"
         );
         // A file that isn't the one the signed list names is refused, and not kept.
-        let err = fetch(&assets(&base), setup, dir.path(), &Progress::default()).await;
+        let err = fetch(
+            &assets(&base),
+            setup,
+            dir.path(),
+            &net,
+            &Progress::default(),
+        )
+        .await;
         assert!(matches!(err, Err(Error::BadChecksum)), "{err:?}");
         assert!(!dir.path().join(setup).exists());
+        // Nothing of it is left behind (its part file, its resume state).
+        let left: Vec<_> = std::fs::read_dir(dir.path())
+            .unwrap()
+            .flatten()
+            .map(|e| e.file_name().to_string_lossy().into_owned())
+            .filter(|n| n.starts_with(setup))
+            .collect();
+        assert!(left.is_empty(), "{left:?}");
         // A list signed by another key (yt-dlp's real one) is refused.
         let base = serve(vec![
             ("SHA256SUMS.txt", "SHA2-256SUMS"),
             ("SHA256SUMS.txt.sig", "SHA2-256SUMS.sig"),
             (zip, zip),
         ]);
-        let err = fetch(&assets(&base), zip, dir.path(), &Progress::default()).await;
+        let err = fetch(&assets(&base), zip, dir.path(), &net, &Progress::default()).await;
         assert!(matches!(err, Err(Error::BadSignature)), "{err:?}");
     }
 

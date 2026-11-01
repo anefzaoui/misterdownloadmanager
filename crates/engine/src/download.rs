@@ -671,6 +671,44 @@ impl Download {
     }
 }
 
+/// Download `url` to `path` and wait for it: MDM's own downloads that aren't in the list (its
+/// helpers, its updates, a crash report's symbols) use the engine like every download. An
+/// earlier attempt cut off at `path` resumes; `progress(done, total)` while it runs.
+pub async fn fetch(
+    url: Url,
+    path: &Path,
+    opts: Options,
+    progress: impl Fn(u64, Option<u64>),
+) -> Result<Outcome, Error> {
+    let state = crate::state::state_path(path);
+    let fresh = || {
+        Download::start(
+            Request {
+                url: url.clone(),
+                headers: HeaderMap::new(),
+                dest: Destination::File(path.to_owned()),
+            },
+            opts.clone(),
+        )
+    };
+    // A saved state for another address (an earlier release's file) is not resumed.
+    let dl = match crate::state::ResumeState::load(&state) {
+        Ok(saved) if saved.url == url => {
+            Download::resume(state, HeaderMap::new(), opts.clone()).unwrap_or_else(|_| fresh())
+        }
+        _ => fresh(),
+    };
+    loop {
+        let s = dl.snapshot();
+        progress(s.downloaded, s.size);
+        if matches!(s.state, State::Done | State::Failed | State::Cancelled) {
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(150)).await;
+    }
+    dl.wait().await
+}
+
 struct Shared {
     view: Mutex<Snapshot>,
     planner: Mutex<Option<Planner>>,

@@ -235,7 +235,12 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
             let progress = move |done: u64, total: Option<u64>| {
                 set(&sh, &cx, |s| s.fetching = Some((done, total)));
             };
-            let fetched = rt.block_on(mdm_crash::symbols::fetch(&http, &data, v, &progress));
+            let fetched = rt.block_on(mdm_crash::symbols::fetch(
+                &data,
+                v,
+                crate::settings::own_net(),
+                &progress,
+            ));
             set(&shared, &ctx, |s| s.fetching = None);
             match fetched {
                 Ok(()) => {

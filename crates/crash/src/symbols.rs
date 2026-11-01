@@ -54,33 +54,28 @@ pub fn have(data: &Path, version: &str) -> bool {
     any_sym(&store(data, version), 3)
 }
 
-/// Fetch `version`'s symbols into the store; `progress(done, total)` as it downloads. Earlier
-/// versions' symbols are removed (only the running version's are useful).
+/// Fetch `version`'s symbols into the store with MDM's own engine (`net`); `progress(done,
+/// total)` as it downloads. A download cut off resumes next time. Earlier versions' symbols are
+/// removed (only the running version's are useful).
 pub async fn fetch(
-    http: &reqwest::Client,
     data: &Path,
     version: &str,
+    net: mdm_engine::Options,
     progress: &(dyn Fn(u64, Option<u64>) + Send + Sync),
 ) -> Result<(), String> {
-    let mut resp = http
-        .get(asset_url(version))
-        .header("User-Agent", "MisterDownloadManager crash reporter")
-        .send()
-        .await
-        .map_err(|e| e.to_string())?
-        .error_for_status()
-        .map_err(|e| e.to_string())?;
-    let total = resp.content_length();
-    let mut bytes = Vec::with_capacity(total.unwrap_or(0) as usize);
-    while let Some(chunk) = resp.chunk().await.map_err(|e| e.to_string())? {
-        bytes.extend_from_slice(&chunk);
-        progress(bytes.len() as u64, total);
-    }
-    let dir = store(data, version);
+    let url = url::Url::parse(&asset_url(version)).map_err(|e| e.to_string())?;
     let parent = data.join("symbols");
+    std::fs::create_dir_all(&parent).map_err(|e| e.to_string())?;
+    let zip = parent.join(asset_name(version));
+    mdm_engine::fetch(url, &zip, net, progress)
+        .await
+        .map_err(|e| e.to_string())?;
+    let bytes = std::fs::read(&zip).map_err(|e| e.to_string())?;
+    let _ = std::fs::remove_file(&zip);
+    let dir = store(data, version);
     if let Ok(rd) = std::fs::read_dir(&parent) {
         for e in rd.flatten() {
-            if e.file_name() != version {
+            if e.file_name() != version && e.path().is_dir() {
                 let _ = std::fs::remove_dir_all(e.path());
             }
         }

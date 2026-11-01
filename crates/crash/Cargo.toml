@@ -20,6 +20,8 @@ minidump-processor = "0.27"
 minidump-unwind = { version = "0.27", features = ["debuginfo"] }
 breakpad-symbols = "0.27"
 chrono.workspace = true
+# The release's symbols come down through MDM's own engine, as every MDM download.
+mdm-engine.workspace = true
 reqwest.workspace = true
 serde.workspace = true
 serde_json.workspace = true

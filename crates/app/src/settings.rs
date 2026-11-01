@@ -58,6 +58,8 @@ pub struct Settings {
     /// The language has been chosen once (in the installer's wizard or the first start's
     /// picker); until then the first start asks (langpick.rs).
     pub language_asked: bool,
+    /// The video helpers (yt-dlp, ffmpeg) have been offered once, at a start (helpers.rs).
+    pub helpers_asked: bool,
     /// General: offer to download (Download File Info) links of the listed file types copied
     /// to the clipboard. On by default: without the browser extension, copying a link is the
     /// quickest way in.
@@ -179,6 +181,7 @@ impl Default for Settings {
             launch_on_startup: false,
             language: None,
             language_asked: false,
+            helpers_asked: false,
             clipboard_autostart: true,
             mv2_extensions: true,
             advanced_integration: true,
@@ -362,6 +365,28 @@ impl Settings {
         self.speed_limit_on
             .then_some(self.speed_limit_kb.max(1) * 1024)
     }
+}
+
+/// The proxy MDM's own downloads go through (its helpers, its updates, a crash report's
+/// symbols): Options → Proxy / Socks, kept in step by the app ([`share_proxy`]); Windows' own
+/// settings in a process without them (the crash monitor).
+static OWN_PROXY: std::sync::RwLock<Option<mdm_engine::Proxy>> = std::sync::RwLock::new(None);
+
+/// Keep [`own_net`] on the settings' proxy (cheap when it didn't change).
+pub fn share_proxy(proxy: mdm_engine::Proxy) {
+    if OWN_PROXY.read().unwrap().as_ref() != Some(&proxy) {
+        *OWN_PROXY.write().unwrap() = Some(proxy);
+    }
+}
+
+/// How MDM downloads its own files: its engine, as itself, through the user's proxy.
+pub fn own_net() -> mdm_engine::Options {
+    let proxy = OWN_PROXY
+        .read()
+        .unwrap()
+        .clone()
+        .unwrap_or(mdm_engine::Proxy::System);
+    mdm_tools::net(proxy)
 }
 
 #[cfg(test)]
