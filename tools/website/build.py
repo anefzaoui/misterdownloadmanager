@@ -32,6 +32,9 @@ from pathlib import Path
 
 import markdown
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sitei18n  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
 WEB = ROOT / "website"
 CONTENT = WEB / "content"
@@ -260,6 +263,7 @@ def header(section: str = "") -> str:
         <a class="btn btn-ghost top-contrib" href="/contributing.html">Contribute</a>
         {gh_pill()}
         <a class="btn btn-primary top-dl" href="/download.html">Download</a>
+        <!--@langs-->
         <button class="theme" type="button" aria-label="Switch between light and dark" title="Light / dark">
           <svg class="for-light-i" aria-hidden="true"><use href="#i-moon"/></svg><svg class="for-dark-i" aria-hidden="true"><use href="#i-sun"/></svg>
         </button>
@@ -339,7 +343,7 @@ def footer() -> str:
       </div>
       <p class="legal">Not affiliated with Tonec Inc.; Internet Download Manager and IDM are trademarks of their owner, named here only to compare.</p>
     </div>
-    <div class="foot-mark" aria-hidden="true">MDM</div>
+    <div class="foot-mark" aria-hidden="true" translate="no">MDM</div>
   </footer>
   {stats_code()}"""
 
@@ -750,7 +754,7 @@ def build_languages() -> None:
     body = f"""{page_head(f"{NAME} in {len(rows)} languages", "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.", trail)}
     <div class="wrap prose page-body" style="max-width:1180px">
       <h2>Every language</h2>
-      <ul class="lang-grid">{"".join(items)}</ul>
+      <ul class="lang-grid" translate="no">{"".join(items)}</ul>
       <h2>Help translate</h2>
       <p>Most translations were made by machine and are waiting for a native speaker. If MDM speaks your language a little oddly, you can fix it in a few minutes, no programming needed:</p>
       <ol>
@@ -840,7 +844,7 @@ def third_party_table() -> str:
     body = "".join(
         f'<tr><td>{f"<a href={chr(34)}{esc(r[3])}{chr(34)}>{esc(r[0])}</a>" if len(r) > 3 and r[3] else esc(r[0])}</td>'
         f"<td>{esc(r[1])}</td><td>{esc(r[2])}</td></tr>" for r in rows)
-    return (f'<div class="table-wrap"><table class="crates"><thead><tr><th>Library</th><th>Version</th>'
+    return (f'<div class="table-wrap"><table class="crates" translate="no"><thead><tr><th>Library</th><th>Version</th>'
             f'<th>Licence</th></tr></thead><tbody>{body}</tbody></table></div>\n\n'
             f'{len(rows)} libraries.')
 
@@ -948,14 +952,10 @@ def bust_caches() -> None:
             page.write_text(new, "utf-8", newline="\n")
 
 
-def finish() -> None:
+def finish(available: dict[str, list[str]]) -> None:
     bust_caches()
-    urls = "\n".join(
-        f"  <url><loc>{SITE}{p}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority></url>"
-        for p, pr in sorted(PAGES, key=lambda x: (-float(x[1]), x[0])))
-    (OUT / "sitemap.xml").write_text(
-        f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n',
-        "utf-8", newline="\n")
+    # One sitemap per language under an index, each page with its languages (sitei18n).
+    sitei18n.sitemaps(OUT, SITE, PAGES, available, TODAY)
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", "utf-8")
 
 
@@ -974,8 +974,13 @@ def main() -> None:
     build_repo_pages()
     build_content_pages()
     build_llms()
-    finish()
-    print(f"{len(PAGES)} pages -> {OUT}")
+    # The same pages in every language with a catalog (i18n/site/<lang>.json), under /<lang>/.
+    # MDM_SITE_ENGLISH_ONLY=1 (translate_site.py's own build): English pages only.
+    only = ["none"] if os.environ.get("MDM_SITE_ENGLISH_ONLY") == "1" else None
+    available = sitei18n.localize(OUT, SITE, only)
+    finish(available)
+    langs = len({c for v in available.values() for c in v})
+    print(f"{len(PAGES)} pages in {langs} language(s) -> {OUT}")
     if "--serve" in sys.argv:
         import functools
         import http.server

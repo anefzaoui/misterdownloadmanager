@@ -1,5 +1,6 @@
 # Builds misterdownloadmanager.com (tools/website/build.py: website/, docs/, CHANGELOG.md and the
-# language list) and publishes it with GitHub Pages, on every push to main that touches them, and
+# language list, then every page again in each language of i18n/site/, tools/website/sitei18n.py)
+# and publishes it with GitHub Pages, on every push to main that touches them, and
 # once a day so the repository's star, fork and issue counts on the site stay current.
 name: Website
 
@@ -12,6 +13,7 @@ on:
       - "CHANGELOG.md"
       - "Cargo.toml"
       - "i18n/languages.tsv"
+      - "i18n/site/**"
       - "tools/website/**"
       - ".github/workflows/pages.yml"
   schedule:
