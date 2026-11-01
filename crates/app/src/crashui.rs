@@ -381,7 +381,11 @@ impl ReportWindow {
             || crate::i18n::t("Reading the crash data…").to_owned(),
             |m| m.text.clone(),
         );
-        winui::edit_frame(&p, r(o, 16.0, 208.0, 588.0, 226.0), true);
+        winui::field_frame(
+            &p,
+            r(o, 16.0, 208.0, 588.0, 226.0),
+            winui::FieldLook::ReadOnly,
+        );
         winui::scroll_text(
             ui,
             egui::Id::unique("crash-report-text"),

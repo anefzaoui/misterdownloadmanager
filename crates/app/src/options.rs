@@ -2028,6 +2028,14 @@ fn report(
     let left = rc.left();
     let head = rc.top() + 1.0;
     let divider = winui::HEADER_LINE();
+    fill(
+        &p,
+        left + 1.0,
+        head,
+        rc.right() - 2.0,
+        head + 23.0,
+        winui::LIST_HEADER(),
+    );
     let mut x0 = left;
     for (i, (title, right)) in cols.iter().enumerate() {
         let title = crate::i18n::t(title);

@@ -250,33 +250,8 @@ impl Progress {
             }
         }
 
-        // Progress bar: #bcbcbc border, #e6e6e6 track, #0f7b0f fill of floor(f × 511) px.
-        let bar = r(o, 17.0, 180.0, 513.0, 16.0);
-        p.rect_stroke(
-            bar,
-            0.0,
-            egui::Stroke::new(1.0, rgb(0xbc, 0xbc, 0xbc)),
-            egui::StrokeKind::Inside,
-        );
-        fill(
-            &p,
-            o.x + 18.0,
-            o.y + 181.0,
-            o.x + 528.0,
-            o.y + 194.0,
-            rgb(0xe6, 0xe6, 0xe6),
-        );
-        let w = (frac * 511.0).floor() as f32;
-        if w > 0.0 {
-            fill(
-                &p,
-                o.x + 18.0,
-                o.y + 181.0,
-                o.x + 17.0 + w,
-                o.y + 194.0,
-                rgb(0x0f, 0x7b, 0x0f),
-            );
-        }
+        // The progress bar: IDM's green on the shared, themed track.
+        winui::meter(&p, r(o, 17.0, 180.0, 513.0, 16.0), frac as f32);
 
         let mut action = Action::None;
         let details_label = if self.details {
@@ -533,22 +508,7 @@ impl Progress {
             "Show download complete dialog",
             true,
         );
-        fill(
-            &p,
-            o.x + 33.0,
-            o.y + 74.0,
-            o.x + 505.0,
-            o.y + 74.0,
-            winui::ETCH_SHADOW(),
-        );
-        fill(
-            &p,
-            o.x + 33.0,
-            o.y + 75.0,
-            o.x + 506.0,
-            o.y + 75.0,
-            winui::ETCH_LIGHT(),
-        );
+        winui::etched_h(&p, o.x + 33.0, o.y + 74.0, 474.0);
         text(
             &p,
             o.x + 33.0,
@@ -607,14 +567,6 @@ impl Progress {
 
 /// "Hide tab" (401,135,96,21) with its 1 px #f9f9f9 focus ring.
 fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
-    let p = ui.painter().clone();
-    let ring = r(o, 400.0, 134.0, 98.0, 23.0);
-    p.rect_stroke(
-        ring,
-        0.0,
-        egui::Stroke::new(1.0, winui::LIGHT_PAGE()),
-        egui::StrokeKind::Inside,
-    );
     winui::button(
         ui,
         r(o, 401.0, 135.0, 96.0, 21.0),
@@ -1111,14 +1063,14 @@ fn table(
     rows: &[Vec<String>],
 ) {
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
-    winui::solid(p, outer, rgb(0x82, 0x87, 0x90));
+    winui::solid(p, outer, winui::FIELD_EDGE());
     let dark = crate::theme::dark();
     let (bg, head, line) = if dark {
-        (winui::BG(), rgb(0x19, 0x19, 0x19), rgb(0x63, 0x63, 0x63))
+        (winui::FIELD(), winui::LIST_HEADER(), rgb(0x63, 0x63, 0x63))
     } else {
         (
             rgb(0xff, 0xff, 0xff),
-            rgb(0xf3, 0xf3, 0xf3),
+            winui::LIST_HEADER(),
             rgb(0xe5, 0xe5, 0xe5),
         )
     };
@@ -1157,16 +1109,22 @@ fn table(
             winui::copyable(ui, rect.intersect(body), (id, first + k, c), cell, cut);
         }
     }
+    // The shared scroll bar (it was a thumb drawn alone, that couldn't be dragged).
     if rows.len() > visible {
-        let track = 124.0 - 17.0;
-        let len = (track * visible as f32 / rows.len() as f32).max(17.0);
-        let y = o.y + 292.0 + (track - len) * first as f32 / max_first.max(1) as f32;
-        let thumb = if dark {
-            rgb(0x95, 0x95, 0x95)
-        } else {
-            rgb(0x85, 0x85, 0x85)
-        };
-        fill(p, o.x + 524.0, y, o.x + 525.0, y + len - 1.0, thumb);
+        let mut pos = first as f32;
+        if crate::scrollbar::bar(
+            ui,
+            key.with("bar"),
+            r(o, 511.0, 275.0, 17.0, 124.0),
+            true,
+            rows.len() as f32,
+            visible as f32,
+            1.0,
+            &mut pos,
+        ) {
+            let first = (pos.round().max(0.0) as usize).min(max_first);
+            ui.ctx().data_mut(|d| d.insert_temp(key, first));
+        }
     }
 }
 
@@ -1234,19 +1192,15 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>)
 /// The connections table (spec "Connections table"): N. · Downloaded · Info.
 fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>) {
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
-    winui::solid(p, outer, rgb(0x82, 0x87, 0x90));
+    winui::solid(p, outer, winui::FIELD_EDGE());
     fill(
         p,
         o.x + 18.0,
         o.y + 274.0,
         o.x + 528.0,
         o.y + 399.0,
-        // Light: the list background is mauve #beb4be (light-dialogs.md).
-        if crate::theme::dark() {
-            winui::BG()
-        } else {
-            rgb(0xbe, 0xb4, 0xbe)
-        },
+        // Every list's background (IDM's light one is mauve, #beb4be: the only one of its kind).
+        winui::FIELD(),
     );
     fill(
         p,
@@ -1254,11 +1208,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         o.y + 275.0,
         o.x + 510.0,
         o.y + 298.0,
-        if crate::theme::dark() {
-            rgb(0x19, 0x19, 0x19)
-        } else {
-            rgb(0xff, 0xff, 0xff)
-        },
+        winui::LIST_HEADER(),
     );
     for x in [48.0, 148.0, 498.0] {
         fill(
@@ -1390,34 +1340,21 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
             winui::full_on_hover(ui, rect.intersect(body), ("conn", c.id), &info);
         }
     }
-    // Thin scrollbar: #171717 track, 2 px #959595 thumb (light: #f0f0f0 / #858585).
-    fill(
-        p,
-        o.x + 511.0,
-        o.y + 275.0,
-        o.x + 527.0,
-        o.y + 398.0,
-        if crate::theme::dark() {
-            rgb(0x17, 0x17, 0x17)
-        } else {
-            rgb(0xf0, 0xf0, 0xf0)
-        },
-    );
+    // The shared scroll bar (a track and thumb were drawn here, the thumb not draggable).
     if conns.len() > visible {
-        let track = 124.0 - 17.0;
-        let len = (track * visible as f32 / conns.len() as f32).max(17.0);
-        let top = o.y + 292.0 + (track - len) * first as f32 / max_first.max(1) as f32;
-        fill(
-            p,
-            o.x + 519.0,
-            top,
-            o.x + 520.0,
-            top + len - 1.0,
-            if crate::theme::dark() {
-                rgb(0x95, 0x95, 0x95)
-            } else {
-                rgb(0x85, 0x85, 0x85)
-            },
-        );
+        let mut pos = first as f32;
+        if crate::scrollbar::bar(
+            ui,
+            key.with("bar"),
+            r(o, 511.0, 275.0, 17.0, 124.0),
+            true,
+            conns.len() as f32,
+            visible as f32,
+            1.0,
+            &mut pos,
+        ) {
+            let first = (pos.round().max(0.0) as usize).min(max_first);
+            ui.ctx().data_mut(|d| d.insert_temp(key, first));
+        }
     }
 }

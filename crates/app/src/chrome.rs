@@ -33,8 +33,8 @@ themed! {
     MENUBAR_HOT = rgb(0x50, 0x50, 0x50), grey(0xf5);
     MENUBAR_LINE = rgb(0xf0, 0xf0, 0xf0), grey(0xf0);
     POPUP_BG = rgb(0x2b, 0x2b, 0x2b), grey(0xf9);
-    // The native menu window's frame (Windows draws menus in their own window).
-    #[cfg_attr(not(windows), allow(dead_code))]
+    // The native menu window's frame (Windows draws menus in their own window), and every
+    // in-window popup's (popup_surface).
     POPUP_BORDER = rgb(0x3e, 0x3e, 0x3e), grey(0xe5);
     POPUP_SEP = rgb(0x3e, 0x3e, 0x3e), grey(0xd7);
     /// Light: #f0f0f0, rounded, captured 2026-10-30.
@@ -737,6 +737,18 @@ pub fn start_at(ctx: &egui::Context, id: &str, i: usize) {
     show_cues(ctx);
     let kb = egui::Id::unique(("popup-sub", id)).with("kb");
     ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(i), None)));
+}
+
+/// The surface of a popup drawn inside a window (the date picker's calendar, a column's filter
+/// box): the menus' colours and border, rounded as Windows 11's flyouts (they had their own).
+pub fn popup_surface(p: &egui::Painter, rc: egui::Rect) {
+    p.rect_filled(rc, 6.0, POPUP_BG());
+    p.rect_stroke(
+        rc,
+        6.0,
+        egui::Stroke::new(1.0, POPUP_BORDER()),
+        egui::StrokeKind::Inside,
+    );
 }
 
 /// A menu label's width as Win32 sizes menus: GDI's whole-pixel width (egui's advances differ

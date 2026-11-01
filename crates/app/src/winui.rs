@@ -18,6 +18,9 @@ crate::theme::themed! {
     pub TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
     /// A group box's frame (it was #dcdcdc in dark too: brighter than the separators in it).
     pub GROUP_LINE = rgb(0x50, 0x50, 0x50), rgb(0xdc, 0xdc, 0xdc);
+    /// A list's column headers (the main list's): every list and table has the same (they had
+    /// four: none, #f3f3f3, white).
+    pub LIST_HEADER = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff);
     /// Light: embossed #a0a0a0 statics (drawn flat here).
     /// Disabled text, the one grey of every control and label (there were five).
     pub TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x8a, 0x8a, 0x8a);
@@ -1423,6 +1426,25 @@ pub fn field_frame(p: &Painter, rc: Rect, look: FieldLook) {
         rc.bottom() - 1.0,
         bottom,
     );
+}
+
+/// How far along something is, as IDM shows a download: its green fill on a track (themed: the
+/// track was light in dark mode too), the controls' rounded corners. `fraction` in 0..=1.
+pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
+    let radius = control_radius().min(rc.height() / 4.0).floor();
+    let (track, edge) = if crate::theme::dark() {
+        (rgb(0x2b, 0x2b, 0x2b), rgb(0x4b, 0x4b, 0x4b))
+    } else {
+        (rgb(0xe6, 0xe6, 0xe6), rgb(0xbc, 0xbc, 0xbc))
+    };
+    p.rect_filled(rc, radius, track);
+    let inner = rc.shrink(1.0);
+    let w = (fraction.clamp(0.0, 1.0) * inner.width()).floor();
+    if w > 0.0 {
+        let done = Rect::from_min_size(inner.min, vec2(w, inner.height()));
+        p.rect_filled(done, (radius - 1.0).max(0.0), rgb(0x0f, 0x7b, 0x0f));
+    }
+    p.rect_stroke(rc, radius, Stroke::new(1.0, edge), StrokeKind::Inside);
 }
 
 /// A box whose value is wrong (a number out of range, an address that isn't one, a schedule
@@ -3108,6 +3130,17 @@ pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
         }
         p.rect_stroke(rc, 2.0, Stroke::new(1.0, border), StrokeKind::Inside);
     }
+}
+
+/// A Windows 11 check box that is partly ticked (a folder with some of its files chosen): the
+/// accent box with a dash, as Windows draws it (a square sat on the unticked box before).
+pub fn check_box_mixed(p: &Painter, rc: Rect, state: State) {
+    p.rect_filled(rc, 2.0, fluent_accent(state));
+    let y = rc.center().y.floor() + 0.5;
+    p.line_segment(
+        [pos2(rc.left() + 3.0, y), pos2(rc.right() - 3.0, y)],
+        Stroke::new(1.4, fluent_mark()),
+    );
 }
 
 /// A checked Windows 11 check box's or radio's accent in `state`: lighter under the pointer,

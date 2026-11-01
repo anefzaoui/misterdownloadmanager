@@ -5,7 +5,7 @@
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use egui::{Stroke, pos2, vec2};
+use egui::{pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -337,13 +337,8 @@ impl Updates {
                             pos2(right, o.y + 206.0),
                         );
                         // English, as the paragraph is laid out; made where it is on screen.
-                        p.rect_filled(winui::rect(notes), 0.0, winui::FIELD());
-                        p.rect_stroke(
-                            winui::rect(notes),
-                            0.0,
-                            Stroke::new(1.0, winui::FIELD_EDGE()),
-                            egui::StrokeKind::Inside,
-                        );
+                        // Read-only text: the read-only field's look (it drew a square box of its own).
+                        winui::field_frame(&p, winui::rect(notes), winui::FieldLook::ReadOnly);
                         // Release notes run longer than the box: it scrolls (issue #5).
                         winui::scroll_text(
                             ui,
@@ -803,13 +798,8 @@ impl TellFriend {
                     pos2(o.x + 409.0, o.y + 106.0 + extra),
                 );
                 // English, as the paragraph is laid out; made where it is on screen.
-                p.rect_filled(winui::rect(rect), 0.0, winui::FIELD());
-                p.rect_stroke(
-                    winui::rect(rect),
-                    0.0,
-                    Stroke::new(1.0, winui::FIELD_EDGE()),
-                    egui::StrokeKind::Inside,
-                );
+                // Read-only text: the read-only field's look (it drew a square box of its own).
+                winui::field_frame(&p, winui::rect(rect), winui::FieldLook::ReadOnly);
                 let lines = winui::paragraph(
                     &p,
                     rect.left() + 6.0,

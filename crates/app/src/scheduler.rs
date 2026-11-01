@@ -842,12 +842,14 @@ impl Scheduler {
 
         // The queue's files: File Name, Size, Status, Time left.
         let list = r(o, 229.0, 82.0, 396.0, 294.0);
-        p.rect_filled(list, 0.0, winui::FIELD());
-        p.rect_stroke(
-            list,
-            0.0,
-            egui::Stroke::new(1.0, winui::FIELD_EDGE()),
-            egui::StrokeKind::Inside,
+        crate::options::list_frame(&p, list);
+        fill(
+            &p,
+            o.x + 230.0,
+            o.y + 83.0,
+            o.x + 624.0,
+            o.y + 106.0,
+            winui::LIST_HEADER(),
         );
         let cols = [
             (crate::i18n::mark("File Name"), 230.0, 421.0),
@@ -1766,13 +1768,7 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
         .show(ui.ctx(), |ui| {
             let (rect, p) = ui.allocate_painter(size, Sense::hover());
             let shown = rect.rect;
-            p.rect_filled(shown, 4.0, winui::FIELD());
-            p.rect_stroke(
-                shown,
-                4.0,
-                egui::Stroke::new(1.0, winui::FIELD_EDGE()),
-                egui::StrokeKind::Inside,
-            );
+            crate::chrome::popup_surface(&p, shown);
             let rect = winui::rect(shown);
             let title = crate::i18n::fmt(
                 // i18n: the calendar's title: {month} = a month's name, {year} = its year
