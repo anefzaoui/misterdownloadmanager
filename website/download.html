@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Download Mister Download Manager {{VERSION}} — free for Windows, macOS and Linux</title>
   <meta name="description" content="Download Mister Download Manager {{VERSION}}, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#1f63d6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1a33" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
   <link rel="canonical" href="{{SITE}}/download.html">
   <meta property="og:type" content="website">
@@ -37,48 +37,45 @@
       </div>
     </section>
 
-    <section class="sec flush" style="padding:48px 0 24px">
+    <section class="sec dl-services" style="padding-top:0">
       <div class="wrap">
-        <div class="plans os-cards">
-          <article class="plan os-card" id="windows" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows">
-            <header><h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Windows</h2><span class="plan-tag">10 and 11 · 64-bit</span></header>
-            <div class="plan-tags"><span class="tag stable">Stable</span><span class="tag">Recommended</span></div>
-            <span class="label">Files</span>
-            <dl>
+        <ul class="service-list os-cards" role="list">
+          <li class="service os-card" id="windows" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows">
+            <h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Windows <small>10 and 11 · 64-bit</small></h2>
+            <p class="service-tags"><span class="tag stable">Stable</span><span class="tag">Recommended</span></p>
+            <dl class="fields">
               <div><dt><a href="{{FILE_SETUP}}">setup.exe</a></dt><dd>Installs MDM, connects your browsers, asks your language</dd></div>
               <div><dt><a href="{{FILE_PORTABLE}}">portable.zip</a></dt><dd>Unzip anywhere, a USB stick too; everything stays in its folder</dd></div>
               <div><dt><a href="{{FILE_ZIP}}">x64.zip</a></dt><dd>The programs without an installer</dd></div>
             </dl>
-            <a class="btn btn-primary btn-h11" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
-          </article>
-          <article class="plan os-card" id="macos" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS">
-            <header><h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> macOS</h2><span class="plan-tag">11 and later</span></header>
-            <div class="plan-tags"><span class="tag try">Experimental</span></div>
-            <span class="label">Files</span>
-            <dl>
+            <a class="btn btn-go" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
+          </li>
+          <li class="service os-card" id="macos" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS">
+            <h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> macOS <small>11 and later</small></h2>
+            <p class="service-tags"><span class="tag try">Experimental</span></p>
+            <dl class="fields">
               <div><dt><a href="{{FILE_DMG}}">.dmg</a></dt><dd>One universal download for Apple Silicon and Intel</dd></div>
               <div><dt>First start</dt><dd>Not notarized by Apple yet: right-click the app and choose Open (macOS 15 and later: System Settings → Privacy &amp; Security → Open Anyway)</dd></div>
             </dl>
-            <a class="btn btn-primary btn-h11" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
-          </article>
-          <article class="plan os-card" id="linux" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux">
-            <header><h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Linux</h2><span class="plan-tag">x86-64</span></header>
-            <div class="plan-tags"><span class="tag try">Experimental</span></div>
-            <span class="label">Files</span>
-            <dl>
+            <a class="btn btn-line" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
+          </li>
+          <li class="service os-card" id="linux" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux">
+            <h2 class="h3like"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Linux <small>x86-64</small></h2>
+            <p class="service-tags"><span class="tag try">Experimental</span></p>
+            <dl class="fields">
               <div><dt><a href="{{FILE_APPIMAGE}}">.AppImage</a></dt><dd>Any distribution: make it executable and run it</dd></div>
               <div><dt><a href="{{FILE_DEB}}">.deb</a> · <a href="{{FILE_RPM}}">.rpm</a></dt><dd>Debian, Ubuntu, Mint · Fedora, openSUSE, RHEL</dd></div>
               <div><dt><a href="{{FILE_TAR}}">.tar.gz</a></dt><dd>The programs, to unpack anywhere</dd></div>
             </dl>
-            <a class="btn btn-primary btn-h11" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
-          </article>
-        </div>
+            <a class="btn btn-line" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
+          </li>
+        </ul>
         <p class="fine" data-mobile-note hidden>It's a desktop app: open this page on your computer to download it.</p>
-        <div class="repo-links">
-          <a href="{{REPO}}/releases/tag/v{{VERSION}}"><svg aria-hidden="true"><use href="#i-tag"/></svg><span><b>All files and checksums</b><span>Version {{VERSION}} on GitHub Releases, with SHA256SUMS.txt</span></span></a>
-          <a href="/contributing.html#getting-set-up"><svg aria-hidden="true"><use href="#i-code"/></svg><span><b>Build it from source</b><span>cargo build, on Windows, macOS or Linux</span></span></a>
-          <a href="{{REPO}}"><svg aria-hidden="true"><use href="#i-github"/></svg><span><b>The project on GitHub</b><span>Code, issues and every release</span></span></a>
-        </div>
+        <ul class="sender-list repo-list" role="list">
+          <li><a href="{{REPO}}/releases/tag/v{{VERSION}}"><svg aria-hidden="true"><use href="#i-tag"/></svg><span><b>All files and checksums</b><small>Version {{VERSION}} on GitHub Releases, with SHA256SUMS.txt</small></span></a></li>
+          <li><a href="/contributing.html#getting-set-up"><svg aria-hidden="true"><use href="#i-code"/></svg><span><b>Build it from source</b><small>cargo build, on Windows, macOS or Linux</small></span></a></li>
+          <li><a href="{{REPO}}"><svg aria-hidden="true"><use href="#i-github"/></svg><span><b>The project on GitHub</b><small>Code, issues and every release</small></span></a></li>
+        </ul>
       </div>
     </section>
 
@@ -112,7 +109,7 @@
       <h2>Older versions and source code</h2>
       <p>Every release, with its notes and files, is on <a href="{{REPO}}/releases">GitHub Releases</a>. The source code is at <a href="{{REPO}}">github.com/anefzaoui/misterdownloadmanager</a> under the GNU GPL, version 3.</p>
 
-      <div class="cta-band"><p>Something not working? We'd like to know.</p><a class="btn btn-ghost" href="{{REPO}}/issues">Report a problem</a></div>
+      <div class="cta-band"><p>Something not working? We'd like to know.</p><a class="btn btn-line" href="{{REPO}}/issues">Report a problem</a></div>
     </div>
   </main>
   <!--@footer-->

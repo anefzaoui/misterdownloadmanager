@@ -313,6 +313,11 @@
   }
 
   function final(sc) { return sc.compare && !sc.provisional; }
+  // "1G", "100M", "256K": the scenario's file size in bytes (binary units, as the lab server serves them).
+  function bytes(size) {
+    var m = /^(\d+(?:\.\d+)?)([KMG])?$/i.exec(size || "");
+    return m ? +m[1] * Math.pow(1024, " KMG".indexOf((m[2] || " ").toUpperCase())) : 0;
+  }
   var raceDone = false;
   function drawRace() {
     var box = document.querySelector("[data-race-src]");
@@ -326,25 +331,13 @@
       var two = sc.id === "maxconns-50m";
       return { tab: SHORT[sc.id] || sc.title, note: sc.title + ".", mdm: ph("MDM"), idm: ph("IDM"),
                e2e: [sc.clients.MDM.stats.e2e_ms.median, sc.clients.IDM.stats.e2e_ms.median],
-               ratio: sc.compare.ratio_idm_over_mdm, conns: two ? [2, 2] : [8, 8] };
+               ratio: sc.compare.ratio_idm_over_mdm, conns: two ? [2, 2] : [8, 8], bytes: bytes(sc.size) };
     });
     window.mdmRace(box, races);
   }
 
   // Speed-up per scenario: a bar from 1x on a log scale, its 95% interval, a counter.
   function fmtRatio(v) { return (v >= 10 ? Math.round(v) : v.toFixed(v < 2 ? 2 : 1)) + "\u00d7"; }
-  function countUp(node, to, ms, delay) {
-    if (still) { node.textContent = fmtRatio(to); return; }
-    setTimeout(function () {
-      var t0 = performance.now();
-      (function step(now) {
-        var k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
-        // Grows on the same log scale as the bar beside it.
-        node.textContent = fmtRatio(Math.exp(Math.log(to) * e));
-        if (k < 1) requestAnimationFrame(step);
-      })(t0);
-    }, delay);
-  }
   function drawSpeedup() {
     var box = document.querySelector("[data-speedup]");
     if (!box || box.childNodes.length) return;
@@ -356,7 +349,6 @@
       var t = el("span", null, v + "\u00d7"); t.style.left = (lg(v) * 100) + "%"; axis.appendChild(t);
     });
     box.appendChild(axis);
-    var nums = [];
     rows.forEach(function (sc, i) {
       var c = sc.compare, row = el("div", "su-row");
       row.style.setProperty("--d", (i * 110) + "ms");
@@ -372,16 +364,16 @@
         var t = el("i", "su-tick"); t.style.left = (lg(v) * 100) + "%"; track.appendChild(t);
       });
       track.appendChild(bar); track.appendChild(ci);
-      var val = el("div", "su-val"), num = el("b", null, "1.00\u00d7");
+      var val = el("div", "su-val"), num = el("b", null, fmtRatio(c.ratio_idm_over_mdm));
       val.appendChild(num);
       val.appendChild(el("small", null, "p " + (c.mann_whitney_p < 0.001 ? "< 0.001" : c.mann_whitney_p)));
       row.appendChild(name); row.appendChild(track); row.appendChild(val);
       box.appendChild(row);
-      nums.push([num, c.ratio_idm_over_mdm]);
     });
     onView(box, function () {
+      // The numbers are final from the start (a counter caught half-way read as a false
+      // claim); only the bars grow.
       box.classList.add("in");
-      nums.forEach(function (n, i) { countUp(n[0], n[1], 1300, i * 110); });
     }, 0.2);
   }
 

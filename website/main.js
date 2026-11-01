@@ -7,6 +7,9 @@
   // tools/website/sitei18n.py); English otherwise. Every such string goes through t().
   var I18N = window.MDM_I18N || {};
   function t(s) { return I18N[s] || s; }
+  // Visitors who asked for less motion get every moving part at rest: the race at its finish,
+  // the tour still, the hello on its first word.
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function each(selector, fn) {
     var els = document.querySelectorAll(selector);
@@ -18,7 +21,7 @@
   // browser asks for, unless that is English), in that language's words (the language menu's
   // data-offer/-yes/-no, sitei18n.py). Picking a language, or No, is remembered.
   (function () {
-    var links = document.querySelectorAll(".langs-list a[hreflang]");
+    var links = document.querySelectorAll(".lang-pick a[hreflang]");
     if (!links.length) return;
     function remember(code) { try { localStorage.setItem("mdm-lang", code); } catch (e) { /* asked again */ } }
     for (var i = 0; i < links.length; i++) {
@@ -51,17 +54,68 @@
     var yes = document.createElement("a");
     yes.className = "btn btn-primary";
     yes.href = match.getAttribute("href");
+    yes.className = "btn btn-line";
     yes.textContent = match.getAttribute("data-yes") + " · " + match.querySelector("span").textContent;
     yes.addEventListener("click", function () { remember(match.getAttribute("hreflang")); });
     var no = document.createElement("button");
     no.type = "button";
     no.className = "btn btn-ghost";
+    no.style.boxShadow = "none";
     no.textContent = match.getAttribute("data-no");
     no.addEventListener("click", function () { remember("en"); bar.parentNode.removeChild(bar); });
     bar.appendChild(p);
     bar.appendChild(yes);
     bar.appendChild(no);
     document.body.appendChild(bar);
+  })();
+
+  // ---- The language picker: a dialog over the page ------------------------------------------
+  // The header's button opens it (without scripts it is a link to the languages page). The
+  // browser's own modal dialog keeps the focus inside and closes on Escape; a click on the
+  // backdrop closes it too, and the focus goes back to the button.
+  each("[data-lang-open]", function (btn) {
+    var dialog = btn.parentNode.querySelector(".lang-dialog");
+    if (!dialog || typeof dialog.showModal !== "function") return;
+    btn.setAttribute("role", "button");
+    function open(e) {
+      e.preventDefault();
+      dialog.showModal();
+      root.classList.add("dialog-on");
+      var cur = dialog.querySelector("[aria-current]");
+      if (cur) cur.focus();
+    }
+    btn.addEventListener("click", open);
+    btn.addEventListener("keydown", function (e) { if (e.key === " ") open(e); });
+    dialog.addEventListener("close", function () { root.classList.remove("dialog-on"); btn.focus(); });
+    dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+    dialog.querySelector("[data-lang-close]").addEventListener("click", function () { dialog.close(); });
+  });
+
+  // ---- The waybill leans toward the pointer ---------------------------------------------------
+  // The hero's label card turns a few degrees toward the mouse over the parcel and settles back
+  // when it leaves (--rx/--ry, styles.css). Mouse only, and never with less motion.
+  (function () {
+    var card = document.querySelector(".parcel .waybill"), area = document.querySelector(".parcel");
+    if (!card || reduce || !(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+    var frame = 0, rx = 0, ry = 0;
+    area.addEventListener("pointermove", function (e) {
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2);
+      var y = (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2);
+      rx = Math.max(-1, Math.min(1, -y)) * 5;
+      ry = Math.max(-1, Math.min(1, x)) * 7;
+      card.classList.add("tilting");
+      if (!frame) frame = requestAnimationFrame(function () {
+        frame = 0;
+        card.style.setProperty("--rx", rx.toFixed(2) + "deg");
+        card.style.setProperty("--ry", ry.toFixed(2) + "deg");
+      });
+    });
+    area.addEventListener("pointerleave", function () {
+      card.classList.remove("tilting");
+      card.style.setProperty("--rx", "0deg");
+      card.style.setProperty("--ry", "0deg");
+    });
   })();
 
   // ---- Light / dark ------------------------------------------------------------------------
@@ -81,7 +135,7 @@
   });
 
   // ---- The split button's menu: one open at a time, closed by a click elsewhere or Escape ----
-  each(".split-more, .menu, .langs", function (d) {
+  each(".split-more, .menu", function (d) {
     d.addEventListener("toggle", function () {
       if (d.open) each(".split-more, .menu", function (o) { if (o !== d) o.open = false; });
     });
@@ -93,17 +147,18 @@
     if (e.key === "Escape") each(".split-more[open], .menu[open]", function (d) { d.open = false; d.querySelector("summary").focus(); });
   });
 
-  // ---- The benchmark, replayed in real time ------------------------------------------------
+  // ---- The benchmark, replayed in real time, as tracking -------------------------------------
   // Medians from docs/bench/run5/REPORT.md: startup (command to first request), transfer and
-  // finish, in milliseconds. Each lane's eight parts fill as the connections would; a lane
-  // whose server allows two connections fills two parts at a time.
+  // finish, in milliseconds. Each lane is one rule on a time axis shared by both: dashed while
+  // the app gets going, solid while the file comes in, stamped where it is delivered. Its scan
+  // events (request sent, receiving at what rate, delivered) appear as they are reached.
   var RACES = [
     { label: "faster", note: t("1 GiB over a fast link. IDM spends 3 s before its first request reaches the server."),
-      mdm: [14, 438, 556], idm: [3076, 1831, 545], e2e: [1009, 5456], ratio: 5.41, conns: [8, 8] },
+      mdm: [14, 438, 556], idm: [3076, 1831, 545], e2e: [1009, 5456], ratio: 5.41, bytes: 1073741824 },
     { label: "faster", note: t("A 256 KiB file. MDM is done in 30 ms; IDM is still starting."),
-      mdm: [14, 7, 8], idm: [3090, 25, 32], e2e: [30, 3141], ratio: 105.9, conns: [4, 4] },
+      mdm: [14, 7, 8], idm: [3090, 25, 32], e2e: [30, 3141], ratio: 105.9, bytes: 262144 },
     { label: "faster", note: t("A server that allows two connections. MDM learns it and keeps to two; IDM opened 480."),
-      mdm: [14, 12546, 9], idm: [3069, 12733, 48], e2e: [12568, 15864], ratio: 1.26, conns: [2, 2] }
+      mdm: [14, 12546, 9], idm: [3069, 12733, 48], e2e: [12568, 15864], ratio: 1.26, bytes: 52428800 }
   ];
   // mdmRace(box, races): sets up one race box; the benchmark page calls it with every scenario
   // from bench/results.json and fills in the tabs itself (data-race-src).
@@ -112,17 +167,17 @@
     var tabList = box.querySelector(".race-tabs");
     if (!tabList.children.length) {
       RACES.forEach(function (r, k) {
-        var t = document.createElement("button");
-        t.type = "button"; t.setAttribute("role", "tab"); t.setAttribute("data-scenario", k);
-        t.setAttribute("aria-selected", k ? "false" : "true");
-        t.textContent = r.tab;
-        tabList.appendChild(t);
+        var b = document.createElement("button");
+        b.type = "button"; b.setAttribute("role", "tab"); b.setAttribute("data-scenario", k);
+        b.setAttribute("aria-selected", k ? "false" : "true");
+        b.textContent = r.tab;
+        tabList.appendChild(b);
       });
     }
     var tabs = box.querySelectorAll("[data-scenario]");
     var ratioEl = box.querySelector("[data-ratio]"), noteEl = box.querySelector("[data-note]");
     var frame = 0, current = 0;
-    function total(t) { return t[0] + t[1] + t[2]; }
+    function total(ph) { return ph[0] + ph[1] + ph[2]; }
     // The phases' medians don't add up exactly to the end-to-end medians: scale them so the
     // finish times are the report's.
     RACES.forEach(function (r) {
@@ -132,42 +187,57 @@
       });
     });
     function fmt(ms) { return ms < 1000 ? Math.round(ms) + " ms" : (ms / 1000).toFixed(2) + " s"; }
-    function paint(lane, t, conns, now) {
-      var parts = lane.querySelectorAll(".lane-bar i");
-      var start = t[0], xfer = t[1], all = total(t);
-      var p = Math.max(0, Math.min(1, (now - start) / xfer));
-      for (var i = 0; i < parts.length; i++) {
-        // Connections work on `conns` parts at a time; each part in its turn.
-        var wave = Math.floor(i / conns), waves = Math.ceil(parts.length / conns);
-        var v = Math.max(0, Math.min(1, p * waves - wave));
-        parts[i].style.setProperty("--p", v.toFixed(3));
-      }
-      var done = now >= all;
-      lane.classList.toggle("waiting", now > 0 && now < start);
+    function times(x) { return (x >= 10 ? Math.round(x) : x < 2 ? x.toFixed(2) : x.toFixed(1)) + "\u00d7"; }
+    // The rate the file came in at while it was coming in, as the app shows it.
+    function rate(bytes, ms) {
+      var mb = bytes / 1048576 / (ms / 1000);
+      return mb >= 100 ? Math.round(mb) + " MB/s" : mb >= 1 ? mb.toFixed(1) + " MB/s" : Math.round(mb * 1024) + " KB/s";
+    }
+    // One stretch of the rule, from a to b ms, on an axis of `axis` ms.
+    function stretch(el, a, b, axis) {
+      el.style.left = (a / axis * 100) + "%";
+      el.style.width = (Math.max(0, b - a) / axis * 100) + "%";
+    }
+    // ph: the lane's phases (startup, transfer, finish); not `t`, which is the page's words.
+    function paint(lane, ph, now, axis, bytes) {
+      var start = ph[0], xfer = ph[1], all = total(ph), at = Math.min(now, all), done = now >= all;
+      var segs = lane.querySelectorAll(".lane-track .seg");
+      stretch(segs[0], 0, Math.min(at, start), axis);
+      stretch(segs[1], start, Math.max(start, Math.min(at, start + xfer)), axis);
+      stretch(segs[2], start + xfer, Math.max(start + xfer, at), axis);
+      lane.querySelector(".lane-stamp").style.left = (all / axis * 100) + "%";
       lane.classList.toggle("done", done);
-      lane.querySelector("[data-time]").textContent = fmt(Math.min(now, all));
-      lane.querySelector("[data-state]").textContent = done ? t("Done") : now < start ? t("Starting…") : now < start + xfer ? t("Downloading") : t("Finishing");
+      lane.querySelector("[data-time]").textContent = fmt(at);
+      lane.querySelector("[data-state]").textContent = done ? t("Done") : now < start ? t("Starting\u2026") : now < start + xfer ? t("Downloading") : t("Finishing");
+      var ev = lane.querySelectorAll(".lane-events li");
+      var words = [t("Request sent") + " \u00b7 " + fmt(start),
+                   t("Receiving") + (bytes ? " \u00b7 " + rate(bytes, xfer) : ""),
+                   t("Delivered") + " \u00b7 " + fmt(all)];
+      var reached = [now >= start, now >= start, done];
+      for (var i = 0; i < ev.length; i++) {
+        ev[i].textContent = words[i];
+        ev[i].classList.toggle("on", reached[i]);
+      }
     }
     function run(k) {
       cancelAnimationFrame(frame);
       current = k;
       var r = RACES[k];
       for (var i = 0; i < tabs.length; i++) tabs[i].setAttribute("aria-selected", i === k ? "true" : "false");
-      var end = Math.max(total(r.mdm), total(r.idm));
+      var end = Math.max(total(r.mdm), total(r.idm)), first = Math.min(total(r.mdm), total(r.idm));
       // The report's ratio of medians (docs/bench/run5/REPORT.md).
       var ratio = r.ratio;
       noteEl.textContent = r.note;
-      ratioEl.textContent = "1.0×";
-      var t0 = performance.now();
+      // Less motion: the finish at once.
+      var t0 = reduce ? performance.now() - end : performance.now();
       (function tick(now) {
         var ms = now - t0;
-        paint(lanes.mdm, r.mdm, r.conns[0], ms);
-        paint(lanes.idm, r.idm, r.conns[1], ms);
-        // The ratio grows as IDM keeps going after MDM has finished.
-        var shown = ms >= end ? ratio : ms <= total(r.mdm) ? 1 : Math.min(ratio, ms / total(r.mdm));
-        ratioEl.textContent = (shown >= 10 ? Math.round(shown) : shown < 2 && ms >= end ? shown.toFixed(2) : shown.toFixed(1)) + "×";
+        paint(lanes.mdm, r.mdm, ms, end, r.bytes);
+        paint(lanes.idm, r.idm, ms, end, r.bytes);
+        // No ratio until the first delivery; then it grows while the other is still on its way.
+        box.classList.toggle("pending", ms < first);
+        ratioEl.textContent = ms < first ? "\u2013" : times(ms >= end ? ratio : Math.min(ratio, ms / first));
         if (ms < end) frame = requestAnimationFrame(tick);
-        else ratioEl.textContent = (ratio >= 10 ? Math.round(ratio) : ratio < 2 ? ratio.toFixed(2) : ratio.toFixed(1)) + "×";
       })(t0);
     }
     for (var i = 0; i < tabs.length; i++) {
@@ -186,7 +256,6 @@
 
   // ---- Hello in the app's languages: each word written in, its chip lit -----------------------
   var stage = document.querySelector("[data-hello]");
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (stage && !reduce) {
     var words = [["Hello", "en"], ["مرحبا", "ar"], ["Bonjour", "fr"], ["Hallo", "de"], ["Hola", "es"],
       ["こんにちは", "ja"], ["Olá", "pt"], ["Привет", "ru"], ["नमस्ते", "hi"], ["Merhaba", "tr"], ["你好", "zh"]];

@@ -18,6 +18,7 @@ Arabic and Persian), and a sitemap that lists each page's languages.
 """
 from __future__ import annotations
 
+import functools
 import hashlib
 import html
 import json
@@ -658,6 +659,7 @@ CHROME = [
     "Read this page in your language?",
     "Yes",
     "No, thanks",
+    "Close",
 ]
 # Pages whose English is the binding version (legal texts).
 BINDING = {"/terms.html", "/privacy.html", "/security.html"}
@@ -728,9 +730,27 @@ def rewrite_links(doc: str, code: str, pages: set[str]) -> str:
     return HREF.sub(one, doc)
 
 
+@functools.lru_cache(maxsize=None)
+def flags() -> dict[str, str]:
+    """Each site language's flag: the app's own (i18n/languages.tsv's flag column, the icons in
+    crates/app/assets/flags, which build.py copies to /assets/flags/)."""
+    rows = [l.split("\t") for l in (ROOT / "i18n" / "languages.tsv").read_text("utf-8").splitlines()
+            if l and not l.startswith("#")]
+    by_code = {r[0]: r[3] for r in rows if len(r) > 3}
+    return {c: by_code.get(c, "") for c, *_ in [ENGLISH] + LANGS}
+
+
+def flag_img(code: str, size: int = 20) -> str:
+    f = flags().get(code)
+    return (f'<img class="flag" src="/assets/flags/{f}.svg" width="{size}" height="{size * 3 // 4}" alt="">'
+            if f else "")
+
+
 def lang_menu(path: str, current: str, langs: list[tuple], cats: dict) -> str:
-    """The header's language menu: every language's copy of this page (or its home page when
-    this page stays English), each with the words the suggestion banner needs in it."""
+    """The header's language button and its picker: every language's copy of this page (or its
+    home page when this page stays English), by flag and name, each with the words the
+    suggestion banner needs in it. A <dialog> that main.js opens; without scripts the button
+    is a link to the languages page."""
     if len(langs) < 2:
         return ""
     here = next(n for c, _, _, n, _ in langs if c == current)
@@ -743,17 +763,24 @@ def lang_menu(path: str, current: str, langs: list[tuple], cats: dict) -> str:
             words = [cats[code].get(ui_segment(s)) or s for s in CHROME[4:7]]
             data = (f' data-offer="{attr_escape(words[0])}" data-yes="{attr_escape(words[1])}"'
                     f' data-no="{attr_escape(words[2])}"')
+        # Only the name runs right to left: the row keeps the picker's own direction.
+        rtl = ' dir="rtl"' if code in RTL else ""
         items.append(f'<li><a href="{target}" hreflang="{tag}" lang="{tag}"{cur}{data}>'
-                     f'<span>{html.escape(native)}</span><small>{html.escape(english)}</small></a></li>')
-    label = cats[current].get(ui_segment("Language")) if current in cats else None
-    label = label or "Language"
-    return (f'<details class="langs" translate="no"><summary class="theme langs-btn" '
-            f'aria-label="{attr_escape(label)}" title="{attr_escape(label)}">'
-            f'<svg aria-hidden="true" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" '
-            f'stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/>'
-            f'<path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>'
-            f'</g></svg><span class="langs-cur">{html.escape(here)}</span></summary>'
-            f'<ul class="langs-list" role="list">{"".join(items)}</ul></details>')
+                     f'{flag_img(code, 28)}<span><bdi{rtl}>{html.escape(native)}</bdi></span><small lang="en">'
+                     f'{html.escape(english)}</small></a></li>')
+    def word(s: str) -> str:
+        return (cats[current].get(ui_segment(s)) if current in cats else None) or s
+    label, close = word("Language"), word("Close")
+    return (f'<div class="langs" translate="no">'
+            f'<a class="langs-btn" href="/languages.html" data-lang-open aria-haspopup="dialog" '
+            f'aria-label="{attr_escape(label)}: {attr_escape(here)}" title="{attr_escape(label)}">'
+            f'{flag_img(current)}<span class="langs-cur">{html.escape(here)}</span></a>'
+            f'<dialog class="lang-dialog" aria-labelledby="lang-title-{current}">'
+            f'<div class="lang-sheet"><div class="lang-head"><h2 id="lang-title-{current}">{html.escape(label)}</h2>'
+            f'<button type="button" class="icon-btn" data-lang-close aria-label="{attr_escape(close)}">'
+            f'<svg aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" '
+            f'stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button></div>'
+            f'<ul class="lang-pick" role="list">{"".join(items)}</ul></div></dialog></div>')
 
 
 def head_links(doc: str, path: str, code: str, langs: list[tuple], site: str) -> str:
@@ -774,10 +801,12 @@ def head_links(doc: str, path: str, code: str, langs: list[tuple], site: str) ->
     return doc
 
 
-def localize(out: Path, site: str, langs_wanted: list[str] | None = None) -> dict[str, list[str]]:
+def localize(out: Path, site: str, langs_wanted: list[str] | None = None,
+             translated: bool = True) -> dict[str, list[str]]:
     """Write every translatable page of `out` under /<code>/ for each language with a catalog,
     and give every page (English too) its language links. Returns, per page, the languages it
-    exists in (for the sitemap). Prints each language's coverage."""
+    exists in (for the sitemap). Prints each language's coverage. translated=False: the English
+    pages with their language picker only (a quick local preview)."""
     cats = {}
     for code, *_ in LANGS:
         if langs_wanted and code not in langs_wanted:
@@ -796,7 +825,7 @@ def localize(out: Path, site: str, langs_wanted: list[str] | None = None) -> dic
         available[path] = [c for c, *_ in here]
         en = head_links(doc.replace("<!--@langs-->", lang_menu(path, "en", langs, cats)), path, "en", here, site)
         file_of(out, path).write_text(en, "utf-8", newline="\n")
-    for code, cat in cats.items():
+    for code, cat in (cats.items() if translated else []):
         lang = next(l for l in LANGS if l[0] == code)
         missing: list[Segment] = []
         js = {s: cat.get(js_segment(s)) for s in js_strings()}

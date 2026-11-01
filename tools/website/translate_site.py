@@ -207,8 +207,10 @@ def why_not(code: str, row: dict, text) -> str | None:
         return "keep every {name} slot exactly as written: " + " ".join(sorted(set(re.findall(r"\{\w+\}", src))))
     for name in KEEP:
         written = OWN_SPELLING.get(code, {}).get(name, name)
-        # A language that declines names may add an ending ("Ahmeda Nefzaoui", "na GitHubie").
-        kept = len(re.findall(r"(?<!\w)" + r"\w*\s+".join(map(re.escape, written.split())), text))
+        # A language that declines names may add an ending ("Ahmeda Nefzaoui", "na GitHubie"); one
+        # without spaces sets a name straight after its own letters ("オープンソースのIDM代替"),
+        # so only a Latin letter or digit before it makes it part of another word.
+        kept = len(re.findall(r"(?<![0-9A-Za-zÀ-ɏ])" + r"\w*\s+".join(map(re.escape, written.split())), text))
         if name in src and src.count(name) > kept and not any(
                 name in k and k != name and k in src for k in KEEP):
             return f'write the name "{name}" exactly as "{written}"'
