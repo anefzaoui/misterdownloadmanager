@@ -269,10 +269,9 @@ html.dialog-on { overflow: hidden; }
    and nothing after it can run into the label. */
 .parcel-inner { display: grid; grid-template-columns: minmax(0, 1fr); }
 .parcel-window, .parcel .waybill { grid-area: 1 / 1; }
-.parcel-window { width: min(84%, 1080px); margin: 0; margin-inline-start: auto; direction: ltr; }
+.parcel-window { width: min(84%, 1080px); margin: 0; margin-inline-start: auto; }
 .parcel-window img { width: 100%; border-radius: 8px; box-shadow: var(--shadow-lift); }
 .parcel-window figcaption { margin-top: 14px; font-size: 13.5px; color: var(--on-board-2); text-align: end; }
-[dir="rtl"] .parcel-window figcaption { direction: rtl; text-align: start; }
 .waybill { background: var(--paper); color: var(--ink); border-radius: 12px; box-shadow: var(--shadow-lift); }
 /* The hero's label: a card stuck across the window's lower start corner (the owner's choice),
    tilted, its depth in the shadow under it: a contact shadow and a long soft one. */
@@ -284,7 +283,9 @@ html.dialog-on { overflow: hidden; }
   transform: rotate(-2deg); transform-origin: 50% 30%;
   box-shadow: var(--shadow-card);
 }
-[dir="rtl"] .parcel .waybill { transform: rotate(2deg); }
+/* Right to left the card covers the window's other end: its edge lands on the "Added" column
+   boundary (82% across the screenshot). */
+[dir="rtl"] .parcel .waybill { transform: rotate(2deg); width: max(340px, calc(31.2% + 2px)); }
 .wb-band { display: flex; align-items: center; gap: 12px; padding: 12px 18px; background: var(--ink); color: var(--paper); border-radius: 12px 12px 0 0; }
 .wb-band img { flex: none; width: 40px; height: 40px; }
 .wb-from b { display: block; font-size: 17px; font-weight: 800; font-stretch: 80%; line-height: 1.15; }
@@ -521,8 +522,6 @@ tbody th { font-weight: 650; }
 .crumbs li + li::before { content: "/"; margin-inline-end: 10px; opacity: .55; }
 .crumbs a { text-decoration: none; }
 .crumbs a:hover { text-decoration: underline; }
-.mt-note { max-width: var(--wrap); margin: 16px auto 0; padding: 10px var(--gutter); font-size: 14px; color: var(--on-board-2); }
-.mt-note a { font-weight: 650; }
 .page-body { margin-bottom: clamp(56px, 8vw, 96px); padding: clamp(24px, 4vw, 56px); background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow-sheet); }
 .wrap.page-body, .wrap.narrow.page-body { width: calc(100% - var(--gutter) * 2); }
 .doc { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 0; width: calc(100% - var(--gutter) * 2); margin-bottom: clamp(56px, 8vw, 96px); padding: 0; background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow-sheet); }

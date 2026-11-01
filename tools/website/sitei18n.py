@@ -653,16 +653,11 @@ HREFLANG = {c: h for c, h, *_ in LANGS}
 # Words the localized pages add around the translated text (translated like any segment).
 CHROME = [
     "Language",
-    "This page was translated by machine.",
-    "Read the English original",
-    "Only the English version of this page is binding.",
     "Read this page in your language?",
     "Yes",
     "No, thanks",
     "Close",
 ]
-# Pages whose English is the binding version (legal texts).
-BINDING = {"/terms.html", "/privacy.html", "/security.html"}
 JS_STRING = re.compile(r"""\bt\(\s*"((?:[^"\\]|\\.)*)"\s*\)""")
 
 
@@ -760,7 +755,7 @@ def lang_menu(path: str, current: str, langs: list[tuple], cats: dict) -> str:
         cur = ' aria-current="true"' if code == current else ""
         data = ""
         if code != "en" and code in cats:
-            words = [cats[code].get(ui_segment(s)) or s for s in CHROME[4:7]]
+            words = [cats[code].get(ui_segment(s)) or s for s in CHROME[1:4]]
             data = (f' data-offer="{attr_escape(words[0])}" data-yes="{attr_escape(words[1])}"'
                     f' data-no="{attr_escape(words[2])}"')
         # Only the name runs right to left: the row keeps the picker's own direction.
@@ -830,9 +825,6 @@ def localize(out: Path, site: str, langs_wanted: list[str] | None = None,
         missing: list[Segment] = []
         js = {s: cat.get(js_segment(s)) for s in js_strings()}
         js = {k: v for k, v in js.items() if v}
-        note = cat.get(ui_segment(CHROME[1]))
-        original = cat.get(ui_segment(CHROME[2]))
-        binding = cat.get(ui_segment(CHROME[3]))
         for path in paths:
             if not translatable(path):
                 continue
@@ -846,11 +838,6 @@ def localize(out: Path, site: str, langs_wanted: list[str] | None = None,
                 blob = json.dumps(js, ensure_ascii=False).replace("</", "<\\/")
                 doc = doc.replace('<script src="/main.js"',
                                   f'<script>window.MDM_I18N={blob};</script>\n  <script src="/main.js"', 1)
-            if note and original:
-                extra = f" {html.escape(binding)}" if path in BINDING and binding else ""
-                bar = (f'\n    <p class="mt-note"><span>{html.escape(note)}{extra}</span> '
-                       f'<a href="{path}" hreflang="en" lang="en">{html.escape(original)}</a></p>')
-                doc = doc.replace('<main id="main">', '<main id="main">' + bar, 1)
             target = file_of(out, lang_path(path, code))
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(doc, "utf-8", newline="\n")

@@ -487,7 +487,7 @@ def waybill_fields() -> str:
     return (f'<dl class="fields">'
             f'<div><dt>Postage</dt><dd>Free</dd></div>'
             f'<div><dt>Delivery</dt><dd><a href="/benchmark.html">1 GiB in 1.0 s</a> <small>IDM: 5.5 s</small></dd></div>'
-            f'<div><dt>For</dt><dd>Windows 10 and 11</dd></div>'
+            f'<div><dt>System</dt><dd>Windows 10 and 11</dd></div>'
             f'<div><dt>Version</dt><dd><a href="/news.html">{VERSION}</a>{size}</dd></div></dl>')
 
 
