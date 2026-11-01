@@ -3,11 +3,66 @@
 (function () {
   "use strict";
   var root = document.documentElement;
+  // Words for people in the page's language: a translated page carries its own (MDM_I18N,
+  // tools/website/sitei18n.py); English otherwise. Every such string goes through t().
+  var I18N = window.MDM_I18N || {};
+  function t(s) { return I18N[s] || s; }
 
   function each(selector, fn) {
     var els = document.querySelectorAll(selector);
     for (var i = 0; i < els.length; i++) fn(els[i]);
   }
+
+  // ---- Your language ---------------------------------------------------------------------------
+  // An English page offers its copy in the visitor's language once (the first language the
+  // browser asks for, unless that is English), in that language's words (the language menu's
+  // data-offer/-yes/-no, sitei18n.py). Picking a language, or No, is remembered.
+  (function () {
+    var links = document.querySelectorAll(".langs-list a[hreflang]");
+    if (!links.length) return;
+    function remember(code) { try { localStorage.setItem("mdm-lang", code); } catch (e) { /* asked again */ } }
+    for (var i = 0; i < links.length; i++) {
+      links[i].addEventListener("click", function () { remember(this.getAttribute("hreflang")); });
+    }
+    var chosen = null;
+    try { chosen = localStorage.getItem("mdm-lang"); } catch (e) { /* none */ }
+    if (chosen || (root.getAttribute("lang") || "en").toLowerCase() !== "en") return;
+    var wanted = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+    var match = null;
+    for (var w = 0; w < wanted.length && !match; w++) {
+      var tag = String(wanted[w]).toLowerCase();
+      var base = tag.split("-")[0];
+      if (base === "en") return;
+      // Chinese: only the simplified script's places; Portuguese: Brazil's copy for every place.
+      if (base === "zh" && /-(tw|hk|mo|hant)/.test(tag)) continue;
+      for (var k = 0; k < links.length; k++) {
+        var h = links[k].getAttribute("hreflang").toLowerCase();
+        if (h !== "en" && h.split("-")[0] === base) { match = links[k]; break; }
+      }
+    }
+    if (!match || !match.getAttribute("data-offer")) return;
+    var bar = document.createElement("div");
+    bar.className = "lang-offer";
+    bar.setAttribute("role", "region");
+    bar.setAttribute("lang", match.getAttribute("hreflang"));
+    if (/^(ar|fa)/.test(match.getAttribute("hreflang"))) bar.setAttribute("dir", "rtl");
+    var p = document.createElement("p");
+    p.textContent = match.getAttribute("data-offer");
+    var yes = document.createElement("a");
+    yes.className = "btn btn-primary";
+    yes.href = match.getAttribute("href");
+    yes.textContent = match.getAttribute("data-yes") + " · " + match.querySelector("span").textContent;
+    yes.addEventListener("click", function () { remember(match.getAttribute("hreflang")); });
+    var no = document.createElement("button");
+    no.type = "button";
+    no.className = "btn btn-ghost";
+    no.textContent = match.getAttribute("data-no");
+    no.addEventListener("click", function () { remember("en"); bar.parentNode.removeChild(bar); });
+    bar.appendChild(p);
+    bar.appendChild(yes);
+    bar.appendChild(no);
+    document.body.appendChild(bar);
+  })();
 
   // ---- Light / dark ------------------------------------------------------------------------
   // The page follows the system until the visitor picks; the pick is remembered.
@@ -26,7 +81,7 @@
   });
 
   // ---- The split button's menu: one open at a time, closed by a click elsewhere or Escape ----
-  each(".split-more, .menu", function (d) {
+  each(".split-more, .menu, .langs", function (d) {
     d.addEventListener("toggle", function () {
       if (d.open) each(".split-more, .menu", function (o) { if (o !== d) o.open = false; });
     });
@@ -43,11 +98,11 @@
   // finish, in milliseconds. Each lane's eight parts fill as the connections would; a lane
   // whose server allows two connections fills two parts at a time.
   var RACES = [
-    { label: "faster", note: "1 GiB over a fast link. IDM spends 3 s before its first request reaches the server.",
+    { label: "faster", note: t("1 GiB over a fast link. IDM spends 3 s before its first request reaches the server."),
       mdm: [14, 438, 556], idm: [3076, 1831, 545], e2e: [1009, 5456], ratio: 5.41, conns: [8, 8] },
-    { label: "faster", note: "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
+    { label: "faster", note: t("A 256 KiB file. MDM is done in 30 ms; IDM is still starting."),
       mdm: [14, 7, 8], idm: [3090, 25, 32], e2e: [30, 3141], ratio: 105.9, conns: [4, 4] },
-    { label: "faster", note: "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
+    { label: "faster", note: t("A server that allows two connections. MDM learns it and keeps to two; IDM opened 480."),
       mdm: [14, 12546, 9], idm: [3069, 12733, 48], e2e: [12568, 15864], ratio: 1.26, conns: [2, 2] }
   ];
   // mdmRace(box, races): sets up one race box; the benchmark page calls it with every scenario
@@ -91,7 +146,7 @@
       lane.classList.toggle("waiting", now > 0 && now < start);
       lane.classList.toggle("done", done);
       lane.querySelector("[data-time]").textContent = fmt(Math.min(now, all));
-      lane.querySelector("[data-state]").textContent = done ? "Done" : now < start ? "Starting…" : now < start + xfer ? "Downloading" : "Finishing";
+      lane.querySelector("[data-state]").textContent = done ? t("Done") : now < start ? t("Starting…") : now < start + xfer ? t("Downloading") : t("Finishing");
     }
     function run(k) {
       cancelAnimationFrame(frame);
@@ -190,14 +245,14 @@
       box.className = "lb";
       box.setAttribute("role", "dialog");
       box.setAttribute("aria-modal", "true");
-      box.setAttribute("aria-label", "Image viewer");
+      box.setAttribute("aria-label", t("Image viewer"));
       box.innerHTML =
         '<div class="lb-stage"><img class="lb-pic" alt=""></div>' +
         '<div class="lb-bar"><span class="lb-count"></span><p class="lb-cap"></p>' +
-        '<span class="lb-hint">Click to zoom · drag to move</span>' +
-        '<button type="button" class="lb-btn lb-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
-        '<button type="button" class="lb-btn lb-nav lb-prev" aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
-        '<button type="button" class="lb-btn lb-nav lb-next" aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>';
+        '<span class="lb-hint">' + t("Click to zoom · drag to move") + '</span>' +
+        '<button type="button" class="lb-btn lb-close" aria-label="' + t("Close") + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
+        '<button type="button" class="lb-btn lb-nav lb-prev" aria-label="' + t("Previous image") + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
+        '<button type="button" class="lb-btn lb-nav lb-next" aria-label="' + t("Next image") + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>';
       document.body.appendChild(box);
       stage = box.querySelector(".lb-stage");
       pic = box.querySelector(".lb-pic");

@@ -66,6 +66,12 @@ by machine translation, and each row marked `#, machine` waits for a native spea
 another one is listed there. See [Languages](docs/languages.md)
 for how the language list, the installer and the right-to-left layout fit together.
 
+The website is in 20 languages too, also machine-translated. Its texts are in
+`i18n/site/<code>.json`, one row per sentence: fix a row's `"text"` (keep tags like `<g1>…</g1>`
+and `<x2/>` as they are, they are the links and icons). `python tools/website/translate_site.py
+--status` shows what each language still lacks, and the same tool with `--langs <code>` translates
+only that.
+
 ## Reporting problems
 
 Use **Help → Report a problem** in the app: it opens the bug report form with your version,

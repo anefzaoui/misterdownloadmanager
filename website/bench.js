@@ -1,6 +1,8 @@
 // Benchmarks section: draws bench/results.json (tools/bench/report.py) with Apache ECharts.
 (function () {
   "use strict";
+  // Words for people in the page's language (main.js has the same; sitei18n.py fills MDM_I18N).
+  function t(s) { return (window.MDM_I18N || {})[s] || s; }
   var root = document.getElementById("bench");
   if (!root || !window.fetch) return;
   var data = null;
@@ -79,12 +81,12 @@
       if (sc.provisional) {
         // Numbers shown, no verdict: the scenario is being measured again.
         card.classList.add("is-provisional");
-        cmp.appendChild(el("span", "bench-badge", "Being re-measured"));
+        cmp.appendChild(el("span", "bench-badge", t("Being re-measured")));
       } else if (a && b) {
         var r = a.median / b.median;
         cmp.innerHTML = r >= 1
-          ? "<b>" + r.toFixed(2) + "×</b> faster"
-          : "<b>" + (1 / r).toFixed(2) + "×</b> slower";
+          ? t("{ratio} faster").replace("{ratio}", "<b>" + r.toFixed(2) + "×</b>")
+          : t("{ratio} slower").replace("{ratio}", "<b>" + (1 / r).toFixed(2) + "×</b>");
         if (metric === "e2e_ms" && sc.compare) {
           cmp.innerHTML += ' <span title="95% bootstrap interval of the ratio of medians; two-sided Mann–Whitney U">(' +
             sc.compare.ratio_ci95[0].toFixed(2) + "–" + sc.compare.ratio_ci95[1].toFixed(2) +
@@ -305,8 +307,8 @@
     if (!box) return;
     box.hidden = data.status !== "preliminary";
     if (!box.hidden) {
-      box.textContent = "Preliminary results from " + data.environment.date.slice(0, 10) +
-        ". A full re-run is under way; these numbers will be replaced when it finishes.";
+      box.textContent = t("Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.")
+        .replace("{date}", data.environment.date.slice(0, 10));
     }
   }
 
@@ -446,6 +448,6 @@
     .then(function (r) { return r.json(); })
     .then(function (j) { data = j; drawAll(); })
     .catch(function () {
-      root.querySelector("[data-bench-grid]").textContent = "The benchmark data could not be loaded.";
+      root.querySelector("[data-bench-grid]").textContent = t("The benchmark data could not be loaded.");
     });
 })();

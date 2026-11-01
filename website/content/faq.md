@@ -45,7 +45,7 @@ Yes. The portable download is a zip: unzip it anywhere, a USB stick included, an
 
 ### Can I bring my download list over from IDM? {#import-from-idm}
 
-Yes. In IDM, export your list (Tasks → Export → To IDM export file). In MDM, choose **Tasks → Import → From IDM export file** and pick that `.ef2` file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See [Adding downloads](/help/adding-downloads.html).
+Yes. In IDM, export your list with **Tasks → Export → To IDM export file**. In MDM, choose **Tasks → Import → From IDM export file** and pick that `.ef2` file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See [Adding downloads](/help/adding-downloads.html).
 
 ### How do I uninstall it? {#uninstall}
 
