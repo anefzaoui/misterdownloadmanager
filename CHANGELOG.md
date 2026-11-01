@@ -3,6 +3,27 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [0.2.4] - 2026-11-01
+
+A fix for 0.2.3, whose toolbar buttons did nothing (only their drop-down arrows worked), and for
+dark mode, which drew everything a little bigger and in other places than day mode.
+
+### Fixed
+
+- **The toolbar's buttons work again**: Add URL, Add Torrent, Delete Completed, Options,
+  Scheduler, Start Queue and the others did nothing when clicked in 0.2.3; their drop-down arrows
+  did.
+- **Dark mode has day mode's sizes and places**: the menu bar, the toolbar, the panes, the list's
+  lines and selection, buttons and the progress window's table measure the same in both modes.
+  Only the colours change.
+- **Texts that were always in English** are translated in every language: the empty list's
+  message, buttons of the crash report window, and why OK or Verify is greyed in some windows.
+- **Menus fit their texts**: they were wider than needed, so short commands looked lost in them.
+- **The language list scrolls with the mouse wheel.**
+- **A cut file name's full text shows at the pointer**, not under the list.
+- **Toolbar buttons** have as much room under their label as above their icon when the pointer is
+  over them.
+
 ## [0.2.3] - 2026-11-01
 
 A fix for 0.2.2, which froze on every system as soon as Add URL opened, and crash reports, so the
