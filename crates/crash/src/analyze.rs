@@ -46,9 +46,11 @@ pub struct ModuleInfo {
 /// What a dump says.
 #[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct Analysis {
-    /// The exception or signal ("EXCEPTION_ACCESS_VIOLATION_READ", "SIGSEGV / SEGV_MAPERR"); none
-    /// for a dump asked for (a panic, a freeze).
+    /// The exception or signal ("EXCEPTION_ACCESS_VIOLATION_READ", "SIGSEGV / SEGV_MAPERR").
     pub reason: Option<String>,
+    /// The dump was asked for (a panic, a freeze: crash-handler's simulated exception), not caused
+    /// by a crash.
+    pub requested: bool,
     pub address: Option<u64>,
     /// The thread the dump was taken for (the one that crashed, panicked or asked for it).
     pub requesting: Option<u32>,
@@ -158,13 +160,10 @@ fn from_state(state: &minidump_processor::ProcessState) -> Analysis {
         })
         .collect();
     let si = &state.system_info;
+    let reason = state.exception_info.as_ref().map(|e| e.reason.to_string());
     Analysis {
-        reason: state
-            .exception_info
-            .as_ref()
-            .map(|e| e.reason.to_string())
-            // A dump asked for (simulated exception) carries a made-up code: not a crash reason.
-            .filter(|r| !r.contains("0x517a7ed") && !r.contains("SIMULATED")),
+        requested: reason.as_deref().is_some_and(is_requested),
+        reason,
         address: state.exception_info.as_ref().map(|e| e.address.0),
         requesting: state
             .requesting_thread
@@ -179,6 +178,16 @@ fn from_state(state: &minidump_processor::ProcessState) -> Analysis {
         cpu_count: si.cpu_count,
         missing_symbols: missing.into_iter().collect(),
     }
+}
+
+/// The reason of a dump asked for: crash-handler's simulated exception (Windows' user code
+/// 0x0cca11ed, macOS' simulated exception) or the signal MDM simulates on Linux (SIGUSR2).
+fn is_requested(reason: &str) -> bool {
+    let r = reason.to_ascii_lowercase();
+    r.contains("0x0cca11ed")
+        || r.contains("0xcca11ed")
+        || r.contains("sigusr2")
+        || r.contains("simulated")
 }
 
 /// The last part of a path, whichever its separators.

@@ -152,6 +152,7 @@ fn dialog_window<T>(
     if let Some(p) = place(ctx, key, client) {
         builder = builder.with_position(p);
     }
+    crate::crash::window(id);
     let out = ctx.show_viewport_immediate(ViewportId::from_hash_of(id), builder, |ui, _| {
         if ui.ctx().input(|i| i.viewport().close_requested()) {
             return Outcome::Closed;

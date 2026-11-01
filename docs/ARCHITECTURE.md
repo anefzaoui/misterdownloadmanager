@@ -13,6 +13,7 @@ How Mister Download Manager's pieces fit together.
 | `crates/nmhost` | `mdm-nmhost` | The browser's native messaging host: takes captured downloads from the extension and hands them to the app |
 | `crates/ipc` | `mdm-ipc` | The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host |
 | `crates/tools` | `mdm-tools` | Video pages through yt-dlp and ffmpeg (run as separate programs) |
+| `crates/crash` | `mdm-crash` | Crash and freeze reports: the monitor process, out-of-process minidumps, symbolicated stacks, the report's text and the release logs ([crash-reports.md](crash-reports.md)) |
 | `crates/torrent` | `mdm-torrent` | BitTorrent and magnet links through librqbit |
 | `crates/labserver` | `mdm-labserver` | An HTTP Range server with a request log and fault injection, and an FTP/FTPS server with its own faults, for tests and benchmarks |
 | `extension/` | — | The Chromium (MV3) and Firefox extension |
@@ -53,7 +54,7 @@ One egui window painted to fixed pixel coordinates, plus one immediate viewport 
 toolbar, key and IPC commands into actions. Each dialog is its own module and returns an
 `Outcome` (open, closed, done with a value). Windows-only calls are confined to `win32.rs` and
 their Linux and macOS counterparts to `unix.rs` (starting with the session, the browsers' host,
-sounds, show in folder); every other file is safe, portable Rust. Fonts come from the system:
+sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system:
 Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`).
 
 The download list and settings are saved atomically to `%APPDATA%\misterdownloadmanager\`

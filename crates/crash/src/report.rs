@@ -62,12 +62,20 @@ pub fn text(input: &Input, home: Option<&Path>) -> String {
             }
         }
         Kind::Freeze => {
-            if let Some(f) = &input.notes.freeze {
-                let _ = writeln!(
-                    s,
-                    "The window did not answer for {} s: one frame never finished (a deadlock or an endless loop).",
-                    f.seconds
-                );
+            match &input.notes.freeze {
+                Some(f) if f.seconds > 0 => {
+                    let _ = writeln!(
+                        s,
+                        "The window did not answer for {} s: one frame never finished (a deadlock or an endless loop).",
+                        f.seconds
+                    );
+                }
+                _ => {
+                    let _ = writeln!(
+                        s,
+                        "A dump asked for while MDM was running (a freeze or a panic): the window thread first."
+                    );
+                }
             }
             if input.notes.recovered {
                 let _ = writeln!(s, "It answered again later.");
@@ -101,7 +109,13 @@ pub fn text(input: &Input, home: Option<&Path>) -> String {
             "Thread that crashed"
         };
         let _ = writeln!(s, "-- {what}: {} --", thread_title(t));
-        write_frames(&mut s, &t.frames, usize::MAX);
+        // A panic's from where it began (the panic hook and the dump request above it are ours).
+        let from = if kind == Kind::Panic {
+            panic_entry(&t.frames)
+        } else {
+            0
+        };
+        write_frames(&mut s, &t.frames[from..], usize::MAX);
         let _ = writeln!(s);
     } else if let Some(p) = &input.notes.panic
         && !p.backtrace.trim().is_empty()
@@ -167,14 +181,34 @@ pub fn text(input: &Input, home: Option<&Path>) -> String {
     }
     let _ = writeln!(s);
 
-    // Every other thread, then the modules.
+    // Every other thread (threads waiting in the same place, as a pool's idle workers do, once
+    // with all their names), then the modules.
     if let Some(a) = input.analysis {
+        let mut groups: Vec<(Vec<&Thread>, String)> = Vec::new();
         for t in &a.threads {
             if key.is_some_and(|k| k.id == t.id) {
                 continue;
             }
-            let _ = writeln!(s, "-- Thread {} --", thread_title(t));
-            write_frames(&mut s, &t.frames, OTHER_THREAD_FRAMES);
+            let shape: String = t
+                .frames
+                .iter()
+                .take(OTHER_THREAD_FRAMES)
+                .map(|f| f.function.as_deref().unwrap_or("?"))
+                .collect::<Vec<_>>()
+                .join("|");
+            match groups.iter_mut().find(|g| g.1 == shape) {
+                Some(g) => g.0.push(t),
+                None => groups.push((vec![t], shape)),
+            }
+        }
+        for (threads, _) in &groups {
+            let names: Vec<String> = threads.iter().map(|t| thread_title(t)).collect();
+            if names.len() == 1 {
+                let _ = writeln!(s, "-- Thread {} --", names[0]);
+            } else {
+                let _ = writeln!(s, "-- {} threads: {} --", names.len(), names.join(", "));
+            }
+            write_frames(&mut s, &threads[0].frames, OTHER_THREAD_FRAMES);
             let _ = writeln!(s);
         }
         let _ = writeln!(s, "-- Modules --");
@@ -278,23 +312,17 @@ pub fn signature(kind: Kind, input: &Input) -> String {
     let ours = key_thread(kind, input).and_then(|t| {
         // A panic's stack starts in the panic hook (the reporter asking for the dump): what
         // panicked is below the last frame of Rust's panic machinery.
-        // (Not the last such frame: every stack ends in start-up's std::panicking::catch_unwind.)
-        let name = |i: usize| t.frames[i].function.as_deref().map(trim_function);
         let below = if kind == Kind::Panic {
-            let entry = (0..t.frames.len()).find(|&i| {
-                name(i).is_some_and(|n| {
-                    n.starts_with("core::panicking")
-                        || n.starts_with("std::panicking::begin_panic")
-                        || n.contains("rust_begin_unwind")
+            let e = panic_entry(&t.frames);
+            (e..t.frames.len())
+                .find(|&i| {
+                    !t.frames[i]
+                        .function
+                        .as_deref()
+                        .map(trim_function)
+                        .is_some_and(|n| n.starts_with("std::") || n.starts_with("core::"))
                 })
-            });
-            entry.map_or(0, |e| {
-                (e..t.frames.len())
-                    .find(|&i| {
-                        !name(i).is_some_and(|n| n.starts_with("std::") || n.starts_with("core::"))
-                    })
-                    .unwrap_or(e)
-            })
+                .unwrap_or(e)
         } else {
             0
         };
@@ -310,6 +338,22 @@ pub fn signature(kind: Kind, input: &Input) -> String {
             .unwrap_or_else(|| "unknown".to_owned()),
     };
     format!("{} in {place}", kind.word())
+}
+
+/// Where a panic begins on its thread's stack (core::panicking::panic_fmt and the like): what is
+/// above it is the panic hook and the reporter asking for the dump. Not the last such frame:
+/// every stack ends in start-up's std::panicking::catch_unwind. 0 when none is found.
+fn panic_entry(frames: &[Frame]) -> usize {
+    frames
+        .iter()
+        .position(|f| {
+            f.function.as_deref().map(trim_function).is_some_and(|n| {
+                n.starts_with("core::panicking")
+                    || n.starts_with("std::panicking::begin_panic")
+                    || n.contains("rust_begin_unwind")
+            })
+        })
+        .unwrap_or(0)
 }
 
 /// The thread a report is about: the window thread for a freeze, else the one the dump was

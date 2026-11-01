@@ -5,7 +5,18 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [0.2.3] - 2026-11-01
 
-A fix for 0.2.2, which froze on every system as soon as Add URL opened.
+A fix for 0.2.2, which froze on every system as soon as Add URL opened, and crash reports, so the
+next problem like it is caught and fixed sooner.
+
+### Added
+
+- **Crash reports.** If MDM closes unexpectedly or stops responding, a report window opens. It
+  shows what happened and where in MDM's code, lets you read the whole report, and **Send on
+  GitHub** opens a crash report form in your browser, filled in. Nothing is sent by itself. When
+  the same problem was already reported, it takes you to that issue instead. A frozen MDM can be
+  ended and restarted from there. Reports leave out your download addresses and file names. See
+  [Crash reports](docs/crash-reports.md).
+- **A log**, kept in MDM's data folder (`logs`), so a report can show what led to a problem.
 
 ### Fixed
 

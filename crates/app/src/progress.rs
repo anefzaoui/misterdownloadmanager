@@ -140,6 +140,7 @@ impl Progress {
     }
 
     pub fn show(&mut self, ctx: &egui::Context, item: &Item, snap: Option<&Snapshot>) -> Action {
+        crate::crash::window("progress");
         let frac = item
             .size
             .filter(|t| *t > 0)

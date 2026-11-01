@@ -31,6 +31,16 @@ for p in "${programs[@]}"; do
   lipo -create -output "$app/Contents/MacOS/$p" \
     "$root/target/aarch64-apple-darwin/release/$p" "$root/target/x86_64-apple-darwin/release/$p"
 done
+# Crash reports: the release's symbols (the -symbols zip) from each half's debug info, which stays
+# in the build's object files until dsymutil gathers it (the app ships without it).
+syms=()
+for t in "${targets[@]}"; do
+  for p in "${programs[@]}"; do
+    dsymutil "$root/target/$t/release/$p" -o "$stage/dsym/$t/$p.dSYM"
+    syms+=("$stage/dsym/$t/$p.dSYM")
+  done
+done
+python3 "$root/tools/installer/symbols.py" macos-universal "$version" "$dist" "${syms[@]}"
 cp -r "$root/target/extension/chromium" "$app/Contents/Resources/extension-chromium"
 cp "$root/target/extension/mdm-firefox.xpi" "$root/LICENSE" "$root/ATTRIBUTION.md" "$app/Contents/Resources/"
 

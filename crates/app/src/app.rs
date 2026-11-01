@@ -1114,6 +1114,8 @@ impl App {
         let (window, tab) = name.split_once(':').unwrap_or((name, ""));
         match window {
             "addurl" => self.run(Cmd::AddUrl, None, ctx),
+            // MDM_CRASH_TEST=1 only (crash.rs): the crash reports' own check.
+            "crash-test" => crate::crash::test(tab),
             "batch" => self.run(Cmd::Batch(false), None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
@@ -2412,6 +2414,8 @@ impl App {
     /// commands act on every selected download (or the right-clicked one outside the
     /// selection); the others on one download.
     fn run(&mut self, cmd: Cmd, target: Option<u64>, ctx: &egui::Context) {
+        // The log a crash report quotes: what was asked for (commands carry no addresses).
+        tracing::info!("command {cmd:?}");
         let many = self.targets(target);
         let target = target.or(self.selection.one());
         let dest = target
@@ -5029,6 +5033,9 @@ impl App {
 
 impl eframe::App for App {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
+        // The freeze watchdog times every frame (crash.rs).
+        crate::crash::frame_begin();
+        crate::crash::window("main");
         let ctx = ui.ctx().clone();
         dialogs::publish_main_rect(&ctx);
         while let Ok(inc) = self.commands.try_recv() {
@@ -5082,12 +5089,20 @@ impl eframe::App for App {
             if changed {
                 ctx.request_repaint();
             }
+            // For a crash report: what MDM has open and running (sent when it changes).
+            crate::crash::state(
+                self.items.len(),
+                self.items.iter().filter(|i| i.live.is_some()).count(),
+                self.queues.len(),
+                ctx.pixels_per_point(),
+            );
         }
         ctx.request_repaint_after(Duration::from_secs(2));
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
         self.dialogs(&ctx);
+        crate::crash::frame_end();
     }
 }
 
