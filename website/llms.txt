@@ -5,7 +5,7 @@
 Key facts:
 - Price: free, no ads, no trial, no paid edition. Licence: GNU GPL 3.0. Source: https://github.com/anefzaoui/misterdownloadmanager
 - Downloads: HTTP, HTTPS, FTP, FTPS (explicit and implicit TLS), BitTorrent and magnet links, and videos from web pages via yt-dlp. Proxies, SOCKS and PAC scripts.
-- Engine: up to 32 connections per file (8 by default), dynamic re-splitting, crash-safe resume, checksum verification, refresh of expired download links, per-server connection limits learned automatically.
+- Engine: up to 32 connections per file (8 by default; 128 once allowed in Options), dynamic re-splitting, crash-safe resume, checksum verification, refresh of expired download links, per-server connection limits learned automatically.
 - Browser extension for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): hands downloads over with cookies and referrer, right-click "Download with Mister Download Manager", a draggable "Download video" button over videos. Without the extension, copying a link to a file opens the download window.
 - 86 interface languages (every Windows 11 display language), right-to-left layouts for Arabic, Hebrew, Persian, Urdu and Uyghur.
 - Imports IDM's export files (.ef2). Accepts IDM's command-line switches (/d /p /f /a /n /s). Has a CLI (misterdownloadmanager-cli, with --json output for scripts and agents) and a local token-protected automation API, described by a JSON Schema.

@@ -43,7 +43,7 @@ Tick **Don't show this dialog again** to stop seeing it. It can be turned back o
 
 MDM splits a file into parts and downloads them over several connections at once:
 
-- It uses **8 connections** by default. You can choose 1, 2, 4, 8, 16, 24 or 32 in **Options → Connection → Default max. conn. number**.
+- It uses **8 connections** by default. You can set 1 to 32 in **Options → Connection → Default max. conn. number**, or up to 128 after ticking **Allow more than 32 connections** there. More connections help only when the server sends each one at a limited speed and allows that many from one address; most servers allow far fewer.
 - When a connection finishes its part, it takes over half of the largest part still left, so no connection sits idle while another one is still working.
 - A connection that is far slower than the others is dropped and opened again.
 - Some servers allow only a few connections. MDM notices this and stops asking that server for more. What it has learned shows in **Options → Connection** under **Exceptions**, marked **(auto)**.

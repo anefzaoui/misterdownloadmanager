@@ -510,7 +510,7 @@ SOFTWARE_LD = {
     "author": {"@type": "Person", "name": "Ahmed Nefzaoui", "url": "https://github.com/anefzaoui"},
     "codeRepository": REPO,
     "featureList": [
-        "Up to 32 connections per download with dynamic re-splitting",
+        "Up to 128 connections per download with dynamic re-splitting",
         "Crash-safe resume", "HTTP, HTTPS, FTP and FTPS", "BitTorrent and magnet links",
         "Video downloads from web pages (yt-dlp)", "Browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox",
         "Queues and scheduler", "Speed limiter", "86 interface languages", "Portable mode",

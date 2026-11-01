@@ -3,6 +3,15 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [Unreleased]
+
+### Added
+
+- **More than 32 connections per download, if you want them** ([#12](https://github.com/anefzaoui/misterdownloadmanager/issues/12)):
+  **Options → Connection** now takes any number from 1 to 32, typed or set with the arrows,
+  and **Allow more than 32 connections** raises that to 128, for server exceptions too. Servers
+  that allow fewer are still noticed and asked for fewer. The command line's `-c` takes 1 to 128.
+
 ## [0.2.4] - 2026-11-01
 
 A fix for 0.2.3, whose toolbar buttons did nothing (only their drop-down arrows worked), and for

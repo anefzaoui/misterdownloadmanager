@@ -20,6 +20,9 @@ pub struct Settings {
     pub global_only_active: bool,
     /// Options → Connection → "Default max. conn. number" (IDM default 8).
     pub max_connections: u32,
+    /// Beyond IDM (issue #12): "Allow more than 32 connections" raises the ceiling of that
+    /// number and of the exceptions from `MAX_CONNECTIONS` to `MAX_CONNECTIONS_UNLOCKED`.
+    pub many_connections: bool,
     /// Show the "Download complete" dialog (Options → Downloads).
     pub show_complete: bool,
     /// List right-click → On Double click: Open (true) or Properties (IDM default).
@@ -163,6 +166,7 @@ impl Default for Settings {
             global_limit_kb: 500,
             global_only_active: false,
             max_connections: 8,
+            many_connections: false,
             show_complete: true,
             double_click_open: false,
             confirm_delete: true,
@@ -307,14 +311,25 @@ impl Settings {
         }
     }
 
+    /// The most connections Options → Connection lets a download use: 32, or 128 once more are
+    /// allowed.
+    pub fn connection_limit(&self) -> u32 {
+        if self.many_connections {
+            mdm_engine::download::MAX_CONNECTIONS_UNLOCKED
+        } else {
+            mdm_engine::download::MAX_CONNECTIONS
+        }
+    }
+
     /// Connections for a download from `url`: a server exception (Options → Connection), else
-    /// the default.
+    /// the default; never more than `connection_limit` (a hand-edited file can hold anything).
     pub fn connections_for(&self, url: &url::Url) -> u32 {
         let host = url.host_str().unwrap_or("").to_ascii_lowercase();
         self.conn_exceptions
             .iter()
             .find(|(server, _)| host_matches(&host, server))
-            .map_or(self.max_connections, |(_, n)| (*n).max(1))
+            .map_or(self.max_connections, |(_, n)| *n)
+            .clamp(1, self.connection_limit())
     }
 
     /// The Sites Logins entry for `url`: its site/path is a prefix of the address (without the
@@ -459,6 +474,18 @@ mod tests {
         let url = |u: &str| url::Url::parse(u).unwrap();
         assert_eq!(s.connections_for(&url("ftp://ftp.slow.org/a")), 1);
         assert_eq!(s.connections_for(&url("https://fast.org/a")), 8);
+        // Beyond 32 only once allowed (issue #12), and never beyond 128.
+        s.max_connections = 100;
+        s.conn_exceptions.push(("big.org".into(), 500));
+        assert_eq!(s.connections_for(&url("https://fast.org/a")), 32);
+        assert_eq!(s.connections_for(&url("https://big.org/a")), 32);
+        s.many_connections = true;
+        assert_eq!(s.connections_for(&url("https://fast.org/a")), 100);
+        assert_eq!(s.connections_for(&url("https://big.org/a")), 128);
+        // An older settings file has no switch: locked.
+        let old: Settings = serde_json::from_str(r#"{"max_connections": 64}"#).unwrap();
+        assert!(!old.many_connections);
+        assert_eq!(old.connections_for(&url("https://fast.org/a")), 32);
         // IDM's default: no proxy, but "use the browser's proxy" ticked — the browser's is
         // Windows' (none set there: direct).
         assert_eq!(s.proxy(), mdm_engine::Proxy::System);
