@@ -2,6 +2,10 @@
  "language": "fa",
  "note": "Machine translation of the website (tools/website/translate_site.py); fix a row's text to improve it.",
  "segments": {
+  "002232b5f1f41adf": {
+   "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and .tar.gz) come with every release too; they are marked experimental because they are new and less tested. See Download.",
+   "text": "Windows 10 و 11، 64-بیت، پلتفرم اصلی است. نسخه‌های macOS (یک بارگیری برای مک‌های Apple Silicon و Intel) و Linux (AppImage، .deb، .rpm و .tar.gz) نیز با هر انتشار ارائه می‌شوند؛ این نسخه‌ها آزمایشی نامیده می‌شوند زیرا جدید هستند و کمتر آزمایش شده‌اند. به بارگیری مراجعه کنید."
+  },
   "0047e3c92be9288c": {
    "source": "After a few months the list can hold hundreds of downloads. Here are four ways to get to the one you want.",
    "text": "بعد از چند ماه، لیست می‌تواند شامل صدها بارگیری باشد. در اینجا چهار روش برای رسیدن به بارگیری مورد نظر شما آورده شده است."
@@ -178,6 +182,10 @@
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, Refresh download address lets you give it a fresh one and keep the data. See Resume a broken download.",
    "text": "بله. MDM پیشرفت خود را در حین کار می‌نویسد، بنابراین پس از قطع اتصال، خرابی یا راه‌اندازی مجدد، از همان جایی که متوقف شده بود ادامه می‌دهد. قبل از ادامه، بررسی می‌کند که فایل روی سرور تغییر نکرده باشد. وقتی نشانی بارگیری منقضی شده باشد، تازه‌سازی نشانی بارگیری به شما امکان می‌دهد نشانی جدیدی به آن بدهید و داده‌ها را حفظ کنید. به ادامه بارگیری قطع شده مراجعه کنید."
   },
+  "056973ea0bc40de4": {
+   "source": "Use GitHub's private <g1><g2>Report a vulnerability</g2></g1> form. Only the maintainers can read it. Say what you found, how to reproduce it, and which version you used (<g3>Help → About</g3> shows it). Please don't open a public issue for security problems.",
+   "text": "از فرم خصوصی <g1><g2>گزارش آسیب‌پذیری</g2></g1> GitHub استفاده کنید. فقط توسعه‌دهندگان اصلی می‌توانند آن را بخوانند. آنچه پیدا کردید، نحوه بازتولید آن و نسخه‌ای که استفاده کردید (در <g3>راهنما ← درباره</g3> نمایش داده می‌شود) را بگویید. لطفا برای مشکلات امنیتی، یک مسئله عمومی باز نکنید."
+  },
   "0570989b9bf67a64": {
    "source": "Sites change often, and a newer yt-dlp usually fixes it. MDM doesn't update yt-dlp on its own yet. To get the newest one: quit MDM (<g1>Tasks → Exit</g1>), delete the <x2/> folder in MDM's data folder (<x3/>, or the <x4/> folder of a portable copy), start MDM, open the video window and click <g5>Install yt-dlp</g5>.",
    "text": "سایت‌ها اغلب تغییر می‌کنند و یک yt-dlp جدیدتر معمولا آن را رفع می‌کند. MDM هنوز yt-dlp را به طور خودکار به‌روز نمی‌کند. برای دریافت جدیدترین نسخه: MDM را ببندید (<g1>وظایف → خروج</g1>)، پوشه <x2/> را در پوشه داده MDM (<x3/>، یا پوشه <x4/> یک کپی قابل حمل) حذف کنید، MDM را راه‌اندازی کنید، پنجره ویدئو را باز کنید و روی <g5>نصب yt-dlp</g5> کلیک کنید."
@@ -236,7 +244,7 @@
   },
   "06fc1bc448892347": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See Connections and speed.",
-   "text": "مرورگر فایل را با یک اتصال دریافت می‌کند. MDM همزمان چندین قسمت از فایل را از سرور درخواست می‌کند (تا ۳۲ اتصال) و به تقسیم‌بندی مجدد ادامه می‌دهد: وقتی یک اتصال کار خود را تمام می‌کند، نیمی از بزرگترین قسمت باقی‌مانده را به عهده می‌گیرد تا هیچ اتصال کندی باعث تأخیر در پایان کار نشود. همچنین سرورهایی را که از اتصالات اضافی خودداری می‌کنند، به خاطر می‌سپارد و دیگر از آنها درخواست نمی‌کند. به بخش اتصالات و سرعت مراجعه کنید."
+   "text": "مرورگر فایل را با یک اتصال دریافت می‌کند. MDM همزمان چندین قسمت از فایل را از سرور درخواست می‌کند (تا 32 اتصال) و به تقسیم‌بندی مجدد ادامه می‌دهد: وقتی یک اتصال کار خود را تمام می‌کند، نیمی از بزرگترین قسمت باقی‌مانده را به عهده می‌گیرد تا هیچ اتصال کندی باعث تأخیر در پایان کار نشود. همچنین سرورهایی را که از اتصالات اضافی خودداری می‌کنند، به خاطر می‌سپارد و دیگر از آنها درخواست نمی‌کند. به بخش اتصالات و سرعت مراجعه کنید."
   },
   "070c8fa6ee24507e": {
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
@@ -252,7 +260,7 @@
   },
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
-   "text": "پردازنده 13th Gen Intel(R) Core(TM) i5-13400F، ۶۳.۸ گیگابایت رم، Windows-11-10.0.26200-SP0. labserver (این مخزن)، 127.0.0.1:8097، محتوای تولید شده. هر دو در حالت پیش‌فرض: ۸ اتصال."
+   "text": "پردازنده 13th Gen Intel(R) Core(TM) i5-13400F، 63.8 گیگابایت رم، Windows-11-10.0.26200-SP0. labserver (این مخزن)، 127.0.0.1:8097، محتوای تولید شده. هر دو در حالت پیش‌فرض: 8 اتصال."
   },
   "0797f3ad6e9f2823": {
    "source": "lines, then <x1/>.",
@@ -284,7 +292,7 @@
   },
   "08927126dc5b4651": {
    "source": "Retried about 250 times a second against the refusals. Finished in 15.9 s.",
-   "text": "حدود ۲۵۰ بار در ثانیه در برابر رد شدن‌ها تلاش مجدد کرد. در ۱۵.۹ ثانیه به پایان رسید."
+   "text": "حدود 250 بار در ثانیه در برابر رد شدن‌ها تلاش مجدد کرد. در 15.9 ثانیه به پایان رسید."
   },
   "08b76c591b3b4d07": {
    "source": "Open an <g1>issue on GitHub</g1>. For anything sensitive, use GitHub's private <g2>security advisory form</g2>.",
@@ -548,7 +556,7 @@
   },
   "11c54a9841b75a9b": {
    "source": "<g1>Fairness.</g1> The apps alternate, IDM first on even runs and MDM first on odd ones, so drift on the machine hits both. One warm-up run each is discarded. Failed runs are counted, not dropped. Before every run the harness waits until the loopback is quiet: against a server that refuses extra connections IDM retries about 250 times a second, leaving thousands of closed sockets for half a minute; without the wait, whichever app ran next was timed on that backlog.",
-   "text": "<g1>انصاف.</g1> برنامه‌ها به صورت متناوب اجرا می‌شوند، IDM ابتدا در اجراهای زوج و MDM ابتدا در اجراهای فرد، بنابراین تغییرات روی دستگاه هر دو را تحت تأثیر قرار می‌دهد. یک اجرای گرم‌کننده برای هر کدام کنار گذاشته می‌شود. اجراهای ناموفق شمارش می‌شوند، نه حذف. قبل از هر اجرا، مهارکننده منتظر می‌ماند تا لوپ‌بک آرام شود: در برابر سروری که اتصالات اضافی را رد می‌کند، IDM حدود ۲۵۰ بار در ثانیه تلاش مجدد می‌کند و هزاران سوکت بسته را برای نیم دقیقه باقی می‌گذارد؛ بدون انتظار، هر برنامه‌ای که بعدا اجرا می‌شد، بر اساس آن انباشت زمان‌بندی می‌شد."
+   "text": "<g1>انصاف.</g1> برنامه‌ها به صورت متناوب اجرا می‌شوند، IDM ابتدا در اجراهای زوج و MDM ابتدا در اجراهای فرد، بنابراین تغییرات روی دستگاه هر دو را تحت تأثیر قرار می‌دهد. یک اجرای گرم‌کننده برای هر کدام کنار گذاشته می‌شود. اجراهای ناموفق شمارش می‌شوند، نه حذف. قبل از هر اجرا، مهارکننده منتظر می‌ماند تا لوپ‌بک آرام شود: در برابر سروری که اتصالات اضافی را رد می‌کند، IDM حدود 250 بار در ثانیه تلاش مجدد می‌کند و هزاران سوکت بسته را برای نیم دقیقه باقی می‌گذارد؛ بدون انتظار، هر برنامه‌ای که بعدا اجرا می‌شد، بر اساس آن انباشت زمان‌بندی می‌شد."
   },
   "1214d36ab497a361": {
    "source": "What it understands",
@@ -604,7 +612,7 @@
   },
   "13bdd66fc5e4c600": {
    "source": "Server allowing 2 connections",
-   "text": "سرور با اجازه ۲ اتصال"
+   "text": "سرور با اجازه 2 اتصال"
   },
   "13d892516a4ab1bb": {
    "source": "When it doesn't work",
@@ -684,7 +692,7 @@
   },
   "15b2bf48d7547b61": {
    "source": "Opened 480, done in 15.9 s<g1><g2>2</g2></g1>",
-   "text": "۴۸۰ اتصال باز کرد، در ۱۵.۹ ثانیه انجام شد<g1><g2>2</g2></g1>"
+   "text": "480 اتصال باز کرد، در 15.9 ثانیه انجام شد<g1><g2>2</g2></g1>"
   },
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
@@ -748,15 +756,15 @@
   },
   "185c2ab4bb5230a4": {
    "source": "The software is licensed under the <g1>GNU General Public License, version 3</g1> (\"GPL\"). The GPL governs your rights to run, study, copy, change and share it, and nothing in these terms takes away any right the GPL gives you. If these terms and the GPL ever disagree about the software, the GPL wins.",
-   "text": "نرم‌افزار تحت <g1>پروانه عمومی همگانی گنو، نسخه ۳</g1> («GPL») پروانه دارد. GPL حقوق شما را برای اجرا، مطالعه، کپی، تغییر و به اشتراک‌گذاری آن تعیین می‌کند و هیچ‌یک از این شرایط، حقی را که GPL به شما می‌دهد، سلب نمی‌کند. اگر این شرایط و GPL در مورد نرم‌افزار با هم اختلاف داشته باشند، GPL ارجحیت دارد."
+   "text": "نرم‌افزار تحت <g1>پروانه عمومی همگانی گنو، نسخه 3</g1> («GPL») پروانه دارد. GPL حقوق شما را برای اجرا، مطالعه، کپی، تغییر و به اشتراک‌گذاری آن تعیین می‌کند و هیچ‌یک از این شرایط، حقی را که GPL به شما می‌دهد، سلب نمی‌کند. اگر این شرایط و GPL در مورد نرم‌افزار با هم اختلاف داشته باشند، GPL ارجحیت دارد."
   },
   "185d7d9ae44f9d62": {
    "source": "86, right to left included",
-   "text": "۸۶، شامل راست به چپ"
+   "text": "86، شامل راست به چپ"
   },
   "185df2d914fc7b3a": {
    "source": "Very likely: MDM speaks 86 languages, every display language Windows 11 offers, chosen on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left. See all the languages and how to help improve yours.",
-   "text": "به احتمال زیاد: MDM به ۸۶ زبان صحبت می‌کند، تمام زبان‌های نمایشی که Windows 11 ارائه می‌دهد، که در اولین راه‌اندازی یا هر زمان در نما → زبان انتخاب می‌شود. عربی، عبری، فارسی، اردو و اویغوری از راست به چپ چیده شده‌اند. همه زبان‌ها و نحوه کمک به بهبود زبان خود را ببینید."
+   "text": "به احتمال زیاد: MDM به 86 زبان صحبت می‌کند، تمام زبان‌های نمایشی که Windows 11 ارائه می‌دهد، که در اولین راه‌اندازی یا هر زمان در نما → زبان انتخاب می‌شود. عربی، عبری، فارسی، اردو و اویغوری از راست به چپ چیده شده‌اند. همه زبان‌ها و نحوه کمک به بهبود زبان خود را ببینید."
   },
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
@@ -802,6 +810,10 @@
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "پاسخ‌های کوتاه به پرتکرارترین سؤالات، هر کدام با پیوندی به راهنمای کامل."
   },
+  "1a0500523dbbbc89": {
+   "source": "On a Mac or Linux",
+   "text": "در مک یا Linux"
+  },
   "1a1c4d85605e18ae": {
    "source": "<g1>Alt+Enter</g1> always opens <g2>Properties</g2>.",
    "text": "<g1>Alt+Enter</g1> همیشه <g2>ویژگی‌ها</g2> را باز می‌کند."
@@ -844,7 +856,7 @@
   },
   "1b435f0f6139d174": {
    "source": "You may use, copy, change and share Mister Download Manager under the <g1>GNU GPL, version 3</g1>.",
-   "text": "می‌توانید Mister Download Manager را تحت <g1>مجوز GNU GPL، نسخه ۳</g1> استفاده، کپی، تغییر و به اشتراک بگذارید."
+   "text": "می‌توانید Mister Download Manager را تحت <g1>مجوز GNU GPL، نسخه 3</g1> استفاده، کپی، تغییر و به اشتراک بگذارید."
   },
   "1b4f356122f747c3": {
    "source": "CPU",
@@ -934,6 +946,10 @@
    "source": "Privacy",
    "text": "حریم خصوصی"
   },
+  "1ccc70fb4aa18b18": {
+   "source": "MDM runs on 64-bit Windows 10 and Windows 11. Builds for macOS and Linux are new: see <g1>On a Mac or Linux</g1>.",
+   "text": "MDM روی Windows 10 و Windows 11 64 بیتی اجرا می‌شود. نسخه‌های macOS و Linux جدید هستند: به <g1>در مک یا Linux</g1> مراجعه کنید."
+  },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
    "text": "پنجره اصلی به زبان عربی، با چیدمان راست به چپ."
@@ -992,7 +1008,7 @@
   },
   "1f1e0325ab540d06": {
    "source": "Server allows 2 connections",
-   "text": "سرور ۲ اتصال را مجاز می‌کند"
+   "text": "سرور 2 اتصال را مجاز می‌کند"
   },
   "1f65e62d97ecd48e": {
    "source": "Mister Download Manager's main window in day mode: web and torrent downloads in one list, with categories, sizes, progress, speeds and dates.",
@@ -1064,11 +1080,11 @@
   },
   "20f9ef471d29f4c4": {
    "source": "Eight per download by default, and up to 32 if you choose in <g1>Options → Connection</g1>. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "به‌طور پیش‌فرض، هشت اتصال برای هر بارگیری، و اگر در <g1>گزینه‌ها ← اتصال</g1> انتخاب کنید، تا ۳۲ اتصال. MDM وقتی سرور اتصالات کمتری را مجاز بداند، از تعداد کمتری استفاده می‌کند، و وقتی سرور اصلا نتواند بخش‌هایی از یک فایل را ارسال کند، فقط از یک اتصال استفاده می‌کند."
+   "text": "به‌طور پیش‌فرض، هشت اتصال برای هر بارگیری، و اگر در <g1>گزینه‌ها ← اتصال</g1> انتخاب کنید، تا 32 اتصال. MDM وقتی سرور اتصالات کمتری را مجاز بداند، از تعداد کمتری استفاده می‌کند، و وقتی سرور اصلا نتواند بخش‌هایی از یک فایل را ارسال کند، فقط از یک اتصال استفاده می‌کند."
   },
   "20ff7c25a0a83544": {
    "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
-   "text": "برای بهترین کیفیت‌ها، MDM پیشنهاد نصب <g1>ffmpeg</g1> (حدود ۸۰ مگابایت) را می‌دهد که تصویر و صدا را به هم متصل می‌کند. اگر آنها را می‌خواهید، روی <g2>نصب ffmpeg</g2> کلیک کنید. بدون آن، کیفیت‌هایی را دریافت می‌کنید که با صدای خودشان همراه هستند."
+   "text": "برای بهترین کیفیت‌ها، MDM پیشنهاد نصب <g1>ffmpeg</g1> (حدود 80 مگابایت) را می‌دهد که تصویر و صدا را به هم متصل می‌کند. اگر آنها را می‌خواهید، روی <g2>نصب ffmpeg</g2> کلیک کنید. بدون آن، کیفیت‌هایی را دریافت می‌کنید که با صدای خودشان همراه هستند."
   },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
@@ -1100,7 +1116,7 @@
   },
   "2281b3a7f571d2ec": {
    "source": "<g1>86 languages, right to left too</g1> <g2>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g2> <g3><g4></g4></g3>",
-   "text": "<g1>۸۶ زبان، از جمله راست به چپ</g1> <g2>به زبان رایانه شما صحبت می‌کند. عربی، عبری، فارسی و اردو از راست به چپ چیده می‌شوند.</g2> <g3><g4></g4></g3>"
+   "text": "<g1>86 زبان، از جمله راست به چپ</g1> <g2>به زبان رایانه شما صحبت می‌کند. عربی، عبری، فارسی و اردو از راست به چپ چیده می‌شوند.</g2> <g3><g4></g4></g3>"
   },
   "22bf3aff73d45517": {
    "source": "Internet Download Manager",
@@ -1292,7 +1308,7 @@
   },
   "27e99f3f3230b288": {
    "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and .tar.gz) come with every release too; they are marked experimental because they are new and less tested. See <g1>Download</g1>.",
-   "text": "Windows 10 و 11، ۶۴ بیتی، پلتفرم اصلی است. نسخه‌های macOS (یک بارگیری برای Apple Silicon و Intel Mac) و Linux (AppImage، .deb، .rpm و .tar.gz) نیز با هر انتشار ارائه می‌شوند؛ آنها آزمایشی علامت‌گذاری شده‌اند زیرا جدید هستند و کمتر آزمایش شده‌اند. به <g1>بارگیری</g1> مراجعه کنید."
+   "text": "Windows 10 و 11، 64 بیتی، پلتفرم اصلی است. نسخه‌های macOS (یک بارگیری برای Apple Silicon و Intel Mac) و Linux (AppImage، .deb، .rpm و .tar.gz) نیز با هر انتشار ارائه می‌شوند؛ آنها آزمایشی علامت‌گذاری شده‌اند زیرا جدید هستند و کمتر آزمایش شده‌اند. به <g1>بارگیری</g1> مراجعه کنید."
   },
   "281e2c871ace1c1d": {
    "source": "Not affiliated with Tonec Inc.; Internet Download Manager and IDM are trademarks of their owner, named here only to compare.",
@@ -1316,7 +1332,7 @@
   },
   "28aaa598d16d2456": {
    "source": "<g1>Downloads on a schedule</g1> Queues that start at 2 a.m., stop by 7 and turn the computer off when they're done.",
-   "text": "<g1>بارگیری‌ها بر اساس برنامه</g1> صف‌هایی که ساعت ۲ صبح شروع می‌شوند، تا ۷ متوقف می‌شوند و پس از اتمام کار، رایانه را خاموش می‌کنند."
+   "text": "<g1>بارگیری‌ها بر اساس برنامه</g1> صف‌هایی که ساعت 2 صبح شروع می‌شوند، تا 7 متوقف می‌شوند و پس از اتمام کار، رایانه را خاموش می‌کنند."
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -1384,7 +1400,7 @@
   },
   "2b3204c8e41ab019": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager has the same layout, imports your IDM list, is open source and finished 5.4× faster in our benchmark. Compare them side by side.",
-   "text": "به دنبال جایگزینی رایگان برای Internet Download Manager (IDM) هستید؟ Mister Download Manager همان طرح‌بندی را دارد، لیست IDM شما را وارد می‌کند، متن‌باز است و در بنچمارک ما ۵.۴ برابر سریع‌تر به پایان رسید. آنها را کنار هم مقایسه کنید."
+   "text": "به دنبال جایگزینی رایگان برای Internet Download Manager (IDM) هستید؟ Mister Download Manager همان طرح‌بندی را دارد، لیست IDM شما را وارد می‌کند، متن‌باز است و در بنچمارک ما 5.4 برابر سریع‌تر به پایان رسید. آنها را کنار هم مقایسه کنید."
   },
   "2b32b47b6f8a0433": {
    "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on.",
@@ -1452,11 +1468,11 @@
   },
   "2c8a809f2055d36d": {
    "source": "86, built in",
-   "text": "۸۶، داخلی"
+   "text": "86، داخلی"
   },
   "2c90837acad968bb": {
    "source": "© 2026 Ahmed Nefzaoui and contributors",
-   "text": "© 2026 Ahmed Nefzaoui و مشارکت‌کنندگان"
+   "text": "© 2026 احمد نفزاوی و مشارکت‌کنندگان"
   },
   "2ca3a07bea54f235": {
    "source": "Licence",
@@ -1488,7 +1504,7 @@
   },
   "2d423a59cc3260fa": {
    "source": "No. MDM needs Windows 10 or 11, 64-bit. The Rust toolchain it is built with no longer supports Windows 7 and 8, and neither does Microsoft.",
-   "text": "خیر. MDM به Windows 10 یا 11، ۶۴ بیتی نیاز دارد. ابزار Rust که با آن ساخته شده است دیگر از Windows 7 و 8 پشتیبانی نمی‌کند و مایکروسافت نیز همینطور."
+   "text": "خیر. MDM به Windows 10 یا 11، 64 بیتی نیاز دارد. ابزار Rust که با آن ساخته شده است دیگر از Windows 7 و 8 پشتیبانی نمی‌کند و مایکروسافت نیز همینطور."
   },
   "2d4601bb24920308": {
    "source": "<g1><x2/></g1><g3>rustls</g3><g4>encryption</g4>",
@@ -1674,10 +1690,6 @@
    "source": "not to use it to break copy protection (DRM): MDM doesn't do this and isn't meant to;",
    "text": "از آن برای شکستن محافظت از کپی (DRM) استفاده نکنید: MDM این کار را نمی‌کند و برای این منظور طراحی نشده است؛"
   },
-  "334e59b8ba0b66bb": {
-   "source": "Yes. In IDM, export your list (Tasks → Export → To IDM export file). In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every…",
-   "text": "بله. در IDM، فهرست خود را صادر کنید (وظایف ← صادر کردن ← به فایل صادراتی IDM). در MDM، وظایف ← وارد کردن ← از فایل خروجی IDM را انتخاب کرده و آن فایل .ef2 را برگزینید: هر…"
-  },
   "335ddbe14ee4164c": {
    "source": "Closing the window with its close box keeps the download running.",
    "text": "بستن پنجره با دکمه بستن آن، دانلود را در حال اجرا نگه می‌دارد."
@@ -1708,7 +1720,7 @@
   },
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
-   "text": "MDM توسط Ahmed Nefzaoui، یک توسعه‌دهنده مستقل، ساخته شده است و برای مشارکت همه در <g1>GitHub</g1> باز است. گزارش باگ، ترجمه‌ها و کد همگی مورد استقبال هستند."
+   "text": "MDM توسط احمد نفزاوی، یک توسعه‌دهنده مستقل، ساخته شده است و برای مشارکت همه در <g1>GitHub</g1> باز است. گزارش باگ، ترجمه‌ها و کد همگی مورد استقبال هستند."
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -1732,7 +1744,7 @@
   },
   "3508dab985cc0335": {
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
-   "text": "مدیر دانلود رایگان و متن‌باز برای Windows، با نسخه‌های آزمایشی برای macOS و Linux. با ظاهر IDM که می‌شناسید، ۵ برابر سریع‌تر در بنچمارک ما: همه اتصالات همزمان، ادامه دانلود پس از قطعی، تورنت، ویدئو از صفحات وب، یکپارچه‌سازی با مرورگر، ۸۶ زبان."
+   "text": "مدیر دانلود رایگان و متن‌باز برای Windows، با نسخه‌های آزمایشی برای macOS و Linux. با ظاهر IDM که می‌شناسید، 5 برابر سریع‌تر در بنچمارک ما: همه اتصالات همزمان، ادامه دانلود پس از قطعی، تورنت، ویدئو از صفحات وب، یکپارچه‌سازی با مرورگر، 86 زبان."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -1785,6 +1797,10 @@
   "36c38f86ce86be0d": {
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "محدودکننده سرعت از استفاده MDM از تمام پهنای باند اتصال شما جلوگیری می‌کند."
+  },
+  "37018c365c78d873": {
+   "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
+   "text": "MDM توسط احمد نفزاوی، یک توسعه‌دهنده مستقل، ساخته شده است و پذیرای مشارکت همه در GitHub است. گزارش‌های باگ، ترجمه‌ها و کد همه..."
   },
   "370fffff42663165": {
    "source": "MDM has <g1>no analytics, no crash reporting, no telemetry and no advertising</g1>. It never sends us your download list, the addresses you download, or anything else.",
@@ -1920,11 +1936,11 @@
   },
   "3a7b5cc8fa1e21f1": {
    "source": "Download a file with up to 8 connections (<x1/>), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "یک فایل را با حداکثر ۸ اتصال (<x1/>) بارگیری کنید، با نمایش پیشرفت. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> فایل تمام‌شده را بررسی می‌کند: MD5، SHA-1، SHA-256، SHA-512 یا CRC32 هگزادسیمال، به صورت اختیاری نام‌گذاری شده (<x5/>)."
+   "text": "یک فایل را با حداکثر 8 اتصال (<x1/>) بارگیری کنید، با نمایش پیشرفت. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> فایل تمام‌شده را بررسی می‌کند: MD5، SHA-1، SHA-256، SHA-512 یا CRC32 هگزادسیمال، به صورت اختیاری نام‌گذاری شده (<x5/>)."
   },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
-   "text": "حدود ۴۰، دانلودهای جداگانه"
+   "text": "حدود 40، دانلودهای جداگانه"
   },
   "3aca386992ad550b": {
    "source": "Move between the download list and the Categories tree",
@@ -1972,7 +1988,7 @@
   },
   "3bd468019bd25247": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
-   "text": "یک مرورگر یک فایل را از طریق یک اتصال دریافت می‌کند. MDM از سرور چندین قسمت از فایل را به طور همزمان، تا ۳۲ اتصال، درخواست می‌کند و به تقسیم مجدد ادامه می‌دهد: وقتی یک اتصال قسمت خود را به پایان می‌رساند، نیمی از بزرگترین قسمت باقی‌مانده را به عهده می‌گیرد، بنابراین هیچ اتصال کندی پایان کار را به تأخیر نمی‌اندازد. همچنین سرورهایی را که از اتصالات اضافی خودداری می‌کنند به خاطر می‌سپارد و از آنها درخواست نمی‌کند. <g1>اتصالات و سرعت</g1> را ببینید."
+   "text": "یک مرورگر یک فایل را از طریق یک اتصال دریافت می‌کند. MDM از سرور چندین قسمت از فایل را به طور همزمان، تا 32 اتصال، درخواست می‌کند و به تقسیم مجدد ادامه می‌دهد: وقتی یک اتصال قسمت خود را به پایان می‌رساند، نیمی از بزرگترین قسمت باقی‌مانده را به عهده می‌گیرد، بنابراین هیچ اتصال کندی پایان کار را به تأخیر نمی‌اندازد. همچنین سرورهایی را که از اتصالات اضافی خودداری می‌کنند به خاطر می‌سپارد و از آنها درخواست نمی‌کند. <g1>اتصالات و سرعت</g1> را ببینید."
   },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
@@ -2176,7 +2192,7 @@
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
-   "text": "۵۰ مگابایت، سرور اجازه ۲ اتصال می‌دهد، هر کدام ۲ مگابایت بر ثانیه"
+   "text": "50 مگابایت، سرور اجازه 2 اتصال می‌دهد، هر کدام 2 مگابایت بر ثانیه"
   },
   "43178126f1fcc63b": {
    "source": "<g1>Download complete</g1> shows the file's size, its address and where it was saved. Choose <g2>Open</g2>, <g3>Open with...</g3>, <g4>Open folder</g4> or <g5>Close</g5>. You can also drag the small box at the bottom right into Explorer, an email or a chat to drop the file there.",
@@ -2528,7 +2544,7 @@
   },
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
-   "text": "<g1><g2>زبان‌ها</g2></g1> — ۸۶ زبان رابط کاربری، طرح‌بندی‌های راست به چپ، و نحوه کمک به ترجمه."
+   "text": "<g1><g2>زبان‌ها</g2></g1> — 86 زبان رابط کاربری، طرح‌بندی‌های راست به چپ، و نحوه کمک به ترجمه."
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -2584,7 +2600,7 @@
   },
   "51a27458c25ed5a6": {
    "source": "64-bit Windows 10 or 11, about 100 MB",
-   "text": "Windows 10 یا 11 ۶۴ بیتی، حدود ۱۰۰ مگابایت"
+   "text": "Windows 10 یا 11 64 بیتی، حدود 100 مگابایت"
   },
   "51a9156ec9109466": {
    "source": "IDM takes about three seconds to accept a download from its command line before it sends anything; downloads caught by its browser extension skip that step. That is why \"Transfer\" is the fair engine-to-engine view. \"End to end\" is here too.",
@@ -2812,7 +2828,7 @@
   },
   "5936f5324103bf1c": {
    "source": "Sizes are in bytes (<x1/> while unknown), speeds in bytes per second. A failure prints <x2/> and exits with code 1. For example:",
-   "text": "اندازه‌ها بر حسب بایت هستند (<x1/> در حالی که ناشناخته است)، سرعت‌ها بر حسب بایت بر ثانیه. یک خطا <x2/> را چاپ می‌کند و با کد ۱ خارج می‌شود. برای مثال:"
+   "text": "اندازه‌ها بر حسب بایت هستند (<x1/> در حالی که ناشناخته است)، سرعت‌ها بر حسب بایت بر ثانیه. یک خطا <x2/> را چاپ می‌کند و با کد 1 خارج می‌شود. برای مثال:"
   },
   "595371845398a7e4": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found, or the native debug info beside a build from source. The report's <g3>Signature</g3> (for example <x4/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -2828,7 +2844,7 @@
   },
   "59ac63e7541fff6b": {
    "source": "8. The site",
-   "text": "۸. سایت"
+   "text": "8. سایت"
   },
   "59bedd7437781de2": {
    "source": "Point at the video in your browser and click the <g1>Download video</g1> button that appears over it, or paste the page's address into <g2>Tasks → Download video from a page</g2>. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See <g3>Download a video from a page</g3>.",
@@ -2876,7 +2892,7 @@
   },
   "5bbb9009f1843aaf": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server can't send parts of a file at all.",
-   "text": "به‌طور پیش‌فرض، هشت اتصال برای هر بارگیری، و اگر در گزینه‌ها ← اتصال انتخاب کنید، تا ۳۲ اتصال. MDM وقتی سرور اتصالات کمتری را مجاز بداند، از تعداد کمتری استفاده می‌کند، و وقتی سرور اصلا نتواند بخش‌هایی از یک فایل را ارسال کند، فقط از یک اتصال استفاده می‌کند."
+   "text": "به‌طور پیش‌فرض، هشت اتصال برای هر بارگیری، و اگر در گزینه‌ها ← اتصال انتخاب کنید، تا 32 اتصال. MDM وقتی سرور اتصالات کمتری را مجاز بداند، از تعداد کمتری استفاده می‌کند، و وقتی سرور اصلا نتواند بخش‌هایی از یک فایل را ارسال کند، فقط از یک اتصال استفاده می‌کند."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -2953,6 +2969,10 @@
   "5ea184bc04ad2f73": {
    "source": "See <g1>If a video won't download</g1>.",
    "text": "به <g1>اگر یک ویدئو بارگیری نمی‌شود</g1> مراجعه کنید."
+  },
+  "5ea31b9a4b8d8d46": {
+   "source": "Every release is built from the public source code by <g1>GitHub Actions</g1>, on GitHub's servers; the build logs are public.",
+   "text": "هر نسخه توسط <g1>GitHub Actions</g1>، روی سرورهای GitHub و از کد منبع عمومی ساخته می‌شود؛ گزارش‌های ساخت عمومی هستند."
   },
   "5ef406f45fdd5c6f": {
    "source": "<g1>What were you doing when it happened?</g1> is optional. A few words, such as \"I opened Add URL\", help a lot.",
@@ -3032,7 +3052,7 @@
   },
   "60b2c5b6854643d6": {
    "source": "Very likely: MDM speaks 86 languages, every display language Windows 11 offers, chosen on the first start or any time in <g1>View → Language</g1>. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left. See <g2>all the languages</g2> and how to help improve yours.",
-   "text": "به احتمال زیاد: MDM به ۸۶ زبان صحبت می‌کند، هر زبان نمایشی که Windows 11 ارائه می‌دهد، که در اولین راه‌اندازی یا هر زمان در <g1>نما ← زبان</g1> انتخاب می‌شود. عربی، عبری، فارسی، اردو و اویغوری از راست به چپ چیده شده‌اند. <g2>همه زبان‌ها</g2> و نحوه کمک به بهبود زبان خود را ببینید."
+   "text": "به احتمال زیاد: MDM به 86 زبان صحبت می‌کند، هر زبان نمایشی که Windows 11 ارائه می‌دهد، که در اولین راه‌اندازی یا هر زمان در <g1>نما ← زبان</g1> انتخاب می‌شود. عربی، عبری، فارسی، اردو و اویغوری از راست به چپ چیده شده‌اند. <g2>همه زبان‌ها</g2> و نحوه کمک به بهبود زبان خود را ببینید."
   },
   "60b93e8420c52c24": {
    "source": "After a crash or a restart",
@@ -3048,7 +3068,7 @@
   },
   "6111bd2651de0090": {
    "source": "<g1>The download engine</g1>: up to 32 connections per file, re-splitting the slowest part until the last byte, and crash-safe resume after a restart or a dropped connection. HTTP, HTTPS, <g2>FTP and FTPS</g2> (<x3/>, <x4/> explicit TLS, <x5/> implicit TLS), proxies, SOCKS and <g6>proxy auto-config (PAC)</g6> scripts.",
-   "text": "<g1>موتور دانلود</g1>: تا ۳۲ اتصال برای هر فایل، تقسیم مجدد کندترین بخش تا آخرین بایت، و از سرگیری ایمن پس از خرابی یا قطع اتصال. HTTP، HTTPS، <g2>FTP و FTPS</g2> (<x3/>، <x4/> TLS صریح، <x5/> TLS ضمنی)، پروکسی‌ها، SOCKS و اسکریپت‌های <g6>پیکربندی خودکار پروکسی (PAC)</g6>."
+   "text": "<g1>موتور دانلود</g1>: تا 32 اتصال برای هر فایل، تقسیم مجدد کندترین بخش تا آخرین بایت، و از سرگیری ایمن پس از خرابی یا قطع اتصال. HTTP، HTTPS، <g2>FTP و FTPS</g2> (<x3/>، <x4/> TLS صریح، <x5/> TLS ضمنی)، پروکسی‌ها، SOCKS و اسکریپت‌های <g6>پیکربندی خودکار پروکسی (PAC)</g6>."
   },
   "6126a3542358d39b": {
    "source": "Tick <g1>Don't show this dialog again</g1> to stop seeing it. It can be turned back on in <g2>Options → Downloads → Show download complete dialog</g2>.",
@@ -3065,6 +3085,10 @@
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
    "text": "<g1>در غیر این صورت:</g1> MDM لیست زبان‌ها را نشان می‌دهد، هر کدام با پرچم و نام خود. زبان خود را انتخاب کنید."
+  },
+  "6177572032459e39": {
+   "source": "MDM runs on 64-bit Windows 10 and Windows 11. Builds for macOS and Linux are new: see On a Mac or Linux.",
+   "text": "MDM روی Windows 10 و Windows 11 64 بیتی اجرا می‌شود. نسخه‌های macOS و Linux جدید هستند: به در مک یا Linux مراجعه کنید."
   },
   "6188db7e3b890126": {
    "source": "The automation API is off by default. When you turn it on, it listens only on <x1/> (your own computer) and answers only programs that present the secret token from MDM's data folder.",
@@ -3136,7 +3160,7 @@
   },
   "6387358ae9160f15": {
    "source": "1 GiB, fast link",
-   "text": "۱ گیبی‌بایت، لینک سریع"
+   "text": "1 گیبی‌بایت، لینک سریع"
   },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
@@ -3161,6 +3185,10 @@
   "63eeefba9d789717": {
    "source": "No. Mister Download Manager is an independent project written from scratch in Rust. It has no connection to Tonec Inc. and contains none of IDM's code, artwork or text. Internet Download Manager and IDM are trademarks of their owner, named here only to compare.",
    "text": "خیر. Mister Download Manager یک پروژه مستقل است که از ابتدا با Rust نوشته شده است. هیچ ارتباطی با Tonec Inc. ندارد و حاوی هیچ کد، اثر هنری یا متن IDM نیست. Internet Download Manager و IDM علائم تجاری مالک خود هستند که در اینجا فقط برای مقایسه نام برده شده‌اند."
+  },
+  "63f14dc462397998": {
+   "source": "Get MDM <g1>only from this site or the project's GitHub releases</g1>. Copies elsewhere may be altered.",
+   "text": "MDM را <g1>فقط از این سایت یا از بخش انتشار پروژه در GitHub</g1> دریافت کنید. نسخه‌های موجود در جاهای دیگر ممکن است تغییر یافته باشند."
   },
   "64127a76a775643b": {
    "source": "<g1>Options on completion</g1> — shows where the file will be saved. Untick <g2>Show download complete dialog</g2> to skip the <g3>Download complete</g3> box for this file only.",
@@ -3204,7 +3232,7 @@
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
-   "text": "۳۲ مگابایت، یک اتصال در سه خزیدن با ۱۲۸ کیلوبایت بر ثانیه"
+   "text": "32 مگابایت، یک اتصال در سه خزیدن با 128 کیلوبایت بر ثانیه"
   },
   "664a43a53c16830a": {
    "source": "License",
@@ -3232,11 +3260,11 @@
   },
   "6821496b26156b7b": {
    "source": "IDM facts from internetdownloadmanager.com, checked October 2026; timings from <g1>our published benchmark</g1> with raw data. Spot a mistake? <g2>Tell us</g2>.",
-   "text": "حقایق IDM از internetdownloadmanager.com، بررسی شده در اکتبر ۲۰۲۶؛ زمان‌بندی‌ها از <g1>معیار منتشر شده ما</g1> با داده‌های خام. اشتباهی مشاهده کردید؟ <g2>به ما بگویید</g2>."
+   "text": "حقایق IDM از internetdownloadmanager.com، بررسی شده در اکتبر 2026؛ زمان‌بندی‌ها از <g1>معیار منتشر شده ما</g1> با داده‌های خام. اشتباهی مشاهده کردید؟ <g2>به ما بگویید</g2>."
   },
   "684645667b5fa81d": {
    "source": "2. Save downloads to the stick",
-   "text": "۲. دانلودها را روی فلش مموری ذخیره کنید"
+   "text": "2. دانلودها را روی فلش مموری ذخیره کنید"
   },
   "68501e4a16b6ce4f": {
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
@@ -3300,7 +3328,7 @@
   },
   "6a0e7d4e6f3512ca": {
    "source": "The first time, MDM needs its video helper. Click <g1>Install yt-dlp</g1> (about 23 MB). MDM downloads it from its official release and checks it before use.",
-   "text": "اولین بار، MDM به کمک‌کننده ویدئوی خود نیاز دارد. روی <g1>نصب yt-dlp</g1> (حدود ۲۳ مگابایت) کلیک کنید. MDM آن را از نسخه رسمی خود بارگیری کرده و قبل از استفاده آن را بررسی می‌کند."
+   "text": "اولین بار، MDM به کمک‌کننده ویدئوی خود نیاز دارد. روی <g1>نصب yt-dlp</g1> (حدود 23 مگابایت) کلیک کنید. MDM آن را از نسخه رسمی خود بارگیری کرده و قبل از استفاده آن را بررسی می‌کند."
   },
   "6a0ee35e1c3730f6": {
    "source": "<g1>Keep sharing torrents after they finish</g1> — off by default: a finished torrent stops, like any download. Turn it on to keep uploading to other peers after your download is complete.",
@@ -3416,7 +3444,7 @@
   },
   "6d73e61c3ec9dd6e": {
    "source": "\"Try IDM 30-days free trial\" — <g1>internetdownloadmanager.com</g1>; prices at <g2>its purchase page</g2>",
-   "text": "«نسخه آزمایشی ۳۰ روزه IDM را امتحان کنید» — <g1>internetdownloadmanager.com</g1>؛ قیمت‌ها در <g2>صفحه خرید آن</g2>"
+   "text": "«نسخه آزمایشی 30 روزه IDM را امتحان کنید» — <g1>internetdownloadmanager.com</g1>؛ قیمت‌ها در <g2>صفحه خرید آن</g2>"
   },
   "6d8509c5a6eeec47": {
    "source": "Column",
@@ -3428,7 +3456,7 @@
   },
   "6de62748781cd023": {
    "source": "100 MiB, 2 MB/s per connection",
-   "text": "۱۰۰ میبی‌بایت، ۲ مگابایت بر ثانیه برای هر اتصال"
+   "text": "100 میبی‌بایت، 2 مگابایت بر ثانیه برای هر اتصال"
   },
   "6df01536fc30f541": {
    "source": "<g1>Torrents, built in</g1> <g2>Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.</g2> <g3><g4></g4></g3>",
@@ -3528,7 +3556,7 @@
   },
   "700bb1f331ccb359": {
    "source": "Very likely: MDM speaks 86 languages, every display language Windows 11 offers, chosen on the first start or any time in View → Language. Arabic, Hebrew…",
-   "text": "به احتمال زیاد: MDM به ۸۶ زبان صحبت می‌کند، تمام زبان‌های نمایشی که Windows 11 ارائه می‌دهد، که در اولین راه‌اندازی یا هر زمان در نما → زبان انتخاب می‌شود. عربی، عبری…"
+   "text": "به احتمال زیاد: MDM به 86 زبان صحبت می‌کند، تمام زبان‌های نمایشی که Windows 11 ارائه می‌دهد، که در اولین راه‌اندازی یا هر زمان در نما → زبان انتخاب می‌شود. عربی، عبری…"
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -3544,7 +3572,7 @@
   },
   "70c4b3c5ac70fcc0": {
    "source": "In the same window, set <g1>Maximum download speed for one file</g1>. It starts at 10 KBytes/sec, which is very slow, so set it first.",
-   "text": "در همان پنجره، <g1>حداکثر سرعت بارگیری برای یک فایل</g1> را تنظیم کنید. این مقدار از ۱۰ کیلوبایت/ثانیه شروع می‌شود که بسیار کند است، بنابراین ابتدا آن را تنظیم کنید."
+   "text": "در همان پنجره، <g1>حداکثر سرعت بارگیری برای یک فایل</g1> را تنظیم کنید. این مقدار از 10 کیلوبایت/ثانیه شروع می‌شود که بسیار کند است، بنابراین ابتدا آن را تنظیم کنید."
   },
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
@@ -3612,7 +3640,7 @@
   },
   "72c2f96db7aa7caa": {
    "source": "1. Put MDM on the stick",
-   "text": "۱. MDM را روی فلش مموری قرار دهید"
+   "text": "1. MDM را روی فلش مموری قرار دهید"
   },
   "72f381013a320442": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
@@ -3624,7 +3652,7 @@
   },
   "73460447cd841230": {
    "source": "1 GiB over a fast local link",
-   "text": "۱ گیبی‌بایت از طریق یک لینک محلی سریع"
+   "text": "1 گیبی‌بایت از طریق یک لینک محلی سریع"
   },
   "734da40a1b2e7f72": {
    "source": "Everything MDM doesn't take stays with the browser.",
@@ -3660,7 +3688,7 @@
   },
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
-   "text": "یک فایل ۲۵۶ کیلوبایتی. MDM در ۳۰ میلی‌ثانیه کارش تمام می‌شود؛ IDM هنوز در حال شروع است."
+   "text": "یک فایل 256 کیلوبایتی. MDM در 30 میلی‌ثانیه کارش تمام می‌شود؛ IDM هنوز در حال شروع است."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -3712,7 +3740,7 @@
   },
   "75a8d67e8ef43ede": {
    "source": "End-to-end medians with interquartile ranges, the ratio with its 95% interval, and the Mann–Whitney test, as <x1/> writes them.",
-   "text": "میانه‌های کامل با دامنه‌های بین چارکی، نسبت با فاصله ۹۵% آن، و آزمون Mann–Whitney، همانطور که <x1/> آنها را می‌نویسد."
+   "text": "میانه‌های کامل با دامنه‌های بین چارکی، نسبت با فاصله 95% آن، و آزمون Mann–Whitney، همانطور که <x1/> آنها را می‌نویسد."
   },
   "75adee39bc161169": {
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
@@ -3744,7 +3772,7 @@
   },
   "775ff017f13cc6a8": {
    "source": "What's new in version 0.2.1 <g1>2026-10-31</g1>",
-   "text": "چه چیز جدیدی در نسخه 0.2.1 <g1>۲۰۲۶-۱۰-۳۱</g1>"
+   "text": "چه چیز جدیدی در نسخه 0.2.1 <g1>2026-10-31</g1>"
   },
   "777ca12141d01bbb": {
    "source": "One universal download for Apple Silicon and Intel",
@@ -3756,7 +3784,7 @@
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
-   "text": "سپس، MDM دو کمک‌کننده ویدیوی رایگان خود را ارائه می‌دهد: <g1>yt-dlp</g1> که ویدیو را در یک صفحه پیدا می‌کند، و <g2>ffmpeg</g2> که تصویر و صدای آن را به هم می‌پیوندد. روی <g3>بله، آن‌ها را دانلود کنید (توصیه می‌شود)</g3> کلیک کنید تا آن‌ها در پس‌زمینه، حدود ۱۰۰ مگابایت، یک بار دانلود شوند. <g4>فعلا نه</g4> آن‌ها را برای بعد می‌گذارد: پنجره ویدیو آن‌ها را زمانی که برای اولین بار به آن‌ها نیاز دارید، ارائه می‌دهد. اطلاعات بیشتر در <g5>ویدیوها</g5>."
+   "text": "سپس، MDM دو کمک‌کننده ویدیوی رایگان خود را ارائه می‌دهد: <g1>yt-dlp</g1> که ویدیو را در یک صفحه پیدا می‌کند، و <g2>ffmpeg</g2> که تصویر و صدای آن را به هم می‌پیوندد. روی <g3>بله، آن‌ها را دانلود کنید (توصیه می‌شود)</g3> کلیک کنید تا آن‌ها در پس‌زمینه، حدود 100 مگابایت، یک بار دانلود شوند. <g4>فعلا نه</g4> آن‌ها را برای بعد می‌گذارد: پنجره ویدیو آن‌ها را زمانی که برای اولین بار به آن‌ها نیاز دارید، ارائه می‌دهد. اطلاعات بیشتر در <g5>ویدیوها</g5>."
   },
   "77c9a0380245b26d": {
    "source": "In MDM, click <g1>Add URL</g1> (or press <g2>Ctrl+N</g2>) and click <g3>OK</g3>. MDM sees that the address is a video's page and opens <g4>Download video from a page</g4>. (You can also open it with <g5>Tasks → Download video from a page...</g5>, paste the address and click <g6>Look up</g6>.)",
@@ -3780,7 +3808,7 @@
   },
   "7876ce34684ebe06": {
    "source": "About 40, as separate downloads<g1><g2>3</g2></g1>",
-   "text": "حدود ۴۰ زبان، به صورت دانلودهای جداگانه<g1><g2>3</g2></g1>"
+   "text": "حدود 40 زبان، به صورت دانلودهای جداگانه<g1><g2>3</g2></g1>"
   },
   "787aa2d926139bb5": {
    "source": "<g1>Crash reports.</g1> If MDM closes unexpectedly or stops responding, a report window opens. It shows what happened and where in MDM's code, lets you read the whole report, and <g2>Send on GitHub</g2> opens a crash report form in your browser, filled in. Nothing is sent by itself. When the same problem was already reported, it takes you to that issue instead. A frozen MDM can be ended and restarted from there. Reports leave out your download addresses and file names. See <g3>Crash reports</g3>.",
@@ -3824,11 +3852,15 @@
   },
   "7a08d84de72aab24": {
    "source": "10 and 11",
-   "text": "۱۰ و ۱۱"
+   "text": "10 و 11"
   },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "افزودن یک دانلود (<g1>افزودن URL</g1>)"
+  },
+  "7a68d73f601fe50b": {
+   "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and…",
+   "text": "Windows 10 و 11، 64-بیت، پلتفرم اصلی است. نسخه‌های macOS (یک بارگیری برای مک‌های Apple Silicon و Intel) و Linux (AppImage، .deb، .rpm و…) نیز با هر انتشار ارائه می‌شوند؛ این نسخه‌ها آزمایشی نامیده می‌شوند زیرا جدید هستند و کمتر آزمایش شده‌اند."
   },
   "7a6ff9503edd25ad": {
    "source": "Is the site in <g1>Don't start downloading automatically from the following sites</g1>?",
@@ -3848,7 +3880,7 @@
   },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
-   "text": "گزینه <g1>محدود کردن همه دانلودها با هم به</g1> را علامت بزنید و سرعتی را بر حسب کیلوبایت/ثانیه وارد کنید. شروع خوب حدود دو سوم سرعت اتصال شماست. (۱ مگابایت/ثانیه حدود ۱۰۰۰ کیلوبایت/ثانیه است.)"
+   "text": "گزینه <g1>محدود کردن همه دانلودها با هم به</g1> را علامت بزنید و سرعتی را بر حسب کیلوبایت/ثانیه وارد کنید. شروع خوب حدود دو سوم سرعت اتصال شماست. (1 مگابایت/ثانیه حدود 1000 کیلوبایت/ثانیه است.)"
   },
   "7ad036d9b7333f33": {
    "source": "Recommended",
@@ -3908,7 +3940,7 @@
   },
   "7cc12e681b9e7519": {
    "source": "Mister Download Manager in 86 languages — translations",
-   "text": "Mister Download Manager به ۸۶ زبان — ترجمه‌ها"
+   "text": "Mister Download Manager به 86 زبان — ترجمه‌ها"
   },
   "7ce987620338a702": {
    "source": "To take a download out of its queue, right-click it and choose <g1>Delete from queue</g1>. The download stays in the list.",
@@ -3928,7 +3960,7 @@
   },
   "7d2368183a8b4aea": {
    "source": "How many times faster MDM finished, from command to finished file. The whisker is the 95% interval of the ratio; the scale is logarithmic.",
-   "text": "چند برابر سریع‌تر MDM از دستور تا فایل تکمیل‌شده، کار را به پایان رساند. خطوط نشان‌دهنده بازه ۹۵% نسبت هستند؛ مقیاس لگاریتمی است."
+   "text": "چند برابر سریع‌تر MDM از دستور تا فایل تکمیل‌شده، کار را به پایان رساند. خطوط نشان‌دهنده بازه 95% نسبت هستند؛ مقیاس لگاریتمی است."
   },
   "7d2a1df7bf483f1d": {
    "source": "Debian, Ubuntu, Mint · Fedora, openSUSE, RHEL",
@@ -4108,7 +4140,7 @@
   },
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
-   "text": "رابط کاربری MDM به ۸۶ زبان ارائه می‌شود: تمام زبان‌های نمایشی که Windows 11 ارائه می‌دهد، از آفریکانس تا ویتنامی، شامل هر دو خط چینی، اسپانیایی برای…"
+   "text": "رابط کاربری MDM به 86 زبان ارائه می‌شود: تمام زبان‌های نمایشی که Windows 11 ارائه می‌دهد، از آفریکانس تا ویتنامی، شامل هر دو خط چینی، اسپانیایی برای…"
   },
   "81ea369617c129d6": {
    "source": "Options → Save to →",
@@ -4156,7 +4188,7 @@
   },
   "835d8bb1b02e82f1": {
    "source": "<g1>Downloads on a schedule</g1> <g2>Queues that start at 2 a.m., stop by 7 and turn the computer off when they're done.</g2> <g3><g4></g4></g3>",
-   "text": "<g1>بارگیری‌ها بر اساس برنامه</g1> <g2>صف‌هایی که ساعت ۲ صبح شروع می‌شوند، تا ۷ متوقف می‌شوند و پس از اتمام کار، رایانه را خاموش می‌کنند.</g2> <g3><g4></g4></g3>"
+   "text": "<g1>بارگیری‌ها بر اساس برنامه</g1> <g2>صف‌هایی که ساعت 2 صبح شروع می‌شوند، تا 7 متوقف می‌شوند و پس از اتمام کار، رایانه را خاموش می‌کنند.</g2> <g3><g4></g4></g3>"
   },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
@@ -4176,7 +4208,7 @@
   },
   "83b7e1529c1cbdec": {
    "source": "0.00 s",
-   "text": "۰.۰۰ ثانیه"
+   "text": "0.00 ثانیه"
   },
   "83caac9f938cc79a": {
    "source": "How a program talks to MDM",
@@ -4208,7 +4240,7 @@
   },
   "84a64e8448db3640": {
    "source": "Last updated 2026-11-01",
-   "text": "آخرین به‌روزرسانی: ۲۰۲۶-۱۱-۰۱"
+   "text": "آخرین به‌روزرسانی: 2026-11-01"
   },
   "84a8b37a9cdcaee5": {
    "source": "Translations",
@@ -4244,7 +4276,7 @@
   },
   "85fef32614c0cce8": {
    "source": "The website is in 20 languages too, also machine-translated. Its texts are in <x1/>, one row per sentence: fix a row's <x2/> (keep tags like <x3/> and <x4/> as they are, they are the links and icons). <x5/> shows what each language still lacks, and the same tool with <x6/> translates only that.",
-   "text": "وب‌سایت هم به ۲۰ زبان، از جمله ترجمه ماشینی، موجود است. متون آن در <x1/>، هر سطر یک جمله: <x2/> یک سطر را اصلاح کنید (تگ‌هایی مانند <x3/> و <x4/> را همان‌طور که هستند نگه دارید، آن‌ها لینک‌ها و آیکون‌ها هستند). <x5/> نشان می‌دهد که هر زبان هنوز چه کمبودهایی دارد، و همان ابزار با <x6/> فقط آن را ترجمه می‌کند."
+   "text": "وب‌سایت هم به 20 زبان، از جمله ترجمه ماشینی، موجود است. متون آن در <x1/>، هر سطر یک جمله: <x2/> یک سطر را اصلاح کنید (تگ‌هایی مانند <x3/> و <x4/> را همان‌طور که هستند نگه دارید، آن‌ها لینک‌ها و آیکون‌ها هستند). <x5/> نشان می‌دهد که هر زبان هنوز چه کمبودهایی دارد، و همان ابزار با <x6/> فقط آن را ترجمه می‌کند."
   },
   "86b49ac974511671": {
    "source": "Older versions and source code",
@@ -4280,7 +4312,7 @@
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
-   "text": "<g1>ذخیره با نام</g1> — پوشه و نام فایل. می‌توانید نام دیگری تایپ کنید، یکی از ۲۰ پوشه آخری که در آن‌ها ذخیره کرده‌اید را از فلش در انتهای آن انتخاب کنید، یا با <g2>...</g2> یک پوشه را انتخاب کنید."
+   "text": "<g1>ذخیره با نام</g1> — پوشه و نام فایل. می‌توانید نام دیگری تایپ کنید، یکی از 20 پوشه آخری که در آن‌ها ذخیره کرده‌اید را از فلش در انتهای آن انتخاب کنید، یا با <g2>...</g2> یک پوشه را انتخاب کنید."
   },
   "878617cd3944420f": {
    "source": "When resuming isn't possible",
@@ -4308,7 +4340,7 @@
   },
   "8893720638f95e94": {
    "source": "4. Third-party components",
-   "text": "۴. اجزای شخص ثالث"
+   "text": "4. اجزای شخص ثالث"
   },
   "8899ec1c903c0f82": {
    "source": "The browser extension can't send downloads to a portable copy, because that needs the installer.",
@@ -4448,7 +4480,7 @@
   },
   "8d2e4423f6df4df8": {
    "source": "3. Using it responsibly",
-   "text": "۳. استفاده مسئولانه از آن"
+   "text": "3. استفاده مسئولانه از آن"
   },
   "8d38b34a197f5a70": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
@@ -4456,7 +4488,7 @@
   },
   "8d8e052bd62085d8": {
    "source": "<g1>Statistics.</g1> Medians with interquartile ranges, bootstrap 95% intervals (10,000 resamples) for each median and for the ratio of medians, and a two-sided Mann–Whitney U test.",
-   "text": "<g1>آمار.</g1> میانه با دامنه بین چارکی، فواصل ۹۵% بوت‌استرپ (۱۰,۰۰۰ نمونه‌گیری مجدد) برای هر میانه و برای نسبت میانه‌ها، و یک آزمون U دوطرفه Mann–Whitney."
+   "text": "<g1>آمار.</g1> میانه با دامنه بین چارکی، فواصل 95% بوت‌استرپ (10,000 نمونه‌گیری مجدد) برای هر میانه و برای نسبت میانه‌ها، و یک آزمون U دوطرفه Mann–Whitney."
   },
   "8dafbe13895c785d": {
    "source": "In short",
@@ -4504,7 +4536,7 @@
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
-   "text": "یک سرور که دو اتصال را مجاز می‌کند. MDM آن را یاد می‌گیرد و به دو اتصال پایبند می‌ماند؛ IDM ۴۸۰ اتصال باز کرد."
+   "text": "یک سرور که دو اتصال را مجاز می‌کند. MDM آن را یاد می‌گیرد و به دو اتصال پایبند می‌ماند؛ IDM 480 اتصال باز کرد."
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -4520,7 +4552,7 @@
   },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
-   "text": "۵.۵ ثانیه<g1><g2>2</g2></g1>"
+   "text": "5.5 ثانیه<g1><g2>2</g2></g1>"
   },
   "906a0cbc955706d5": {
    "source": "Not yet",
@@ -4529,10 +4561,6 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "نسخه <x1/> نصب‌کننده ندارد، اما می‌توانید برنامه کمکی را خودتان ثبت کنید. یک خط فرمان را در پوشه MDM باز کنید و اجرا کنید:"
-  },
-  "90d545cb513eb042": {
-   "source": "Yes. In IDM, export your list (Tasks → Export → To IDM export file). In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See Adding downloads.",
-   "text": "بله. در IDM، فهرست خود را صادر کنید (وظایف ← صادر کردن ← به فایل صادراتی IDM). در MDM، وظایف ← وارد کردن ← از فایل خروجی IDM را انتخاب کرده و آن فایل .ef2 را برگزینید: هر بارگیری با نشانی، ارجاع‌دهنده و کوکی‌هایش منتقل می‌شود. یک فایل متنی ساده از پیوندها نیز کار می‌کند. به افزودن بارگیری‌ها مراجعه کنید."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -4656,7 +4684,7 @@
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
-   "text": "Mister Download Manager («MDM»، «نرم‌افزار») و وب‌سایت misterdownloadmanager.com («سایت») توسط Ahmed Nefzaoui و مشارکت‌کنندگان («ما») ساخته شده‌اند. با استفاده از نرم‌افزار یا سایت، شما این شرایط را می‌پذیرید. در غیر این صورت، لطفا از آن‌ها استفاده نکنید."
+   "text": "Mister Download Manager («MDM»، «نرم‌افزار») و وب‌سایت misterdownloadmanager.com («سایت») توسط احمد نفزاوی و مشارکت‌کنندگان («ما») ساخته شده‌اند. با استفاده از نرم‌افزار یا سایت، شما این شرایط را می‌پذیرید. در غیر این صورت، لطفا از آن‌ها استفاده نکنید."
   },
   "9434b8330f4457a2": {
    "source": "Queues and the Scheduler →",
@@ -4866,6 +4894,10 @@
    "source": "Keep <x1/> and the one <x2/> (the keyboard shortcut letter) as they are.",
    "text": "<x1/> و <x2/> (حرف میانبر صفحه کلید) را همانطور که هستند نگه دارید."
   },
+  "9a7e8a7fcdad1262": {
+   "source": "Yes. In IDM, export your list with Tasks → Export → To IDM export file. In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every…",
+   "text": "بله. در IDM، فهرست خود را با Tasks ← Export ← To IDM export file صادر کنید. در MDM، Tasks ← Import ← From IDM export file را انتخاب کرده و آن فایل .ef2 را برگزینید: هر…"
+  },
   "9a898519717fc749": {
    "source": "Start MDM. The server can't start it for you.",
    "text": "MDM را شروع کنید. سرور نمی‌تواند آن را برای شما شروع کند."
@@ -4904,7 +4936,7 @@
   },
   "9bb90abfa6162f11": {
    "source": "1. Who we are",
-   "text": "۱. ما که هستیم"
+   "text": "1. ما که هستیم"
   },
   "9be7deca7d13f40b": {
    "source": "Keys to force or prevent capture",
@@ -4992,11 +5024,15 @@
   },
   "9ee01014043d0097": {
    "source": "Yes. It's open source under the GNU GPL, version 3. No trial, no paid edition, no registration key, no nag screen, no ads. <g1>More</g1>",
-   "text": "بله. این نرم‌افزار تحت مجوز GNU GPL، نسخه ۳، متن‌باز است. بدون نسخه آزمایشی، بدون نسخه پولی، بدون کلید ثبت‌نام، بدون صفحه آزاردهنده، بدون تبلیغات. <g1>بیشتر</g1>"
+   "text": "بله. این نرم‌افزار تحت مجوز GNU GPL، نسخه 3، متن‌باز است. بدون نسخه آزمایشی، بدون نسخه پولی، بدون کلید ثبت‌نام، بدون صفحه آزاردهنده، بدون تبلیغات. <g1>بیشتر</g1>"
   },
   "9f1b18ba278b131b": {
    "source": "<g1>The app's own command line</g1>, the same switches as IDM's: hand a download to the running app from a script, a batch file or another program.",
    "text": "<g1>خط فرمان خود برنامه</g1>، همان سوئیچ‌های IDM: یک بارگیری را از یک اسکریپت، یک فایل دسته‌ای یا برنامه دیگر به برنامه در حال اجرا بسپارید."
+  },
+  "9f205a2e0f05f0f5": {
+   "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all welcome.",
+   "text": "MDM توسط احمد نفزاوی، یک توسعه‌دهنده مستقل، ساخته شده است و پذیرای مشارکت همه در GitHub است. گزارش‌های باگ، ترجمه‌ها و کد همگی مورد استقبال قرار می‌گیرند."
   },
   "9f478902968ca400": {
    "source": "Install in three steps",
@@ -5028,7 +5064,7 @@
   },
   "a037f2038ab4ded4": {
    "source": "Up to 32 connections per file, re-split as they go",
-   "text": "تا ۳۲ اتصال برای هر فایل، با تقسیم مجدد در حین کار"
+   "text": "تا 32 اتصال برای هر فایل، با تقسیم مجدد در حین کار"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -5084,7 +5120,7 @@
   },
   "a2ecbbee3658b831": {
    "source": "480 connections against 2.",
-   "text": "۴۸۰ اتصال در برابر ۲ اتصال."
+   "text": "480 اتصال در برابر 2 اتصال."
   },
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
@@ -5140,7 +5176,7 @@
   },
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
-   "text": "رابط کاربری MDM به ۸۶ زبان ارائه می‌شود: هر زبان نمایشی که Windows 11 ارائه می‌دهد، از آفریکانس تا ویتنامی، شامل هر دو خط چینی، اسپانیایی برای اسپانیا و مکزیک، فرانسوی برای فرانسه و کانادا، پرتغالی برای پرتغال و برزیل، و صربی به خط سیریلیک و لاتین."
+   "text": "رابط کاربری MDM به 86 زبان ارائه می‌شود: هر زبان نمایشی که Windows 11 ارائه می‌دهد، از آفریکانس تا ویتنامی، شامل هر دو خط چینی، اسپانیایی برای اسپانیا و مکزیک، فرانسوی برای فرانسه و کانادا، پرتغالی برای پرتغال و برزیل، و صربی به خط سیریلیک و لاتین."
   },
   "a52b4fbee3f29f57": {
    "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> (<x2/>: unzip, then <g3>Load unpacked</g3> on the browser's extensions page with Developer mode on)",
@@ -5184,7 +5220,7 @@
   },
   "a65e3187925f9f37": {
    "source": "256 KiB file over a fast local link",
-   "text": "فایل ۲۵۶ کیلوبایتی از طریق یک لینک محلی سریع"
+   "text": "فایل 256 کیلوبایتی از طریق یک لینک محلی سریع"
   },
   "a67015ec28a9f976": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the…",
@@ -5192,11 +5228,11 @@
   },
   "a67499fbcf74e61d": {
    "source": "A 256 KiB file",
-   "text": "یک فایل ۲۵۶ کیلوبایتی"
+   "text": "یک فایل 256 کیلوبایتی"
   },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
-   "text": "۷. نام‌ها و لوگوها"
+   "text": "7. نام‌ها و لوگوها"
   },
   "a6b0e6db519b23bf": {
    "source": "Is Mister Download Manager really free? — Mister Download Manager",
@@ -5204,7 +5240,7 @@
   },
   "a6b3dc565ef67e7b": {
    "source": "Pull requests are accepted under the project's licence, the <g1>GNU GPL, version 3 or later</g1>.",
-   "text": "درخواست‌های پول (pull requests) تحت مجوز پروژه، <g1>GNU GPL، نسخه ۳ یا بالاتر</g1> پذیرفته می‌شوند."
+   "text": "درخواست‌های پول (pull requests) تحت مجوز پروژه، <g1>GNU GPL، نسخه 3 یا بالاتر</g1> پذیرفته می‌شوند."
   },
   "a6ce09b9c1c7e4cf": {
    "source": "Internet Download Manager 6.42",
@@ -5364,11 +5400,11 @@
   },
   "ac1ba7ef6480ed92": {
    "source": ", <x1/>, <x2/>, <x3/>, <x4/> and <x5/> exit with code 1 when the app answers with an error (the API is off, an unknown action), as they do when the app isn't running.",
-   "text": "، <x1/>، <x2/>، <x3/>، <x4/> و <x5/> با کد ۱ خارج می‌شوند وقتی برنامه با خطا پاسخ می‌دهد (API خاموش است، یک عمل ناشناخته)، همانطور که وقتی برنامه در حال اجرا نیست."
+   "text": "، <x1/>، <x2/>، <x3/>، <x4/> و <x5/> با کد 1 خارج می‌شوند وقتی برنامه با خطا پاسخ می‌دهد (API خاموش است، یک عمل ناشناخته)، همانطور که وقتی برنامه در حال اجرا نیست."
   },
   "ac4b27cd07db9df5": {
    "source": "shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:",
-   "text": "همه گزینه‌ها را نشان می‌دهد. دستوری که با شکست مواجه می‌شود (برنامه در حال اجرا نیست، با خطا پاسخ می‌دهد، دانلود قطع می‌شود) با کد ۱ خارج می‌شود. برای مثال:"
+   "text": "همه گزینه‌ها را نشان می‌دهد. دستوری که با شکست مواجه می‌شود (برنامه در حال اجرا نیست، با خطا پاسخ می‌دهد، دانلود قطع می‌شود) با کد 1 خارج می‌شود. برای مثال:"
   },
   "ac52d45735bdf913": {
    "source": "\"Pause everything that's downloading.\"",
@@ -5376,7 +5412,7 @@
   },
   "ac53d931c9be8331": {
    "source": "The token changes at every start; only programs that can read your data folder (yours) can use it. 2. Connect to that port and send one line of JSON: the token and the command's fields, e.g. <x1/>. 3. MDM answers with one line: <x2/> for a command, or a JSON object for a question.",
-   "text": "توکن در هر بار شروع تغییر می‌کند؛ فقط برنامه‌هایی که می‌توانند پوشه داده‌های شما (شما) را بخوانند، می‌توانند از آن استفاده کنند. ۲. به آن پورت متصل شوید و یک خط JSON ارسال کنید: توکن و فیلدهای دستور، مثلا <x1/>. ۳. MDM با یک خط پاسخ می‌دهد: <x2/> برای یک دستور، یا یک شیء JSON برای یک سوال."
+   "text": "توکن در هر بار شروع تغییر می‌کند؛ فقط برنامه‌هایی که می‌توانند پوشه داده‌های شما (شما) را بخوانند، می‌توانند از آن استفاده کنند. 2. به آن پورت متصل شوید و یک خط JSON ارسال کنید: توکن و فیلدهای دستور، مثلا <x1/>. 3. MDM با یک خط پاسخ می‌دهد: <x2/> برای یک دستور، یا یک شیء JSON برای یک سوال."
   },
   "aca7e2c7c8203a37": {
    "source": "Browser integration needs one more step in each browser: loading the extension. <g1>Browser integration</g1> shows how.",
@@ -5404,7 +5440,7 @@
   },
   "ad298e7cabb9be62": {
    "source": "Uses 2, done in 12.6 s",
-   "text": "از ۲ اتصال استفاده می‌کند، در ۱۲.۶ ثانیه انجام می‌شود"
+   "text": "از 2 اتصال استفاده می‌کند، در 12.6 ثانیه انجام می‌شود"
   },
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
@@ -5440,7 +5476,7 @@
   },
   "ae5e388ca494c5cf": {
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in our benchmark, speaks 86 languages and has experimental builds for macOS and Linux. IDM is the more mature product, refined over many years. See the full comparison.",
-   "text": "طرح‌بندی عمدا آشناست: نوار ابزار، دسته‌بندی‌ها، فهرست بارگیری، پنجره پیشرفت با هر اتصال، صف‌ها و زمان‌بندی. تفاوت‌ها: MDM رایگان و متن‌باز است، پیوندهای BitTorrent و magnet را در همان فهرست بارگیری می‌کند، در معیار ما سریع‌تر به پایان رسید، به ۸۶ زبان صحبت می‌کند و نسخه‌های آزمایشی برای macOS و Linux دارد. IDM محصولی بالغ‌تر است که طی سال‌ها بهبود یافته است. مقایسه کامل را ببینید."
+   "text": "طرح‌بندی عمدا آشناست: نوار ابزار، دسته‌بندی‌ها، فهرست بارگیری، پنجره پیشرفت با هر اتصال، صف‌ها و زمان‌بندی. تفاوت‌ها: MDM رایگان و متن‌باز است، پیوندهای BitTorrent و magnet را در همان فهرست بارگیری می‌کند، در معیار ما سریع‌تر به پایان رسید، به 86 زبان صحبت می‌کند و نسخه‌های آزمایشی برای macOS و Linux دارد. IDM محصولی بالغ‌تر است که طی سال‌ها بهبود یافته است. مقایسه کامل را ببینید."
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -5464,7 +5500,7 @@
   },
   "aeea31ff4889dbde": {
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
-   "text": "<g1>آدرس</g1> (افزودن URL) و <g2>ذخیره با نام</g2> (اطلاعات فایل بارگیری) ۲۰ آدرس و پوشه آخر را از فلش‌های خود لیست می‌کنند؛ <g3>...</g3> کنار ذخیره با نام یک پوشه را انتخاب می‌کند، <g4>+</g4> کنار دسته یکی را می‌سازد."
+   "text": "<g1>آدرس</g1> (افزودن URL) و <g2>ذخیره با نام</g2> (اطلاعات فایل بارگیری) 20 آدرس و پوشه آخر را از فلش‌های خود لیست می‌کنند؛ <g3>...</g3> کنار ذخیره با نام یک پوشه را انتخاب می‌کند، <g4>+</g4> کنار دسته یکی را می‌سازد."
   },
   "af3db50095e6e22e": {
    "source": "News feed",
@@ -5648,7 +5684,7 @@
   },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
-   "text": "محدودیت را از پاسخ سرور یاد می‌گیرد، به آن پایبند می‌ماند و برای دفعه بعد به خاطر می‌سپارد. در ۱۲.۶ ثانیه به پایان رسید."
+   "text": "محدودیت را از پاسخ سرور یاد می‌گیرد، به آن پایبند می‌ماند و برای دفعه بعد به خاطر می‌سپارد. در 12.6 ثانیه به پایان رسید."
   },
   "b4fb0012bd71528e": {
    "source": "Added",
@@ -5692,7 +5728,7 @@
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
-   "text": "۹. تغییرات"
+   "text": "9. تغییرات"
   },
   "b6c726de6b97d025": {
    "source": "11 and later",
@@ -5720,7 +5756,7 @@
   },
   "b73adcfb797ce9e9": {
    "source": "<g1>Options → Regional</g1>: dates and times as your region writes them, or your own way (day, month or year first, 12- or 24-hour clock, the week's first day); the list and the Scheduler follow.",
-   "text": "<g1>گزینه‌ها → منطقه‌ای</g1>: تاریخ‌ها و زمان‌ها به شکلی که منطقه شما می‌نویسد، یا به روش خودتان (روز، ماه یا سال اول، ساعت ۱۲ یا ۲۴ ساعته، اولین روز هفته)؛ لیست و زمان‌بند پیروی می‌کنند."
+   "text": "<g1>گزینه‌ها → منطقه‌ای</g1>: تاریخ‌ها و زمان‌ها به شکلی که منطقه شما می‌نویسد، یا به روش خودتان (روز، ماه یا سال اول، ساعت 12 یا 24 ساعته، اولین روز هفته)؛ لیست و زمان‌بند پیروی می‌کنند."
   },
   "b793f20aa217a8fa": {
    "source": "If MDM or this website ever needs to use a new service, this page will say so first, and the change will be listed in <g1>What's new</g1>. Past versions of this page are in the project's history on GitHub.",
@@ -5736,7 +5772,7 @@
   },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
-   "text": "این برنامه به ۸۶ زبان ارائه می‌شود، یعنی تمام زبان‌هایی که Windows 11 پشتیبانی می‌کند. زبان برنامه از زبان کامپیوتر شما پیروی می‌کند و هر زمان می‌توانید آن را در نما → زبان تغییر دهید."
+   "text": "این برنامه به 86 زبان ارائه می‌شود، یعنی تمام زبان‌هایی که Windows 11 پشتیبانی می‌کند. زبان برنامه از زبان کامپیوتر شما پیروی می‌کند و هر زمان می‌توانید آن را در نما → زبان تغییر دهید."
   },
   "b7e9c3ecd7fadf7a": {
    "source": "Role",
@@ -5768,7 +5804,7 @@
   },
   "b921c33f58e520a8": {
    "source": "<g1>5.4×</g1><g2>faster</g2>",
-   "text": "<g1>۵.۴ برابر</g1><g2>سریع‌تر</g2>"
+   "text": "<g1>5.4 برابر</g1><g2>سریع‌تر</g2>"
   },
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
@@ -5780,7 +5816,7 @@
   },
   "b96597d534e090d4": {
    "source": "100 MiB, 150 ms latency, 4 MB/s per connection",
-   "text": "۱۰۰ مگابایت، ۱۵۰ میلی‌ثانیه تأخیر، ۴ مگابایت بر ثانیه برای هر اتصال"
+   "text": "100 مگابایت، 150 میلی‌ثانیه تأخیر، 4 مگابایت بر ثانیه برای هر اتصال"
   },
   "b969ef14e7c6e518": {
    "source": "Tutorial: download overnight →",
@@ -5788,7 +5824,7 @@
   },
   "b97c8337ca7df15d": {
    "source": "Mister Download Manager in 86 languages",
-   "text": "Mister Download Manager به ۸۶ زبان"
+   "text": "Mister Download Manager به 86 زبان"
   },
   "b9fcc6b45167f69f": {
    "source": "Download a torrent, or only some of its files.",
@@ -5812,11 +5848,11 @@
   },
   "badd22766a5d58ab": {
    "source": "6. Limitation of liability",
-   "text": "۶. محدودیت مسئولیت"
+   "text": "6. محدودیت مسئولیت"
   },
   "bb154512f21f1dec": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (حدود ۸۰ مگابایت) ویدئو و صدای آن را زمانی که یک سایت آن‌ها را جدا نگه می‌دارد، که بیشتر سایت‌ها برای کیفیت‌های بالاتر این کار را می‌کنند، به هم متصل می‌کند. زمانی که MDM آن را پیشنهاد می‌دهد، روی <g2>نصب ffmpeg</g2> کلیک کنید. MDM آن را با چک‌سام‌های منتشر شده در نسخه آن بررسی می‌کند."
+   "text": "<g1>ffmpeg</g1> (حدود 80 مگابایت) ویدئو و صدای آن را زمانی که یک سایت آن‌ها را جدا نگه می‌دارد، که بیشتر سایت‌ها برای کیفیت‌های بالاتر این کار را می‌کنند، به هم متصل می‌کند. زمانی که MDM آن را پیشنهاد می‌دهد، روی <g2>نصب ffmpeg</g2> کلیک کنید. MDM آن را با چک‌سام‌های منتشر شده در نسخه آن بررسی می‌کند."
   },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
@@ -5844,7 +5880,7 @@
   },
   "bc030f9b56273dbe": {
    "source": "1 GiB over a fast link. IDM spends 3 s before its first request reaches the server.",
-   "text": "۱ گیگابایت از طریق یک لینک سریع. IDM قبل از اینکه اولین درخواستش به سرور برسد، ۳ ثانیه صرف می‌کند."
+   "text": "1 گیگابایت از طریق یک لینک سریع. IDM قبل از اینکه اولین درخواستش به سرور برسد، 3 ثانیه صرف می‌کند."
   },
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
@@ -5860,7 +5896,7 @@
   },
   "bc2e9b93fe95f751": {
    "source": "3.1 s<g1><g2>2</g2></g1>",
-   "text": "۳.۱ ثانیه<g1><g2>2</g2></g1>"
+   "text": "3.1 ثانیه<g1><g2>2</g2></g1>"
   },
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
@@ -5885,6 +5921,10 @@
   "bcfa5eb2ba6b105c": {
    "source": "Start the main download queue.",
    "text": "صف اصلی بارگیری را شروع کنید."
+  },
+  "bd0124357425c778": {
+   "source": "Yes. In IDM, export your list with <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g4>Adding downloads</g4>.",
+   "text": "بله. در IDM، فهرست خود را با <g1>وظایف ← صادر کردن ← به فایل صادراتی IDM</g1> صادر کنید. در MDM، <g2>وظایف ← وارد کردن ← از فایل خروجی IDM</g2> را انتخاب کرده و آن فایل <x3/> را برگزینید: هر دانلود با آدرس، ارجاع‌دهنده و کوکی‌هایش منتقل می‌شود. یک فایل متنی ساده از لینک‌ها نیز کار می‌کند. به <g4>افزودن دانلودها</g4> مراجعه کنید."
   },
   "bd38ebc1b5f00936": {
    "source": "Scenario",
@@ -5914,13 +5954,17 @@
    "source": "There are several ways to give MDM something to download. Most of them end in the same window, <g1>Download File Info</g1>, where you choose where the file goes.",
    "text": "چندین راه برای دادن چیزی برای دانلود به MDM وجود دارد. بیشتر آنها به یک پنجره، <g1>اطلاعات فایل بارگیری</g1>، ختم می‌شوند که در آنجا محل ذخیره فایل را انتخاب می‌کنید."
   },
+  "be084d135955b9b6": {
+   "source": "<g1>Mac and Linux too</g1>, as experimental builds, if you use more than Windows.",
+   "text": "<g1>برای مک و Linux</g1> هم نسخه‌های آزمایشی دارد، اگر فقط از Windows استفاده نمی‌کنید."
+  },
   "be14d04df892aaf9": {
    "source": "3. Use it",
-   "text": "۳. از آن استفاده کنید"
+   "text": "3. از آن استفاده کنید"
   },
   "be3fe1b3f5a5749a": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period…",
-   "text": "بله، کاملا. Mister Download Manager (MDM) یک نرم‌افزار رایگان و متن‌باز تحت مجوز عمومی همگانی گنو، نسخه ۳ است. هیچ دوره آزمایشی ندارد…"
+   "text": "بله، کاملا. Mister Download Manager (MDM) یک نرم‌افزار رایگان و متن‌باز تحت مجوز عمومی همگانی گنو، نسخه 3 است. هیچ دوره آزمایشی ندارد…"
   },
   "be46b102bff9f95e": {
    "source": "MDM runs only once. Starting it again brings the running copy's window to the front. If nothing appears, look for MDM's icon in the notification area.",
@@ -5952,7 +5996,7 @@
   },
   "bf8eed08aa80a086": {
    "source": "<g1>86 languages, right to left too</g1> It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.",
-   "text": "<g1>۸۶ زبان، از جمله راست به چپ</g1> به زبان رایانه شما صحبت می‌کند. عربی، عبری، فارسی و اردو از راست به چپ چیده می‌شوند."
+   "text": "<g1>86 زبان، از جمله راست به چپ</g1> به زبان رایانه شما صحبت می‌کند. عربی، عبری، فارسی و اردو از راست به چپ چیده می‌شوند."
   },
   "bfb5be5f11fb070f": {
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
@@ -5972,7 +6016,7 @@
   },
   "bffef71aebafb31a": {
    "source": "10. Contact",
-   "text": "۱۰. تماس"
+   "text": "10. تماس"
   },
   "c008a73b27cfda1f": {
    "source": "<g1>Videos from web pages</g1> through yt-dlp (installed and kept current from MDM, with ffmpeg for the qualities that need merging), and <g2>BitTorrent and magnet links</g2> through librqbit: choose the files, see peers, trackers and pieces, keep sharing if you like.",
@@ -5992,7 +6036,7 @@
   },
   "c10113f6b226570a": {
    "source": "<g1>Enter new address to download</g1> opens. If the clipboard holds a web address, it is already filled in. The arrow at the end of <g2>Address</g2> lists the last 20 addresses you entered; pick one to use it again. Right-click the box for <g3>Cut</g3>, <g4>Copy</g4>, <g5>Paste</g5>, <g6>Delete</g6> and <g7>Select all</g7>.",
-   "text": "<g1>آدرس جدید برای بارگیری را وارد کنید</g1> باز می‌شود. اگر کلیپ‌بورد حاوی یک آدرس وب باشد، از قبل پر شده است. فلش در انتهای <g2>آدرس</g2> ۲۰ آدرس آخری که وارد کرده‌اید را لیست می‌کند؛ یکی را انتخاب کنید تا دوباره از آن استفاده کنید. برای <g3>برش</g3>، <g4>کپی</g4>، <g5>چسباندن</g5>، <g6>حذف</g6> و <g7>انتخاب همه</g7> روی کادر کلیک راست کنید."
+   "text": "<g1>آدرس جدید برای بارگیری را وارد کنید</g1> باز می‌شود. اگر کلیپ‌بورد حاوی یک آدرس وب باشد، از قبل پر شده است. فلش در انتهای <g2>آدرس</g2> 20 آدرس آخری که وارد کرده‌اید را لیست می‌کند؛ یکی را انتخاب کنید تا دوباره از آن استفاده کنید. برای <g3>برش</g3>، <g4>کپی</g4>، <g5>چسباندن</g5>، <g6>حذف</g6> و <g7>انتخاب همه</g7> روی کادر کلیک راست کنید."
   },
   "c123aa98640ee0cd": {
    "source": "<g1>Downloads still go to the computer's Downloads folder</g1> unless you change it. To keep them with MDM, set each category's folder in <g2>Options → Save to</g2>. <g3>Carry MDM on a USB stick</g3> shows how.",
@@ -6072,7 +6116,7 @@
   },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
-   "text": "۵۰ مگابایت، هر اتصال دوم پس از ۲ مگابایت قطع می‌شود، ۴ مگابایت بر ثانیه"
+   "text": "50 مگابایت، هر اتصال دوم پس از 2 مگابایت قطع می‌شود، 4 مگابایت بر ثانیه"
   },
   "c493cf1e8ba7e4c3": {
    "source": "Ctrl+N",
@@ -6124,7 +6168,7 @@
   },
   "c646ba36cb04a745": {
    "source": "3.39e-06",
-   "text": "۳.۳۹e-06"
+   "text": "3.39e-06"
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -6132,7 +6176,7 @@
   },
   "c6a2b86a33c71c9e": {
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
-   "text": "مجوز پولی پس از ۳۰ روز آزمایشی رایگان<g1><g2>1</g2></g1>"
+   "text": "مجوز پولی پس از 30 روز آزمایشی رایگان<g1><g2>1</g2></g1>"
   },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
@@ -6160,7 +6204,7 @@
   },
   "c7a354bd345262c3": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection. MDM uses fewer when a server allows fewer, and only one when a server…",
-   "text": "به‌طور پیش‌فرض، هشت اتصال برای هر بارگیری، و اگر در گزینه‌ها ← اتصال انتخاب کنید، تا ۳۲ اتصال. MDM وقتی سرور اتصالات کمتری را مجاز بداند، از تعداد کمتری استفاده می‌کند، و وقتی سرور…"
+   "text": "به‌طور پیش‌فرض، هشت اتصال برای هر بارگیری، و اگر در گزینه‌ها ← اتصال انتخاب کنید، تا 32 اتصال. MDM وقتی سرور اتصالات کمتری را مجاز بداند، از تعداد کمتری استفاده می‌کند، و وقتی سرور…"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -6316,7 +6360,7 @@
   },
   "cdbd4b5a71dd1ff3": {
    "source": "The one you know, down to the pixel. With torrents, video and 86 languages it never had.",
-   "text": "همانی که می‌شناسید، تا حد پیکسل. با تورنت‌ها، ویدئو و ۸۶ زبان که هرگز نداشت."
+   "text": "همانی که می‌شناسید، تا حد پیکسل. با تورنت‌ها، ویدئو و 86 زبان که هرگز نداشت."
   },
   "cddd71be4d398e2a": {
    "source": "<g1><g2>AI assistants (MCP)</g2></g1> — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.",
@@ -6336,7 +6380,7 @@
   },
   "ce72a006f1da3867": {
    "source": "Yes, completely. Mister Download Manager (MDM) is free and open-source software under the GNU General Public License, version 3. There is no trial period, no paid edition, no registration key, no nag screen and no ads, and there never will be. You may use it at home or at work, copy it and give it to others.",
-   "text": "بله، کاملا. Mister Download Manager (MDM) یک نرم‌افزار رایگان و متن‌باز تحت مجوز عمومی همگانی گنو، نسخه ۳ است. هیچ دوره آزمایشی، نسخه پولی، کلید ثبت‌نام، صفحه آزاردهنده و تبلیغاتی وجود ندارد و هرگز نخواهد بود. می‌توانید از آن در خانه یا محل کار استفاده کنید، آن را کپی کرده و به دیگران بدهید."
+   "text": "بله، کاملا. Mister Download Manager (MDM) یک نرم‌افزار رایگان و متن‌باز تحت مجوز عمومی همگانی گنو، نسخه 3 است. هیچ دوره آزمایشی، نسخه پولی، کلید ثبت‌نام، صفحه آزاردهنده و تبلیغاتی وجود ندارد و هرگز نخواهد بود. می‌توانید از آن در خانه یا محل کار استفاده کنید، آن را کپی کرده و به دیگران بدهید."
   },
   "ce766e960cac52d8": {
    "source": "FAQ",
@@ -6404,7 +6448,7 @@
   },
   "d1432f447b205626": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>گرفتن مشکلات.</g1> وقتی MDM از کار می‌افتد (یک استثنای Windows، یک سیگنال در Linux، یک استثنای Mach در macOS)، دچار وحشت می‌شود یا فریز می‌کند، از مانیتور یک دامپ می‌خواهد. فریز شدن به معنای این است که یک فریم از پنجره بیش از ۸ ثانیه اجرا شود، که توسط یک رشته نگهبان که زمان خواب را نادیده می‌گیرد، مشاهده می‌شود. سپس مانیتور یک <g2>مینی‌دامپ</g2> از هر رشته را از بیرون، از طریق <x3/> و <x4/> می‌نویسد. یک فرآیند از کار افتاده هرگز دامپ خود را نمی‌نویسد، که این همان روشی است که Firefox، Crashpad و Sentry نیز از آن استفاده می‌کنند."
+   "text": "<g1>گرفتن مشکلات.</g1> وقتی MDM از کار می‌افتد (یک استثنای Windows، یک سیگنال در Linux، یک استثنای Mach در macOS)، دچار وحشت می‌شود یا فریز می‌کند، از مانیتور یک دامپ می‌خواهد. فریز شدن به معنای این است که یک فریم از پنجره بیش از 8 ثانیه اجرا شود، که توسط یک رشته نگهبان که زمان خواب را نادیده می‌گیرد، مشاهده می‌شود. سپس مانیتور یک <g2>مینی‌دامپ</g2> از هر رشته را از بیرون، از طریق <x3/> و <x4/> می‌نویسد. یک فرآیند از کار افتاده هرگز دامپ خود را نمی‌نویسد، که این همان روشی است که Firefox، Crashpad و Sentry نیز از آن استفاده می‌کنند."
   },
   "d14cab1a03533aa1": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands…",
@@ -6456,7 +6500,7 @@
   },
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
-   "text": "<g1>Windows 10 یا 11</g1>، ۶۴ بیتی؛ حدود ۱۰۰ مگابایت فضای دیسک."
+   "text": "<g1>Windows 10 یا 11</g1>، 64 بیتی؛ حدود 100 مگابایت فضای دیسک."
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -6489,6 +6533,10 @@
   "d449b53420eb05e2": {
    "source": "<g1>Up</g1> / <g2>Down</g2>",
    "text": "<g1>بالا</g1> / <g2>پایین</g2>"
+  },
+  "d44a5bde783443c0": {
+   "source": "Yes. In IDM, export your list with Tasks → Export → To IDM export file. In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See Adding downloads.",
+   "text": "بله. در IDM، فهرست خود را با Tasks ← Export ← To IDM export file صادر کنید. در MDM، Tasks ← Import ← From IDM export file را انتخاب کرده و آن فایل .ef2 را برگزینید: هر دانلود با آدرس، ارجاع‌دهنده و کوکی‌هایش منتقل می‌شود. یک فایل متنی ساده از لینک‌ها نیز کار می‌کند. به Adding downloads مراجعه کنید."
   },
   "d46916a1a497cf15": {
    "source": "Yes (yt-dlp)",
@@ -6620,7 +6668,7 @@
   },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
-   "text": "۵. عدم ضمانت"
+   "text": "5. عدم ضمانت"
   },
   "d878d923ca93995a": {
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
@@ -6796,11 +6844,11 @@
   },
   "df09a84f0b34a8ab": {
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in <g1>our benchmark</g1>, speaks 86 languages and has experimental builds for macOS and Linux. IDM is the more mature product, refined over many years. See the full <g2>comparison</g2>.",
-   "text": "طرح‌بندی عمدا آشنا است: نوار ابزار، دسته‌ها، فهرست دانلود، پنجره پیشرفت با هر اتصال، صف‌ها و زمان‌بندی. تفاوت‌ها: MDM رایگان و متن‌باز است، دانلودهای BitTorrent و لینک‌های مگنت را در همان فهرست انجام می‌دهد، در <g1>معیار ما</g1> سریع‌تر به پایان رسید، به ۸۶ زبان صحبت می‌کند و نسخه‌های آزمایشی برای macOS و Linux دارد. IDM محصولی بالغ‌تر است که طی سالیان متمادی بهبود یافته است. <g2>مقایسه</g2> کامل را ببینید."
+   "text": "طرح‌بندی عمدا آشنا است: نوار ابزار، دسته‌ها، فهرست دانلود، پنجره پیشرفت با هر اتصال، صف‌ها و زمان‌بندی. تفاوت‌ها: MDM رایگان و متن‌باز است، دانلودهای BitTorrent و لینک‌های مگنت را در همان فهرست انجام می‌دهد، در <g1>معیار ما</g1> سریع‌تر به پایان رسید، به 86 زبان صحبت می‌کند و نسخه‌های آزمایشی برای macOS و Linux دارد. IDM محصولی بالغ‌تر است که طی سالیان متمادی بهبود یافته است. <g2>مقایسه</g2> کامل را ببینید."
   },
   "df260daf719b26b8": {
    "source": "1 GiB over a fast link",
-   "text": "۱ گیگابایت از طریق یک لینک سریع"
+   "text": "1 گیگابایت از طریق یک لینک سریع"
   },
   "df4be9726ccb94fb": {
    "source": "<g1>Pause</g1> stops the download and keeps what it has; <g2>Resume</g2> continues it.",
@@ -6844,7 +6892,7 @@
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
-   "text": "یک صف در حال اجرا، بارگیری‌های خود را به ترتیب فهرست، چندتا چندتا (به طور پیش‌فرض چهارتا) شروع می‌کند. وقتی یکی از آنها با شکست مواجه می‌شود، به انتهای صف منتقل شده و ۳۰ ثانیه بعد دوباره امتحان می‌شود. صف زمانی متوقف می‌شود که چیزی برای بارگیری باقی نمانده باشد."
+   "text": "یک صف در حال اجرا، بارگیری‌های خود را به ترتیب فهرست، چندتا چندتا (به طور پیش‌فرض چهارتا) شروع می‌کند. وقتی یکی از آنها با شکست مواجه می‌شود، به انتهای صف منتقل شده و 30 ثانیه بعد دوباره امتحان می‌شود. صف زمانی متوقف می‌شود که چیزی برای بارگیری باقی نمانده باشد."
   },
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
@@ -6968,7 +7016,7 @@
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
-   "text": "Mister Download Manager به ۸۶ زبان، از جمله زبان‌هایی که از راست به چپ نوشته می‌شوند و Windows 11 ارائه می‌دهد، صحبت می‌کند. همه آن‌ها را ببینید و به بهبود زبان خود کمک کنید."
+   "text": "Mister Download Manager به 86 زبان، از جمله زبان‌هایی که از راست به چپ نوشته می‌شوند و Windows 11 ارائه می‌دهد، صحبت می‌کند. همه آن‌ها را ببینید و به بهبود زبان خود کمک کنید."
   },
   "e4f6fc43ebf4b378": {
    "source": "<g1>The download stops with an error:</g1> see <g2>Resume a broken download</g2>.",
@@ -6976,11 +7024,11 @@
   },
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
-   "text": "<g1>کلاینت‌ها.</g1> IDM و MDM، هر دو با تنظیمات پیش‌فرض (۸ اتصال)، هر کدام از طریق همان خط فرمان مستند شده، دانلود را دریافت می‌کنند: <x2/>. هر دو در درایوی ذخیره می‌کنند که پوشه موقت IDM را در خود جای داده است، بنابراین هیچ‌کدام هزینه کپی بین درایوها را نمی‌پردازند."
+   "text": "<g1>کلاینت‌ها.</g1> IDM و MDM، هر دو با تنظیمات پیش‌فرض (8 اتصال)، هر کدام از طریق همان خط فرمان مستند شده، دانلود را دریافت می‌کنند: <x2/>. هر دو در درایوی ذخیره می‌کنند که پوشه موقت IDM را در خود جای داده است، بنابراین هیچ‌کدام هزینه کپی بین درایوها را نمی‌پردازند."
   },
   "e52b5461bc5bf605": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections, and keeps re-splitting: when…",
-   "text": "یک مرورگر فایل را با یک اتصال دریافت می‌کند. MDM همزمان از سرور چندین قسمت از فایل را درخواست می‌کند (تا ۳۲ اتصال) و به تقسیم مجدد ادامه می‌دهد: وقتی..."
+   "text": "یک مرورگر فایل را با یک اتصال دریافت می‌کند. MDM همزمان از سرور چندین قسمت از فایل را درخواست می‌کند (تا 32 اتصال) و به تقسیم مجدد ادامه می‌دهد: وقتی..."
   },
   "e54c910b35908f87": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones.",
@@ -7033,10 +7081,6 @@
   "e70f4ddad4e54ab0": {
    "source": "Press <g1>F3</g1> to jump to the next match. The search wraps round to the top.",
    "text": "برای پرش به مورد منطبق بعدی، <g1>F3</g1> را فشار دهید. جستجو به بالای لیست برمی‌گردد."
-  },
-  "e711b558061d9218": {
-   "source": "Yes. In IDM, export your list (Tasks → Export → To IDM export file). In MDM, choose <g1>Tasks → Import → From IDM export file</g1> and pick that <x2/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g3>Adding downloads</g3>.",
-   "text": "بله. در IDM، لیست خود را صادر کنید (وظایف ← صادر کردن ← به فایل صادراتی IDM). در MDM، <g1>وظایف ← وارد کردن ← از فایل خروجی IDM</g1> را انتخاب کرده و آن فایل <x2/> را برگزینید: هر دانلود با آدرس، ارجاع‌دهنده و کوکی‌هایش منتقل می‌شود. یک فایل متنی ساده از لینک‌ها نیز کار می‌کند. به <g3>افزودن دانلودها</g3> مراجعه کنید."
   },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
@@ -7116,7 +7160,7 @@
   },
   "e931037e5c0b1a7d": {
    "source": "2. The software's licence",
-   "text": "۲. پروانه نرم‌افزار"
+   "text": "2. پروانه نرم‌افزار"
   },
   "e9a347178dfe62b4": {
    "source": "The automation API is off",
@@ -7268,7 +7312,7 @@
   },
   "ef47e1ebbb6f563f": {
    "source": "Mister Download Manager (\"MDM\") is free, open-source software made by Ahmed Nefzaoui and contributors. Because its whole source code is public at <g1>github.com/anefzaoui/misterdownloadmanager</g1>, you don't have to take this page's word for it: every network connection described here can be checked in the code.",
-   "text": "Mister Download Manager (\"MDM\") یک نرم‌افزار رایگان و متن‌باز است که توسط Ahmed Nefzaoui و مشارکت‌کنندگان ساخته شده است. از آنجا که تمام کد منبع آن در <g1>github.com/anefzaoui/misterdownloadmanager</g1> عمومی است، نیازی نیست حرف این صفحه را باور کنید: هر اتصال شبکه‌ای که در اینجا توضیح داده شده است را می‌توان در کد بررسی کرد."
+   "text": "Mister Download Manager (\"MDM\") یک نرم‌افزار رایگان و متن‌باز است که توسط احمد نفزاوی و مشارکت‌کنندگان ساخته شده است. از آنجا که تمام کد منبع آن در <g1>github.com/anefzaoui/misterdownloadmanager</g1> عمومی است، نیازی نیست حرف این صفحه را باور کنید: هر اتصال شبکه‌ای که در اینجا توضیح داده شده است را می‌توان در کد بررسی کرد."
   },
   "ef4a27773ff3aeb9": {
    "source": "The download progress window: a file over eight connections, each one's share drawn as it fills.",
@@ -7284,7 +7328,7 @@
   },
   "efa153c1e62ecc96": {
    "source": "95% CI of median",
-   "text": "۹۵% CI میانه"
+   "text": "95% CI میانه"
   },
   "efaf00494efe309f": {
    "source": "The other downloads keep their speed.",
@@ -7448,7 +7492,7 @@
   },
   "f50a9dc5388cc3c6": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and downloads the video. The first time, click <g2>Install yt-dlp</g2>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
-   "text": "<g1>yt-dlp</g1> (حدود ۲۳ مگابایت) صفحه را جستجو می‌کند و ویدئو را دانلود می‌کند. برای اولین بار، روی <g2>نصب yt-dlp</g2> کلیک کنید. MDM قبل از استفاده، دانلود را با امضای منتشر شده توسط توسعه‌دهندگان yt-dlp بررسی می‌کند."
+   "text": "<g1>yt-dlp</g1> (حدود 23 مگابایت) صفحه را جستجو می‌کند و ویدئو را دانلود می‌کند. برای اولین بار، روی <g2>نصب yt-dlp</g2> کلیک کنید. MDM قبل از استفاده، دانلود را با امضای منتشر شده توسط توسعه‌دهندگان yt-dlp بررسی می‌کند."
   },
   "f50da68e6439495e": {
    "source": "What's new in version 0.2.3 <g1>2026-11-01</g1>",
@@ -7564,7 +7608,7 @@
   },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",
-   "text": "<g1>۱.۰×</g1><g2>سریع‌تر</g2>"
+   "text": "<g1>1.0×</g1><g2>سریع‌تر</g2>"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
@@ -7572,7 +7616,7 @@
   },
   "fa6a5141054cb2c6": {
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The…",
-   "text": "طرح‌بندی عمدا آشناست: نوار ابزار، دسته‌بندی‌ها، فهرست بارگیری، پنجره پیشرفت با هر اتصال، صف‌ها و زمان‌بندی. تفاوت‌ها: MDM رایگان و متن‌باز است، پیوندهای BitTorrent و magnet را در همان فهرست بارگیری می‌کند، در معیار ما سریع‌تر به پایان رسید، به ۸۶ زبان صحبت می‌کند و نسخه‌های آزمایشی برای macOS و Linux دارد. IDM محصولی بالغ‌تر است که طی سال‌ها بهبود یافته است. مقایسه کامل را ببینید."
+   "text": "طرح‌بندی عمدا آشناست: نوار ابزار، دسته‌بندی‌ها، فهرست بارگیری، پنجره پیشرفت با هر اتصال، صف‌ها و زمان‌بندی. تفاوت‌ها: MDM رایگان و متن‌باز است، پیوندهای BitTorrent و magnet را در همان فهرست بارگیری می‌کند، در معیار ما سریع‌تر به پایان رسید، به 86 زبان صحبت می‌کند و نسخه‌های آزمایشی برای macOS و Linux دارد. IDM محصولی بالغ‌تر است که طی سال‌ها بهبود یافته است. مقایسه کامل را ببینید."
   },
   "fa6e95ec9b6285a4": {
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
@@ -7632,7 +7676,7 @@
   },
   "fc337e8e7eb02a6e": {
    "source": "86 languages",
-   "text": "۸۶ زبان"
+   "text": "86 زبان"
   },
   "fc67345a4f529039": {
    "source": "Choose whether to install for you only or for everyone on the computer. For you only needs no administrator rights and goes to <x1/>. For everyone goes to <x2/>.",
@@ -7696,7 +7740,7 @@
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",
-   "text": "نرم‌افزار <g1>«همان‌طور که هست»، بدون هیچ‌گونه ضمانتی</g1>، صریح یا ضمنی، از جمله ضمانت‌های ضمنی قابلیت فروش و مناسب بودن برای یک هدف خاص، ارائه می‌شود. تمام خطر مربوط به کیفیت و عملکرد آن با شماست. به بخش‌های ۱۵ و ۱۶ GPL مراجعه کنید. از هر چیز مهمی پشتیبان تهیه کنید."
+   "text": "نرم‌افزار <g1>«همان‌طور که هست»، بدون هیچ‌گونه ضمانتی</g1>، صریح یا ضمنی، از جمله ضمانت‌های ضمنی قابلیت فروش و مناسب بودن برای یک هدف خاص، ارائه می‌شود. تمام خطر مربوط به کیفیت و عملکرد آن با شماست. به بخش‌های 15 و 16 GPL مراجعه کنید. از هر چیز مهمی پشتیبان تهیه کنید."
   },
   "fe5f5f847ef5514f": {
    "source": "<g1>Browser integration needs the installer.</g1> The browser finds MDM's helper through the registry, so a portable copy can't take downloads from the browser. Use <g2>Add URL</g2>, the clipboard or the drop target instead (see <g3>Adding downloads</g3>).",
@@ -7720,7 +7764,7 @@
   },
   "fec39583e98965c8": {
    "source": "What's new in version 0.2.0 <g1>2026-10-31</g1>",
-   "text": "چه چیز جدیدی در نسخه 0.2.0 <g1>۲۰۲۶-۱۰-۳۱</g1>"
+   "text": "چه چیز جدیدی در نسخه 0.2.0 <g1>2026-10-31</g1>"
   },
   "fec6d809554b4fd9": {
    "source": "IDM vs MDM, timed to the millisecond.",

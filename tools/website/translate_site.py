@@ -32,6 +32,7 @@ import subprocess
 import sys
 import threading
 import time
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -51,6 +52,53 @@ BATCH_WORDS = 1400
 KEEP = sorted(set(tr.KEEP + ["macOS", "Linux", "Rust", "YouTube", "Vimeo", "Tonec", "Ahmed Nefzaoui",
                              "Statcounter", "OpenRouter", "Gemini", "Homebrew", "AppImage", "Flatpak",
                              "Chromium", "Vivaldi", "Safari", "MCP", "GPL"]), key=len, reverse=True)
+# Kept names a language writes in its own script instead (the maintainer's spelling of his name).
+OWN_SPELLING = {
+    "ar": {"Ahmed Nefzaoui": "أحمد نفزاوي"},
+    "fa": {"Ahmed Nefzaoui": "احمد نفزاوی"},
+    "bn": {"Ahmed Nefzaoui": "আহমেদ নেফজাউই"},
+}
+# The spellings the model falls back to in these scripts, whatever it is told (ویندوز for Windows):
+# written back as the name the page uses everywhere else before the answer is checked.
+RESPELL = {
+    "ar": {r"[أا]حمد\s+(?:ال)?نفزاو[يی]": "أحمد نفزاوي", "ويندوز": "Windows", "لينكس": "Linux",
+           r"[جغ]يت\s?هاب": "GitHub", "يوتيوب": "YouTube"},
+    "fa": {r"[أا]حمد\s+(?:ال)?نفزاو[يی]": "احمد نفزاوی", "ویندوز": "Windows", "لینوکس": "Linux",
+           r"گیت(?:\u200c|\s)?هاب": "GitHub", "یوتیوب": "YouTube"},
+    "bn": {r"আহমেদ\s+নেফজা[উও]ই": "আহমেদ নেফজাউই", "উইন্ডোজ": "Windows", "লিনাক্স": "Linux",
+           "গিটহাব": "GitHub", "ইউটিউব": "YouTube", "ক্রোম": "Chrome"},
+}
+# Bengali's vowel signs are no \w, so its letters are its block; Arabic script's are \w (its comma isn't).
+BENGALI_LETTER = "\u0980-\u09FF"
+# A Bengali ending after a Latin name starts with a hyphen and a full vowel: GitHub-এ, Windows-কে.
+BENGALI_VOWEL = dict(zip("\u09be\u09bf\u09c0\u09c1\u09c2\u09c7\u09c8\u09cb\u09cc",
+                         "\u0986\u0987\u0988\u0989\u098a\u098f\u0990\u0993\u0994"))
+
+
+def respell(code: str, src: str, text: str) -> str:
+    """`text` with the RESPELL spellings of names `src` uses written as the page writes them."""
+    for pattern, name in RESPELL.get(code, {}).items():
+        if name.isascii() and name not in src:
+            continue
+        if code == "bn":
+            def ending(m, name=name):
+                rest = m.group(1)
+                if rest and name.isascii():
+                    return name + "-" + BENGALI_VOWEL.get(rest[0], rest[0]) + rest[1:]
+                return name + rest
+            text = re.sub(f"(?<![{BENGALI_LETTER}])(?:{pattern})([{BENGALI_LETTER}]*)", ending, text)
+        else:
+            # Only a whole word: a name with a prefix joined to it (بويندوز) is left to the checks.
+            text = re.sub(rf"(?<!\w)(?:{pattern})(?!\w)", name, text)
+    return text
+
+
+def latin_digits(text: str) -> str:
+    """Persian, Bengali and other native digits as 0-9, as the app writes them (rule 4)."""
+    return "".join(str(unicodedata.digit(c)) if unicodedata.category(c) == "Nd" and not c.isascii()
+                   else c for c in text)
+
+
 # Gemini 2.5 Flash on OpenRouter, $ per million tokens: for --dry-run's estimate.
 PRICE_IN, PRICE_OUT = 0.30, 2.50
 
@@ -84,7 +132,7 @@ Rules:
    translate, drop or add a tag.
 2. Keep these names exactly as written: {keep}. Keep file names, extensions, web addresses,
    code, command-line options, version numbers, sizes and units (MB, GB, KB/sec), keyboard keys
-   (Ctrl, Alt, Shift, Enter, Delete, F2...) and arrows (→).
+   (Ctrl, Alt, Shift, Enter, Delete, F2...) and arrows (→).{spell}
 3. When a text names a part of MDM (a menu, a button, a window, a setting; often in bold or joined
    with →), use MDM's own translation from "ui" when it is there.
 4. Numbers in Latin digits 0-9. HTML entities like &amp; and &lt; stay as they are.
@@ -158,9 +206,12 @@ def why_not(code: str, row: dict, text) -> str | None:
     if sorted(re.findall(r"\{\w+\}", src)) != sorted(re.findall(r"\{\w+\}", text)):
         return "keep every {name} slot exactly as written: " + " ".join(sorted(set(re.findall(r"\{\w+\}", src))))
     for name in KEEP:
-        if name in src and src.count(name) > text.count(name) and not any(
+        written = OWN_SPELLING.get(code, {}).get(name, name)
+        # A language that declines names may add an ending ("Ahmeda Nefzaoui", "na GitHubie").
+        kept = len(re.findall(r"(?<!\w)" + r"\w*\s+".join(map(re.escape, written.split())), text))
+        if name in src and src.count(name) > kept and not any(
                 name in k and k != name and k in src for k in KEEP):
-            return f'keep the name "{name}" exactly as written'
+            return f'write the name "{name}" exactly as "{written}"'
     words = PH.sub(" ", src)
     for name in KEEP:
         words = words.replace(name, " ")
@@ -195,7 +246,9 @@ def ui_terms(code: str) -> list[tuple[str, str]]:
         s = source.replace("&", "").rstrip(".").strip()
         # Without the menu's access letter: "帮助(&H)" is "帮助" on a web page.
         t = re.sub(r"\s*\(&?[A-Za-z0-9]\)", "", text).replace("&", "").rstrip(".").strip()
-        if 3 <= len(s) <= 60 and s not in terms:
+        # Interface names are capitalized ("Finished", "Delete"); an app phrase like "in the list"
+        # is no name, and offering it gets plain words bolded as if they were one.
+        if 3 <= len(s) <= 60 and s[:1].isupper() and s not in terms:
             terms[s] = t
     return sorted(terms.items(), key=lambda kv: -len(kv[0]))
 
@@ -248,7 +301,8 @@ def run_language(code: str, rows: dict[str, dict], key: str, spend: tr.Spend, wo
         return {"code": code, "missing": len(missing), "words": words}
     meta = next((l for l in tr.languages() if l["code"] == code), {"english": lang[4], "native": lang[3]})
     system = RULES.format(english=meta["english"], native=meta["native"], code=code,
-                          keep=", ".join(KEEP),
+                          keep=", ".join(n for n in KEEP if n not in OWN_SPELLING.get(code, {})),
+                          spell="".join(f' Write "{n}" as "{s}".' for n, s in OWN_SPELLING.get(code, {}).items()),
                           variant=tr.VARIANTS.get(code, "Use the standard written form of this language."))
     terms = ui_terms(code)
     lock = threading.Lock()
@@ -261,7 +315,7 @@ def run_language(code: str, rows: dict[str, dict], key: str, spend: tr.Spend, wo
         for i, r in enumerate(batch):
             text = out.get(str(i))
             if isinstance(text, str):
-                text = tr.clean(code, text.strip())
+                text = respell(code, r["seg"].text, latin_digits(tr.clean(code, text.strip())))
                 # Tags in the answer to a text that had none (bold put round a menu name): dropped.
                 if not PH.search(r["seg"].text):
                     text = re.sub(r"\s{2,}", " ", PH.sub("", text)).strip()

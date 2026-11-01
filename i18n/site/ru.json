@@ -1690,10 +1690,6 @@
    "source": "not to use it to break copy protection (DRM): MDM doesn't do this and isn't meant to;",
    "text": "не использовать его для обхода защиты от копирования (DRM): MDM не делает этого и не предназначен для этого;"
   },
-  "334e59b8ba0b66bb": {
-   "source": "Yes. In IDM, export your list (Tasks → Export → To IDM export file). In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every…",
-   "text": "Да. В IDM экспортируйте свой список (Задачи → Экспорт → В IDM файл экспорта). В MDM выберите Задачи → Импорт → Из файла экспорта IDM и укажите этот файл .ef2: каждая…"
-  },
   "335ddbe14ee4164c": {
    "source": "Closing the window with its close box keeps the download running.",
    "text": "Закрытие окна с помощью кнопки закрытия оставляет загрузку активной."
@@ -4566,10 +4562,6 @@
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "Версия <x1/> не имеет установщика, но вы можете зарегистрировать вспомогательную программу самостоятельно. Откройте командную строку в папке MDM и выполните:"
   },
-  "90d545cb513eb042": {
-   "source": "Yes. In IDM, export your list (Tasks → Export → To IDM export file). In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See Adding downloads.",
-   "text": "Да. В IDM экспортируйте свой список (Задачи → Экспорт → В IDM файл экспорта). В MDM выберите Задачи → Импорт → Из файла экспорта IDM и укажите этот файл .ef2: каждая загрузка будет перенесена со своим адресом, реферером и файлами cookie. Также подойдет обычный текстовый файл со ссылками. См. Добавление загрузок."
-  },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
    "text": "Чтобы отправить свои изменения:"
@@ -4901,6 +4893,10 @@
   "9a7aa1f60dbf9dbd": {
    "source": "Keep <x1/> and the one <x2/> (the keyboard shortcut letter) as they are.",
    "text": "Оставьте <x1/> и <x2/> (букву горячей клавиши) как есть."
+  },
+  "9a7e8a7fcdad1262": {
+   "source": "Yes. In IDM, export your list with Tasks → Export → To IDM export file. In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every…",
+   "text": "Да. В IDM экспортируйте список с помощью Задачи → Экспорт → В IDM файл экспорта. В MDM выберите Задачи → Импорт → Из файла экспорта IDM и укажите этот файл .ef2: каждая…"
   },
   "9a898519717fc749": {
    "source": "Start MDM. The server can't start it for you.",
@@ -5926,6 +5922,10 @@
    "source": "Start the main download queue.",
    "text": "Запустить основную очередь загрузки."
   },
+  "bd0124357425c778": {
+   "source": "Yes. In IDM, export your list with <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g4>Adding downloads</g4>.",
+   "text": "Да. В IDM экспортируйте список с помощью <g1>Задачи → Экспорт → В IDM файл экспорта</g1>. В MDM выберите <g2>Задачи → Импорт → Из файла экспорта IDM</g2> и укажите этот <x3/> файл: каждая загрузка будет перенесена со своим адресом, реферером и файлами cookie. Обычный текстовый файл со ссылками также подойдет. См. <g4>Добавление загрузок</g4>."
+  },
   "bd38ebc1b5f00936": {
    "source": "Scenario",
    "text": "Сценарий"
@@ -6534,6 +6534,10 @@
    "source": "<g1>Up</g1> / <g2>Down</g2>",
    "text": "<g1>Вверх</g1> / <g2>Вниз</g2>"
   },
+  "d44a5bde783443c0": {
+   "source": "Yes. In IDM, export your list with Tasks → Export → To IDM export file. In MDM, choose Tasks → Import → From IDM export file and pick that .ef2 file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See Adding downloads.",
+   "text": "Да. В IDM экспортируйте список с помощью Задачи → Экспорт → В IDM файл экспорта. В MDM выберите Задачи → Импорт → Из файла экспорта IDM и укажите этот файл .ef2: каждая загрузка будет перенесена со своим адресом, реферером и файлами cookie. Обычный текстовый файл со ссылками также подойдет. См. Добавление загрузок."
+  },
   "d46916a1a497cf15": {
    "source": "Yes (yt-dlp)",
    "text": "Да (yt-dlp)"
@@ -7062,6 +7066,10 @@
    "source": "Opening a download",
    "text": "Открытие загрузки"
   },
+  "e646f73c14c73fff": {
+   "source": "<g1>Resuming.</g1> MDM keeps the file's size and modification time. If either has changed when you resume, it says the file changed on the server instead of mixing two versions (<g2>Options → Downloads → Ignore file modification time changes</g2> skips the time check). The password is not written to the resume file next to the download: MDM gives it again when it resumes.",
+   "text": "<g1>Возобновление.</g1> MDM сохраняет размер файла и время его изменения. Если что-либо из этого изменилось при возобновлении, он сообщает, что файл изменился на сервере, вместо того чтобы смешивать две версии (<g2>Параметры → Загрузки → Игнорировать изменения времени модификации файла</g2> пропускает проверку времени). Пароль не записывается в файл возобновления рядом с загрузкой: MDM запрашивает его снова при возобновлении."
+  },
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> — это английский текст; оставьте его как есть. Изменяйте только <g2>translation</g2>."
@@ -7073,10 +7081,6 @@
   "e70f4ddad4e54ab0": {
    "source": "Press <g1>F3</g1> to jump to the next match. The search wraps round to the top.",
    "text": "Нажмите <g1>F3</g1>, чтобы перейти к следующему совпадению. Поиск начнется сначала, если дойдет до конца списка."
-  },
-  "e711b558061d9218": {
-   "source": "Yes. In IDM, export your list (Tasks → Export → To IDM export file). In MDM, choose <g1>Tasks → Import → From IDM export file</g1> and pick that <x2/> file: every download comes over with its address, referrer and cookies. A plain text file of links works too. See <g3>Adding downloads</g3>.",
-   "text": "Да. В IDM экспортируйте список (Задачи → Экспорт → В IDM файл экспорта). В MDM выберите <g1>Задачи → Импорт → Из файла экспор та IDM</g1> и укажите этот <x2/> файл: каждая загрузка будет перенесена с адресом, реферером и файлами cookie. Обычный текстовый файл со ссылками также подойдет. См. <g3>Добавление загрузок</g3>."
   },
   "e7281739beb4476f": {
    "source": "A download manager can fill your whole connection. These steps cap MDM so that browsing, video calls and games stay smooth.",
