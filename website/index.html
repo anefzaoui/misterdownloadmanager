@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mister Download Manager — free download manager and IDM alternative</title>
   <meta name="description" content="Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#070708" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#1f63d6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1a33" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
   <link rel="canonical" href="{{SITE}}/">
 
@@ -32,93 +32,74 @@
   <script type="application/ld+json">{{SOFTWARE_LD}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Mister Download Manager","alternateName":"MDM","url":"{{SITE}}/"}</script>
 </head>
-<body>
+<body class="home">
   <!--@header-->
 
   <main id="main">
-    <!-- Hero: support card, the wordmark with its echoes and flyers, the line, the buttons, the app. -->
-    <section class="hero" id="top">
-      <div class="wrap">
-        <div class="support">
-          <a class="support-card" href="{{REPO}}">
-            <span class="support-text"><small>Support Mister Download Manager</small><b>Star it on GitHub ↗</b></span>
-            <span class="support-badge"><svg aria-hidden="true"><use href="#i-github"/></svg><span><small>Open source on</small><b>GitHub</b></span><span class="support-count"><i>★</i>{{STARS}}</span></span>
-          </a>
-        </div>
-
-        <div class="hero-stage" aria-hidden="true" translate="no">
-          <div class="hero-echoes">
-            <div class="hero-echo" data-row="-2"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
-            <div class="hero-echo" data-row="-1"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
-            <div class="hero-echo" data-row="1"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
-            <div class="hero-echo" data-row="2"><div class="hero-echo-track"><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span><span class="hero-echo-copy"><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span><span>MDM</span></span></div></div>
-          </div>
-          <div class="hero-word-wrap">
-            <p class="hero-word"><span class="hero-letter" style="--i:0">M</span><span class="hero-letter" style="--i:1">i</span><span class="hero-letter" style="--i:2">s</span><span class="hero-letter" style="--i:3">t</span><span class="hero-letter" style="--i:4">e</span><span class="hero-letter" style="--i:5">r</span><span class="hero-space"> </span><span class="hero-letter" style="--i:6">D</span><span class="hero-letter" style="--i:7">o</span><span class="hero-letter" style="--i:8">w</span><span class="hero-letter" style="--i:9">n</span><span class="hero-letter" style="--i:10">l</span><span class="hero-letter" style="--i:11">o</span><span class="hero-letter" style="--i:12">a</span><span class="hero-letter" style="--i:13">d</span><span class="hero-space"> </span><span class="hero-letter" style="--i:14">M</span><span class="hero-letter" style="--i:15">a</span><span class="hero-letter" style="--i:16">n</span><span class="hero-letter" style="--i:17">a</span><span class="hero-letter" style="--i:18">g</span><span class="hero-letter" style="--i:19">e</span><span class="hero-letter" style="--i:20">r</span></p>
-          </div>
-          <span class="hero-flyer" style="--i:0;left:27%;top:6%"><img src="/assets/logo-256.webp" width="64" height="64" alt=""></span>
-        </div>
-
-        <div class="hero-copy">
-          <h1 class="hero-tagline">The download manager you already know. <span class="accent">Rebuilt to be faster.</span></h1>
-          <div class="hero-cta">
-            <!--@split-->
-            <a class="btn btn-ghost btn-h11" href="{{REPO}}"><svg class="os-ico" aria-hidden="true"><use href="#i-star"/></svg> Star on GitHub <span class="count">{{STARS}}</span></a>
-          </div>
-          <p class="hero-sub">The free, open-source IDM alternative. Every connection at once, crash-safe resume, torrents and video in one list. Windows 10 and 11; <a href="/download.html#macos">macOS</a> and <a href="/download.html#linux">Linux</a> to try.</p>
-        </div>
-
-        <figure class="hero-mock" data-lightbox>
-          <div class="device">
-            <span class="device-cam"></span>
-            <div class="device-screen">
-              <img class="for-light" src="/assets/screens/main-light.webp" width="930" height="500" fetchpriority="high" alt="Mister Download Manager's main window in day mode: web and torrent downloads in one list, with categories, sizes, progress, speeds and dates.">
-              <img class="for-dark" src="/assets/screens/main-dark.webp" width="930" height="500" alt="Mister Download Manager's main window in night mode: web and torrent downloads in one list.">
-            </div>
-          </div>
+    <!-- The parcel: the real window, its waybill stuck across the lower corner. -->
+    <section class="parcel" id="top">
+      <div class="wrap parcel-inner">
+        <figure class="parcel-window" data-lightbox>
+          <img class="for-light" src="/assets/screens/main-light.webp" width="930" height="500" fetchpriority="high" alt="Mister Download Manager's main window in day mode: web and torrent downloads in one list, with categories, sizes, progress, speeds and dates.">
+          <img class="for-dark" src="/assets/screens/main-dark.webp" width="930" height="500" alt="Mister Download Manager's main window in night mode: web and torrent downloads in one list.">
           <figcaption>The real app, version {{VERSION}} on Windows 11 · every screenshot on this site is unretouched.</figcaption>
         </figure>
+
+        <div class="waybill" data-print>
+          <div class="wb-band">
+            <img src="/assets/logo-64.png" width="40" height="40" alt="">
+            <span class="wb-from"><b>Mister Download Manager</b><small>Free and open source · GPL-3.0</small></span>
+          </div>
+          <h1 class="wb-head">The download manager you already know. Rebuilt to be faster.</h1>
+          <p class="wb-sub">The free, open-source IDM alternative. Every connection at once, crash-safe resume, torrents and video in one list.</p>
+          <div class="wb-act">
+            <!--@split-->
+          </div>
+          <p class="wb-fine"><a href="/download.html#macos"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg>macOS</a> and <a href="/download.html#linux"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg>Linux</a> to try.</p>
+          <!--@fields-->
+          <div class="wb-code"><!--@barcode--><span translate="no">MDM {{VERSION}}</span></div>
+        </div>
       </div>
     </section>
 
-    <!-- Showcase: a tour of the app, one feature at a time (main.js: tabs that move on by themselves). -->
-    <section class="sec showcase" id="features" aria-labelledby="features-title">
+    <!-- Packing list: a tour of the app, one window at a time (main.js: tabs that move on by themselves). -->
+    <section class="sec manifest" id="features" aria-labelledby="features-title">
       <div class="wrap">
-        <div class="sec-center">
+        <div class="sec-intro">
           <h2 id="features-title">Every window, rebuilt.</h2>
           <p>The one you know, down to the pixel. With torrents, video and 86 languages it never had.</p>
         </div>
         <div class="tour" data-tour>
           <div class="tour-tabs" role="tablist" aria-label="Features" aria-orientation="vertical">
             <button type="button" class="tour-tab" role="tab" id="tour-tab-progress" aria-controls="tour-progress" aria-selected="true" tabindex="0">
+              <span class="tour-box" aria-hidden="true"><i></i></span>
               <span class="tour-title">Every connection, live</span>
               <span class="tour-text">Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</span>
-              <span class="tour-bar" aria-hidden="true"><i></i></span>
             </button>
             <button type="button" class="tour-tab" role="tab" id="tour-tab-torrents" aria-controls="tour-torrents" aria-selected="false" tabindex="-1">
+              <span class="tour-box" aria-hidden="true"><i></i></span>
               <span class="tour-title">Torrents, built in</span>
               <span class="tour-text">Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.</span>
-              <span class="tour-bar" aria-hidden="true"><i></i></span>
             </button>
             <button type="button" class="tour-tab" role="tab" id="tour-tab-video" aria-controls="tour-video" aria-selected="false" tabindex="-1">
+              <span class="tour-box" aria-hidden="true"><i></i></span>
               <span class="tour-title">Video from a page</span>
               <span class="tour-text">Paste a page's address and choose a quality, up to 4K, from YouTube, Vimeo and thousands of other sites.</span>
-              <span class="tour-bar" aria-hidden="true"><i></i></span>
             </button>
             <button type="button" class="tour-tab" role="tab" id="tour-tab-scheduler" aria-controls="tour-scheduler" aria-selected="false" tabindex="-1">
+              <span class="tour-box" aria-hidden="true"><i></i></span>
               <span class="tour-title">Downloads on a schedule</span>
               <span class="tour-text">Queues that start at 2 a.m., stop by 7 and turn the computer off when they're done.</span>
-              <span class="tour-bar" aria-hidden="true"><i></i></span>
             </button>
             <button type="button" class="tour-tab" role="tab" id="tour-tab-languages" aria-controls="tour-languages" aria-selected="false" tabindex="-1">
+              <span class="tour-box" aria-hidden="true"><i></i></span>
               <span class="tour-title">86 languages, right to left too</span>
               <span class="tour-text">It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</span>
-              <span class="tour-bar" aria-hidden="true"><i></i></span>
             </button>
             <button type="button" class="tour-tab" role="tab" id="tour-tab-options" aria-controls="tour-options" aria-selected="false" tabindex="-1">
+              <span class="tour-box" aria-hidden="true"><i></i></span>
               <span class="tour-title">Options where you expect them</span>
               <span class="tour-text">Every setting where an IDM user looks first: connections, proxies, folders, sounds.</span>
-              <span class="tour-bar" aria-hidden="true"><i></i></span>
             </button>
           </div>
           <div class="tour-stage" data-lightbox>
@@ -150,10 +131,11 @@
         </div>
       </div>
     </section>
-    <!-- Speed: the benchmark, replayed. -->
-    <section class="sec race-sec" id="speed" aria-labelledby="speed-title">
+
+    <!-- Tracking: the benchmark, replayed as two shipments scanned to the real times. -->
+    <section class="sec tracking" id="speed" aria-labelledby="speed-title">
       <div class="wrap">
-        <div class="sec-center">
+        <div class="sec-intro">
           <h2 id="speed-title">Faster than IDM. Timed to the millisecond.</h2>
           <p>Our benchmark, replayed: the same PC, the same test server, the median of alternating runs.</p>
         </div>
@@ -164,177 +146,195 @@
               <button type="button" role="tab" aria-selected="false" data-scenario="1">A small file</button>
               <button type="button" role="tab" aria-selected="false" data-scenario="2">Server allows 2 connections</button>
             </div>
-            <button class="race-replay" type="button" data-race-replay aria-label="Replay" title="Replay"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button>
+            <button class="icon-btn race-replay" type="button" data-race-replay aria-label="Replay" title="Replay"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button>
           </div>
           <div class="lane" data-lane="mdm">
-            <div class="lane-name"><img src="/assets/logo-64.png" width="22" height="22" alt=""><b>Mister Download Manager</b></div>
-            <div class="lane-bar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="lane-name"><img src="/assets/logo-64.png" width="28" height="28" alt=""><b>Mister Download Manager</b></div>
             <div class="lane-time"><span data-time>0.00 s</span><small data-state>Ready</small></div>
+            <div class="lane-track" aria-hidden="true"><i class="seg wait"></i><i class="seg run"></i><i class="seg end"></i><span class="stamp lane-stamp">Delivered</span></div>
+            <ol class="lane-events"><li></li><li></li><li></li></ol>
           </div>
           <div class="lane idm" data-lane="idm">
-            <div class="lane-name"><span class="lane-dot"></span><b>Internet Download Manager 6.42</b></div>
-            <div class="lane-bar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="lane-name"><span class="lane-mark" aria-hidden="true" translate="no">IDM</span><b>Internet Download Manager 6.42</b></div>
             <div class="lane-time"><span data-time>0.00 s</span><small data-state>Ready</small></div>
+            <div class="lane-track" aria-hidden="true"><i class="seg wait"></i><i class="seg run"></i><i class="seg end"></i><span class="stamp lane-stamp">Delivered</span></div>
+            <ol class="lane-events"><li></li><li></li><li></li></ol>
           </div>
           <div class="race-foot">
             <p class="race-big"><span data-ratio>5.4×</span><small data-ratio-label>faster</small></p>
             <p class="race-note" data-note>Played in real time.</p>
-            <a class="btn btn-ghost btn-h11" href="/benchmark.html">Every run and the raw data</a>
+            <a class="text-link" href="/benchmark.html">Every run and the raw data</a>
           </div>
           <noscript><p class="race-note">1 GiB: MDM 1.01 s, IDM 5.46 s. A 256 KiB file: MDM 0.03 s, IDM 3.14 s. A server that allows two connections: MDM 12.6 s on 2 connections, IDM 15.9 s after opening 480.</p></noscript>
         </div>
       </div>
     </section>
-    <!-- Works with -->
-    <section class="sec" aria-labelledby="with-title">
+
+    <!-- Delivery options: one row per system. -->
+    <section class="sec services" id="download" aria-labelledby="download-title">
       <div class="wrap">
-        <h2 id="with-title" class="sec-h">Works with what you already use</h2>
-        <p class="sec-p">Your browsers hand it their downloads, and proven open-source tools do the specialist work. <a href="/help/browser-integration.html">Set up the extension</a>.</p>
-        <div class="with-rows">
-          <div class="with-row"><span class="label">Browsers</span>
-            <div class="marquee"><div class="marquee-track">
-              <div class="marquee-copy"><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/chrome.svg" width="22" height="22" alt=""></i><b>Chrome</b><small>Google</small></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/edge.svg" width="22" height="22" alt=""></i><b>Edge</b><small>Microsoft</small></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/brave.svg" width="22" height="22" alt=""></i><b>Brave</b></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/opera.svg" width="22" height="22" alt=""></i><b>Opera</b></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/vivaldi.svg" width="22" height="22" alt=""></i><b>Vivaldi</b></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/firefox.svg" width="22" height="22" alt=""></i><b>Firefox</b><small>Mozilla · in testing</small></span></div>
-              <div class="marquee-copy" aria-hidden="true"><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/chrome.svg" width="22" height="22" alt=""></i><b>Chrome</b><small>Google</small></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/edge.svg" width="22" height="22" alt=""></i><b>Edge</b><small>Microsoft</small></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/brave.svg" width="22" height="22" alt=""></i><b>Brave</b></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/opera.svg" width="22" height="22" alt=""></i><b>Opera</b></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/vivaldi.svg" width="22" height="22" alt=""></i><b>Vivaldi</b></span><span class="tchip"><i class="tchip-ico logo"><img src="/assets/browsers/firefox.svg" width="22" height="22" alt=""></i><b>Firefox</b><small>Mozilla · in testing</small></span></div>
-            </div></div>
-          </div>
-          <div class="with-row"><span class="label">Protocols</span>
-            <div class="marquee"><div class="marquee-track" data-reverse>
-              <div class="marquee-copy"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>HTTP</b><small>and HTTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-ftp"/></svg></i><b>FTP</b><small>and FTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>BitTorrent</b><small>DHT and trackers</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-magnet"/></svg></i><b>Magnet</b><small>links</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-proxy"/></svg></i><b>SOCKS5</b><small>and HTTP proxies</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-pac"/></svg></i><b>PAC</b><small>proxy scripts</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-import"/></svg></i><b>IDM</b><small>list import</small></span></div>
-              <div class="marquee-copy" aria-hidden="true"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>HTTP</b><small>and HTTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-ftp"/></svg></i><b>FTP</b><small>and FTPS</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>BitTorrent</b><small>DHT and trackers</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-magnet"/></svg></i><b>Magnet</b><small>links</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-proxy"/></svg></i><b>SOCKS5</b><small>and HTTP proxies</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-pac"/></svg></i><b>PAC</b><small>proxy scripts</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-import"/></svg></i><b>IDM</b><small>list import</small></span></div>
-            </div></div>
-          </div>
-          <div class="with-row"><span class="label">Built on</span>
-            <div class="marquee"><div class="marquee-track">
-              <div class="marquee-copy"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>yt-dlp</b><small>video from thousands of sites</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>ffmpeg</b><small>merges picture and sound</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>librqbit</b><small>torrent engine</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>rustls</b><small>encryption</small></span></div>
-              <div class="marquee-copy" aria-hidden="true"><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>yt-dlp</b><small>video from thousands of sites</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></i><b>ffmpeg</b><small>merges picture and sound</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-torrent"/></svg></i><b>librqbit</b><small>torrent engine</small></span><span class="tchip"><i class="tchip-ico"><svg aria-hidden="true"><use href="#p-https"/></svg></i><b>rustls</b><small>encryption</small></span></div>
-            </div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Built in the open -->
-    <section class="wrap partof" aria-labelledby="partof-title">
-      <div class="partof-box">
-        <h2 id="partof-title">Built in the open</h2>
-        <ul>
-          <li><a href="{{REPO}}"><span class="partof-ico"><svg aria-hidden="true"><use href="#i-github"/></svg></span><span><b>Every line on GitHub</b><small>public source code</small></span></a></li>
-          <li><a href="/license.html"><span class="partof-ico"><svg aria-hidden="true"><use href="#i-tag"/></svg></span><span><b>GNU GPL 3.0</b><small>free software, for good</small></span></a></li>
-          <li><a href="{{REPO}}/actions"><span class="partof-ico"><svg aria-hidden="true"><use href="#i-code"/></svg></span><span><b>Built by GitHub Actions</b><small>never on someone's laptop</small></span></a></li>
-          <li><a href="/download.html#check-your-download"><span class="partof-ico"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/></svg></span><span><b>SHA-256 checksums</b><small>for every file</small></span></a></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Open source -->
-    <section class="sec" id="open-source" aria-labelledby="oss-title">
-      <div class="wrap">
-        <a class="pill-link" href="{{REPO}}">Meet Mister Download Manager. Free and open source.</a>
-        <div class="community">
-          <div>
-            <span class="community-ico"><svg aria-hidden="true"><use href="#i-github"/></svg></span>
-            <h2 id="oss-title">Join the project</h2>
-            <p class="community-lede">Report what's broken, ask for what's missing, fix a translation or send a pull request. The maintainer reads every issue.</p>
-            <p class="community-small">Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.</p>
-          </div>
-          <div class="community-side">
-            <div class="community-stats">
-              <div><b>{{STARS}}</b><small>Stars</small></div>
-              <span class="vr"></span>
-              <div><b><span class="ping"></span>{{ISSUES}}</b><small>Open issues</small></div>
-              <span class="vr"></span>
-              <div><b>{{FORKS}}</b><small>Forks</small></div>
-            </div>
-            <a class="btn btn-ink btn-h11 wide" href="{{REPO}}"><svg class="os-ico" aria-hidden="true"><use href="#i-github"/></svg> Star it on GitHub</a>
-            <div class="community-links"><a href="{{REPO}}/issues/new?template=bug.yml">Report a bug</a><a href="/contributing.html">Contribute</a><a href="/languages.html">Translate</a></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Hello -->
-    <section class="sec hello" aria-labelledby="hello-title">
-      <div class="wrap hello-inner">
-        <h2 id="hello-title" class="sr-only">86 languages</h2>
-        <span class="hello-stage" aria-hidden="true" data-hello translate="no">
-          <span class="hello-word" data-pos="current" lang="en">Hello</span>
-        </span>
-        <p class="hello-from"><span>from</span><img src="/assets/logo-256.webp" width="40" height="40" alt="">Mister Download Manager</p>
-        <p class="hello-sub">The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.</p>
-        <ul class="hello-chips" data-hello-chips translate="no">
-          <li><a class="hello-chip" href="/languages.html" lang="en" data-on>English</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="ar">العربية</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="fr">Français</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="de">Deutsch</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="es">Español</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="ja">日本語</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="pt">Português</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="ru">Русский</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="hi">हिन्दी</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="tr">Türkçe</a></li>
-          <li><a class="hello-chip" href="/languages.html" lang="zh">简体中文</a></li>
-          <li><a class="hello-chip" href="/languages.html">+ 75 more</a></li>
-        </ul>
-        <p class="hello-note">Most translations were made by machine and are waiting for a native speaker. <a href="/languages.html">Help with yours</a>.</p>
-      </div>
-    </section>
-
-    <!-- Download: one card per system -->
-    <section class="sec" id="download" aria-labelledby="download-title">
-      <div class="wrap">
-        <div class="sec-center">
+        <div class="sec-intro">
           <h2 id="download-title">Get Mister Download Manager {{VERSION}}</h2>
           <p>Free for everyone, forever. No sign-up, no ads, nothing bundled.</p>
         </div>
-        <div class="plans os-cards">
-          <article class="plan os-card" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows">
-            <header><h3><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Windows</h3><span class="plan-tag">10 and 11</span></header>
-            <div class="plan-tags"><span class="tag stable">Stable</span><span class="tag">Recommended</span></div>
-            <span class="label">What you get</span>
-            <dl>
+        <div class="sheet sheet-labelled">
+        <p class="sheet-band"><b>Delivery options</b><span>Version {{VERSION}} · free for everyone</span></p>
+        <ul class="service-list os-cards" role="list">
+          <li class="service os-card" data-os="windows" data-href="{{FILE_SETUP}}" data-label="Download for Windows">
+            <h3><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Windows <small>10 and 11</small></h3>
+            <p class="service-tags"><span class="tag stable">Stable</span><span class="tag">Recommended</span></p>
+            <dl class="fields">
               <div><dt>Installer</dt><dd>setup.exe — connects your browsers</dd></div>
               <div><dt>Portable</dt><dd>portable.zip — runs from a folder or USB stick</dd></div>
               <div><dt>Needs</dt><dd>64-bit Windows 10 or 11, about 100 MB</dd></div>
             </dl>
-            <a class="btn btn-primary btn-h11" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
-          </article>
-          <article class="plan os-card" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS">
-            <header><h3><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> macOS</h3><span class="plan-tag">11 and later</span></header>
-            <div class="plan-tags"><span class="tag try">Experimental</span></div>
-            <span class="label">What you get</span>
-            <dl>
+            <a class="btn btn-go" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
+          </li>
+          <li class="service os-card" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS">
+            <h3><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> macOS <small>11 and later</small></h3>
+            <p class="service-tags"><span class="tag try">Experimental</span></p>
+            <dl class="fields">
               <div><dt>Disk image</dt><dd>.dmg — one download for every Mac</dd></div>
               <div><dt>Runs on</dt><dd>Apple Silicon and Intel</dd></div>
               <div><dt>First start</dt><dd>right-click the app → Open (not notarized yet)</dd></div>
             </dl>
-            <a class="btn btn-primary btn-h11" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
-          </article>
-          <article class="plan os-card" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux">
-            <header><h3><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Linux</h3><span class="plan-tag">x86-64</span></header>
-            <div class="plan-tags"><span class="tag try">Experimental</span></div>
-            <span class="label">What you get</span>
-            <dl>
+            <a class="btn btn-line" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
+          </li>
+          <li class="service os-card" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux">
+            <h3><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Linux <small>x86-64</small></h3>
+            <p class="service-tags"><span class="tag try">Experimental</span></p>
+            <dl class="fields">
               <div><dt>AppImage</dt><dd>any distribution: make it executable, run it</dd></div>
               <div><dt>Packages</dt><dd><a href="{{FILE_DEB}}">.deb</a> for Debian and Ubuntu, <a href="{{FILE_RPM}}">.rpm</a> for Fedora</dd></div>
               <div><dt>Or</dt><dd><a href="{{FILE_TAR}}">.tar.gz</a> to unpack anywhere</dd></div>
             </dl>
-            <a class="btn btn-primary btn-h11" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
-          </article>
+            <a class="btn btn-line" href="{{FILE_APPIMAGE}}"><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Download the AppImage</a>
+          </li>
+        </ul>
         </div>
-        <p class="plans-note">The browser extension comes with the app and as its own download for <a href="{{FILE_CHROMIUM}}">Chrome, Edge, Brave, Opera and Vivaldi</a> and <a href="{{FILE_FIREFOX}}">Firefox</a>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.</p>
-        <p class="fine center" data-mobile-note hidden>It's a desktop app: open this page on your computer to download it.</p>
-        <div class="center-cta"><a class="btn btn-ghost btn-h11" href="/download.html">All files and install steps</a><a class="text-link" href="{{REPO}}/releases">Every release on GitHub</a></div>
+        <p class="services-note">The browser extension comes with the app and as its own download for <a href="{{FILE_CHROMIUM}}">Chrome, Edge, Brave, Opera and Vivaldi</a> and <a href="{{FILE_FIREFOX}}">Firefox</a>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.</p>
+        <p class="fine" data-mobile-note hidden>It's a desktop app: open this page on your computer to download it.</p>
+        <p class="services-links"><a class="text-link" href="/download.html">All files and install steps</a><a class="text-link" href="{{REPO}}/releases">Every release on GitHub</a></p>
+      </div>
+    </section>
+
+    <!-- Carriers: what it works with. -->
+    <section class="sec carriers" aria-labelledby="with-title">
+      <div class="wrap">
+        <div class="sec-intro">
+          <h2 id="with-title">Works with what you already use</h2>
+          <p>Your browsers hand it their downloads, and proven open-source tools do the specialist work. <a href="/help/browser-integration.html">Set up the extension</a>.</p>
+        </div>
+        <div class="sheet carrier-sheet">
+          <div class="carrier-row"><h3>Browsers</h3>
+            <ul role="list">
+              <li><img src="/assets/browsers/chrome.svg" width="24" height="24" alt=""><b>Chrome</b><small>Google</small></li>
+              <li><img src="/assets/browsers/edge.svg" width="24" height="24" alt=""><b>Edge</b><small>Microsoft</small></li>
+              <li><img src="/assets/browsers/brave.svg" width="24" height="24" alt=""><b>Brave</b></li>
+              <li><img src="/assets/browsers/opera.svg" width="24" height="24" alt=""><b>Opera</b></li>
+              <li><img src="/assets/browsers/vivaldi.svg" width="24" height="24" alt=""><b>Vivaldi</b></li>
+              <li><img src="/assets/browsers/firefox.svg" width="24" height="24" alt=""><b>Firefox</b><small>Mozilla · in testing</small></li>
+            </ul>
+          </div>
+          <div class="carrier-row"><h3>Protocols</h3>
+            <ul role="list">
+              <li><svg aria-hidden="true"><use href="#p-https"/></svg><b>HTTP</b><small>and HTTPS</small></li>
+              <li><svg aria-hidden="true"><use href="#p-ftp"/></svg><b>FTP</b><small>and FTPS</small></li>
+              <li><svg aria-hidden="true"><use href="#p-torrent"/></svg><b>BitTorrent</b><small>DHT and trackers</small></li>
+              <li><svg aria-hidden="true"><use href="#p-magnet"/></svg><b>Magnet</b><small>links</small></li>
+              <li><svg aria-hidden="true"><use href="#p-proxy"/></svg><b>SOCKS5</b><small>and HTTP proxies</small></li>
+              <li><svg aria-hidden="true"><use href="#p-pac"/></svg><b>PAC</b><small>proxy scripts</small></li>
+              <li><svg aria-hidden="true"><use href="#p-import"/></svg><b>IDM</b><small>list import</small></li>
+            </ul>
+          </div>
+          <div class="carrier-row"><h3>Built on</h3>
+            <ul role="list">
+              <li><svg aria-hidden="true"><use href="#i-code"/></svg><b>yt-dlp</b><small>video from thousands of sites</small></li>
+              <li><svg aria-hidden="true"><use href="#i-code"/></svg><b>ffmpeg</b><small>merges picture and sound</small></li>
+              <li><svg aria-hidden="true"><use href="#p-torrent"/></svg><b>librqbit</b><small>torrent engine</small></li>
+              <li><svg aria-hidden="true"><use href="#p-https"/></svg><b>rustls</b><small>encryption</small></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Customs declaration: the app's languages. -->
+    <section class="sec customs" aria-labelledby="hello-title">
+      <div class="wrap customs-inner">
+        <div class="sec-intro">
+          <h2 id="hello-title">86 languages, right to left too</h2>
+          <p>The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.</p>
+          <p class="fine">Most translations were made by machine and are waiting for a native speaker. <a href="/languages.html">Help with yours</a>.</p>
+        </div>
+        <ul class="customs-grid" role="list" translate="no">
+          <li lang="en"><img class="flag" src="/assets/flags/gb.svg" width="28" height="21" alt="">English</li>
+          <li><img class="flag" src="/assets/flags/sa.svg" width="28" height="21" alt=""><bdi lang="ar" dir="rtl">العربية</bdi></li>
+          <li lang="fr"><img class="flag" src="/assets/flags/fr.svg" width="28" height="21" alt="">Français</li>
+          <li lang="de"><img class="flag" src="/assets/flags/de.svg" width="28" height="21" alt="">Deutsch</li>
+          <li lang="es"><img class="flag" src="/assets/flags/es.svg" width="28" height="21" alt="">Español</li>
+          <li lang="ja"><img class="flag" src="/assets/flags/jp.svg" width="28" height="21" alt="">日本語</li>
+          <li lang="pt"><img class="flag" src="/assets/flags/br.svg" width="28" height="21" alt="">Português</li>
+          <li lang="ru"><img class="flag" src="/assets/flags/ru.svg" width="28" height="21" alt="">Русский</li>
+          <li lang="hi"><img class="flag" src="/assets/flags/in.svg" width="28" height="21" alt="">हिन्दी</li>
+          <li lang="tr"><img class="flag" src="/assets/flags/tr.svg" width="28" height="21" alt="">Türkçe</li>
+          <li><img class="flag" src="/assets/flags/ir.svg" width="28" height="21" alt=""><bdi lang="fa" dir="rtl">فارسی</bdi></li>
+          <li lang="zh"><img class="flag" src="/assets/flags/cn.svg" width="28" height="21" alt="">简体中文</li>
+          <li class="customs-more"><a href="/languages.html">+ 74 more</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Proof of delivery: the comparison, with its sources. -->
+    <section class="sec proof" id="compare" aria-labelledby="compare-title">
+      <div class="wrap">
+        <div class="sec-intro">
+          <h2 id="compare-title">Mister Download Manager and IDM, side by side.</h2>
+          <p>Internet Download Manager is the long-established paid download manager for Windows, and the design we grew up with. Here is what can be checked. Where it's ahead, we say so.</p>
+        </div>
+        <div class="sheet sheet-labelled">
+          <p class="sheet-band"><b>Mister Download Manager vs IDM 6.42</b><span>Checked October 2026 · sources below</span></p>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead>
+                <tr><th scope="col"></th><th scope="col">Mister Download Manager</th><th scope="col">Internet Download Manager</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Price</th><td class="yes">Free</td><td>Paid licence after a 30-day free trial<sup><a href="#s1">1</a></sup></td></tr>
+                <tr><th scope="row">Source code</th><td class="yes">Open (GPL-3.0)</td><td>Closed</td></tr>
+                <tr><th scope="row">1 GiB over a fast link</th><td class="yes">1.0 s</td><td>5.5 s<sup><a href="#s2">2</a></sup></td></tr>
+                <tr><th scope="row">A 256 KiB file</th><td class="yes">0.03 s</td><td>3.1 s<sup><a href="#s2">2</a></sup></td></tr>
+                <tr><th scope="row">Server allowing 2 connections</th><td class="yes">Uses 2, done in 12.6 s</td><td>Opened 480, done in 15.9 s<sup><a href="#s2">2</a></sup></td></tr>
+                <tr><th scope="row">Torrents and magnet links</th><td class="yes">Yes</td><td>Not offered on its website<sup><a href="#s3">3</a></sup></td></tr>
+                <tr><th scope="row">Video from web pages</th><td class="yes">Yes, via yt-dlp</td><td class="yes">Yes, from web players<sup><a href="#s3">3</a></sup></td></tr>
+                <tr><th scope="row">FTP and FTPS</th><td class="yes">Yes</td><td class="yes">Yes<sup><a href="#s3">3</a></sup></td></tr>
+                <tr><th scope="row">Interface languages</th><td class="yes">86, built in</td><td>About 40, as separate downloads<sup><a href="#s3">3</a></sup></td></tr>
+                <tr><th scope="row">Browser extensions</th><td>Chrome, Edge, Brave, Opera, Vivaldi; Firefox in testing</td><td class="yes">Chrome, Firefox, Edge<sup><a href="#s3">3</a></sup></td></tr>
+                <tr><th scope="row">Systems</th><td>Windows 10/11; macOS and Linux to try</td><td>Windows<sup><a href="#s3">3</a></sup></td></tr>
+                <tr><th scope="row">Maturity</th><td>New</td><td class="yes">Refined over many years</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <ol class="sources">
+            <li id="s1">"Try IDM 30-days free trial" — <a href="https://www.internetdownloadmanager.com/">internetdownloadmanager.com</a>; prices at <a href="https://secure.internetdownloadmanager.com/buy_idm.html">its purchase page</a></li>
+            <li id="s2">Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <a href="/benchmark.html">charts, report and raw data</a></li>
+            <li id="s3"><a href="https://www.internetdownloadmanager.com/">internetdownloadmanager.com</a>: supported Windows versions, browser extensions, video, FTP, scheduling and translations; no mention of BitTorrent or magnet links</li>
+          </ol>
+        </div>
+        <p class="services-links"><a class="text-link" href="/idm-alternative.html">MDM as an IDM alternative</a><a class="text-link" href="{{REPO}}/issues/new?template=website.yml&page=https%3A%2F%2Fmisterdownloadmanager.com%2F">Spot something wrong? Tell us</a></p>
       </div>
     </section>
 
     <!-- In short: the facts, for skimmers and for search and AI summaries. -->
-    <section class="wrap tldr tldr-late" aria-labelledby="tldr-title">
-      <div class="tldr-box">
-        <div>
-          <h2 id="tldr-title" class="label">In short</h2>
+    <section class="sec facts-sec" aria-labelledby="tldr-title">
+      <div class="wrap facts-inner">
+        <div class="sec-intro">
+          <h2 id="tldr-title">In short</h2>
           <p><strong>Mister Download Manager (MDM)</strong> is a free, open-source download manager for Windows 10 and 11, with experimental builds for macOS and Linux. It looks and works like Internet Download Manager (IDM), but it is free (GPL-3.0), downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in our published benchmark, and also downloads torrents, magnet links and videos from web pages. A browser extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox hands downloads to it.</p>
         </div>
-        <dl class="facts">
+        <div class="sheet sheet-labelled facts-sheet">
+        <p class="sheet-band"><b>Mister Download Manager {{VERSION}}</b><span>The facts</span></p>
+        <dl class="fields facts">
           <div><dt>Price</dt><dd>Free forever, no ads, no trial</dd></div>
           <div><dt>Licence</dt><dd>Open source, GNU GPL 3.0</dd></div>
           <div><dt>Systems</dt><dd>Windows 10/11; macOS and Linux to try</dd></div>
@@ -344,47 +344,36 @@
           <div><dt>Privacy</dt><dd>The app has no accounts, telemetry or tracking</dd></div>
           <div><dt>Version</dt><dd><a href="/news.html">{{VERSION}}</a></dd></div>
         </dl>
+        <div class="wb-code"><!--@barcode--><span translate="no">MDM {{VERSION}}</span></div>
+        </div>
       </div>
     </section>
 
-    <!-- Compare -->
-    <div class="wrap">
-      <section class="launch-section" id="compare" aria-labelledby="compare-title">
-        <h2 id="compare-title">Mister Download Manager and IDM, side by side.</h2>
-        <p class="launch-intro">Internet Download Manager is the long-established paid download manager for Windows, and the design we grew up with. Here is what can be checked. Where it's ahead, we say so.</p>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th scope="col"></th><th scope="col">Mister Download Manager</th><th scope="col">Internet Download Manager</th></tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">Price</th><td class="yes">Free</td><td>Paid licence after a 30-day free trial<sup><a href="#s1">1</a></sup></td></tr>
-              <tr><th scope="row">Source code</th><td class="yes">Open (GPL-3.0)</td><td>Closed</td></tr>
-              <tr><th scope="row">1 GiB over a fast link</th><td class="yes">1.0 s</td><td>5.5 s<sup><a href="#s2">2</a></sup></td></tr>
-              <tr><th scope="row">A 256 KiB file</th><td class="yes">0.03 s</td><td>3.1 s<sup><a href="#s2">2</a></sup></td></tr>
-              <tr><th scope="row">Server allowing 2 connections</th><td class="yes">Uses 2, done in 12.6 s</td><td>Opened 480, done in 15.9 s<sup><a href="#s2">2</a></sup></td></tr>
-              <tr><th scope="row">Torrents and magnet links</th><td class="yes">Yes</td><td>Not offered on its website<sup><a href="#s3">3</a></sup></td></tr>
-              <tr><th scope="row">Video from web pages</th><td class="yes">Yes, via yt-dlp</td><td class="yes">Yes, from web players<sup><a href="#s3">3</a></sup></td></tr>
-              <tr><th scope="row">FTP and FTPS</th><td class="yes">Yes</td><td class="yes">Yes<sup><a href="#s3">3</a></sup></td></tr>
-              <tr><th scope="row">Interface languages</th><td class="yes">86, built in</td><td>About 40, as separate downloads<sup><a href="#s3">3</a></sup></td></tr>
-              <tr><th scope="row">Browser extensions</th><td>Chrome, Edge, Brave, Opera, Vivaldi; Firefox in testing</td><td class="yes">Chrome, Firefox, Edge<sup><a href="#s3">3</a></sup></td></tr>
-              <tr><th scope="row">Systems</th><td>Windows 10/11; macOS and Linux to try</td><td>Windows<sup><a href="#s3">3</a></sup></td></tr>
-              <tr><th scope="row">Maturity</th><td>New</td><td class="yes">Refined over many years</td></tr>
-            </tbody>
-          </table>
+    <!-- Return address: built in the open, and how to join in. -->
+    <section class="sec sender" id="open-source" aria-labelledby="oss-title">
+      <div class="wrap sender-inner">
+        <div class="sec-intro">
+          <h2 id="oss-title">Built in the open</h2>
+          <p>Report what's broken, ask for what's missing, fix a translation or send a pull request. The maintainer reads every issue.</p>
+          <p class="fine">Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.</p>
         </div>
-        <ol class="sources">
-          <li id="s1">"Try IDM 30-days free trial" — <a href="https://www.internetdownloadmanager.com/">internetdownloadmanager.com</a>; prices at <a href="https://secure.internetdownloadmanager.com/buy_idm.html">its purchase page</a></li>
-          <li id="s2">Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <a href="/benchmark.html">charts, report and raw data</a></li>
-          <li id="s3"><a href="https://www.internetdownloadmanager.com/">internetdownloadmanager.com</a>: supported Windows versions, browser extensions, video, FTP, scheduling and translations; no mention of BitTorrent or magnet links</li>
-        </ol>
-        <div class="launch-links"><a href="/idm-alternative.html">MDM as an IDM alternative</a><a href="{{REPO}}/issues/new?template=website.yml&page=https%3A%2F%2Fmisterdownloadmanager.com%2F">Spot something wrong? Tell us</a></div>
-      </section>
+        <div class="sheet sender-sheet">
+          <ul class="sender-list" role="list">
+            <li><a href="{{REPO}}"><svg aria-hidden="true"><use href="#i-github"/></svg><span><b>Every line on GitHub</b><small>public source code</small></span></a></li>
+            <li><a href="/license.html"><svg aria-hidden="true"><use href="#i-tag"/></svg><span><b>GNU GPL 3.0</b><small>free software, for good</small></span></a></li>
+            <li><a href="{{REPO}}/actions"><svg aria-hidden="true"><use href="#i-code"/></svg><span><b>Built by GitHub Actions</b><small>never on someone's laptop</small></span></a></li>
+            <li><a href="/download.html#check-your-download"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/></svg><span><b>SHA-256 checksums</b><small>for every file</small></span></a></li>
+          </ul>
+          <p class="sender-links"><a class="btn btn-line" href="{{REPO}}"><svg class="os-ico" aria-hidden="true"><use href="#i-star"/></svg> Star it on GitHub</a><a class="text-link" href="{{REPO}}/issues/new?template=bug.yml">Report a bug</a><a class="text-link" href="/contributing.html">Contribute</a><a class="text-link" href="/languages.html">Translate</a></p>
+        </div>
+      </div>
+    </section>
 
-      <!-- FAQ -->
-      <section class="launch-section" id="faq" aria-labelledby="faq-title">
+    <!-- Questions -->
+    <section class="sec questions" id="faq" aria-labelledby="faq-title">
+      <div class="wrap narrow">
         <h2 id="faq-title">A few things to know before you start.</h2>
-        <div class="launch-faq">
+        <div class="qa">
           <details><summary>Is it really free?</summary><p>Yes. It's open source under the GNU GPL, version 3. No trial, no paid edition, no registration key, no nag screen, no ads. <a href="/faq/is-it-free.html">More</a></p></details>
           <details><summary>Is it IDM?</summary><p>No. It's an independent project with no connection to Tonec Inc. It's written from scratch in Rust and contains none of IDM's code or artwork. The layout follows the classic download manager because that's what many people know and like. <a href="/faq/is-it-idm.html">More</a></p></details>
           <details><summary>Is it safe to install?</summary><p>The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <a href="/faq/is-it-safe.html">More</a></p></details>
@@ -393,26 +382,29 @@
           <details><summary>Mac or Linux?</summary><p>Yes, to try: every release has a .dmg for Apple Silicon and Intel Macs and an AppImage, .deb, .rpm and .tar.gz for Linux, marked experimental while they mature. <a href="/faq/systems.html">More</a></p></details>
           <details><summary>Where can I get help?</summary><p>The <a href="/help/">user guide</a> covers every window, with step-by-step tutorials. Something broken? <a href="{{REPO}}/issues/new?template=bug.yml">Open an issue on GitHub</a>, or use Help → Report a problem in the app.</p></details>
         </div>
-        <div class="launch-links"><a href="/faq/">All questions</a><a href="/help/troubleshooting.html">Troubleshooting</a><a href="{{REPO}}/issues/new?template=bug.yml">Report an issue</a></div>
-      </section>
-    </div>
-
-    <!-- Last call -->
-    <section class="closing" aria-labelledby="final-title">
-      <div class="closing-inner">
-        <h2 id="final-title">Your next download, faster.</h2>
-        <p>Free and open source. Install it, click a link, and watch every connection at work.</p>
-        <div class="hero-cta">
-          <!--@split-->
-          <a class="btn btn-ghost btn-h11" href="{{REPO}}"><svg class="os-ico" aria-hidden="true"><use href="#i-star"/></svg> Star on GitHub <span class="count">{{STARS}}</span></a>
-        </div>
-        <div class="launch-links"><a href="/help/getting-started.html">Installation help</a><a href="/help/">User guide</a><a href="{{REPO}}/issues/new?template=bug.yml">Report an issue</a></div>
+        <p class="services-links"><a class="text-link" href="/faq/">All questions</a><a class="text-link" href="/help/troubleshooting.html">Troubleshooting</a><a class="text-link" href="{{REPO}}/issues/new?template=bug.yml">Report an issue</a></p>
       </div>
-      <svg class="closing-art" viewBox="0 0 600 340" aria-hidden="true">
-        <circle cx="300" cy="300" r="250" fill="none" stroke="var(--accent)" stroke-width="2"/>
-        <path d="M300 50c-70 70-70 430 0 500M300 50c70 70 70 430 0 500M60 230c160 40 320 40 480 0M90 140c140 30 280 30 420 0" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity=".55"/>
-        <path d="M300 150v130m-50-50 50 50 50-50" fill="none" stroke="var(--fg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+    </section>
+
+    <!-- The close: back on the board, one action. -->
+    <section class="closing" aria-labelledby="final-title">
+      <div class="wrap closing-inner">
+        <div>
+          <h2 id="final-title">Your next download, faster.</h2>
+          <p>Free and open source. Install it, click a link, and watch every connection at work.</p>
+          <div class="closing-act"><!--@split--></div>
+          <p class="services-links"><a class="text-link" href="/help/getting-started.html">Installation help</a><a class="text-link" href="/help/">User guide</a><a class="text-link" href="{{REPO}}/issues/new?template=bug.yml">Report an issue</a></p>
+        </div>
+        <div class="waybill closing-label">
+          <div class="wb-band">
+            <img src="/assets/logo-64.png" width="40" height="40" alt="">
+            <span class="wb-from"><b>Mister Download Manager</b><small>Free and open source · GPL-3.0</small></span>
+          </div>
+          <p class="stamp closing-stamp"><b>Delivered</b><span>1 GiB in 1.01 s</span></p>
+          <!--@fields-->
+          <div class="wb-code"><!--@barcode--><span translate="no">MDM {{VERSION}}</span></div>
+        </div>
+      </div>
     </section>
   </main>
 

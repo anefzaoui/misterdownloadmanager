@@ -49,7 +49,7 @@ They aren't included in MDM's downloads. MDM fetches them from their official re
 
 ## This website
 
-The site's charts use [Apache ECharts](https://echarts.apache.org) 5.6 (Apache License 2.0) and its text is set in [Inter](https://rsms.me/inter/) 4.1 by Rasmus Andersson (SIL Open Font License 1.1), both served from this site. The browser logos come from [browser-logos](https://github.com/alrra/browser-logos) (MIT); the logos themselves are trademarks of their owners and appear only to name the browsers MDM works with. Screenshots show freely available files, including the Blender Foundation's open movies (CC BY).
+The site's charts use [Apache ECharts](https://echarts.apache.org) 5.6 (Apache License 2.0) and its text is set in [Archivo](https://github.com/Omnibus-Type/Archivo) by Omnibus-Type (SIL Open Font License 1.1), both served from this site. The language flags are the app's own, from [flag-icons](https://github.com/lipis/flag-icons) (MIT). The browser logos come from [browser-logos](https://github.com/alrra/browser-logos) (MIT); the logos themselves are trademarks of their owners and appear only to name the browsers MDM works with. Screenshots show freely available files, including the Blender Foundation's open movies (CC BY).
 
 ## Rust libraries built into MDM
 

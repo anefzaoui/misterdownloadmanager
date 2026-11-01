@@ -33,6 +33,7 @@ from pathlib import Path
 import markdown
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import barcode  # noqa: E402
 import sitei18n  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -59,15 +60,26 @@ def github(path: str):
         return None
 
 
+LATEST = github(f"repos/{REPO.split('github.com/')[1]}/releases/latest") or {}
+
+
 def published_version() -> str:
     """The latest published release's version: what the download links and the version shown
     point at. Cargo.toml's is ahead of it between a merged version bump and its release's
     files (release.yml rebuilds the site once they are published); used offline."""
-    latest = github(f"repos/{REPO.split('github.com/')[1]}/releases/latest")
-    return (latest or {}).get("tag_name", "").lstrip("v") or CARGO_VERSION
+    return LATEST.get("tag_name", "").lstrip("v") or CARGO_VERSION
+
+
+def setup_size() -> str:
+    """The Windows installer's size as the label shows it ("12.4 MB"), or "" offline."""
+    for a in LATEST.get("assets", []):
+        if a.get("name", "").endswith("-setup.exe"):
+            return f"{a['size'] / 1_000_000:.1f} MB"
+    return ""
 
 
 VERSION = published_version()
+SETUP_SIZE = setup_size()
 TODAY = datetime.date.today().isoformat()
 RELEASE = f"{REPO}/releases/download/v{VERSION}/MisterDownloadManager-{VERSION}"
 FILES = {
@@ -232,12 +244,12 @@ def os_menu() -> str:
 def split_button(extra_class: str = "") -> str:
     """Download for <your system>, with the other systems under its arrow."""
     return f"""<div class="split{extra_class}">
-          <a class="btn btn-primary split-main" href="/download.html" data-os-cta>
+          <a class="btn btn-go split-main" href="/download.html" data-os-cta>
             <svg class="os-ico" aria-hidden="true"><use href="#os-windows" data-os-cta-icon/></svg>
             <span data-os-label>Download for Windows</span>
           </a>
           <details class="split-more">
-            <summary class="btn btn-primary" aria-label="Other systems and files"><svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+            <summary class="btn btn-go" aria-label="Other systems and files"><svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
             {os_menu()}
           </details>
         </div>"""
@@ -253,27 +265,26 @@ def header(section: str = "") -> str:
   <header class="top">
     <div class="wrap top-inner">
       <a class="brand" href="/">
-        <img src="/assets/logo-64.png" width="28" height="28" alt="">
+        <img src="/assets/logo-64.png" width="34" height="34" alt="">
         <span>{NAME}</span>
       </a>
       <nav class="nav" aria-label="Main">
         {links}
       </nav>
       <div class="top-actions">
-        <a class="btn btn-ghost top-contrib" href="/contributing.html">Contribute</a>
-        {gh_pill()}
-        <a class="btn btn-primary top-dl" href="/download.html">Download</a>
         <!--@langs-->
-        <button class="theme" type="button" aria-label="Switch between light and dark" title="Light / dark">
+        <button class="icon-btn theme" type="button" aria-label="Switch between light and dark" title="Light / dark">
           <svg class="for-light-i" aria-hidden="true"><use href="#i-moon"/></svg><svg class="for-dark-i" aria-hidden="true"><use href="#i-sun"/></svg>
         </button>
+        <a class="icon-btn top-gh" href="{REPO}" aria-label="Mister Download Manager on GitHub" title="GitHub"><svg aria-hidden="true"><use href="#i-github"/></svg></a>
+        <a class="btn btn-go top-dl" href="/download.html">Download</a>
         <details class="menu">
-          <summary class="theme" aria-label="Menu"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg></summary>
+          <summary class="icon-btn" aria-label="Menu"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg></summary>
           <nav class="menu-panel" aria-label="Main">
             {links}
             <a href="/languages.html">Languages</a>
             <a href="/contributing.html">Contribute</a>
-            <a class="btn btn-primary" href="/download.html">Download</a>
+            <a href="{REPO}">GitHub</a>
           </nav>
         </details>
       </div>
@@ -287,9 +298,9 @@ def footer() -> str:
     <div class="wrap">
       <div class="foot-cols">
         <div class="foot-brand">
-          <a class="brand" href="/"><img src="/assets/logo-64.png" width="28" height="28" alt=""><span>{NAME}</span></a>
+          <a class="brand" href="/"><img src="/assets/logo-64.png" width="34" height="34" alt=""><span>{NAME}</span></a>
           <p class="foot-tag">The download manager you already know, rebuilt to be faster. Free, open source and written from scratch in Rust.</p>
-          <a class="btn btn-ghost btn-small foot-star" href="{REPO}"><svg class="os-ico" aria-hidden="true"><use href="#i-star"/></svg> Star it on GitHub</a>
+          <a class="text-link foot-star" href="{REPO}"><svg aria-hidden="true"><use href="#i-star"/></svg> Star it on GitHub</a>
         </div>
         <div>
           <h2>Product</h2>
@@ -343,14 +354,13 @@ def footer() -> str:
       </div>
       <p class="legal">Not affiliated with Tonec Inc.; Internet Download Manager and IDM are trademarks of their owner, named here only to compare.</p>
     </div>
-    <div class="foot-mark" aria-hidden="true" translate="no">MDM</div>
   </footer>
   {stats_code()}"""
 
 
 # In every head (templated pages get it through <!--@theme-->): the font, then the theme before
 # the first paint.
-THEME_SCRIPT = """<link rel="preload" href="/vendor/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+THEME_SCRIPT = """<link rel="preload" href="/vendor/archivo/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script>
     (function () {
       var d = document.documentElement;
@@ -376,8 +386,8 @@ def head(path: str, title: str, desc: str, *, jsonld: list | None = None, og_typ
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{esc(title)}</title>
   <meta name="description" content="{esc(desc)}">{robots}
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#1f63d6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1a33" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
   <link rel="canonical" href="{url}">
   <meta property="og:type" content="{og_type}">
@@ -467,7 +477,18 @@ def page_tools(src: str, path: str, title: str) -> str:
 
 def cta_band(text: str = "Free, open source, no ads, no trial.") -> str:
     return f"""<div class="cta-band"><p>{text}</p>
-          <a class="btn btn-primary" href="/download.html"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download {NAME}</a></div>"""
+          <a class="btn btn-go" href="/download.html"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download {NAME}</a></div>"""
+
+
+def waybill_fields() -> str:
+    """The release's facts in the label's field grammar (the home page's waybill and the
+    download page): what the visitor gets, for what, at what postage."""
+    size = f' <small>{SETUP_SIZE}</small>' if SETUP_SIZE else ""
+    return (f'<dl class="fields">'
+            f'<div><dt>Postage</dt><dd>Free</dd></div>'
+            f'<div><dt>Delivery</dt><dd><a href="/benchmark.html">1 GiB in 1.0 s</a> <small>IDM: 5.5 s</small></dd></div>'
+            f'<div><dt>System</dt><dd>Windows 10 and 11</dd></div>'
+            f'<div><dt>Version</dt><dd><a href="/news.html">{VERSION}</a>{size}</dd></div></dl>')
 
 
 SOFTWARE_LD = {
@@ -859,6 +880,7 @@ def fill(text: str) -> str:
     for k in ("stars", "forks", "issues", "watchers"):
         text = text.replace("{{" + k.upper() + "}}", STATS.get(k, "–"))
     text = text.replace("<!--@split-->", split_button()).replace("<!--@gh-->", gh_pill("btn btn-ghost btn-big gh-big"))
+    text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
             .replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
 
@@ -977,7 +999,8 @@ def main() -> None:
     # The same pages in every language with a catalog (i18n/site/<lang>.json), under /<lang>/.
     # MDM_SITE_ENGLISH_ONLY=1 (translate_site.py's own build): English pages only.
     only = ["none"] if os.environ.get("MDM_SITE_ENGLISH_ONLY") == "1" else None
-    available = sitei18n.localize(OUT, SITE, only)
+    # MDM_SITE_PREVIEW=1: the English pages with their language picker, nothing translated (fast).
+    available = sitei18n.localize(OUT, SITE, only, translated=os.environ.get("MDM_SITE_PREVIEW") != "1")
     finish(available)
     langs = len({c for v in available.values() for c in v})
     print(f"{len(PAGES)} pages in {langs} language(s) -> {OUT}")

@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "website/index.html"
+        ],
+        "createdAt": "2026-11-01T21:27:47.899Z",
+        "reason": "Claude's triage 2026-11-01: static scan can't see the rows' own padding; the rendered scan of the built page reports none"
+      },
+      {
+        "rule": "nested-cards",
+        "value": "*",
+        "files": [
+          "website/index.html"
+        ],
+        "createdAt": "2026-11-01T21:27:48.049Z",
+        "reason": "Claude's triage 2026-11-01: static scan only; the rendered page has no card inside a card (sheets hold rows and rules)"
+      }
+    ]
+  }
+}
