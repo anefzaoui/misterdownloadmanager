@@ -340,6 +340,8 @@ fn keyboard(
         return false;
     }
     let page = ((client_h - ROW_H) / ROW_H).floor().max(1.0) as isize;
+    // The first row in view (the list scrolls by whole rows).
+    let top = (st.scroll / ROW_H).round() as isize;
     let last = n as isize - 1;
     let cur = focus.map(|s| s as isize);
     let (to, mods) = ui.input(|i| {
@@ -348,10 +350,12 @@ fn keyboard(
             Some(cur.map_or(0, |c| c + 1))
         } else if k(egui::Key::ArrowUp) {
             Some(cur.map_or(0, |c| c - 1))
+        // As Explorer: first to the last (first) row in view, then a page on.
         } else if k(egui::Key::PageDown) {
-            Some(cur.map_or(0, |c| c + page))
+            let bottom = top + page - 1;
+            Some(cur.map_or(0, |c| if c < bottom { bottom } else { c + page }))
         } else if k(egui::Key::PageUp) {
-            Some(cur.map_or(0, |c| c - page))
+            Some(cur.map_or(0, |c| if c > top { top } else { c - page }))
         } else if k(egui::Key::Home) {
             Some(0)
         } else if k(egui::Key::End) {

@@ -632,11 +632,33 @@ pub fn popup<C: Clone>(
     hint: &dyn Fn(&C) -> Option<&'static str>,
 ) -> PopupResult<C> {
     let sub_key = egui::Id::unique(("popup-sub", id));
+    // The control that has the keys while the menu is open (a drop-down list, a text box): the
+    // menu's windows never take them, so Escape reached its window, and egui let them go there
+    // (Escape drops the focus). Escape closing the menu gives them back.
+    let opener = sub_key.with("opener");
+    let focused_now = ctx.memory(|m| m.focused());
+    if let Some(f) = focused_now {
+        ctx.data_mut(|d| d.insert_temp(opener, f));
+    }
+    let give_back = |ctx: &egui::Context| {
+        let had = ctx.data_mut(|d| {
+            let had = d.get_temp::<egui::Id>(opener);
+            d.remove::<egui::Id>(opener);
+            had
+        });
+        if let Some(had) = had
+            && focused_now.is_none()
+            && ctx.input(|i| i.key_pressed(egui::Key::Escape))
+        {
+            ctx.memory_mut(|m| m.request_focus(had));
+        }
+    };
     if let Some(r) = keyboard(ctx, entries, sub_key) {
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
         });
+        give_back(ctx);
         return r;
     }
     let origin = ctx
@@ -662,6 +684,7 @@ pub fn popup<C: Clone>(
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
         });
+        give_back(ctx);
         return PopupResult::Chosen(c);
     }
     // The menus are other windows: any press that reaches the main window, Escape, or the
@@ -698,6 +721,7 @@ pub fn popup<C: Clone>(
                 d.insert_temp(dismissed, at);
             }
         });
+        give_back(ctx);
         return PopupResult::Dismissed;
     }
     PopupResult::Open

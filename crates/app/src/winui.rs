@@ -1653,6 +1653,7 @@ fn edit_text_with(
         ui.visuals_mut().text_cursor.stroke.color = color;
         ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
     });
+    pass_focus_on(ui, &resp, enabled);
     // Named for screen readers by its caption.
     name_from_caption(&resp);
     // Tab into a box selects its text, as in Windows (a click places the caret instead).
@@ -2261,6 +2262,7 @@ pub fn caption_click(
         Sense::hover()
     };
     let resp = ui.interact(rect(caption), widget_id(ui, ("caption", id)), sense);
+    pass_focus_on(ui, &resp, enabled);
     if resp.clicked() {
         *checked = !*checked;
     }
@@ -2303,6 +2305,7 @@ pub fn checkbox_until(
         widget_id(ui, ("check", box_min.x as i32, box_min.y as i32)),
         sense,
     );
+    pass_focus_on(ui, &resp, enabled);
     let resp = enter_is_not_a_click(ui, resp);
     focus_on_press(&resp);
     show_focus(ui, &resp, hit.expand(1.0));
@@ -2594,15 +2597,37 @@ pub fn multiline_light(
     } else {
         LIGHT_DISABLED()
     };
-    let inner = Rect::from_min_max(rc.min + vec2(4.0, 2.0), rc.max - vec2(3.0, 3.0));
+    // The text left of the shared scroll bar (egui's own was a thin overlay unlike every other
+    // list's), which sits inside the frame when the text is taller than the box.
+    let track = Rect::from_min_max(
+        pos2(rc.right() - 1.0 - crate::scrollbar::THICK, rc.top() + 1.0),
+        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
+    );
+    let inner = Rect::from_min_max(
+        rc.min + vec2(4.0, 2.0),
+        pos2(track.left() - 2.0, rc.bottom() - 3.0),
+    );
+    let off_key = egui::Id::unique(("multiline-scroll", id));
+    let mut off: f32 = ui.data(|d| d.get_temp(off_key)).unwrap_or(0.0);
     let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).id_salt(id));
+    // Inside the frame only (the last line showed under the box, over the control below).
+    child.set_clip_rect(rc.shrink(2.0));
     child.visuals_mut().text_cursor.stroke.color = LIGHT_TEXT();
     if !enabled {
         child.disable();
     }
-    let resp = egui::ScrollArea::vertical()
+    let out = egui::ScrollArea::vertical()
         .id_salt((id, "scroll"))
         .max_height(inner.height())
+        // egui's least height (64) is taller than most boxes.
+        .min_scrolled_height(inner.height())
+        .scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden)
+        .scroll_source(egui::scroll_area::ScrollSource {
+            scroll_bar: false,
+            mouse_wheel: false,
+            ..Default::default()
+        })
+        .vertical_scroll_offset(off)
         .show(&mut child, |ui| {
             let resp = ui.add(
                 egui::TextEdit::multiline(value)
@@ -2610,7 +2635,7 @@ pub fn multiline_light(
                     .text_color(ink)
                     .frame(egui::Frame::NONE)
                     .margin(egui::Margin::ZERO)
-                    .desired_width(inner.width() - 14.0)
+                    .desired_width(inner.width())
                     .desired_rows(3),
             );
             edit_menu(&resp, value, false, true);
@@ -2619,8 +2644,32 @@ pub fn multiline_light(
                 take_key(ui, egui::Key::Enter);
             }
             resp
-        })
-        .inner;
+        });
+    let resp = out.inner;
+    // Where the caret took it (typing past the bottom), then the wheel and the bar.
+    off = out.state.clamped_offset().y;
+    let (total, page) = (out.content_size.y, inner.height());
+    let line = ui.fonts_mut(|f| f.row_height(&tahoma()));
+    if ui.rect_contains_pointer(rect(rc)) {
+        off += wheel_rows(ui, line, (page / line).floor().max(1.0)) * line;
+    }
+    if total > page && enabled {
+        crate::scrollbar::bar(
+            ui,
+            off_key.with("bar"),
+            track,
+            true,
+            total,
+            page,
+            line,
+            &mut off,
+        );
+    }
+    let off_now = off.clamp(0.0, (total - page).max(0.0));
+    if off_now != out.state.clamped_offset().y {
+        ui.ctx().request_repaint();
+    }
+    ui.data_mut(|d| d.insert_temp(off_key, off_now));
     edit_focus_line(ui, &resp, rc);
     resp
 }
@@ -2663,6 +2712,7 @@ fn button_face(
         widget_id(ui, ("button", rc.min.x as i32, rc.min.y as i32)),
         sense,
     );
+    pass_focus_on(ui, &resp, enabled);
     expose(
         &resp,
         egui::Role::Button,
@@ -2976,6 +3026,7 @@ pub fn checkbox_light_until(
         widget_id(ui, ("check-light", glyph.x as i32, glyph.y as i32)),
         sense,
     );
+    pass_focus_on(ui, &resp, enabled);
     let resp = enter_is_not_a_click(ui, resp);
     focus_on_press(&resp);
     show_focus(ui, &resp, hit.expand(1.0));
@@ -3161,6 +3212,7 @@ pub fn radio_light_until(
         widget_id(ui, ("radio-light", glyph.x as i32, glyph.y as i32)),
         sense,
     );
+    pass_focus_on(ui, &resp, enabled);
     let resp = enter_is_not_a_click(ui, resp);
     focus_on_press(&resp);
     show_focus(ui, &resp, hit.expand(1.0));
@@ -3319,6 +3371,22 @@ pub fn wheel_steps(ui: &Ui, id: egui::Id, row_h: f32, page: f32) -> isize {
     let whole = total.trunc();
     ui.ctx().data_mut(|d| d.insert_temp(key, total - whole));
     whole as isize
+}
+
+/// A control greyed while it has the keys hands them to the next one, as in Windows: egui let
+/// them go to nowhere, and Tab then started over from the window's first control (a button
+/// that greys itself when pressed, a box greyed by a choice made from the keyboard). Called
+/// where the control is laid out, so "next" is the one after it.
+pub fn pass_focus_on(ui: &Ui, resp: &Response, enabled: bool) {
+    let id = resp.id;
+    if !enabled
+        && ui
+            .ctx()
+            .memory(|m| m.focused().is_none() && m.had_focus_last_frame(id))
+    {
+        ui.ctx()
+            .memory_mut(|m| m.move_focus(egui::FocusDirection::Next));
+    }
 }
 
 /// A system file or folder dialog's answer, from its thread.
@@ -3787,6 +3855,7 @@ pub fn combo_light(
         Sense::hover()
     };
     let resp = ui.interact(rc, key.with("button"), sense);
+    pass_focus_on(ui, &resp, enabled);
     let resp = opener_click(ui, resp);
     focus_on_press(&resp);
     keep_keys(ui, &resp, false, true, false);
@@ -3913,6 +3982,7 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
             Sense::hover()
         };
         let r = ui.interact(part, widget_id(ui, ("updown-light", id, i)), sense);
+        pass_focus_on(ui, &r, enabled);
         let name = if dir > 0 {
             // i18n: a spin box's arrow, for screen readers: one more
             crate::i18n::t("Increase")
@@ -3970,6 +4040,7 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
         Sense::hover()
     };
     let resp = ui.interact(rc, widget_id(ui, ("icon-button-light", id)), sense);
+    pass_focus_on(ui, &resp, enabled);
     expose(
         &resp,
         egui::Role::Button,
@@ -3994,6 +4065,43 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_control_greyed_with_the_keys_hands_them_on() {
+        let ctx = egui::Context::default();
+        let a = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(75.0, 23.0));
+        let b = a.translate(egui::vec2(0.0, 30.0));
+        let mut first_id = None;
+        let mut frame = |enabled: bool, first_id: &mut Option<egui::Id>| {
+            let mut second = None;
+            let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+                let kind = if enabled {
+                    ButtonKind::Normal
+                } else {
+                    ButtonKind::Disabled
+                };
+                let r = button(ui, a, "One", kind, false, None);
+                if first_id.is_none() {
+                    r.request_focus();
+                }
+                *first_id = Some(r.id);
+                second = Some(button(ui, b, "Two", ButtonKind::Normal, false, None).id);
+            });
+            out.textures_delta.clear();
+            second.unwrap()
+        };
+        frame(true, &mut first_id);
+        frame(true, &mut first_id);
+        assert!(ctx.memory(|m| m.has_focus(first_id.unwrap())));
+        // Greyed: the next button has the keys (egui had kept them on the greyed one).
+        let second = frame(false, &mut first_id);
+        frame(false, &mut first_id);
+        assert!(
+            ctx.memory(|m| m.has_focus(second)),
+            "{:?}",
+            ctx.memory(|m| m.focused())
+        );
+    }
 
     #[test]
     /// egui's context locks itself for `data`, `memory`, `input` and their `_mut`s: asking it
