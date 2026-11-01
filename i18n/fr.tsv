@@ -80,6 +80,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Masquer les détails
+#. text in crashui.rs
+#. crash report window: what the report is and what Send does
+#, machine
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Un rapport a été enregistré. L’envoyer aux développeurs sur GitHub les aide à résoudre ce problème ; vous pouvez lire tout ce qu’il contient ci-dessous. Rien n’est envoyé automatiquement : Envoyer ouvre le formulaire de rapport dans votre navigateur, prérempli, pour que vous puissiez le vérifier et le soumettre.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	À propos de Mister Download Manager
@@ -143,6 +147,14 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	déjà en cours de téléchargement : {path}
+#. text in crashui.rs
+#. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
+#, machine
+	Already reported as issue #{number}: {title}	Déjà signalé comme problème n°{number} : {title}
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Joindre également les données d’incident (.dmp) : elles peuvent contenir les adresses que MDM avait en mémoire
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Supprimer également le fichier du disque
@@ -245,8 +257,9 @@
 #, machine
 	Check for updates	Rechercher les mises à jour
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates once a week	Rechercher les mises à jour une fois par semaine
+	Check for updates at every start	Rechercher les mises à jour à chaque démarrage
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -272,7 +285,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Horloge :
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -316,6 +329,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Copier
+#. button in crashui.rs
+#. crash report window button: copy the report's text
+#, machine
+	Copy report	Copier le rapport
 #. window title in a dialog box
 #, machine
 	Create folder	Créer un dossier
@@ -895,6 +912,10 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Recherchez d’abord la nouvelle adresse
+#. text in crashui.rs
+#. crash report window: looking on GitHub for an issue about the same problem
+#, machine
+	Looking for this problem on GitHub…	Recherche de ce problème sur GitHub…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -905,6 +926,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	Rallonger ou raccourcir la sélection
+#. text in crashui.rs
+#. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
+#, machine
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	Rendre le rapport lisible : récupération des symboles ({done} sur {total} Mo)…
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Configuration manuelle du proxy/socks
@@ -938,9 +963,27 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM crashed and is gone
+#, machine
+	Mister Download Manager closed unexpectedly	Mister Download Manager s’est fermé de manière inattendue
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	Configuration de Mister Download Manager
+#. text in crashui.rs
+#, machine
+	Mister Download Manager crash report	Rapport d’incident Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: an internal error, MDM still running
+#, machine
+	Mister Download Manager hit an internal error	Mister Download Manager a rencontré une erreur interne
+#. text in crashui.rs
+#. crash report window heading: MDM's window doesn't answer (frozen)
+#, machine
+	Mister Download Manager stopped responding	Mister Download Manager ne répond plus
+#. text in crashui.rs
+#, machine
+	Mister Download Manager stopped responding for a while	Mister Download Manager n’a pas répondu pendant un certain temps
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1143,6 +1186,10 @@
 #. verb: opens the file
 #, machine
 	Open	Ouvrir
+#. button in crashui.rs
+#. crash report window button: show the report's file in its folder
+#, machine
+	Open folder	Ouvrir le dossier
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Ouvrir les liens magnet et les fichiers .torrent avec Mister Download Manager
@@ -1169,6 +1216,7 @@
 #, machine
 	Options	Options
 #. text in a download's progress window
+#. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Options à la fin
 #. text in the Download video window
@@ -1264,6 +1312,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Files d’attente
+#. text in crashui.rs
+#. crash report window: shown while the crash dump is being read
+#, machine
+	Reading the crash data…	Lecture des données d’incident…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1742,6 +1794,10 @@
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	le dossier {path} n’est pas disponible (lecteur supprimé ou partage réseau hors ligne ?)
+#. text in crashui.rs
+#. crash report window: after Send opened the browser
+#, machine
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Le formulaire s’est ouvert dans votre navigateur. Faites-y glisser le fichier du rapport (et le .dmp, si vous l’avez choisi), puis soumettez-le.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -1757,6 +1813,17 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	la version n’a pas de numéro
+#. text in crashui.rs
+#. crash report window: label above the report's text
+#, machine
+	The report	Le rapport
+#. text in crashui.rs
+#. crash report window: after Copy report
+#, machine
+	The report is on your clipboard.	Le rapport est dans votre Presse-papiers.
+#. text in crashui.rs
+#, machine
+	The report is on your clipboard: paste it in a comment on the issue.	Le rapport est dans votre Presse-papiers : collez-le dans un commentaire sur le problème.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -1786,6 +1853,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	le serveur a envoyé une partie inattendue du fichier ({detail})
+#. text in crashui.rs
+#. crash report window: the symbols couldn't be downloaded; the report still works
+#, machine
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Les symboles n’ont pas pu être récupérés : certaines lignes du rapport affichent des adresses au lieu de noms (les développeurs peuvent toujours les lire).
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2041,6 +2112,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	Mercredi
+#. text in crashui.rs
+#. crash report window: label of the box where the user describes what they did
+#, machine
+	What were you doing when it happened? (optional)	Que faisiez-vous quand c’est arrivé ? (facultatif)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Nouveautés :

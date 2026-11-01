@@ -80,6 +80,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Απόκρυψη λεπτομερειών
+#. text in crashui.rs
+#. crash report window: what the report is and what Send does
+#, machine
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Αποθηκεύτηκε μια αναφορά. Η αποστολή της στους προγραμματιστές στο GitHub τους βοηθά να το διορθώσουν. Μπορείτε να διαβάσετε όλα όσα περιέχει παρακάτω. Τίποτα δεν αποστέλλεται από μόνο του: η Αποστολή ανοίγει τη φόρμα αναφοράς στο πρόγραμμα περιήγησής σας, συμπληρωμένη, για να την ελέγξετε και να την υποβάλετε.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Πληροφορίες για το Mister Download Manager
@@ -143,6 +147,14 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	γίνεται ήδη λήψη: {path}
+#. text in crashui.rs
+#. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
+#, machine
+	Already reported as issue #{number}: {title}	Έχει ήδη αναφερθεί ως ζήτημα #{number}: {title}
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Επισύναψη επίσης των δεδομένων σφάλματος (.dmp): μπορεί να περιέχει διευθύνσεις που είχε στην μνήμη το MDM
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Να διαγραφεί επίσης το αρχείο από το δίσκο
@@ -245,8 +257,9 @@
 #, machine
 	Check for updates	Έλεγχος για ενημερώσεις
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates once a week	Έλεγχος για ενημερώσεις μία φορά την εβδομάδα
+	Check for updates at every start	Έλεγχος για ενημερώσεις σε κάθε εκκίνηση
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -272,7 +285,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Ρολόι:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -316,6 +329,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Αντιγραφή
+#. button in crashui.rs
+#. crash report window button: copy the report's text
+#, machine
+	Copy report	Αντιγραφή αναφοράς
 #. window title in a dialog box
 #, machine
 	Create folder	Δημιουργία φακέλου
@@ -895,6 +912,10 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Αναζητήστε πρώτα τη νέα διεύθυνση
+#. text in crashui.rs
+#. crash report window: looking on GitHub for an issue about the same problem
+#, machine
+	Looking for this problem on GitHub…	Αναζήτηση αυτού του προβλήματος στο GitHub…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -905,6 +926,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	Επιμήκυνση ή συντόμευση της επιλογής
+#. text in crashui.rs
+#. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
+#, machine
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	Καθιστώντας την αναφορά αναγνώσιμη: ανάκτηση των συμβόλων ({done} από {total} MB)…
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Μη αυτόματη διαμόρφωση διακομιστή μεσολάβησης/socks
@@ -938,9 +963,27 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: MDM crashed and is gone
+#, machine
+	Mister Download Manager closed unexpectedly	Η εφαρμογή Mister Download Manager έκλεισε απροσδόκητα
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	Διαμόρφωση Mister Download Manager
+#. text in crashui.rs
+#, machine
+	Mister Download Manager crash report	Αναφορά σφάλματος Mister Download Manager
+#. text in crashui.rs
+#. crash report window heading: an internal error, MDM still running
+#, machine
+	Mister Download Manager hit an internal error	Η εφαρμογή Mister Download Manager αντιμετώπισε ένα εσωτερικό σφάλμα
+#. text in crashui.rs
+#. crash report window heading: MDM's window doesn't answer (frozen)
+#, machine
+	Mister Download Manager stopped responding	Η εφαρμογή Mister Download Manager σταμάτησε να αποκρίνεται
+#. text in crashui.rs
+#, machine
+	Mister Download Manager stopped responding for a while	Η εφαρμογή Mister Download Manager σταμάτησε να αποκρίνεται για λίγο
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1143,6 +1186,10 @@
 #. verb: opens the file
 #, machine
 	Open	Άνοιγμα
+#. button in crashui.rs
+#. crash report window button: show the report's file in its folder
+#, machine
+	Open folder	Άνοιγμα φακέλου
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Άνοιγμα συνδέσμων magnet και αρχείων .torrent με το Mister Download Manager
@@ -1169,6 +1216,7 @@
 #, machine
 	Options	Επιλογές
 #. text in a download's progress window
+#. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Επιλογές κατά την ολοκλήρωση
 #. text in the Download video window
@@ -1264,6 +1312,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Ουρές
+#. text in crashui.rs
+#. crash report window: shown while the crash dump is being read
+#, machine
+	Reading the crash data…	Ανάγνωση των δεδομένων σφάλματος…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1742,6 +1794,10 @@
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	ο φάκελος {path} δεν είναι διαθέσιμος (η μονάδα δίσκου αφαιρέθηκε ή η κοινόχρηστη τοποθεσία δικτύου είναι εκτός σύνδεσης;)
+#. text in crashui.rs
+#. crash report window: after Send opened the browser
+#, machine
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Η φόρμα άνοιξε στο πρόγραμμα περιήγησής σας. Σύρετε το αρχείο της αναφοράς (και το .dmp, αν επιλέξατε) σε αυτήν και, στη συνέχεια, υποβάλετε.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -1757,6 +1813,17 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	η έκδοση δεν έχει αριθμό έκδοσης
+#. text in crashui.rs
+#. crash report window: label above the report's text
+#, machine
+	The report	Η αναφορά
+#. text in crashui.rs
+#. crash report window: after Copy report
+#, machine
+	The report is on your clipboard.	Η αναφορά βρίσκεται στο πρόχειρό σας.
+#. text in crashui.rs
+#, machine
+	The report is on your clipboard: paste it in a comment on the issue.	Η αναφορά βρίσκεται στο πρόχειρό σας: επικολλήστε την σε ένα σχόλιο στο ζήτημα.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -1786,6 +1853,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	ο διακομιστής έστειλε ένα μη αναμενόμενο τμήμα του αρχείου ({detail})
+#. text in crashui.rs
+#. crash report window: the symbols couldn't be downloaded; the report still works
+#, machine
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Τα σύμβολα δεν μπόρεσαν να ανακτηθούν: ορισμένες γραμμές της αναφοράς εμφανίζουν διευθύνσεις αντί για ονόματα (οι προγραμματιστές μπορούν ακόμα να τις διαβάσουν).
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2041,6 +2112,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	Τετάρτη
+#. text in crashui.rs
+#. crash report window: label of the box where the user describes what they did
+#, machine
+	What were you doing when it happened? (optional)	Τι κάνατε όταν συνέβη; (προαιρετικό)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Τι νέο υπάρχει:
