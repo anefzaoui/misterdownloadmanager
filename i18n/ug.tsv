@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} بايت|{n} بايت
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} چۈشۈرۈش|{n} چۈشۈرۈش
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} چۈشۈرۈلۈۋاتىدۇ|{n} چۈشۈرۈلۈۋاتىدۇ
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ھۆججەت|{n} ھۆججەت
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} تاللانغان|{n} تاللانغان
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ئېكسپورت قىلىش ئارقىلىق
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	بىكار قىلىش
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	تۈر
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	تۈر قىسقۇچى
 #. text in categories.rs
 #, machine
 	Category properties	تۈر خاسلىقى
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	سائەت:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	تاقاش
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	دېكابىر
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	كىچىكلەت
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	سۈكۈتتىكى ئەڭ چوڭ ئۇلىنىش سانى
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	ئۆچۈرۈش
 #. message or event log entry in the main window
 #, machine
 	Delete category	تۈرنى ئۆچۈرۈش
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	نۆۋەتنى ئۆچۈرۈش
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" تۈرىنى ئۆچۈرەمسىز؟ ئۇنىڭ چۈشۈرۈلمىلىرى ئادەتتىكىگە ئايلىنىدۇ؛ ئۇلارنىڭ ھۆججەتلىرى ئورنىدا قالىدۇ.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" نۆۋىتىنى ئۆچۈرەمسىز؟ ئۇنىڭ چۈشۈرۈلمىلىرى تىزىملىكتە قالىدۇ.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	يېڭىلاشنى چۈشۈرۈۋاتىدۇ... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	چۈشۈرمىلەر
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	چۈشۈرمىلەر توختىتىلدى ۋە سائەت {time} دە ئاپتوماتىك ئەسلىگە كېلىدۇ.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	.torrent ھۆججەتلىرى ياكى ئادرېس تىزىملىكىنى بۇ يەرگە سۆرەڭ
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	چۈشۈرۈش ئۈچۈن ئۇلىنىشلارنى بۇ يەرگە سۆرەڭ
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	سۆرەپ تاشلانغان ئۇلىنىشلار
 #. window title in a dialog box
 #, machine
 	Duplicate download link	قايتا چۈشۈرۈش ئۇلىنىشى
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	ئۆچرەت نامىنى كىرگۈزۈڭ
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	مەسىلەن: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	پەقەت سىزنىڭ ھېساباتىڭىز ئۈچۈن. باشقا ئەپلەر ئالدىنقى ئورۇندا تۇرىدۇ.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	پەقەت Windows ھېساباتىڭىز ئۈچۈن. «بىلەن ئېچىش» تاللانغان باشقا ئەپ ئالدىنقى ئورۇندا تۇرىدۇ.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	توررېنت ھۆججىتىدىن
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	«دىن» «غىچە» دىن بۇرۇن كېلىشى كېرەك
 #. message or event log entry in the main window
 #, machine
 	from the browser	تور كۆرگۈچتىن
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	تورداشلار ئارىسىدىن ھۆججەت تىزىملىكىنى ئېلىۋاتىدۇ... {n} سېكۇنت
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	چۈشۈرۈش تۈگىگەندىن كېيىن داۋاملىشىدۇ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	تاماملىغاندا مودېمنى ئۈزۈش
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	نۆۋەتتە
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	تىزىملىكتە
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	چوڭايت
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	بارلىق چۈشۈرۈشلەرنى بىرلىكتە چەكلەش
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	ئادرېس تىزىملىكى
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	كىرىش
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ئىزدەش
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	ئالدى بىلەن يېڭى ئادرېسنى ئىزدەڭ
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	كەم
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	بەتنى يۇقىرى/تۆۋەنگە يۆتكەش
+#. text in the Scheduler window
+#, machine
+	Move down	تۆۋەنگە يۆتكە
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	تاللانغان چۈشۈرۈلمىنى يۆتكەش ياكى نامىنى ئۆزگەرتىش
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	كۆچرۈش نۆۋىتىگە يۆتكەش
+#. text in the Scheduler window
+#, machine
+	Move up	يۇقىرىغا يۆتكە
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	تاللاشنى ئۆزگەرتمەي يۆتكەش
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	يۆتكەش/نامىنى ئۆزگەرتىش
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	ھۆججەت يۆتكىلىۋاتىدۇ...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	باشقا ئۇلىنىشلاردىن كۆپ ئاستا؛ قايتا ئۇلىنىۋاتىدۇ
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	تېخىچە قىسقۇچ يوق
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	ھېچقانداق تىل ئىزدەشكە ماس كەلمىدى
 #. text in langpick.rs
 #, machine
 	No language matches.	ماس كېلىدىغان تىل يوق.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	خەت ئەپ ئېچىلمىدى.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	خەت ئەپ يوق: ئۇچۇر كۆچۈرۈلدى، ئۇنى خېتىڭىزغا چاپلاڭ.
 #. text in the Options window
 #, machine
 	No proxy/socks	ۋاكالەتچى/SOCKS يوق
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	ئەسكەرتىش: بۇ تەڭشەكلەر نۆۋەت بىر تەرەپ قىلىشقا مۇناسىۋەتلىك ئەمەس
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item} دا چۈشۈرۈلىدىغان ھېچقانداق نەرسە يوق: ئۇلىنىشلارنى، .torrent ھۆججىتىنى ياكى ئادرېس تىزىملىكىنى (.txt, .ef2) تاشلاڭ.
 #. text in the Scheduler window
 #, machine
 	November	نويابىر
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	بىر قېتىملىق چۈشۈرۈش
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	پەقەت تاماملىنىپ بولغان ياكى تېخى باشلانمىغان چۈشۈرۈشلەرنىلا يۆتكىگىلى بولىدۇ
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	پەقەت تاماملىنىپ بولغان ياكى تېخى باشلانمىغان چۈشۈرۈشلەرنىلا يۆتكىگىلى بولىدۇ. ئالدى بىلەن ئۇنى توختىتىپ تاماملاڭ.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	پەقەت كومپيۇتېرنى ئىشلىتىۋاتقان ۋاقتىمدا
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	ئېچىش
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	ۋاقىتلىق توختىتىش
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	ئالدى بىلەن چۈشۈرۈشنى توختىتىڭ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	ئالدىن كۆرسىتىش
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	ئالدىن كۆرۈش تېخى ئىشلەتمىگىلى بولمايدۇ
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ۋەكىل مۇلازىمېتىر ئادرېسى
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	سان ياكى ھەرپلەر كېلىدىغان ئادرېسقا * بەلگىسىنى قويۇڭ
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	چىقىرىۋېتىش
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	كۆچۈرۈش نۆۋىتىدىن چىقىرىۋەت
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	داۋاملاشتۇرۇلدى
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	قايتا سىنا
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	ئىككىنچى ھۆججەت:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	بىر قىسقۇچ تاللاڭ
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	توررېنت چۈشۈرۈلۈۋاتقاندا كۆرسىتىلىدۇ.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	تاقاش
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	ھالىتى:
+#. text in the Add torrent window
+#, machine
+	Stop	توختات
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	چۈشۈرۈشنى توختىتىش ۋاقتى
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} نى توختات
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	توختىتىلدى
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	پە
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	بۇ 100,000 دىن ئارتۇق ھۆججەت: دائىرىنى كىچىكلەتمەڭ
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	ئەڭ ياخشى سۈپەتلەر ئۈچۈن سىن ۋە ئاۋازنى بىرلەشتۈرۈش ئۈچۈن ffmpeg (تەخمىنەن 80 MB) كېرەك.
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	ئەڭ ياخشى سۈپەتلەرگە ffmpeg كېرەك: ئۇنى سىستېمىڭىزنىڭ بوغچا باشقۇرغۇچىسى (ياكى Homebrew) ئارقىلىق قاچىلاڭ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	چاپلاش تاختىسى ئالدىراش: قايتا سىناڭ.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	كومپيۇتېرنى تاقىغىلى بولمىدى: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	دىسكا تولۇپ كەتتى
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	چۈشۈرۈش تېخى تاماملىنىپ بولمىدى
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	چۈشۈرۈش ئۇلىنىشىنىڭ ۋاقتى ئۆتۈپ كەتتى (چۈشۈرۈش ئادرېسىنى يېڭىلاڭ)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	چۈشۈرۈش تىزىملىكىنى ساقلىغىلى بولمىدى: {error}. MDM ئىجرا بولۇۋاتقاندا ئۆزگەرتىشلەر ساقلىنىدۇ.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	سىز ئاللىبۇرۇن بىلىدىغان چۈشۈرۈش باشقۇرغۇچ، تېخىمۇ تېز بولۇش ئۈچۈن قايتا قۇرۇلدى. GNU GPL 3-نۇسخىسى ياكى ئۇنىڭدىن كېيىنكى نۇسخىسى ئاستىدا ھەقسىز ۋە ئوچۇق كودلۇق. سىنلار yt-dlp ئارقىلىق تېپىلىدۇ؛ توررېنتلار librqbit ئارقىلىق ئىجرا قىلىنىدۇ.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	ھۆججەتنى يۆتكىگىلى بولمىدى: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	ھۆججەتنى ئوقۇغىلى بولمىدى: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	باشقا تۈرلەردە تىزىملىككە كىرگۈزۈلمىگەن ھۆججەت تىپلىرى
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	ھۆججەتنىڭ ئۆزىنىڭ تەكشۈرۈش يىغىندىسى
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	بۇ مۇندەرىجە مەۋجۇت ئەمەس:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	بۇ سىستېمىدا تېلېفون ئارقىلىق ئۇلىنىش يوق
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	بۇ توررېنت ئاللىبۇرۇن چۈشۈرۈش تىزىملىكىدە بار
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	غا:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	بۈگۈن: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	بەك كۆپ يۆنىلىش
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	توررېنت چۈشۈرۈش (ماگنىت ئۇلىنىشلىرى ۋە .torrent ھۆججەتلىرى)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	توررېنت ھۆججەتلىرى
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	تاقاش
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	كومپيۇتېرنى تاقا
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	تاماملىغاندىن كېيىن كومپيۇتېرنى ئۆچۈرۈش
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ئاچىش
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	«دىن» ۋە «غىچە»گە بىر ھەرپ كىرگۈزۈڭ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	«دىن» ۋە «غىچە»گە بىر سان كىرگۈزۈڭ
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	تۈرنىڭ نامىنى كىرگۈزۈڭ
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	«باشقا نامدا ساقلا»غا ھۆججەت نامىنى كىرگۈزۈڭ
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	ئىزدەيدىغان نەرسىنى كىرگۈزۈپ، كەم دېگەندە بىر ئورۇننى تاللاڭ
 #. text in a download's Properties window
 #, machine
 	Type:	تۈرى:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	نامەلۇم
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	نامەلۇم
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV ھالىتىدە FTP ئىشلىتىش
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	پەقەت بىر * ئىشلىتىڭ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	تەكشۈرۈش
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	تەكشۈرۈش يىغىندى تەكشۈرۈش نومۇرى
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ۋىرۇس تەكشۈرۈش تەڭشەكلىرى
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	كۈتۈۋاتىدۇ
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} نى ئۆز ئىچىگە ئالىدۇ
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}، {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ھۆججىتى
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} دىسكىدىن ئۆچۈرۈلمىدى: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} ئېچىلمىدى: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file}نى تەكشۈرۈش ئۈچۈن ئوقۇغىلى بولمىدى
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ئەمدى ساقلانغان ئورنىدا يوق (يۆتكەلگەن ياكى ئۆچۈرۈلگەن). ئوڭ چېكىش تىزىملىكىدىكى «قايتا چۈشۈرۈش» ئۇنى قايتا چۈشۈرىدۇ.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ھۆججەتنىڭ تەكشۈرۈش يىغىندىسى ({algorithm}) ماس كەلمەيدۇ
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: ھۆججەتنىڭ تەكشۈرۈش يىغىندىسى ({algorithm}) ماس كېلىدۇ
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	ئاخىرقى سىناش ۋاقتى
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	كۆچۈرۈش نۆۋىتى
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	نۆۋەت
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Mister Download Manager ھە&ققىدە
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	يېڭى چۈشۈرۈشنى &قوشۇش
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	يېڭى چۈشۈرۈشنى &قوشۇش...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	&چىقىرىۋېتىش
 #, machine
 menu	&Report a problem	بىر مەسىلە &دوكلات قىلىش
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	تۈۋرۈكلەرنى &ئەسلىگە قايتۇرۇش
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	&پىلانلىغۇچ ۋە ئۆچرەتلەر
@@ -2221,13 +2446,14 @@ menu	&Tray icon	&تەخسە بەلگىسى
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	&دەرسلىكلەر
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&قايتۇرۇش
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Video downloads	&سىن چۈشۈرۈش
-#. menu command in the main window
-#, machine
-menu	3D Style	3D ئۇسلۇبى
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2321,10 +2547,6 @@ menu	Create new queue	يېڭى ئۆچرەت قۇرۇش
 #, machine
 menu	Cu&t	كېسىش(&t)
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	Customize...	خاسلاشتۇرۇش...
-#. menu command in the main window
 #, machine
 menu	Dark Mode support	قاراڭغۇ ھالەتنى قوللاش
 #. menu command in the main window
@@ -2376,22 +2598,12 @@ menu	H&elp contents	ياردەم مەزمۇنى(&H)
 #, machine
 menu	Hide drop target	تۆكۈش نىشانىنى يوشۇرۇش
 #. menu command in the main window
-#, machine
-menu	Large Buttons	چوڭ كۇنۇپكىلار
-#. menu command in the main window
-#, machine
-menu	Look for new toolbars	يېڭى قورال بالداقلىرىنى ئىزدەش
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	Mister Download Manager &باش بەت
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	يۆتكەش/ئات ئۆزگەرتىش (Ctrl-M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-#, machine
-menu	Neon	نېئون
 #. menu command in the main window
 #, machine
 menu	On Double click	قوش چېكىلسە
@@ -2435,6 +2647,15 @@ menu	Refresh download address	چۈشۈرۈش ئادرېسىنى يېڭىلاش
 #, machine
 menu	Remove	چىقىرىۋېتىش
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	ھۆججەتلەر بىلەن &چىقىرىۋېتىش
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	ھۆججەتلەر بىلەن چىقىرىۋېتىش
+#. menu command in the main window
 #, machine
 menu	Resume Download	چۈشۈرۈشنى ئەسلىگە كەلتۈرۈش
 #. menu command in the main window
@@ -2454,7 +2675,7 @@ menu	S&top queue	نۆۋەتنى توختىتىش(&p)
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	پىلانلاش
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	ھەممىنى تاللاش(&a)
@@ -2465,9 +2686,6 @@ menu	Show &drop target	تۆكۈش نىشانىنى كۆرسىتىش(&d)
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager نى كۆرسەت
-#. menu command in the main window
-#, machine
-menu	Small Buttons	كىچىك كۇنۇپكىلار
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2522,20 +2740,25 @@ menu	Turn of&f	تاقاش(&f)
 #, machine
 menu	Verify checksum...	تەكشۈرۈش يىغىندىسىنى دەلىللەش...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Downloads	چۈشۈرۈشلەر
+menubar	&Downloads	&چۈشۈرۈشلەر
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	File	ھۆججەت
+menubar	&File	&ھۆججەت
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Help	ياردەم
+menubar	&Help	&ياردەم
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Tasks	ۋەزىپىلەر
+menubar	&Tasks	&ۋەزىپىلەر
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	View	كۆرۈنۈش
+menubar	&View	&كۆرۈنۈش
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	توررېنت قوشۇش

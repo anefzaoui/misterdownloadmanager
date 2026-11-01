@@ -35,10 +35,18 @@ fn folder() -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join("updates"))
 }
 
-/// A release file on its way: its progress, then the checked file or why not.
+/// A release file on its way: its progress, then the checked file or why not. Dropped
+/// (Cancel, the window closed), it stops.
 pub struct Job {
     pub progress: Arc<Progress>,
     slot: Arc<Mutex<Option<Result<PathBuf, String>>>>,
+    task: tokio::task::JoinHandle<()>,
+}
+
+impl Drop for Job {
+    fn drop(&mut self) {
+        self.task.abort();
+    }
 }
 
 impl Job {
@@ -53,7 +61,7 @@ impl Job {
         let (p, out, ctx) = (progress.clone(), slot.clone(), ctx.clone());
         // Repaint while it runs, for the progress bar.
         let ticker = ctx.clone();
-        rt.spawn(async move {
+        let task = rt.spawn(async move {
             let res = match folder() {
                 Some(dir) => mdm_tools::update::fetch(&assets, &name, &dir, &p)
                     .await
@@ -64,7 +72,11 @@ impl Job {
             ctx.request_repaint();
         });
         ticker.request_repaint_after(Duration::from_millis(200));
-        Job { progress, slot }
+        Job {
+            progress,
+            slot,
+            task,
+        }
     }
 
     /// The checked file, or why not, once the download ended.

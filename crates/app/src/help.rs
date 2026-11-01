@@ -5,7 +5,7 @@
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use egui::{Color32, Painter, Sense, Stroke, Ui, pos2, vec2};
+use egui::{Stroke, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -17,13 +17,6 @@ pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const COMMIT: &str = env!("MDM_COMMIT");
 /// The weekly check: at most this often.
 pub const CHECK_EVERY: i64 = 7 * 24 * 3600;
-
-crate::theme::themed! {
-    LINK = Color32::from_rgb(0x99, 0xc8, 0xff), Color32::from_rgb(0x00, 0x66, 0xcc);
-    BOX = Color32::from_rgb(0x1f, 0x1f, 0x1f), Color32::from_rgb(0xff, 0xff, 0xff);
-    BOX_EDGE = Color32::from_rgb(0x5a, 0x5a, 0x5a), Color32::from_rgb(0x82, 0x87, 0x90);
-    MUTED = Color32::from_rgb(0xa0, 0xa0, 0xa0), Color32::from_rgb(0x6d, 0x6d, 0x6d);
-}
 
 /// Open a page of the user guide (`"README.md"`, `"video.md"`, `"README.md#tutorials"`…, in
 /// the repository's docs/) in the browser; `""` is the home page (the repository).
@@ -38,7 +31,8 @@ pub fn open_page(path: &str) {
 
 /// A new GitHub issue on the Bug report form (.github/ISSUE_TEMPLATE/bug.yml), filled with
 /// what MDM knows: its version, the system and its version, how it was installed, the
-/// language. The parameters are the form's field ids; a dropdown takes an option's text.
+/// language. The parameters are the form's field ids (all text fields: GitHub's page drops a
+/// dropdown's value from the address).
 pub fn report_problem() {
     let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
     let url = report_fields().iter().fold(
@@ -82,22 +76,6 @@ fn report_fields() -> Vec<(&'static str, String)> {
         mdm_tools::update::Install::detect().label().to_owned(),
     ));
     fields
-}
-
-/// Text that opens something when clicked: link colour, underlined under the pointer.
-fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str) -> bool {
-    let rect = winui::text(p, x, baseline, crate::i18n::t(label), LINK());
-    let resp = ui
-        .interact(rect, ui.scope_id().with(("link", salt)), Sense::click())
-        .on_hover_cursor(egui::CursorIcon::PointingHand);
-    if resp.hovered() {
-        let y = rect.bottom() + 0.5;
-        p.line_segment(
-            [pos2(rect.left(), y), pos2(rect.right(), y)],
-            Stroke::new(1.0, LINK()),
-        );
-    }
-    resp.clicked()
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -280,11 +258,8 @@ impl Updates {
         let result = self.result.clone();
         // Compact unless there are release notes to show (then a window of its own size).
         let notes = matches!(result, Some(Ok(Found::Newer(_))));
-        let (id, h) = if notes {
-            ("updates-new", 250.0)
-        } else {
-            ("updates", 96.0)
-        };
+        // One window that grows when notes arrive (a second id made a new window flash up).
+        let (id, h) = ("updates", if notes { 250.0 } else { 96.0 });
         let bottom = h - 32.0;
         window(
             ctx,
@@ -335,12 +310,21 @@ impl Updates {
                             ),
                             &[("version", &rel.version), ("date", &rel.date)],
                         );
-                        winui::text_fit(&p, o.x + 11.0, o.y + 24.0, &line, ink, right);
+                        winui::fit(
+                            ui,
+                            &p,
+                            o.x + 11.0,
+                            o.y + 24.0,
+                            &line,
+                            ink,
+                            right,
+                            "update-line",
+                        );
                         let have = crate::i18n::fmt(
                             crate::i18n::t("You have version {version}."),
                             &[("version", VERSION)],
                         );
-                        winui::text(&p, o.x + 11.0, o.y + 42.0, &have, MUTED());
+                        winui::text(&p, o.x + 11.0, o.y + 42.0, &have, winui::MUTED());
                         winui::text(
                             &p,
                             o.x + 11.0,
@@ -353,11 +337,11 @@ impl Updates {
                             pos2(right, o.y + 206.0),
                         );
                         // English, as the paragraph is laid out; made where it is on screen.
-                        p.rect_filled(winui::rect(notes), 0.0, BOX());
+                        p.rect_filled(winui::rect(notes), 0.0, winui::FIELD());
                         p.rect_stroke(
                             winui::rect(notes),
                             0.0,
-                            Stroke::new(1.0, BOX_EDGE()),
+                            Stroke::new(1.0, winui::FIELD_EDGE()),
                             egui::StrokeKind::Inside,
                         );
                         // Release notes run longer than the box: it scrolls (issue #5).
@@ -374,7 +358,10 @@ impl Updates {
                     }
                 }
                 // Under the answer: how Update now is going, else the weekly switch.
-                let status_rc = r(o, 11.0, bottom, 255.0, 21.0);
+                // In English, as the text pens take it (a right-to-left window placed the status
+                // over its buttons when given the mirrored rect).
+                let status_rc =
+                    egui::Rect::from_min_size(o + vec2(11.0, bottom), vec2(255.0, 21.0));
                 if let Some(job) = &self.job {
                     let fraction = job.progress.fraction();
                     let line = crate::i18n::fmt(
@@ -388,10 +375,10 @@ impl Updates {
                     winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);
                     winui::progress_bar(
                         &p,
-                        egui::Rect::from_min_size(
+                        winui::rect(egui::Rect::from_min_size(
                             pos2(status_rc.left(), status_rc.top() + 15.0),
                             vec2(status_rc.width(), 4.0),
-                        ),
+                        )),
                         fraction,
                         ui.input(|i| i.time),
                     );
@@ -426,14 +413,28 @@ impl Updates {
                         true,
                     );
                 }
-                let close_label = if download.is_some() {
+                let close_label = if self.job.is_some() {
+                    // i18n: button: stop downloading the update
+                    crate::i18n::mark("Cancel")
+                } else if download.is_some() {
                     // i18n: button: not now (download the update later)
                     crate::i18n::mark("Later")
                 } else {
                     crate::i18n::mark("OK")
                 };
                 // Enter presses the default button, as in the other dialogs.
-                let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
+                let mut enter = winui::enter_pressed(ui);
+                // A check that failed can be tried again.
+                if matches!(result, Some(Err(_))) {
+                    let at = r(o, 274.0, bottom, 73.0, 21.0);
+                    // i18n: button: check for updates again
+                    let retry = winui::button(ui, at, "Retry", ButtonKind::Default, false, None);
+                    if retry.clicked() || enter {
+                        self.slot = Some(check(rt, ui.ctx()));
+                        self.result = None;
+                        enter = false;
+                    }
+                }
                 if let Some(rel) = &download {
                     // Update now when this copy's file is in the signed release (and it
                     // hasn't just failed); else Download opens the release's page.
@@ -466,7 +467,7 @@ impl Updates {
                         return Outcome::Done(false);
                     }
                 }
-                let kind = if download.is_some() {
+                let kind = if download.is_some() || matches!(result, Some(Err(_))) {
                     ButtonKind::Normal
                 } else {
                     ButtonKind::Default
@@ -480,10 +481,11 @@ impl Updates {
                     None,
                 )
                 .clicked();
-                if close
-                    || ui.input(|i| i.key_pressed(egui::Key::Escape))
-                    || (enter && download.is_none())
-                {
+                if close && self.job.is_some() {
+                    // Cancel: the download stops, the window stays (Update now again, Later).
+                    self.job = None;
+                    Outcome::Open
+                } else if close || winui::escape_pressed(ui) || (enter && download.is_none()) {
                     Outcome::Closed
                 } else {
                     Outcome::Open
@@ -552,11 +554,13 @@ pub struct About;
 
 impl About {
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
+        // A long translation pushes the links and OK down; the window grows with them.
+        let extra = crate::dialogs::grow_extra(ctx, "about");
         window(
             ctx,
             "about",
             "About Mister Download Manager",
-            [420.0, 214.0],
+            [420.0, 214.0 + extra],
             false,
             winui::BG(),
             |ui, o| {
@@ -578,7 +582,9 @@ impl About {
                     crate::i18n::t("Version {version} ({commit})"),
                     &[("version", VERSION), ("commit", COMMIT)],
                 );
-                winui::text(&p, o.x + 80.0, o.y + 46.0, &version, MUTED());
+                // Copyable: bug reports ask for it.
+                let rect = winui::text(&p, o.x + 80.0, o.y + 46.0, &version, winui::MUTED());
+                winui::copyable(ui, rect, "about-version", &version, false);
                 let lines = winui::paragraph(
                     &p,
                     o.x + 80.0,
@@ -607,13 +613,13 @@ impl About {
                     place("Source code"),
                     place("Licenses and credits"),
                 );
-                if link(ui, &p, home.0, home.1, "Home page", "home") {
+                if winui::link(ui, &p, home.0, home.1, "Home page", "home") {
                     open_page("");
                 }
-                if link(ui, &p, source.0, source.1, "Source code", "source") {
+                if winui::link(ui, &p, source.0, source.1, "Source code", "source") {
                     let _ = open::that_detached(REPO);
                 }
-                if link(
+                if winui::link(
                     ui,
                     &p,
                     credits.0,
@@ -623,20 +629,18 @@ impl About {
                 ) {
                     let _ = open::that_detached(format!("{REPO}/blob/main/ATTRIBUTION.md"));
                 }
+                // The links' last row ends above OK (at 182 when it fits as planned).
+                crate::dialogs::grow_px(ui.ctx(), "about", y + 12.0 - (o.y + 172.0));
                 let ok = winui::button(
                     ui,
-                    r(o, 336.0, 182.0, 73.0, 21.0),
+                    r(o, 336.0, 182.0 + extra, 73.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
                     None,
                 )
                 .clicked();
-                if ok
-                    || ui.input(|i| {
-                        i.key_pressed(egui::Key::Escape) || i.key_pressed(egui::Key::Enter)
-                    })
-                {
+                if ok || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
                     Outcome::Closed
                 } else {
                     Outcome::Open
@@ -656,7 +660,7 @@ const SHORTCUTS: [(&str, &str); 21] = [
     ("F3", "Find the next match"),
     ("Enter", "Open the selected download"),
     ("Alt+Enter", "Properties of the selected download"),
-    ("Ctrl+M", "Move or rename the selected download"),
+    ("Ctrl+M / F2", "Move or rename the selected download"),
     ("Delete", "Delete the selected downloads (asks first)"),
     (
         "Shift+Delete",
@@ -705,8 +709,27 @@ impl Shortcuts {
                     let y = o.y + 24.0 + 18.0 * i as f32;
                     // As this system writes it: ⌘N on macOS, the translated key names elsewhere.
                     let keys = crate::chrome::key_label(keys);
-                    winui::text_fit(&p, o.x + 16.0, y, &keys, ink, o.x + 174.0);
-                    winui::text_fit(&p, o.x + 184.0, y, crate::i18n::t(what), ink, o.x + 504.0);
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 16.0,
+                        y,
+                        &keys,
+                        ink,
+                        o.x + 174.0,
+                        ("keys", y as i32),
+                    );
+                    let what = crate::i18n::t(what);
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 184.0,
+                        y,
+                        what,
+                        ink,
+                        o.x + 504.0,
+                        ("what", y as i32),
+                    );
                 }
                 let y = 24.0 + 18.0 * rows + 6.0;
                 let ok = winui::button(
@@ -736,12 +759,13 @@ impl Shortcuts {
 // Tell a friend
 
 pub struct TellFriend {
-    copied: bool,
+    /// What became of Copy or Email: the line under the message, and whether it is a failure.
+    said: Option<(&'static str, bool)>,
 }
 
 impl TellFriend {
     pub fn new() -> Self {
-        TellFriend { copied: false }
+        TellFriend { said: None }
     }
 
     fn message() -> String {
@@ -755,11 +779,13 @@ impl TellFriend {
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let message = Self::message();
+        // The message's box grows with a long translation, the window with it.
+        let extra = crate::dialogs::grow_extra(ctx, "tell-a-friend");
         window(
             ctx,
             "tell-a-friend",
             "Tell a friend",
-            [420.0, 168.0],
+            [420.0, 168.0 + extra],
             false,
             winui::BG(),
             |ui, o| {
@@ -774,17 +800,17 @@ impl TellFriend {
                 );
                 let rect = egui::Rect::from_min_max(
                     pos2(o.x + 11.0, o.y + 30.0),
-                    pos2(o.x + 409.0, o.y + 106.0),
+                    pos2(o.x + 409.0, o.y + 106.0 + extra),
                 );
                 // English, as the paragraph is laid out; made where it is on screen.
-                p.rect_filled(winui::rect(rect), 0.0, BOX());
+                p.rect_filled(winui::rect(rect), 0.0, winui::FIELD());
                 p.rect_stroke(
                     winui::rect(rect),
                     0.0,
-                    Stroke::new(1.0, BOX_EDGE()),
+                    Stroke::new(1.0, winui::FIELD_EDGE()),
                     egui::StrokeKind::Inside,
                 );
-                winui::paragraph(
+                let lines = winui::paragraph(
                     &p,
                     rect.left() + 6.0,
                     rect.top() + 17.0,
@@ -793,13 +819,24 @@ impl TellFriend {
                     rect.right() - 6.0,
                     13.0,
                 );
-                if self.copied {
-                    winui::text(
+                crate::dialogs::grow_to(ui.ctx(), "tell-a-friend", lines, 5);
+                let o = o + vec2(0.0, extra);
+                if let Some((said, failed)) = self.said {
+                    // Short of the buttons beside it (a long translation: "...", whole on hover).
+                    let c = if failed {
+                        winui::ERROR()
+                    } else {
+                        winui::MUTED()
+                    };
+                    winui::fit(
+                        ui,
                         &p,
                         o.x + 11.0,
                         o.y + 150.0,
-                        crate::i18n::t("Copied to the clipboard."),
-                        MUTED(),
+                        crate::i18n::t(said),
+                        c,
+                        o.x + 166.0,
+                        "copied",
                     );
                 }
                 let copy = winui::button(
@@ -810,7 +847,8 @@ impl TellFriend {
                     false,
                     None,
                 )
-                .clicked();
+                .clicked()
+                    || winui::enter_pressed(ui);
                 let email = winui::button(
                     ui,
                     r(o, 254.0, 136.0, 73.0, 21.0),
@@ -829,11 +867,20 @@ impl TellFriend {
                     None,
                 )
                 .clicked();
+                // The user asked for it: the message goes to the clipboard (a busy clipboard
+                // says so; it showed nothing).
+                let to_clipboard = |text: &str| {
+                    arboard::Clipboard::new()
+                        .and_then(|mut c| c.set_text(text.to_owned()))
+                        .is_ok()
+                };
                 if copy {
-                    // The user asked for it: the message goes to the clipboard.
-                    self.copied = arboard::Clipboard::new()
-                        .and_then(|mut c| c.set_text(message.clone()))
-                        .is_ok();
+                    self.said = Some(if to_clipboard(&message) {
+                        (crate::i18n::mark("Copied to the clipboard."), false)
+                    } else {
+                        // i18n: Tell a friend: Copy failed (another program holds the clipboard)
+                        (crate::i18n::mark("The clipboard is busy: try again."), true)
+                    });
                 }
                 if email {
                     let enc = |s: &str| {
@@ -842,13 +889,28 @@ impl TellFriend {
                             .replace('+', "%20")
                     };
                     let subject = crate::i18n::t("Mister Download Manager");
-                    let _ = open::that_detached(format!(
+                    let opened = open::that_detached(format!(
                         "mailto:?subject={}&body={}",
                         enc(subject),
                         enc(&message)
                     ));
+                    // No mail program: the message is copied instead, and said so.
+                    if opened.is_err() {
+                        self.said = Some(if to_clipboard(&message) {
+                            // i18n: Tell a friend: Email found no mail program, so the message was copied
+                            (
+                                crate::i18n::mark(
+                                    "No mail app: the message is copied, paste it in your mail.",
+                                ),
+                                false,
+                            )
+                        } else {
+                            // i18n: Tell a friend: Email found no mail program
+                            (crate::i18n::mark("No mail app opened."), true)
+                        });
+                    }
                 }
-                if close || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if close || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else {
                     Outcome::Open
@@ -918,17 +980,34 @@ mod tests {
         let form = include_str!("../../../.github/ISSUE_TEMPLATE/bug.yml").replace("\r\n", "\n");
         let has = |line: String| form.contains(&format!("{line}\n"));
         let fields = report_fields();
-        for (id, value) in &fields {
+        for (id, _) in &fields {
             assert!(has(format!("id: {id}")), "no field {id} in bug.yml");
-            // A dropdown takes one of its options' text.
-            if matches!(*id, "os" | "install") {
-                assert!(has(format!("- {value}")), "{id}: {value:?} isn't an option");
-            }
+            // Filled as text: GitHub's page put a dropdown's value from the address back to none.
+            let field = form
+                .split(&format!(
+                    "id: {id}
+"
+                ))
+                .next()
+                .unwrap();
+            assert!(
+                field.ends_with(
+                    "- type: input
+    "
+                ),
+                "{id} isn't a text field"
+            );
         }
         assert!(fields.iter().any(|(id, _)| *id == "install"));
-        // Every value Install::label() and report_fields() can give, on any system.
+        // Every value Install::label() and report_fields() can give, on any system, is one the
+        // field's description names.
+        let named = |v: &str| {
+            [format!("{v}, "), format!("{v} or "), format!(" or {v}.")]
+                .iter()
+                .any(|s| form.contains(s.as_str()))
+        };
         for install in mdm_tools::update::Install::ALL {
-            assert!(has(format!("- {}", install.label())), "{}", install.label());
+            assert!(named(install.label()), "{}", install.label());
         }
         for option in [
             "Windows 11",
@@ -938,7 +1017,7 @@ mod tests {
             "Linux",
             "Other",
         ] {
-            assert!(has(format!("- {option}")), "{option}");
+            assert!(named(option), "{option}");
         }
     }
 }

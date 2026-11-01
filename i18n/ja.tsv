@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} バイト
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n}個のダウンロード
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n}個をダウンロード中
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} 個のファイル
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n}個を選択済み
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	インポートによる
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	キャンセル
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	カテゴリ
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	カテゴリ フォルダー
 #. text in categories.rs
 #, machine
 	Category properties	カテゴリのプロパティ
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	時計:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	閉じる
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	12 月
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	減らす
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	既定の最大接続数
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	削除
 #. message or event log entry in the main window
 #, machine
 	Delete category	カテゴリを削除
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	キューを削除
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	カテゴリ「{category}」を削除しますか? ダウンロードは「一般」になり、ファイルは元の場所に残ります。
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	キュー「{queue}」を削除しますか? ダウンロードはリストに残ります。
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	更新をダウンロードしています... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	ダウンロード
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ダウンロードは停止され、{time}に自動的に再開されます。
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	.torrent ファイルまたはアドレスの一覧をここにドラッグします
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	ダウンロードするリンクをここにドラッグしてください
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	ドロップされたリンク
 #. window title in a dialog box
 #, machine
 	Duplicate download link	重複するダウンロードリンク
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	キュー名の入力
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	例: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	お使いのアカウントのみ。既定として設定されている別のアプリが優先されます。
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	Windowsアカウントのみ。"プログラムから開く"で選択された別のアプリが優先されます。
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	トレントファイルから
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	「開始」は「終了」より前である必要があります
 #. message or event log entry in the main window
 #, machine
 	from the browser	ブラウザから
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	ピアからファイル リストを取得しています... {n} 秒
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	ダウンロード完了後も継続
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	完了時にモデムを切断する
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	キュー内
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	リスト内
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	増やす
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	すべてのダウンロードを合計で制限する
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	アドレスの一覧
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	ログイン
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	検索
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	まず新しいアドレスを検索してください
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	不足
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ページを上下に移動
+#. text in the Scheduler window
+#, machine
+	Move down	下に移動
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	選択したダウンロードを移動または名前変更
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	キューに移動
+#. text in the Scheduler window
+#, machine
+	Move up	上に移動
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	選択を変更せずに移動
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	移動/名前の変更
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	ファイルを移動中...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	他の接続よりはるかに低速です。再接続しています
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	フォルダーはまだありません
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	検索に一致する言語がありません
 #. text in langpick.rs
 #, machine
 	No language matches.	一致する言語はありません。
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	メール アプリが開かれていません。
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	メール アプリがありません: メッセージがコピーされました。メールに貼り付けてください。
 #. text in the Options window
 #, machine
 	No proxy/socks	プロキシ/SOCKS なし
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	注: これらの設定はキュー処理には関係ありません
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item} にダウンロードするものはありません: リンク、.torrent ファイル、またはアドレスの一覧 (.txt、.ef2) をドロップしてください。
 #. text in the Scheduler window
 #, machine
 	November	11 月
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	1 回限りのダウンロード
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	完了したダウンロード、またはまだ開始されていないダウンロードのみ移動できます
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	完了したダウンロード、またはまだ開始されていないダウンロードのみ移動できます。まず停止して完了させてください。
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	コンピューターを使用している間のみ
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	開く
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	一時停止
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	まずダウンロードを一時停止してください
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	プレビュー
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	プレビューはまだ利用できません
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	プロキシ サーバー アドレス
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	数字または文字が入るアドレスに * を入力してください
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	削除
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	キューから削除
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	再開されました
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	再試行
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	2 番目のファイル:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	フォルダーの選択
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	トレントのダウンロード中に表示されます。
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	シャットダウン
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	状態:
+#. text in the Add torrent window
+#, machine
+	Stop	停止
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	ダウンロードを停止する時刻
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} を停止
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	停止済み
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	木
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	100,000 ファイルを超えています: 範囲を小さくしてください
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	最高の品質でビデオとオーディオを結合するには ffmpeg (約 80 MB) が必要です。
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	最高の品質には ffmpeg が必要です: システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	クリップボードがビジー状態です: もう一度お試しください。
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	コンピューターをシャットダウンできませんでした: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	ディスクがいっぱいです
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	ダウンロードはまだ完了していません
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	ダウンロード リンクの有効期限が切れました (ダウンロード アドレスを更新してください)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	ダウンロード リストを保存できませんでした: {error}。変更は MDM の実行中に保持されます。
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	既におなじみのダウンロード マネージャーが、より高速に再構築されました。GNU GPL バージョン 3 以降で、無料でオープンソースです。動画は yt-dlp で検索され、トレントは librqbit で実行されます。
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	ファイルを移動できませんでした: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	ファイルを読み取れませんでした: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	他のどのカテゴリにもリストされていないファイルの種類
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	ファイルの独自のチェックサム
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	このフォルダーは存在しません:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	このシステムには切断するダイヤルアップ接続がありません
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	このトレントはすでにダウンロードリストにあります
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	宛先:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	今日: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	リダイレクトが多すぎます
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	トレント ダウンロード (マグネット リンクと .torrent ファイル)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	Torrent ファイル
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	オフにする
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	コンピューターの電源を切る
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	完了時にコンピューターの電源を切る
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	オンにする
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	「開始」と「終了」に文字を入力してください
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	「開始」と「終了」に数字を入力してください
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	カテゴリ名を入力してください
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	「名前を付けて保存」にファイル名を入力してください
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	検索する内容を入力し、検索場所を少なくとも 1 つ選択してください
 #. text in a download's Properties window
 #, machine
 	Type:	種類:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	不明
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	不明
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV モードで FTP を使用する
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	アスタリスクは 1 つだけ使用してください
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	検証
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	チェックサムの検証
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ウイルス チェック設定
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	待機中
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} に含まれる
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}、{speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ファイル
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} をディスクから削除できませんでした: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} を開けませんでした: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file} を読み取って確認できませんでした
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} は保存場所になくなっています (移動または削除されました)。右クリック メニューの「再ダウンロード」で再度取得できます。
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ファイルがチェックサム ({algorithm}) と一致しません
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: ファイルがチェックサム ({algorithm}) と一致します
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	最終試行日時
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	キュー
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Mister Download Manager について(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	新しいダウンロードの追加(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	新しいダウンロードの追加(&A)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	削除(&R)
 #, machine
 menu	&Report a problem	問題の報告(&R)
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	列をリセット(&R)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	スケジューラとキュー(&S)
@@ -2221,13 +2446,14 @@ menu	&Tray icon	タスク バー アイコン(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	チュートリアル(&T)
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	元に戻す(&U)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Video downloads	ビデオのダウンロード(&V)
-#. menu command in the main window
-#, machine
-menu	3D Style	3D スタイル
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2321,10 +2547,6 @@ menu	Create new queue	新しいキューを作成
 #, machine
 menu	Cu&t	切り取り(&T)
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	Customize...	カスタマイズ...
-#. menu command in the main window
 #, machine
 menu	Dark Mode support	ダーク モードのサポート
 #. menu command in the main window
@@ -2376,22 +2598,12 @@ menu	H&elp contents	ヘルプ コンテンツ(&H)
 #, machine
 menu	Hide drop target	ドロップ ターゲットを非表示
 #. menu command in the main window
-#, machine
-menu	Large Buttons	大きいボタン
-#. menu command in the main window
-#, machine
-menu	Look for new toolbars	新しいツールバーを探す
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	Mister Download Manager ホーム ページ(&H)
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	移動/名前の変更 (Ctrl+M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-#, machine
-menu	Neon	ネオン
 #. menu command in the main window
 #, machine
 menu	On Double click	ダブルクリック時
@@ -2435,6 +2647,15 @@ menu	Refresh download address	ダウンロードアドレスを更新
 #, machine
 menu	Remove	削除
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	ファイルと共に削除(&F)
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	ファイルと共に削除
+#. menu command in the main window
 #, machine
 menu	Resume Download	ダウンロードの再開
 #. menu command in the main window
@@ -2454,7 +2675,7 @@ menu	S&top queue	キューを停止(&P)
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	スケジュール
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	すべて選択(&A)
@@ -2465,9 +2686,6 @@ menu	Show &drop target	ドロップ ターゲットを表示(&D)
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager を表示
-#. menu command in the main window
-#, machine
-menu	Small Buttons	小さいボタン
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2522,20 +2740,25 @@ menu	Turn of&f	オフにする(&F)
 #, machine
 menu	Verify checksum...	チェックサムの確認...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Downloads	ダウンロード
+menubar	&Downloads	&ダウンロード
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	File	ファイル
+menubar	&File	&ファイル
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Help	ヘルプ
+menubar	&Help	&ヘルプ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Tasks	タスク
+menubar	&Tasks	&タスク
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	View	表示
+menubar	&View	&表示
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Torrent を追加

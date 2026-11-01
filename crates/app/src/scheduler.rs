@@ -153,12 +153,16 @@ pub struct Scheduler {
     /// Index into the tree: a queue, or `queues.len()` for Download limits.
     selected: usize,
     tab: Tab,
-    tree_focused: bool,
-    file_sel: Option<usize>,
-    files_focused: bool,
+    /// The queue list's and the files list's scroll and selection.
+    tree_rows: winui::RowList,
+    files_rows: winui::RowList,
+    /// Each queue's downloads as the app last had them ([`Scheduler::sync_items`]).
+    base: std::collections::HashMap<String, Vec<u64>>,
     focus: Focus,
     /// The "Enter queue name" prompt, while open.
     naming: Option<String>,
+    /// Delete's question, for this queue, while it is asked.
+    deleting: Option<(usize, crate::dialogs::Confirm)>,
 }
 
 // i18n: the Scheduler's page (and checkbox) that caps how much is downloaded in a time
@@ -180,6 +184,10 @@ impl Scheduler {
             q.running = false;
         }
         let forms = queues.iter().map(Form::of).collect();
+        let base = queues
+            .iter()
+            .map(|q| (q.name.clone(), q.items.clone()))
+            .collect();
         let limits = Limits::from_settings(settings);
         let mut s = Scheduler {
             limits_mb: limits.mb.to_string(),
@@ -190,11 +198,12 @@ impl Scheduler {
             queues,
             selected: 0,
             tab: Tab::Schedule,
-            tree_focused: false,
-            file_sel: None,
-            files_focused: false,
+            tree_rows: Default::default(),
+            files_rows: Default::default(),
             focus: Focus::default(),
             naming: None,
+            deleting: None,
+            base,
         };
         s.applied = s.state();
         s
@@ -204,13 +213,13 @@ impl Scheduler {
     pub fn show_queue(&mut self, q: usize, files: bool) {
         self.selected = q.min(self.queues.len().saturating_sub(1));
         self.tab = if files { Tab::Files } else { Tab::Schedule };
-        self.file_sel = None;
+        self.files_rows.selected = None;
     }
 
     /// Ask for a new queue's name (Create new queue in a right-click menu).
     pub fn new_queue(&mut self) {
         self.naming = Some(queue_name(self.queues.len() + 1));
-        self.file_sel = None;
+        self.files_rows.selected = None;
     }
 
     /// The draft as the app would store it.
@@ -236,16 +245,47 @@ impl Scheduler {
         }
     }
 
-    /// Draw the dialog. `running` holds the names of running queues. Returns false once closed.
+    /// The queues' downloads as the app has them now (`live`), merged into the draft: added or
+    /// deleted in the main window while the Scheduler is open is kept, and so is what the
+    /// Scheduler moved or removed itself.
+    fn sync_items(&mut self, live: &[Queue]) {
+        for (k, q) in self.queues.iter_mut().enumerate() {
+            let Some(now) = live.iter().find(|l| l.name == q.name) else {
+                continue;
+            };
+            let base = self
+                .base
+                .entry(q.name.clone())
+                .or_insert_with(|| now.items.clone());
+            if *base == now.items {
+                continue;
+            }
+            q.items = merge_items(base, &q.items, &now.items);
+            if let Some(a) = self.applied.0.get_mut(k).filter(|a| a.name == q.name) {
+                a.items = merge_items(base, &a.items, &now.items);
+            }
+            *base = now.items.clone();
+        }
+    }
+
+    /// Draw the dialog. `live` is the app's queues (what runs, their downloads now). Returns
+    /// false once closed.
     pub fn show(
         &mut self,
         ctx: &egui::Context,
         icons: &mut ShellIcons,
         items: &[Item],
-        running: &[String],
+        live: &[Queue],
         actions: &mut Vec<Action>,
     ) -> bool {
-        let naming = self.naming.is_some();
+        self.sync_items(live);
+        let running: Vec<String> = live
+            .iter()
+            .filter(|q| q.running)
+            .map(|q| q.name.clone())
+            .collect();
+        let running = running.as_slice();
+        let naming = self.naming.is_some() || self.deleting.is_some();
         let outcome = window(
             ctx,
             "scheduler",
@@ -253,11 +293,32 @@ impl Scheduler {
             "Scheduler",
             [651.0, 465.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, items, running, actions, naming),
         );
         if self.naming.is_some() {
             self.name_prompt(ctx);
+        }
+        // Delete asks first: a queue's schedule can't be had back.
+        if let Some((q, ask)) = &mut self.deleting {
+            match ask.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.deleting = None,
+                Outcome::Done(()) => {
+                    let q = *q;
+                    self.deleting = None;
+                    if q < self.queues.len() {
+                        self.queues.remove(q);
+                        self.forms.remove(q);
+                        self.selected = q - 1;
+                        self.files_rows.selected = None;
+                    }
+                }
+            }
+        }
+        if !matches!(outcome, Outcome::Open) {
+            // Closed: the calendar doesn't open again with the next Scheduler.
+            close_pickers(ctx, &mut self.focus);
         }
         if matches!(outcome, Outcome::Closed) {
             // Close keeps the changes (as Apply would) [IDM: unknown, lab].
@@ -279,9 +340,6 @@ impl Scheduler {
         modal: bool,
     ) -> Outcome<()> {
         let p = ui.painter().clone();
-        // Pointer presses outside a list take its focus away.
-        let pressed = ui.input(|i| i.pointer.any_pressed());
-        let pointer = ui.input(|i| i.pointer.interact_pos());
 
         // ---- left pane ----------------------------------------------------------------
         let clock = r(o, 11.0, 7.0, 32.0, 32.0);
@@ -292,10 +350,10 @@ impl Scheduler {
             o.x + 74.0,
             o.y + 34.0,
             crate::i18n::t("Queues"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         let tree = r(o, 11.0, 44.0, 173.0, 379.0);
-        self.tree(ui, &p, icons, tree, pressed, pointer);
+        let delete_key = self.tree(ui, icons, tree);
         let new_queue = winui::button_light(
             ui,
             r(o, 21.0, 432.0, 73.0, 21.0),
@@ -331,7 +389,7 @@ impl Scheduler {
                 (o.x + 412.0 - w / 2.0).max(o.x + 203.0).round(),
                 o.y + 15.0,
                 &name,
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
                 o.x + 640.0,
             );
             if cut {
@@ -353,12 +411,13 @@ impl Scheduler {
             let current = if self.tab == Tab::Schedule { 0 } else { 1 };
             if let Some(t) =
                 winui::tabs_light(ui, o, r(o, 213.0, 23.0, 428.0, 403.0), &tabs, current)
+                    .or(winui::tab_keys(ui, 2, current))
             {
                 self.tab = if t == 0 { Tab::Schedule } else { Tab::Files };
             }
             match self.tab {
                 Tab::Schedule => self.schedule_page(ui, o),
-                Tab::Files => self.files_page(ui, o, icons, items, pressed, pointer),
+                Tab::Files => self.files_page(ui, o, icons, items),
             }
         } else {
             self.limits_page(ui, o);
@@ -404,11 +463,17 @@ impl Scheduler {
         if new_queue {
             self.naming = Some(queue_name(self.queues.len() + 1));
         }
-        if delete && deletable {
-            self.queues.remove(self.selected);
-            self.forms.remove(self.selected);
-            self.selected -= 1;
-            self.file_sel = None;
+        if (delete || delete_key) && deletable {
+            let name = crate::i18n::t(&self.queues[self.selected].name).to_owned();
+            let text = crate::i18n::fmt(
+                // i18n: asked before deleting a queue; its downloads stay in the list
+                crate::i18n::t("Delete the queue \"{queue}\"? Its downloads stay in the list."),
+                &[("queue", &crate::i18n::isolate(&name))],
+            );
+            self.deleting = Some((
+                self.selected,
+                crate::dialogs::Confirm::new(crate::i18n::mark("Delete queue"), text),
+            ));
         }
         if apply {
             self.apply(actions);
@@ -420,7 +485,11 @@ impl Scheduler {
         if stop && on_queue {
             actions.push(Action::Stop(self.queues[self.selected].name.clone()));
         }
-        let escape = self.focus.at.is_none() && ui.input(|i| i.key_pressed(egui::Key::Escape));
+        // Escape first leaves a selected time or date field, then closes the window.
+        if self.focus.at.is_some() && winui::take_key(ui, egui::Key::Escape) {
+            self.focus.at = None;
+        }
+        let escape = winui::escape_pressed(ui);
         if close || escape {
             Outcome::Closed
         } else {
@@ -428,86 +497,66 @@ impl Scheduler {
         }
     }
 
-    /// The queue list (a tree view in IDM): queues, then Download limits.
-    fn tree(
-        &mut self,
-        ui: &mut Ui,
-        p: &egui::Painter,
-        icons: &mut ShellIcons,
-        rc: Rect,
-        pressed: bool,
-        pointer: Option<Pos2>,
-    ) {
-        p.rect_filled(rc, 0.0, Color32::WHITE);
-        p.rect_stroke(
+    /// The queue list (a tree view in IDM): queues, then Download limits, in the shared row
+    /// list. True when Delete is pressed on it.
+    fn tree(&mut self, ui: &mut Ui, icons: &mut ShellIcons, rc: Rect) -> bool {
+        let queues = &self.queues;
+        let n = queues.len() + 1;
+        self.tree_rows.selected = Some(self.selected);
+        let ev = winui::row_list(
+            ui,
+            "sched-tree",
             rc,
-            0.0,
-            egui::Stroke::new(1.0, winui::rgb_hex(0x828790)),
-            egui::StrokeKind::Inside,
-        );
-        if pressed && pointer.is_some_and(|q| !rc.contains(q)) {
-            self.tree_focused = false;
-        }
-        let clip = p.with_clip_rect(rc.shrink(1.0));
-        let rc = winui::rect(rc);
-        let n = self.queues.len() + 1;
-        for i in 0..n {
-            let top = rc.top() + 2.0 + 16.0 * i as f32;
-            let (label, icon) = if i < self.queues.len() {
-                let q = &self.queues[i];
-                (
-                    crate::i18n::t(q.name.as_str()),
-                    if q.sync { "folder_link" } else { "folder" },
-                )
-            } else {
-                (crate::i18n::t(LIMITS_LABEL), "folder_delete")
-            };
-            let row = winui::rect(Rect::from_min_size(
-                pos2(rc.left() + 1.0, top),
-                vec2(rc.width() - 2.0, 16.0),
-            ));
-            let resp = ui.interact(row, egui::Id::unique(("sched-tree", i)), Sense::click());
-            if resp.clicked() {
-                self.selected = i;
-                self.tree_focused = true;
-                self.file_sel = None;
-            }
-            icons.paint_in(ui, &clip, IconKey::Silk(icon), pos2(rc.left() + 5.0, top));
-            let x = rc.left() + 25.0;
-            let w = winui::text_width(&clip, label);
-            if i == self.selected {
-                let bg = if self.tree_focused {
-                    winui::rgb_hex(0x0078d7)
-                } else {
-                    LIGHT_BG
+            n,
+            16.0,
+            &mut self.tree_rows,
+            |ui, clip, i, row, look| {
+                let (label, icon) = match queues.get(i) {
+                    Some(q) => (
+                        crate::i18n::t(q.name.as_str()),
+                        if q.sync { "folder_link" } else { "folder" },
+                    ),
+                    None => (crate::i18n::t(LIMITS_LABEL), "folder_delete"),
                 };
-                fill(&clip, x - 1.0, top, x + w + 2.0, top + 15.0, bg);
-            }
-            let c = if i == self.selected && self.tree_focused {
-                Color32::WHITE
-            } else {
-                LIGHT_TEXT
-            };
-            let (trect, cut) = winui::text_fit(&clip, x, top + 11.0, label, c, rc.right() - 3.0);
-            if cut {
-                winui::full_on_hover(ui, trect, ("sched-tree-full", i), label);
-            }
+                icons.paint_in(
+                    ui,
+                    clip,
+                    IconKey::Silk(icon),
+                    pos2(row.left() + 4.0, row.top()),
+                );
+                winui::fit(
+                    ui,
+                    clip,
+                    row.left() + 24.0,
+                    row.top() + 11.0,
+                    label,
+                    look.ink,
+                    row.right() - 3.0,
+                    ("sched-tree-full", i),
+                );
+            },
+        );
+        let queues = &self.queues;
+        if ev.focused
+            && self.tree_rows.type_to(ui, "sched-tree", n, |i| {
+                queues
+                    .get(i)
+                    .map_or(crate::i18n::t(LIMITS_LABEL).to_owned(), |q| {
+                        crate::i18n::t(&q.name).to_owned()
+                    })
+            })
+            && let Some(i) = self.tree_rows.selected
+        {
+            self.selected = i;
+            self.files_rows = Default::default();
         }
-        // Up / Down move through the list while it has the focus.
-        if self.tree_focused {
-            let (up, down) = ui.input(|i| {
-                (
-                    i.key_pressed(egui::Key::ArrowUp),
-                    i.key_pressed(egui::Key::ArrowDown),
-                )
-            });
-            if up && self.selected > 0 {
-                self.selected -= 1;
-            }
-            if down && self.selected + 1 < n {
-                self.selected += 1;
-            }
+        if let Some(i) = ev.picked {
+            self.selected = i;
+            self.files_rows = Default::default();
+            // Another queue: its own date, not this one's calendar left open over it.
+            close_pickers(ui.ctx(), &mut self.focus);
         }
+        ev.delete.is_some()
     }
 
     fn schedule_page(&mut self, ui: &mut Ui, o: Pos2) {
@@ -552,16 +601,15 @@ impl Scheduler {
             &mut self.focus,
         );
         let date_x = after(235.0, "Once at", 337.0, 627.0 - 188.0);
-        if winui::radio_light_until(
+        let once = winui::radio_light_until(
             ui,
             at(235.0, 144.0),
             f.once,
             "Once at",
             on,
             Some(o.x + date_x),
-        )
-        .clicked()
-        {
+        );
+        if once.clicked() {
             f.once = true;
         }
         date_picker(
@@ -577,17 +625,20 @@ impl Scheduler {
         let last_day = 16.0 + winui::text_width(&p, crate::i18n::t(WEEKDAYS[6])).ceil() + 4.0;
         let shift = after(235.0, "Daily", 310.0, 627.0 - last_day - 221.0) - 310.0;
         // i18n: adverb: every day (the other choice is once, on a date)
-        if winui::radio_light_until(
+        let daily = winui::radio_light_until(
             ui,
             at(235.0, 173.0),
             !f.once,
             "Daily",
             on,
             Some(o.x + 310.0 + shift),
-        )
-        .clicked()
-        {
+        );
+        if daily.clicked() {
             f.once = false;
+        }
+        // The arrows between them, as in a Windows radio group.
+        if let Some(i) = winui::radio_keys(ui, &[once, daily]) {
+            f.once = i == 0;
         }
         let days = [
             (WEEKDAYS[0], 310.0, 173.0),
@@ -613,6 +664,39 @@ impl Scheduler {
                 on && !f.once,
                 next,
             );
+        }
+        // A start that can never come says so where it is set (the queue just never ran).
+        if f.start_at_on {
+            let today = Local::now().date_naive();
+            let (bad, rc, why) = if f.once {
+                (
+                    f.date < today,
+                    r(o, date_x, 141.0, 188.0, 24.0),
+                    // i18n: tooltip on the Scheduler's date when it is in the past
+                    "This date has passed: the queue will not start",
+                )
+            } else {
+                (
+                    !f.days.iter().any(|d| *d),
+                    r(o, 306.0 + shift, 169.0, 321.0 - shift, 54.0),
+                    // i18n: tooltip on the Scheduler's weekdays when none is ticked
+                    "No day is ticked: the queue will not start",
+                )
+            };
+            if bad {
+                p.rect_stroke(
+                    rc,
+                    3.0,
+                    egui::Stroke::new(1.0, winui::ERROR()),
+                    egui::StrokeKind::Inside,
+                );
+                ui.interact(
+                    rc,
+                    egui::Id::unique(("start-warning", self.selected)),
+                    Sense::hover(),
+                )
+                .on_hover_text(crate::i18n::t(why));
+            }
         }
         winui::etched_h(&p, o.x + 229.0, o.y + 227.0, 398.0);
         let stop_x = after(229.0, "Stop download at", 384.0, 627.0 - 89.0);
@@ -641,16 +725,15 @@ impl Scheduler {
             true,
             Some(o.x + 541.0),
         );
-        winui::edit_light_on(
+        winui::number_field(
             ui,
             r(o, 541.0, 260.0, 48.0, 23.0),
             &mut f.retries,
+            1,
+            9999,
             f.retries_on,
-            false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
-        f.retries.retain(|c| c.is_ascii_digit());
-        f.retries.truncate(4);
         winui::etched_h(&p, o.x + 229.0, o.y + 290.0, 398.0);
         winui::checkbox_light(
             ui,
@@ -665,7 +748,7 @@ impl Scheduler {
             &mut f.open_file,
             f.open_on,
             false,
-            LIGHT_PAGE,
+            LIGHT_PAGE(),
         );
         let browse = winui::button_light(
             ui,
@@ -679,21 +762,24 @@ impl Scheduler {
             false,
         )
         .clicked();
-        if browse
-            && f.open_on
-            && let Some(path) = rfd::FileDialog::new()
-                .set_title(crate::i18n::t("Open the following file when done"))
-                .pick_file()
-        {
+        if browse && f.open_on {
+            let title = crate::i18n::t("Open the following file when done").to_owned();
+            winui::start_pick(ui.ctx(), "sched-open-file", move || {
+                rfd::FileDialog::new().set_title(title).pick_file()
+            });
+        }
+        if let Some(path) = winui::picked(ui.ctx(), "sched-open-file") {
             f.open_file = path.display().to_string();
         }
-        winui::checkbox_light(
+        // Dial-up is hung up through Windows' rasdial; macOS and Linux have no such command.
+        let hang_up = winui::checkbox_light(
             ui,
             at(228.0, 348.0),
             &mut f.hang_up,
             "Hang up modem when done",
-            true,
+            cfg!(windows),
         );
+        winui::why_disabled(hang_up, !cfg!(windows), crate::progress::NO_DIAL_UP);
         winui::checkbox_light(
             ui,
             at(228.0, 366.0),
@@ -728,15 +814,7 @@ impl Scheduler {
         );
     }
 
-    fn files_page(
-        &mut self,
-        ui: &mut Ui,
-        o: Pos2,
-        icons: &mut ShellIcons,
-        items: &[Item],
-        pressed: bool,
-        pointer: Option<Pos2>,
-    ) {
+    fn files_page(&mut self, ui: &mut Ui, o: Pos2, icons: &mut ShellIcons, items: &[Item]) {
         let p = ui.painter().clone();
         let boxes = winui::sentence(
             ui,
@@ -752,13 +830,19 @@ impl Scheduler {
             }],
             &[("files", vec2(39.0, 23.0))],
             |p, x, baseline, s| {
-                text(p, x, baseline, s, LIGHT_TEXT);
+                text(p, x, baseline, s, LIGHT_TEXT());
             },
         );
         let f = &mut self.forms[self.selected];
-        winui::edit_light_on(ui, boxes[0], &mut f.files_at_once, true, false, LIGHT_PAGE);
-        f.files_at_once.retain(|c| c.is_ascii_digit());
-        f.files_at_once.truncate(2);
+        winui::number_field(
+            ui,
+            boxes[0],
+            &mut f.files_at_once,
+            1,
+            99,
+            true,
+            LIGHT_PAGE(),
+        );
         // The up-down buddy inside the box's right end (IDM's: 318, 54 for the box at 297, 53).
         let english_box = winui::rect(boxes[0]);
         let spin = winui::rect(Rect::from_min_size(
@@ -773,16 +857,13 @@ impl Scheduler {
 
         // The queue's files: File Name, Size, Status, Time left.
         let list = r(o, 229.0, 82.0, 396.0, 294.0);
-        p.rect_filled(list, 0.0, Color32::WHITE);
+        p.rect_filled(list, 0.0, winui::FIELD());
         p.rect_stroke(
             list,
             0.0,
-            egui::Stroke::new(1.0, winui::rgb_hex(0x828790)),
+            egui::Stroke::new(1.0, winui::FIELD_EDGE()),
             egui::StrokeKind::Inside,
         );
-        if pressed && pointer.is_some_and(|q| !list.contains(q)) {
-            self.files_focused = false;
-        }
         let cols = [
             (crate::i18n::mark("File Name"), 230.0, 421.0),
             // i18n: column title: the file's size
@@ -791,125 +872,113 @@ impl Scheduler {
             (crate::i18n::mark("Status"), 488.0, 540.0),
             (crate::i18n::mark("Time left"), 540.0, 607.0),
         ];
-        let grid = winui::rgb_hex(0xf0f0f0);
+        let grid = winui::GRID();
         for (title, x0, x1) in cols {
             let title = crate::i18n::t(title);
-            text(&p, o.x + x0 + 6.0, o.y + 99.0, title, LIGHT_TEXT);
+            text(&p, o.x + x0 + 6.0, o.y + 99.0, title, LIGHT_TEXT());
             fill(
                 &p,
                 o.x + x1,
                 o.y + 83.0,
                 o.x + x1,
                 o.y + 106.0,
-                winui::rgb_hex(0xe5e5e5),
+                winui::HEADER_LINE(),
             );
         }
+        // The rows: the shared row list under the header (its frame on the list's).
         let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0));
-        let clip = p.with_clip_rect(winui::rect(body));
         let ids = self.queues[self.selected].items.clone();
-        let rows: Vec<&Item> = ids
-            .iter()
-            .filter_map(|id| items.iter().find(|i| i.id == *id))
-            .collect();
-        let visible = ((body.height()) / 17.0).ceil() as usize;
-        for k in 0..visible {
-            let top = body.top() + 17.0 * k as f32;
-            fill(
-                &clip,
-                body.left(),
-                top + 16.0,
-                body.right(),
-                top + 16.0,
-                grid,
-            );
-            let Some(item) = rows.get(k) else { continue };
-            let row = Rect::from_min_size(pos2(body.left(), top), vec2(body.width(), 16.0));
-            let resp = ui.interact(
-                winui::rect(row),
-                egui::Id::unique(("sched-file", k)),
-                Sense::click(),
-            );
-            if resp.clicked() {
-                self.file_sel = Some(k);
-                self.files_focused = true;
-            }
-            let sel = self.file_sel == Some(k);
-            if sel {
-                let bg = if self.files_focused {
-                    winui::rgb_hex(0x0078d7)
-                } else {
-                    LIGHT_BG
-                };
-                fill(
-                    &clip,
-                    row.left(),
-                    row.top(),
-                    row.right() - 1.0,
-                    row.bottom() - 1.0,
-                    bg,
-                );
-            }
-            let c = if sel && self.files_focused {
-                Color32::WHITE
-            } else {
-                LIGHT_TEXT
-            };
-            let cells = [
-                // Its own direction (an Arabic name right to left in any window).
-                crate::i18n::isolate(&item.file_name),
-                item.size.map(model::size_list).unwrap_or_default(),
-                item.status_text(),
-                item.time_left(),
-            ];
-            for ((_, x0, x1), cell) in cols.iter().zip(&cells) {
-                let cell_clip = clip.with_clip_rect(winui::rect(
-                    Rect::from_min_max(pos2(o.x + x0, top), pos2(o.x + x1 - 1.0, top + 16.0))
-                        .intersect(body),
-                ));
-                let (rect, cut) = winui::text_fit(
-                    &cell_clip,
-                    o.x + x0 + 6.0,
-                    top + 12.0,
-                    cell,
-                    c,
-                    o.x + x1 - 3.0,
-                );
-                if cut {
-                    winui::full_on_hover(ui, rect, ("sched-cell", k, *x0 as i32), cell);
+        // Looked up once a frame (a long queue in a long list was slow to draw).
+        let by_id: std::collections::HashMap<u64, &Item> =
+            items.iter().map(|i| (i.id, i)).collect();
+        let rows: Vec<&Item> = ids.iter().filter_map(|id| by_id.get(id).copied()).collect();
+        let ev = winui::row_list(
+            ui,
+            "sched-files",
+            winui::rect(body.expand(1.0)),
+            rows.len(),
+            17.0,
+            &mut self.files_rows,
+            |ui, clip, k, row, look| {
+                let item = rows[k];
+                let top = row.top();
+                fill(clip, row.left(), top + 16.0, row.right(), top + 16.0, grid);
+                let cells = [
+                    // Its own direction (an Arabic name right to left in any window).
+                    crate::i18n::isolate(&item.file_name),
+                    item.size.map(model::size_list).unwrap_or_default(),
+                    item.status_text(),
+                    item.time_left(),
+                ];
+                for ((_, x0, x1), cell) in cols.iter().zip(&cells) {
+                    fill(clip, o.x + x1, top, o.x + x1, top + 16.0, grid);
+                    let cell_clip = clip.with_clip_rect(
+                        winui::rect(Rect::from_min_max(
+                            pos2(o.x + x0, top),
+                            pos2(o.x + x1 - 1.0, top + 16.0),
+                        ))
+                        .intersect(clip.clip_rect()),
+                    );
+                    winui::fit(
+                        ui,
+                        &cell_clip,
+                        o.x + x0 + 6.0,
+                        top + 12.0,
+                        cell,
+                        look.ink,
+                        o.x + x1 - 3.0,
+                        ("sched-cell", k, *x0 as i32),
+                    );
                 }
-            }
-        }
-        for (_, _, x1) in cols {
-            fill(&clip, o.x + x1, body.top(), o.x + x1, body.bottom(), grid);
-        }
-        if self.file_sel.is_some_and(|s| s >= rows.len()) {
-            self.file_sel = None;
+            },
+        );
+        // Delete on a file: Remove from the queue.
+        let delete_key = ev.delete.is_some();
+        if ev.focused {
+            self.files_rows
+                .type_to(ui, "sched-files", rows.len(), |i| rows[i].file_name.clone());
         }
 
         // Move down, move up, remove from the queue.
-        let sel = self.file_sel;
+        let sel = self.files_rows.selected;
         let n = rows.len();
         let buttons = [
-            ("arrow_down", 233.0, sel.is_some_and(|s| s + 1 < n)),
-            ("arrow_up", 263.0, sel.is_some_and(|s| s > 0)),
-            ("cross", 290.0, sel.is_some()),
+            // i18n: tooltip of an icon button in the Scheduler's list of files
+            (
+                "arrow_down",
+                233.0,
+                sel.is_some_and(|s| s + 1 < n),
+                crate::i18n::mark("Move down"),
+            ),
+            // i18n: tooltip of an icon button in the Scheduler's list of files
+            (
+                "arrow_up",
+                263.0,
+                sel.is_some_and(|s| s > 0),
+                crate::i18n::mark("Move up"),
+            ),
+            // i18n: tooltip of an icon button in the Scheduler's list of files
+            (
+                "cross",
+                290.0,
+                sel.is_some(),
+                crate::i18n::mark("Remove from the queue"),
+            ),
         ];
-        for (icon, x, enabled) in buttons {
+        for (icon, x, enabled, tip) in buttons {
             let rc = r(o, x, 387.0, 19.0, 21.0);
-            let clicked = winui::icon_button_light(ui, rc, icon, enabled).clicked();
+            let clicked = winui::icon_button_light(ui, rc, icon, enabled, tip).clicked()
+                || (icon == "cross" && delete_key);
             // English, as the icon and its wash take it.
             let img = winui::rect(rc).min + vec2(2.0, 2.0);
             icons.paint(ui, IconKey::Silk(icon), img);
             if !enabled {
                 // Disabled: wash the icon out.
-                fill(
-                    &p,
-                    img.x,
-                    img.y,
-                    img.x + 15.0,
-                    img.y + 15.0,
-                    Color32::from_rgba_unmultiplied(0xfb, 0xfb, 0xfb, 170),
-                );
+                fill(&p, img.x, img.y, img.x + 15.0, img.y + 15.0, {
+                    // The dialog's colour over the icon: greyed.
+                    let b = LIGHT_BG();
+                    Color32::from_rgba_unmultiplied(b.r(), b.g(), b.b(), 170)
+                });
             }
             if !(clicked && enabled) {
                 continue;
@@ -927,17 +996,17 @@ impl Scheduler {
                     let next = rows[s + 1].id;
                     let npos = q.items.iter().position(|x| *x == next).unwrap_or(pos);
                     q.items.swap(pos, npos);
-                    self.file_sel = Some(s + 1);
+                    self.files_rows.selected = Some(s + 1);
                 }
                 "arrow_up" => {
                     let prev = rows[s - 1].id;
                     let ppos = q.items.iter().position(|x| *x == prev).unwrap_or(pos);
                     q.items.swap(pos, ppos);
-                    self.file_sel = Some(s - 1);
+                    self.files_rows.selected = Some(s - 1);
                 }
                 _ => {
                     q.items.remove(pos);
-                    self.file_sel = None;
+                    self.files_rows.selected = None;
                 }
             }
         }
@@ -947,7 +1016,7 @@ impl Scheduler {
         let p = ui.painter().clone();
         let l = &mut self.limits;
         winui::checkbox_light(ui, o + vec2(239.0, 33.0), &mut l.on, LIMITS_LABEL, true);
-        let c = if l.on { LIGHT_TEXT } else { LIGHT_DISABLED };
+        let c = if l.on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
         // The labels end where `text_right(380)` ended them: at 381.
         let line = |y: f32, baseline: f32, gap: f32| winui::SentenceLine {
             lead: winui::Lead::Right(o.x + 381.0),
@@ -966,8 +1035,24 @@ impl Scheduler {
                 text(p, x, baseline, s, c);
             },
         );
-        winui::edit_light(ui, boxes[0], &mut self.limits_mb, l.on, false);
-        winui::edit_light(ui, boxes[1], &mut self.limits_hours, l.on, false);
+        winui::number_field(
+            ui,
+            boxes[0],
+            &mut self.limits_mb,
+            1,
+            999_999,
+            l.on,
+            LIGHT_BG(),
+        );
+        winui::number_field(
+            ui,
+            boxes[1],
+            &mut self.limits_hours,
+            1,
+            999,
+            l.on,
+            LIGHT_BG(),
+        );
         winui::checkbox_light(
             ui,
             o + vec2(239.0, 127.0),
@@ -986,13 +1071,20 @@ impl Scheduler {
         let Some(mut name) = self.naming.take() else {
             return;
         };
+        // The names in use, as stored and as shown (a built-in queue's in the interface's
+        // language).
+        let names: Vec<String> = self
+            .queues
+            .iter()
+            .flat_map(|q| [q.name.clone(), crate::i18n::t(&q.name).to_owned()])
+            .collect();
         let outcome = window(
             ctx,
             "queue-name",
             "Enter queue name",
             [279.0, 120.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 text(
@@ -1000,14 +1092,14 @@ impl Scheduler {
                     o.x + 11.0,
                     o.y + 20.0,
                     crate::i18n::t("Enter a name for the new queue that will be"),
-                    LIGHT_TEXT,
+                    LIGHT_TEXT(),
                 );
                 text(
                     &p,
                     o.x + 11.0,
                     o.y + 33.0,
                     crate::i18n::t("displayed in the list of queues"),
-                    LIGHT_TEXT,
+                    LIGHT_TEXT(),
                 );
                 let edit =
                     winui::edit_light(ui, r(o, 11.0, 46.0, 258.0, 23.0), &mut name, true, false);
@@ -1018,14 +1110,45 @@ impl Scheduler {
                     edit.request_focus();
                     ui.data_mut(|d| d.insert_temp(egui::Id::unique("queue-name-focused"), true));
                 }
+                // An empty name or one in use holds OK back, saying which.
+                let typed = name.trim();
+                let why = if typed.is_empty() {
+                    // i18n: why OK is greyed when naming a new queue
+                    Some("Type the queue's name")
+                } else if names
+                    .iter()
+                    .any(|n| n.to_lowercase() == typed.to_lowercase())
+                {
+                    // i18n: why OK is greyed when naming a new queue
+                    Some("There is already a queue with this name")
+                } else {
+                    None
+                };
                 let ok = winui::button_light(
                     ui,
                     r(o, 55.0, 87.0, 73.0, 21.0),
                     "OK",
-                    ButtonKind::Default,
+                    if why.is_some() {
+                        ButtonKind::Disabled
+                    } else {
+                        ButtonKind::Default
+                    },
                     false,
-                )
-                .clicked();
+                );
+                let ok = winui::why_disabled(ok, why.is_some(), why.unwrap_or("")).clicked()
+                    && why.is_none();
+                if let Some(w) = why.filter(|_| !typed.is_empty()) {
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 11.0,
+                        o.y + 80.0,
+                        crate::i18n::t(w),
+                        winui::ERROR(),
+                        o.x + 269.0,
+                        "queue-name-taken",
+                    );
+                }
                 let cancel = winui::button_light(
                     ui,
                     r(o, 148.0, 87.0, 73.0, 21.0),
@@ -1034,9 +1157,9 @@ impl Scheduler {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if ok || (why.is_none() && winui::enter_pressed(ui)) {
                     Outcome::Done(())
                 } else {
                     Outcome::Open
@@ -1050,7 +1173,7 @@ impl Scheduler {
                 let taken = self
                     .queues
                     .iter()
-                    .any(|q| q.name.eq_ignore_ascii_case(name));
+                    .any(|q| q.name.to_lowercase() == name.to_lowercase());
                 if name.is_empty() || taken {
                     self.naming = Some(name.to_owned()); // keep asking
                 } else {
@@ -1080,18 +1203,46 @@ fn field(p: &egui::Painter, x: f32, base: f32, s: &str, selected: bool, enabled:
         pos2(x + w + 1.0, base + 3.0),
     ));
     if selected && enabled {
-        p.rect_filled(rc, 0.0, winui::rgb_hex(0x0078d7));
+        p.rect_filled(rc, 0.0, winui::SELECTION);
     }
     let c = match (enabled, selected) {
-        (false, _) => LIGHT_DISABLED,
+        (false, _) => LIGHT_DISABLED(),
         (true, true) => Color32::WHITE,
-        (true, false) => LIGHT_TEXT,
+        (true, false) => LIGHT_TEXT(),
     };
     text(p, x, base, s, c);
     rc
 }
 
 /// Keyboard and wheel input for the focused picker field: (step, digit typed, move by).
+/// Every picker's field and calendar closed (another queue, the Scheduler closing).
+fn close_pickers(ctx: &egui::Context, focus: &mut Focus) {
+    focus.at = None;
+    focus.typed.clear();
+    let key = egui::Id::unique(("date-picker", "once-at"));
+    ctx.data_mut(|d| {
+        d.remove::<bool>(key);
+        d.remove::<NaiveDate>(key.with("month"));
+        d.remove::<NaiveDate>(key.with("cursor"));
+    });
+}
+
+/// A time or date picker is one Tab stop: its field is chosen while it has the keys (Tab in:
+/// the first), and none when they go elsewhere (it took arrows and digits meant for the box
+/// Tab moved to).
+fn picker_focus(ui: &Ui, hold: &egui::Response, id: &'static str, focus: &mut Focus) {
+    let ours = focus.at.is_some_and(|(fid, _)| fid == id);
+    if hold.has_focus() {
+        winui::keep_keys(ui, hold, true, true, false);
+        if !ours {
+            focus.at = Some((id, 0));
+            focus.typed.clear();
+        }
+    } else if ours && !ui.input(|i| i.pointer.any_down()) {
+        focus.at = None;
+    }
+}
+
 fn picker_keys(ui: &Ui, hovered: bool) -> (i32, Option<char>, i32) {
     ui.input(|i| {
         let mut step = 0;
@@ -1164,7 +1315,16 @@ fn time_picker(
     } else {
         Rect::from_min_max(rc.min, rc.max + vec2(extra, 0.0))
     };
-    let hover = ui.interact(rc, egui::Id::unique(("time-picker", id)), Sense::hover());
+    let hover = ui.interact(
+        rc,
+        egui::Id::unique(("time-picker", id)),
+        if enabled {
+            Sense::click()
+        } else {
+            Sense::hover()
+        },
+    );
+    picker_focus(ui, &hover, id, focus);
     winui::dropdown_frame_light(&p, rc, winui::State::of(&hover, enabled));
     // A time reads left to right in every language: its fields are laid out on screen as they
     // are; in RTL the up-down is at the left and the fields follow it.
@@ -1199,7 +1359,11 @@ fn time_picker(
         x,
         base,
         ":",
-        if enabled { LIGHT_TEXT } else { LIGHT_DISABLED },
+        if enabled {
+            LIGHT_TEXT()
+        } else {
+            LIGHT_DISABLED()
+        },
     );
     x += colon;
     rects.push(field(
@@ -1216,7 +1380,11 @@ fn time_picker(
         x,
         base,
         ":",
-        if enabled { LIGHT_TEXT } else { LIGHT_DISABLED },
+        if enabled {
+            LIGHT_TEXT()
+        } else {
+            LIGHT_DISABLED()
+        },
     );
     x += colon;
     rects.push(field(
@@ -1237,11 +1405,16 @@ fn time_picker(
     }
     for (i, fr) in rects.iter().enumerate() {
         if ui
-            .interact(*fr, egui::Id::unique(("time-field", id, i)), Sense::click())
+            .interact(
+                *fr,
+                egui::Id::unique(("time-field", id, i)),
+                winui::pointer_only(),
+            )
             .clicked()
         {
             focus.at = Some((id, i));
             focus.typed.clear();
+            hover.request_focus();
         }
     }
     if ui.input(|i| i.pointer.any_pressed()) && !ui.rect_contains_pointer(rc) && sel.is_some() {
@@ -1254,8 +1427,11 @@ fn time_picker(
         (0, None, 0)
     };
     step += step_btn;
-    if step_btn != 0 && sel.is_none() {
-        focus.at = Some((id, 0));
+    if step_btn != 0 {
+        if sel.is_none() {
+            focus.at = Some((id, 0));
+        }
+        hover.request_focus();
     }
     if step != 0 {
         let (h, m, s) = value;
@@ -1414,7 +1590,16 @@ fn date_picker(
         rc = winui::rect(english);
     }
     let key = egui::Id::unique(("date-picker", id));
-    let hover = ui.interact(rc, key, Sense::hover());
+    let hover = ui.interact(
+        rc,
+        key,
+        if enabled {
+            Sense::click()
+        } else {
+            Sense::hover()
+        },
+    );
+    picker_focus(ui, &hover, id, focus);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
     winui::dropdown_frame_light(&p, rc, winui::State::of(&hover, enabled).open_if(open));
     let sel = match focus.at {
@@ -1467,12 +1652,12 @@ fn date_picker(
         pos2(winui::rect(rc).right() - 20.0, rc.top()),
         winui::rect(rc).max,
     ));
-    let drop_resp = ui.interact(drop, key.with("drop"), Sense::click());
+    let drop_resp = ui.interact(drop, key.with("drop"), winui::pointer_only());
     winui::tint_part(
         &p,
         drop.shrink(1.0),
         winui::State::of(&drop_resp, true).open_if(open),
-        false,
+        crate::theme::dark(),
         |p| winui::chevron_light(p, chevron, true),
     );
     if drop_resp.clicked() {
@@ -1480,17 +1665,19 @@ fn date_picker(
     }
     for (i, fr) in rects.iter().enumerate() {
         if ui
-            .interact(*fr, key.with(("field", i)), Sense::click())
+            .interact(*fr, key.with(("field", i)), winui::pointer_only())
             .clicked()
         {
             focus.at = Some((id, i));
             focus.typed.clear();
+            hover.request_focus();
         }
     }
     if ui.input(|i| i.pointer.any_pressed()) && !ui.rect_contains_pointer(rc) && sel.is_some() {
         focus.at = None;
     }
-    if let Some(f) = sel {
+    // The fields' keys wait while the calendar is open (it has its own).
+    if let Some(f) = sel.filter(|_| !open) {
         let (step, typed, mv) = picker_keys(ui, hover.hovered());
         if step != 0 {
             *date = match f {
@@ -1524,43 +1711,88 @@ fn date_picker(
             }
         }
     }
-    if open && let Some(picked) = calendar(ui, key, rc, *date) {
-        *date = picked;
-        open = false;
+    if open {
+        let (picked, over) = calendar(ui, key, rc, *date);
+        if let Some(picked) = picked {
+            *date = picked;
+            open = false;
+        }
+        // The calendar answers Escape itself (the Scheduler under it doesn't close), and a
+        // click anywhere else closes it.
+        let outside =
+            ui.input(|i| i.pointer.any_pressed()) && !over && !ui.rect_contains_pointer(rc);
+        if winui::take_key(ui, egui::Key::Escape) || outside {
+            open = false;
+        }
     }
-    if open && ui.input(|i| i.key_pressed(egui::Key::Escape)) {
-        open = false;
+    if !open {
+        // Opened again, it shows the chosen date's month.
+        ui.data_mut(|d| {
+            d.remove::<NaiveDate>(key.with("month"));
+            d.remove::<NaiveDate>(key.with("cursor"));
+        });
     }
     ui.data_mut(|d| d.insert_temp(key, open));
 }
 
-/// The month calendar under a date picker. Returns the day clicked.
-fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<NaiveDate> {
+/// The month calendar under a date picker, as Windows' has it: the arrows move a day cursor
+/// (Left / Right a day, Up / Down a week), Page Up / Down a month, Enter picks it, and Today
+/// at the bottom. Returns the day picked, and whether the pointer is over the calendar.
+fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option<NaiveDate>, bool) {
     let month_key = key.with("month");
+    let cursor_key = key.with("cursor");
+    let mut cursor: NaiveDate = ui.data(|d| d.get_temp(cursor_key)).unwrap_or(date);
     let mut month: NaiveDate = ui
         .data(|d| d.get_temp(month_key))
         .unwrap_or_else(|| date.with_day(1).unwrap_or(date));
     let (cw, ch) = (28.0, 19.0);
-    let size = vec2(cw * 7.0 + 12.0, 26.0 + 18.0 + ch * 6.0 + 8.0);
+    let size = vec2(cw * 7.0 + 12.0, 26.0 + 18.0 + ch * 6.0 + 8.0 + 18.0);
     let mut picked = None;
     let today = Local::now().date_naive();
+    // The keys (the week runs from the right in RTL: Left and Right swap there).
+    let back = if winui::rtl() { 1 } else { -1 };
+    let moves = [
+        (egui::Key::ArrowLeft, Days::days(1), back),
+        (egui::Key::ArrowRight, Days::days(1), -back),
+        (egui::Key::ArrowUp, Days::days(7), -1),
+        (egui::Key::ArrowDown, Days::days(7), 1),
+    ];
+    let before = cursor;
+    for (k, by, dir) in moves {
+        if winui::take_key(ui, k) {
+            cursor = if dir > 0 { cursor + by } else { cursor - by };
+        }
+    }
+    if winui::take_key(ui, egui::Key::PageUp) {
+        cursor = add_months(cursor, -1);
+    }
+    if winui::take_key(ui, egui::Key::PageDown) {
+        cursor = add_months(cursor, 1);
+    }
+    if winui::take_key(ui, egui::Key::Enter) {
+        picked = Some(cursor);
+    }
+    // A moved cursor brings its month.
+    if cursor != before {
+        month = cursor.with_day(1).unwrap_or(month);
+    }
     // Under the picker's leading edge; the month laid out in English (the week from the right
     // in RTL), each part made where it is on screen.
     let at = winui::at(
         pos2(winui::rect(under).left(), under.bottom() + 1.0),
         size.x,
     );
-    egui::Area::new(key.with("calendar"))
+    let area = egui::Area::new(key.with("calendar"))
         .order(egui::Order::Foreground)
         .fixed_pos(at)
         .show(ui.ctx(), |ui| {
             let (rect, p) = ui.allocate_painter(size, Sense::hover());
             let shown = rect.rect;
-            p.rect_filled(shown, 4.0, Color32::WHITE);
+            p.rect_filled(shown, 4.0, winui::FIELD());
             p.rect_stroke(
                 shown,
                 4.0,
-                egui::Stroke::new(1.0, winui::rgb_hex(0xc8c8c8)),
+                egui::Stroke::new(1.0, winui::FIELD_EDGE()),
                 egui::StrokeKind::Inside,
             );
             let rect = winui::rect(shown);
@@ -1578,15 +1810,21 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                 (rect.center().x - tw / 2.0).round(),
                 rect.top() + 17.0,
                 &title,
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
             );
             for (dir, x, glyph) in [(-1, rect.left() + 8.0, "<"), (1, rect.right() - 22.0, ">")] {
                 let b = Rect::from_min_size(pos2(x, rect.top() + 5.0), vec2(14.0, 16.0));
-                let r = ui.interact(winui::rect(b), key.with(("cal-nav", dir)), Sense::click());
-                if let Some(c) = winui::highlight_fill(winui::State::of(&r, true)) {
+                let r = ui.interact(
+                    winui::rect(b),
+                    key.with(("cal-nav", dir)),
+                    winui::pointer_only(),
+                );
+                if let Some(c) =
+                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::dark())
+                {
                     p.rect_filled(winui::rect(b), 2.0, c);
                 }
-                text(&p, b.left() + 4.0, b.top() + 12.0, glyph, LIGHT_TEXT);
+                text(&p, b.left() + 4.0, b.top() + 12.0, glyph, LIGHT_TEXT());
                 if r.clicked() {
                     month = add_months(month, dir);
                 }
@@ -1603,7 +1841,7 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                     x0 + cw * i as f32 + (cw - w) / 2.0,
                     y0 + 12.0,
                     d,
-                    LIGHT_DISABLED,
+                    LIGHT_DISABLED(),
                 );
             }
             let lead = (month.weekday().num_days_from_sunday() as i64 + 7 - start as i64) % 7;
@@ -1613,30 +1851,39 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                 let (col, row) = ((k % 7) as f32, (k / 7) as f32);
                 let cell =
                     Rect::from_min_size(pos2(x0 + cw * col, y0 + 18.0 + ch * row), vec2(cw, ch));
-                let r = ui.interact(winui::rect(cell), key.with(("cal-day", k)), Sense::click());
+                let r = ui.interact(
+                    winui::rect(cell),
+                    key.with(("cal-day", k)),
+                    winui::pointer_only(),
+                );
                 let label = day.day().to_string();
                 let w = winui::text_width(&p, &label);
                 let chosen = day == date;
                 let mark = winui::rect(cell.shrink(1.0));
                 if chosen {
-                    p.rect_filled(mark, 3.0, winui::rgb_hex(0x0078d7));
-                } else if let Some(c) = winui::highlight_fill(winui::State::of(&r, true)) {
+                    p.rect_filled(mark, 3.0, winui::SELECTION);
+                } else if let Some(c) =
+                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::dark())
+                {
                     p.rect_filled(mark, 3.0, c);
                 }
                 if day == today && !chosen {
                     p.rect_stroke(
                         mark,
                         3.0,
-                        egui::Stroke::new(1.0, winui::rgb_hex(0x0078d7)),
+                        egui::Stroke::new(1.0, winui::SELECTION),
                         egui::StrokeKind::Inside,
                     );
+                }
+                if day == cursor && cursor != date {
+                    winui::focus_ring(&p, mark);
                 }
                 let c = if chosen {
                     Color32::WHITE
                 } else if day.month() != month.month() {
-                    winui::rgb_hex(0xa0a0a0)
+                    winui::TEXT_DISABLED()
                 } else {
-                    LIGHT_TEXT
+                    LIGHT_TEXT()
                 };
                 text(
                     &p,
@@ -1649,18 +1896,68 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> Option<
                     picked = Some(day);
                 }
             }
+            // Today, under the month: a click picks it.
+            let label = crate::i18n::fmt(
+                // i18n: link under the calendar: {date} = today's date
+                crate::i18n::t("Today: {date}"),
+                &[(
+                    "date",
+                    &crate::i18n::ltr(&crate::regional::short_date(today)),
+                )],
+            );
+            let ty = y0 + 18.0 + ch * 6.0 + 16.0;
+            let tw = winui::text_width(&p, &label);
+            if winui::link(
+                ui,
+                &p,
+                (rect.center().x - tw / 2.0).round(),
+                ty,
+                &label,
+                "cal-today",
+            ) {
+                picked = Some(today);
+            }
         });
+    let over = area.response.contains_pointer();
     if picked.is_some() {
         ui.data_mut(|d| d.remove::<NaiveDate>(month_key));
     } else {
-        ui.data_mut(|d| d.insert_temp(month_key, month));
+        ui.data_mut(|d| {
+            d.insert_temp(month_key, month);
+            d.insert_temp(cursor_key, cursor);
+        });
     }
-    picked
+    (picked, over)
+}
+
+/// A queue's downloads after a three-way merge: the draft's order, less what left the list
+/// since `base`, plus what was added to the queue since (at the end).
+fn merge_items(base: &[u64], draft: &[u64], live: &[u64]) -> Vec<u64> {
+    let mut out: Vec<u64> = draft
+        .iter()
+        .copied()
+        .filter(|i| live.contains(i) || !base.contains(i))
+        .collect();
+    for i in live {
+        if !base.contains(i) && !out.contains(i) {
+            out.push(*i);
+        }
+    }
+    out
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_draft_keeps_its_order_and_the_lists_changes() {
+        // Opened with 1 2 3; the Scheduler moved 3 up and removed 1; meanwhile the main window
+        // deleted 2 and added 4.
+        assert_eq!(merge_items(&[1, 2, 3], &[3, 2], &[1, 3, 4]), vec![3, 4]);
+        // Nothing changed elsewhere: the draft as it is.
+        assert_eq!(merge_items(&[1, 2], &[2, 1], &[1, 2]), vec![2, 1]);
+    }
 
     #[test]
     fn a_form_round_trips_a_queue() {

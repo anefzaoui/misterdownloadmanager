@@ -184,7 +184,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	לפי ייבוא
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	ביטול
 #. text in errors.rs
@@ -217,6 +218,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	קטגוריה
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	תיקיית קטגוריה
 #. text in categories.rs
 #, machine
 	Category properties	מאפייני קטגוריה
@@ -255,8 +260,9 @@
 #. text in the Options window
 #, machine
 	Clock:	שעון:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	סגור
@@ -330,6 +336,10 @@
 #. text in the Scheduler window
 #, machine
 	December	דצמבר
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	הקטן
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +354,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	מספר חיבורים מרבי המוגדר כברירת מחדל
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	מחק
 #. message or event log entry in the main window
 #, machine
 	Delete category	מחיקת קטגוריה
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	מחיקת תור
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	למחוק את הקטגוריה "{category}"? ההורדות שלה יהפכו לכלליות; הקבצים שלהן יישארו במקומם.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	למחוק את התור "{queue}"? ההורדות שלו יישארו ברשימה.
@@ -486,7 +497,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	מוריד את העדכון... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	הורדות
@@ -495,8 +506,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ההורדות הופסקו ויחודשו אוטומטית בשעה {time}.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	גרור לכאן קובצי .torrent או רשימות כתובות
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	גרור קישורים לכאן כדי להוריד אותם
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	קישורים שנגררו
 #. window title in a dialog box
 #, machine
 	Duplicate download link	קישור הורדה כפול
@@ -534,7 +553,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	הזן שם תור
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +672,10 @@
 #, machine
 	For example:  {address}	לדוגמה: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	עבור החשבון שלך בלבד. יישום אחר שהוגדר כברירת מחדל נשאר ראשון.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	עבור חשבון Windows שלך בלבד. אפליקציה אחרת שנבחרה ב"פתח באמצעות" נשארת ראשונה.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +697,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	מקובץ טורנט
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	השדה 'מאת' חייב להופיע לפני השדה 'אל'
 #. message or event log entry in the main window
 #, machine
 	from the browser	מהדפדפן
@@ -699,6 +727,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	מקבל רשימת קבצים מעמיתים... {n} שניות
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	נמשך לאחר סיום ההורדה
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	נתק מודם בסיום
@@ -751,6 +783,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	בתור
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	ברשימה
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	הגדל
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +867,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	הגבל את כל ההורדות יחד ל-
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	רשימות כתובות
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	כניסה
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	חפש
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	חפש תחילה את הכתובת החדשה
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +923,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	חסר
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +955,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	הזז עמוד למעלה/למטה
+#. text in the Scheduler window
+#, machine
+	Move down	הזז למטה
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	הזז או שנה שם של הורדה נבחרת
@@ -916,12 +967,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	העבר לתור
+#. text in the Scheduler window
+#, machine
+	Move up	הזז למעלה
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	הזז בלי לשנות את הבחירה
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	הזז/שנה שם
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	מעביר את הקובץ...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	איטי בהרבה מהחיבורים האחרים; מתחבר מחדש
@@ -976,9 +1034,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	אין תיקיות עדיין
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	אין שפה התואמת לחיפוש
 #. text in langpick.rs
 #, machine
 	No language matches.	לא נמצאה שפה תואמת.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	לא נפתחה אפליקציית דואר.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	אין אפליקציית דואר: ההודעה הועתקה, הדבק אותה בדואר שלך.
 #. text in the Options window
 #, machine
 	No proxy/socks	ללא Proxy/SOCKS
@@ -1010,6 +1079,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	הערה: הגדרות אלו אינן קשורות לעיבוד תורים
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	אין מה להוריד ב- {item}: גרור קישורים, קובץ .torrent או רשימת כתובות (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	נובמבר
@@ -1044,10 +1116,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	הורדה חד-פעמית
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	ניתן להעביר רק הורדה שהסתיימה או שעדיין לא התחילה
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ניתן להעביר רק הורדה שהסתיימה או שעדיין לא התחילה. עצור אותה וסיים אותה תחילה.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	רק כשאני משתמש במחשב
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	פתח
@@ -1095,6 +1175,10 @@
 #. verb: pause the download
 #, machine
 	Pause	השהה
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	השהה את ההורדה תחילה
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1209,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	תצוגה מקדימה
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	התצוגה המקדימה אינה זמינה עדיין
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1233,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	כתובת שרת Proxy
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	הצב כוכבית בכתובת שבה מופיעים המספרים או האותיות
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1290,9 @@
 #. verb: remove the item
 #, machine
 	Remove	הסר
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	הסר מהתור
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1313,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	הורדה חודשה
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	נסה שוב
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1368,7 @@
 #, machine
 	Second file:	קובץ שני:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	בחר תיקיה
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1471,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	מוצג בזמן שהטורנט יורד.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	כיבוי
@@ -1475,6 +1575,9 @@
 #. label before the download's state
 #, machine
 	Status:	מצב:
+#. text in the Add torrent window
+#, machine
+	Stop	עצור
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	הפסק הורדה ב-
@@ -1485,8 +1588,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	הפסק {queue}
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	הופסק
 #. text in a download's progress window
@@ -1512,6 +1616,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	ה'
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	זה יותר מ-100,000 קבצים: צמצם את הטווח
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1630,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	האיכויות הטובות ביותר דורשות ffmpeg כדי למזג וידאו ושמע (כ-80 מ"ב).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	האיכויות הטובות ביותר דורשות ffmpeg: התקן אותה באמצעות מנהל החבילות של המערכת שלך (או Homebrew).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	הלוח תפוס: נסה שוב.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	לא ניתן לכבות את המחשב: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1663,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	הדיסק מלא
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	ההורדה עדיין לא הושלמה
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1674,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	קישור ההורדה פג (רענן את כתובת ההורדה)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	לא ניתן לשמור את רשימת ההורדות: {error}. שינויים נשמרים בזמן ש-MDM פועל.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	מנהל ההורדות שאתה כבר מכיר, נבנה מחדש כדי להיות מהיר יותר. חינם וקוד פתוח תחת רישיון GNU GPL, גרסה 3 ואילך. סרטונים נמצאים על ידי yt-dlp; טורנטים פועלים על librqbit.
@@ -1568,6 +1696,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	לא ניתן להעביר את הקובץ: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	הקובץ לא ניתן לקריאה: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1715,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	סוגי הקבצים שאינם מפורטים באף קטגוריה אחרת
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	בדיקת תקינות הקובץ עצמו
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1804,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	תיקייה זו אינה קיימת:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	למערכת זו אין חיבורי חיוג לניתוק
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	טורנט זה כבר נמצא ברשימת ההורדות
@@ -1680,6 +1819,10 @@
 #. text in the Batch download window
 #, machine
 	To:	אל:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	היום: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	יותר מדי הפניות
@@ -1690,7 +1833,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	הורדות טורנט (קישורי מגנט וקבצי .torrent)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	קבצי טורנט
@@ -1728,6 +1871,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	כבה
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	כבה את המחשב
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	כבה את המחשב בסיום
@@ -1738,6 +1885,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	הפעל
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	הקלד אות בשדה 'מאת' ובשדה 'אל'
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	הקלד מספר בשדה 'מאת' ובשדה 'אל'
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	הקלד את שם הקטגוריה
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	הקלד את שם הקובץ ב'שמור בשם'
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	הקלד מה לחפש, וסמן לפחות מקום אחד לחיפוש
 #. text in a download's Properties window
 #, machine
 	Type:	סוג:
@@ -1748,7 +1915,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	לא ידוע
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	לא ידוע
@@ -1775,6 +1942,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	השתמש ב-FTP במצב PASV
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	השתמש בתו * אחד בלבד
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1985,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	אמת
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	אמת בדיקת תקינות
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2006,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	הגדרות בדיקת וירוסים
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	ממתין
@@ -1908,10 +2080,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} מכיל
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	קובץ {ext}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	לא ניתן היה למחוק את {file} מהדיסק: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	לא ניתן היה לפתוח את {file}: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	לא ניתן היה לקרוא את {file} כדי לבדוק אותו
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} אינו עוד במקום שבו נשמר (הועבר או נמחק). 'הורד מחדש' בתפריט לחיצה ימנית משיג אותו שוב.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: הקובץ אינו תואם את סכום הבדיקה שלו ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: הקובץ תואם את סכום הבדיקה שלו ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2189,10 @@ column	Last Try Date	תאריך ניסיון אחרון
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	ת
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	תור
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2276,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2349,11 @@ menu	&About Mister Download Manager	&אודות Mister Download Manager
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	&הוסף הורדה חדשה
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	&הוסף הורדה חדשה...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2410,11 @@ menu	&Remove	&הסר
 #, machine
 menu	&Report a problem	&דווח על בעיה
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	א&פס עמודות
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	&מתזמן ותורים
@@ -2221,13 +2434,14 @@ menu	&Tray icon	&סמל מגש המערכת
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	&מדריכים
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&בטל
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Video downloads	&הורדות וידאו
-#. menu command in the main window
-#, machine
-menu	3D Style	סגנון תלת-ממדי
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2321,10 +2535,6 @@ menu	Create new queue	צור תור חדש
 #, machine
 menu	Cu&t	ג&זור
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	Customize...	התאמה אישית...
-#. menu command in the main window
 #, machine
 menu	Dark Mode support	תמיכה במצב כהה
 #. menu command in the main window
@@ -2376,22 +2586,12 @@ menu	H&elp contents	תוכן &עזרה
 #, machine
 menu	Hide drop target	הסתר יעד שחרור
 #. menu command in the main window
-#, machine
-menu	Large Buttons	לחצנים גדולים
-#. menu command in the main window
-#, machine
-menu	Look for new toolbars	חפש סרגלי כלים חדשים
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	דף ה&בית של Mister Download Manager
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	העבר/שנה שם (Ctrl-M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-#, machine
-menu	Neon	ניאון
 #. menu command in the main window
 #, machine
 menu	On Double click	בלחיצה כפולה
@@ -2435,6 +2635,15 @@ menu	Refresh download address	רענן כתובת הורדה
 #, machine
 menu	Remove	הסר
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	הסר עם ק&בצים
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	הסר עם קבצים
+#. menu command in the main window
 #, machine
 menu	Resume Download	המשך הורדה
 #. menu command in the main window
@@ -2454,7 +2663,7 @@ menu	S&top queue	ע&צור תור
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	תזמן
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	&בחר הכל
@@ -2465,9 +2674,6 @@ menu	Show &drop target	הצג יעד &שחרור
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	הצג את Mister Download Manager
-#. menu command in the main window
-#, machine
-menu	Small Buttons	לחצנים קטנים
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2522,20 +2728,25 @@ menu	Turn of&f	כ&בה
 #, machine
 menu	Verify checksum...	אמת בדיקת תקינות...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Downloads	הורדות
+menubar	&Downloads	&הורדות
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	File	קובץ
+menubar	&File	&קובץ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Help	עזרה
+menubar	&Help	&עזרה
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Tasks	משימות
+menubar	&Tasks	&משימות
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	View	תצוגה
+menubar	&View	&תצוגה
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	הוסף טורנט

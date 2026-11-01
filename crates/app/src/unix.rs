@@ -192,3 +192,15 @@ pub fn set_torrent_handlers(on: bool) {
         ]));
     }
 }
+
+/// `win32::wheel_lines`: Linux and macOS have no such setting shared by every toolkit; three
+/// rows a notch, as GTK, Qt and Windows' default do.
+pub fn wheel_lines() -> Option<f32> {
+    Some(3.0)
+}
+
+/// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
+/// position is trusted (the window manager keeps windows on screen on Linux and macOS).
+pub fn on_a_screen(_x: i32, _y: i32) -> bool {
+    true
+}

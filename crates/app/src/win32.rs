@@ -363,6 +363,41 @@ pub fn apps_use_dark() -> bool {
     rc == 0 && value == 0
 }
 
+/// Sleep now (not hibernate: rundll32's SetSuspendState read its own window handle as
+/// "hibernate"). `force`: don't let programs delay it. False when Windows refused.
+pub fn sleep(force: bool) -> bool {
+    use windows_sys::Win32::System::Power::SetSuspendState;
+    // SAFETY: a plain call; FALSE / force / FALSE (no wake events disabled).
+    unsafe { SetSuspendState(false, force, false) }
+}
+
+/// Is this screen point (a saved window's corner, in points) on a monitor now? A window put
+/// back where a since-removed screen was would open out of sight.
+pub fn on_a_screen(x: i32, y: i32) -> bool {
+    use windows_sys::Win32::Foundation::POINT;
+    use windows_sys::Win32::Graphics::Gdi::{MONITOR_DEFAULTTONULL, MonitorFromPoint};
+    // SAFETY: a plain query.
+    !unsafe { MonitorFromPoint(POINT { x, y }, MONITOR_DEFAULTTONULL) }.is_null()
+}
+
+/// Rows a notch of the mouse wheel scrolls (Mouse settings → "lines to scroll at a time", 3
+/// unless changed); None when it is set to a screen at a time.
+pub fn wheel_lines() -> Option<f32> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        SPI_GETWHEELSCROLLLINES, SystemParametersInfoW,
+    };
+    let mut lines: u32 = 3;
+    // SAFETY: a plain query into a u32 it writes.
+    let ok =
+        unsafe { SystemParametersInfoW(SPI_GETWHEELSCROLLLINES, 0, (&raw mut lines).cast(), 0) };
+    match lines {
+        _ if ok == 0 => Some(3.0),
+        // WHEEL_PAGESCROLL
+        u32::MAX => None,
+        n => Some(n as f32),
+    }
+}
+
 /// Seconds since the last keyboard or mouse input anywhere ("limit while I'm using the
 /// computer").
 pub fn idle_seconds() -> u64 {
@@ -1088,6 +1123,9 @@ pub mod ole {
         over: Arc<AtomicBool>,
         /// What the current drag carries (decided at DragEnter).
         accepts: AtomicBool,
+        /// Woken at enter, leave and drop: OLE's drag loop sends the window no input, so
+        /// egui wouldn't draw the highlight, or take the drop, until something else came.
+        wake: egui::Context,
     }
 
     static VTBL: Vtbl = Vtbl {
@@ -1146,6 +1184,7 @@ pub mod ole {
             let ok = !read(data).is_empty();
             (*this).accepts.store(ok, Ordering::Relaxed);
             (*this).over.store(ok, Ordering::Relaxed);
+            (*this).wake.request_repaint();
             *effect = if ok { DROPEFFECT_COPY } else { DROPEFFECT_NONE };
         }
         S_OK
@@ -1170,7 +1209,10 @@ pub mod ole {
 
     unsafe extern "system" fn drag_leave(this: *mut Target) -> HResult {
         // SAFETY: valid for the call.
-        unsafe { (*this).over.store(false, Ordering::Relaxed) };
+        unsafe {
+            (*this).over.store(false, Ordering::Relaxed);
+            (*this).wake.request_repaint();
+        }
         S_OK
     }
 
@@ -1193,6 +1235,7 @@ pub mod ole {
             for s in found {
                 let _ = (*this).tx.send(s);
             }
+            (*this).wake.request_repaint();
         }
         S_OK
     }
@@ -1212,6 +1255,8 @@ pub mod ole {
                             let w = w.to_ascii_lowercase();
                             w.starts_with("http://")
                                 || w.starts_with("https://")
+                                || w.starts_with("ftp://")
+                                || w.starts_with("ftps://")
                                 || w.starts_with("magnet:")
                         })
                         .map(str::to_owned)
@@ -1289,7 +1334,12 @@ pub mod ole {
 
     impl Registration {
         /// None until the window exists (tried again next frame).
-        pub fn new(title: &str, tx: Sender<String>, over: Arc<AtomicBool>) -> Option<Self> {
+        pub fn new(
+            title: &str,
+            tx: Sender<String>,
+            over: Arc<AtomicBool>,
+            wake: &egui::Context,
+        ) -> Option<Self> {
             let hwnd = crate::win32::find_own_window(title)?;
             let target = Box::into_raw(Box::new(Target {
                 vtbl: &VTBL,
@@ -1297,6 +1347,7 @@ pub mod ole {
                 tx,
                 over,
                 accepts: AtomicBool::new(false),
+                wake: wake.clone(),
             }));
             // SAFETY: OLE on the UI thread (winit initialised it already: S_FALSE is fine);
             // any target winit registered goes first, then ours (RegisterDragDrop AddRefs it).

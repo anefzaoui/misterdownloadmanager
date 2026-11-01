@@ -1,5 +1,7 @@
 # The bug report form. MDM's Help -> Report a problem opens it with the text fields filled in
-# (crates/app/src/help.rs: the ids below are the URL's parameters; keep them in step).
+# (crates/app/src/help.rs: the ids below are the URL's parameters; keep them in step). System and
+# Installed with are text fields, not dropdowns: GitHub's page showed a dropdown's value from the
+# address for a moment, then put it back to none.
 name: Bug report
 description: Something in Mister Download Manager doesn't work as it should.
 labels: [bug]
@@ -9,17 +11,12 @@ body:
       value: |
         Thanks for taking the time. **Help → Report a problem** in MDM opens this form with your version and system already filled in.
         A security problem? Please don't report it here: see the [security page](https://misterdownloadmanager.com/security.html).
-  - type: dropdown
+  - type: input
     id: os
     attributes:
       label: System
-      options:
-        - Windows 11
-        - Windows 10
-        - macOS (Apple Silicon)
-        - macOS (Intel)
-        - Linux
-        - Other
+      description: "Windows 11, Windows 10, macOS (Apple Silicon), macOS (Intel), Linux or Other."
+      placeholder: Windows 11
     validations:
       required: true
   - type: input
@@ -38,20 +35,12 @@ body:
       placeholder: "0.2.0"
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: install
     attributes:
       label: Installed with
-      options:
-        - The installer (setup.exe)
-        - The portable zip
-        - The plain zip
-        - The .dmg
-        - The AppImage
-        - The .deb
-        - The .rpm
-        - The .tar.gz
-        - Built from source
+      description: "The installer (setup.exe), The portable zip, The plain zip, The .dmg, The AppImage, The .deb, The .rpm, The .tar.gz or Built from source."
+      placeholder: The installer (setup.exe)
     validations:
       required: true
   - type: dropdown

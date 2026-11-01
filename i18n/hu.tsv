@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} bájt|{n} bájt
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} letöltés|{n} letöltés
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} letöltés alatt|{n} letöltés alatt
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} fájl|{n} fájl
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} kijelölve|{n} kijelölve
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	importálással
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	Mégse
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	Kategória
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	Kategória mappa
 #. text in categories.rs
 #, machine
 	Category properties	Kategória tulajdonságai
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	Óra:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	Bezárás
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	December
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	Csökkentés
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Alapértelmezett max. kapcs. szám
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	Törlés
 #. message or event log entry in the main window
 #, machine
 	Delete category	Kategória törlése
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Várólista törlése
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Törli a(z) „{category}” kategóriát? A letöltései az Általános kategóriába kerülnek; a fájljaik a helyükön maradnak.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	Törli a(z) „{queue}” várólistát? A letöltései a listában maradnak.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Frissítés letöltése... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	Letöltések
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	A letöltések leálltak, és {time} időpontban automatikusan folytatódnak.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	Húzzon ide .torrent fájlokat vagy címek listáját
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	Húzza ide a hivatkozásokat a letöltéshez
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	Húzott hivatkozások
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Ismétlődő letöltési hivatkozás
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	Várólista nevének megadása
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	Például: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	Csak az Ön fiókjához. Egy másik alapértelmezett alkalmazás marad az első.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	Csak a Windows-fiókjához. Az „Társítás” menüben kiválasztott másik alkalmazás marad az első.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	torrentfájlból
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	A „Feladó” dátumnak meg kell előznie a „Címzett” dátumot
 #. message or event log entry in the main window
 #, machine
 	from the browser	böngészőből
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	Fájllista lekérése a peerektől... {n} mp
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	A letöltés befejezése után is folytatódik
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Modem letétele, ha kész
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Sorban
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	a listában
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	Növelés
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Összes letöltés korlátozása
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	Címek listái
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	Bejelentkezés
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Keresés
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	Először keresse meg az új címet
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	Hiányzik
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Lapozás fel / le
+#. text in the Scheduler window
+#, machine
+	Move down	Lejjebb
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	A kijelölt letöltés áthelyezése vagy átnevezése
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Áthelyezés a várólistára
+#. text in the Scheduler window
+#, machine
+	Move up	Feljebb
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	Áthelyezés a kijelölés módosítása nélkül
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Áthelyezés/átnevezés
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	Fájl áthelyezése...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	sokkal lassabb, mint a többi kapcsolat; újracsatlakozás
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Még nincsenek mappák
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	Nincs a keresésnek megfelelő nyelv
 #. text in langpick.rs
 #, machine
 	No language matches.	Nincs egyező nyelv.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	Nem nyílt meg levelezőalkalmazás.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	Nincs levelezőalkalmazás: az üzenet másolva lett, illessze be a levelezőjébe.
 #. text in the Options window
 #, machine
 	No proxy/socks	Nincs proxy/SOCKS
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Megjegyzés: Ezek a beállítások nem vonatkoznak a várólista feldolgozására
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Nincs letölteni való a(z) {item} mappában: húzzon ide hivatkozásokat, egy .torrent fájlt vagy egy címlistát (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	November
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Egyszeri letöltés
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	Csak befejezett vagy még el nem indított letöltés helyezhető át
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Csak befejezett vagy még el nem indított letöltés helyezhető át. Először állítsa le és fejezze be.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Csak amíg használom a számítógépet
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	Megnyitás
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	Szüneteltetés
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	Először szüneteltesse a letöltést
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	Előnézet
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	Az előnézet még nem érhető el
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Proxykiszolgáló címe
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	Tegyen egy * jelet a címbe, ahová a számok vagy betűk kerülnek
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	Eltávolítás
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	Eltávolítás a sorból
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	Folytatva
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	Újra
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	Második fájl:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	Mappa kiválasztása
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	A torrent letöltése közben látható.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Leállítás
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	Állapot:
+#. text in the Add torrent window
+#, machine
+	Stop	Leállítás
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	Letöltés leállítása ekkor:
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} leállítása
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Leállítva
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	Cs
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	Ez több mint 100 000 fájl: szűkítse a tartományt
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	A legjobb minőségekhez ffmpeg szükséges a videó és hang egyesítéséhez (kb. 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	A legjobb minőséghez ffmpeg szükséges: telepítse a rendszer csomagkezelőjével (vagy a Homebrew-val).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	A vágólap foglalt: próbálja újra.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	A számítógépet nem lehetett kikapcsolni: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	a lemez megtelt
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	A letöltés még nem fejeződött be
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	a letöltési hivatkozás lejárt (frissítse a letöltési címet)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	A letöltési lista nem menthető: {error}. A változtatások megmaradnak, amíg az MDM fut.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Az Ön által már ismert letöltéskezelő, gyorsabbá téve. Ingyenes és nyílt forráskódú a GNU GPL 3-as vagy újabb verziója alatt. A videókat a yt-dlp találja meg; a torrentek a librqbit-en futnak.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	A fájlt nem lehetett áthelyezni: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	A fájl nem olvasható: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	Azok a fájltípusok, amelyek nincsenek felsorolva más kategóriában
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	A fájl saját ellenőrzőösszege
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Ez a mappa nem létezik:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	Ez a rendszer nem rendelkezik felhívható tárcsázós kapcsolatokkal
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Ez a torrent már szerepel a letöltési listában
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	Címzett:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	Ma: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	túl sok átirányítás
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	Torrent letöltések (magnet linkek és .torrent fájlok)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	Torrent fájlok
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	Kikapcsolás
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	Számítógép kikapcsolása
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	Számítógép kikapcsolása, ha kész
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Bekapcsolás
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	Írjon be egy betűt a „Feladó” és a „Címzett” mezőbe
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	Írjon be egy számot a „Feladó” és a „Címzett” mezőbe
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	Írja be a kategória nevét
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	Írja be a fájl nevét a „Mentés másként” mezőbe
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	Írja be, mit keressen, és jelöljön be legalább egy keresési helyet
 #. text in a download's Properties window
 #, machine
 	Type:	Típus:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	Ismeretlen
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	ismeretlen
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	FTP használata PASV módban
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	Csak egy * jelet használjon
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	Ellenőrzés
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	Összegellenőrzés ellenőrzése
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Vírusellenőrzési beállítások
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Várakozás
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} tartalmazza
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} fájl
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} nem törölhető a lemezről: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} nem nyitható meg: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file} nem olvasható az ellenőrzéshez
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} már nincs ott, ahová mentve lett (áthelyezve vagy törölve). A jobb kattintás menüben az „Újra letöltés” újra letölti.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: a fájl NEM egyezik az ellenőrzőösszegével ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: a fájl egyezik az ellenőrzőösszegével ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	Utolsó próbálkozás dátuma
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	S
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	Sor
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	A &Mister Download Manager névjegye
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	&Új letöltés hozzáadása
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	&Új letöltés hozzáadása...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	&Eltávolítás
 #, machine
 menu	&Report a problem	Probléma &jelentése
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	Oszlopok &visszaállítása
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	&Ütemező és várólisták
@@ -2221,13 +2446,14 @@ menu	&Tray icon	&Tálcaikon
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	&Oktatóanyagok
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&Visszavonás
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Video downloads	&Videóletöltések
-#. menu command in the main window
-#, machine
-menu	3D Style	3D stílus
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2321,10 +2547,6 @@ menu	Create new queue	Új sor létrehozása
 #, machine
 menu	Cu&t	Ki&vágás
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	Customize...	Testreszabás...
-#. menu command in the main window
 #, machine
 menu	Dark Mode support	Sötét mód támogatása
 #. menu command in the main window
@@ -2376,22 +2598,12 @@ menu	H&elp contents	&Súgó tartalma
 #, machine
 menu	Hide drop target	Cél elrejtése
 #. menu command in the main window
-#, machine
-menu	Large Buttons	Nagy gombok
-#. menu command in the main window
-#, machine
-menu	Look for new toolbars	Új eszköztárak keresése
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	Mister Download Manager &kezdőlapja
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	Áthelyezés/átnevezés (Ctrl+M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-#, machine
-menu	Neon	Neon
 #. menu command in the main window
 #, machine
 menu	On Double click	Dupla kattintásra
@@ -2435,6 +2647,15 @@ menu	Refresh download address	Letöltési cím frissítése
 #, machine
 menu	Remove	Eltávolítás
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	Eltávolítás a &fájlokkal
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	Eltávolítás a fájlokkal
+#. menu command in the main window
 #, machine
 menu	Resume Download	Letöltés folytatása
 #. menu command in the main window
@@ -2454,7 +2675,7 @@ menu	S&top queue	&Sor leállítása
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	Ütemezés
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	Összes ki&jelölése
@@ -2465,9 +2686,6 @@ menu	Show &drop target	&Célterület megjelenítése
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager megjelenítése
-#. menu command in the main window
-#, machine
-menu	Small Buttons	Kis gombok
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2522,20 +2740,25 @@ menu	Turn of&f	&Kikapcsolás
 #, machine
 menu	Verify checksum...	Ellenőrzőösszeg ellenőrzése...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Downloads	Letöltések
+menubar	&Downloads	&Letöltések
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	File	Fájl
+menubar	&File	Fá&jl
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Help	Súgó
+menubar	&Help	&Súgó
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Tasks	Feladatok
+menubar	&Tasks	&Feladatok
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	View	Nézet
+menubar	&View	&Nézet
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Torrent hozzáadása

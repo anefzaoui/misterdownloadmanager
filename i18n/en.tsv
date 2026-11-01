@@ -17,10 +17,19 @@
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 @plural	{n} byte|{n} bytes	{n} byte|{n} bytes
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} download|{n} downloads	{n} download|{n} downloads
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} downloading|{n} downloading	{n} downloading|{n} downloading
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file|{n} files	{n} file|{n} files
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+@plural	{n} selected|{n} selected	{n} selected|{n} selected
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -134,7 +143,8 @@
 	by batch download	by batch download
 #. message or event log entry in the main window
 	by import	by import
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
 	cancelled	cancelled
@@ -157,6 +167,9 @@
 	Categories, file types, folders	Categories, file types, folders
 #. text in a dialog box; text in the Options window
 	Category	Category
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+	Category folder	Category folder
 #. text in categories.rs
 	Category properties	Category properties
 #. text in the Options window
@@ -184,8 +197,9 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 	Close	Close
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -237,6 +251,9 @@
 	Day, month, year	Day, month, year
 #. text in the Scheduler window
 	December	December
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+	Decrease	Decrease
 #. button in the Options window
 #. button: put back the default list
 	Default	Default
@@ -247,17 +264,18 @@
 	Default download settings	Default download settings
 #. text in the Options window
 	Default max. conn. number	Default max. conn. number
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 	Delete	Delete
 #. message or event log entry in the main window
 	Delete category	Delete category
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 	Delete queue	Delete queue
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Delete the category "{category}"? Its downloads become General; their files stay where they are.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Delete the queue "{queue}"? Its downloads stay in the list.	Delete the queue "{queue}"? Its downloads stay in the list.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -348,14 +366,20 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	Downloading the update... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Downloads
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 	Downloads stopped and will resume automatically at {time}.	Downloads stopped and will resume automatically at {time}.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+	Drag .torrent files or lists of addresses here	Drag .torrent files or lists of addresses here
+#. text in droptarget.rs
 	Drag links here to download them	Drag links here to download them
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+	Dropped links	Dropped links
 #. window title in a dialog box
 	Duplicate download link	Duplicate download link
 #. button in the Options window
@@ -382,7 +406,8 @@
 	Enter new address to download	Enter new address to download
 #. window title in the Scheduler window
 	Enter queue name	Enter queue name
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 	Error	Error
@@ -466,6 +491,9 @@
 #. {address} = an example web address with a * in the file name
 	For example:  {address}	For example:  {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+	For your account only. Another app set as the default stays first.	For your account only. Another app set as the default stays first.
+#. text in the Add torrent window
 	For your Windows account only. Another app chosen in "Open with" stays first.	For your Windows account only. Another app chosen in "Open with" stays first.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Force processes to terminate	Force processes to terminate
@@ -480,6 +508,9 @@
 	from a page (yt-dlp)	from a page (yt-dlp)
 #. message or event log entry in the main window
 	from a torrent file	from a torrent file
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+	From must come before To	From must come before To
 #. message or event log entry in the main window
 	from the browser	from the browser
 #. message or event log entry in the main window
@@ -499,6 +530,9 @@
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
 	Getting the file list from peers...  {n} s	Getting the file list from peers...  {n} s
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+	Goes on after the download finishes	Goes on after the download finishes
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	Hang up modem when done
 #. text in a download's progress window
@@ -535,6 +569,12 @@
 	Import downloads	Import downloads
 #. value in a column's filter list in the download list
 	In a queue	In a queue
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+	in the list	in the list
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+	Increase	Increase
 #. text in a download's progress window
 #. column title: what the connection is doing
 	Info	Info
@@ -589,12 +629,18 @@
 	Licenses and credits	Licenses and credits
 #. checkbox in a dialog box
 	Limit all downloads together to	Limit all downloads together to
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+	Lists of addresses	Lists of addresses
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 	Login	Login
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 	Look up	Look up
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+	Look up the new address first	Look up the new address first
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Looking the page up...
@@ -623,7 +669,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 	Missing	Missing
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
 	Mister Download Manager Configuration	Mister Download Manager Configuration
@@ -646,16 +692,23 @@
 	Move	Move
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move a page up / down	Move a page up / down
+#. text in the Scheduler window
+	Move down	Move down
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move or rename the selected download	Move or rename the selected download
 #. text in a download's Properties window
 	Move to folder	Move to folder
 #. message or event log entry in the main window
 	Move to queue	Move to queue
+#. text in the Scheduler window
+	Move up	Move up
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move without changing the selection	Move without changing the selection
 #. message or event log entry in the main window
 	Move/Rename	Move/Rename
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+	Moving the file...	Moving the file...
 #. text in errors.rs
 	much slower than the other connections; reconnecting	much slower than the other connections; reconnecting
 #. text in the download list (sizes, speeds, status)
@@ -694,8 +747,16 @@
 	no data folder for torrents	no data folder for torrents
 #. text in a dialog box
 	No folders yet	No folders yet
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+	No language matches the search	No language matches the search
 #. text in langpick.rs
 	No language matches.	No language matches.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+	No mail app opened.	No mail app opened.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	No mail app: the message is copied, paste it in your mail.	No mail app: the message is copied, paste it in your mail.
 #. text in the Options window
 	No proxy/socks	No proxy/socks
 #. text in the Download video window
@@ -717,6 +778,8 @@
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.
 #. text in the Options window
 	Note: These settings don't relate to queue processing	Note: These settings don't relate to queue processing
+#. message or event log entry in the main window
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).
 #. text in the Scheduler window
 	November	November
 #. text in the Options window
@@ -740,9 +803,15 @@
 	Once at	Once at
 #. option (radio button) in the Scheduler window
 	One-time downloading	One-time downloading
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+	Only a finished download, or one not started yet, can be moved	Only a finished download, or one not started yet, can be moved
+#. message or event log entry in the main window
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 	Open	Open
 #. checkbox in the Add torrent window
@@ -775,6 +844,9 @@
 #. text in a download's progress window
 #. verb: pause the download
 	Pause	Pause
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+	Pause the download first	Pause the download first
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 	Paused	Paused
@@ -797,6 +869,9 @@
 #. button in a dialog box
 #. verb: open the part already downloaded
 	Preview	Preview
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+	Preview isn't available yet	Preview isn't available yet
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 	Programs	Programs
@@ -811,6 +886,9 @@
 	Proxy / socks configuration	Proxy / socks configuration
 #. label in the Options window
 	Proxy server address	Proxy server address
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+	Put a * in the address where the numbers or letters go	Put a * in the address where the numbers or letters go
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -850,6 +928,8 @@
 #. button in the Options window
 #. verb: remove the item
 	Remove	Remove
+#. text in the Scheduler window
+	Remove from the queue	Remove from the queue
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Replace asterisk to
@@ -865,6 +945,9 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 	Resumed	Resumed
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+	Retry	Retry
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -903,6 +986,7 @@
 #. text in the Batch download window
 	Second file:	Second file:
 #. text in a dialog box
+#. title of the folder picker
 	Select a folder	Select a folder
 #. button in the Add torrent window; button in transfer.rs
 	Select all	Select all
@@ -973,7 +1057,7 @@
 	Show warning before stopping downloads	Show warning before stopping downloads
 #. text in a download's progress window
 	Shown while the torrent is downloading.	Shown while the torrent is downloading.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 	Shut down	Shut down
 #. checkbox in the Find window
@@ -1048,6 +1132,8 @@
 #. text in a download's Properties window
 #. label before the download's state
 	Status:	Status:
+#. text in the Add torrent window
+	Stop	Stop
 #. checkbox in the Scheduler window
 	Stop download at	Stop download at
 #. text in the tray icon's menu
@@ -1055,8 +1141,9 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Stop {queue}	Stop {queue}
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 	Stopped	Stopped
 #. text in a download's progress window
 	Stops when the download finishes	Stops when the download finishes
@@ -1074,6 +1161,9 @@
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 	Th	Th
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+	That is more than 100,000 files: make the range smaller	That is more than 100,000 files: make the range smaller
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 	the .torrent file kept for it is gone	the .torrent file kept for it is gone
@@ -1081,6 +1171,15 @@
 	The address must be an http(s) or ftp(s) address	The address must be an http(s) or ftp(s) address
 #. text in the Download video window
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	The best qualities need ffmpeg to merge video and audio (about 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+	The clipboard is busy: try again.	The clipboard is busy: try again.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+	The computer could not be turned off: {error}	The computer could not be turned off: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 	The computer will go to sleep in {n} seconds.	The computer will go to sleep in {n} seconds.
@@ -1096,11 +1195,17 @@
 	the connection was lost while receiving data	the connection was lost while receiving data
 #. text in errors.rs
 	the disk is full	the disk is full
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+	The download isn't complete yet	The download isn't complete yet
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 	The download limit ({mb} MBytes every {hours} hours) has been reached.	The download limit ({mb} MBytes every {hours} hours) has been reached.
 #. text in errors.rs
 	the download link has expired (refresh the download address)	the download link has expired (refresh the download address)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	The download list could not be saved: {error}. Changes are kept while MDM runs.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.
 #. text in a dialog box
@@ -1111,6 +1216,9 @@
 	the file changed on the server	the file changed on the server
 #. message or event log entry in the main window
 	The file could not be moved	The file could not be moved
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+	The file could not be moved: {error}	The file could not be moved: {error}
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The file could not be read: {error}	The file could not be read: {error}
@@ -1124,6 +1232,9 @@
 	The file saved as	The file saved as
 #. text in the download list (sizes, speeds, status)
 	The file types that are not listed in any other category	The file types that are not listed in any other category
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+	The file's own checksum	The file's own checksum
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)
@@ -1184,6 +1295,8 @@
 	This address is already in the list of downloads:	This address is already in the list of downloads:
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
+#. text in a download's progress window
+	This system has no dial-up connections to hang up	This system has no dial-up connections to hang up
 #. text in the Add torrent window
 	This torrent is already in the download list	This torrent is already in the download list
 #. text in the Scheduler window
@@ -1192,6 +1305,9 @@
 	Time left	Time left
 #. text in the Batch download window
 	To:	To:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+	Today: {date}	Today: {date}
 #. text in errors.rs
 	too many redirects	too many redirects
 #. value in a column's filter list in the download list; text in the Add torrent window
@@ -1199,7 +1315,7 @@
 	Torrent	Torrent
 #. text in the download list (sizes, speeds, status)
 	Torrent downloads (magnet links and .torrent files)	Torrent downloads (magnet links and .torrent files)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 	Torrent files	Torrent files
 #. window title in the Add torrent window
@@ -1227,6 +1343,9 @@
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 	Turn off	Turn off
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+	Turn off computer	Turn off computer
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Turn off computer when done	Turn off computer when done
 #. button in a dialog box
@@ -1234,6 +1353,21 @@
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter on
 	Turn on	Turn on
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+	Type a letter in From and in To	Type a letter in From and in To
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+	Type a number in From and in To	Type a number in From and in To
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+	Type the category's name	Type the category's name
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+	Type the file's name in Save As	Type the file's name in Save As
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+	Type what to find, and tick at least one place to look	Type what to find, and tick at least one place to look
 #. text in a download's Properties window
 	Type:	Type:
 #. item in the Categories tree in the main window
@@ -1241,7 +1375,7 @@
 	Unfinished	Unfinished
 #. text in a download's Properties window
 	Unknown	Unknown
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 	unknown	unknown
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1260,6 +1394,9 @@
 	Use automatic configuration script	Use automatic configuration script
 #. checkbox in the Options window
 	Use FTP in PASV mode	Use FTP in PASV mode
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+	Use one * only	Use one * only
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser
@@ -1287,7 +1424,7 @@
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 	Verify	Verify
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 	Verify checksum	Verify checksum
 #. text in the download list (sizes, speeds, status)
 #. the trailing ... means it is still going on: keep it
@@ -1302,8 +1439,9 @@
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
 	Virus checking settings	Virus checking settings
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 	Waiting	Waiting
 #. message or event log entry in the main window
@@ -1354,9 +1492,29 @@
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 	{column} contains	{column} contains
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+	{file} could not be deleted from the disk: {error}	{file} could not be deleted from the disk: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+	{file} could not be opened: {error}	{file} could not be opened: {error}
+#. text in the Checksum window
+	{file} could not be read to check it	{file} could not be read to check it
+#. text in a dialog box
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: the file does NOT match its checksum ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+	{file}: the file matches its checksum ({algorithm})	{file}: the file matches its checksum ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1416,6 +1574,9 @@ column	Last Try Date	Last Try Date
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 column	Q	Q
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+column	Queue	Queue
 #. column title in the download list in the download list
 #. noun: the file's size
 column	Size	Size
@@ -1478,7 +1639,7 @@ key	Ctrl+click	Ctrl+click
 key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl+N	Ctrl+N
@@ -1533,6 +1694,10 @@ menu	&About Mister Download Manager	&About Mister Download Manager
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Add new download	&Add new download
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&Add new download...	&Add new download...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&Copy
@@ -1576,6 +1741,10 @@ menu	&Remove	&Remove
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Report a problem	&Report a problem
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Reset columns	&Reset columns
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Scheduler and queues	&Scheduler and queues
 #. menu command in the main window
@@ -1590,11 +1759,12 @@ menu	&Tray icon	&Tray icon
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tutorials	&Tutorials
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Undo	&Undo
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Video downloads	&Video downloads
-#. menu command in the main window
-menu	3D Style	3D Style
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Add &batch download	Add &batch download
@@ -1665,9 +1835,6 @@ menu	Create new queue	Create new queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Cu&t	Cu&t
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-menu	Customize...	Customize...
-#. menu command in the main window
 menu	Dark Mode support	Dark Mode support
 #. menu command in the main window
 #. verb: deletes the category
@@ -1706,17 +1873,10 @@ menu	H&elp contents	H&elp contents
 #. menu command in the main window
 menu	Hide drop target	Hide drop target
 #. menu command in the main window
-menu	Large Buttons	Large Buttons
-#. menu command in the main window
-menu	Look for new toolbars	Look for new toolbars
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Mister Download Manager &Home Page	Mister Download Manager &Home Page
 #. menu command in the main window
 menu	Move/Rename (Ctrl-M)	Move/Rename (Ctrl-M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-menu	Neon	Neon
 #. menu command in the main window
 menu	On Double click	On Double click
 #. menu command in the main window
@@ -1750,6 +1910,13 @@ menu	Refresh download address	Refresh download address
 #. verb: removes the download from the list
 menu	Remove	Remove
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	Remove with &files	Remove with &files
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+menu	Remove with files	Remove with files
+#. menu command in the main window
 menu	Resume Download	Resume Download
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -1764,7 +1931,7 @@ menu	S&top queue	S&top queue
 #. menu command in the main window
 #. command: opens this queue's schedule (when it starts and stops)
 menu	Schedule	Schedule
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Select &all	Select &all
 #. menu command in the main window
@@ -1772,8 +1939,6 @@ menu	Select &all	Select &all
 menu	Show &drop target	Show &drop target
 #. menu command in the main window
 menu	Show Mister Download Manager	Show Mister Download Manager
-#. menu command in the main window
-menu	Small Buttons	Small Buttons
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Speed &Limiter	Speed &Limiter
@@ -1815,15 +1980,20 @@ menu	Turn of&f	Turn of&f
 #. the trailing ... means it opens a window: keep it
 menu	Verify checksum...	Verify checksum...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
-menubar	Downloads	Downloads
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menubar	&Downloads	&Downloads
 #. menu bar title in the main window (menus, toolbar, Categories pane)
-menubar	File	File
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menubar	&File	&File
 #. menu bar title in the main window (menus, toolbar, Categories pane)
-menubar	Help	Help
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menubar	&Help	&Help
 #. menu bar title in the main window (menus, toolbar, Categories pane)
-menubar	Tasks	Tasks
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menubar	&Tasks	&Tasks
 #. menu bar title in the main window (menus, toolbar, Categories pane)
-menubar	View	View
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menubar	&View	&View
 #. toolbar button in the main window
 toolbar	Add Torrent	Add Torrent
 #. toolbar button in the main window

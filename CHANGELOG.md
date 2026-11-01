@@ -3,6 +3,73 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [0.2.2] - 2026-11-01
+
+A sweep through every window for the small things that make a program feel finished: how each
+control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers,
+and a long list of fixes found by reviewing all of it (issue #7 and more).
+
+### Added
+
+- **A status strip** under the list: how many downloads it shows and how many are selected,
+  how many are running and how fast in all. The tray icon's tip says the same.
+- **Drag and drop on the main window**: drop a link to add it, several links or a list
+  (.txt, .ef2) to choose them in Import, a .torrent file to add it.
+- **MDM comes back as you left it**: the window's place and size, the Categories pane, its
+  open branches and the node shown.
+- **Download counts** in the Categories tree, **an empty list that says why** (with Clear
+  filters or Add new download), **a right-click menu on the list's blank space**, a
+  double-click on a column border to fit it, and **Reset columns**.
+- **Screen readers** (Narrator, NVDA): every window, dialogs and menus included, now tells them
+  what each control is, its name and its state; the download list reads each download.
+- **Keyboard everywhere**: arrow keys in radio groups and tab strips, Ctrl+Tab between tabs,
+  type a name to jump to it in any list or drop-down, Up/Down through Add URL's and Save As'
+  history, Home/End in menus, Tab between the Categories tree and the list (the tree answers
+  the arrows), F2 to rename, held arrows repeat, the date picker's calendar works from the
+  keyboard and has Today.
+
+### Changed
+
+- **Windows 11's look in light mode**: rounded text boxes and drop-downs (no more black corner
+  dots), pressed states on every button (issue #7), focus rings only when you use the
+  keyboard, tooltips with Windows 11's corners and padding, and dark mode in every window.
+- **Every list in the dialogs** scrolls, highlights and takes the keys the same way, and the
+  Scheduler's list of a queue's files now scrolls at all.
+- **Numbers** are typed in one kind of box everywhere: arrows step them, a value out of range is
+  outlined in red and set right when you leave the box (some were changed silently before).
+- **Things that fail say why**: opening a file that was moved, a file that can't be deleted or
+  moved, the list that can't be saved, a computer that won't shut down, a check closed early.
+- **System file dialogs no longer freeze MDM's other windows** while they are open.
+- **The mouse wheel scrolls as many lines a notch as Windows' mouse settings say**, in every
+  list, tree and text box; Page Up / Page Down in the download list go to the edge of what's
+  shown first, as in Explorer; text boxes of several lines have the lists' scroll bar.
+- The toolbar's right-click menu is gone: it offered button sizes and styles that don't exist.
+
+### Fixed
+
+- **Options' OK undid changes made meanwhile** (the toolbar's Speed Limiter, Torrent
+  settings…), and the Scheduler's Close undid downloads added to or removed from a queue.
+- **Shift+Delete's answer was remembered**: after one Shift+Delete, a plain Delete with "Don't
+  show again" erased files from disk. Shift+Delete now works on macOS and Linux too.
+- **Sleep when done hibernated** the computer on Windows.
+- **Enter did two things**: with Cancel or a check box focused, Enter also pressed OK.
+- **Download File Info** ignored an edited address and accepted an empty Save As.
+- **Find** could select a download hidden by the column filters; the selection vanished when
+  the list lost focus; Delete now selects the next download.
+- **The keyboard focus got lost** when a button greyed itself or Escape closed a drop-down:
+  Tab started over at the top of the window. It now moves on, or comes back, as in Windows.
+- **Help → Report a problem** filled the form's System and Installed with only for a moment;
+  they stay filled now.
+- A torrent's progress window: its tabs touched the buttons above them, and Resume
+  capability's Yes / No stood apart from the other values. A long list of file types in
+  Options ran out under its box.
+- Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop
+  Queue arrows always work.
+- Many more: the checksum dialog, the progress window's completion options and speed limit,
+  the torrent and video windows (Stop a look-up, stale video choices), Batch's letter ranges,
+  addresses without http://, duplicate links arriving together, imports that doubled
+  downloads, menu titles that shared access letters in French and other languages, and more.
+
 ## [0.2.1] - 2026-10-31
 
 ### Added

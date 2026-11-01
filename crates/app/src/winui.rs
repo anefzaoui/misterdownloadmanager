@@ -12,18 +12,14 @@ const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
 
-/// A colour from its `0xRRGGBB` value, as the specs write them.
-pub const fn rgb_hex(v: u32) -> Color32 {
-    rgb((v >> 16) as u8, (v >> 8) as u8, v as u8)
-}
-
 crate::theme::themed! {
     /// Dialog background (light: light-dialogs.md).
     pub BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
     pub TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
     /// Light: embossed #a0a0a0 statics (drawn flat here).
     pub TEXT_DISABLED = rgb(0x80, 0x80, 0x80), rgb(0xa0, 0xa0, 0xa0);
-    pub EDIT_TEXT_DISABLED = rgb(0x6d, 0x6d, 0x6d), rgb(0x6d, 0x6d, 0x6d);
+    /// A greyed text box's text (dark: #8a8a8a, readable on the dark dialog; #6d6d6d was not).
+    pub EDIT_TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x6d, 0x6d, 0x6d);
 }
 pub const GROUP_LINE: Color32 = rgb(0xdc, 0xdc, 0xdc);
 pub const SELECTION: Color32 = rgb(0x00, 0x78, 0xd7);
@@ -215,7 +211,53 @@ pub fn galley(p: &Painter, font: FontId, s: &str, color: Color32) -> std::sync::
 /// Draw `s` with its pen (its start) at English `x` and its baseline (last cap row) at
 /// `baseline`. Returns the text's advance rect on screen.
 pub fn text(p: &Painter, x: f32, baseline: f32, s: &str, color: Color32) -> Rect {
-    text_font(p, tahoma(), x, baseline, s, color)
+    let drawn = text_font(p, tahoma(), x, baseline, s, color);
+    note_caption(p, s, drawn);
+    drawn
+}
+
+/// The caption painted last in this window (text, where, which pass): the next text box or
+/// drop-down beside or under it takes it as its name for screen readers ([`caption_for`]).
+fn caption_key(ctx: &egui::Context) -> egui::Id {
+    egui::Id::unique(("last-caption", ctx.viewport_id()))
+}
+
+fn note_caption(p: &Painter, s: &str, drawn: Rect) {
+    let s = s.trim();
+    if s.is_empty() || s.chars().count() > 80 {
+        return;
+    }
+    let ctx = p.ctx();
+    // The key first: asking the context inside its lock deadlocks.
+    let (key, pass) = (caption_key(ctx), ctx.cumulative_pass_nr());
+    ctx.data_mut(|d| d.insert_temp(key, (s.to_owned(), drawn, pass)));
+}
+
+/// The caption that names `control` (screen rect): painted this pass just before it, at its
+/// leading side on the same row or right above it. Taken once.
+fn caption_for(ctx: &egui::Context, control: Rect) -> Option<String> {
+    let key = caption_key(ctx);
+    let (s, at, pass) = ctx.data(|d| d.get_temp::<(String, Rect, u64)>(key))?;
+    if pass != ctx.cumulative_pass_nr() {
+        return None;
+    }
+    // In English (a right-to-left window has its captions at the right).
+    let (c, b) = (rect(control), rect(at));
+    let same_row = b.right() <= c.left() + 4.0 && b.bottom() > c.top() && b.top() < c.bottom();
+    let above = b.bottom() <= c.top() + 3.0 && b.bottom() >= c.top() - 24.0 && b.left() < c.right();
+    if !(same_row || above) {
+        return None;
+    }
+    ctx.data_mut(|d| d.remove::<(String, Rect, u64)>(key));
+    Some(s.trim_end_matches(':').trim().replace('&', ""))
+}
+
+/// A text box's or drop-down's name for screen readers, from its caption ([`caption_for`]).
+fn name_from_caption(resp: &Response) {
+    if let Some(name) = caption_for(&resp.ctx, resp.rect) {
+        resp.ctx
+            .accesskit_node_builder(resp.id, |node| node.set_label(name));
+    }
 }
 
 /// Segoe UI −12: menu bar, toolbar labels.
@@ -616,13 +658,13 @@ pub fn scroll_text(
     };
     let max_top = (total - visible).max(0.0);
     let mut top: f32 = ui.data(|d| d.get_temp(id)).unwrap_or(0.0);
-    // The wheel scrolls three lines a notch, as Windows text boxes do.
-    if ui
-        .interact(rect(area), id.with("area"), Sense::hover())
-        .hovered()
-    {
-        top -= ui.input(|i| i.smooth_scroll_delta.y) / 40.0 * 3.0;
+    // The wheel scrolls the system's lines a notch (three unless changed), as text boxes do.
+    let area_resp = ui.interact(rect(area), id.with("area"), pointer_only());
+    if area_resp.hovered() {
+        top += wheel_rows(ui, line_h, visible);
     }
+    // The whole text to the clipboard from its right-click menu.
+    copy_menu(&area_resp, s);
     if keys {
         let page = (visible - 1.0).max(1.0);
         ui.input(|i| {
@@ -951,6 +993,311 @@ pub fn full_on_hover(
         .on_hover_text(full);
 }
 
+// ---- row list -------------------------------------------------------------------------------
+
+/// Where a [`row_list`] is: its first row shown and its selected row (kept by the caller).
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct RowList {
+    pub first: usize,
+    pub selected: Option<usize>,
+    /// The selection was set from outside (typing, the caller): scrolled into view next draw.
+    pending: bool,
+    /// Wheel travel not yet a whole row.
+    wheel: f32,
+}
+
+impl RowList {
+    /// Typing selects the row whose `label` starts with what was typed ([`typed_match`]);
+    /// call after [`row_list`] while it has the keys (`RowEvents::focused`).
+    pub fn type_to(
+        &mut self,
+        ui: &Ui,
+        list: &str,
+        n: usize,
+        label: impl Fn(usize) -> String,
+    ) -> bool {
+        let key = widget_id(ui, ("row-list-typed", list));
+        match typed_match(ui, key, n, self.selected, label) {
+            Some(i) => {
+                self.selected = Some(i);
+                self.pending = true;
+                true
+            }
+            None => false,
+        }
+    }
+
+    /// Scroll so row `i` shows (whole), `page` rows being visible.
+    pub fn show_row(&mut self, i: usize, page: usize) {
+        if i < self.first {
+            self.first = i;
+        } else if i >= self.first + page {
+            self.first = i + 1 - page;
+        }
+    }
+}
+
+/// What happened in a [`row_list`] this frame (row indexes).
+#[derive(Default, Debug)]
+pub struct RowEvents {
+    /// The selection moved to this row (a click, the keys).
+    pub picked: Option<usize>,
+    pub double_clicked: Option<usize>,
+    /// Enter on the selected row (not taken: [`take_key`] it to keep it from the dialog).
+    pub entered: Option<usize>,
+    /// Space on the selected row (a list of check boxes ticks it).
+    pub space: Option<usize>,
+    /// Delete on the selected row.
+    pub delete: Option<usize>,
+    /// Right-click on a row (selected first), at this screen point.
+    pub context: Option<(usize, Pos2)>,
+    /// The list has the keys (a tree adds Left / Right).
+    pub focused: bool,
+}
+
+/// How [`row_list`] drew a row's background: the row's text goes in `ink`.
+pub struct RowLook {
+    pub selected: bool,
+    pub ink: Color32,
+}
+
+/// The one list of whole rows in a box (a dialog's list, a tree drawn as rows): its frame,
+/// rows scrolled whole by the wheel (travel kept until it makes a row) and by a scroll bar
+/// when they don't all fit, the row under the pointer tinted, the selected row in the
+/// selection colour (grey while the list hasn't the keys), and the keys while it has them:
+/// Up, Down, Home, End, Page Up, Page Down move the selection; Enter, Space and Delete are
+/// reported. `rc` is where the box is on screen ([`r`]); `paint` draws row `i`'s contents in
+/// its English rect, after its background, and may put controls in it (they take their own
+/// clicks).
+pub fn row_list(
+    ui: &mut Ui,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    rc: Rect,
+    n: usize,
+    row_h: f32,
+    st: &mut RowList,
+    mut paint: impl FnMut(&mut Ui, &Painter, usize, Rect, &RowLook),
+) -> RowEvents {
+    let mut ev = RowEvents::default();
+    let id = widget_id(ui, ("row-list", id));
+    let p = ui.painter().clone();
+    solid(&p, rc, FIELD_EDGE());
+    p.rect_filled(rc.shrink(1.0), 0.0, FIELD());
+    // Laid out in English, made where it is on screen.
+    let inner = rect(rc).shrink(1.0);
+    let page = (((inner.height() - 2.0) / row_h).floor() as usize).max(1);
+    let max_first = n.saturating_sub(page);
+    let bar = n > page;
+    let right = inner.right() - if bar { crate::scrollbar::THICK } else { 0.0 };
+    let area = Rect::from_min_max(inner.min, pos2(right, inner.bottom()));
+    let resp = ui.interact(rect(inner), id, Sense::click());
+    expose(&resp, egui::Role::ListBox, "", true, None);
+    // Its arrows (a tree's Left / Right too) stay with it.
+    keep_keys(ui, &resp, true, true, false);
+    let focused = resp.has_focus();
+    // The wheel: whole rows, the rest kept for the next turn of it.
+    if ui.rect_contains_pointer(rect(inner)) {
+        st.wheel += wheel_rows(ui, row_h, page as f32);
+        let whole = st.wheel.trunc();
+        st.wheel -= whole;
+        st.first = (st.first as f32 + whole).max(0.0) as usize;
+    }
+    if focused && n > 0 {
+        let at = st.selected.map_or(-1, |s| s as isize);
+        let last = n as isize - 1;
+        let step = page as isize;
+        let keys = [
+            (egui::Key::ArrowDown, at + 1),
+            (egui::Key::ArrowUp, (at - 1).max(0)),
+            (egui::Key::Home, 0),
+            (egui::Key::End, last),
+            // As Explorer: first to the last (first) row in view, then a page on.
+            (
+                egui::Key::PageDown,
+                if at < (st.first + page) as isize - 1 {
+                    (st.first + page) as isize - 1
+                } else {
+                    at + step
+                },
+            ),
+            (
+                egui::Key::PageUp,
+                if at > st.first as isize {
+                    st.first as isize
+                } else {
+                    at - step
+                },
+            ),
+        ];
+        for (key, to) in keys {
+            if take_key(ui, key) {
+                let to = to.clamp(0, last) as usize;
+                st.selected = Some(to);
+                st.show_row(to, page);
+                ev.picked = Some(to);
+            }
+        }
+        if let Some(s) = st.selected {
+            // Reported, not taken: a list that ignores it leaves Enter to the dialog's
+            // default button (a caller that acts on it takes it).
+            if ui.input(|i| i.key_pressed(egui::Key::Enter) && i.modifiers.is_none()) {
+                ev.entered = Some(s);
+            }
+            if take_key(ui, egui::Key::Space) {
+                ev.space = Some(s);
+            }
+            if take_key(ui, egui::Key::Delete) {
+                ev.delete = Some(s);
+            }
+        }
+    }
+    if std::mem::take(&mut st.pending)
+        && let Some(s) = st.selected
+    {
+        st.show_row(s, page);
+    }
+    st.first = st.first.min(max_first);
+    ev.focused = focused;
+    let clip = p.with_clip_rect(rect(area));
+    for i in st.first..n.min(st.first + page) {
+        let top = inner.top() + 1.0 + row_h * (i - st.first) as f32;
+        let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
+        let r = ui.interact(rect(row), id.with(i), pointer_only());
+        let selected = st.selected == Some(i);
+        expose(&r, egui::Role::ListBoxOption, "", true, Some(selected));
+        let fill = if selected && focused {
+            Some(ROW_SELECTED())
+        } else if selected {
+            Some(SELECTED_INACTIVE())
+        } else {
+            // Hot, and pressed lighter still on a dark field (subtle_fill's pressed grey was the
+            // dark field's own).
+            match (State::of(&r, true), crate::theme::dark()) {
+                (State::Pressed, true) => Some(rgb(0x4f, 0x4f, 0x4f)),
+                (state, dark) => subtle_fill(state, dark),
+            }
+        };
+        if let Some(f) = fill {
+            clip.rect_filled(rect(row), 0.0, f);
+        }
+        if r.clicked() || r.secondary_clicked() || r.double_clicked() {
+            resp.request_focus();
+            if st.selected != Some(i) {
+                st.selected = Some(i);
+                ev.picked = Some(i);
+            }
+        }
+        if r.double_clicked() {
+            ev.double_clicked = Some(i);
+        }
+        if r.secondary_clicked()
+            && let Some(at) = r.interact_pointer_pos()
+        {
+            ev.context = Some((i, at));
+        }
+        let look = RowLook {
+            selected,
+            ink: if selected && focused {
+                Color32::WHITE
+            } else {
+                TEXT()
+            },
+        };
+        paint(ui, &clip, i, row, &look);
+        if selected && focused {
+            focus_ring(&clip, rect(row));
+        }
+    }
+    if focused
+        && st
+            .selected
+            .is_none_or(|s| s < st.first || s >= st.first + page)
+    {
+        focus_ring(&p, rect(area));
+    }
+    if bar {
+        let track = Rect::from_min_max(pos2(right, inner.top()), inner.max);
+        let mut pos = st.first as f32;
+        if crate::scrollbar::bar(
+            ui,
+            id.with("bar"),
+            rect(track),
+            true,
+            n as f32,
+            page as f32,
+            1.0,
+            &mut pos,
+        ) {
+            st.first = (pos.round().max(0.0) as usize).min(max_first);
+        }
+    }
+    ev
+}
+
+/// Text that opens or does something when clicked: link colour, underlined under the pointer.
+/// `label` is English (translated here).
+pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str) -> bool {
+    let rect = text(p, x, baseline, crate::i18n::t(label), LINK());
+    let resp = ui
+        .interact(rect, ui.scope_id().with(("link", salt)), Sense::click())
+        .on_hover_cursor(egui::CursorIcon::PointingHand);
+    expose(&resp, egui::Role::Link, crate::i18n::t(label), true, None);
+    // A Tab stop shows that it has the keys.
+    show_focus(ui, &resp, rect.expand(2.0));
+    if resp.hovered() {
+        let y = rect.bottom() + 0.5;
+        p.line_segment(
+            [pos2(rect.left(), y), pos2(rect.right(), y)],
+            egui::Stroke::new(1.0, LINK()),
+        );
+    }
+    resp.clicked()
+}
+
+/// A disabled control says why on hover: `reason` (English, translated here) while `disabled`.
+pub fn why_disabled(resp: Response, disabled: bool, reason: &str) -> Response {
+    if disabled {
+        resp.on_hover_text(crate::i18n::t(reason))
+    } else {
+        resp
+    }
+}
+
+/// [`text_fit`] that shows the whole text on hover whenever it cut it: the one way to draw a
+/// line that may not fit (no caller can forget the hover). `salt` tells the lines apart.
+#[allow(clippy::too_many_arguments)]
+pub fn fit(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> Rect {
+    let (rect, cut) = text_fit(p, x, baseline, s, color, right);
+    if cut {
+        full_on_hover(ui, rect, salt, s);
+    }
+    rect
+}
+
+/// Text already drawn in `rect` that the user may want to copy (an address, a hash, a path, a
+/// version): its right-click menu copies it whole ([`copy_menu`]), and it shows whole on hover
+/// when `cut`. Taken by the pointer only (labels are no Tab stops).
+pub fn copyable(
+    ui: &Ui,
+    rect: Rect,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+    text: &str,
+    cut: bool,
+) -> Response {
+    let resp = ui.interact(rect, ui.scope_id().with(("copyable", salt)), pointer_only());
+    copy_menu(&resp, text);
+    if cut { resp.on_hover_text(text) } else { resp }
+}
+
 /// Right-aligned label whose ink ends at `right`.
 pub fn text_right(p: &Painter, right: f32, baseline: f32, s: &str, color: Color32) -> (Rect, bool) {
     // A text longer than the room to the window's near edge (6 px margin) is cut with "...":
@@ -981,8 +1328,19 @@ pub fn text_right_within(
 /// which erases 1 × 1 rects and softens 1 px lines).
 pub fn solid(p: &Painter, rc: Rect, c: Color32) {
     let mut mesh = egui::Mesh::default();
-    mesh.add_colored_rect(rc, c);
+    mesh.add_colored_rect(snap(p.pixels_per_point(), rc), c);
     p.add(egui::Shape::mesh(mesh));
+}
+
+/// `rc` on whole screen pixels at `ppp` pixels a point (125 %, 150 % scaling put a 1 pt line
+/// across two pixels, blurred or uneven), never thinner than one pixel. At 100 % it is `rc`.
+fn snap(ppp: f32, rc: Rect) -> Rect {
+    let round = |v: f32| (v * ppp).round() / ppp;
+    let (x0, y0) = (round(rc.min.x), round(rc.min.y));
+    let one = 1.0 / ppp;
+    let x1 = round(rc.max.x).max(x0 + if rc.width() > 0.0 { one } else { 0.0 });
+    let y1 = round(rc.max.y).max(y0 + if rc.height() > 0.0 { one } else { 0.0 });
+    Rect::from_min_max(pos2(x0, y0), pos2(x1, y1))
 }
 
 /// Fill inclusive pixel coordinates `x0..=x1, y0..=y1`.
@@ -1004,8 +1362,38 @@ fn vline(p: &Painter, x: f32, y0: f32, y1: f32, c: Color32) {
     fill(p, x, y0, x, y1, c);
 }
 
-/// The 2 px light edit border around a dark fill (height 23).
+/// The rounding of a control's corners (buttons, text boxes, drop-downs): IDM's dark buttons,
+/// Windows 11's light ones.
+pub fn control_radius() -> f32 {
+    if crate::theme::dark() { 4.0 } else { 3.0 }
+}
+
+/// A text box's frame. Light: Windows 11's, rounded as the buttons are, a subtle border with a
+/// darker bottom line (flat when disabled). Dark: IDM's 2 px light border around a dark fill
+/// (height 23), its corner pixels measured.
 pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
+    if !crate::theme::dark() {
+        let radius = control_radius();
+        let (fill_c, border, bottom) = if enabled {
+            (Color32::WHITE, rgb(0xe5, 0xe5, 0xe5), rgb(0x86, 0x86, 0x86))
+        } else {
+            (
+                rgb(0xf9, 0xf9, 0xf9),
+                rgb(0xe9, 0xe9, 0xe9),
+                rgb(0xe9, 0xe9, 0xe9),
+            )
+        };
+        p.rect_filled(rc, radius, fill_c);
+        p.rect_stroke(rc, radius, Stroke::new(1.0, border), StrokeKind::Inside);
+        hline(
+            p,
+            rc.left() + radius,
+            rc.right() - radius - 1.0,
+            rc.bottom() - 1.0,
+            bottom,
+        );
+        return;
+    }
     let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
     // Dark: the dialog colour. Light: white when editable, #f0f0f0 read-only/disabled.
     let fill_c = match (crate::theme::dark(), enabled) {
@@ -1083,7 +1471,35 @@ pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
 /// baseline at top+13.
 pub fn edit(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool, password: bool) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    edit_text(ui, rc, value, enabled, password, 5.0)
+    let resp = edit_text(ui, rc, value, enabled, password, 5.0);
+    edit_focus_line(ui, &resp, rc);
+    resp
+}
+
+/// A text box's focus, as Windows 11 shows it: an accent line along its bottom edge.
+pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
+    if resp.has_focus() {
+        focus_bottom(ui.painter(), rc);
+    }
+}
+
+/// The 2 px accent along a focused box's bottom edge. Light: the bottom of its rounded
+/// frame, curving into the corners as Windows 11 draws it; dark: IDM's straight line.
+fn focus_bottom(p: &Painter, rc: Rect) {
+    if crate::theme::dark() {
+        fill(
+            p,
+            rc.left() + 1.0,
+            rc.bottom() - 2.0,
+            rc.right() - 2.0,
+            rc.bottom() - 1.0,
+            accent(),
+        );
+    } else {
+        let strip = Rect::from_min_max(pos2(rc.left(), rc.bottom() - 2.0), rc.max);
+        p.with_clip_rect(strip)
+            .rect_filled(rc, control_radius(), accent());
+    }
 }
 
 fn edit_text(
@@ -1145,17 +1561,113 @@ fn edit_text_with(
         pos2(rc.left() + inset, rc.top() + 3.0),
         pos2(rc.right() - inset, rc.top() + 16.0),
     );
+    // The whole drawn box takes clicks (the text itself fills only a strip inside it): first,
+    // so the text on top still gets its own; a click elsewhere in the box focuses it.
+    // Keyed by its window's opening too: a box shown again for another record (New login after
+    // Edit login) starts without the last one's text in its undo.
+    // (The key first: asking the context inside its own lock deadlocks.)
+    let opening = crate::dialogs::opening_key(ui.ctx());
+    let opened = ui.data(|d| d.get_temp::<u64>(opening)).unwrap_or(0);
+    let edit_id = widget_id(ui, ("edit-box", rc.min.x as i32, rc.min.y as i32, opened));
+    if enabled {
+        let frame = ui.interact(rc, edit_id.with("frame"), pointer_only());
+        if frame.hovered() {
+            ui.ctx().set_cursor_icon(egui::CursorIcon::Text);
+        }
+        if frame.clicked() {
+            ui.memory_mut(|m| m.request_focus(edit_id));
+        }
+    }
     let te = egui::TextEdit::singleline(value)
+        .id(edit_id)
         .align(egui::Align2([align, egui::Align::TOP]))
         .frame(egui::Frame::NONE)
         .margin(egui::Margin::ZERO)
         .font(tahoma())
         .text_color(color)
         .password(password)
+        // Enter keeps the focus in the box (the dialog's default button answers it; a box that
+        // lost the keys on Enter took the next typing nowhere).
+        .return_key(None)
         .desired_width(inner.width());
+    if ui.memory(|m| m.has_focus(edit_id)) {
+        ui.input_mut(|i| {
+            let mut events = Vec::with_capacity(i.events.len());
+            for e in i.events.drain(..) {
+                match e {
+                    // Ctrl+V: one clean line (see single_line).
+                    egui::Event::Paste(t) => events.push(egui::Event::Paste(single_line(&t))),
+                    // A password's word moves would show where its words end: whole-box
+                    // moves instead (Ctrl+Left / Right to its ends, Ctrl+Backspace / Delete
+                    // to them).
+                    egui::Event::Key {
+                        key,
+                        pressed: true,
+                        modifiers,
+                        physical_key,
+                        repeat,
+                    } if password
+                        && modifiers.command
+                        && matches!(
+                            key,
+                            egui::Key::ArrowLeft
+                                | egui::Key::ArrowRight
+                                | egui::Key::Backspace
+                                | egui::Key::Delete
+                        ) =>
+                    {
+                        let plain = egui::Modifiers {
+                            shift: modifiers.shift,
+                            ..Default::default()
+                        };
+                        let select = egui::Modifiers::SHIFT;
+                        let press = |key, modifiers| egui::Event::Key {
+                            key,
+                            physical_key,
+                            pressed: true,
+                            repeat,
+                            modifiers,
+                        };
+                        match key {
+                            egui::Key::ArrowLeft => events.push(press(egui::Key::Home, plain)),
+                            egui::Key::ArrowRight => events.push(press(egui::Key::End, plain)),
+                            egui::Key::Backspace => {
+                                events.push(press(egui::Key::Home, select));
+                                events.push(press(egui::Key::Backspace, Default::default()));
+                            }
+                            _ => {
+                                events.push(press(egui::Key::End, select));
+                                events.push(press(egui::Key::Delete, Default::default()));
+                            }
+                        }
+                    }
+                    other => events.push(other),
+                }
+            }
+            i.events = events;
+        });
+    }
     let resp = ui.put(inner, |ui: &mut Ui| {
+        // The caret in the box's own ink: egui's default (a pale blue in its dark style) was
+        // all but invisible on a light box.
+        ui.visuals_mut().text_cursor.stroke.color = color;
         ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
     });
+    pass_focus_on(ui, &resp, enabled);
+    // Named for screen readers by its caption.
+    name_from_caption(&resp);
+    // Tab into a box selects its text, as in Windows (a click places the caret instead).
+    if resp.gained_focus() && !ui.input(|i| i.pointer.any_down()) {
+        let mut state = egui::text_edit::TextEditState::load(ui.ctx(), edit_id).unwrap_or_default();
+        let n = value.chars().count();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::two(
+                egui::text::CCursor::new(0),
+                egui::text::CCursor::new(n),
+            )));
+        state.store(ui.ctx(), edit_id);
+    }
     if enabled {
         edit_menu(&resp, value, password, false);
     }
@@ -1164,6 +1676,7 @@ fn edit_text_with(
 
 #[derive(Clone, Copy)]
 enum EditCmd {
+    Undo,
     Cut,
     Copy,
     Paste,
@@ -1174,6 +1687,74 @@ enum EditCmd {
 /// A text box's right-click menu: Cut, Copy, Paste, Delete and Select all, on the box's own
 /// selection, as every Windows, macOS and Linux text box has (Cut and Copy not for passwords). A
 /// menu window of its own (`chrome::popup`), so short dialogs never cut it off.
+/// A right-click (or Shift+F10) menu with Copy for read-only text `text` shown by `resp` (a
+/// value, a version, an address): the whole text goes to the clipboard. Ctrl+C does the same
+/// while `resp` has the focus.
+pub fn copy_menu(resp: &Response, text: &str) {
+    use crate::chrome::{MenuEntry, PopupResult};
+    let ctx = resp.ctx.clone();
+    let key = resp.id.with("copy-menu");
+    if resp.has_focus() && ctx.input(|i| i.events.iter().any(|e| matches!(e, egui::Event::Copy))) {
+        ctx.copy_text(text.to_owned());
+    }
+    if resp.secondary_clicked()
+        && let Some(p) = resp.interact_pointer_pos()
+    {
+        ctx.data_mut(|d| d.insert_temp(key, p));
+    }
+    if resp.has_focus() && ctx.input_mut(|i| i.consume_key(egui::Modifiers::SHIFT, egui::Key::F10))
+    {
+        ctx.data_mut(|d| d.insert_temp(key, resp.rect.left_bottom()));
+    }
+    let Some(at) = ctx.data(|d| d.get_temp::<Pos2>(key)) else {
+        return;
+    };
+    let entries = [MenuEntry::Item("&Copy", (), !text.is_empty(), false)];
+    match crate::chrome::popup(&ctx, &format!("copy-{:?}", resp.id), at, &entries, &|_| {
+        None
+    }) {
+        PopupResult::Open | PopupResult::Neighbor(_) => {}
+        PopupResult::Chosen(()) => {
+            ctx.copy_text(text.to_owned());
+            ctx.data_mut(|d| d.remove::<Pos2>(key));
+        }
+        PopupResult::Dismissed => ctx.data_mut(|d| d.remove::<Pos2>(key)),
+    }
+}
+
+/// A read-only value in a box (a path, an address): cut to fit with "..." and whole on hover,
+/// on `fill`; it takes the focus (Tab), and Ctrl+C or its right-click menu copies the whole
+/// value ([`copy_menu`]). `ltr`: the value reads left to right in every language (paths,
+/// addresses keep their "..." at their end in a right-to-left interface).
+pub fn readonly_field(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &str,
+    fill: Color32,
+    ltr: bool,
+    id: impl std::hash::Hash + std::fmt::Debug,
+) -> Response {
+    edit_frame(ui.painter(), rc, true);
+    ui.painter().rect_filled(rc.shrink(2.0), 0.0, fill);
+    let p = ui.painter().clone();
+    // From the field's leading edge (an English pen in its English rect).
+    let e = rect(rc);
+    let shown = ellipsize(&p, &tahoma(), value, e.width() - 9.0);
+    let cut = shown != value;
+    let shown = if ltr && rtl() {
+        crate::i18n::ltr(&shown)
+    } else {
+        shown
+    };
+    text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
+    let resp = ui.interact(rc, widget_id(ui, ("readonly", id)), Sense::click());
+    focus_on_press(&resp);
+    expose(&resp, egui::Role::TextInput, value, true, None);
+    show_focus(ui, &resp, rc.shrink(2.0));
+    copy_menu(&resp, value);
+    if cut { resp.on_hover_text(value) } else { resp }
+}
+
 pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline: bool) {
     use crate::chrome::{MenuEntry, PopupResult};
     use egui::text::{CCursor, CCursorRange};
@@ -1209,7 +1790,12 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
         .and_then(|mut c| c.get_text())
         .ok()
         .filter(|t| !t.is_empty());
+    // egui's own undo history (Ctrl+Z uses it too).
+    let mut undoer = state.undoer();
+    let now = (state.cursor.char_range().unwrap_or_default(), value.clone());
     let entries = vec![
+        MenuEntry::Item("&Undo", EditCmd::Undo, undoer.has_undo(&now), false),
+        MenuEntry::Sep,
         MenuEntry::Item("Cu&t", EditCmd::Cut, has && !password, false),
         MenuEntry::Item("&Copy", EditCmd::Copy, has && !password, false),
         MenuEntry::Item("&Paste", EditCmd::Paste, clip.is_some(), false),
@@ -1227,8 +1813,21 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
     let byte = |c: usize| value.char_indices().nth(c).map_or(value.len(), |(i, _)| i);
     let (ba, bb) = (byte(a), byte(b));
     let caret = match cmd {
+        EditCmd::Undo => {
+            let Some((range, text)) = undoer.undo(&now).cloned() else {
+                return;
+            };
+            *value = text;
+            state.set_undoer(undoer);
+            state.cursor.set_char_range(Some(range));
+            state.store(&ctx, id);
+            ctx.memory_mut(|m| m.request_focus(id));
+            return;
+        }
+        // Each change an undo step of its own (Undo after the menu's Paste did nothing).
         EditCmd::Cut => {
             ctx.copy_text(value[ba..bb].to_owned());
+            undoer.add_undo(&now);
             value.replace_range(ba..bb, "");
             (a, a)
         }
@@ -1242,13 +1841,15 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
             let text = if multiline {
                 text.replace("\r\n", "\n")
             } else {
-                text.replace(['\r', '\n'], " ")
+                single_line(&text)
             };
+            undoer.add_undo(&now);
             value.replace_range(ba..bb, &text);
             let end = a + text.chars().count();
             (end, end)
         }
         EditCmd::Delete => {
+            undoer.add_undo(&now);
             value.replace_range(ba..bb, "");
             (a, a)
         }
@@ -1258,6 +1859,7 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
         CCursor::new(caret.0),
         CCursor::new(caret.1),
     )));
+    state.set_undoer(undoer);
     state.store(&ctx, id);
     ctx.memory_mut(|m| m.request_focus(id));
 }
@@ -1265,11 +1867,16 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
 /// A dark edit with right-aligned text (numbers, e.g. the Speed Limiter value).
 pub fn edit_right(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    let color = if enabled { TEXT() } else { DISABLED_TEXT };
-    edit_text_with(ui, rc, value, enabled, false, 5.0, color, end_align())
+    let color = if enabled {
+        TEXT()
+    } else {
+        EDIT_TEXT_DISABLED()
+    };
+    let resp = edit_text_with(ui, rc, value, enabled, false, 5.0, color, end_align());
+    // Its focus shows as every text box's does.
+    edit_focus_line(ui, &resp, rc);
+    resp
 }
-
-const DISABLED_TEXT: Color32 = rgb(0x80, 0x80, 0x80);
 
 // ---- control states -------------------------------------------------------------------------
 
@@ -1290,7 +1897,9 @@ impl State {
     pub fn of(resp: &Response, enabled: bool) -> Self {
         if !enabled {
             State::Disabled
-        } else if resp.is_pointer_button_down_on() {
+        } else if resp.is_pointer_button_down_on() && resp.contains_pointer() {
+            // Held, it looks pressed only while the pointer is on it (as in Windows: moved
+            // off, it lets go without a click).
             State::Pressed
         } else if resp.hovered() {
             State::Hot
@@ -1324,11 +1933,13 @@ pub fn subtle_fill(state: State, dark_surface: bool) -> Option<Color32> {
 }
 
 /// The blue highlight of a calendar's days and arrows (Win32's month calendar) in `state`:
-/// #e5f1fb under the pointer, #cce4f7 pressed.
-pub fn highlight_fill(state: State) -> Option<Color32> {
-    match state {
-        State::Hot => Some(rgb(0xe5, 0xf1, 0xfb)),
-        State::Pressed | State::Open => Some(rgb(0xcc, 0xe4, 0xf7)),
+/// #e5f1fb under the pointer, #cce4f7 pressed; deep blues on a dark surface.
+pub fn highlight_fill(state: State, dark_surface: bool) -> Option<Color32> {
+    match (state, dark_surface) {
+        (State::Hot, false) => Some(rgb(0xe5, 0xf1, 0xfb)),
+        (State::Pressed | State::Open, false) => Some(rgb(0xcc, 0xe4, 0xf7)),
+        (State::Hot, true) => Some(rgb(0x2d, 0x4a, 0x60)),
+        (State::Pressed | State::Open, true) => Some(rgb(0x23, 0x3d, 0x52)),
         _ => None,
     }
 }
@@ -1380,9 +1991,19 @@ fn combo_chevron(p: &Painter, rc: Rect) {
     );
 }
 
-/// Combo frame: 1 px border (#8d8d8d, or #0078d4 when focused), 2 px white ring, dark text
-/// area, white 19 px arrow zone with a grey chevron. Height 21.
+/// Combo frame. Dark: 1 px border (#8d8d8d, or #0078d4 when focused), 2 px white ring, dark
+/// text area, white 19 px arrow zone with a grey chevron. Height 21.
 pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
+    // Light: the text box's rounded frame (an accent border while focused), the chevron.
+    if !crate::theme::dark() {
+        edit_frame(p, rc, true);
+        // Focused as a text box is: the accent along its bottom (an editable drop-down is one).
+        if focused {
+            focus_bottom(p, rc);
+        }
+        combo_chevron(p, rc);
+        return;
+    }
     let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
     let border = if focused {
         rgb(0x00, 0x78, 0xd4)
@@ -1417,7 +2038,9 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
 /// Drop-list combo showing `value`; returns the click response.
 pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
-    combo_frame(ui.painter(), rc, false);
+    let resp = opener_click(ui, resp);
+    expose_value(&resp, egui::Role::ComboBox, value, true);
+    combo_frame(ui.painter(), rc, resp.has_focus());
     // The arrow zone (always white) shows the state.
     tint_part(
         ui.painter(),
@@ -1426,21 +2049,32 @@ pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
         false,
         |p| combo_chevron(p, rc),
     );
+    // Short of the arrow zone: a longer value ends in "..." and shows whole on hover.
+    let shown = ellipsize(ui.painter(), &tahoma(), value, rc.width() - 5.0 - 22.0);
     text_start(
         ui.painter(),
         tahoma(),
         lead(rc) + 5.0 * fwd(),
         rc.top() + 13.0,
-        value,
+        &shown,
         TEXT(),
     );
-    resp
+    if shown != value {
+        resp.on_hover_text(value)
+    } else {
+        resp
+    }
 }
 
 /// Editable combo (Add URL "Address", Save As): frame + edit child at +3,+3 .. right−20 (the
 /// arrow zone at the trailing edge).
-pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String, focused: bool) -> Response {
-    combo_frame(ui.painter(), rc, focused);
+/// Its blue focus border while its box has the keyboard focus.
+pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String) -> Response {
+    // The frame goes under the box, so it is drawn first, with the box's focus as last frame
+    // left it (a change repaints at once).
+    let key = widget_id(ui, ("combo-edit-focus", rc.min.x as i32, rc.min.y as i32));
+    let was = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false));
+    combo_frame(ui.painter(), rc, was);
     let child = if rtl() {
         Rect::from_min_max(pos2(rc.left() + 20.0, rc.top()), rc.max - vec2(3.0, 0.0))
     } else {
@@ -1449,14 +2083,20 @@ pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String, focused: bool) -> R
             pos2(rc.right() - 20.0, rc.bottom()),
         )
     };
-    edit_text(ui, child, value, true, false, 2.0)
+    let resp = edit_text(ui, child, value, true, false, 2.0);
+    if resp.has_focus() != was {
+        ui.data_mut(|d| d.insert_temp(key, resp.has_focus()));
+        ui.ctx().request_repaint();
+    }
+    resp
 }
 
 /// The arrow zone of an editable combo (`combo_edit`, at the trailing edge): a click on it
 /// opens the combo's drop list (`drop_list`); it shows hot, pressed, and pressed while `open`.
 pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str, open: bool) -> Response {
     let zone = combo_zone(rc);
-    let resp = ui.interact(zone, widget_id(ui, ("combo-arrow", id)), Sense::click());
+    let resp = ui.interact(zone, widget_id(ui, ("combo-arrow", id)), pointer_only());
+    let resp = opener_click(ui, resp);
     let state = State::of(&resp, true).open_if(open);
     tint_part(ui.painter(), zone, state, false, |p| combo_chevron(p, rc));
     resp
@@ -1464,6 +2104,31 @@ pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str, open: bool) -> Response {
 
 /// The keys that open an editable combo's drop list while its box has the focus: Alt+Down or
 /// F4, as Windows' combo boxes.
+/// Up / Down in an editable drop-down's box (the list closed): the next / previous of its
+/// `n` items, as Windows' editable combos step through theirs. `current`: the one the box
+/// shows, if any. Returns the item to put in the box.
+pub fn history_keys(ui: &Ui, edit: &Response, n: usize, current: Option<usize>) -> Option<usize> {
+    if !edit.has_focus() || n == 0 {
+        return None;
+    }
+    keep_keys(ui, edit, false, true, false);
+    if take_key(ui, egui::Key::ArrowDown) {
+        Some(current.map_or(0, |c| (c + 1).min(n - 1)))
+    } else if take_key(ui, egui::Key::ArrowUp) {
+        Some(current.map_or(0, |c| c.saturating_sub(1)))
+    } else {
+        None
+    }
+}
+
+/// Text pasted into a one-line box: a trailing line break dropped, line breaks and tabs inside
+/// it one space each, other control characters out ("url\r\n" was "url" and two spaces).
+pub fn single_line(text: &str) -> String {
+    let t = text.trim_end_matches(['\r', '\n']);
+    let t = t.replace("\r\n", " ").replace(['\r', '\n', '\t'], " ");
+    t.chars().filter(|c| !c.is_control()).collect()
+}
+
 pub fn combo_keys(ui: &mut Ui, edit: &Response) -> bool {
     edit.has_focus()
         && ui.input_mut(|i| {
@@ -1509,13 +2174,14 @@ pub fn drop_list(
             .map(|(i, t)| MenuEntry::Item(shown(t), i, true, false))
             .collect()
     };
-    let menu = crate::chrome::popup(
-        ui.ctx(),
-        &format!("drop-{id}"),
-        anchor.left_bottom(),
-        &entries,
-        &|_| None,
-    );
+    // Under the box's leading edge (its right one in a right-to-left interface, where menus
+    // open leftwards from their top-right).
+    let at = if rtl() {
+        anchor.right_bottom()
+    } else {
+        anchor.left_bottom()
+    };
+    let menu = crate::chrome::popup(ui.ctx(), &format!("drop-{id}"), at, &entries, &|_| None);
     match menu {
         PopupResult::Chosen(i) => {
             *open = false;
@@ -1546,99 +2212,17 @@ pub fn button(
     focus_rect: bool,
     mnemonic: Option<usize>,
 ) -> Response {
-    // The label is translated here (M16); a mnemonic index points into the English text only.
+    // The label is translated here (M16); a mnemonic index points into the English text only,
+    // and becomes the "&" form every button uses.
     let translated = crate::i18n::t(label);
-    let mnemonic = mnemonic.filter(|_| translated == label);
-    let label = translated;
-    if !crate::theme::dark() {
-        return button_light(ui, rc, label, kind, focus_rect);
-    }
-    let sense = if kind == ButtonKind::Disabled {
-        Sense::hover()
-    } else {
-        Sense::click()
-    };
-    let resp = ui.interact(
-        rc,
-        widget_id(ui, ("button", label, rc.min.x as i32, rc.min.y as i32)),
-        sense,
-    );
-    let p = ui.painter();
-    let (border, bottom) = match kind {
-        ButtonKind::Normal => (rgb(0x9b, 0x9b, 0x9b), rgb(0x89, 0x89, 0x89)),
-        ButtonKind::Default => (rgb(0xff, 0xff, 0xff), rgb(0xe5, 0xe5, 0xe5)),
-        ButtonKind::Disabled => (rgb(0x40, 0x40, 0x40), rgb(0x40, 0x40, 0x40)),
-    };
-    let fill = match State::of(&resp, kind != ButtonKind::Disabled) {
-        State::Pressed => rgb(0x26, 0x26, 0x26),
-        State::Hot => rgb(0x45, 0x45, 0x45),
-        _ => rgb(0x33, 0x33, 0x33),
-    };
-    p.rect_filled(rc, 4.0, fill);
-    p.rect_stroke(rc, 4.0, Stroke::new(1.0, border), StrokeKind::Inside);
-    hline(
-        p,
-        rc.left() + 4.0,
-        rc.right() - 5.0,
-        rc.bottom() - 1.0,
-        bottom,
-    );
-    let color = if kind == ButtonKind::Disabled {
-        rgb(0xcc, 0xcc, 0xcc)
-    } else {
-        TEXT()
-    };
-    // A translation wider than the button ends in "..." and shows whole on hover (UI rule).
-    let (shown, cut) = fit_label(p, label, rc);
-    let mnemonic = mnemonic.filter(|_| !cut);
-    let w = text_width(p, &shown);
-    let x = (rc.center().x - w / 2.0 - 1.0).round();
-    let baseline = rc.top() + if rc.height() <= 19.0 { 13.0 } else { 14.0 };
-    // Centred in a rect on screen: placed by its left, not by an English pen.
-    let drawn = text_at(p, tahoma(), x, baseline, &shown, color);
-    if let Some(i) = mnemonic {
-        let (x0, x1) = char_span(p, &tahoma(), label, i, drawn);
-        hline(p, x0, x1, baseline + 2.0, color);
-    }
-    if focus_rect {
-        let f = rc.shrink(2.0);
-        let mut i = 0;
-        let mut dot = |x: f32, y: f32| {
-            px(
-                p,
-                x,
-                y,
-                if i % 2 == 0 {
-                    rgb(0xcc, 0xcc, 0xcc)
-                } else {
-                    rgb(0x0a, 0x0a, 0x0a)
-                },
-            );
-            i += 1;
-        };
-        let (l, t, rr, b) = (f.left(), f.top(), f.right() - 1.0, f.bottom() - 1.0);
-        let mut x = l;
-        while x <= rr {
-            dot(x, t);
-            x += 1.0;
+    let label = match mnemonic.filter(|_| translated == label) {
+        Some(i) => {
+            let at = label.char_indices().nth(i).map_or(label.len(), |(b, _)| b);
+            format!("{}&{}", &label[..at], &label[at..])
         }
-        let mut y = t + 1.0;
-        while y <= b {
-            dot(rr, y);
-            y += 1.0;
-        }
-        let mut x = rr - 1.0;
-        while x >= l {
-            dot(x, b);
-            x -= 1.0;
-        }
-        let mut y = b - 1.0;
-        while y > t {
-            dot(l, y);
-            y -= 1.0;
-        }
-    }
-    if cut { resp.on_hover_text(label) } else { resp }
+        None => translated.to_owned(),
+    };
+    button_face(ui, rc, &label, kind, focus_rect)
 }
 
 /// `label` as it fits on a button `rc`: whole, or cut with "..." (true) when it would reach the
@@ -1661,6 +2245,28 @@ pub fn checkbox(
     enabled: bool,
 ) -> Response {
     checkbox_until(ui, box_min, checked, caption, enabled, None)
+}
+
+/// A checkbox's caption drawn apart from it (two lines, a paragraph) in English `caption`: a
+/// click on it ticks the box too, as on a caption the box draws itself.
+pub fn caption_click(
+    ui: &mut Ui,
+    caption: Rect,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    checked: &mut bool,
+    enabled: bool,
+) -> Response {
+    let sense = if enabled {
+        pointer_only()
+    } else {
+        Sense::hover()
+    };
+    let resp = ui.interact(rect(caption), widget_id(ui, ("caption", id)), sense);
+    pass_focus_on(ui, &resp, enabled);
+    if resp.clicked() {
+        *checked = !*checked;
+    }
+    resp
 }
 
 /// [`checkbox`] whose caption also stops before English x `until` (a control after it).
@@ -1695,19 +2301,33 @@ pub fn checkbox_until(
     };
     let resp = ui.interact(
         hit,
-        widget_id(ui, ("check", caption, box_min.x as i32, box_min.y as i32)),
+        // By place, not caption: a caption that changes keeps the focus.
+        widget_id(ui, ("check", box_min.x as i32, box_min.y as i32)),
         sense,
     );
+    pass_focus_on(ui, &resp, enabled);
+    let resp = enter_is_not_a_click(ui, resp);
+    focus_on_press(&resp);
+    show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
     }
+    expose(
+        &resp,
+        egui::Role::CheckBox,
+        caption,
+        enabled,
+        Some(*checked),
+    );
     let (l, t) = (box_min.x, box_min.y);
     let (rr, b) = (l + 12.0, t + 12.0);
-    // Interior: white, or #f0f0f0 when disabled (spec "Checkbox") or pressed (classic
-    // Windows: the button face while the mouse button is held on it).
-    let interior = match State::of(&resp, enabled) {
-        State::Normal | State::Hot | State::Open => Color32::WHITE,
-        State::Pressed | State::Disabled => rgb(0xf0, 0xf0, 0xf0),
+    // Interior: white, or #f0f0f0 when disabled (spec "Checkbox").
+    let state = State::of(&resp, enabled);
+    let interior = match state {
+        State::Disabled => rgb(0xf0, 0xf0, 0xf0),
+        // Under the pointer and pressed: the shared highlight (a classic box has no hot look
+        // of its own; without one it didn't answer the pointer at all).
+        _ => highlight_fill(state, false).unwrap_or(Color32::WHITE),
     };
     solid(&p, Rect::from_min_size(box_min, vec2(13.0, 13.0)), interior);
     hline(&p, l, rr - 1.0, t, rgb(0xa0, 0xa0, 0xa0));
@@ -1798,9 +2418,36 @@ pub fn small_button(ui: &mut Ui, rc: Rect, glyph: &str) -> Response {
 // ---- light dialogs (Speed Limiter, Scheduler, Options) ------------------------------------
 // notes/ui-spec/scheduler-and-misc.md "Light dialog control styles".
 
-pub const LIGHT_BG: Color32 = rgb(0xf0, 0xf0, 0xf0);
-pub const LIGHT_TEXT: Color32 = rgb(0x00, 0x00, 0x00);
-pub const LIGHT_DISABLED: Color32 = rgb(0x6d, 0x6d, 0x6d);
+crate::theme::themed! {
+    /// The "light dialogs" (Options, Scheduler, File Properties…): IDM draws them light in both
+    /// modes; here they follow the mode, dark the dark dialogs' colours.
+    pub LIGHT_BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
+    pub LIGHT_TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
+    pub LIGHT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x6d, 0x6d, 0x6d);
+    /// A text box's or a list's inside.
+    pub FIELD = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
+    /// A list's or a box's outline.
+    pub FIELD_EDGE = rgb(0x5a, 0x5a, 0x5a), rgb(0x82, 0x87, 0x90);
+    /// Grid lines between a list's rows, and header dividers.
+    pub GRID = rgb(0x40, 0x40, 0x40), rgb(0xf0, 0xf0, 0xf0);
+    pub HEADER_LINE = rgb(0x4e, 0x4e, 0x4e), rgb(0xe5, 0xe5, 0xe5);
+    /// Etched separators: the shadow line and the highlight beside it.
+    pub ETCH_SHADOW = rgb(0x22, 0x22, 0x22), rgb(0xa0, 0xa0, 0xa0);
+    pub ETCH_LIGHT = rgb(0x50, 0x50, 0x50), rgb(0xff, 0xff, 0xff);
+    /// A selected row in a focused list ([`row_list`]; the download list's colours), white
+    /// text on it.
+    pub ROW_SELECTED = rgb(0x2d, 0x4b, 0x63), rgb(0x00, 0x78, 0xd7);
+    /// Text that opens something ([`link`]).
+    pub LINK = rgb(0x99, 0xc8, 0xff), rgb(0x00, 0x66, 0xcc);
+    /// A selected row in a list without the focus.
+    pub SELECTED_INACTIVE = rgb(0x4a, 0x4a, 0x4a), rgb(0xd9, 0xd9, 0xd9);
+    /// Error text.
+    pub ERROR = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
+    /// Secondary text (notes, sizes, versions).
+    pub MUTED = rgb(0xa0, 0xa0, 0xa0), rgb(0x6d, 0x6d, 0x6d);
+    /// Success text (a matching checksum).
+    pub SUCCESS = rgb(0x6c, 0xcb, 0x5f), rgb(0x0f, 0x7b, 0x0f);
+}
 
 /// Light edit: the same Win11 border, white fill, black text.
 pub fn edit_light(
@@ -1810,7 +2457,62 @@ pub fn edit_light(
     enabled: bool,
     align_right: bool,
 ) -> Response {
-    edit_light_on(ui, rc, value, enabled, align_right, LIGHT_BG)
+    edit_light_on(ui, rc, value, enabled, align_right, LIGHT_BG())
+}
+
+/// A whole number in `min..=max` typed in a box (the one number box of the dialogs): digits
+/// only, no longer than `max` has; Up / Down step it by 1, Page Up / Down by 10; out of range,
+/// its frame is red while typed and it comes back into range, visibly, when the box is left.
+/// [`number_in`] reads it.
+#[allow(clippy::too_many_arguments)]
+pub fn number_field(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    min: u64,
+    max: u64,
+    enabled: bool,
+    parent: Color32,
+) -> Response {
+    let resp = edit_light_on(ui, rc, value, enabled, false, parent);
+    value.retain(|c| c.is_ascii_digit());
+    value.truncate(max.to_string().len());
+    if resp.has_focus() {
+        keep_keys(ui, &resp, false, true, false);
+        let n = value.parse::<u64>().unwrap_or(min) as i64;
+        let step = if take_key(ui, egui::Key::ArrowUp) {
+            1
+        } else if take_key(ui, egui::Key::ArrowDown) {
+            -1
+        } else if take_key(ui, egui::Key::PageUp) {
+            10
+        } else if take_key(ui, egui::Key::PageDown) {
+            -10
+        } else {
+            0
+        };
+        if step != 0 {
+            *value = (n + step).clamp(min as i64, max as i64).to_string();
+        }
+    }
+    if resp.lost_focus() {
+        *value = number_in(value, min, max).to_string();
+    }
+    let ok = value.parse::<u64>().is_ok_and(|n| (min..=max).contains(&n));
+    if enabled && !ok {
+        ui.painter().rect_stroke(
+            rc,
+            control_radius(),
+            Stroke::new(1.0, ERROR()),
+            StrokeKind::Inside,
+        );
+    }
+    resp
+}
+
+/// The number in a [`number_field`], brought into `min..=max` (empty: `min`).
+pub fn number_in(value: &str, min: u64, max: u64) -> u64 {
+    value.parse::<u64>().unwrap_or(min).clamp(min, max)
 }
 
 /// [`edit_light`] on a surface `parent` (a disabled edit shows it: `#f9f9f9` on a tab page).
@@ -1822,8 +2524,20 @@ pub fn edit_light_on(
     align_right: bool,
     parent: Color32,
 ) -> Response {
+    edit_light_with(ui, rc, value, enabled, align_right, false, parent)
+}
+
+fn edit_light_with(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    enabled: bool,
+    align_right: bool,
+    password: bool,
+    parent: Color32,
+) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    let fill_c = if enabled { Color32::WHITE } else { parent };
+    let fill_c = if enabled { FIELD() } else { parent };
     fill(
         ui.painter(),
         rc.left() + 2.0,
@@ -1832,13 +2546,132 @@ pub fn edit_light_on(
         rc.bottom() - 3.0,
         fill_c,
     );
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
-    let align = if align_right {
-        egui::Align::RIGHT
+    let color = if enabled {
+        LIGHT_TEXT()
     } else {
-        egui::Align::LEFT
+        LIGHT_DISABLED()
     };
-    edit_text_with(ui, rc, value, enabled, false, 5.0, color, align)
+    // A number keeps to the end (the left in RTL), text to the start.
+    let align = if align_right {
+        end_align()
+    } else {
+        start_align()
+    };
+    let resp = edit_text_with(ui, rc, value, enabled, password, 5.0, color, align);
+    edit_focus_line(ui, &resp, rc);
+    resp
+}
+
+/// A light password box: dots, and no Cut or Copy in its menu.
+pub fn password_light(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> Response {
+    password_light_on(ui, rc, value, enabled, LIGHT_BG())
+}
+
+/// [`password_light`] on a surface `parent` (shown inside it while disabled).
+pub fn password_light_on(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    enabled: bool,
+    parent: Color32,
+) -> Response {
+    edit_light_with(ui, rc, value, enabled, false, true, parent)
+}
+
+/// A multi-line text box (lists of sites, notes) that wraps its text and scrolls, with the
+/// shared frame, caret, focus line and edit menu. `id` keeps its scroll place.
+/// `enabled`: off, it is greyed and can't be typed in (its switch is off).
+pub fn multiline_light(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    id: &str,
+    enabled: bool,
+) -> Response {
+    edit_frame(ui.painter(), rc, enabled);
+    if enabled {
+        ui.painter().rect_filled(rc.shrink(2.0), 0.0, FIELD());
+    }
+    let ink = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
+    // The text left of the shared scroll bar (egui's own was a thin overlay unlike every other
+    // list's), which sits inside the frame when the text is taller than the box.
+    let track = Rect::from_min_max(
+        pos2(rc.right() - 1.0 - crate::scrollbar::THICK, rc.top() + 1.0),
+        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
+    );
+    let inner = Rect::from_min_max(
+        rc.min + vec2(4.0, 2.0),
+        pos2(track.left() - 2.0, rc.bottom() - 3.0),
+    );
+    let off_key = egui::Id::unique(("multiline-scroll", id));
+    let mut off: f32 = ui.data(|d| d.get_temp(off_key)).unwrap_or(0.0);
+    let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).id_salt(id));
+    // Inside the frame only (the last line showed under the box, over the control below).
+    child.set_clip_rect(rc.shrink(2.0));
+    child.visuals_mut().text_cursor.stroke.color = LIGHT_TEXT();
+    if !enabled {
+        child.disable();
+    }
+    let out = egui::ScrollArea::vertical()
+        .id_salt((id, "scroll"))
+        .max_height(inner.height())
+        // egui's least height (64) is taller than most boxes.
+        .min_scrolled_height(inner.height())
+        .scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden)
+        .scroll_source(egui::scroll_area::ScrollSource {
+            scroll_bar: false,
+            mouse_wheel: false,
+            ..Default::default()
+        })
+        .vertical_scroll_offset(off)
+        .show(&mut child, |ui| {
+            let resp = ui.add(
+                egui::TextEdit::multiline(value)
+                    .font(tahoma())
+                    .text_color(ink)
+                    .frame(egui::Frame::NONE)
+                    .margin(egui::Margin::ZERO)
+                    .desired_width(inner.width())
+                    .desired_rows(3),
+            );
+            edit_menu(&resp, value, false, true);
+            // Enter here is a new line, not the dialog's OK.
+            if resp.has_focus() {
+                take_key(ui, egui::Key::Enter);
+            }
+            resp
+        });
+    let resp = out.inner;
+    // Where the caret took it (typing past the bottom), then the wheel and the bar.
+    off = out.state.clamped_offset().y;
+    let (total, page) = (out.content_size.y, inner.height());
+    let line = ui.fonts_mut(|f| f.row_height(&tahoma()));
+    if ui.rect_contains_pointer(rect(rc)) {
+        off += wheel_rows(ui, line, (page / line).floor().max(1.0)) * line;
+    }
+    if total > page && enabled {
+        crate::scrollbar::bar(
+            ui,
+            off_key.with("bar"),
+            track,
+            true,
+            total,
+            page,
+            line,
+            &mut off,
+        );
+    }
+    let off_now = off.clamp(0.0, (total - page).max(0.0));
+    if off_now != out.state.clamped_offset().y {
+        ui.ctx().request_repaint();
+    }
+    ui.data_mut(|d| d.insert_temp(off_key, off_now));
+    edit_focus_line(ui, &resp, rc);
+    resp
 }
 
 /// Light push button: #fdfdfd fill, radius 3; border #d0d0d0 (bottom #bababa), default
@@ -1850,56 +2683,69 @@ pub fn button_light(
     kind: ButtonKind,
     focus_rect: bool,
 ) -> Response {
-    let label = crate::i18n::t(label);
-    let sense = if kind == ButtonKind::Disabled {
-        Sense::hover()
-    } else {
+    button_face(ui, rc, crate::i18n::t(label), kind, focus_rect)
+}
+
+/// A push button in the current theme (dark: IDM's dark buttons; light: Windows 11's), its
+/// (translated) `label` with "&" before the access letter: the letter is underlined and
+/// Alt+letter presses it. Hot and pressed as Windows 11 draws them: a pressed button's label
+/// dims and its darker bottom edge flattens. `default_focus`: the dialog's default button, whose
+/// focus rectangle shows while no other control has the keyboard focus; any control with the
+/// focus shows it.
+fn button_face(
+    ui: &mut Ui,
+    rc: Rect,
+    label: &str,
+    kind: ButtonKind,
+    default_focus: bool,
+) -> Response {
+    let dark = crate::theme::dark();
+    let enabled = kind != ButtonKind::Disabled;
+    let sense = if enabled {
         Sense::click()
+    } else {
+        Sense::hover()
     };
+    // Keyed by its place, not its label: Pause becoming Resume keeps the focus.
     let resp = ui.interact(
         rc,
-        widget_id(
-            ui,
-            ("button-light", label, rc.min.x as i32, rc.min.y as i32),
-        ),
+        widget_id(ui, ("button", rc.min.x as i32, rc.min.y as i32)),
         sense,
     );
+    pass_focus_on(ui, &resp, enabled);
+    expose(
+        &resp,
+        egui::Role::Button,
+        crate::i18n::t(label),
+        enabled,
+        None,
+    );
+    focus_on_press(&resp);
+    // A focused button answers Enter itself (egui clicks it): the dialog's default button,
+    // read after it, doesn't run as well.
+    if resp.has_focus() {
+        take_key(ui, egui::Key::Enter);
+    }
+    let state = State::of(&resp, enabled);
     let p = ui.painter();
-    let (border, bottom, fill_c, color) = match kind {
-        ButtonKind::Normal => (
-            rgb(0xd0, 0xd0, 0xd0),
-            rgb(0xba, 0xba, 0xba),
-            rgb(0xfd, 0xfd, 0xfd),
-            LIGHT_TEXT,
-        ),
-        ButtonKind::Default => (
-            rgb(0x00, 0x78, 0xd4),
-            rgb(0x00, 0x6b, 0xbe),
-            rgb(0xfd, 0xfd, 0xfd),
-            LIGHT_TEXT,
-        ),
-        ButtonKind::Disabled => (
-            rgb(0xe9, 0xe9, 0xe9),
-            rgb(0xe9, 0xe9, 0xe9),
-            rgb(0xf9, 0xf9, 0xf9),
-            rgb(0x83, 0x83, 0x83),
-        ),
-    };
-    let fill_c = match State::of(&resp, kind != ButtonKind::Disabled) {
-        State::Pressed => rgb(0xf5, 0xf5, 0xf5),
-        State::Hot => rgb(0xf6, 0xf6, 0xf6),
-        _ => fill_c,
-    };
-    p.rect_filled(rc, 3.0, fill_c);
-    p.rect_stroke(rc, 3.0, Stroke::new(1.0, border), StrokeKind::Inside);
+    let face = button_colors(kind, state, dark);
+    let rounding = control_radius();
+    p.rect_filled(rc, rounding, face.fill);
+    p.rect_stroke(
+        rc,
+        rounding,
+        Stroke::new(1.0, face.border),
+        StrokeKind::Inside,
+    );
+    let inset = if dark { 4.0 } else { 3.0 };
     hline(
         p,
-        rc.left() + 3.0,
-        rc.right() - 4.0,
+        rc.left() + inset,
+        rc.right() - inset - 1.0,
         rc.bottom() - 1.0,
-        bottom,
+        face.bottom,
     );
-    // "&Start now": the letter after '&' is underlined (y + 16) and Alt+letter presses it.
+    // "&Start now": the letter after '&' is underlined and Alt+letter presses it.
     let (shown, mnemonic) = match label.split_once('&') {
         Some((before, after)) if !after.is_empty() => (format!("{before}{after}"), Some(before)),
         _ => (label.to_owned(), None),
@@ -1908,26 +2754,32 @@ pub fn button_light(
     let (shown, cut) = fit_label(p, &shown, rc);
     let mnemonic = mnemonic.filter(|_| !cut);
     let w = text_width(p, &shown);
-    let x = (rc.center().x - w / 2.0).round();
-    let drawn = text_at(p, tahoma(), x, rc.top() + 13.0, &shown, color);
+    let x = (rc.center().x - w / 2.0 - if dark { 1.0 } else { 0.0 }).round();
+    let baseline = rc.top()
+        + if dark && rc.height() > 19.0 {
+            14.0
+        } else {
+            13.0
+        };
+    // Centred in a rect on screen: placed by its left, not by an English pen.
+    let drawn = text_at(p, tahoma(), x, baseline, &shown, face.text);
     let mut pressed_by_key = false;
     if let Some(before) = mnemonic
         && let Some(letter) = shown[before.len()..].chars().next()
     {
-        let (x0, x1) = if rtl() {
-            char_span(p, &tahoma(), &shown, before.chars().count(), drawn)
-        } else {
-            (
-                x + text_width(p, before),
-                x + text_width(p, &shown[..before.len() + letter.len_utf8()]) - 1.0,
-            )
-        };
-        hline(p, x0, x1, rc.top() + 16.0, color);
-        if kind != ButtonKind::Disabled
-            && let Some(key) = egui::Key::from_name(&letter.to_ascii_uppercase().to_string())
-        {
-            pressed_by_key = ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, key));
+        // Underlined as the menus are (always dark; light once the keyboard is in use), while
+        // Alt+letter always works.
+        if crate::chrome::cues(ui.ctx()) {
+            let (x0, x1) = char_span(p, &tahoma(), &shown, before.chars().count(), drawn);
+            hline(
+                p,
+                x0,
+                x1,
+                baseline + if dark { 2.0 } else { 3.0 },
+                face.text,
+            );
         }
+        pressed_by_key = enabled && mnemonic_pressed(ui, letter);
     }
     let resp = if pressed_by_key {
         let mut r = resp;
@@ -1936,25 +2788,201 @@ pub fn button_light(
     } else {
         resp
     };
-    if focus_rect {
-        let f = rc.shrink(2.0);
-        let mut x = f.left();
-        while x < f.right() {
-            px(p, x, f.top(), rgb(0x0d, 0x0d, 0x0d));
-            px(p, x, f.bottom() - 1.0, rgb(0x0d, 0x0d, 0x0d));
-            x += 2.0;
-        }
-        let mut y = f.top();
-        while y < f.bottom() {
-            px(p, f.left(), y, rgb(0x0d, 0x0d, 0x0d));
-            px(p, f.right() - 1.0, y, rgb(0x0d, 0x0d, 0x0d));
-            y += 2.0;
-        }
+    if resp.has_focus() || (default_focus && ui.ctx().memory(|m| m.focused().is_none())) {
+        focus_ring(ui.painter(), rc.shrink(2.0));
     }
     if cut {
         resp.on_hover_text(label.replace('&', ""))
     } else {
         resp
+    }
+}
+
+/// A button's colours.
+#[derive(Clone, Copy, Debug, PartialEq)]
+struct Face {
+    fill: Color32,
+    border: Color32,
+    /// The bottom edge (a darker line at rest; flat, the border's own, while pressed).
+    bottom: Color32,
+    text: Color32,
+}
+
+/// A button's colours for `kind` in `state`: dark, IDM's dark buttons; light, Windows 11's.
+fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
+    let pressed = state == State::Pressed;
+    let face = if dark {
+        let (border, bottom) = match kind {
+            ButtonKind::Normal => (rgb(0x9b, 0x9b, 0x9b), rgb(0x89, 0x89, 0x89)),
+            ButtonKind::Default => (rgb(0xff, 0xff, 0xff), rgb(0xe5, 0xe5, 0xe5)),
+            ButtonKind::Disabled => (rgb(0x40, 0x40, 0x40), rgb(0x40, 0x40, 0x40)),
+        };
+        Face {
+            fill: match state {
+                State::Pressed => rgb(0x26, 0x26, 0x26),
+                State::Hot => rgb(0x45, 0x45, 0x45),
+                _ => rgb(0x33, 0x33, 0x33),
+            },
+            border,
+            bottom,
+            text: match state {
+                State::Disabled => rgb(0x80, 0x80, 0x80),
+                State::Pressed => rgb(0xc8, 0xc8, 0xc8),
+                _ => TEXT(),
+            },
+        }
+    } else {
+        let (border, bottom) = match kind {
+            ButtonKind::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xba, 0xba, 0xba)),
+            ButtonKind::Default => (rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x6b, 0xbe)),
+            ButtonKind::Disabled => (rgb(0xe9, 0xe9, 0xe9), rgb(0xe9, 0xe9, 0xe9)),
+        };
+        Face {
+            fill: match state {
+                State::Disabled => rgb(0xf9, 0xf9, 0xf9),
+                State::Pressed => rgb(0xf5, 0xf5, 0xf5),
+                State::Hot => rgb(0xf6, 0xf6, 0xf6),
+                _ => rgb(0xfd, 0xfd, 0xfd),
+            },
+            border,
+            bottom,
+            text: match state {
+                State::Disabled => rgb(0x83, 0x83, 0x83),
+                State::Pressed => rgb(0x5d, 0x5d, 0x5d),
+                _ => LIGHT_TEXT(),
+            },
+        }
+    };
+    if pressed {
+        Face {
+            bottom: face.border,
+            ..face
+        }
+    } else {
+        face
+    }
+}
+
+/// Alt+`letter` was pressed (and is taken): Latin letters as egui keys, other scripts (Cyrillic,
+/// Greek, Arabic…) as the text typed with Alt held.
+pub fn mnemonic_pressed(ui: &Ui, letter: char) -> bool {
+    let upper: String = letter.to_uppercase().collect();
+    if let Some(key) = egui::Key::from_name(&upper)
+        && ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, key))
+    {
+        return true;
+    }
+    let lower: String = letter.to_lowercase().collect();
+    ui.input_mut(|i| {
+        let alt = i.modifiers.alt;
+        let at = i
+            .events
+            .iter()
+            .position(|e| matches!(e, egui::Event::Text(t) if alt && t.to_lowercase() == lower));
+        at.map(|k| i.events.remove(k)).is_some()
+    })
+}
+
+/// Enter, without a modifier, that no control took first: a dialog's default button. A control
+/// that answers Enter itself (an open list, a multi-line box) takes it with [`take_key`] before
+/// the dialog asks.
+pub fn enter_pressed(ui: &Ui) -> bool {
+    ui.input(|i| i.key_pressed(egui::Key::Enter) && i.modifiers.is_none())
+}
+
+/// Escape that no control took first (an open list or picker closes itself): a dialog's Cancel.
+pub fn escape_pressed(ui: &Ui) -> bool {
+    ui.input(|i| i.key_pressed(egui::Key::Escape))
+}
+
+/// Take `key` (without modifiers) for a control that answers it, so the dialog under it doesn't
+/// too: Escape closes an open list, not the window; Enter in a multi-line box is a new line.
+pub fn take_key(ui: &Ui, key: egui::Key) -> bool {
+    ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, key))
+}
+
+/// A part clicked by the pointer that never takes the keyboard focus (egui's `click()` is also
+/// a Tab stop): spinner arrows, a combo's arrow, scroll bars, toolbar and menu-bar items, rows
+/// of a list that handles its own keys. Tab then only reaches real controls.
+pub fn pointer_only() -> Sense {
+    Sense::CLICK
+}
+
+/// [`pointer_only`] that can also be dragged (a scroll bar's thumb).
+pub fn pointer_drag() -> Sense {
+    Sense::CLICK | Sense::DRAG
+}
+
+/// The ring of `resp`'s control around `rc` while it has the keyboard focus.
+pub fn show_focus(ui: &Ui, resp: &Response, rc: Rect) {
+    if resp.has_focus() {
+        focus_ring(ui.painter(), rc);
+    }
+}
+
+/// Is the keyboard in use in the current window? A navigation key (Tab, the arrows, Space,
+/// Enter, Home / End, Page Up / Down) turns it on, a mouse press off: focus rings show only
+/// for a user moving with the keys, as Windows shows them.
+pub fn keyboard_in_use(ctx: &egui::Context) -> bool {
+    use egui::Key as K;
+    let key = egui::Id::unique(("keyboard-in-use", ctx.viewport_id()));
+    let (keys, press) = ctx.input(|i| {
+        let nav = i.events.iter().any(|e| {
+            matches!(
+                e,
+                egui::Event::Key {
+                    key: K::Tab
+                        | K::ArrowUp
+                        | K::ArrowDown
+                        | K::ArrowLeft
+                        | K::ArrowRight
+                        | K::Space
+                        | K::Enter
+                        | K::Home
+                        | K::End
+                        | K::PageUp
+                        | K::PageDown
+                        | K::F6,
+                    pressed: true,
+                    ..
+                }
+            )
+        });
+        (nav, i.pointer.any_pressed())
+    });
+    let mut on = ctx.data(|d| d.get_temp::<bool>(key)).unwrap_or(false);
+    if keys {
+        on = true;
+    } else if press {
+        on = false;
+    }
+    ctx.data_mut(|d| d.insert_temp(key, on));
+    on
+}
+
+/// The keyboard focus around `rc`: a dotted rectangle, every other pixel, in the theme's ink.
+pub fn focus_ring(p: &Painter, rc: Rect) {
+    // Only once the keyboard is in use in this window, as Windows shows focus rectangles.
+    if !keyboard_in_use(p.ctx()) {
+        return;
+    }
+    let ink = if crate::theme::dark() {
+        rgb(0xcc, 0xcc, 0xcc)
+    } else {
+        rgb(0x0d, 0x0d, 0x0d)
+    };
+    let (l, t, r, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
+    let mut x = l;
+    while x <= r {
+        px(p, x, t, ink);
+        px(p, x, b, ink);
+        x += 2.0;
+    }
+    let mut y = t;
+    while y <= b {
+        px(p, l, y, ink);
+        px(p, r, y, ink);
+        y += 2.0;
     }
 }
 
@@ -1995,33 +3023,30 @@ pub fn checkbox_light_until(
     };
     let resp = ui.interact(
         hit,
-        widget_id(ui, ("check-light", caption, glyph.x as i32, glyph.y as i32)),
+        widget_id(ui, ("check-light", glyph.x as i32, glyph.y as i32)),
         sense,
     );
+    pass_focus_on(ui, &resp, enabled);
+    let resp = enter_is_not_a_click(ui, resp);
+    focus_on_press(&resp);
+    show_focus(ui, &resp, hit.expand(1.0));
     if resp.clicked() {
         *checked = !*checked;
     }
+    expose(
+        &resp,
+        egui::Role::CheckBox,
+        caption,
+        enabled,
+        Some(*checked),
+    );
     let rc = Rect::from_min_size(glyph, vec2(13.0, 13.0));
-    let state = State::of(&resp, enabled);
-    if *checked {
-        let accent = fluent_accent(state);
-        p.rect_filled(rc, 2.0, accent);
-        p.line(
-            vec![
-                pos2(rc.left() + 3.0, rc.top() + 6.5),
-                pos2(rc.left() + 5.5, rc.top() + 9.0),
-                pos2(rc.left() + 10.0, rc.top() + 3.5),
-            ],
-            Stroke::new(1.4, Color32::WHITE),
-        );
+    check_box_glyph(&p, rc, *checked, State::of(&resp, enabled));
+    let color = if enabled {
+        LIGHT_TEXT()
     } else {
-        let (fill_c, border) = fluent_box(state);
-        if let Some(f) = fill_c {
-            p.rect_filled(rc, 2.0, f);
-        }
-        p.rect_stroke(rc, 2.0, Stroke::new(1.0, border), StrokeKind::Inside);
-    }
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+        LIGHT_DISABLED()
+    };
     text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
         resp.on_hover_text(caption)
@@ -2030,28 +3055,120 @@ pub fn checkbox_light_until(
     }
 }
 
-/// Tab page body.
-pub const LIGHT_PAGE: Color32 = rgb(0xf9, 0xf9, 0xf9);
+crate::theme::themed! {
+    /// Tab page body.
+    pub LIGHT_PAGE = rgb(0x40, 0x40, 0x40), rgb(0xf9, 0xf9, 0xf9);
+    /// An unselected tab, and the page's shadow.
+    pub TAB_UNSELECTED = rgb(0x33, 0x33, 0x33), rgb(0xf3, 0xf3, 0xf3);
+    pub TAB_HOT = rgb(0x46, 0x46, 0x46), rgb(0xfd, 0xfd, 0xfd);
+    CHEVRON = rgb(0xc8, 0xc8, 0xc8), rgb(0x6f, 0x6f, 0x6f);
+    CHEVRON_DISABLED = rgb(0x6a, 0x6a, 0x6a), rgb(0xbe, 0xbe, 0xbe);
+    /// Small controls' outline (spinners, icon buttons).
+    CONTROL_EDGE = rgb(0x5a, 0x5a, 0x5a), rgb(0xd2, 0xd2, 0xd2);
+}
+
+/// A small control's face in `state` (spinner arrows, icon buttons): the shared tints over its
+/// resting face.
+fn subtle_or(state: State) -> Color32 {
+    let dark = crate::theme::dark();
+    match state {
+        State::Disabled if dark => rgb(0x30, 0x30, 0x30),
+        State::Disabled => rgb(0xf3, 0xf3, 0xf3),
+        _ => subtle_fill(state, dark).unwrap_or(if dark {
+            rgb(0x33, 0x33, 0x33)
+        } else {
+            rgb(0xfa, 0xfa, 0xfa)
+        }),
+    }
+}
+
+/// A Windows 11 check box's 13 × 13 box in `rc`, ticked or not, in `state`: the one look of
+/// check boxes and of the check lists (Options → Browsers, Sounds).
+/// A check box in a list's row ([`row_list`]): its 13 × 13 box at English `at`, ticked by a
+/// click (hot and pressed as any check box), not a Tab stop of its own (the list is: Space
+/// ticks the selected row). `salt` names the item, so the box stays its own while the list
+/// scrolls. True when clicked.
+pub fn row_check(
+    ui: &Ui,
+    p: &Painter,
+    at: Pos2,
+    on: &mut bool,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> bool {
+    let rc = rect(Rect::from_min_size(at, vec2(13.0, 13.0)));
+    let resp = ui.interact(
+        rc.expand(2.0),
+        widget_id(ui, ("row-check", salt)),
+        pointer_only(),
+    );
+    if resp.clicked() {
+        *on = !*on;
+    }
+    check_box_glyph(p, rc, *on, State::of(&resp, true));
+    resp.clicked()
+}
+
+pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
+    if checked {
+        p.rect_filled(rc, 2.0, fluent_accent(state));
+        p.line(
+            vec![
+                pos2(rc.left() + 3.0, rc.top() + 6.5),
+                pos2(rc.left() + 5.5, rc.top() + 9.0),
+                pos2(rc.left() + 10.0, rc.top() + 3.5),
+            ],
+            Stroke::new(1.4, fluent_mark()),
+        );
+    } else {
+        let (fill_c, border) = fluent_box(state);
+        if let Some(f) = fill_c {
+            p.rect_filled(rc, 2.0, f);
+        }
+        p.rect_stroke(rc, 2.0, Stroke::new(1.0, border), StrokeKind::Inside);
+    }
+}
 
 /// A checked Windows 11 check box's or radio's accent in `state`: lighter under the pointer,
 /// lighter still while pressed, grey when disabled.
 fn fluent_accent(state: State) -> Color32 {
-    match state {
-        State::Disabled => rgb(0xc3, 0xc3, 0xc3),
-        State::Hot => rgb(0x19, 0x6e, 0xbf),
-        State::Pressed => rgb(0x33, 0x7f, 0xc6),
-        _ => rgb(0x00, 0x5f, 0xb8),
+    match (state, crate::theme::dark()) {
+        (State::Disabled, false) => rgb(0xc3, 0xc3, 0xc3),
+        (State::Hot, false) => rgb(0x19, 0x6e, 0xbf),
+        (State::Pressed, false) => rgb(0x33, 0x7f, 0xc6),
+        (_, false) => rgb(0x00, 0x5f, 0xb8),
+        (State::Disabled, true) => rgb(0x5a, 0x5a, 0x5a),
+        (State::Hot, true) => rgb(0x5a, 0xbc, 0xe8),
+        (State::Pressed, true) => rgb(0x52, 0xa6, 0xcc),
+        (_, true) => rgb(0x60, 0xcd, 0xff),
+    }
+}
+
+/// The mark on a checked box or radio (white on the light accent's blue, dark on the dark's).
+fn fluent_mark() -> Color32 {
+    if crate::theme::dark() {
+        rgb(0x00, 0x00, 0x00)
+    } else {
+        Color32::WHITE
     }
 }
 
 /// An unchecked Windows 11 check box's or radio's fill (none when disabled) and border in
 /// `state`: darker fill under the pointer, darker still and a fainter border while pressed.
 fn fluent_box(state: State) -> (Option<Color32>, Color32) {
-    match state {
-        State::Disabled => (None, rgb(0xc3, 0xc3, 0xc3)),
-        State::Hot => (Some(rgb(0xea, 0xea, 0xea)), rgb(0x62, 0x62, 0x62)),
-        State::Pressed => (Some(rgb(0xdd, 0xdd, 0xdd)), rgb(0x9a, 0x9a, 0x9a)),
-        _ => (Some(rgb(0xf3, 0xf3, 0xf3)), rgb(0x62, 0x62, 0x62)),
+    fluent_box_in(state, crate::theme::dark())
+}
+
+fn fluent_box_in(state: State, dark: bool) -> (Option<Color32>, Color32) {
+    match (state, dark) {
+        (State::Disabled, false) => (None, rgb(0xc3, 0xc3, 0xc3)),
+        (State::Hot, false) => (Some(rgb(0xea, 0xea, 0xea)), rgb(0x62, 0x62, 0x62)),
+        (State::Pressed, false) => (Some(rgb(0xdd, 0xdd, 0xdd)), rgb(0x9a, 0x9a, 0x9a)),
+        (_, false) => (Some(rgb(0xf3, 0xf3, 0xf3)), rgb(0x62, 0x62, 0x62)),
+        (State::Disabled, true) => (None, rgb(0x5a, 0x5a, 0x5a)),
+        (State::Hot, true) => (Some(rgb(0x3a, 0x3a, 0x3a)), rgb(0xa0, 0xa0, 0xa0)),
+        // Pressed lighter still, as Windows 11's dark boxes (it went darker, the wrong way).
+        (State::Pressed, true) => (Some(rgb(0x47, 0x47, 0x47)), rgb(0x70, 0x70, 0x70)),
+        (_, true) => (Some(rgb(0x2b, 0x2b, 0x2b)), rgb(0x9b, 0x9b, 0x9b)),
     }
 }
 
@@ -2092,8 +3209,19 @@ pub fn radio_light_until(
     };
     let resp = ui.interact(
         hit,
-        widget_id(ui, ("radio-light", caption, glyph.x as i32, glyph.y as i32)),
+        widget_id(ui, ("radio-light", glyph.x as i32, glyph.y as i32)),
         sense,
+    );
+    pass_focus_on(ui, &resp, enabled);
+    let resp = enter_is_not_a_click(ui, resp);
+    focus_on_press(&resp);
+    show_focus(ui, &resp, hit.expand(1.0));
+    expose(
+        &resp,
+        egui::Role::RadioButton,
+        caption,
+        enabled,
+        Some(selected),
     );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
@@ -2105,15 +3233,23 @@ pub fn radio_light_until(
             State::Pressed => 2.1,
             _ => 2.6,
         };
-        p.circle_filled(c, dot, Color32::WHITE);
+        p.circle_filled(c, dot, fluent_mark());
     } else {
         let (fill_c, ring) = fluent_box(state);
         if let Some(f) = fill_c {
             p.circle_filled(c, 6.0, f);
         }
         p.circle_stroke(c, 6.0, Stroke::new(1.0, ring));
+        // Pressed, Windows 11 shows the dot to come.
+        if state == State::Pressed {
+            p.circle_filled(c, 2.1, ring);
+        }
     }
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+    let color = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
     text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
         resp.on_hover_text(caption)
@@ -2122,21 +3258,318 @@ pub fn radio_light_until(
     }
 }
 
+/// A held button that repeats, as Windows' spinners and scroll-bar arrows do: true when it is
+/// pressed, then after 0.4 s every 50 ms while it stays held (redraws are asked for to keep
+/// time).
+pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
+    let key = resp.id.with("repeat-at");
+    if !resp.is_pointer_button_down_on() {
+        ui.data_mut(|d| d.remove::<f64>(key));
+        return false;
+    }
+    // Paused while the pointer is off it (Windows' arrows wait for it to come back).
+    if !resp.contains_pointer() {
+        ui.ctx()
+            .request_repaint_after(std::time::Duration::from_millis(50));
+        return false;
+    }
+    let now = ui.input(|i| i.time);
+    let due = ui.data(|d| d.get_temp::<f64>(key));
+    let (fire, next) = match due {
+        None => (true, now + 0.4),
+        Some(t) if now >= t => (true, t + 0.05),
+        Some(t) => (false, t),
+    };
+    ui.data_mut(|d| d.insert_temp(key, next));
+    ui.ctx()
+        .request_repaint_after(std::time::Duration::from_secs_f64((next - now).max(0.01)));
+    fire
+}
+
+/// What a control is for screen readers (Narrator, NVDA through AccessKit): its role, its name
+/// (the full translated label, "&" taken out), whether it can be used, and for a check box,
+/// radio button, tab or list row whether it is on. Our controls are painted by hand, so egui
+/// can't tell otherwise. Call right after the control's `interact`, before any tooltip.
+pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on: Option<bool>) {
+    let name = label
+        .replace("&&", "\u{1}")
+        .replace('&', "")
+        .replace('\u{1}', "&");
+    resp.widget_info(|| {
+        let mut info = egui::WidgetInfo::labeled(role, enabled, &name);
+        info.selected = on;
+        info
+    });
+}
+
+/// [`expose`] for a control showing a value (a drop-down): named by its caption, the value read
+/// after it.
+pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: bool) {
+    let name = caption_for(&resp.ctx, resp.rect).unwrap_or_default();
+    let value = value.to_owned();
+    resp.widget_info(|| {
+        let mut info = egui::WidgetInfo::labeled(role, enabled, &name);
+        info.current_text_value = Some(value.clone());
+        info
+    });
+}
+
+/// The click of a control that opens a popup, except the one ending the press that just closed
+/// that popup (it went down on the control): a click on an open list's arrow closes it, not
+/// closes and opens it again.
+pub fn opener_click(ui: &Ui, mut resp: Response) -> Response {
+    let key = crate::chrome::dismissed_at_key(ui.ctx());
+    let Some(at) = ui.data(|d| d.get_temp::<Pos2>(key)) else {
+        return resp;
+    };
+    if resp.clicked() && resp.rect.contains(at) {
+        resp.flags.remove(egui::response::Flags::CLICKED);
+        ui.data_mut(|d| d.remove::<Pos2>(key));
+    } else if !ui.input(|i| i.pointer.any_down() || i.pointer.any_released()) {
+        // Between presses: that press is over.
+        ui.data_mut(|d| d.remove::<Pos2>(key));
+    }
+    resp
+}
+
+/// The wheel's travel this frame in rows of `row_h` points, down positive (the caller checks
+/// the pointer is over it): a notch moves the system's "lines per notch" rows, a page setting
+/// `page` rows, a trackpad its own travel. A Ctrl wheel (zoom) or a Shift wheel (sideways)
+/// isn't counted.
+pub fn wheel_rows(ui: &Ui, row_h: f32, page: f32) -> f32 {
+    #[cfg(windows)]
+    let lines = crate::win32::wheel_lines();
+    #[cfg(unix)]
+    let lines = crate::unix::wheel_lines();
+    let notch = lines.unwrap_or(page);
+    ui.input(|i| {
+        i.events
+            .iter()
+            .map(|e| match e {
+                egui::Event::MouseWheel {
+                    unit,
+                    delta,
+                    modifiers,
+                    ..
+                } if !(modifiers.ctrl || modifiers.command || modifiers.shift) => match unit {
+                    egui::MouseWheelUnit::Line => -delta.y * notch,
+                    egui::MouseWheelUnit::Page => -delta.y * page,
+                    egui::MouseWheelUnit::Point => -delta.y / row_h,
+                },
+                _ => 0.0,
+            })
+            .sum()
+    })
+}
+
+/// [`wheel_rows`] in whole rows, the rest kept under `id` for the next turn of the wheel (a
+/// trackpad's small moves add up).
+pub fn wheel_steps(ui: &Ui, id: egui::Id, row_h: f32, page: f32) -> isize {
+    let key = id.with("wheel-rest");
+    let rest: f32 = ui.ctx().data(|d| d.get_temp(key)).unwrap_or(0.0);
+    let total = rest + wheel_rows(ui, row_h, page);
+    let whole = total.trunc();
+    ui.ctx().data_mut(|d| d.insert_temp(key, total - whole));
+    whole as isize
+}
+
+/// A control greyed while it has the keys hands them to the next one, as in Windows: egui let
+/// them go to nowhere, and Tab then started over from the window's first control (a button
+/// that greys itself when pressed, a box greyed by a choice made from the keyboard). Called
+/// where the control is laid out, so "next" is the one after it.
+pub fn pass_focus_on(ui: &Ui, resp: &Response, enabled: bool) {
+    let id = resp.id;
+    if !enabled
+        && ui
+            .ctx()
+            .memory(|m| m.focused().is_none() && m.had_focus_last_frame(id))
+    {
+        ui.ctx()
+            .memory_mut(|m| m.move_focus(egui::FocusDirection::Next));
+    }
+}
+
+/// A system file or folder dialog's answer, from its thread.
+type PickSlot = std::sync::Arc<std::sync::Mutex<Option<Option<std::path::PathBuf>>>>;
+
+/// Show a system Open / Save / folder dialog (`ask` builds and runs it) on a thread of its
+/// own: it blocked the app's windows while open (progress windows stood still). One per
+/// `key` at a time; [`picked`] gives its answer on a later frame.
+pub fn start_pick(
+    ctx: &egui::Context,
+    key: &str,
+    ask: impl FnOnce() -> Option<std::path::PathBuf> + Send + 'static,
+) {
+    let id = egui::Id::unique(("pick", key));
+    if ctx.data(|d| d.get_temp::<PickSlot>(id)).is_some() {
+        return;
+    }
+    let slot: PickSlot = Default::default();
+    ctx.data_mut(|d| d.insert_temp(id, slot.clone()));
+    let wake = ctx.clone();
+    std::thread::spawn(move || {
+        let answer = ask();
+        *slot.lock().unwrap() = Some(answer);
+        wake.request_repaint();
+    });
+}
+
+/// The path chosen in [`start_pick`]'s dialog `key`, once (None while it is open, or when it
+/// was cancelled).
+pub fn picked(ctx: &egui::Context, key: &str) -> Option<std::path::PathBuf> {
+    let id = egui::Id::unique(("pick", key));
+    let slot = ctx.data(|d| d.get_temp::<PickSlot>(id))?;
+    let answer = slot.lock().unwrap().take()?;
+    ctx.data_mut(|d| d.remove::<PickSlot>(id));
+    answer
+}
+
+/// A press gives a control the keys, as in Windows (egui focuses only text boxes on a click):
+/// the arrows work in a radio group clicked, Ctrl+C in a field clicked. Its ring shows only
+/// once the keyboard is used ([`keyboard_in_use`]).
+pub fn focus_on_press(resp: &Response) {
+    if resp.is_pointer_button_down_on() && !resp.has_focus() && resp.sense.senses_click() {
+        resp.request_focus();
+    }
+}
+
+/// egui clicks a focused control on Enter as on Space. A check box, radio button or tab answers
+/// Space only, as in Windows: Enter is the dialog's default button (it ticked the box and
+/// pressed OK). Links do open on Enter.
+pub fn enter_is_not_a_click(ui: &Ui, mut resp: Response) -> Response {
+    if resp.has_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+        resp.flags.remove(egui::response::Flags::CLICKED);
+    }
+    resp
+}
+
+/// A focused control that answers arrow keys (or Escape) itself keeps them: egui otherwise also
+/// moves the focus to the next control on an arrow and drops it on Escape. Call each frame
+/// with the control's response.
+pub fn keep_keys(ui: &Ui, resp: &Response, horizontal: bool, vertical: bool, escape: bool) {
+    if resp.has_focus() {
+        ui.memory_mut(|m| {
+            m.set_focus_lock_filter(
+                resp.id,
+                egui::EventFilter {
+                    horizontal_arrows: horizontal,
+                    vertical_arrows: vertical,
+                    escape,
+                    ..Default::default()
+                },
+            )
+        });
+    }
+}
+
+/// Type-ahead, as Windows lists and drop-downs have it: letters typed while it has the keys
+/// pick the next of its `n` items whose `label` starts with them (typed within a second of
+/// each other; one letter again and again goes through the items starting with it). `key`
+/// keeps what was typed. Returns the item to choose.
+pub fn typed_match(
+    ui: &Ui,
+    key: egui::Id,
+    n: usize,
+    current: Option<usize>,
+    label: impl Fn(usize) -> String,
+) -> Option<usize> {
+    let typed: String = ui.input(|i| {
+        if i.modifiers.ctrl || i.modifiers.alt || i.modifiers.command {
+            return String::new();
+        }
+        i.events
+            .iter()
+            .filter_map(|e| match e {
+                egui::Event::Text(t) => Some(t.as_str()),
+                _ => None,
+            })
+            .collect::<String>()
+    });
+    let typed: String = typed.chars().filter(|c| !c.is_control()).collect();
+    // Space alone is a key of its own (it ticks a row), not a name's first letter.
+    if typed.trim().is_empty() || n == 0 {
+        return None;
+    }
+    let now = ui.input(|i| i.time);
+    let (mut buf, at) = ui
+        .data(|d| d.get_temp::<(String, f64)>(key))
+        .unwrap_or_default();
+    if now - at > 1.0 {
+        buf.clear();
+    }
+    buf.push_str(&typed.to_lowercase());
+    ui.data_mut(|d| d.insert_temp(key, (buf.clone(), now)));
+    let first = buf.chars().next().unwrap_or_default();
+    let repeated = buf.chars().all(|c| c == first);
+    // The same letter again: the next item with it; else the first from here with the prefix.
+    let (needle, start) = if repeated {
+        (first.to_string(), current.map_or(0, |c| c + 1))
+    } else {
+        (buf, current.unwrap_or(0))
+    };
+    (0..n)
+        .map(|k| (start + k) % n)
+        .find(|&i| label(i).to_lowercase().starts_with(&needle))
+}
+
+/// A tab control's keys, as Windows has them: Ctrl+Tab / Ctrl+Page Down the next of its `n`
+/// tabs, Ctrl+Shift+Tab / Ctrl+Page Up the previous one, wrapping. For a window's main tabs
+/// (one tab control a window answers them).
+pub fn tab_keys(ui: &Ui, n: usize, current: usize) -> Option<usize> {
+    if n == 0 {
+        return None;
+    }
+    let (next, prev) = ui.input_mut(|i| {
+        let ctrl = egui::Modifiers::COMMAND;
+        let ctrl_shift = egui::Modifiers::COMMAND | egui::Modifiers::SHIFT;
+        (
+            i.consume_key(ctrl, egui::Key::Tab) || i.consume_key(ctrl, egui::Key::PageDown),
+            i.consume_key(ctrl_shift, egui::Key::Tab) || i.consume_key(ctrl, egui::Key::PageUp),
+        )
+    });
+    match (next, prev) {
+        (true, _) => Some((current + 1) % n),
+        (_, true) => Some((current + n - 1) % n),
+        _ => None,
+    }
+}
+
+/// A radio group's keys, as Windows has them: while one of the group's buttons (`group`, in
+/// order) has the focus, Up / Left and Down / Right move the focus to the previous / next
+/// enabled one, wrapping, and choose it. Returns the one chosen.
+pub fn radio_keys(ui: &Ui, group: &[Response]) -> Option<usize> {
+    let at = group.iter().position(Response::has_focus)?;
+    keep_keys(ui, &group[at], true, true, false);
+    let step: isize = if take_key(ui, egui::Key::ArrowDown) || take_key(ui, egui::Key::ArrowRight) {
+        1
+    } else if take_key(ui, egui::Key::ArrowUp) || take_key(ui, egui::Key::ArrowLeft) {
+        -1
+    } else {
+        return None;
+    };
+    let n = group.len() as isize;
+    let next = (1..n)
+        .map(|k| (at as isize + step * k).rem_euclid(n) as usize)
+        .find(|&j| group[j].sense.senses_click())?;
+    group[next].request_focus();
+    Some(next)
+}
+
 /// Etched horizontal separator in English rect `x, y, w × 2`: `#a0a0a0` over `#ffffff`, the
 /// white line 1 px longer so it covers the far end.
 pub fn etched_h(p: &Painter, x: f32, y: f32, w: f32) {
     let x = rect(Rect::from_min_size(pos2(x, y), vec2(w, 2.0))).left();
-    hline(p, x, x + w - 2.0, y, rgb(0xa0, 0xa0, 0xa0));
-    px(p, x + w - 1.0, y, Color32::WHITE);
-    hline(p, x, x + w - 1.0, y + 1.0, Color32::WHITE);
+    hline(p, x, x + w - 2.0, y, ETCH_SHADOW());
+    px(p, x + w - 1.0, y, ETCH_LIGHT());
+    hline(p, x, x + w - 1.0, y + 1.0, ETCH_LIGHT());
 }
 
 /// Etched vertical separator in English rect `x, y, 2 × h`.
 pub fn etched_v(p: &Painter, x: f32, y: f32, h: f32) {
     let x = rect(Rect::from_min_size(pos2(x, y), vec2(2.0, h))).left();
-    vline(p, x, y, y + h - 2.0, rgb(0xa0, 0xa0, 0xa0));
-    px(p, x, y + h - 1.0, Color32::WHITE);
-    vline(p, x + 1.0, y, y + h - 1.0, Color32::WHITE);
+    vline(p, x, y, y + h - 2.0, ETCH_SHADOW());
+    px(p, x, y + h - 1.0, ETCH_LIGHT());
+    vline(p, x + 1.0, y, y + h - 1.0, ETCH_LIGHT());
 }
 
 /// [`fill`] in English pixels (inclusive): on screen in a mirrored surface.
@@ -2226,8 +3659,8 @@ pub fn tabs_light(
     selected: usize,
 ) -> Option<usize> {
     let p = ui.painter().clone();
-    let border = rgb(0xe5, 0xe5, 0xe5);
-    let shadow = rgb(0xf3, 0xf3, 0xf3);
+    let border = HEADER_LINE();
+    let shadow = TAB_UNSELECTED();
     // Pane: x rc.left ..= right − 3, y top + 20 ..= bottom − 2, then a 2 px / 1 px shadow.
     let (l, t, rr, b) = (
         rc.left(),
@@ -2235,7 +3668,7 @@ pub fn tabs_light(
         rc.right() - 3.0,
         rc.bottom() - 2.0,
     );
-    fill(&p, l, t, rr, b, LIGHT_PAGE);
+    fill(&p, l, t, rr, b, LIGHT_PAGE());
     hline(&p, l, rr, t, border);
     hline(&p, l, rr, b, border);
     vline(&p, l, t, b, border);
@@ -2270,18 +3703,52 @@ pub fn tabs_light(
         let (x0, x1) = (a.min(b), a.max(b));
         let y0 = if sel { rc.top() } else { rc.top() + 2.0 };
         let hit = Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, t));
-        let resp = ui.interact(
-            hit,
-            widget_id(ui, ("tab-light", tab.label, x0 as i32)),
-            Sense::click(),
+        // Keyed by the control's place and the tab's index: its x changes when it is chosen,
+        // and the focus must stay on it.
+        // One Tab stop, the chosen tab (Windows' tab control); the arrows choose.
+        let sense = if sel { Sense::click() } else { pointer_only() };
+        let id_of =
+            |ui: &Ui, k: usize| widget_id(ui, ("tab-light", rc.min.x as i32, rc.min.y as i32, k));
+        let resp = ui.interact(hit, id_of(ui, i), sense);
+        focus_on_press(&resp);
+        expose(
+            &resp,
+            egui::Role::Tab,
+            crate::i18n::t(tab.label),
+            true,
+            Some(sel),
         );
+        let resp = enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
         }
+        if sel {
+            keep_keys(ui, &resp, true, false, false);
+            if resp.has_focus() {
+                let last = tabs.len().saturating_sub(1) as isize;
+                let fwd = if rtl() { -1 } else { 1 };
+                let to = if take_key(ui, egui::Key::ArrowRight) {
+                    Some(i as isize + fwd)
+                } else if take_key(ui, egui::Key::ArrowLeft) {
+                    Some(i as isize - fwd)
+                } else if take_key(ui, egui::Key::Home) {
+                    Some(0)
+                } else if take_key(ui, egui::Key::End) {
+                    Some(last)
+                } else {
+                    None
+                };
+                if let Some(to) = to.map(|t| t.clamp(0, last) as usize).filter(|t| *t != i) {
+                    clicked = Some(to);
+                    let next = id_of(ui, to);
+                    ui.memory_mut(|m| m.request_focus(next));
+                }
+            }
+        }
         let face = if sel {
-            LIGHT_PAGE
+            LIGHT_PAGE()
         } else if resp.hovered() {
-            rgb(0xfd, 0xfd, 0xfd)
+            TAB_HOT()
         } else {
             shadow
         };
@@ -2291,7 +3758,7 @@ pub fn tabs_light(
         vline(&p, x1, y0 + 1.0, t, border);
         if sel {
             // Open at the bottom: the pane's top line stops at the tab.
-            hline(&p, x0 + 1.0, x1 - 1.0, t, LIGHT_PAGE);
+            hline(&p, x0 + 1.0, x1 - 1.0, t, LIGHT_PAGE());
         } else {
             hline(&p, x0, x1, t, border);
         }
@@ -2301,7 +3768,9 @@ pub fn tabs_light(
             rc.top() + 15.0
         };
         let full = crate::i18n::t(tab.label);
-        let drawn = text(&p, o.x + label_x, base, shown, LIGHT_TEXT);
+        let drawn = text(&p, o.x + label_x, base, shown, LIGHT_TEXT());
+        // Over the tab's face (drawn before it, the face hid it).
+        show_focus(ui, &resp, hit.shrink(2.0));
         if shown != full {
             full_on_hover(ui, drawn, ("tab-light-label", i), full);
         }
@@ -2318,9 +3787,9 @@ pub fn tabs_light(
 /// The 8 × 5 "v" of drop-downs, its top-left at `at`.
 pub fn chevron_light(p: &Painter, at: Pos2, enabled: bool) {
     let c = if enabled {
-        rgb(0x6f, 0x6f, 0x6f)
+        CHEVRON()
     } else {
-        rgb(0xbe, 0xbe, 0xbe)
+        CHEVRON_DISABLED()
     };
     p.line(
         vec![
@@ -2335,26 +3804,37 @@ pub fn chevron_light(p: &Painter, at: Pos2, enabled: bool) {
 /// The frame of a light drop-down (combo or date picker): rounded `#c8c8c8` border, `#fefefe`
 /// fill; enabled ones darken on hover and take the accent border while open.
 pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
-    let enabled = state != State::Disabled;
+    // Drawn as a button (Windows 11 draws its drop-downs so): the same faces and states, in
+    // the current theme; open, the accent border and no bottom edge (its list is out).
+    let dark = crate::theme::dark();
     let open = state == State::Open;
-    // The light buttons' fills: hot #f6f6f6, pressed #f5f5f5 (as `button_light`).
-    let (border, fill_c) = match state {
-        State::Disabled => (rgb(0xc8, 0xc8, 0xc8), rgb(0xfe, 0xfe, 0xfe)),
-        State::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xfd, 0xfd, 0xfd)),
-        State::Pressed => (rgb(0xd0, 0xd0, 0xd0), rgb(0xf5, 0xf5, 0xf5)),
-        State::Hot | State::Open => (rgb(0xd0, 0xd0, 0xd0), rgb(0xf6, 0xf6, 0xf6)),
+    let kind = if state == State::Disabled {
+        ButtonKind::Disabled
+    } else {
+        ButtonKind::Normal
     };
-    let border = if open { rgb(0x00, 0x78, 0xd4) } else { border };
-    p.rect_filled(rc, 3.0, fill_c);
-    p.rect_stroke(rc, 3.0, Stroke::new(1.0, border), StrokeKind::Inside);
-    if enabled && !open {
+    let face = button_colors(kind, if open { State::Hot } else { state }, dark);
+    let border = if open { accent() } else { face.border };
+    let rounding = control_radius();
+    p.rect_filled(rc, rounding, face.fill);
+    p.rect_stroke(rc, rounding, Stroke::new(1.0, border), StrokeKind::Inside);
+    if !open {
         hline(
             p,
             rc.left() + 3.0,
             rc.right() - 4.0,
             rc.bottom() - 1.0,
-            rgb(0x86, 0x86, 0x86),
+            face.bottom,
         );
+    }
+}
+
+/// The accent (Windows' blue): borders of open and focused controls.
+pub fn accent() -> Color32 {
+    if crate::theme::dark() {
+        rgb(0x60, 0xcd, 0xff)
+    } else {
+        rgb(0x00, 0x78, 0xd4)
     }
 }
 
@@ -2375,15 +3855,60 @@ pub fn combo_light(
         Sense::hover()
     };
     let resp = ui.interact(rc, key.with("button"), sense);
+    pass_focus_on(ui, &resp, enabled);
+    let resp = opener_click(ui, resp);
+    focus_on_press(&resp);
+    keep_keys(ui, &resp, false, true, false);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
-    if resp.clicked() {
+    let popup_id = format!("combo-light-{}", key.short_debug_format());
+    let mut chosen = None;
+    let last = items.len().saturating_sub(1);
+    // egui clicks a focused control on Enter too: on a closed one Enter is the dialog's default
+    // button, not an opener.
+    let enter = ui.input(|i| i.key_pressed(egui::Key::Enter));
+    if resp.clicked() && !enter {
         open = !open;
+    }
+    // The keys, as a Windows drop-down list has them (an open list's are the popup's).
+    if resp.has_focus() && enabled && !items.is_empty() && !open {
+        let opener = ui.input_mut(|i| {
+            i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowDown)
+                || i.consume_key(egui::Modifiers::NONE, egui::Key::F4)
+        });
+        if opener {
+            open = true;
+            crate::chrome::start_at(ui.ctx(), &popup_id, selected.min(last));
+        }
+        let to = if take_key(ui, egui::Key::ArrowDown) {
+            Some((selected + 1).min(last))
+        } else if take_key(ui, egui::Key::ArrowUp) {
+            Some(selected.saturating_sub(1))
+        } else if take_key(ui, egui::Key::Home) {
+            Some(0)
+        } else if take_key(ui, egui::Key::End) {
+            Some(last)
+        } else {
+            None
+        };
+        // Typing picks the item starting with it (the arrows change the choice too).
+        let typed = typed_match(ui, key.with("typed"), items.len(), Some(selected), |i| {
+            crate::i18n::t(items[i]).to_owned()
+        });
+        // Closed: the arrows change the choice itself.
+        if let Some(i) = to.or(typed).filter(|i| *i != selected) {
+            chosen = Some(i);
+        }
     }
     let p = ui.painter().clone();
     dropdown_frame_light(&p, rc, State::of(&resp, enabled).open_if(open));
-    let color = if enabled { LIGHT_TEXT } else { LIGHT_DISABLED };
+    let color = if enabled {
+        LIGHT_TEXT()
+    } else {
+        LIGHT_DISABLED()
+    };
     // Items are shown in the interface language (data such as numbers passes through as is).
     let full = crate::i18n::t(items.get(selected).copied().unwrap_or(""));
+    expose_value(&resp, egui::Role::ComboBox, full, enabled);
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
     let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0);
     let drawn = text_start(
@@ -2404,67 +3929,39 @@ pub fn combo_light(
         rc.right() - 13.0
     };
     chevron_light(&p, pos2(chevron_x, rc.top() + 8.0), enabled);
-    let mut chosen = None;
+    // Over the face (drawn before it, the face hid it).
+    show_focus(ui, &resp, rc.shrink(3.0));
     if open {
-        // The list: rows of 15 px under the combo, the hovered row in the accent colour.
-        let row_h = 15.0;
-        // As wide as the combo, or as its longest item (a translation): it grows from the
-        // leading edge.
-        let longest = items
+        // The list: the shared popup (a window of its own, never clipped by the dialog, kept on
+        // the screen; the keys, the pointer), the choice marked.
+        use crate::chrome::{MenuEntry, PopupResult, label as menu_label};
+        let entries: Vec<MenuEntry<usize>> = items
             .iter()
-            .map(|s| text_width(&p, crate::i18n::t(s)).ceil() + 8.0)
-            .fold(rc.width(), f32::max);
-        let left = if rtl() {
-            rc.right() - longest
+            .enumerate()
+            .map(|(i, s)| {
+                let shown = crate::i18n::t(s).replace('&', "&&");
+                MenuEntry::Radio(menu_label(&shown), i, true, i == selected)
+            })
+            .collect();
+        let at = if rtl() {
+            rc.right_bottom()
         } else {
-            rc.left()
+            rc.left_bottom()
         };
-        let list = Rect::from_min_size(
-            pos2(left, rc.bottom()),
-            vec2(longest, row_h * items.len() as f32 + 2.0),
-        );
-        let area = egui::Area::new(key.with("list"))
-            .order(egui::Order::Foreground)
-            .fixed_pos(list.min)
-            .show(ui.ctx(), |ui| {
-                let (_, lp) = ui.allocate_painter(list.size(), Sense::hover());
-                lp.rect_filled(list, 0.0, Color32::WHITE);
-                lp.rect_stroke(
-                    list,
-                    0.0,
-                    Stroke::new(1.0, rgb(0x76, 0x76, 0x76)),
-                    StrokeKind::Inside,
-                );
-                for (i, item) in items.iter().enumerate() {
-                    let row = Rect::from_min_size(
-                        pos2(list.left() + 1.0, list.top() + 1.0 + row_h * i as f32),
-                        vec2(list.width() - 2.0, row_h),
-                    );
-                    let r = ui.interact(row, key.with(("item", i)), Sense::click());
-                    let hot = r.hovered() || (!ui.rect_contains_pointer(list) && i == selected);
-                    if hot {
-                        lp.rect_filled(row, 0.0, rgb(0x00, 0x78, 0xd7));
-                    }
-                    let c = if hot { Color32::WHITE } else { LIGHT_TEXT };
-                    text_start(
-                        &lp,
-                        tahoma(),
-                        lead(row) + 3.0 * fwd(),
-                        row.top() + 11.0,
-                        crate::i18n::t(item),
-                        c,
-                    );
-                    if r.clicked() {
-                        chosen = Some(i);
-                    }
-                }
-            });
-        let outside = ui.input(|i| i.pointer.any_pressed())
-            && !area.response.contains_pointer()
-            && !resp.contains_pointer();
-        if chosen.is_some() || outside || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
-            open = false;
+        match crate::chrome::popup(ui.ctx(), &popup_id, at, &entries, &|_| None) {
+            PopupResult::Chosen(i) => {
+                open = false;
+                chosen = Some(i).filter(|i| *i != selected);
+                resp.request_focus();
+            }
+            PopupResult::Dismissed => {
+                open = false;
+                resp.request_focus();
+            }
+            PopupResult::Open | PopupResult::Neighbor(_) => {}
         }
+        // The keys went to the list: the dialog's default button doesn't take Enter too.
+        take_key(ui, egui::Key::Enter);
     }
     ui.data_mut(|d| d.insert_temp(key, open));
     chosen
@@ -2480,32 +3977,41 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
     let mut step = 0;
     for (i, part, dir) in [(0, up, 1), (1, down, -1)] {
         let sense = if enabled {
-            Sense::click()
+            pointer_only()
         } else {
             Sense::hover()
         };
         let r = ui.interact(part, widget_id(ui, ("updown-light", id, i)), sense);
-        let face = if !enabled {
-            rgb(0xf3, 0xf3, 0xf3)
-        } else if r.is_pointer_button_down_on() {
-            rgb(0xe8, 0xe8, 0xe8)
-        } else if r.hovered() {
-            rgb(0xf0, 0xf0, 0xf0)
+        pass_focus_on(ui, &r, enabled);
+        let name = if dir > 0 {
+            // i18n: a spin box's arrow, for screen readers: one more
+            crate::i18n::t("Increase")
         } else {
-            rgb(0xfa, 0xfa, 0xfa)
+            // i18n: a spin box's arrow, for screen readers: one less
+            crate::i18n::t("Decrease")
+        };
+        expose(&r, egui::Role::Button, name, enabled, None);
+        let face = if !enabled {
+            subtle_or(State::Disabled)
+        } else if r.is_pointer_button_down_on() {
+            subtle_or(State::Pressed)
+        } else if r.hovered() {
+            subtle_or(State::Hot)
+        } else {
+            subtle_or(State::Normal)
         };
         let border = if enabled {
-            rgb(0xd2, 0xd2, 0xd2)
+            CONTROL_EDGE()
         } else {
-            rgb(0xe5, 0xe5, 0xe5)
+            HEADER_LINE()
         };
         p.rect_filled(part, 1.0, face);
         p.rect_stroke(part, 1.0, Stroke::new(1.0, border), StrokeKind::Inside);
         let c = part.center();
         let arrow = if enabled {
-            rgb(0x1a, 0x1a, 0x1a)
+            LIGHT_TEXT()
         } else {
-            rgb(0x9b, 0x9b, 0x9b)
+            CHEVRON_DISABLED()
         };
         let pts = if dir > 0 {
             vec![c + vec2(-3.0, 1.5), c + vec2(3.0, 1.5), c + vec2(0.0, -1.5)]
@@ -2517,36 +4023,200 @@ pub fn updown_light(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
             ]
         };
         p.add(egui::Shape::convex_polygon(pts, arrow, Stroke::NONE));
-        if r.clicked() {
+        // Held, it keeps counting.
+        if auto_repeat(ui, &r) {
             step = dir;
         }
     }
     step
 }
 
-/// A flat 19 × 21 button with a 16 × 16 icon (the Scheduler's move up / down / remove).
-pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool) -> Response {
+/// A flat 19 × 21 button with a 16 × 16 icon (the Scheduler's move up / down / remove), its
+/// `tip` (English, translated here) on hover.
+pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &str) -> Response {
     let sense = if enabled {
         Sense::click()
     } else {
         Sense::hover()
     };
     let resp = ui.interact(rc, widget_id(ui, ("icon-button-light", id)), sense);
+    pass_focus_on(ui, &resp, enabled);
+    expose(
+        &resp,
+        egui::Role::Button,
+        crate::i18n::t(tip),
+        enabled,
+        None,
+    );
     let p = ui.painter();
-    let face = subtle_fill(State::of(&resp, enabled), false).unwrap_or(rgb(0xfb, 0xfb, 0xfb));
+    let face = subtle_or(State::of(&resp, enabled));
     p.rect_filled(rc, 2.0, face);
     p.rect_stroke(
         rc,
         2.0,
-        Stroke::new(1.0, rgb(0xd3, 0xd3, 0xd3)),
+        Stroke::new(1.0, CONTROL_EDGE()),
         StrokeKind::Inside,
     );
-    resp
+    show_focus(ui, &resp, rc.shrink(2.0));
+    // No label of its own: its tooltip says what it does (translated).
+    resp.on_hover_text(crate::i18n::t(tip))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_control_greyed_with_the_keys_hands_them_on() {
+        let ctx = egui::Context::default();
+        let a = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(75.0, 23.0));
+        let b = a.translate(egui::vec2(0.0, 30.0));
+        let mut first_id = None;
+        // Labels from variables: the catalog's extractor takes literal ones as texts to translate.
+        let (one, two) = ("OK", "Cancel");
+        let frame = |enabled: bool, first_id: &mut Option<egui::Id>| {
+            let mut second = None;
+            let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+                let kind = if enabled {
+                    ButtonKind::Normal
+                } else {
+                    ButtonKind::Disabled
+                };
+                let r = button(ui, a, one, kind, false, None);
+                if first_id.is_none() {
+                    r.request_focus();
+                }
+                *first_id = Some(r.id);
+                second = Some(button(ui, b, two, ButtonKind::Normal, false, None).id);
+            });
+            out.textures_delta.clear();
+            second.unwrap()
+        };
+        frame(true, &mut first_id);
+        frame(true, &mut first_id);
+        assert!(ctx.memory(|m| m.has_focus(first_id.unwrap())));
+        // Greyed: the next button has the keys (egui had kept them on the greyed one).
+        let second = frame(false, &mut first_id);
+        frame(false, &mut first_id);
+        assert!(
+            ctx.memory(|m| m.has_focus(second)),
+            "{:?}",
+            ctx.memory(|m| m.focused())
+        );
+    }
+
+    #[test]
+    /// egui's context locks itself for `data`, `memory`, `input` and their `_mut`s: asking it
+    /// again inside one (`ctx.viewport_id()` to build a key) deadlocks the app at once. The
+    /// key is worked out first; this keeps it so in every file of the app.
+    fn no_context_call_inside_a_context_lock() {
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let opens = [
+            ".data(|",
+            ".data_mut(|",
+            ".memory(|",
+            ".memory_mut(|",
+            ".input(|",
+            ".input_mut(|",
+        ];
+        let inner = [
+            "ctx()",
+            ".viewport_id()",
+            ".cumulative_pass_nr()",
+            "_key(ctx",
+            "_key(ui",
+            "_key(&",
+        ];
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(&dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().is_none_or(|e| e != "rs") {
+                continue;
+            }
+            let mut src = std::fs::read_to_string(&path).unwrap();
+            // Not this test's own patterns.
+            if let Some(me) = src.find("fn no_context_call_inside_a_context_lock") {
+                src.truncate(me);
+            }
+            for open in opens {
+                let mut from = 0;
+                while let Some(at) = src[from..].find(open) {
+                    let start = from + at + open.len() - 2; // the "(" of the call
+                    let mut depth = 0;
+                    let mut end = start;
+                    for (k, c) in src[start..].char_indices() {
+                        match c {
+                            '(' => depth += 1,
+                            ')' => depth -= 1,
+                            _ => {}
+                        }
+                        if depth == 0 {
+                            end = start + k;
+                            break;
+                        }
+                    }
+                    let body = &src[start..end];
+                    if inner.iter().any(|i| body.contains(i)) {
+                        let line = src[..start].lines().count();
+                        found.push(format!("{}:{line}", path.display()));
+                    }
+                    from = end.max(start + 1);
+                }
+            }
+        }
+        assert!(
+            found.is_empty(),
+            "context asked inside its own lock: {found:?}"
+        );
+    }
+
+    #[test]
+    fn lines_land_on_whole_pixels_at_any_scaling() {
+        let r = Rect::from_min_max(pos2(10.0, 3.0), pos2(11.0, 4.0));
+        assert_eq!(snap(1.0, r), r);
+        // 125 %: a 1 pt line at x 10 → pixels 12.5..13.75: one whole pixel, on the grid.
+        let s = snap(1.25, r);
+        assert_eq!(
+            ((s.min.x * 1.25).fract(), (s.max.x * 1.25).fract()),
+            (0.0, 0.0)
+        );
+        assert!(s.width() * 1.25 >= 1.0);
+    }
+
+    #[test]
+    fn a_paste_into_one_line_is_one_clean_line() {
+        assert_eq!(single_line("https://x/a.zip\r\n"), "https://x/a.zip");
+        assert_eq!(single_line("a\r\nb\tc\u{7}"), "a b c");
+    }
+
+    #[test]
+    fn a_pressed_button_looks_pressed_in_both_themes() {
+        // Issue #7: pressed was #f5f5f5 against hot #f6f6f6, the same to the eye.
+        for dark in [false, true] {
+            for kind in [ButtonKind::Normal, ButtonKind::Default] {
+                let rest = button_colors(kind, State::Normal, dark);
+                let hot = button_colors(kind, State::Hot, dark);
+                let pressed = button_colors(kind, State::Pressed, dark);
+                assert_ne!(pressed.text, rest.text, "pressed dims the label");
+                assert_eq!(
+                    pressed.bottom, pressed.border,
+                    "pressed flattens the bottom edge"
+                );
+                assert_ne!(
+                    rest.bottom, rest.border,
+                    "at rest the bottom edge is darker"
+                );
+                assert_ne!(hot.fill, rest.fill, "hot differs from rest");
+            }
+            let disabled = button_colors(ButtonKind::Disabled, State::Disabled, dark);
+            let enabled = button_colors(ButtonKind::Normal, State::Normal, dark);
+            let gap = |a: Color32, b: Color32| (a.r() as i32 - b.r() as i32).abs();
+            assert!(
+                gap(disabled.text, enabled.text) >= 0x50,
+                "disabled text is clearly dimmer"
+            );
+        }
+    }
 
     #[test]
     fn control_states_open_and_tint() {
@@ -2567,12 +4237,24 @@ mod tests {
             );
         }
         assert!(
-            highlight_fill(State::Pressed).unwrap().r() < highlight_fill(State::Hot).unwrap().r()
+            highlight_fill(State::Pressed, false).unwrap().r()
+                < highlight_fill(State::Hot, false).unwrap().r()
         );
         // Windows 11 boxes: deeper under the pointer, deeper still pressed.
-        let fill = |s| fluent_box(s).0.unwrap().r();
-        assert!(fill(State::Pressed) < fill(State::Hot) && fill(State::Hot) < fill(State::Normal));
-        assert_eq!(fluent_box(State::Disabled).0, None);
+        // Light: darker under the pointer, darker still pressed. Dark: lighter under the
+        // pointer, lighter still pressed (Windows 11). The three differ; disabled is empty.
+        let fill = |s, dark| fluent_box_in(s, dark).0.unwrap().r();
+        assert!(
+            fill(State::Pressed, false) < fill(State::Hot, false)
+                && fill(State::Hot, false) < fill(State::Normal, false)
+        );
+        assert!(
+            fill(State::Normal, true) < fill(State::Hot, true)
+                && fill(State::Hot, true) < fill(State::Pressed, true)
+        );
+        for dark in [false, true] {
+            assert_eq!(fluent_box_in(State::Disabled, dark).0, None);
+        }
     }
 
     /// 6 px per character: a stand-in for the font.

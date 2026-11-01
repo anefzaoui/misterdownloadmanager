@@ -49,6 +49,23 @@ enum Tab {
     Completion,
 }
 
+impl Progress {
+    /// Open on a torrent's details tab by its English name in lower case ("peers"; /show
+    /// progress:peers); any other name leaves it as it is.
+    pub fn show_tab(&mut self, name: &str) {
+        let tab = match name {
+            "files" => TTab::Files,
+            "peers" => TTab::Peers,
+            "trackers" => TTab::Trackers,
+            "pieces" => TTab::Pieces,
+            "general" => TTab::General,
+            _ => return,
+        };
+        self.ttab = tab;
+        self.details = true;
+    }
+}
+
 /// A torrent's details tabs (M15, D-014), in the place of the connections table.
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum TTab {
@@ -58,6 +75,9 @@ enum TTab {
     Pieces,
     General,
 }
+
+/// Why "Hang up modem when done" is greyed off Windows.
+pub const NO_DIAL_UP: &str = crate::i18n::mark("This system has no dial-up connections to hang up");
 
 pub struct Progress {
     pub id: u64,
@@ -73,6 +93,14 @@ pub struct Progress {
     pending_limit: Option<(Option<u64>, bool)>,
     remember: bool,
     show_complete: bool,
+    /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
+    pub keep_sharing: bool,
+    /// Options on completion, used when "Show download complete dialog" is off.
+    hang_up: bool,
+    exit: bool,
+    turn_off_on: bool,
+    turn_off: usize,
+    force: bool,
 }
 
 pub enum Action {
@@ -89,7 +117,8 @@ pub enum Action {
 }
 
 impl Progress {
-    pub fn new(id: u64) -> Self {
+    /// `show_complete`: Options' "Show download complete dialog", this file's first state.
+    pub fn new(id: u64, show_complete: bool) -> Self {
         Progress {
             id,
             details: true,
@@ -100,7 +129,13 @@ impl Progress {
             limit_init: false,
             pending_limit: None,
             remember: false,
-            show_complete: true,
+            show_complete,
+            keep_sharing: false,
+            hang_up: false,
+            exit: false,
+            turn_off_on: false,
+            turn_off: 0,
+            force: false,
         }
     }
 
@@ -117,7 +152,7 @@ impl Progress {
             crate::i18n::isolate(&item.file_name)
         );
         let client = if self.details {
-            [548.0, 412.0]
+            [548.0, 412.0 + torrent_drop(item)]
         } else {
             [548.0, 241.0]
         };
@@ -145,7 +180,7 @@ impl Progress {
                 if ui.ctx().input(|i| i.viewport().close_requested()) {
                     return Action::Close;
                 }
-                egui::CentralPanel::no_frame()
+                let action = egui::CentralPanel::no_frame()
                     .frame(egui::Frame::new().fill(winui::BG()))
                     .show(ui, |ui| {
                         let o = ui.max_rect().min;
@@ -153,7 +188,13 @@ impl Progress {
                         let _surface = winui::Surface::enter(o.x, o.x + client[0]);
                         self.body(ui, o, item, snap, frac)
                     })
-                    .inner
+                    .inner;
+                // Escape hides the window (the download goes on), as the × does.
+                if matches!(action, Action::None) && winui::escape_pressed(ui) {
+                    Action::Close
+                } else {
+                    action
+                }
             },
         );
         // Apply IDM's thin frame once, and again whenever the client size changes (details).
@@ -306,7 +347,7 @@ impl Progress {
         }
 
         if self.details && item.torrent.is_some() {
-            self.torrent_details(ui, &p, o, item);
+            self.torrent_details(ui, &p, o + egui::vec2(0.0, torrent_drop(item)), item);
         } else if self.details {
             winui::text_in_window(
                 ui,
@@ -324,6 +365,11 @@ impl Progress {
 
     /// Classic 3-D tabs over a raised page frame (spec "Tab strip").
     fn tabs(&mut self, ui: &mut Ui, o: Pos2) {
+        let order = [Tab::Status, Tab::Limiter, Tab::Completion];
+        let current = order.iter().position(|t| *t == self.tab).unwrap_or(0);
+        if let Some(i) = winui::tab_keys(ui, order.len(), current) {
+            self.tab = order[i];
+        }
         let p = ui.painter().clone();
         let tabs = [
             // i18n: tab title: how the download is going
@@ -379,14 +425,19 @@ impl Progress {
                 (o.x + x0, o.x + x1, o.y + 10.0)
             };
             let y1 = o.y + 27.0;
-            fill(
-                &p,
-                x0,
-                y0,
-                x1,
-                y1 + if sel { 2.0 } else { 0.0 },
-                winui::BG(),
+            let hit = winui::rect(Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, y1 + 1.0)));
+            let resp = ui.interact(
+                hit,
+                egui::Id::unique(("progress-tab", label)),
+                Sense::click(),
             );
+            // An unselected tab under the pointer: lighter (the torrent tabs' hover grey).
+            let body = if !sel && resp.hovered() {
+                rgb(0x45, 0x45, 0x45)
+            } else {
+                winui::BG()
+            };
+            fill(&p, x0, y0, x1, y1 + if sel { 2.0 } else { 0.0 }, body);
             px(&p, x0, y0, TAB_CORNER);
             px(&p, x0 + 1.0, y0, TAB_CORNER);
             fill(&p, x0 + 2.0, y0, x1 - 2.0, y0, HILIGHT);
@@ -410,15 +461,8 @@ impl Progress {
                 label,
                 winui::TEXT(),
             );
-            let hit = winui::rect(Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, y1 + 1.0)));
-            if ui
-                .interact(
-                    hit,
-                    egui::Id::unique(("progress-tab", label)),
-                    Sense::click(),
-                )
-                .clicked()
-            {
+            winui::show_focus(ui, &resp, hit.shrink(3.0));
+            if resp.clicked() {
                 self.tab = tab;
             }
         }
@@ -487,6 +531,26 @@ impl Progress {
         draw(selected, true);
         for (i, (tab, label, dark_x0, _)) in tabs.iter().enumerate() {
             let sel = i == selected;
+            let hit = winui::rect(Rect::from_min_max(
+                pos2(o.x + edges[i], o.y + 8.0),
+                pos2(o.x + edges[i + 1] + 1.0, o.y + 28.0),
+            ));
+            let resp = ui.interact(
+                hit,
+                egui::Id::unique(("progress-tab", *label)),
+                Sense::click(),
+            );
+            // An unselected tab under the pointer: lighter, as the shared light tabs.
+            if !sel && resp.hovered() {
+                fill(
+                    &p,
+                    o.x + edges[i] + 1.0,
+                    o.y + 11.0,
+                    o.x + edges[i + 1] - 1.0,
+                    o.y + 27.0,
+                    rgb(0xfd, 0xfd, 0xfd),
+                );
+            }
             // Text x is the same as in dark mode (25 / 117 / 193).
             let tx = o.x + dark_x0 + 5.0;
             text(
@@ -496,18 +560,8 @@ impl Progress {
                 label,
                 winui::TEXT(),
             );
-            let hit = winui::rect(Rect::from_min_max(
-                pos2(o.x + edges[i], o.y + 8.0),
-                pos2(o.x + edges[i + 1] + 1.0, o.y + 28.0),
-            ));
-            if ui
-                .interact(
-                    hit,
-                    egui::Id::unique(("progress-tab", *label)),
-                    Sense::click(),
-                )
-                .clicked()
-            {
+            winui::show_focus(ui, &resp, hit.shrink(3.0));
+            if resp.clicked() {
                 self.tab = *tab;
             }
         }
@@ -562,14 +616,16 @@ impl Progress {
             crate::i18n::t("Maximum download speed:"),
             label,
         );
-        let before = self.limit_kb.clone();
-        winui::edit_right(
+        let rate_box = winui::edit_right(
             ui,
             r(o, 33.0, 100.0, 77.0, 23.0),
             &mut self.limit_kb,
             self.limiter,
         );
         self.limit_kb.retain(|c| c.is_ascii_digit());
+        // A typed rate applies once typed (focus leaves, Enter), not at each digit (typing 100
+        // would throttle to 1, then 10 KB/s on the way).
+        let typed = rate_box.lost_focus() || (rate_box.has_focus() && winui::enter_pressed(ui));
         // i18n: unit after an input box: kilobytes per second
         text(
             &p,
@@ -580,12 +636,21 @@ impl Progress {
         );
         let remembered = self.remember;
         winui::checkbox(ui, o + vec2(33.0, 134.0), &mut self.remember, "", true);
-        if was_on != self.limiter
-            || (self.limiter && before != self.limit_kb)
-            || remembered != self.remember
+        // Its caption is two lines drawn below; a click on them ticks it too.
+        winui::caption_click(
+            ui,
+            r(o, 51.0, 127.0, 450.0, 27.0),
+            "remember-limit",
+            &mut self.remember,
+            true,
+        );
+        // An empty or zero rate isn't "unlimited" while the box is ticked: the limit stays
+        // as it was until a rate is typed.
+        let kb: u64 = self.limit_kb.parse().unwrap_or(0);
+        if (was_on != self.limiter || (self.limiter && typed) || remembered != self.remember)
+            && !(self.limiter && kb == 0)
         {
-            let kb: u64 = self.limit_kb.parse().unwrap_or(0);
-            let limit = (self.limiter && kb > 0).then_some(kb * 1024);
+            let limit = self.limiter.then_some(kb * 1024);
             self.pending_limit = Some((limit, self.remember));
         }
         text(
@@ -608,6 +673,18 @@ impl Progress {
     /// Options on completion → "Show download complete dialog" for this file.
     pub fn shows_complete(&self) -> bool {
         self.show_complete
+    }
+
+    /// Options on completion's other settings, when they apply (the complete dialog is off).
+    pub fn when_done(&self) -> Option<crate::queue::WhenDone> {
+        (!self.show_complete).then(|| crate::queue::WhenDone {
+            hang_up: self.hang_up,
+            exit: self.exit,
+            turn_off: self
+                .turn_off_on
+                .then(|| crate::queue::TurnOff::ALL[self.turn_off]),
+            force: self.turn_off_on && self.force,
+        })
     }
 
     /// Returns true when "Hide tab" is pressed.
@@ -634,8 +711,22 @@ impl Progress {
             "Show download complete dialog",
             true,
         );
-        fill(&p, o.x + 33.0, o.y + 74.0, o.x + 505.0, o.y + 74.0, SHADOW);
-        fill(&p, o.x + 33.0, o.y + 75.0, o.x + 506.0, o.y + 75.0, HILIGHT);
+        fill(
+            &p,
+            o.x + 33.0,
+            o.y + 74.0,
+            o.x + 505.0,
+            o.y + 74.0,
+            winui::ETCH_SHADOW(),
+        );
+        fill(
+            &p,
+            o.x + 33.0,
+            o.y + 75.0,
+            o.x + 506.0,
+            o.y + 75.0,
+            winui::ETCH_LIGHT(),
+        );
         text(
             &p,
             o.x + 33.0,
@@ -645,44 +736,49 @@ impl Progress {
             ),
             winui::TEXT(),
         );
-        let mut off = false;
-        winui::checkbox(
+        // Used when the complete dialog is off (it asks what to do itself).
+        let on = !self.show_complete;
+        // Dial-up is hung up through Windows' rasdial; macOS and Linux have no such command.
+        let hang_up = winui::checkbox(
             ui,
             o + vec2(33.0, 96.0),
-            &mut off,
+            &mut self.hang_up,
             "Hang up modem when done",
-            false,
+            on && cfg!(windows),
         );
+        winui::why_disabled(hang_up, on && !cfg!(windows), NO_DIAL_UP);
         winui::checkbox(
             ui,
             o + vec2(33.0, 114.0),
-            &mut off,
+            &mut self.exit,
             "Exit Mister Download Manager when done",
-            false,
+            on,
         );
         winui::checkbox_until(
             ui,
             o + vec2(33.0, 132.0),
-            &mut off,
+            &mut self.turn_off_on,
             "Turn off computer when done",
-            false,
+            on,
             Some(o.x + 267.0),
         );
         winui::checkbox(
             ui,
             o + vec2(52.0, 148.0),
-            &mut off,
+            &mut self.force,
             "Force processes to terminate",
-            false,
+            on && self.turn_off_on,
         );
-        winui::combo_frame(&p, r(o, 267.0, 134.0, 119.0, 21.0), false);
-        text(
-            &p,
-            o.x + 273.0,
-            o.y + 147.0,
-            crate::i18n::t("Shut down"),
-            rgb(0x6d, 0x6d, 0x6d),
-        );
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 267.0, 134.0, 119.0, 21.0),
+            &crate::queue::TurnOff::LABELS,
+            self.turn_off,
+            on && self.turn_off_on,
+            "progress-turn-off",
+        ) {
+            self.turn_off = i;
+        }
         hide_tab(ui, o)
     }
 }
@@ -694,7 +790,7 @@ fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
     p.rect_stroke(
         ring,
         0.0,
-        egui::Stroke::new(1.0, rgb(0xf9, 0xf9, 0xf9)),
+        egui::Stroke::new(1.0, winui::LIGHT_PAGE()),
         egui::StrokeKind::Inside,
     );
     winui::button(
@@ -716,9 +812,7 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
     // Long values are cut with "..." at the page edge and shown whole on hover.
     let fit = |key: &str, x: f32, base: f32, s: &str, color| {
         let (rect, cut) = winui::text_fit(p, o.x + x, o.y + base, s, color, o.x + PAGE_TEXT_RIGHT);
-        if cut {
-            winui::full_on_hover(ui, rect, key, s);
-        }
+        winui::copyable(ui, rect, key, s, cut);
     };
     let status = match item.status {
         Status::Downloading => {
@@ -795,7 +889,7 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
             // i18n: label: whether the server lets a stopped download continue (Yes / No)
             crate::i18n::mark("Resume capability"),
             151.0,
-            213.0,
+            135.0,
             match item.resumable {
                 Some(true) => crate::i18n::t("Yes"),
                 Some(false) => crate::i18n::t("No"),
@@ -804,8 +898,8 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
             .to_owned(),
         ),
     ];
-    // A value starts 6 px after its label at the least (a long translation); the four rows that
-    // share IDM's column at 135 keep sharing one.
+    // A value starts 6 px after its label at the least (a long translation); the rows that share
+    // the column at 135 (all but Status) keep sharing one.
     let after = |label: &str| 33.0 + winui::text_width(p, crate::i18n::t(label)).ceil() + 6.0;
     let column = rows
         .iter()
@@ -835,6 +929,12 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
     }
 }
 
+/// How much lower a torrent's details sit than a download's (and how much taller its window
+/// is): its tab strip, where the connections caption is, would touch the buttons above.
+fn torrent_drop(item: &Item) -> f32 {
+    if item.torrent.is_some() { 6.0 } else { 0.0 }
+}
+
 impl Progress {
     /// A torrent's details: a tab strip where the connections caption is, the piece map in
     /// the segment bar, and the tab's table below.
@@ -858,43 +958,23 @@ impl Progress {
             // i18n: tab title: general information
             (TTab::General, crate::i18n::mark("General")),
         ];
-        let mut x = o.x + 17.0;
-        for (t, label) in tabs {
-            let label = crate::i18n::t(label);
-            let w = winui::text_width(p, label) + 16.0;
-            let rc = winui::rect(egui::Rect::from_min_size(
-                egui::pos2(x, o.y + 229.0),
-                egui::vec2(w, 18.0),
-            ));
-            let resp = ui.interact(rc, egui::Id::unique(("ttab", label)), egui::Sense::click());
-            if resp.clicked() {
-                self.ttab = t;
-            }
-            let on = self.ttab == t;
-            let dark = crate::theme::dark();
-            if on || resp.hovered() {
-                let bg = match (on, dark) {
-                    (true, true) => rgb(0x55, 0x55, 0x55),
-                    (true, false) => rgb(0xcc, 0xe4, 0xf7),
-                    (false, true) => rgb(0x45, 0x45, 0x45),
-                    (false, false) => rgb(0xe5, 0xf1, 0xfb),
-                };
-                p.rect_filled(rc, 3.0, bg);
-            }
-            if resp.hovered() {
-                ui.ctx().set_cursor_icon(egui::CursorIcon::PointingHand);
-            }
-            text(p, x + 8.0, o.y + 242.0, label, winui::TEXT());
-            if on {
-                // The selected tab: a 2 px accent line under it.
-                let accent = if dark {
-                    rgb(0x4c, 0xc2, 0xff)
-                } else {
-                    rgb(0x00, 0x78, 0xd7)
-                };
-                fill(p, x + 3.0, o.y + 245.0, x + w - 4.0, o.y + 246.0, accent);
-            }
-            x += w + 2.0;
+        // The usual tab control (the Scheduler's and Options' look): tabs sized to their
+        // labels from the leading edge, the page under them holding the piece map and the
+        // table.
+        let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
+        let light: Vec<winui::LightTab> = winui::tab_row(p, &english, 16.0, 530.0, 2.0, 8.0)
+            .into_iter()
+            .zip(tabs.iter())
+            .map(|((x0, x1, _), (_, label))| winui::LightTab {
+                label,
+                sel: (x0 - 2.0, x1 + 2.0),
+                unsel: (x0, x1),
+            })
+            .collect();
+        let current = tabs.iter().position(|t| t.0 == self.ttab).unwrap_or(0);
+        if let Some(i) = winui::tabs_light(ui, o, r(o, 14.0, 226.0, 521.0, 180.0), &light, current)
+        {
+            self.ttab = tabs[i].0;
         }
         let pieces = d.as_ref().map(|d| d.pieces.as_slice()).unwrap_or(&[]);
         piece_bar(p, o, pieces);
@@ -1055,7 +1135,12 @@ impl Progress {
                     vec![
                         // i18n: noun: sharing the torrent with others after it is downloaded
                         t("Sharing"),
-                        t("Stops when the download finishes"),
+                        if self.keep_sharing {
+                            // i18n: a torrent's sharing, when Torrent settings keep it on
+                            t("Goes on after the download finishes")
+                        } else {
+                            t("Stops when the download finishes")
+                        },
                     ],
                 ];
                 table(
@@ -1224,7 +1309,8 @@ fn table(
         text(p, o.x + x, o.y + 290.0, crate::i18n::t(h), winui::TEXT());
     }
     let visible = 6usize;
-    let key = egui::Id::unique(("torrent-table", id));
+    // Per window: each progress window scrolls its own tables.
+    let key = egui::Id::unique(("torrent-table", id, ui.ctx().viewport_id()));
     let max_first = rows.len().saturating_sub(visible);
     let mut first = ui
         .ctx()
@@ -1233,12 +1319,8 @@ fn table(
         .min(max_first);
     let body = r(o, 19.0, 299.0, 508.0, 100.0);
     if ui.rect_contains_pointer(body) {
-        let dy = ui.input(|i| i.smooth_scroll_delta.y);
-        if dy < 0.0 {
-            first = (first + 1).min(max_first);
-        } else if dy > 0.0 {
-            first = first.saturating_sub(1);
-        }
+        let step = winui::wheel_steps(ui, key, 100.0 / visible as f32, visible as f32);
+        first = first.saturating_add_signed(step).min(max_first);
         ui.ctx().data_mut(|d| d.insert_temp(key, first));
     }
     let clip = p.with_clip_rect(body);
@@ -1249,9 +1331,8 @@ fn table(
             let x = heads.get(c).map_or(o.x + 25.0, |h| o.x + h.0);
             let (rect, cut) =
                 winui::text_fit(&clip, x, top + 12.0, cell, winui::TEXT(), right_of(c));
-            if cut {
-                winui::full_on_hover(ui, rect.intersect(body), (id, first + k, c), cell);
-            }
+            // Cells hold info hashes, folders, trackers, peers: copyable (whole on hover).
+            winui::copyable(ui, rect.intersect(body), (id, first + k, c), cell, cut);
         }
     }
     if rows.len() > visible {
@@ -1420,7 +1501,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         .map(|s| s.connections.iter().collect())
         .unwrap_or_default();
     conns.sort_by_key(|c| c.id);
-    let key = egui::Id::unique("conn-scroll");
+    let key = egui::Id::unique(("conn-scroll", ui.ctx().viewport_id()));
     let visible = 6usize;
     let max_first = conns.len().saturating_sub(visible);
     let mut first = ui
@@ -1430,12 +1511,8 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         .min(max_first);
     let body = r(o, 19.0, 299.0, 492.0, 100.0);
     if ui.rect_contains_pointer(body) {
-        let dy = ui.input(|i| i.smooth_scroll_delta.y);
-        if dy < 0.0 {
-            first = (first + 1).min(max_first);
-        } else if dy > 0.0 {
-            first = first.saturating_sub(1);
-        }
+        let step = winui::wheel_steps(ui, key, 100.0 / visible as f32, visible as f32);
+        first = first.saturating_add_signed(step).min(max_first);
         ui.ctx().data_mut(|d| d.insert_temp(key, first));
     }
     let clip = p.with_clip_rect(body);

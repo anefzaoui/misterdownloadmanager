@@ -25,8 +25,9 @@ use crate::store;
 use crate::winui;
 use mdm_ipc as ipc;
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-enum View {
+/// A node of the Categories tree, what the list shows (saved: the last one comes back).
+#[derive(Clone, Copy, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
+pub(crate) enum View {
     All,
     Cat(Category),
     Unfinished(Option<Category>),
@@ -138,8 +139,46 @@ enum Cmd {
     Arrange(Option<usize>),
     /// Header right-click → Clear all filters.
     ClearFilters,
+    /// Every download the list shows (Ctrl+A).
+    SelectAll,
+    /// The All Downloads view (an empty list's link).
+    ShowAll,
+    /// Header right-click → Reset columns.
+    ResetColumns,
     None,
 }
+
+/// A download's standing (a gone one counts as complete: nothing to start).
+fn member_in(members: &std::collections::HashMap<u64, Member>, id: u64) -> Member {
+    members.get(&id).copied().unwrap_or(Member::Complete)
+}
+
+/// A file move's answer, from its thread.
+type MoveDone = std::sync::mpsc::Receiver<Result<(), String>>;
+
+/// Move a file: a rename, else a copy and the original deleted (a copy whose original can't go,
+/// in use, is taken back: the file stays in one place).
+fn move_file(from: &std::path::Path, to: &std::path::Path) -> Result<(), String> {
+    if std::fs::rename(from, to).is_ok() {
+        return Ok(());
+    }
+    std::fs::copy(from, to).map_err(|e| e.to_string())?;
+    std::fs::remove_file(from).map_err(|e| {
+        let _ = std::fs::remove_file(to);
+        e.to_string()
+    })
+}
+
+/// A download's new place (its name from it).
+fn take_place(item: &mut Item, target: PathBuf) {
+    if let Some(name) = target.file_name() {
+        item.file_name = name.to_string_lossy().into_owned();
+    }
+    item.dest = target;
+}
+
+/// The status strip's height, under the list and the Categories pane.
+const STRIP_H: f32 = 22.0;
 
 impl Cmd {
     /// The key that runs this command anywhere in the main window, as the shortcuts list writes
@@ -153,6 +192,7 @@ impl Cmd {
             Cmd::Remove => "Delete",
             Cmd::RemoveWithFiles => "Shift+Delete",
             Cmd::Open => "Enter",
+            Cmd::SelectAll => "Ctrl+A",
             Cmd::Properties => "Alt+Enter",
             _ => return None,
         })
@@ -166,8 +206,6 @@ enum Popup {
     Columns,
     /// List right-click on a row, or on blank space (None).
     Item(Option<u64>),
-    /// Right-click on a toolbar button.
-    Toolbar,
     /// The Start Queue (true) / Stop Queue drop-down arrows.
     QueueDrop(bool),
     /// The Add Torrent button's drop-down arrow.
@@ -196,6 +234,18 @@ pub struct App {
     selection: crate::selection::Selection,
     view: View,
     show_categories: bool,
+    /// The node the list was last drawn for (a new one starts at the top).
+    list_view: View,
+    /// The download Move/Rename's dialog is for (winui::start_pick answers later).
+    move_rename_for: Option<u64>,
+    /// The Categories tree has the keys (else the list; Tab moves between them).
+    tree_keys: bool,
+    /// The app's context, to reach its windows from anywhere (bring one to the front).
+    ui_ctx: egui::Context,
+    /// The language screen readers were last told.
+    a11y_lang: &'static str,
+    /// Maximized as last seen (the saved size is the restored window's, not the screen's).
+    maximized: Option<bool>,
     all_open: bool,
     unfinished_open: bool,
     finished_open: bool,
@@ -223,12 +273,16 @@ pub struct App {
     after_stop: Vec<(u64, Option<(PathBuf, bool)>)>,
     /// Tasks → Show drop target: the floating box links are dragged onto.
     drop_target: Option<crate::droptarget::DropTarget>,
+    /// Links and files dropped on the main window.
+    drops: crate::droptarget::Drops,
     /// The queue selection panel after Download Later / a batch: the downloads waiting for it.
     queue_pick: Option<(Vec<u64>, dialogs::QueuePick)>,
     /// Tasks → Import: the addresses found, to check before adding.
     import: Option<crate::transfer::ImportDialog>,
     /// Add category / Properties from the Categories tree.
     category_dlg: Option<crate::categories::CategoryDialog>,
+    /// The category dialog was opened by Download File Info's "+" (its result is picked there).
+    category_for_file_info: bool,
     /// Delete a category of the user's, asking first.
     confirm_category_delete: Option<(u32, dialogs::Confirm)>,
     /// File Properties windows, one per download.
@@ -248,6 +302,10 @@ pub struct App {
     last_find: Option<crate::find::Query>,
     /// A message with OK: its window title and message: "Cannot find …", an export that failed…
     notice: Option<(&'static str, String)>,
+    /// Why the last save of the download list failed (told once per reason).
+    save_failed: Option<String>,
+    /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
+    moving: Vec<(u64, PathBuf, MoveDone)>,
     /// A finished queue asked to turn the computer off: the countdown, cancellable.
     turn_off: Option<dialogs::TurnOffCountdown>,
     /// A finished queue asked to exit.
@@ -277,6 +335,8 @@ pub struct App {
     confirm_redownload: Option<(u64, dialogs::Confirm)>,
     /// A duplicate address asking what to do: the download already there, what was being added.
     duplicate: Option<(u64, Pending, dialogs::Duplicate)>,
+    /// Duplicates that came while one was being asked about, next in turn.
+    duplicates_waiting: std::collections::VecDeque<(u64, Pending, dialogs::Duplicate)>,
     /// The next duplicate check is passed (the user chose to add it anyway).
     duplicate_cleared: bool,
     downloads: PathBuf,
@@ -347,17 +407,16 @@ fn file_icon(name: &str) -> IconKey {
 }
 
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
-fn sort_key(it: &Item, col: usize) -> (f64, String) {
+/// `queued`: the download is in a queue (the Q column's mark).
+fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
     let frac = it
         .size
         .filter(|s| *s > 0)
         .map_or(0.0, |s| it.downloaded as f64 / s as f64);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
-        1 => (
-            f64::from(u8::from(it.status == Status::Queued)),
-            String::new(),
-        ),
+        // As the column shows it: in a queue or not.
+        1 => (f64::from(u8::from(queued)), String::new()),
         2 => (it.size.unwrap_or(0) as f64, String::new()),
         3 => (
             if it.status == Status::Complete {
@@ -408,6 +467,7 @@ impl App {
         cc: &eframe::CreationContext<'_>,
         rt: tokio::runtime::Handle,
         initial: Option<ipc::Command>,
+        loaded: store::Loaded,
     ) -> Self {
         let (tx, commands) = std::sync::mpsc::channel();
         if let Some(cmd) = initial {
@@ -417,7 +477,6 @@ impl App {
         // Without the channel the app still works; it just can't receive commands.
         let _ = ipc::serve(tx, move || wake.request_repaint());
         crate::theme::apply(&cc.egui_ctx);
-        let loaded = store::load();
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
             settings.speed_limit_on = true;
@@ -493,17 +552,33 @@ impl App {
         let downloads = dirs::download_dir()
             .or_else(|| dirs::home_dir().map(|h| h.join("Downloads")))
             .unwrap_or_else(|| PathBuf::from("."));
+        // The Categories pane as it was left, and the node shown (if it still exists).
+        let [all_open, unfinished_open, finished_open, queues_open] = settings.branches;
+        let known = |c: Option<Category>| c.is_none_or(|c| Category::all().contains(&c));
+        let view = match settings.view {
+            Some(View::Queue(q)) if q < queues.len() => View::Queue(q),
+            Some(v @ View::Cat(c)) if known(Some(c)) => v,
+            Some(v @ (View::Unfinished(c) | View::Finished(c))) if known(c) => v,
+            _ => View::All,
+        };
+        let show_categories = settings.show_categories;
         App {
             rt,
             items,
             next_id,
             selection: Default::default(),
-            view: View::All,
-            show_categories: true,
-            all_open: true,
-            unfinished_open: false,
-            finished_open: false,
-            queues_open: false,
+            view,
+            show_categories,
+            all_open,
+            unfinished_open,
+            finished_open,
+            queues_open,
+            maximized: None,
+            a11y_lang: "",
+            ui_ctx: cc.egui_ctx.clone(),
+            tree_keys: false,
+            move_rename_for: None,
+            list_view: view,
             add_url: None,
             about: None,
             updates: None,
@@ -519,9 +594,11 @@ impl App {
             scheduler: None,
             options: None,
             category_dlg: None,
+            category_for_file_info: false,
             import: None,
             queue_pick: None,
             drop_target: None,
+            drops: Default::default(),
             after_stop: Vec::new(),
             confirm_category_delete: None,
             properties: Vec::new(),
@@ -535,6 +612,8 @@ impl App {
             find: None,
             last_find: None,
             notice: None,
+            save_failed: None,
+            moving: Vec::new(),
             turn_off: None,
             exit_requested: false,
             global: std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None)),
@@ -551,6 +630,7 @@ impl App {
             confirm_queue_delete: None,
             confirm_redownload: None,
             duplicate: None,
+            duplicates_waiting: Default::default(),
             duplicate_cleared: false,
             downloads,
             dirty: false,
@@ -600,31 +680,218 @@ impl App {
             .collect()
     }
 
-    /// The list's rows: the view's downloads in the list's order.
-    fn shown_ids(&self) -> Vec<u64> {
-        let mut ids: Vec<u64> = self
-            .items
-            .iter()
-            .filter(|i| self.visible(i))
-            .map(|i| i.id)
-            .collect();
-        if let Some((col, asc)) = self.list.sort {
-            let key = |id: &u64| {
-                let it = self.items.iter().find(|i| i.id == *id);
-                it.map_or((0.0, String::new()), |it| sort_key(it, col))
-            };
-            ids.sort_by(|a, b| {
-                let (ka, kb) = (key(a), key(b));
-                let ord = ka.0.total_cmp(&kb.0).then_with(|| ka.1.cmp(&kb.1));
-                if asc { ord } else { ord.reverse() }
-            });
-        }
-        ids
+    /// An empty list's message, centred in its rows' area `body` (English): an icon, what is
+    /// empty, why, and the one thing to do about it (clear the filters, show every download,
+    /// add one). Returns that command when it is clicked.
+    fn empty_state(&self, ui: &Ui, body: egui::Rect) -> Option<Cmd> {
+        let p = ui.painter();
+        let filtered = self.list.filters.iter().any(Option::is_some) && !self.view_ids().is_empty();
+        let (title, why, action, cmd) = if filtered {
+            (
+                // i18n: title in the empty download list, when the column filters hide every download
+                "No downloads match the filters",
+                // i18n: in the empty download list, under its title
+                "The column filters hide every download in this view.",
+                "Clear all filters",
+                Cmd::ClearFilters,
+            )
+        } else if !self.items.is_empty() {
+            (
+                // i18n: title in the empty download list (this category or queue has no downloads)
+                "No downloads here",
+                // i18n: in the empty download list, under its title
+                "This category or queue holds no downloads yet.",
+                // i18n: link in the empty download list: go to the All Downloads view
+                "Show all downloads",
+                Cmd::ShowAll,
+            )
+        } else {
+            (
+                // i18n: title in the empty download list when there are no downloads at all
+                "No downloads yet",
+                // i18n: in the empty download list, under its title
+                "The downloads you add, or drop on this window, show here.",
+                // i18n: link in the empty download list: opens Add URL
+                "Add new download",
+                Cmd::AddUrl,
+            )
+        };
+        let (title, why) = (crate::i18n::t(title), crate::i18n::t(why));
+        let title_font = winui::tahoma_bold();
+        let tw = winui::text_width_font(p, title_font.clone(), title);
+        let ww = winui::text_width(p, why);
+        let aw = winui::text_width(p, crate::i18n::t(action));
+        // The block: icon 40, title, reason, link; in the middle, or under the header when
+        // the list is short.
+        let block_h = 40.0 + 14.0 + 16.0 + 8.0 + 13.0 + 14.0 + 13.0;
+        let top = (body.center().y - block_h / 2.0).max(body.top() + 16.0);
+        let cx = body.center().x;
+        // A download glyph in the muted ink (outlined, as the toolbar's icons are).
+        let ink = egui::Stroke::new(1.5, winui::MUTED());
+        let c = winui::rect(egui::Rect::from_center_size(
+            pos2(cx, top + 20.0),
+            egui::vec2(1.0, 1.0),
+        ))
+        .center();
+        p.circle_stroke(c, 19.0, ink);
+        p.line_segment([c + egui::vec2(0.0, -10.0), c + egui::vec2(0.0, 9.0)], ink);
+        p.line_segment([c + egui::vec2(-7.0, 2.0), c + egui::vec2(0.0, 9.0)], ink);
+        p.line_segment([c + egui::vec2(7.0, 2.0), c + egui::vec2(0.0, 9.0)], ink);
+        let y = top + 40.0 + 14.0 + 12.0;
+        winui::text_font(p, title_font, cx - tw / 2.0, y, title, winui::TEXT());
+        let y = y + 8.0 + 13.0;
+        winui::text(p, cx - ww / 2.0, y, why, winui::MUTED());
+        let y = y + 14.0 + 13.0;
+        winui::link(ui, p, cx - aw / 2.0, y, action, "empty-action").then_some(cmd)
     }
 
-    fn visible(&self, i: &Item) -> bool {
+    /// The strip under the list: how many downloads are shown and selected, how many run and
+    /// how fast in all (beyond IDM, which has no status bar).
+    fn status_strip(&self, ui: &Ui, o: Pos2, w: f32, h: f32, shown: usize) {
+        let p = ui.painter();
+        let top = o.y + h - STRIP_H;
+        let baseline = top + 14.0;
+        let n = shown as u64;
+        let mut left = crate::i18n::tn(n, "{n} download", "{n} downloads");
+        let selected = self.selection.ids().len() as u64;
+        if selected > 1 {
+            left += "   ";
+            left += &crate::i18n::tn(selected, "{n} selected", "{n} selected");
+        }
+        winui::fit(
+            ui,
+            p,
+            o.x + 8.0,
+            baseline,
+            &left,
+            winui::MUTED(),
+            o.x + w / 2.0,
+            "strip-left",
+        );
+        if let Some(right) = self.activity() {
+            winui::text_right(p, o.x + w - 10.0, baseline, &right, winui::MUTED());
+        }
+    }
+
+    /// "2 downloading, 1.25 MB/sec" while downloads run (the status strip, the tray's tip).
+    fn activity(&self) -> Option<String> {
+        let running: Vec<&Item> = self.items.iter().filter(|i| i.live.is_some()).collect();
+        if running.is_empty() {
+            return None;
+        }
+        let speed: f64 = running.iter().map(|i| i.rate()).sum();
+        Some(crate::i18n::fmt(
+            // i18n: {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+            crate::i18n::t("{count}, {speed}"),
+            &[
+                (
+                    "count",
+                    &crate::i18n::tn(running.len() as u64, "{n} downloading", "{n} downloading"),
+                ),
+                ("speed", &model::rate(speed)),
+            ],
+        ))
+    }
+
+    /// The list's rows as drawn: the view's downloads in the list's order that pass the column
+    /// filters (Find, Select all and scrolling count these, so they match what is shown).
+    fn shown_ids(&self) -> Vec<u64> {
+        if self.list.filters.iter().all(Option::is_none) {
+            return self.view_ids();
+        }
+        self.list_rows().0
+    }
+
+    /// The rows the list draws ([`Self::shown_ids`]) with their cells.
+    fn list_rows(&self) -> (Vec<u64>, Vec<list::Row>) {
+        let queued: std::collections::HashSet<u64> = self
+            .queues
+            .iter()
+            .flat_map(|q| q.items.iter().copied())
+            .collect();
+        self.view_items()
+            .into_iter()
+            .map(|it| (it.id, self.row(it, &queued)))
+            .filter(|(_, r)| list::matches(&self.list, r))
+            .unzip()
+    }
+
+    /// One download's row in the list.
+    /// `queued`: the downloads in a queue (worked out once for all the rows).
+    fn row(&self, it: &Item, queued: &std::collections::HashSet<u64>) -> list::Row {
+        list::Row {
+            status_group: match it.status {
+                // i18n: a download's status (state it is in, not a command): being downloaded now
+                Status::Downloading => "Downloading",
+                // i18n: a download's status (state it is in, not a command): stopped by the user
+                Status::Stopped => "Stopped",
+                // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
+                Status::Queued => "Waiting",
+                // i18n: a download's status (state it is in, not a command): finished, the whole file is there
+                Status::Complete => "Complete",
+                // i18n: a download's status (state it is in, not a command): it failed
+                Status::Error => "Error",
+            },
+            icon: file_icon(&it.file_name),
+            queued: queued.contains(&it.id),
+            cells: [
+                it.file_name.clone(),
+                String::new(),
+                it.size.map_or(String::new(), model::size_list),
+                it.status_text(),
+                it.time_left(),
+                if it.live.is_some() {
+                    model::rate(it.rate())
+                } else {
+                    String::new()
+                },
+                it.last_try
+                    .as_deref()
+                    .map_or(String::new(), model::date_text),
+                it.error.clone().unwrap_or_else(|| it.description.clone()),
+                it.added.as_deref().map_or(String::new(), model::date_text),
+                if it.torrent.is_some() {
+                    // i18n: where a download comes from: BitTorrent (shown on a small colored label)
+                    "Torrent".into()
+                } else {
+                    // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
+                    "Web".into()
+                },
+            ],
+        }
+    }
+
+    /// The view's downloads in the list's order, before the column filters.
+    fn view_ids(&self) -> Vec<u64> {
+        self.view_items().iter().map(|i| i.id).collect()
+    }
+
+    /// [`Self::view_ids`]'s downloads themselves (each sort key worked out once, not at
+    /// every comparison).
+    fn view_items(&self) -> Vec<&Item> {
+        let shown = self.items.iter().filter(|i| self.in_view(self.view, i));
+        let Some((col, asc)) = self.list.sort else {
+            return shown.collect();
+        };
+        let queued: std::collections::HashSet<u64> = self
+            .queues
+            .iter()
+            .flat_map(|q| q.items.iter().copied())
+            .collect();
+        let mut keyed: Vec<((f64, String), &Item)> = shown
+            .map(|i| (sort_key(i, col, queued.contains(&i.id)), i))
+            .collect();
+        keyed.sort_by(|(ka, _), (kb, _)| {
+            let ord = ka.0.total_cmp(&kb.0).then_with(|| ka.1.cmp(&kb.1));
+            if asc { ord } else { ord.reverse() }
+        });
+        keyed.into_iter().map(|(_, i)| i).collect()
+    }
+
+    /// Does `view` (a node of the Categories tree) hold this download?
+    fn in_view(&self, view: View, i: &Item) -> bool {
         let in_cat = |c: Option<Category>| c.is_none_or(|c| i.category == c);
-        match self.view {
+        match view {
             View::All => true,
             View::Cat(c) => i.category == c,
             View::Unfinished(c) => i.status != Status::Complete && in_cat(c),
@@ -739,7 +1006,8 @@ impl App {
             } else if !live {
                 self.start(id, true);
             } else if !self.progress.iter().any(|p| p.id == id) {
-                self.progress.push(Progress::new(id));
+                self.progress
+                    .push(Progress::new(id, self.settings.show_complete));
             }
         } else {
             // Later: paused, its data kept for the queue to resume.
@@ -859,7 +1127,14 @@ impl App {
                 if let Some(id) = last
                     && !self.progress.iter().any(|p| p.id == id)
                 {
-                    self.progress.push(Progress::new(id));
+                    self.progress
+                        .push(Progress::new(id, self.settings.show_complete));
+                }
+                // progress:peers and so on: a torrent's details tab (the docs' screenshots).
+                if let Some(id) = last
+                    && let Some(p) = self.progress.iter_mut().find(|p| p.id == id)
+                {
+                    p.show_tab(tab);
                 }
             }
             "options" => {
@@ -1111,7 +1386,8 @@ impl App {
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -1141,7 +1417,19 @@ impl App {
 
     /// Take a download off the list; its files stay.
     fn delete(&mut self, id: u64) {
-        self.remove_download(id, false);
+        self.remove_downloads(&[id], false);
+    }
+
+    /// Take downloads off the list (not while they run; see [`Self::remove_download`]). When
+    /// the selection goes with them, the row that comes after them is selected, as in Explorer,
+    /// so Delete can be pressed again.
+    fn remove_downloads(&mut self, ids: &[u64], files: bool) {
+        let before = self.shown_ids();
+        for id in ids {
+            self.remove_download(*id, files);
+        }
+        let after = self.shown_ids();
+        self.selection.after_removal(&before, &after);
     }
 
     /// Take a download off the list (not while it runs); with `files`, its file goes from disk
@@ -1151,8 +1439,22 @@ impl App {
             if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
                 self.torrent_host.forget(&self.rt, &spec.hash, files);
             } else if files && let Some(i) = self.items.iter().find(|i| i.id == id) {
-                if i.status == Status::Complete {
-                    let _ = std::fs::remove_file(&i.dest);
+                // The file itself: one that can't go (open in a player) is said, not skipped
+                // silently; the row still leaves the list.
+                if i.status == Status::Complete
+                    && let Err(e) = std::fs::remove_file(&i.dest)
+                    && e.kind() != std::io::ErrorKind::NotFound
+                {
+                    dialogs::tell(
+                        crate::i18n::mark("Delete"),
+                        crate::i18n::fmt(
+                            crate::i18n::t("{file} could not be deleted from the disk: {error}"),
+                            &[
+                                ("file", &crate::i18n::isolate(&i.file_name)),
+                                ("error", &e.to_string()),
+                            ],
+                        ),
+                    );
                 }
                 let _ = std::fs::remove_file(mdm_engine::naming::part_path(&i.dest));
                 let _ = std::fs::remove_file(state_path(&i.dest));
@@ -1176,19 +1478,23 @@ impl App {
             .filter_map(|id| self.items.iter().find(|i| i.id == *id && i.live.is_none()))
             .collect();
         let Some(first) = gone.first() else { return };
+        // Shift+Delete ticks "also the files" this once; only a plain Delete's answer is
+        // remembered (else one Shift+Delete made every later Delete erase files).
+        let shift = files;
         let files = files || self.settings.delete_files_too;
         if self.settings.confirm_delete {
             let one = gone.len() == 1;
-            self.confirm_delete = Some(dialogs::ConfirmDelete::new(
+            let mut ask = dialogs::ConfirmDelete::new(
                 gone.iter().map(|i| i.id).collect(),
                 first.file_name.clone(),
                 one && first.status != Status::Complete,
                 files,
-            ));
+            );
+            ask.remember = !shift;
+            self.confirm_delete = Some(ask);
         } else {
-            for id in gone.into_iter().map(|i| i.id).collect::<Vec<_>>() {
-                self.remove_download(id, files);
-            }
+            let ids: Vec<u64> = gone.into_iter().map(|i| i.id).collect();
+            self.remove_downloads(&ids, files);
         }
     }
 
@@ -1258,6 +1564,16 @@ impl App {
         {
             t.set_limiter(self.settings.speed_limit_on);
             self.tray_limiter = Some(self.settings.speed_limit_on);
+        }
+        if let (Some(t), Some(q)) = (&self.tray, self.queues.first()) {
+            t.set_queue(q.running);
+        }
+        if let Some(t) = &self.tray {
+            let tip = match self.activity() {
+                Some(a) => format!("{}\n{a}", crate::MAIN_TITLE),
+                None => crate::MAIN_TITLE.to_owned(),
+            };
+            t.set_tooltip(&tip);
         }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
@@ -1341,6 +1657,10 @@ impl App {
     /// Open (or bring back) the File Properties of a download.
     fn properties(&mut self, id: u64) {
         if self.properties.iter().any(|p| p.id == id) {
+            dialogs::raise(
+                &self.ui_ctx,
+                dialogs::dialog_viewport(&format!("properties-{id}")),
+            );
             return;
         }
         if let Some(item) = self.items.iter().find(|i| i.id == id) {
@@ -1374,20 +1694,75 @@ impl App {
                 item.status = Status::Stopped;
             }
         }
-        if let Some(dir) = c.move_to {
-            let target = mdm_engine::naming::unique_path(&dir, &item.file_name);
-            if item.status == Status::Complete {
-                let moved = std::fs::rename(&item.dest, &target).is_ok()
-                    || (std::fs::copy(&item.dest, &target).is_ok()
-                        && std::fs::remove_file(&item.dest).is_ok());
-                if moved {
-                    item.dest = target;
+        // Moved into the folder it is already in: nothing to do (it became "a (1).zip").
+        let move_to = c
+            .move_to
+            .filter(|dir| item.dest.parent() != Some(dir.as_path()))
+            .map(|dir| mdm_engine::naming::unique_path(&dir, &item.file_name));
+        self.dirty = true;
+        if let Some(target) = move_to {
+            self.start_move(c.id, target);
+        }
+    }
+
+    /// Move a download to `target` (its name too): a finished file moves on a thread of its
+    /// own (a copy to another drive takes a while), one not started just takes the new place.
+    /// A failure says why.
+    fn start_move(&mut self, id: u64, target: PathBuf) {
+        let Some(item) = self.item(id) else { return };
+        if target == item.dest {
+            return;
+        }
+        if item.status != Status::Complete {
+            if item.downloaded == 0 {
+                take_place(item, target);
+                self.dirty = true;
+            }
+            return;
+        }
+        let (tx, rx) = std::sync::mpsc::channel();
+        let from = item.dest.clone();
+        let to = target.clone();
+        item.note(crate::i18n::t("Moving the file..."));
+        std::thread::spawn(move || {
+            let _ = tx.send(move_file(&from, &to));
+        });
+        self.moving.push((id, target, rx));
+    }
+
+    /// Moves that finished: the download takes its new place, or the user is told why not.
+    fn poll_moves(&mut self) {
+        let mut done = Vec::new();
+        self.moving.retain(|(id, target, rx)| match rx.try_recv() {
+            Ok(r) => {
+                done.push((*id, target.clone(), r));
+                false
+            }
+            Err(std::sync::mpsc::TryRecvError::Empty) => true,
+            Err(_) => false,
+        });
+        for (id, target, r) in done {
+            match r {
+                Ok(()) => {
+                    if let Some(item) = self.item(id) {
+                        take_place(item, target);
+                    }
+                    self.dirty = true;
                 }
-            } else if item.downloaded == 0 {
-                item.dest = target;
+                Err(e) => {
+                    if let Some(item) = self.item(id) {
+                        item.note(crate::i18n::t("The file could not be moved"));
+                    }
+                    self.notice = Some((
+                        crate::i18n::mark("Move/Rename"),
+                        crate::i18n::fmt(
+                            crate::i18n::t("The file could not be moved: {error}"),
+                            &[("error", &e)],
+                        ),
+                    ));
+                }
             }
         }
-        self.dirty = true;
     }
 
     /// Select the next download matching `q` after the selection: in the list as shown, else
@@ -1511,7 +1886,8 @@ impl App {
         }
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -1624,7 +2000,8 @@ impl App {
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -1805,6 +2182,14 @@ impl App {
         let index = |queues: &[Queue], name: &str| queues.iter().position(|q| q.name == name);
         match a {
             Action::Apply { queues, limits } => {
+                // A running queue the Scheduler deleted stops first (its downloads stay).
+                for q in 0..self.queues.len() {
+                    if self.queues[q].running
+                        && !queues.iter().any(|n| n.name == self.queues[q].name)
+                    {
+                        self.stop_queue(q);
+                    }
+                }
                 // Running state belongs to the app, not the draft.
                 let running: Vec<String> = self
                     .queues
@@ -1812,6 +2197,14 @@ impl App {
                     .filter(|q| q.running)
                     .map(|q| q.name.clone())
                     .collect();
+                // The list showing a queue follows it to its new place (All Downloads when
+                // it is gone).
+                if let View::Queue(i) = self.view {
+                    let name = self.queues.get(i).map(|q| q.name.clone());
+                    self.view = name
+                        .and_then(|n| queues.iter().position(|q| q.name == n))
+                        .map_or(View::All, View::Queue);
+                }
                 self.queues = queues;
                 for q in &mut self.queues {
                     q.running = running.contains(&q.name);
@@ -1851,10 +2244,16 @@ impl App {
     }
 
     /// How a queue sees one of its downloads.
-    fn member(&self, id: u64, now: Instant) -> Member {
-        let Some(i) = self.items.iter().find(|i| i.id == id) else {
-            return Member::Complete;
-        };
+    /// Every download's standing for the queues, by id.
+    fn members(&self, now: Instant) -> std::collections::HashMap<u64, Member> {
+        self.items
+            .iter()
+            .map(|i| (i.id, self.member_of(i, now)))
+            .collect()
+    }
+
+    fn member_of(&self, i: &Item, now: Instant) -> Member {
+        let id = i.id;
         match i.status {
             Status::Queued | Status::Stopped => Member::Waiting,
             Status::Downloading => Member::Running,
@@ -1894,11 +2293,14 @@ impl App {
             if !self.queues[q].running {
                 continue;
             }
-            let starts = queue::to_start(&self.queues[q], |id| self.member(id, now), now);
+            // Each download's standing, looked up once (a linear search per queued id before).
+            let members = self.members(now);
+            let starts = queue::to_start(&self.queues[q], |id| member_in(&members, id), now);
             for id in starts {
                 self.start(id, false);
             }
-            if queue::finished(&self.queues[q], |id| self.member(id, now)) {
+            let members = self.members(now);
+            if queue::finished(&self.queues[q], |id| member_in(&members, id)) {
                 self.queues[q].running = false;
                 self.queue_done(q);
             }
@@ -1967,16 +2369,23 @@ impl App {
         if let Some(path) = &sch.open_when_done {
             let _ = open::that_detached(path);
         }
+        self.when_done(sch.when_done());
+    }
+
+    /// A queue's, or a download's (its progress window's Options on completion), "when done":
+    /// hang up, turn the computer off (a countdown first), or exit.
+    fn when_done(&mut self, w: crate::queue::WhenDone) {
+        // Ends dial-up (RAS) connections; nothing happens without one. Windows only: macOS and
+        // Linux have no dial-up command to call.
         #[cfg(windows)]
-        if sch.hang_up {
-            // Ends dial-up (RAS) connections; nothing happens without one.
+        if w.hang_up {
             let _ = std::process::Command::new("rasdial")
                 .arg("/disconnect")
                 .spawn();
         }
-        if let Some(mode) = sch.turn_off {
-            self.turn_off = Some(dialogs::TurnOffCountdown::new(mode, sch.force_close));
-        } else if sch.exit_when_done {
+        if let Some(mode) = w.turn_off {
+            self.turn_off = Some(dialogs::TurnOffCountdown::new(mode, w.force));
+        } else if w.exit {
             self.exit_requested = true;
         }
     }
@@ -1986,9 +2395,16 @@ impl App {
             return;
         };
         if i.status == Status::Complete {
-            let _ = open::that_detached(&i.dest);
+            crate::dialogs::open_file(&i.dest);
         } else if !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
+        } else {
+            // Open already, behind: to the front.
+            dialogs::raise(
+                &self.ui_ctx,
+                egui::ViewportId::from_hash_of(("progress", id)),
+            );
         }
     }
 
@@ -2159,6 +2575,8 @@ impl App {
             Cmd::Find => {
                 if self.find.is_none() {
                     self.find = Some(crate::find::Find::new(self.last_find.as_ref()));
+                } else {
+                    dialogs::raise(ctx, dialogs::dialog_viewport("find"));
                 }
             }
             Cmd::FindNext => match self.last_find.clone() {
@@ -2194,13 +2612,14 @@ impl App {
                 }
             }
             Cmd::OpenTorrentFile => {
-                if let Some(f) = rfd::FileDialog::new()
-                    .add_filter("Torrent files", &["torrent"])
-                    .set_title(crate::i18n::t("Open torrent file"))
-                    .pick_file()
-                {
-                    self.open_torrent_dialog(Some(f.display().to_string()), ctx);
-                }
+                let kind = crate::i18n::t("Torrent files").to_owned();
+                let title = crate::i18n::t("Open torrent file").to_owned();
+                winui::start_pick(ctx, "app-torrent-file", move || {
+                    rfd::FileDialog::new()
+                        .add_filter(kind, &["torrent"])
+                        .set_title(title)
+                        .pick_file()
+                });
             }
             Cmd::Batch(clipboard) => {
                 if self.batch.is_none() {
@@ -2214,6 +2633,8 @@ impl App {
                         &self.downloads,
                         self.host_limits.learned(),
                     ));
+                } else {
+                    dialogs::raise(ctx, dialogs::dialog_viewport("options"));
                 }
             }
             Cmd::Scheduler => {
@@ -2222,6 +2643,8 @@ impl App {
                         &self.queues,
                         &self.settings,
                     ));
+                } else {
+                    dialogs::raise(ctx, dialogs::dialog_viewport("scheduler"));
                 }
             }
             Cmd::EditQueue(_) | Cmd::ScheduleQueue(_) | Cmd::NewQueue => {
@@ -2235,8 +2658,11 @@ impl App {
                     _ => s.new_queue(),
                 }
             }
+            // A dialog already open (half filled in) stays.
             Cmd::AddCategory => {
-                self.category_dlg = Some(crate::categories::CategoryDialog::new());
+                if self.category_dlg.is_none() {
+                    self.category_dlg = Some(crate::categories::CategoryDialog::new());
+                }
             }
             Cmd::CategoryProps(c) => {
                 let folder = self.settings.category_dir(c, &self.downloads);
@@ -2302,12 +2728,22 @@ impl App {
             }
             Cmd::Arrange(col) => self.list.sort = col.map(|c| (c, true)),
             Cmd::ClearFilters => self.list.filters = vec![None; list::COLS],
+            Cmd::ResetColumns => self.list.reset_columns(),
+            Cmd::ShowAll => self.view = View::All,
+            Cmd::SelectAll => {
+                let ids = self.shown_ids();
+                self.selection.apply(crate::selection::Pick::All, &ids);
+            }
             Cmd::None => {}
         }
     }
 
     /// Pull engine progress into the rows; open "Download complete" when one finishes.
     fn poll(&mut self, ctx: &egui::Context) {
+        self.poll_moves();
+        if !self.moving.is_empty() {
+            ctx.request_repaint_after(Duration::from_millis(200));
+        }
         let mut finished = Vec::new();
         let mut failed = Vec::new();
         let mut any_live = false;
@@ -2351,11 +2787,11 @@ impl App {
         for id in finished {
             // This file's "Show download complete dialog" (its progress window's Options on
             // completion tab), read before the window closes.
-            let this_file = self
-                .progress
-                .iter()
-                .find(|p| p.id == id)
-                .is_none_or(|p| p.shows_complete());
+            let window = self.progress.iter().find(|p| p.id == id);
+            let this_file = window.is_none_or(|p| p.shows_complete());
+            if let Some(w) = window.and_then(Progress::when_done) {
+                self.when_done(w);
+            }
             self.progress.retain(|p| p.id != id);
             if Some(id) == early {
                 continue;
@@ -2383,13 +2819,33 @@ impl App {
             }
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
-            let _ = store::save(
+            let saved = store::save(
                 self.next_id,
                 &self.items,
                 &self.list.layout(),
                 &self.settings,
                 &self.queues,
             );
+            // A list that can't be saved says so, once for each reason (not every second);
+            // it was silent and a restart lost the changes.
+            match saved {
+                Ok(()) => self.save_failed = None,
+                Err(e) => {
+                    let e = e.to_string();
+                    if self.save_failed.as_ref() != Some(&e) {
+                        self.notice = Some((
+                            crate::i18n::mark("Mister Download Manager"),
+                            crate::i18n::fmt(
+                                crate::i18n::t(
+                                    "The download list could not be saved: {error}. Changes are kept while MDM runs.",
+                                ),
+                                &[("error", &e)],
+                            ),
+                        ));
+                    }
+                    self.save_failed = Some(e);
+                }
+            }
             self.dirty = false;
             self.last_save = Instant::now();
         }
@@ -2476,6 +2932,8 @@ impl App {
                 I("&Stop Download", Cmd::Stop, running, false),
                 // i18n: verb: removes the selected download from the list
                 I("&Remove", Cmd::Remove, deletable, false),
+                // i18n: verb: removes the selected download from the list and its file from the disk
+                I("Remove with &files", Cmd::RemoveWithFiles, deletable, false),
                 I("&Download Now", Cmd::Resume, resumable, false),
                 // i18n: verb: download the file again from the start
                 I(
@@ -2489,10 +2947,21 @@ impl App {
                 I("&Pause All", Cmd::StopAll, any_running, false),
                 I("&Stop All", Cmd::StopAll, any_running, false),
                 Sep,
-                I("&Delete All Completed", Cmd::DeleteCompleted, true, false),
+                I(
+                    "&Delete All Completed",
+                    Cmd::DeleteCompleted,
+                    self.items.iter().any(|i| i.status == Status::Complete),
+                    false,
+                ),
                 Sep,
                 I("Find (Ctrl-F)", Cmd::Find, true, false),
                 I("Find Next (F3)", Cmd::FindNext, true, false),
+                I(
+                    "Select &all",
+                    Cmd::SelectAll,
+                    !self.shown_ids().is_empty(),
+                    false,
+                ),
                 Sep,
                 I("S&cheduler", Cmd::Scheduler, true, false),
                 Sub("Start &queue", true, self.queue_drop(true)),
@@ -2532,26 +3001,7 @@ impl App {
                     true,
                     false,
                 ),
-                Sub("Arrange files", true, {
-                    let sorted = self.list.sort.map(|s| s.0);
-                    let by = |label, col: Option<usize>| {
-                        I(label, Cmd::Arrange(col), true, sorted == col)
-                    };
-                    vec![
-                        by("By &Order Of Addition", None),
-                        by("By &File Name", Some(0)),
-                        by("By &Size", Some(2)),
-                        by("By St&atus", Some(3)),
-                        by("By &Time Left", Some(4)),
-                        by("By Transfer &Rate", Some(5)),
-                        by("By &Last Try Date", Some(6)),
-                        by("By Date &Added", Some(list::ADDED)),
-                        by("By &Description", Some(7)),
-                        off("By Save &Path"),
-                        off("By R&eferer"),
-                        off("By Parent &Web Page"),
-                    ]
-                }),
+                self.arrange_menu(),
                 // i18n: noun: the toolbar (submenu of View with its settings)
                 Sub("Toolbar", false, vec![]),
                 Sub("&Tray icon", false, vec![]),
@@ -2615,7 +3065,11 @@ impl App {
             };
             crate::chrome::label(&crate::i18n::fmt(
                 template,
-                &[("queue", crate::i18n::t(&self.queues[q].name))],
+                // A name's "&" is text, not an access key (Tom & Jerry lost it).
+                &[(
+                    "queue",
+                    &crate::i18n::t(&self.queues[q].name).replace('&', "&&"),
+                )],
             ))
         };
         (0..self.queues.len())
@@ -2634,6 +3088,60 @@ impl App {
     /// space (`None`: nothing selected, almost everything greyed).
     /// The list's right-click menu. With several downloads selected it acts on all of them
     /// (Resume, Stop, Remove, queues); commands for one download need one.
+    /// View → Arrange files, also on the list's blank space.
+    fn arrange_menu(&self) -> MenuEntry<Cmd> {
+        use MenuEntry::{Item as I, Sub};
+        let off = |label| I(label, Cmd::None, false, false);
+        Sub("Arrange files", true, {
+            let sorted = self.list.sort.map(|s| s.0);
+            let by = |label, col: Option<usize>| I(label, Cmd::Arrange(col), true, sorted == col);
+            vec![
+                by("By &Order Of Addition", None),
+                by("By &File Name", Some(0)),
+                by("By &Size", Some(2)),
+                by("By St&atus", Some(3)),
+                by("By &Time Left", Some(4)),
+                by("By Transfer &Rate", Some(5)),
+                by("By &Last Try Date", Some(6)),
+                by("By Date &Added", Some(list::ADDED)),
+                by("By &Description", Some(7)),
+                off("By Save &Path"),
+                off("By R&eferer"),
+                off("By Parent &Web Page"),
+            ]
+        })
+    }
+
+    /// Right-click on the list's blank space: what applies to the whole list (IDM greys the
+    /// download menu there).
+    fn blank_entries(&self) -> Vec<MenuEntry<Cmd>> {
+        use MenuEntry::{Item as I, Sep};
+        vec![
+            I("&Add new download...", Cmd::AddUrl, true, false),
+            Sep,
+            I(
+                "Select &all",
+                Cmd::SelectAll,
+                !self.shown_ids().is_empty(),
+                false,
+            ),
+            self.arrange_menu(),
+            I(
+                "Clear all &filters",
+                Cmd::ClearFilters,
+                self.list.filters.iter().any(Option::is_some),
+                false,
+            ),
+            Sep,
+            I(
+                "&Delete All Completed",
+                Cmd::DeleteCompleted,
+                self.items.iter().any(|i| i.status == Status::Complete),
+                false,
+            ),
+        ]
+    }
+
     fn item_entries(&self, id: Option<u64>) -> Vec<MenuEntry<Cmd>> {
         use MenuEntry::{Item as I, Radio, Sep, Sub};
         let chosen = if id.is_some() {
@@ -2665,7 +3173,7 @@ impl App {
             .filter(|(_, q)| !queue_of(q) && (!all_done || q.sync))
             .map(|(q, queue)| {
                 I(
-                    crate::chrome::label(&queue.name),
+                    crate::chrome::label(&crate::i18n::t(&queue.name).replace('&', "&&")),
                     Cmd::AddToQueue(q),
                     true,
                     false,
@@ -2700,6 +3208,8 @@ impl App {
             Sep,
             // i18n: verb: removes the download from the list
             I("Remove", Cmd::Remove, any_idle, false),
+            // i18n: verb: removes the download from the list and its file from the disk
+            I("Remove with files", Cmd::RemoveWithFiles, any_idle, false),
             Sep,
             Sub(
                 if in_queue {
@@ -2725,23 +3235,6 @@ impl App {
             Sep,
             // i18n: noun: opens the download's Properties window
             I("Properties", Cmd::Properties, sel, false),
-        ]
-    }
-
-    /// Right-click on a toolbar button. Only the current look (large Neon buttons) is built.
-    fn toolbar_entries() -> Vec<MenuEntry<Cmd>> {
-        use MenuEntry::{Item as I, Radio, Sep};
-        vec![
-            I("Customize...", Cmd::None, false, false),
-            Sep,
-            Radio("Small Buttons", Cmd::None, false, false),
-            Radio("Large Buttons", Cmd::None, true, true),
-            Sep,
-            I("Look for new toolbars", Cmd::None, false, false),
-            Sep,
-            // i18n: name of the toolbar's icon style (a proper name; may stay as is)
-            Radio("Neon", Cmd::None, true, true),
-            Radio("3D Style", Cmd::None, false, false),
         ]
     }
 
@@ -2833,6 +3326,7 @@ impl App {
             selected: view == Some(cur),
             icon,
             badge,
+            count: None,
         };
         let mut rows = Vec::new();
         // Silk icons in IDM's roles: folder, folder + green arrow, folder + tick, page stacks.
@@ -2854,6 +3348,7 @@ impl App {
                                 selected: v == cur,
                                 icon: category_icon(c),
                                 badge: None,
+                                count: None,
                             },
                             Some(v),
                             Branch::Leaf,
@@ -2916,10 +3411,21 @@ impl App {
                         selected: view == Some(cur),
                         icon: stack.clone(),
                         badge: queue.sync.then_some("tick"),
+                        count: None,
                     },
                     view,
                     Branch::Leaf,
                 ));
+            }
+        }
+        // Each top node's downloads, as its list would show them (before column filters):
+        // the pane is narrow, its children's names fill it already.
+        for (row, view, _) in &mut rows {
+            if row.level == 0
+                && let Some(v) = view
+            {
+                let n = self.items.iter().filter(|i| self.in_view(*v, i)).count();
+                row.count = (n > 0).then_some(n);
             }
         }
         rows
@@ -2956,12 +3462,7 @@ impl App {
         {
             let labels: Vec<String> = chrome::menus(ui.painter())
                 .iter()
-                .map(|(l, ..)| {
-                    l.chars()
-                        .next()
-                        .map(|c| c.to_lowercase().to_string())
-                        .unwrap_or_default()
-                })
+                .map(|(l, ..)| chrome::menu_letter(l))
                 .collect();
             let (alt, other, f10, ctrl_f2, letter) = ctx.input(|i| {
                 let mut letter = None;
@@ -2980,6 +3481,10 @@ impl App {
                             }
                         }
                         egui::Event::PointerButton { pressed: true, .. } => other = true,
+                        // A letter of another script (Cyrillic, Arabic...) typed with Alt.
+                        egui::Event::Text(t) if i.modifiers.alt && !i.modifiers.ctrl => {
+                            letter = Some(t.to_lowercase());
+                        }
                         _ => {}
                     }
                 }
@@ -2999,6 +3504,8 @@ impl App {
             } else {
                 if alt && !self.alt_down {
                     self.alt_alone = true;
+                    // The keyboard is in use: access letters show (light mode too).
+                    crate::chrome::show_cues(&ctx);
                 }
                 if alt && other {
                     self.alt_alone = false;
@@ -3096,13 +3603,14 @@ impl App {
             (
                 Icon::StartQueue,
                 "Start Queue",
-                self.queues.iter().any(|q| !q.running),
+                // The button acts on the main queue (the others: its arrow, the menus).
+                self.queues.first().is_some_and(|q| !q.running),
                 Cmd::StartQueue(0),
             ),
             (
                 Icon::StopQueue,
                 "Stop Queue",
-                self.queues.iter().any(|q| q.running),
+                self.queues.first().is_some_and(|q| q.running),
                 Cmd::StopQueue(0),
             ),
         ];
@@ -3113,7 +3621,6 @@ impl App {
                 Icon::AddTorrent => self.open_popup(Popup::TorrentDrop, at),
                 icon => self.open_popup(Popup::QueueDrop(matches!(icon, Icon::StartQueue)), at),
             },
-            Some(ToolbarEvent::Context(at)) => self.open_popup(Popup::Toolbar, at),
             None => {}
         }
 
@@ -3127,9 +3634,13 @@ impl App {
             let right = o.x + 6.0 + cat_w;
             let split = winui::rect(egui::Rect::from_min_max(
                 pos2(right, o.y + chrome::MENU_H + chrome::pane_top()),
-                pos2(right + 4.0, o.y + h - 5.0),
+                pos2(right + 4.0, o.y + h - STRIP_H - 5.0),
             ));
-            let sr = ui.interact(split, egui::Id::unique("cat-splitter"), egui::Sense::drag());
+            let sr = ui.interact(
+                split,
+                egui::Id::unique("cat-splitter"),
+                winui::pointer_drag(),
+            );
             if sr.hovered() || sr.dragged() {
                 ctx.set_cursor_icon(egui::CursorIcon::ResizeHorizontal);
             }
@@ -3146,7 +3657,69 @@ impl App {
             if sr.drag_stopped() {
                 self.dirty = true;
             }
-            if let Some(ev) = chrome::categories(ui, &mut self.icons, o, o.y + h, right, &tree) {
+            // The tree's keys while it has them (Tab moves between it and the list): Up / Down
+            // through the nodes, Left / Right close and open a branch, Home / End.
+            let free = self.popup.is_none()
+                && self.open_menu.is_none()
+                && ctx.memory(|m| m.focused().is_none());
+            if free
+                && ctx.input_mut(|i| {
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::Tab)
+                        || i.consume_key(egui::Modifiers::SHIFT, egui::Key::Tab)
+                })
+            {
+                self.tree_keys = !self.tree_keys;
+                self.list.set_keys(!self.tree_keys);
+                crate::chrome::show_cues(&ctx);
+            }
+            let mut tree_event = None;
+            if free && self.tree_keys {
+                let at = rows
+                    .iter()
+                    .position(|(_, v, _)| *v == Some(self.view))
+                    .unwrap_or(0);
+                let with_view: Vec<usize> =
+                    (0..rows.len()).filter(|k| rows[*k].1.is_some()).collect();
+                let pos = with_view.iter().position(|k| *k == at).unwrap_or(0);
+                let key = |k| ctx.input_mut(|i| i.consume_key(egui::Modifiers::NONE, k));
+                let to = if key(egui::Key::ArrowDown) {
+                    with_view.get(pos + 1).copied()
+                } else if key(egui::Key::ArrowUp) {
+                    pos.checked_sub(1).and_then(|p| with_view.get(p).copied())
+                } else if key(egui::Key::Home) {
+                    with_view.first().copied()
+                } else if key(egui::Key::End) {
+                    with_view.last().copied()
+                } else {
+                    None
+                };
+                if let Some(k) = to {
+                    tree_event = Some(TreeEvent::Select(k));
+                }
+                let open = rows[at].0.expander;
+                let (left, right) = if winui::rtl() {
+                    (egui::Key::ArrowRight, egui::Key::ArrowLeft)
+                } else {
+                    (egui::Key::ArrowLeft, egui::Key::ArrowRight)
+                };
+                if (open == Some(true) && key(left)) || (open == Some(false) && key(right)) {
+                    tree_event = Some(TreeEvent::Toggle(at));
+                }
+            }
+            if let Some(ev) = chrome::categories(
+                ui,
+                &mut self.icons,
+                o,
+                o.y + h - STRIP_H,
+                right,
+                &tree,
+                self.tree_keys && free,
+            )
+            .or(tree_event)
+            {
+                // A click in the tree gives it the keys.
+                self.tree_keys = true;
+                self.list.set_keys(false);
                 match ev {
                     TreeEvent::Close => self.show_categories = false,
                     TreeEvent::Select(k) => match rows[k].1 {
@@ -3170,64 +3743,27 @@ impl App {
         };
 
         // Download list.
-        let ids = self.shown_ids();
-        let rows: Vec<list::Row> = ids
-            .iter()
-            .filter_map(|id| self.items.iter().find(|i| i.id == *id))
-            .map(|it| list::Row {
-                status_group: match it.status {
-                    // i18n: a download's status (state it is in, not a command): being downloaded now
-                    Status::Downloading => "Downloading",
-                    // i18n: a download's status (state it is in, not a command): stopped by the user
-                    Status::Stopped => "Stopped",
-                    // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
-                    Status::Queued => "Waiting",
-                    // i18n: a download's status (state it is in, not a command): finished, the whole file is there
-                    Status::Complete => "Complete",
-                    // i18n: a download's status (state it is in, not a command): it failed
-                    Status::Error => "Error",
-                },
-                icon: file_icon(&it.file_name),
-                queued: self.queues.iter().any(|q| q.items.contains(&it.id)),
-                cells: [
-                    it.file_name.clone(),
-                    String::new(),
-                    it.size.map_or(String::new(), model::size_list),
-                    it.status_text(),
-                    it.time_left(),
-                    if it.live.is_some() {
-                        model::rate(it.rate())
-                    } else {
-                        String::new()
-                    },
-                    it.last_try
-                        .as_deref()
-                        .map_or(String::new(), model::date_text),
-                    it.error.clone().unwrap_or_else(|| it.description.clone()),
-                    it.added.as_deref().map_or(String::new(), model::date_text),
-                    if it.torrent.is_some() {
-                        // i18n: where a download comes from: BitTorrent (shown on a small colored label)
-                        "Torrent".into()
-                    } else {
-                        // i18n: where a download comes from: a web or FTP server (shown on a small colored label)
-                        "Web".into()
-                    },
-                ],
-                status_tip: it.log_lines(12),
-            })
-            .collect();
-        // Column filters: only the rows that pass them (ids kept in step).
-        let (ids, rows): (Vec<u64>, Vec<list::Row>) = ids
-            .into_iter()
-            .zip(rows)
-            .filter(|(_, r)| list::matches(&self.list, r))
-            .unzip();
+        let (ids, rows) = self.list_rows();
         self.selection.retain(&ids);
         let (selected, focus) = self.selection.rows(&ids);
         let outer = egui::Rect::from_min_max(
             pos2(o.x + list_left, o.y + chrome::MENU_H + chrome::pane_top()),
-            pos2(o.x + w - 7.0, o.y + h - 4.0),
+            pos2(o.x + w - 7.0, o.y + h - STRIP_H - 4.0),
         );
+        self.list.menu_open = self.popup.is_some() || self.open_menu.is_some();
+        // Another node shows from its top (its rows aren't the last one's).
+        if self.list_view != self.view {
+            self.list.scroll = 0.0;
+            self.list_view = self.view;
+        }
+        // The Status cell's tip, the download's recent events: made for the row under the
+        // pointer only (twelve dated lines for every row, every frame, before).
+        let items = &self.items;
+        let tip = |i: usize| {
+            ids.get(i)
+                .and_then(|id| items.iter().find(|it| it.id == *id))
+                .map_or(String::new(), |it| it.log_lines(12))
+        };
         let r = list::show(
             ui,
             outer,
@@ -3236,7 +3772,11 @@ impl App {
             &selected,
             focus,
             &mut self.icons,
+            &tip,
         );
+        if self.list.has_keys() {
+            self.tree_keys = false;
+        }
         if let Some(pick) = r.pick {
             self.selection.apply(pick, &ids);
         }
@@ -3256,6 +3796,25 @@ impl App {
                 self.open_item(id);
             }
         }
+        if let Some(i) = r.enter {
+            self.open_item(ids[i]);
+        }
+        // Something droppable over the window: the list is where it goes.
+        let dragging = self.drops.over() || ctx.input(|i| !i.raw.hovered_files.is_empty());
+        if dragging {
+            ui.painter().rect_stroke(
+                winui::rect(outer),
+                0.0,
+                egui::Stroke::new(2.0, winui::accent()),
+                egui::StrokeKind::Inside,
+            );
+        }
+        if ids.is_empty()
+            && let Some(cmd) = self.empty_state(ui, r.body.unwrap_or(outer))
+        {
+            chosen = Some((cmd, None));
+        }
+        self.status_strip(ui, o, w, h, ids.len());
         if let Some((i, pos)) = r.context {
             self.open_popup(Popup::Item(i.map(|i| ids[i])), pos);
         }
@@ -3275,7 +3834,20 @@ impl App {
                         .iter()
                         .enumerate()
                         .map(|(i, t)| {
-                            MenuEntry::Item(t, Cmd::ToggleColumn(i), i != 0, self.list.visible[i])
+                            // As the header names them (its own words, not the menus'), and
+                            // the narrow Q column by its whole name.
+                            let name = if *t == "Q" {
+                                crate::i18n::tc("column", "Queue")
+                            } else {
+                                crate::i18n::tc("column", t)
+                            };
+                            let name = crate::chrome::label(&name.replace('&', "&&"));
+                            MenuEntry::Item(
+                                name,
+                                Cmd::ToggleColumn(i),
+                                i != 0,
+                                self.list.visible[i],
+                            )
                         })
                         .collect();
                     e.push(MenuEntry::Sep);
@@ -3285,10 +3857,17 @@ impl App {
                         self.list.filters.iter().any(Option::is_some),
                         false,
                     ));
+                    // i18n: header menu: put the columns back as they first were (order, widths, all shown)
+                    e.push(MenuEntry::Item(
+                        "&Reset columns",
+                        Cmd::ResetColumns,
+                        true,
+                        false,
+                    ));
                     (e, None)
                 }
+                Popup::Item(None) => (self.blank_entries(), None),
                 Popup::Item(id) => (self.item_entries(id), id),
-                Popup::Toolbar => (Self::toolbar_entries(), None),
                 Popup::QueueDrop(start) => (self.queue_drop(start), None),
                 Popup::TorrentDrop => (
                     vec![
@@ -3335,7 +3914,11 @@ impl App {
                     i.consume_key(egui::Modifiers::COMMAND, egui::Key::N),
                 )
             });
-            if ctx.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::M)) {
+            // Ctrl+M as IDM; F2 as renaming in Explorer.
+            if ctx.input_mut(|i| {
+                i.consume_key(egui::Modifiers::COMMAND, egui::Key::M)
+                    || i.consume_key(egui::Modifiers::NONE, egui::Key::F2)
+            }) {
                 chosen = Some((Cmd::MoveRename, None));
             }
             if find {
@@ -3357,9 +3940,11 @@ impl App {
             let (del, shift_del) = ctx.input(|i| {
                 (
                     i.key_pressed(egui::Key::Delete) && !i.modifiers.shift,
+                    // Windows reports it as Cut; macOS and Linux as the key.
                     i.modifiers.shift
                         && !i.modifiers.command
-                        && i.events.iter().any(|e| matches!(e, egui::Event::Cut)),
+                        && (i.events.iter().any(|e| matches!(e, egui::Event::Cut))
+                            || i.key_pressed(egui::Key::Delete)),
                 )
             });
             if shift_del {
@@ -3413,8 +3998,13 @@ impl App {
                 false
             }
             _ => {
+                // One question at a time; the others wait their turn (a second link while the
+                // first was asked was dropped).
+                let ask = (dup, pending(), dialogs::Duplicate::new(name));
                 if self.duplicate.is_none() {
-                    self.duplicate = Some((dup, pending(), dialogs::Duplicate::new(name)));
+                    self.duplicate = Some(ask);
+                } else {
+                    self.duplicates_waiting.push_back(ask);
                 }
                 false
             }
@@ -3482,7 +4072,8 @@ impl App {
         } else if i.live.is_none() {
             self.start(id, true);
         } else if !self.progress.iter().any(|p| p.id == id) {
-            self.progress.push(Progress::new(id));
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
         }
     }
 
@@ -3509,13 +4100,7 @@ impl App {
         for ev in dt.show(ctx, &icon) {
             use crate::droptarget::Event;
             match ev {
-                Event::Drop(s) => {
-                    let cmd = ipc::Command {
-                        url: Some(s),
-                        ..Default::default()
-                    };
-                    self.handle_command(cmd, ctx);
-                }
+                Event::Drop(s) => self.dropped(vec![s], ctx),
                 Event::ShowMain => self.show_window(ctx),
                 Event::Context(screen) => {
                     // Popups take a point in the main window.
@@ -3539,20 +4124,29 @@ impl App {
         } else {
             ("txt", "downloads.txt")
         };
-        let Some(path) = rfd::FileDialog::new()
-            .set_title(crate::i18n::t("Export"))
-            .add_filter(ext.to_ascii_uppercase(), &[ext])
-            .set_file_name(name)
-            .save_file()
-        else {
-            return;
+        let title = crate::i18n::t("Export").to_owned();
+        let key = if ef2 {
+            "app-export-ef2"
+        } else {
+            "app-export-txt"
         };
+        winui::start_pick(&self.ui_ctx, key, move || {
+            rfd::FileDialog::new()
+                .set_title(title)
+                .add_filter(ext.to_ascii_uppercase(), &[ext])
+                .set_file_name(name)
+                .save_file()
+        });
+    }
+
+    /// Tasks → Export, the file chosen: the addresses written to it.
+    fn export_to(&mut self, path: &std::path::Path, ef2: bool) {
         let text = if ef2 {
             crate::transfer::export_ef2(&self.items)
         } else {
             crate::transfer::export_text(&self.items)
         };
-        if let Err(e) = std::fs::write(&path, text) {
+        if let Err(e) = std::fs::write(path, text) {
             self.notice = Some((
                 crate::i18n::mark("Export"),
                 crate::i18n::fmt(
@@ -3563,25 +4157,201 @@ impl App {
         }
     }
 
+    /// The window's place and size, the Categories pane and the node shown, kept in the
+    /// settings as they change (so they come back at the next start).
+    fn remember_layout(&mut self, ctx: &egui::Context) {
+        // Screen readers speak in the interface's language (its voice for Arabic, Japanese...).
+        let lang = crate::i18n::code();
+        if self.a11y_lang != lang {
+            ctx.set_language(Some(lang.to_owned()));
+            self.a11y_lang = lang;
+        }
+        let s = &mut self.settings;
+        let pane = (
+            self.show_categories,
+            [
+                self.all_open,
+                self.unfinished_open,
+                self.finished_open,
+                self.queues_open,
+            ],
+            Some(self.view),
+        );
+        if (s.show_categories, s.branches, s.view) != pane {
+            (s.show_categories, s.branches, s.view) = pane;
+            self.dirty = true;
+        }
+        // Not a test instance's off-screen window, nor a zoomed one (screenshots).
+        if crate::offscreen() || ctx.zoom_factor() != 1.0 {
+            return;
+        }
+        let (outer, inner, maximized, minimized) = ctx.input(|i| {
+            let v = i.viewport();
+            (v.outer_rect, v.inner_rect, v.maximized, v.minimized)
+        });
+        if minimized == Some(true) {
+            return;
+        }
+        if let Some(m) = maximized {
+            self.maximized = Some(m);
+            if s.window_maximized != m {
+                s.window_maximized = m;
+                self.dirty = true;
+            }
+        }
+        if self.maximized == Some(false)
+            && let (Some(outer), Some(inner)) = (outer, inner)
+        {
+            let rect = [
+                outer.min.x.round() as i32,
+                outer.min.y.round() as i32,
+                inner.width().round() as i32,
+                inner.height().round() as i32,
+            ];
+            if s.window != Some(rect) {
+                s.window = Some(rect);
+                self.dirty = true;
+            }
+        }
+    }
+
+    /// What was dropped on the main window (its OLE target on Windows; winit's dropped files on
+    /// macOS and Linux, which hand over files only).
+    fn main_drops(&mut self, ctx: &egui::Context) {
+        #[cfg_attr(windows, allow(unused_mut))]
+        let mut got = self.drops.poll(ctx, crate::MAIN_TITLE);
+        #[cfg(not(windows))]
+        got.extend(ctx.input(|i| {
+            i.raw
+                .dropped_files
+                .iter()
+                .map(|f| f.path().display().to_string())
+                .filter(|p| !p.is_empty())
+                .collect::<Vec<_>>()
+        }));
+        if !got.is_empty() {
+            self.dropped(got, ctx);
+        }
+    }
+
+    /// Links or files dropped (on the main window, on the drop target): one address, a magnet
+    /// link or a .torrent file goes the usual way (Download File Info, Add torrent); several
+    /// addresses, or a list file (.txt, .ef2, .htm, .csv), show in Import to tick first.
+    fn dropped(&mut self, items: Vec<String>, ctx: &egui::Context) {
+        let list_file = |s: &str| {
+            let p = std::path::Path::new(s);
+            p.is_file()
+                && p.extension().is_some_and(|e| {
+                    ["txt", "ef2", "htm", "html", "csv"]
+                        .contains(&e.to_string_lossy().to_ascii_lowercase().as_str())
+                })
+        };
+        let (lists, items): (Vec<String>, Vec<String>) =
+            items.into_iter().partition(|s| list_file(s));
+        for file in lists {
+            self.import_file(std::path::Path::new(&file));
+        }
+        let (links, other): (Vec<String>, Vec<String>) = items
+            .into_iter()
+            .partition(|s| url::Url::parse(s.trim()).is_ok_and(|u| mdm_engine::supported(&u)));
+        if links.len() > 1 {
+            self.show_window(ctx);
+            let found = links
+                .into_iter()
+                .map(|url| crate::transfer::Imported {
+                    url,
+                    referer: None,
+                    cookies: None,
+                    user_agent: None,
+                })
+                .collect();
+            // i18n: in Import, where the addresses came from: dragged onto the window
+            let source = crate::i18n::t("Dropped links").to_owned();
+            self.show_import(found, source);
+        } else {
+            for url in links {
+                self.handle_command(
+                    ipc::Command {
+                        url: Some(url),
+                        ..Default::default()
+                    },
+                    ctx,
+                );
+            }
+        }
+        for s in other {
+            let torrent = mdm_torrent::Source::magnet(&s).is_some()
+                || (s.to_ascii_lowercase().ends_with(".torrent")
+                    && std::path::Path::new(&s).is_file());
+            if torrent {
+                self.handle_command(
+                    ipc::Command {
+                        url: Some(s),
+                        ..Default::default()
+                    },
+                    ctx,
+                );
+            } else {
+                // A file MDM can't download or import (a picture, a program).
+                self.notice = Some((
+                    crate::i18n::mark("Mister Download Manager"),
+                    crate::i18n::fmt(
+                        crate::i18n::t(
+                            "Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).",
+                        ),
+                        &[("item", &crate::i18n::isolate(&s))],
+                    ),
+                ));
+            }
+        }
+    }
+
     /// Tasks → Import: read a file and show the addresses found, to check before adding.
     fn import(&mut self, ef2: bool) {
-        let mut dialog = rfd::FileDialog::new().set_title(crate::i18n::t("Import"));
-        dialog = if ef2 {
-            dialog.add_filter("EF2", &["ef2"])
-        } else {
-            dialog.add_filter("TXT", &["txt", "htm", "html", "csv"])
-        };
-        let Some(path) = dialog
-            .add_filter(crate::i18n::t("All files"), &["*"])
-            .pick_file()
-        else {
-            return;
-        };
+        let title = crate::i18n::t("Import").to_owned();
+        // i18n: the kind of file the Import dialog lists (text files with addresses)
+        let lists = crate::i18n::t("Lists of addresses").to_owned();
+        let all = crate::i18n::t("All files").to_owned();
+        winui::start_pick(&self.ui_ctx, "app-import", move || {
+            let dialog = rfd::FileDialog::new().set_title(title);
+            let dialog = if ef2 {
+                dialog.add_filter("EF2", &["ef2"])
+            } else {
+                dialog.add_filter(lists, &["txt", "htm", "html", "csv"])
+            };
+            dialog.add_filter(all, &["*"]).pick_file()
+        });
+    }
+
+    /// The system dialogs opened from the main window, answered (winui::start_pick): their
+    /// work goes on.
+    fn poll_picks(&mut self, ctx: &egui::Context) {
+        if let Some(f) = winui::picked(ctx, "app-torrent-file") {
+            self.open_torrent_dialog(Some(f.display().to_string()), ctx);
+        }
+        if let Some(path) = winui::picked(ctx, "app-export-ef2") {
+            self.export_to(&path, true);
+        }
+        if let Some(path) = winui::picked(ctx, "app-export-txt") {
+            self.export_to(&path, false);
+        }
+        if let Some(path) = winui::picked(ctx, "app-import") {
+            self.import_file(&path);
+        }
+        if let Some(target) = winui::picked(ctx, "app-move-rename")
+            && let Some(id) = self.move_rename_for.take()
+        {
+            self.start_move(id, target);
+        }
+    }
+
+    /// The addresses in a list file, shown in Import to tick before adding.
+    fn import_file(&mut self, path: &std::path::Path) {
         let file = path
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        let found = match std::fs::read(&path) {
+        let found = match std::fs::read(path) {
             Ok(bytes) => crate::transfer::import(&String::from_utf8_lossy(&bytes)),
             Err(e) => {
                 self.notice = Some((
@@ -3604,10 +4374,24 @@ impl App {
             ));
             return;
         }
-        self.import = Some(crate::transfer::ImportDialog::new(found, file));
+        self.show_import(found, file);
     }
 
     /// The checked addresses go to the list and the main queue, not started (IDM's import).
+    /// Addresses to check before adding (Import, dropped links): into the Import window open
+    /// already (several dropped lists, a list and links), else a new one; those in the list
+    /// already are marked and unticked (imported twice, they were doubled).
+    fn show_import(&mut self, found: Vec<crate::transfer::Imported>, source: String) {
+        let known: std::collections::HashSet<String> =
+            self.items.iter().map(|i| i.url.to_string()).collect();
+        let dialog = self
+            .import
+            .get_or_insert_with(crate::transfer::ImportDialog::default);
+        dialog.add(found, source, |u| {
+            url::Url::parse(u).is_ok_and(|u| known.contains(u.as_str()))
+        });
+    }
+
     fn add_imported(&mut self, found: Vec<crate::transfer::Imported>) {
         for d in found {
             let Ok(url) = url::Url::parse(&d.url) else {
@@ -3672,34 +4456,31 @@ impl App {
         };
         let complete = item.status == Status::Complete;
         if item.live.is_some() || !(complete || item.downloaded == 0) {
+            // Said, not silently ignored (F2, Ctrl+M on a download that can't move).
+            self.notice = Some((
+                crate::i18n::mark("Move/Rename"),
+                crate::i18n::t(
+                    "Only a finished download, or one not started yet, can be moved. Stop it and finish it first.",
+                )
+                .to_owned(),
+            ));
             return;
         }
-        let Some(target) = rfd::FileDialog::new()
-            .set_title(crate::i18n::t("Move/Rename"))
-            .set_directory(item.dest.parent().unwrap_or(std::path::Path::new(".")))
-            .set_file_name(&item.file_name)
-            .save_file()
-        else {
-            return;
-        };
-        let Some(item) = self.item(id) else { return };
-        if target == item.dest {
-            return;
-        }
-        if complete {
-            let moved = std::fs::rename(&item.dest, &target).is_ok()
-                || (std::fs::copy(&item.dest, &target).is_ok()
-                    && std::fs::remove_file(&item.dest).is_ok());
-            if !moved {
-                item.note(crate::i18n::t("The file could not be moved"));
-                return;
-            }
-        }
-        if let Some(name) = target.file_name() {
-            item.file_name = name.to_string_lossy().into_owned();
-        }
-        item.dest = target;
-        self.dirty = true;
+        let title = crate::i18n::t("Move/Rename").to_owned();
+        let from = item
+            .dest
+            .parent()
+            .unwrap_or(std::path::Path::new("."))
+            .to_path_buf();
+        let name = item.file_name.clone();
+        self.move_rename_for = Some(id);
+        winui::start_pick(&self.ui_ctx, "app-move-rename", move || {
+            rfd::FileDialog::new()
+                .set_title(title)
+                .set_directory(from)
+                .set_file_name(name)
+                .save_file()
+        });
     }
 
     /// Delete a queue of the user's (not the two built-in ones); its downloads stay in the list.
@@ -3805,6 +4586,9 @@ impl App {
 
     fn dialogs(&mut self, ctx: &egui::Context) {
         self.help_dialogs(ctx);
+        if self.duplicate.is_none() {
+            self.duplicate = self.duplicates_waiting.pop_front();
+        }
         if let Some((_, _, d)) = &mut self.duplicate {
             match d.show(ctx) {
                 Outcome::Open => {}
@@ -3854,7 +4638,13 @@ impl App {
                 Outcome::Closed => self.category_dlg = None,
                 Outcome::Done(e) => {
                     self.category_dlg = None;
-                    crate::categories::apply(&mut self.settings, e, &self.downloads);
+                    let made = crate::categories::apply(&mut self.settings, e, &self.downloads);
+                    // Made with Download File Info's "+": that download goes in it.
+                    if std::mem::take(&mut self.category_for_file_info)
+                        && let Some(fi) = &mut self.file_info
+                    {
+                        fi.set_category(made);
+                    }
                     self.dirty = true;
                 }
             }
@@ -3943,11 +4733,12 @@ impl App {
                 Outcome::Closed => self.confirm_delete = None,
                 Outcome::Done((files, dont_show)) => {
                     let ids = std::mem::take(&mut d.ids);
+                    let remember = d.remember;
                     self.confirm_delete = None;
-                    for id in ids {
-                        self.remove_download(id, files);
+                    self.remove_downloads(&ids, files);
+                    if remember {
+                        self.settings.delete_files_too = files;
                     }
-                    self.settings.delete_files_too = files;
                     if dont_show {
                         self.settings.confirm_delete = false;
                     }
@@ -4112,20 +4903,21 @@ impl App {
                     self.options = None;
                 }
                 Outcome::Done(new) => {
+                    let new = Settings::merge_changes(&self.settings, &d.from, &new);
                     self.options = None;
                     self.apply_options(new);
                 }
             }
         }
         if let Some(mut s) = self.scheduler.take() {
-            let running: Vec<String> = self
-                .queues
-                .iter()
-                .filter(|q| q.running)
-                .map(|q| q.name.clone())
-                .collect();
             let mut actions = Vec::new();
-            let open = s.show(ctx, &mut self.icons, &self.items, &running, &mut actions);
+            let open = s.show(
+                ctx,
+                &mut self.icons,
+                &self.items,
+                &self.queues,
+                &mut actions,
+            );
             for a in actions {
                 self.scheduler_action(a);
             }
@@ -4153,6 +4945,7 @@ impl App {
             self.start_early(&mut fi);
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
+                self.category_for_file_info = true;
                 self.run(Cmd::AddCategory, None, ctx);
             }
             // The folder a download goes to is remembered for the Save As drop list.
@@ -4164,6 +4957,15 @@ impl App {
                     &dir.display().to_string(),
                 );
                 self.dirty = true;
+            }
+            // The address was edited after the early start: that download is the old address's.
+            // It goes; the new one starts early in its turn (start_early).
+            if let Some(id) = fi.early
+                && self.item(id).is_some_and(|i| i.url != fi.url)
+            {
+                self.stop(id);
+                self.after_stop.push((id, None));
+                fi.early = None;
             }
             match out {
                 Outcome::Open => self.file_info = Some(fi),
@@ -4182,6 +4984,7 @@ impl App {
         self.finish_stopped();
         let mut actions = Vec::new();
         for p in &mut self.progress {
+            p.keep_sharing = self.settings.torrent_keep_sharing;
             if let Some(item) = self.items.iter().find(|i| i.id == p.id) {
                 actions.push((p.id, p.show(ctx, item, item.snap.as_ref())));
             }
@@ -4237,7 +5040,14 @@ impl eframe::App for App {
             }
         }
         self.poll(&ctx);
+        // What failed in any window, told here (dialogs::tell).
+        if let Some((title, text)) = dialogs::told().pop() {
+            self.notice = Some((title, text));
+        }
+        self.poll_picks(&ctx);
         self.drop_target(&ctx);
+        self.main_drops(&ctx);
+        self.remember_layout(&ctx);
         self.weekly_update_check(&ctx);
         self.apply_global_limit();
         self.watch_clipboard(&ctx);

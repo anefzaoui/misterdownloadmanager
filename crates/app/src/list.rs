@@ -115,9 +115,11 @@ fn row_value(row: &Row, col: usize) -> &str {
     }
 }
 
-/// Does the row pass every column filter?
+/// Does the row pass every column filter? A hidden column's filter is kept but doesn't filter
+/// (nothing on screen would say why rows are missing).
 pub fn matches(st: &ListState, row: &Row) -> bool {
     st.filters.iter().enumerate().all(|(c, f)| match f {
+        _ if !st.visible[c] => true,
         None => true,
         Some(Filter::Values(keep)) => keep.contains(&row_value(row, c)),
         Some(Filter::Text(t)) => row.cells[c].to_lowercase().contains(&t.to_lowercase()),
@@ -155,7 +157,7 @@ pub struct ListState {
     /// Horizontal scroll in px.
     pub hscroll: f32,
     drag: Option<HeaderDrag>,
-    /// Like a Windows list view, the selection only shows while the list has focus.
+    /// The list has the keys: the selection in its colour (grey while it hasn't).
     focused: bool,
     /// Bring this row into view on the next frame (Find).
     pub scroll_to: Option<usize>,
@@ -163,11 +165,15 @@ pub struct ListState {
     pub filters: Vec<Option<Filter>>,
     /// The open filter box: column and its top-left.
     filter_open: Option<(usize, Pos2)>,
+    /// The sideways scroll when it opened (it closes when the list moves).
+    filter_hscroll: f32,
     /// A selection box being dragged: where it started (x in content, y in rows' space) and
     /// whether Ctrl adds it to the selection.
     marquee: Option<(Pos2, bool)>,
     /// Type-ahead: the letters typed so far and when the last one came (seconds).
     typed: String,
+    /// A menu is open: its keys (and letters) are its own, not the list's.
+    pub menu_open: bool,
     typed_at: f64,
 }
 
@@ -181,12 +187,15 @@ impl Default for ListState {
             scroll: 0.0,
             hscroll: 0.0,
             drag: None,
-            focused: false,
+            // The list has the keys from the start (as Explorer's does), not after a click.
+            focused: true,
             scroll_to: None,
             filters: vec![None; COLS],
             filter_open: None,
+            filter_hscroll: 0.0,
             marquee: None,
             typed: String::new(),
+            menu_open: false,
             typed_at: 0.0,
         }
     }
@@ -203,6 +212,26 @@ pub struct Layout {
 }
 
 impl ListState {
+    /// Does the list have the keys? (A click elsewhere, or Tab to the Categories tree,
+    /// takes them.)
+    pub fn has_keys(&self) -> bool {
+        self.focused
+    }
+
+    /// Give the list the keys, or take them (the tree has them).
+    pub fn set_keys(&mut self, on: bool) {
+        self.focused = on;
+    }
+
+    /// Columns as they first were: order, widths, every one shown.
+    pub fn reset_columns(&mut self) {
+        let fresh = ListState::default();
+        self.order = fresh.order;
+        self.widths = fresh.widths;
+        self.visible = fresh.visible;
+        self.hscroll = 0.0;
+    }
+
     pub fn layout(&self) -> Layout {
         Layout {
             order: self.order.clone(),
@@ -258,16 +287,19 @@ pub struct Row {
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
     pub cells: [String; COLS],
-    /// The Status cell's tooltip: the download's recent events (empty: none).
-    pub status_tip: String,
 }
 
 #[derive(Default)]
 pub struct ListResponse {
+    /// The rows' area (under the header, inside the scroll bars), English: where an empty
+    /// list's message goes.
+    pub body: Option<Rect>,
     /// How the selection changes (a click, a key, a selection box).
     pub pick: Option<Pick>,
-    /// Double-click or Enter on this row.
+    /// Double-click on this row.
     pub double_clicked: Option<usize>,
+    /// Enter on the focused row (Open, as its menu says, whatever a double-click does).
+    pub enter: Option<usize>,
     /// Alt+Enter: the focused row's Properties.
     pub properties: Option<usize>,
     /// Right-click: the row (None = blank space) and where its menu opens.
@@ -296,7 +328,7 @@ fn keyboard(
     out: &mut ListResponse,
 ) -> bool {
     let n = rows.len();
-    if n == 0 || ui.ctx().memory(|m| m.focused().is_some()) {
+    if n == 0 || st.menu_open || ui.ctx().memory(|m| m.focused().is_some()) {
         return false;
     }
     if ui.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::A)) {
@@ -308,6 +340,8 @@ fn keyboard(
         return false;
     }
     let page = ((client_h - ROW_H) / ROW_H).floor().max(1.0) as isize;
+    // The first row in view (the list scrolls by whole rows).
+    let top = (st.scroll / ROW_H).round() as isize;
     let last = n as isize - 1;
     let cur = focus.map(|s| s as isize);
     let (to, mods) = ui.input(|i| {
@@ -316,10 +350,12 @@ fn keyboard(
             Some(cur.map_or(0, |c| c + 1))
         } else if k(egui::Key::ArrowUp) {
             Some(cur.map_or(0, |c| c - 1))
+        // As Explorer: first to the last (first) row in view, then a page on.
         } else if k(egui::Key::PageDown) {
-            Some(cur.map_or(0, |c| c + page))
+            let bottom = top + page - 1;
+            Some(cur.map_or(0, |c| if c < bottom { bottom } else { c + page }))
         } else if k(egui::Key::PageUp) {
-            Some(cur.map_or(0, |c| c - page))
+            Some(cur.map_or(0, |c| if c > top { top } else { c - page }))
         } else if k(egui::Key::Home) {
             Some(0)
         } else if k(egui::Key::End) {
@@ -351,7 +387,7 @@ fn keyboard(
     });
     if let Some(f) = focus {
         if enter {
-            out.double_clicked = Some(f);
+            out.enter = Some(f);
         } else if alt_enter {
             out.properties = Some(f);
         }
@@ -406,6 +442,7 @@ fn keyboard(
 
 /// Paint the list inside `outer` (its 1 px #828790 border rect). `selected`: each row's
 /// selection; `focus`: the focused row (the dotted outline, where keys move from).
+#[allow(clippy::too_many_arguments)]
 pub fn show(
     ui: &mut Ui,
     outer: Rect,
@@ -414,6 +451,8 @@ pub fn show(
     selected: &[bool],
     focus: Option<usize>,
     icons: &mut ShellIcons,
+    // The Status cell's tip for row `i` (asked for the row under the pointer only).
+    status_tip: &dyn Fn(usize) -> String,
 ) -> ListResponse {
     let mut out = ListResponse::default();
     // `outer` and everything below are English (the main window's layout): each part is made where
@@ -448,7 +487,9 @@ pub fn show(
     let menu_key = keyboard(ui, st, rows, focus, client_h, &mut out);
     let (mut need_v, mut need_h) = (false, false);
     for _ in 0..2 {
-        need_h = content_w > client_w - if need_v { scrollbar::THICK } else { 0.0 };
+        // An empty list has nothing to scroll to (its empty state is centred in the view).
+        need_h =
+            !rows.is_empty() && content_w > client_w - if need_v { scrollbar::THICK } else { 0.0 };
         need_v = rows_h > client_h - HEADER_H - if need_h { scrollbar::THICK } else { 0.0 };
     }
     // Inclusive right edge of the header and rows, and bottom of the rows.
@@ -473,7 +514,7 @@ pub fn show(
     let hresp = ui.interact(
         screen(header),
         egui::Id::unique("list-header"),
-        Sense::click_and_drag(),
+        winui::pointer_drag(),
     );
     let pointer = ui.ctx().pointer_interact_pos().map(english);
     let cols = spans(st);
@@ -527,6 +568,14 @@ pub fn show(
             _ => {}
         }
     }
+    // A double-click on a border fits the column to the widest of its title and cells (as in
+    // Explorer).
+    if hresp.double_clicked()
+        && let Some(col) = pointer.and_then(|pp| near_sep(pp.x))
+    {
+        st.widths[col] = fit_width(&p, &font, col, rows);
+        st.drag = None;
+    }
     if hresp.drag_stopped() {
         if let (Some(HeaderDrag::Move { col, .. }), Some(pp)) = (st.drag, pointer) {
             move_column(st, &cols, col, pp.x);
@@ -549,6 +598,7 @@ pub fn show(
             Some((c, _)) if c == col => None,
             _ => Some((col, pos2(at.x.min(outer.right() - FILTER_W), ct + HEADER_H))),
         };
+        st.filter_hscroll = st.hscroll;
     }
     if hresp.clicked()
         && funnel_click.is_none()
@@ -639,12 +689,20 @@ pub fn show(
                 arrow_room += 14.0;
             }
         }
-        let label = winui::ellipsize(
-            &p,
-            &font,
-            crate::i18n::tc("column", TITLES[*c]),
-            x1 - x0 - 10.0 - arrow_room,
-        );
+        let full = crate::i18n::tc("column", TITLES[*c]);
+        let label = winui::ellipsize(&p, &font, full, x1 - x0 - 10.0 - arrow_room);
+        // A cut title shows whole under the pointer; the one-letter Q says what it is.
+        if hovered && st.drag.is_none() {
+            let tip = if TITLES[*c] == "Q" {
+                // i18n: tooltip of the narrow "Q" column's title
+                Some(crate::i18n::tc("column", "Queue"))
+            } else {
+                (label != full).then_some(full)
+            };
+            if let Some(tip) = tip {
+                hresp.clone().on_hover_text(tip);
+            }
+        }
         let clip = p.with_clip_rect(screen(Rect::from_x_y_ranges(*x0..=*x1, ct..=ct + HEADER_H)));
         text_font(&clip, font.clone(), x0 + 6.0, ct + 15.0, &label, TEXT());
     }
@@ -653,19 +711,33 @@ pub fn show(
     let p = p_all;
     let body_top = ct + HEADER_H;
     let body = Rect::from_min_max(pos2(cl, body_top), pos2(rr + 1.0, rb + 1.0));
+    out.body = Some(body);
     let resp = ui.interact(
         screen(body),
         egui::Id::unique("download-list"),
-        Sense::click_and_drag(),
+        winui::pointer_drag(),
     );
+    // For screen readers: the list, its rows below, and the row with the dotted outline
+    // as the one they read (the list keeps its keys itself, not egui's focus).
+    winui::expose(
+        &resp,
+        egui::Role::ListBox,
+        crate::i18n::t("Downloads"),
+        true,
+        None,
+    );
+    if let Some(f) = focus {
+        let row = egui::Id::unique(("download-row", f));
+        ui.ctx()
+            .accesskit_node_builder(resp.id, |n| n.set_active_descendant(row.accesskit_id()));
+    }
     let bp = p.with_clip_rect(screen(body));
     // Fully visible rows; the list scrolls by whole rows until the last one is fully shown.
     let page_rows = (body.height() / ROW_H).floor().max(1.0);
     let max_scroll = (rows.len() as f32 - page_rows).max(0.0) * ROW_H;
     if resp.hovered() {
-        let d = ui.input(|i| i.smooth_scroll_delta);
-        st.scroll -= d.y;
-        st.hscroll -= d.x;
+        st.scroll += winui::wheel_rows(ui, ROW_H, page_rows) * ROW_H;
+        st.hscroll -= ui.input(|i| i.smooth_scroll_delta.x);
     }
     if let Some(row) = st.scroll_to.take() {
         let top = row as f32 * ROW_H;
@@ -687,7 +759,32 @@ pub fn show(
         let idx = first + k;
         let top = body_top + k as f32 * ROW_H - offset;
         if let Some(row) = rows.get(idx) {
-            let sel = selected.get(idx).copied().unwrap_or(false) && st.focused;
+            let picked = selected.get(idx).copied().unwrap_or(false);
+            // A screen reader's row: the name, then Status and Size, selected or not.
+            let ppp = ui.ctx().pixels_per_point();
+            let bounds = screen(Rect::from_min_size(
+                pos2(cl, top),
+                egui::vec2(rr - cl, ROW_H),
+            ));
+            let spoken = [0usize, 3, 2]
+                .iter()
+                .map(|c| row.cells[*c].as_str())
+                .filter(|t| !t.is_empty())
+                .collect::<Vec<_>>()
+                .join(", ");
+            ui.ctx()
+                .accesskit_node_builder(egui::Id::unique(("download-row", idx)), |n| {
+                    n.set_role(egui::Role::ListBoxOption);
+                    n.set_label(spoken);
+                    n.set_selected(picked);
+                    n.set_bounds(egui::accesskit::Rect {
+                        x0: (bounds.left() * ppp) as f64,
+                        y0: (bounds.top() * ppp) as f64,
+                        x1: (bounds.right() * ppp) as f64,
+                        y1: (bounds.bottom() * ppp) as f64,
+                    });
+                });
+            let sel = picked && st.focused;
             let has_focus = focus == Some(idx) && st.focused;
             if (sel || has_focus) && !crate::theme::dark() {
                 // Light: the row above its grid line; the focused row has a dotted outline
@@ -727,6 +824,18 @@ pub fn show(
                     right,
                     top + ROW_H - 2.0,
                     SELECTED_RIGHT(),
+                );
+            } else if picked {
+                // Unfocused (Find, Properties, a menu has the keys): still shown, in the inactive
+                // selection grey, as Explorer shows it, so what a command acts on stays visible.
+                let bottom = top + ROW_H - if crate::theme::dark() { 1.0 } else { 2.0 };
+                fill(
+                    &bp,
+                    cl,
+                    top,
+                    last_right - 1.0,
+                    bottom,
+                    winui::SELECTED_INACTIVE(),
                 );
             }
             for (c, x0, x1) in &cols {
@@ -772,14 +881,27 @@ pub fn show(
                     .map(english)
                     .is_some_and(|h| cell.contains(h))
                 {
-                    if *c == 3 && !row.status_tip.is_empty() {
-                        cut_under_pointer = Some(row.status_tip.clone());
+                    let tip = if *c == 3 {
+                        status_tip(idx)
+                    } else {
+                        String::new()
+                    };
+                    if !tip.is_empty() {
+                        cut_under_pointer = Some(tip);
                     } else if s != value {
                         cut_under_pointer = Some(row.cells[*c].clone());
                     }
                 }
                 let clip = bp.with_clip_rect(screen(cell.intersect(body)));
-                let ink = if sel { Color32::WHITE } else { TEXT() };
+                // A failed download's Status and Description (the reason) in the error colour.
+                let failed = row.status_group == "Error" && (*c == 3 || *c == 7);
+                let ink = if sel {
+                    Color32::WHITE
+                } else if failed {
+                    winui::ERROR()
+                } else {
+                    TEXT()
+                };
                 text_font(&clip, font.clone(), tx, top + 12.0, &s, ink);
             }
         }
@@ -791,13 +913,16 @@ pub fn show(
             } else {
                 ROW_H - 1.0
             };
-        fill(&bp, cl, gy, rr, gy, GRID_H());
+        // An empty list has no grid (the empty state stands alone).
+        if !rows.is_empty() {
+            fill(&bp, cl, gy, rr, gy, GRID_H());
+        }
     }
     if let Some(full) = cut_under_pointer {
         resp.clone().on_hover_text(full);
     }
     filter_box(ui, st);
-    for (_, _, x1) in &cols {
+    for (_, _, x1) in cols.iter().filter(|_| !rows.is_empty()) {
         if crate::theme::dark() {
             fill(&bp, x1 - 1.0, body_top, x1 - 1.0, rb, GRID_V_LEFT());
             fill(&bp, *x1, body_top, *x1, rb, GRID_V_RIGHT());
@@ -808,7 +933,11 @@ pub fn show(
     }
     // Dark only: IDM draws a 2 px sliver right of the last column in every body row (spec
     // "Artifact"); light mode has none.
-    for k in 0..if crate::theme::dark() { visible } else { 0 } {
+    for k in 0..if crate::theme::dark() && !rows.is_empty() {
+        visible
+    } else {
+        0
+    } {
         let top = body_top + k as f32 * ROW_H - offset;
         fill(
             &bp,
@@ -1030,6 +1159,23 @@ pub fn show(
 /// file name or a description as a first-strong isolate (an Arabic name reads right to left in
 /// an English window, a Latin one left to right in an Arabic window), a date left to right. The
 /// cut happens inside the isolate, so the "..." ends the name.
+/// The width that shows column `col`'s title and every cell whole (its icon, its padding).
+fn fit_width(p: &egui::Painter, font: &egui::FontId, col: usize, rows: &[Row]) -> f32 {
+    let measure = |s: &str| winui::text_width_font(p, font.clone(), s);
+    // The title, with room for the sort arrow and the filter funnel.
+    let title = measure(crate::i18n::tc("column", TITLES[col])) + 6.0 + 24.0;
+    let lead = if col == 0 { 22.0 } else { 6.0 };
+    let cells = rows
+        .iter()
+        .map(|r| lead + measure(&cell_text(col, crate::i18n::t(&r.cells[col]))) + 8.0)
+        .fold(0.0, f32::max);
+    match col {
+        // The queue icon and the source chip have their own sizes.
+        1 | SOURCE => DEFAULT_WIDTHS[col],
+        _ => title.max(cells).ceil().max(MIN_WIDTH),
+    }
+}
+
 fn cell_text(col: usize, s: &str) -> String {
     match col {
         0 | 7 => crate::i18n::isolate(s),
@@ -1133,12 +1279,20 @@ fn filter_box(ui: &mut Ui, st: &mut ListState) {
     let shown = winui::rect(rect);
     let r = winui::rect;
     let mut close = ui.input(|i| i.key_pressed(egui::Key::Escape));
+    // A press anywhere else closes it (the toolbar, the menu bar, another header too), except
+    // on its own funnel, whose click toggles it; so does the list scrolling sideways (it
+    // stayed where the column was).
+    let on_funnel =
+        |pp: Pos2| pp.y <= at.y && pp.y >= at.y - HEADER_H && (pp.x - at.x).abs() <= 24.0;
     if ui.input(|i| i.pointer.any_pressed())
         && ui
             .ctx()
             .pointer_interact_pos()
-            .is_some_and(|pp| !shown.contains(pp) && pp.y > at.y)
+            .is_some_and(|pp| !shown.contains(pp) && !on_funnel(pp))
     {
+        close = true;
+    }
+    if st.hscroll != st.filter_hscroll {
         close = true;
     }
     egui::Area::new(egui::Id::unique(("list-filter", col)))
@@ -1364,7 +1518,6 @@ mod tests {
             icon: IconKey::Silk("page_white"),
             queued,
             cells,
-            status_tip: String::new(),
         }
     }
 

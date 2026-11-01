@@ -3,7 +3,7 @@
 
 use std::path::{Path, PathBuf};
 
-use egui::{Pos2, Ui, pos2, vec2};
+use egui::{Pos2, Ui, vec2};
 
 use crate::chrome::{IconKey, ShellIcons};
 use crate::dialogs::{Outcome, window};
@@ -61,7 +61,7 @@ impl Properties {
             "File Properties",
             [477.0, 400.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, item),
         );
         match outcome {
@@ -97,10 +97,9 @@ impl Properties {
             .unwrap_or_default();
         icons.paint(ui, IconKey::ExtLarge(ext.clone()), o + vec2(11.0, 11.0));
         let fit = |ui: &mut Ui, x: f32, base: f32, s: &str| {
-            let (rect, cut) = winui::text_fit(&p, o.x + x, o.y + base, s, LIGHT_TEXT, o.x + 466.0);
-            if cut {
-                winui::full_on_hover(ui, rect, ("props", base as i32), s);
-            }
+            let (rect, cut) =
+                winui::text_fit(&p, o.x + x, o.y + base, s, LIGHT_TEXT(), o.x + 466.0);
+            winui::copyable(ui, rect, ("props", base as i32), s, cut);
         };
         fit(ui, 87.0, 31.0, &item.file_name);
         winui::etched_h(&p, o.x + 11.0, o.y + 50.0, 456.0);
@@ -143,7 +142,7 @@ impl Properties {
                 o.x + 11.0,
                 o.y + base,
                 crate::i18n::t(label),
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
             );
             fit(ui, col, base, &value);
         }
@@ -153,7 +152,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 135.0,
             crate::i18n::t("Save To:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         let dest = match &self.move_to {
             Some(dir) => dir.join(&item.file_name),
@@ -177,15 +176,30 @@ impl Properties {
                 ButtonKind::Disabled
             },
             false,
+        );
+        let pick = winui::why_disabled(
+            pick,
+            !movable,
+            if running {
+                // i18n: tooltip of the greyed Move button in File Properties
+                crate::i18n::mark("Pause the download first")
+            } else {
+                // i18n: tooltip of the greyed Move button in File Properties
+                crate::i18n::mark("Only a finished download, or one not started yet, can be moved")
+            },
         )
         .clicked();
-        if pick
-            && movable
-            && let Some(dir) = rfd::FileDialog::new()
-                .set_title(crate::i18n::t("Move to folder"))
-                .set_directory(item.dest.parent().unwrap_or(Path::new(".")))
-                .pick_folder()
-        {
+        if pick && movable {
+            let title = crate::i18n::t("Move to folder").to_owned();
+            let from = item.dest.parent().unwrap_or(Path::new(".")).to_path_buf();
+            winui::start_pick(ui.ctx(), &format!("move-to-{}", self.id), move || {
+                rfd::FileDialog::new()
+                    .set_title(title)
+                    .set_directory(from)
+                    .pick_folder()
+            });
+        }
+        if let Some(dir) = winui::picked(ui.ctx(), &format!("move-to-{}", self.id)) {
             self.move_to = Some(dir);
         }
 
@@ -194,16 +208,19 @@ impl Properties {
             o.x + 11.0,
             o.y + 166.0,
             crate::i18n::t("Address:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         if editable {
-            winui::edit_light(
+            let edit = winui::edit_light(
                 ui,
                 r(o, col, 151.0, 467.0 - col, 23.0),
                 &mut self.address,
                 true,
                 false,
             );
+            if edit.changed() {
+                self.error = None;
+            }
         } else {
             readonly(ui, r(o, col, 151.0, 467.0 - col, 23.0), &self.address);
         }
@@ -212,7 +229,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 197.0,
             crate::i18n::t("Description:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
@@ -227,7 +244,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 231.0,
             crate::i18n::t("The web page from which this file was obtained:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         // i18n: the web page is not known
         let page = item
@@ -243,7 +260,7 @@ impl Properties {
             o.x + 11.0,
             o.y + 288.0,
             crate::i18n::t("Referer:"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
@@ -258,7 +275,7 @@ impl Properties {
             o.x + 110.0,
             o.y + 316.0,
             crate::i18n::t("Login"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
@@ -272,7 +289,7 @@ impl Properties {
             o.x + 110.0,
             o.y + 343.0,
             crate::i18n::t("Password"),
-            LIGHT_TEXT,
+            LIGHT_TEXT(),
         );
         password(
             ui,
@@ -289,6 +306,20 @@ impl Properties {
                 &[("last", &last)],
             );
             fit(ui, 11.0, 376.0, &last_try);
+        }
+        // The dialog's own error (a bad address) takes the Result line's place while it lasts.
+        if let Some(e) = &self.error {
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                o.y + 395.0,
+                e,
+                winui::ERROR(),
+                o.x + 250.0,
+                "props-error",
+            );
+        } else if !complete {
             let result = item.error.clone().unwrap_or_else(|| item.status_text());
             let x1 = o.x + 250.0;
             let (rect, cut) = winui::text_fit(
@@ -300,22 +331,12 @@ impl Properties {
                     crate::i18n::t("Result: {result}"),
                     &[("result", &result)],
                 ),
-                LIGHT_TEXT,
+                LIGHT_TEXT(),
                 x1,
             );
             if cut {
                 winui::full_on_hover(ui, rect, "props-result", &result);
             }
-        }
-        if let Some(e) = &self.error {
-            winui::text_fit(
-                &p,
-                o.x + 11.0,
-                o.y + 395.0,
-                e,
-                winui::rgb_hex(0xc42b1c),
-                o.x + 250.0,
-            );
         }
         let open = winui::button_light(
             ui,
@@ -328,10 +349,16 @@ impl Properties {
                 ButtonKind::Disabled
             },
             false,
+        );
+        let open = winui::why_disabled(
+            open,
+            !complete,
+            // i18n: tooltip of the greyed Open button in File Properties
+            "The download isn't complete yet",
         )
         .clicked();
         if open && complete {
-            let _ = open::that_detached(&item.dest);
+            crate::dialogs::open_file(&item.dest);
         }
         let ok = winui::button_light(
             ui,
@@ -343,9 +370,9 @@ impl Properties {
         .clicked();
         let address_ok = !editable
             || url::Url::parse(self.address.trim()).is_ok_and(|u| mdm_engine::supported(&u));
-        if ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+        if winui::escape_pressed(ui) {
             Outcome::Closed
-        } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+        } else if ok || winui::enter_pressed(ui) {
             if address_ok {
                 Outcome::Done(())
             } else {
@@ -378,55 +405,12 @@ fn file_type(name: &str, ext: &str) -> String {
     }
 }
 
-/// A read-only field: the dialog colour, its text cut to fit (whole on hover).
-/// A read-only field holding a path or an address (left-to-right data).
+/// A read-only field holding a path or an address (left-to-right data): the shared one, so it
+/// can be copied.
 fn readonly(ui: &mut Ui, rc: egui::Rect, value: &str) {
-    winui::edit_frame(ui.painter(), rc, true);
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, LIGHT_BG);
-    let p = ui.painter().clone();
-    // From the field's leading edge (an English pen in its English rect).
-    let e = winui::rect(rc);
-    let shown = winui::ellipsize(&p, &winui::tahoma(), value, e.width() - 9.0);
-    let cut = shown != value;
-    // A path or an address reads left to right in every language: in RTL its "..." stays at
-    // its end, not at the start of the line.
-    let shown = if winui::rtl() {
-        crate::i18n::ltr(&shown)
-    } else {
-        shown
-    };
-    let rect = winui::text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT);
-    if cut {
-        winui::full_on_hover(ui, rect, ("props-readonly", rc.top() as i32), value);
-    }
+    winui::readonly_field(ui, rc, value, LIGHT_BG(), true, ("props", rc.top() as i32));
 }
 
 fn password(ui: &mut Ui, rc: egui::Rect, value: &mut String, enabled: bool) {
-    winui::edit_frame(ui.painter(), rc, enabled);
-    let fill = if enabled {
-        egui::Color32::WHITE
-    } else {
-        LIGHT_BG
-    };
-    ui.painter().rect_filled(rc.shrink(2.0), 0.0, fill);
-    let inner = egui::Rect::from_min_max(
-        pos2(rc.left() + 4.0, rc.top() + 3.0),
-        rc.max - vec2(3.0, 3.0),
-    );
-    let resp = ui
-        .add_enabled_ui(enabled, |ui| {
-            ui.put(
-                inner,
-                egui::TextEdit::singleline(value)
-                    .password(true)
-                    .font(winui::tahoma())
-                    .text_color(LIGHT_TEXT)
-                    .frame(egui::Frame::NONE)
-                    .margin(egui::Margin::ZERO),
-            )
-        })
-        .inner;
-    if enabled {
-        winui::edit_menu(&resp, value, true, false);
-    }
+    winui::password_light_on(ui, rc, value, enabled, LIGHT_BG());
 }

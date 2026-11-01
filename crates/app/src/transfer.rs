@@ -4,11 +4,11 @@
 //! download — `<`, the address, `referer: …` / `cookie: …` / `User-Agent: …` lines, `>` — so a
 //! list moves between IDM and MDM with its request context.
 
-use egui::{Pos2, Rect, Sense, pos2, vec2};
+use egui::{Rect, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::model::Item;
-use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_PAGE, LIGHT_TEXT, r};
+use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, r};
 
 /// A download read from a file: its address and what the browser sent with it.
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -124,19 +124,33 @@ fn addresses(text: &str) -> Vec<String> {
 }
 
 /// "Import downloads": the addresses found, each with a checkbox; OK adds the ticked ones.
+#[derive(Default)]
 pub struct ImportDialog {
     found: Vec<(Imported, bool)>,
-    first: usize,
+    /// Which addresses are in the download list already (shown so, not ticked).
+    known: Vec<bool>,
+    /// The list's scroll and selection.
+    rows: winui::RowList,
     source: String,
 }
 
 impl ImportDialog {
-    pub fn new(found: Vec<Imported>, source: String) -> Self {
-        ImportDialog {
-            found: found.into_iter().map(|d| (d, true)).collect(),
-            first: 0,
-            source,
+    /// More addresses, from `source` (a file, dropped links): those `known` in the list
+    /// already come unticked and marked; an address listed twice is shown once.
+    pub fn add(&mut self, found: Vec<Imported>, source: String, known: impl Fn(&str) -> bool) {
+        for d in found {
+            if self.found.iter().any(|(f, _)| f.url == d.url) {
+                continue;
+            }
+            let k = known(&d.url);
+            self.known.push(k);
+            self.found.push((d, !k));
         }
+        self.source = if self.source.is_empty() {
+            source
+        } else {
+            format!("{}, {source}", self.source)
+        };
     }
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Vec<Imported>> {
@@ -148,7 +162,7 @@ impl ImportDialog {
             "Import downloads",
             [560.0, 360.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 let line = crate::i18n::fmt(
@@ -156,7 +170,7 @@ impl ImportDialog {
                     &[("file", &self.source)],
                 );
                 let (rect, cut) =
-                    winui::text_fit(&p, o.x + 11.0, o.y + 20.0, &line, LIGHT_TEXT, o.x + 549.0);
+                    winui::text_fit(&p, o.x + 11.0, o.y + 20.0, &line, LIGHT_TEXT(), o.x + 549.0);
                 if cut {
                     winui::full_on_hover(ui, rect, "import-source", &line);
                 }
@@ -165,46 +179,58 @@ impl ImportDialog {
                     pos2(o.x + 11.0, o.y + 30.0),
                     vec2(538.0, ROWS as f32 * ROW_H + 4.0),
                 );
-                let shown = winui::rect(list);
-                p.rect_filled(shown, 0.0, LIGHT_PAGE);
-                p.rect_stroke(
-                    shown,
-                    0.0,
-                    egui::Stroke::new(1.0, egui::Color32::from_rgb(0x82, 0x87, 0x90)),
-                    egui::StrokeKind::Inside,
+                // The shared row list: Space ticks the selected address.
+                let found = &mut self.found;
+                let known = &self.known;
+                let ev = winui::row_list(
+                    ui,
+                    "import-list",
+                    winui::rect(list),
+                    found.len(),
+                    ROW_H,
+                    &mut self.rows,
+                    |ui, clip, i, row, look| {
+                        let (d, on) = &mut found[i];
+                        winui::row_check(
+                            ui,
+                            clip,
+                            pos2(row.left() + 5.0, row.top() + 2.0),
+                            on,
+                            ("import", &d.url),
+                        );
+                        // One in the download list already says so at the row's end.
+                        let mut right = row.right() - 6.0;
+                        if known.get(i).copied().unwrap_or(false) {
+                            // i18n: in Import, after an address the download list has already
+                            let tag = crate::i18n::t("in the list");
+                            let ink = if look.selected {
+                                look.ink
+                            } else {
+                                winui::MUTED()
+                            };
+                            let w = winui::text_width(clip, tag);
+                            winui::text(clip, right - w, row.top() + 13.0, tag, ink);
+                            right -= w + 10.0;
+                        }
+                        let url = crate::i18n::ltr(&d.url);
+                        winui::fit(
+                            ui,
+                            clip,
+                            row.left() + 25.0,
+                            row.top() + 13.0,
+                            &url,
+                            look.ink,
+                            right,
+                            ("import-row", i),
+                        );
+                    },
                 );
-                // The wheel scrolls by whole rows.
-                let resp = ui.interact(shown, ui.scope_id().with("import-list"), Sense::hover());
-                if resp.hovered() {
-                    let dy = ui.input(|i| i.smooth_scroll_delta.y);
-                    if dy < 0.0 {
-                        self.first = (self.first + 1).min(self.found.len().saturating_sub(ROWS));
-                    } else if dy > 0.0 {
-                        self.first = self.first.saturating_sub(1);
-                    }
+                if let Some(i) = ev.space.or(ev.double_clicked) {
+                    found[i].1 = !found[i].1;
                 }
-                let clip = p.with_clip_rect(shown.shrink(2.0));
-                for (k, (d, on)) in self
-                    .found
-                    .iter_mut()
-                    .enumerate()
-                    .skip(self.first)
-                    .take(ROWS)
-                {
-                    let y = list.top() + 2.0 + (k - self.first) as f32 * ROW_H;
-                    winui::checkbox_light(ui, Pos2::new(list.left() + 6.0, y + 2.0), on, "", true);
-                    let url = crate::i18n::ltr(&d.url);
-                    let (rect, cut) = winui::text_fit(
-                        &clip,
-                        list.left() + 26.0,
-                        y + 13.0,
-                        &url,
-                        LIGHT_TEXT,
-                        list.right() - 6.0,
-                    );
-                    if cut {
-                        winui::full_on_hover(ui, rect, ("import-row", k), &d.url);
-                    }
+                if ev.focused {
+                    self.rows
+                        .type_to(ui, "import-list", found.len(), |i| found[i].0.url.clone());
                 }
                 let ticked = self.found.iter().filter(|(_, on)| *on).count();
                 let count = crate::i18n::fmt(
@@ -214,7 +240,7 @@ impl ImportDialog {
                         ("total", &crate::i18n::integer(self.found.len() as u64)),
                     ],
                 );
-                winui::text(&p, o.x + 11.0, list.bottom() + 20.0, &count, LIGHT_TEXT);
+                winui::text(&p, o.x + 11.0, list.bottom() + 20.0, &count, LIGHT_TEXT());
                 if winui::button_light(
                     ui,
                     r(o, 196.0, 296.0, 82.0, 21.0),
@@ -257,9 +283,9 @@ impl ImportDialog {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok && ticked > 0 {
+                } else if (ok || winui::enter_pressed(ui)) && ticked > 0 {
                     Outcome::Done(())
                 } else {
                     Outcome::Open

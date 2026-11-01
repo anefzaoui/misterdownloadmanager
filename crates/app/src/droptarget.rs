@@ -8,7 +8,7 @@
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, atomic::AtomicBool, atomic::Ordering};
 
-use egui::{Pos2, Sense, ViewportBuilder, ViewportCommand, ViewportId, pos2, vec2};
+use egui::{Pos2, ViewportBuilder, ViewportCommand, ViewportId, pos2, vec2};
 
 /// The window's title (its OLE target is found by it).
 const TITLE: &str = "Mister Download Manager drop target"; // not translated: an id
@@ -28,51 +28,97 @@ pub enum Event {
     Moved(Pos2),
 }
 
-pub struct DropTarget {
+/// Links and files dropped on one of the app's windows (the drop target, the main window).
+/// On Windows through the window's own OLE `IDropTarget` (browsers hand links over that way);
+/// macOS and Linux have no such hook here: winit passes dropped files only, which the main
+/// window reads from egui itself.
+pub struct Drops {
     rx: Receiver<Dropped>,
-    /// For OLE drag and drop, how links from a browser arrive on Windows (winit passes only
-    /// files on macOS and Linux).
     #[cfg_attr(not(windows), allow(dead_code))]
     tx: Sender<Dropped>,
-    /// Something is being dragged over it (highlight).
+    /// Something droppable is being dragged over the window (highlight).
     over: Arc<AtomicBool>,
     #[cfg(windows)]
     ole: Option<crate::win32::ole::Registration>,
-    pos: Pos2,
 }
 
-impl DropTarget {
-    pub fn new(pos: Option<Pos2>) -> Self {
+impl Default for Drops {
+    fn default() -> Self {
         let (tx, rx) = channel();
-        DropTarget {
+        Drops {
             rx,
             tx,
             over: Arc::new(AtomicBool::new(false)),
             #[cfg(windows)]
             ole: None,
+        }
+    }
+}
+
+impl Drops {
+    /// What was dropped on the window titled `title` since the last call (it is registered
+    /// as a drop target once it exists).
+    #[cfg_attr(not(windows), allow(unused_variables))]
+    pub fn poll(&mut self, ctx: &egui::Context, title: &str) -> Vec<Dropped> {
+        #[cfg(windows)]
+        if self.ole.is_none() {
+            self.ole = crate::win32::ole::Registration::new(
+                title,
+                self.tx.clone(),
+                self.over.clone(),
+                ctx,
+            );
+        }
+        self.rx.try_iter().collect()
+    }
+
+    /// Something droppable is over the window.
+    pub fn over(&self) -> bool {
+        self.over.load(Ordering::Relaxed)
+    }
+}
+
+pub struct DropTarget {
+    drops: Drops,
+    pos: Pos2,
+}
+
+impl DropTarget {
+    pub fn new(pos: Option<Pos2>) -> Self {
+        DropTarget {
+            drops: Drops::default(),
             pos: pos.unwrap_or(pos2(200.0, 200.0)),
         }
     }
 
     pub fn show(&mut self, ctx: &egui::Context, icon: &egui::ImageSource<'static>) -> Vec<Event> {
-        let mut events: Vec<Event> = self.rx.try_iter().map(Event::Drop).collect();
+        let mut events: Vec<Event> = self
+            .drops
+            .poll(ctx, TITLE)
+            .into_iter()
+            .map(Event::Drop)
+            .collect();
         let builder = ViewportBuilder::default()
             .with_title(TITLE)
             .with_decorations(false)
             .with_resizable(false)
             .with_taskbar(false)
             .with_always_on_top()
-            .with_drag_and_drop(false)
+            // Windows: our own OLE target takes links and files; elsewhere winit's own
+            // (files only: macOS and Linux hand links over no other way here).
+            .with_drag_and_drop(!cfg!(windows))
             .with_position(self.pos)
             .with_inner_size(vec2(SIZE, SIZE));
-        let over = self.over.load(Ordering::Relaxed);
+        let over = self.drops.over();
         ctx.show_viewport_immediate(ViewportId::from_hash_of("drop-target"), builder, |ui, _| {
             let rect = ui.max_rect();
             let p = ui.painter();
             let (fill, edge) = if over {
                 (
-                    egui::Color32::from_rgb(0xe5, 0xf3, 0xff),
-                    egui::Color32::from_rgb(0x00, 0x78, 0xd4),
+                    // Something dragged over it: the shared highlight and accent, in the mode.
+                    crate::winui::highlight_fill(crate::winui::State::Hot, crate::theme::dark())
+                        .unwrap_or(crate::winui::BG()),
+                    crate::winui::accent(),
                 )
             } else {
                 (
@@ -95,9 +141,21 @@ impl DropTarget {
                 .interact(
                     rect,
                     ui.scope_id().with("drop-target"),
-                    Sense::click_and_drag(),
+                    crate::winui::pointer_drag(),
                 )
-                .on_hover_text(crate::i18n::t("Drag links here to download them"));
+                .on_hover_text(if cfg!(windows) {
+                    crate::i18n::t("Drag links here to download them")
+                } else {
+                    // i18n: the drop target's tooltip on macOS and Linux (they hand over files only)
+                    crate::i18n::t("Drag .torrent files or lists of addresses here")
+                });
+            #[cfg(not(windows))]
+            for f in ui.ctx().input(|i| i.raw.dropped_files.clone()) {
+                let path = f.path().display().to_string();
+                if !path.is_empty() {
+                    events.push(Event::Drop(path));
+                }
+            }
             if resp.drag_started() {
                 ui.ctx().send_viewport_cmd(ViewportCommand::StartDrag);
             }
@@ -120,11 +178,6 @@ impl DropTarget {
                 events.push(Event::Moved(r.min));
             }
         });
-        #[cfg(windows)]
-        if self.ole.is_none() {
-            self.ole =
-                crate::win32::ole::Registration::new(TITLE, self.tx.clone(), self.over.clone());
-        }
         events
     }
 }

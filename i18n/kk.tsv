@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} байт|{n} байт
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} жүктеу|{n} жүктеу
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} жүктелуде|{n} жүктелуде
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} файл|{n} файл
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} таңдалды|{n} таңдалды
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	импорттау арқылы
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	Болдырмау
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	Санат
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	Санат қалтасы
 #. text in categories.rs
 #, machine
 	Category properties	Санат сипаттары
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	Сағат:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	Жабу
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	Желтоқсан
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	Кеміту
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Әдепкі макс. қосылым саны
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	Жою
 #. message or event log entry in the main window
 #, machine
 	Delete category	Санатты жою
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Кезекті жою
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" санатын жою керек пе? Оның жүктеулері Жалпы болады; файлдары өз орындарында қалады.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	"{queue}" кезегін жою керек пе? Оның жүктеулері тізімде қалады.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Жаңарту жүктелуде... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	Жүктеулер
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	Жүктеулер тоқтатылды және {time} уақытында автоматты түрде жалғасады.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	.torrent файлдарын немесе мекенжайлар тізімін осы жерге сүйреп апарыңыз
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	Жүктеу үшін сілтемелерді осы жерге сүйреңіз
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	Тасталған сілтемелер
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Қайталанатын жүктеу сілтемесі
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	Кезек атауын енгізіңіз
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	Мысалы: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	Тек сіздің тіркелгіңіз үшін. Әдепкі ретінде орнатылған басқа қолданба бірінші болып қалады.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	Тек сіздің Windows тіркелгіңіз үшін. «Ашу» арқылы таңдалған басқа қолданба бірінші болып қалады.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	торрент файлынан
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	«Бастапқы» «Соңғыдан» бұрын болуы керек
 #. message or event log entry in the main window
 #, machine
 	from the browser	шолғыштан
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	Теңдерден файл тізімін алу... {n} с
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	Жүктеу аяқталғаннан кейін жалғасады
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Аяқтағанда модемді ажырату
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Кезекте
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	тізімде
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	Көбейту
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Барлық жүктеулерді шектеу
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	Мекенжайлар тізімдері
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	Кіру
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Іздеу
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	Алдымен жаңа мекенжайды іздеңіз
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	Жоқ
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Бетті жоғары/төмен жылжыту
+#. text in the Scheduler window
+#, machine
+	Move down	Төмен жылжыту
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Таңдалған жүктемені жылжыту немесе атын өзгерту
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Кезекке жылжыту
+#. text in the Scheduler window
+#, machine
+	Move up	Жоғары жылжыту
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	Таңдауды өзгертпей жылжыту
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Жылжыту/Атын өзгерту
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	Файл жылжытылуда...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	басқа қосылымдарға қарағанда әлдеқайда баяу; қайта қосылуда
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Әзірге қалталар жоқ
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	Іздеуге сәйкес келетін тіл жоқ
 #. text in langpick.rs
 #, machine
 	No language matches.	Сәйкес тіл жоқ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	Пошта қолданбасы ашылған жоқ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	Пошта қолданбасы жоқ: хабар көшірілді, оны поштаңызға қойыңыз.
 #. text in the Options window
 #, machine
 	No proxy/socks	Прокси/SOCKS жоқ
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Ескертпе: Бұл параметрлер кезек өңдеуіне қатысты емес
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item} ішінде жүктейтін ештеңе жоқ: сілтемелерді, .torrent файлын немесе мекенжайлар тізімін (.txt, .ef2) тастаңыз.
 #. text in the Scheduler window
 #, machine
 	November	Қараша
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Бір реттік жүктеу
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	Тек аяқталған немесе әлі басталмаған жүктеуді жылжытуға болады
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Тек аяқталған немесе әлі басталмаған жүктеуді жылжытуға болады. Алдымен оны тоқтатып, аяқтаңыз.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Тек мен компьютерді пайдаланған кезде
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	Ашу
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	Кідірту
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	Алдымен жүктеуді кідіртіңіз
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	Алдын ала қарау
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	Алдын ала қарау әлі қолжетімді емес
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Прокси сервер мекенжайы
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	Сандар немесе әріптер болатын мекенжайға * белгісін қойыңыз
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	Жою
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	Кезектегілерден жою
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	Жалғастырылды
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	Қайталау
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	Екінші файл:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	Қалтаны таңдау
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	Торрент жүктеліп жатқанда көрсетіледі.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Өшіру
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	Күйі:
+#. text in the Add torrent window
+#, machine
+	Stop	Тоқтату
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	Жүктеуді тоқтату
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} тоқтату
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Тоқтатылды
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	Бс
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	Бұл 100 000-нан астам файл: ауқымды кішірейтіңіз
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	Ең жақсы сапалар үшін бейне мен аудионы біріктіру үшін ffmpeg қажет (шамамен 80 МБ).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Ең жақсы сапаларға ffmpeg қажет: оны жүйеңіздің пакеттік менеджерімен (немесе Homebrew) орнатыңыз.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	Алмасу буфері бос емес: қайталап көріңіз.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	Компьютерді өшіру мүмкін болмады: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	диск толы
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	Жүктеу әлі аяқталған жоқ
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	жүктеп алу сілтемесінің мерзімі өтіп кетті (жүктеп алу мекенжайын жаңартыңыз)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	Жүктеу тізімін сақтау мүмкін болмады: {error}. MDM жұмыс істеп тұрғанда өзгерістер сақталады.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Сіз білетін жүктеу менеджері жылдамырақ болу үшін қайта құрастырылды. GNU GPL, 3-нұсқа немесе одан кейінгі нұсқасы бойынша тегін және ашық бастапқы кодты. Бейнелерді yt-dlp табады; торренттер librqbit-те жұмыс істейді.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	Файлды жылжыту мүмкін болмады: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	Файлды оқу мүмкін болмады: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	Басқа санаттарда көрсетілмеген файл түрлері
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	Файлдың өзінің бақылау сомасы
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Бұл қалта жоқ:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	Бұл жүйеде қоңырау шалу байланыстары жоқ
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Бұл торрент жүктеу тізімінде бар
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	Кімге:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	Бүгін: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	тым көп қайта бағыттау
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	Торрент жүктеулері (магниттік сілтемелер және .torrent файлдары)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	Торрент файлдары
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	Өшіру
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	Компьютерді өшіру
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	Аяқтағанда компьютерді өшіру
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Қосу
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	Бастапқы және Соңғы жолдарына әріп теріңіз
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	Бастапқы және Соңғы жолдарына сан теріңіз
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	Санат атауын теріңіз
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	«Басқаша сақтау» жолына файл атауын теріңіз
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	Не іздейтініңізді теріңіз және кем дегенде бір іздеу орнын белгілеңіз
 #. text in a download's Properties window
 #, machine
 	Type:	Түрі:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	Белгісіз
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	белгісіз
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	FTP-ді PASV режимінде пайдалану
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	Тек бір * пайдаланыңыз
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	Тексеру
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	Бақылау сомасын тексеру
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Вирустарды тексеру параметрлері
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Күтуде
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} қамтиды
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} файлы
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file} дискіде жойылмады: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file} ашылмады: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file} тексеру үшін оқылмады
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} бұрын сақталған жерінде жоқ (жылжытылған немесе жойылған). Оны қайта жүктеп алу үшін, оның оң жақ түймешік мәзіріндегі «Қайта жүктеп алу» опциясын пайдаланыңыз.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: файлдың бақылау сомасымен сәйкес келмейді ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: файлдың бақылау сомасымен сәйкес келеді ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	Соңғы әрекет күні
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	К
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	Кезек
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Mister Download Manager туралы(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	Жаңа жүктеуді қосу(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	Жаңа жүктеуді &қосу...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	Жою(&R)
 #, machine
 menu	&Report a problem	Мәселе туралы хабарлау(&R)
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	Бағандарды &қалпына келтіру
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	Жоспарлаушы және кезектер(&S)
@@ -2221,13 +2446,14 @@ menu	&Tray icon	Науа белгішесі(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	Оқулықтар(&T)
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&Болдырмау
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Video downloads	Бейне жүктеулер(&V)
-#. menu command in the main window
-#, machine
-menu	3D Style	3D стилі
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2321,10 +2547,6 @@ menu	Create new queue	Жаңа кезек жасау
 #, machine
 menu	Cu&t	Қи&ю
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	Customize...	Реттеу...
-#. menu command in the main window
 #, machine
 menu	Dark Mode support	Қараңғы режимді қолдау
 #. menu command in the main window
@@ -2376,22 +2598,12 @@ menu	H&elp contents	&Анықтама мазмұны
 #, machine
 menu	Hide drop target	Апару нысанасын жасыру
 #. menu command in the main window
-#, machine
-menu	Large Buttons	Үлкен түймелер
-#. menu command in the main window
-#, machine
-menu	Look for new toolbars	Жаңа құралдар тақталарын іздеу
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	Mister Download Manager &басты беті
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	Жылжыту/Атын өзгерту (Ctrl-M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-#, machine
-menu	Neon	Неон
 #. menu command in the main window
 #, machine
 menu	On Double click	Екі рет басқанда
@@ -2435,6 +2647,15 @@ menu	Refresh download address	Жүктеп алу мекенжайын жаңа�
 #, machine
 menu	Remove	Жою
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	Файлдармен бірге &жою
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	Файлдармен бірге жою
+#. menu command in the main window
 #, machine
 menu	Resume Download	Жүктеп алуды жалғастыру
 #. menu command in the main window
@@ -2454,7 +2675,7 @@ menu	S&top queue	Кезекті то&қтату
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	Жоспар
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	Бәрін &таңдау
@@ -2465,9 +2686,6 @@ menu	Show &drop target	Апару нысанасын &көрсету
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager көрсету
-#. menu command in the main window
-#, machine
-menu	Small Buttons	Шағын түймелер
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2522,20 +2740,25 @@ menu	Turn of&f	&Өшіру
 #, machine
 menu	Verify checksum...	Бақылау сомасын тексеру...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Downloads	Жүктеп алулар
+menubar	&Downloads	&Жүктеп алулар
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	File	Файл
+menubar	&File	&Файл
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Help	Анықтама
+menubar	&Help	&Анықтама
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Tasks	Тапсырмалар
+menubar	&Tasks	&Тапсырмалар
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	View	Көрініс
+menubar	&View	&Көрініс
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Торрент қосу

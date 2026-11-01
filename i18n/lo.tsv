@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} ໄບຕ໌
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} ດາວໂຫຼດ
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} ກຳລັງດາວໂຫຼດ
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ໄຟລ໌
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} ຖືກເລືອກ
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ໂດຍການນໍາເຂົ້າ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	ຍົກເລີກ
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	ໝວດໝູ່
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	ໂຟນເດີໝວດໝູ່
 #. text in categories.rs
 #, machine
 	Category properties	ຄຸນສົມບັດຂອງໝວດໝູ່
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	ໂມງ:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	ປິດ
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	ທັນວາ
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	ຫຼຸດລົງ
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ຈຳນວນການເຊື່ອມຕໍ່ສູງສຸດເລີ່ມຕົ້ນ
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	ລຶບ
 #. message or event log entry in the main window
 #, machine
 	Delete category	ລຶບໝວດໝູ່
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	ລຶບຄິວ
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	ລຶບໝວດໝູ່ “{category}” ບໍ? ການດາວໂຫຼດຂອງມັນຈະກາຍເປັນທົ່ວໄປ; ໄຟລ໌ຂອງມັນຈະຍັງຄົງຢູ່ໃນບ່ອນເດີມ.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	ລຶບຄິວ “{queue}” ບໍ? ການດາວໂຫຼດຂອງມັນຈະຍັງຄົງຢູ່ໃນລາຍການ.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	ກຳລັງດາວໂຫຼດອັບເດດ... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	ການດາວໂຫຼດ
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ການດາວໂຫຼດຖືກຢຸດ ແລະຈະສືບຕໍ່ອັດຕະໂນມັດໃນເວລາ {time}.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	ລາກໄຟລ໌ .torrent ຫຼືລາຍການທີ່ຢູ່ມາທີ່ນີ້
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	ລາກລິ້ງມາທີ່ນີ້ເພື່ອດາວໂຫຼດ
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	ລິ້ງທີ່ຖືກລາກ
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ລິ້ງດາວໂຫຼດຊໍ້າກັນ
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	ໃສ່ຊື່ຄິວ
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	ຕົວຢ່າງ: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	ສຳລັບບັນຊີຂອງທ່ານເທົ່ານັ້ນ. ແອັບອື່ນທີ່ຕັ້ງເປັນຄ່າເລີ່ມຕົ້ນຍັງຄົງຢູ່ອັນດັບທຳອິດ.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	ສຳລັບບັນຊີ Windows ຂອງທ່ານເທົ່ານັ້ນ. ແອັບອື່ນທີ່ເລືອກໃນ “ເປີດດ້ວຍ” ຈະຍັງຄົງເປັນອັນດັບທຳອິດ.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ຈາກໄຟລ໌ torrent
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	ຈາກຕ້ອງມາກ່ອນເຖິງ
 #. message or event log entry in the main window
 #, machine
 	from the browser	ຈາກບຣາວເຊີ
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	ກຳລັງເອົາລາຍການໄຟລ໌ຈາກເພຍ... {n} ວິນາທີ
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	ສືບຕໍ່ຫຼັງຈາກການດາວໂຫຼດສຳເລັດ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	ວາງສາຍໂມເດັມເມື່ອສຳເລັດ
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ຢູ່ໃນຄິວ
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	ໃນລາຍການ
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	ເພີ່ມຂຶ້ນ
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	ຈຳກັດການດາວໂຫຼດທັງໝົດຮ່ວມກັນເປັນ
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	ລາຍການທີ່ຢູ່
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	ເຂົ້າສູ່ລະບົບ
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ຊອກຫາ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	ຊອກຫາທີ່ຢູ່ໃໝ່ກ່ອນ
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	ຂາດຫາຍ
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ຍ້າຍໜ້າຂຶ້ນ/ລົງ
+#. text in the Scheduler window
+#, machine
+	Move down	ຍ້າຍລົງ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	ຍ້າຍ ຫຼື ປ່ຽນຊື່ການດາວໂຫຼດທີ່ເລືອກ
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ຍ້າຍໄປທີ່ຄິວ
+#. text in the Scheduler window
+#, machine
+	Move up	ຍ້າຍຂຶ້ນ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	ຍ້າຍໂດຍບໍ່ປ່ຽນການເລືອກ
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ຍ້າຍ/ປ່ຽນຊື່
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	ກຳລັງຍ້າຍໄຟລ໌...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	ຊ້າກວ່າການເຊື່ອມຕໍ່ອື່ນໆຫຼາຍ; ກຳລັງເຊື່ອມຕໍ່ໃໝ່
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	ຍັງບໍ່ມີໂຟນເດີ
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	ບໍ່ມີພາສາໃດກົງກັບການຄົ້ນຫາ
 #. text in langpick.rs
 #, machine
 	No language matches.	ບໍ່ມີພາສາທີ່ກົງກັນ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	ບໍ່ມີແອັບເມລເປີດ.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	ບໍ່ມີແອັບເມລ: ຂໍ້ຄວາມຖືກສຳເນົາແລ້ວ, ວາງໃສ່ໃນເມລຂອງທ່ານ.
 #. text in the Options window
 #, machine
 	No proxy/socks	ບໍ່ມີ proxy/socks
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	ໝາຍເຫດ: ການຕັ້ງຄ່າເຫຼົ່ານີ້ບໍ່ກ່ຽວຂ້ອງກັບການປະມວນຜົນຄິວ
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	ບໍ່ມີຫຍັງໃຫ້ດາວໂຫຼດໃນ {item}: ວາງລິ້ງ, ໄຟລ໌ .torrent, ຫຼືລາຍການທີ່ຢູ່ (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	ພະຈິກ
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ດາວໂຫຼດຄັ້ງດຽວ
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	ສາມາດຍ້າຍໄດ້ສະເພາະການດາວໂຫຼດທີ່ສຳເລັດແລ້ວ, ຫຼືຍັງບໍ່ໄດ້ເລີ່ມເທົ່ານັ້ນ
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ສາມາດຍ້າຍໄດ້ສະເພາະການດາວໂຫຼດທີ່ສຳເລັດແລ້ວ, ຫຼືຍັງບໍ່ໄດ້ເລີ່ມເທົ່ານັ້ນ. ຢຸດມັນ ແລະເຮັດໃຫ້ມັນສຳເລັດກ່ອນ.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ສະເພາະເວລາທີ່ຂ້ອຍກຳລັງໃຊ້ຄອມພິວເຕີ
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	ເປີດ
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	ຢຸດຊົ່ວຄາວ
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	ຢຸດການດາວໂຫຼດກ່ອນ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	ເບິ່ງຕົວຢ່າງ
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	ການສະແດງຕົວຢ່າງຍັງບໍ່ພ້ອມເທື່ອ
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ທີ່ຢູ່ເຊີບເວີພຣັອກຊີ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	ໃສ່ * ໃນທີ່ຢູ່ບ່ອນທີ່ຕົວເລກ ຫຼືຕົວອັກສອນໄປ
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	ລຶບອອກ
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	ລຶບອອກຈາກຄິວ
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	ສືບຕໍ່ແລ້ວ
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	ລອງໃໝ່
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	ໄຟລ໌ທີສອງ:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	ເລືອກໂຟນເດີ
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	ສະແດງໃນຂະນະທີ່ກຳລັງດາວໂຫຼດ torrent.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	ປິດເຄື່ອງ
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	ສະຖານະ:
+#. text in the Add torrent window
+#, machine
+	Stop	ຢຸດ
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	ຢຸດດາວໂຫຼດໃນເວລາ
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	ຢຸດ {queue}
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	ຢຸດແລ້ວ
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	ພະ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	ນັ້ນແມ່ນຫຼາຍກວ່າ 100,000 ໄຟລ໌: ເຮັດໃຫ້ຊ່ວງນ້ອຍລົງ
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	ຄຸນນະພາບທີ່ດີທີ່ສຸດຕ້ອງການ ffmpeg ເພື່ອລວມວິດີໂອ ແລະ ສຽງ (ປະມານ 80 MB).
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	ຄຸນນະພາບທີ່ດີທີ່ສຸດຕ້ອງການ ffmpeg: ຕິດຕັ້ງມັນດ້ວຍຕົວຈັດການແພັກເກັດຂອງລະບົບຂອງທ່ານ (ຫຼື Homebrew).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	ຄລິບບອດບໍ່ຫວ່າງ: ລອງໃໝ່.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	ຄອມພິວເຕີບໍ່ສາມາດປິດໄດ້: {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	ດິສກ໌ເຕັມ
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	ການດາວໂຫຼດຍັງບໍ່ສຳເລັດເທື່ອ
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	ລິ້ງດາວໂຫຼດໝົດອາຍຸແລ້ວ (ໂຫຼດທີ່ຢູ່ດາວໂຫຼດໃໝ່)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	ລາຍການດາວໂຫຼດບໍ່ສາມາດບັນທຶກໄດ້: {error}. ການປ່ຽນແປງຈະຖືກເກັບໄວ້ໃນຂະນະທີ່ MDM ເຮັດວຽກ.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	ຕົວຈັດການການດາວໂຫຼດທີ່ທ່ານຮູ້ຈັກກັນດີ, ຖືກສ້າງໃໝ່ໃຫ້ໄວຂຶ້ນ. ຟຣີ ແລະ ເປີດເຜີຍແຫຼ່ງທີ່ມາພາຍໃຕ້ GNU GPL, ເວີຊັນ 3 ຫຼື ໃໝ່ກວ່າ. ວິດີໂອຖືກພົບໂດຍ yt-dlp; torrents ໃຊ້ librqbit.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	ໄຟລ໌ບໍ່ສາມາດຍ້າຍໄດ້: {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	ບໍ່ສາມາດອ່ານໄຟລ໌ໄດ້: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	ປະເພດໄຟລ໌ທີ່ບໍ່ໄດ້ລະບຸໄວ້ໃນໝວດໝູ່ອື່ນໆ
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	Checksum ຂອງໄຟລ໌ເອງ
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ໂຟນເດີນີ້ບໍ່ມີຢູ່:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	ລະບົບນີ້ບໍ່ມີການເຊື່ອມຕໍ່ແບບ Dial-up ທີ່ຈະວາງສາຍ
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	torrent ນີ້ມີຢູ່ໃນລາຍການດາວໂຫຼດແລ້ວ
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	ເຖິງ:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	ມື້ນີ້: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	ການປ່ຽນເສັ້ນທາງຫຼາຍເກີນໄປ
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	ການດາວໂຫຼດ Torrent (ລິ້ງແມັກເນັດ ແລະ ໄຟລ໌ .torrent)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	ໄຟລ໌ Torrent
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	ປິດ
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	ປິດຄອມພິວເຕີ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	ປິດຄອມພິວເຕີເມື່ອສຳເລັດ
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ເປີດ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	ພິມຕົວອັກສອນໃນ ຈາກ ແລະ ເຖິງ
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	ພິມຕົວເລກໃນ ຈາກ ແລະ ເຖິງ
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	ພິມຊື່ໝວດໝູ່
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	ພິມຊື່ໄຟລ໌ໃນ ບັນທຶກເປັນ
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	ພິມສິ່ງທີ່ຈະຊອກຫາ, ແລະໝາຍຕິກຢ່າງໜ້ອຍໜຶ່ງບ່ອນທີ່ຈະຊອກຫາ
 #. text in a download's Properties window
 #, machine
 	Type:	ປະເພດ:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	ບໍ່ຮູ້ຈັກ
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	ບໍ່ຮູ້ຈັກ
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	ໃຊ້ FTP ໃນໂໝດ PASV
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	ໃຊ້ * ອັນດຽວເທົ່ານັ້ນ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	ຢືນຢັນ
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	ຢືນຢັນ checksum
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ການຕັ້ງຄ່າການກວດສອບໄວຣັສ
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	ກຳລັງລໍຖ້າ
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} ປະກອບມີ
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	ໄຟລ໌ {ext}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	ບໍ່ສາມາດລຶບ {file} ອອກຈາກແຜ່ນໄດ້: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	ບໍ່ສາມາດເປີດ {file} ໄດ້: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	ບໍ່ສາມາດອ່ານ {file} ເພື່ອກວດສອບໄດ້
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ບໍ່ໄດ້ຢູ່ໃນບ່ອນທີ່ບັນທຶກໄວ້ແລ້ວ (ຍ້າຍ ຫຼື ລຶບ). ດາວໂຫຼດຄືນໃໝ່, ໃນເມນູຄລິກຂວາ, ເພື່ອເອົາມັນຄືນມາ.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ໄຟລ໌ບໍ່ກົງກັບ checksum ຂອງມັນ ({algorithm})
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: ໄຟລ໌ກົງກັບ checksum ຂອງມັນ ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	ວັນທີລອງຄັ້ງສຸດທ້າຍ
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	ຄິວ
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2226,9 +2441,6 @@ menu	&Tutorials	&ບົດສອນ
 #, machine
 menu	&Video downloads	ການດາວໂຫຼດວິດີໂ&ອ
 #. menu command in the main window
-#, machine
-menu	3D Style	ຮູບແບບ 3D
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	ເພີ່ມການດາວໂຫຼດເປັນ&ຊຸດ
@@ -2321,10 +2533,6 @@ menu	Create new queue	ສ້າງຄິວໃໝ່
 #, machine
 menu	Cu&t	ຕັ&ດ
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	Customize...	ປັບແຕ່ງ...
-#. menu command in the main window
 #, machine
 menu	Dark Mode support	ຮອງຮັບໂໝດມືດ
 #. menu command in the main window
@@ -2376,22 +2584,12 @@ menu	H&elp contents	ເນື້ອໃນ &ຊ່ວຍເຫຼືອ
 #, machine
 menu	Hide drop target	ເຊື່ອງເປົ້າໝາຍການລາກ
 #. menu command in the main window
-#, machine
-menu	Large Buttons	ປຸ່ມໃຫຍ່
-#. menu command in the main window
-#, machine
-menu	Look for new toolbars	ຊອກຫາແຖບເຄື່ອງມືໃໝ່
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	ໜ້າຫຼັກຂອງ Mister Download Manager(&H)
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	ຍ້າຍ/ປ່ຽນຊື່ (Ctrl-M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-#, machine
-menu	Neon	ນີອອນ
 #. menu command in the main window
 #, machine
 menu	On Double click	ເມື່ອຄລິກສອງເທື່ອ
@@ -2435,6 +2633,10 @@ menu	Refresh download address	ໂຫຼດທີ່ຢູ່ດາວໂຫຼ�
 #, machine
 menu	Remove	ລຶບອອກ
 #. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	ລຶບພ້ອມໄຟລ໌
+#. menu command in the main window
 #, machine
 menu	Resume Download	ສືບຕໍ່ດາວໂຫຼດ
 #. menu command in the main window
@@ -2454,7 +2656,7 @@ menu	S&top queue	ຢຸດ&ຄິວ
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	ຕາຕະລາງເວລາ
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	ເລືອກທັ&ງໝົດ
@@ -2465,9 +2667,6 @@ menu	Show &drop target	ສະແດງເປົ້າໝາຍ&ລາກວາ�
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	ສະແດງ Mister Download Manager
-#. menu command in the main window
-#, machine
-menu	Small Buttons	ປຸ່ມນ້ອຍ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2522,20 +2721,25 @@ menu	Turn of&f	ປິດ&ນຳໃຊ້
 #, machine
 menu	Verify checksum...	ກວດສອບ Checksum...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Downloads	ການດາວໂຫຼດ
+menubar	&Downloads	&ການດາວໂຫຼດ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	File	ໄຟລ໌
+menubar	&File	&ໄຟລ໌
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Help	ຊ່ວຍເຫຼືອ
+menubar	&Help	&ຊ່ວຍເຫຼືອ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Tasks	ໜ້າວຽກ
+menubar	&Tasks	&ໜ້າວຽກ
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	View	ເບິ່ງ
+menubar	&View	&ເບິ່ງ
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	ເພີ່ມ Torrent

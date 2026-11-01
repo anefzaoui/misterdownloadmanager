@@ -4,16 +4,12 @@
 //! name; typing filters the list; the arrows, Page Up/Down, Home/End move; Enter or a double
 //! click chooses.
 
-use egui::{Color32, Rect, Sense, pos2, vec2};
+use egui::{Color32, Rect, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
 
-crate::theme::themed! {
-    LIST_BG = Color32::from_rgb(0x1f, 0x1f, 0x1f), Color32::from_rgb(0xff, 0xff, 0xff);
-    LIST_EDGE = Color32::from_rgb(0x5a, 0x5a, 0x5a), Color32::from_rgb(0x82, 0x87, 0x90);
-    MUTED = Color32::from_rgb(0xa0, 0xa0, 0xa0), Color32::from_rgb(0x6d, 0x6d, 0x6d);
-}
+crate::theme::themed! {}
 
 const W: f32 = 380.0;
 const H: f32 = 452.0;
@@ -128,11 +124,11 @@ impl Picker {
                     self.selected = first;
                 }
                 let shown_list = r(o, LIST[0], LIST[1], LIST[2], LIST[3]);
-                p.rect_filled(shown_list, 0.0, LIST_BG());
+                p.rect_filled(shown_list, 0.0, winui::FIELD());
                 p.rect_stroke(
                     shown_list,
                     0.0,
-                    egui::Stroke::new(1.0, LIST_EDGE()),
+                    egui::Stroke::new(1.0, winui::FIELD_EDGE()),
                     egui::StrokeKind::Inside,
                 );
                 // Rows laid out in English, made where they are on screen: the flag and the
@@ -197,17 +193,16 @@ impl Picker {
                 }
                 self.top = self.top.clamp(0.0, (total - page).max(0.0));
 
-                // The wheel scrolls three rows a notch, as Windows lists do.
+                // The wheel scrolls the system's lines a notch (three unless changed).
                 let list_resp = ui.interact(
                     shown_list,
                     egui::Id::unique("language-list"),
-                    Sense::click(),
+                    winui::pointer_only(),
                 );
                 if list_resp.hovered() {
-                    let wheel = ui.input(|i| i.smooth_scroll_delta.y);
-                    if wheel != 0.0 {
-                        self.top =
-                            (self.top - (wheel / 40.0) * 3.0).clamp(0.0, (total - page).max(0.0));
+                    let rows = winui::wheel_rows(ui, ROW, page);
+                    if rows != 0.0 {
+                        self.top = (self.top + rows).clamp(0.0, (total - page).max(0.0));
                     }
                 }
 
@@ -224,7 +219,7 @@ impl Picker {
                     let resp = ui.interact(
                         winui::rect(row),
                         egui::Id::unique(("language-row", k)),
-                        Sense::click(),
+                        winui::pointer_only(),
                     );
                     if resp.clicked() {
                         self.selected = *entry;
@@ -234,13 +229,19 @@ impl Picker {
                         chosen = true;
                     }
                     let on = self.selected == *entry;
+                    // The shared list's colours: the selection (its dark value in dark mode),
+                    // the row under the pointer tinted.
                     if on {
-                        clip.rect_filled(winui::rect(row), 0.0, winui::SELECTION);
+                        clip.rect_filled(winui::rect(row), 0.0, winui::ROW_SELECTED());
+                    } else if let Some(c) =
+                        winui::subtle_fill(winui::State::of(&resp, true), crate::theme::dark())
+                    {
+                        clip.rect_filled(winui::rect(row), 0.0, c);
                     }
                     let (fg, muted) = if on {
                         (Color32::WHITE, Color32::from_gray(0xe0))
                     } else {
-                        (ink, MUTED())
+                        (ink, winui::MUTED())
                     };
                     let code = entry.unwrap_or_else(|| crate::i18n::system_code());
                     let info = crate::i18n::info(code);
@@ -297,7 +298,7 @@ impl Picker {
                         list.left() + 10.0,
                         list.top() + 20.0,
                         crate::i18n::t("No language matches."),
-                        MUTED(),
+                        winui::MUTED(),
                     );
                 }
                 if need_bar {
@@ -331,6 +332,12 @@ impl Picker {
                     },
                     false,
                     None,
+                );
+                let ok = winui::why_disabled(
+                    ok,
+                    rows.is_empty(),
+                    // i18n: tooltip of the greyed OK button in the language picker
+                    "No language matches the search",
                 )
                 .clicked();
                 let cancel = winui::button(
@@ -342,6 +349,8 @@ impl Picker {
                     None,
                 )
                 .clicked();
+                // Enter, unless a focused button (Cancel) took it.
+                let enter = enter && winui::enter_pressed(ui);
                 if (ok || enter || chosen) && !rows.is_empty() {
                     Outcome::Done(self.selected)
                 } else if cancel || esc {

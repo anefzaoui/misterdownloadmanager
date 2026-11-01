@@ -98,7 +98,7 @@ impl Find {
             "Find file",
             [345.0, 241.0],
             false,
-            LIGHT_BG,
+            LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 let q = &mut self.query;
@@ -107,7 +107,7 @@ impl Find {
                     o.x + 11.0,
                     o.y + 21.0,
                     crate::i18n::t("Find:"),
-                    LIGHT_TEXT,
+                    LIGHT_TEXT(),
                 );
                 let edit =
                     winui::edit_light(ui, r(o, 11.0, 31.0, 324.0, 23.0), &mut q.text, true, false);
@@ -157,6 +157,12 @@ impl Find {
                         ButtonKind::Disabled
                     },
                     false,
+                );
+                let find = winui::why_disabled(
+                    find,
+                    !can,
+                    // i18n: tooltip of the greyed Find button
+                    "Type what to find, and tick at least one place to look",
                 )
                 .clicked();
                 let cancel = winui::button_light(
@@ -167,9 +173,9 @@ impl Find {
                     false,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if can && (find || ui.input(|i| i.key_pressed(egui::Key::Enter))) {
+                } else if can && (find || winui::enter_pressed(ui)) {
                     Outcome::Done(())
                 } else {
                     Outcome::Open

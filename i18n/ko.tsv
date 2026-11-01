@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n}바이트
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n}개 다운로드
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n}개 다운로드 중
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n}개 파일
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n}개 선택됨
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -184,7 +196,8 @@
 #. message or event log entry in the main window
 #, machine
 	by import	가져오기
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button: stop downloading the update
 #, machine
 	Cancel	취소
 #. text in errors.rs
@@ -217,6 +230,10 @@
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	범주
+#. text in categories.rs
+#. title of the folder picker of the category dialog
+#, machine
+	Category folder	범주 폴더
 #. text in categories.rs
 #, machine
 	Category properties	범주 속성
@@ -255,8 +272,9 @@
 #. text in the Options window
 #, machine
 	Clock:	시계:
-#. text in the Checksum window; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
+#. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
 #, machine
 	Close	닫기
@@ -330,6 +348,10 @@
 #. text in the Scheduler window
 #, machine
 	December	12월
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one less
+#, machine
+	Decrease	줄이기
 #. button in the Options window
 #. button: put back the default list
 #, machine
@@ -344,21 +366,22 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	기본 최대 연결 수
-#. button in the Options window
+#. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 #, machine
 	Delete	삭제
 #. message or event log entry in the main window
 #, machine
 	Delete category	범주 삭제
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	큐 삭제
 #. message or event log entry in the main window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its downloads become General; their files stay where they are.	범주 "{category}"를 삭제하시겠습니까? 다운로드는 일반으로 변경되고 파일은 현재 위치에 유지됩니다.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Scheduler window
+#. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Delete the queue "{queue}"? Its downloads stay in the list.	큐 "{queue}"를 삭제하시겠습니까? 다운로드는 목록에 유지됩니다.
@@ -486,7 +509,7 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	업데이트 다운로드 중... {percent}
-#. text in the Options window
+#. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	다운로드
@@ -495,8 +518,16 @@
 #, machine
 	Downloads stopped and will resume automatically at {time}.	다운로드가 중지되었으며 {time}에 자동으로 다시 시작됩니다.
 #. text in droptarget.rs
+#. the drop target's tooltip on macOS and Linux (they hand over files only)
+#, machine
+	Drag .torrent files or lists of addresses here	.torrent 파일 또는 주소 목록을 여기에 끌어다 놓으세요.
+#. text in droptarget.rs
 #, machine
 	Drag links here to download them	여기에 링크를 끌어다 놓아 다운로드
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: dragged onto the window
+#, machine
+	Dropped links	끌어다 놓은 링크
 #. window title in a dialog box
 #, machine
 	Duplicate download link	중복 다운로드 링크
@@ -534,7 +565,8 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	큐 이름 입력
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -652,6 +684,10 @@
 #, machine
 	For example:  {address}	예: {address}
 #. text in the Add torrent window
+#. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+#, machine
+	For your account only. Another app set as the default stays first.	계정 전용입니다. 다른 앱이 기본값으로 설정되어 있으면 먼저 실행됩니다.
+#. text in the Add torrent window
 #, machine
 	For your Windows account only. Another app chosen in "Open with" stays first.	Windows 계정에만 해당됩니다. "연결 프로그램"에서 선택한 다른 앱이 먼저 유지됩니다.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -673,6 +709,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	토렌트 파일에서
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	From must come before To	시작이 끝보다 먼저 와야 합니다.
 #. message or event log entry in the main window
 #, machine
 	from the browser	브라우저에서
@@ -699,6 +739,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	피어에서 파일 목록 가져오는 중... {n}초
+#. text in a download's progress window
+#. a torrent's sharing, when Torrent settings keep it on
+#, machine
+	Goes on after the download finishes	다운로드 완료 후 계속됩니다.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	완료되면 모뎀 끊기
@@ -751,6 +795,14 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	큐에 있음
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	목록에 있음
+#. text in standard windows
+#. a spin box's arrow, for screen readers: one more
+#, machine
+	Increase	늘리기
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -827,14 +879,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	모든 다운로드 제한
+#. message or event log entry in the main window
+#. the kind of file the Import dialog lists (text files with addresses)
+#, machine
+	Lists of addresses	주소 목록
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
 	Login	로그인
-#. button in the Add torrent window; button in the Download video window
+#. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	찾아보기
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: the page address was changed after the look-up
+#, machine
+	Look up the new address first	새 주소를 먼저 찾아보세요.
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -875,7 +935,7 @@
 #. legend: pieces not downloaded yet
 #, machine
 	Missing	누락
-#. window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
 #. window title in the Options window
@@ -907,6 +967,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	페이지 위/아래로 이동
+#. text in the Scheduler window
+#, machine
+	Move down	아래로 이동
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	선택한 다운로드 이동 또는 이름 바꾸기
@@ -916,12 +979,19 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	큐로 이동
+#. text in the Scheduler window
+#, machine
+	Move up	위로 이동
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move without changing the selection	선택 변경 없이 이동
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	이동/이름 바꾸기
+#. message or event log entry in the main window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving the file...	파일 이동 중...
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	다른 연결보다 훨씬 느림, 다시 연결 중
@@ -976,9 +1046,20 @@
 #. text in a dialog box
 #, machine
 	No folders yet	아직 폴더가 없습니다.
+#. tooltip (why a control is greyed) in langpick.rs
+#. tooltip of the greyed OK button in the language picker
+#, machine
+	No language matches the search	검색과 일치하는 언어가 없습니다.
 #. text in langpick.rs
 #, machine
 	No language matches.	일치하는 언어가 없습니다.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Email found no mail program
+#, machine
+	No mail app opened.	메일 앱이 열리지 않았습니다.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	No mail app: the message is copied, paste it in your mail.	메일 앱이 없습니다. 메시지가 복사되었습니다. 메일에 붙여넣으세요.
 #. text in the Options window
 #, machine
 	No proxy/socks	프록시/SOCKS 없음
@@ -1010,6 +1091,9 @@
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	참고: 이 설정은 큐 처리와 관련이 없습니다.
+#. message or event log entry in the main window
+#, machine
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item}에 다운로드할 항목이 없습니다. 링크, .torrent 파일 또는 주소 목록(.txt, .ef2)을 놓으세요.
 #. text in the Scheduler window
 #, machine
 	November	11월
@@ -1044,10 +1128,18 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	일회성 다운로드
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	완료된 다운로드 또는 아직 시작되지 않은 다운로드만 이동할 수 있습니다.
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	완료된 다운로드 또는 아직 시작되지 않은 다운로드만 이동할 수 있습니다. 먼저 중지하고 완료하세요.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	컴퓨터를 사용하는 동안에만
-#. button in a download's Properties window
+#. text in a dialog box; button in a download's Properties window
+#. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	열기
@@ -1095,6 +1187,10 @@
 #. verb: pause the download
 #, machine
 	Pause	일시 중지
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Pause the download first	먼저 다운로드를 일시 중지하세요.
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -1125,6 +1221,10 @@
 #. verb: open the part already downloaded
 #, machine
 	Preview	미리 보기
+#. text in a dialog box
+#. tooltip of the greyed Preview button in Download File Info
+#, machine
+	Preview isn't available yet	미리 보기가 아직 제공되지 않습니다.
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
@@ -1145,6 +1245,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	프록시 서버 주소
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Put a * in the address where the numbers or letters go	숫자나 문자가 들어갈 주소에 *를 넣으세요.
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1198,6 +1302,9 @@
 #. verb: remove the item
 #, machine
 	Remove	제거
+#. text in the Scheduler window
+#, machine
+	Remove from the queue	대기열에서 제거
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1218,6 +1325,10 @@
 #. event log entry, past tense: the download resumed (just now)
 #, machine
 	Resumed	다시 시작됨
+#. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. button: check for updates again
+#, machine
+	Retry	다시 시도
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1269,6 +1380,7 @@
 #, machine
 	Second file:	두 번째 파일:
 #. text in a dialog box
+#. title of the folder picker
 #, machine
 	Select a folder	폴더 선택
 #. button in the Add torrent window; button in transfer.rs
@@ -1371,7 +1483,7 @@
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	토렌트 다운로드 중 표시됩니다.
-#. text in a download's progress window; text in the queues
+#. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	시스템 종료
@@ -1475,6 +1587,9 @@
 #. label before the download's state
 #, machine
 	Status:	상태:
+#. text in the Add torrent window
+#, machine
+	Stop	중지
 #. checkbox in the Scheduler window
 #, machine
 	Stop download at	다운로드 중지 시각
@@ -1485,8 +1600,9 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} 중지
-#. value in a column's filter list in the download list
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	중지됨
 #. text in a download's progress window
@@ -1512,6 +1628,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	목
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	That is more than 100,000 files: make the range smaller	100,000개 이상의 파일입니다. 범위를 더 작게 만드세요.
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -1522,6 +1642,18 @@
 #. text in the Download video window
 #, machine
 	The best qualities need ffmpeg to merge video and audio (about 80 MB).	최고 품질은 비디오와 오디오를 병합하는 데 ffmpeg(약 80MB)가 필요합니다.
+#. text in the Download video window
+#. in Download video, on macOS and Linux (no button: the system installs it)
+#, machine
+	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	최고 품질에는 ffmpeg가 필요합니다. 시스템의 패키지 관리자(또는 Homebrew)로 설치하세요.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Tell a friend: Copy failed (another program holds the clipboard)
+#, machine
+	The clipboard is busy: try again.	클립보드가 사용 중입니다. 다시 시도하세요.
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The computer could not be turned off: {error}	컴퓨터를 끌 수 없습니다. {error}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -1543,6 +1675,10 @@
 #. text in errors.rs
 #, machine
 	the disk is full	디스크가 가득 찼습니다.
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of the greyed Open button in File Properties
+#, machine
+	The download isn't complete yet	다운로드가 아직 완료되지 않았습니다.
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -1550,6 +1686,10 @@
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	다운로드 링크가 만료되었습니다(다운로드 주소를 새로 고침).
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	다운로드 목록을 저장할 수 없습니다. {error}. MDM이 실행되는 동안 변경 사항이 유지됩니다.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	이미 알고 있는 다운로드 관리자를 더 빠르게 재구축했습니다. GNU GPL 버전 3 이상에 따라 무료 오픈 소스입니다. 비디오는 yt-dlp로 찾고, 토렌트는 librqbit에서 실행됩니다.
@@ -1568,6 +1708,10 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
+	The file could not be moved: {error}	파일을 이동할 수 없습니다. {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
 	The file could not be read: {error}	파일을 읽을 수 없습니다: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1583,6 +1727,10 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	다른 범주에 나열되지 않은 파일 형식
+#. text in the Checksum window
+#. tooltip of the box showing the checksum the file really has
+#, machine
+	The file's own checksum	파일 자체의 체크섬
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -1668,6 +1816,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	이 폴더가 없습니다:
+#. text in a download's progress window
+#, machine
+	This system has no dial-up connections to hang up	이 시스템에는 끊을 전화 접속 연결이 없습니다.
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	이 토렌트는 이미 다운로드 목록에 있습니다.
@@ -1680,6 +1831,10 @@
 #. text in the Batch download window
 #, machine
 	To:	받는 사람:
+#. text in the Scheduler window
+#. link under the calendar: {date} = today's date
+#, machine
+	Today: {date}	오늘: {date}
 #. text in errors.rs
 #, machine
 	too many redirects	너무 많은 리디렉션
@@ -1690,7 +1845,7 @@
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	토렌트 다운로드(마그넷 링크 및 .torrent 파일)
-#. text in the Add torrent window
+#. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
 	Torrent files	토렌트 파일
@@ -1728,6 +1883,10 @@
 #. verb: turn the Speed Limiter off
 #, machine
 	Turn off	끄기
+#. text in a dialog box
+#. title of the message when shutting down / sleep / hibernate failed
+#, machine
+	Turn off computer	컴퓨터 끄기
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Turn off computer when done	완료 시 컴퓨터 끄기
@@ -1738,6 +1897,26 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	켜기
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a letter in From and in To	시작 및 끝에 문자를 입력하세요.
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Type a number in From and in To	시작 및 끝에 숫자를 입력하세요.
+#. tooltip (why a control is greyed) in categories.rs
+#. why OK is greyed in the category dialog
+#, machine
+	Type the category's name	범주 이름을 입력하세요.
+#. text in a dialog box
+#. why Start Download is greyed in Download File Info
+#, machine
+	Type the file's name in Save As	다른 이름으로 저장에 파일 이름을 입력하세요.
+#. tooltip (why a control is greyed) in the Find window
+#. tooltip of the greyed Find button
+#, machine
+	Type what to find, and tick at least one place to look	찾을 내용을 입력하고, 찾을 위치를 하나 이상 선택하세요.
 #. text in a download's Properties window
 #, machine
 	Type:	유형:
@@ -1748,7 +1927,7 @@
 #. text in a download's Properties window
 #, machine
 	Unknown	알 수 없음
-#. text in a download's progress window
+#. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 #, machine
 	unknown	알 수 없음
@@ -1775,6 +1954,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV 모드에서 FTP 사용
+#. text in the Batch download window
+#. why Batch download's OK is greyed
+#, machine
+	Use one * only	별표(*)는 하나만 사용하세요.
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1814,7 +1997,7 @@
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
 	Verify	확인
-#. window title in the Checksum window
+#. window title in the Checksum window; text in the Checksum window
 #, machine
 	Verify checksum	체크섬 확인
 #. text in the download list (sizes, speeds, status)
@@ -1835,8 +2018,9 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	바이러스 검사 설정
-#. value in a column's filter list in the download list; text in a download's progress window
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
+#. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	대기 중
@@ -1908,10 +2092,37 @@
 #. {column} = a column title (keep the braces as they are)
 #, machine
 	{column} contains	{column} 포함
+#. message or event log entry in the main window
+#. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{count}, {speed}	{count}, {speed}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} 파일
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be deleted from the disk: {error}	{file}을(를) 디스크에서 삭제할 수 없습니다: {error}
+#. text in a dialog box
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{file} could not be opened: {error}	{file}을(를) 열 수 없습니다: {error}
+#. text in the Checksum window
+#, machine
+	{file} could not be read to check it	{file}을(를) 읽어 확인할 수 없습니다.
+#. text in a dialog box
+#, machine
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file}이(가) 저장된 위치에 더 이상 없습니다(이동되었거나 삭제됨). 마우스 오른쪽 단추 메뉴에서 다시 다운로드를 선택하여 다시 가져올 수 있습니다.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: 파일이 체크섬({algorithm})과 일치하지 않습니다.
+#. text in the Checksum window
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	{file}: the file matches its checksum ({algorithm})	{file}: 파일이 체크섬({algorithm})과 일치합니다.
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1990,6 +2201,10 @@ column	Last Try Date	마지막 시도 날짜
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
+#. column title in the main window; column title in the download list
+#. tooltip of the narrow "Q" column's title
+#, machine
+column	Queue	대기열
 #. column title in the download list in the download list
 #. noun: the file's size
 #, machine
@@ -2073,7 +2288,7 @@ key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+M	Ctrl+M
+key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -2146,6 +2361,11 @@ menu	&About Mister Download Manager	Mister Download Manager 정보(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Add new download	새 다운로드 추가(&A)
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Add new download...	새 다운로드 &추가...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2202,6 +2422,11 @@ menu	&Remove	제거(&R)
 #, machine
 menu	&Report a problem	문제 보고(&R)
 #. menu command in the main window
+#. header menu: put the columns back as they first were (order, widths, all shown)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Reset columns	열 &재설정
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Scheduler and queues	스케줄러 및 큐(&S)
@@ -2221,13 +2446,14 @@ menu	&Tray icon	트레이 아이콘(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tutorials	자습서(&T)
+#. menu command in standard windows
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Undo	&실행 취소
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Video downloads	비디오 다운로드(&V)
-#. menu command in the main window
-#, machine
-menu	3D Style	3D 스타일
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2321,10 +2547,6 @@ menu	Create new queue	새 큐 만들기
 #, machine
 menu	Cu&t	잘라내기(&T)
 #. menu command in the main window
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	Customize...	사용자 지정...
-#. menu command in the main window
 #, machine
 menu	Dark Mode support	다크 모드 지원
 #. menu command in the main window
@@ -2376,22 +2598,12 @@ menu	H&elp contents	&도움말 내용
 #, machine
 menu	Hide drop target	드롭 대상 숨기기
 #. menu command in the main window
-#, machine
-menu	Large Buttons	큰 단추
-#. menu command in the main window
-#, machine
-menu	Look for new toolbars	새 도구 모음 찾기
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Mister Download Manager &Home Page	Mister Download Manager &홈 페이지
 #. menu command in the main window
 #, machine
 menu	Move/Rename (Ctrl-M)	이동/이름 바꾸기(Ctrl+M)
-#. menu command in the main window
-#. name of the toolbar's icon style (a proper name; may stay as is)
-#, machine
-menu	Neon	네온
 #. menu command in the main window
 #, machine
 menu	On Double click	두 번 클릭 시
@@ -2435,6 +2647,15 @@ menu	Refresh download address	다운로드 주소 새로 고침
 #, machine
 menu	Remove	제거
 #. menu command in the main window
+#. verb: removes the selected download from the list and its file from the disk
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Remove with &files	파일과 함께 &제거
+#. menu command in the main window
+#. verb: removes the download from the list and its file from the disk
+#, machine
+menu	Remove with files	파일과 함께 제거
+#. menu command in the main window
 #, machine
 menu	Resume Download	다운로드 다시 시작
 #. menu command in the main window
@@ -2454,7 +2675,7 @@ menu	S&top queue	큐 중지(&P)
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
 menu	Schedule	예약
-#. menu command in standard windows
+#. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Select &all	모두 선택(&A)
@@ -2465,9 +2686,6 @@ menu	Show &drop target	끌어 놓기 대상 표시(&D)
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager 표시
-#. menu command in the main window
-#, machine
-menu	Small Buttons	작은 단추
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2522,20 +2740,25 @@ menu	Turn of&f	끄기(&F)
 #, machine
 menu	Verify checksum...	체크섬 확인...
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Downloads	다운로드
+menubar	&Downloads	&다운로드
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	File	파일
+menubar	&File	&파일
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Help	도움말
+menubar	&Help	&도움말
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	Tasks	작업
+menubar	&Tasks	&작업
 #. menu bar title in the main window (menus, toolbar, Categories pane)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menubar	View	보기
+menubar	&View	&보기
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	토렌트 추가

@@ -419,10 +419,11 @@ impl Item {
             .take(n)
             .rev()
             .map(|(at, text)| {
+                // In the interface's way (English month names in every language before).
                 let t = chrono::Local
                     .timestamp_opt(*at, 0)
                     .single()
-                    .map(|t| t.format("%b %d %H:%M:%S").to_string())
+                    .map(|t| when_text(t.naive_local()))
                     .unwrap_or_default();
                 format!("{t}  {text}")
             })
@@ -536,9 +537,17 @@ impl Item {
             Status::Complete => crate::i18n::t("Complete").into(),
             // i18n: a download's status (state it is in, not a command): it failed
             Status::Error => crate::i18n::t("Error").into(),
-            Status::Queued if self.downloaded == 0 => String::new(),
-            _ => match self.size {
-                Some(t) if t > 0 => percent(self.downloaded as f64 / t as f64),
+            // Where IDM leaves the cell blank (nothing yet, or no size to take a share of), it
+            // says what the download is doing.
+            // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
+            Status::Queued if self.downloaded == 0 => crate::i18n::t("Waiting").into(),
+            _ => match (self.size, self.status) {
+                (Some(t), _) if t > 0 => percent(self.downloaded as f64 / t as f64),
+                // i18n: a download's status (state it is in, not a command): stopped by the user
+                (_, Status::Stopped) => crate::i18n::t("Stopped").into(),
+                (_, Status::Queued) => crate::i18n::t("Waiting").into(),
+                // No size to take a share of: how much has come (it looked idle).
+                (_, Status::Downloading) if self.downloaded > 0 => size_list(self.downloaded),
                 _ => String::new(),
             },
         }
@@ -574,11 +583,20 @@ pub fn date_text(stored: &str) -> String {
     let Some(t) = stamp_time(stored) else {
         return stored.to_owned();
     };
+    if english() && !crate::regional::current().custom {
+        return stored.to_owned();
+    }
+    when_text(t)
+}
+
+/// A local time as the interface writes dates and times (Options → Regional; IDM's text in
+/// English; the Windows region's elsewhere).
+pub fn when_text(t: chrono::NaiveDateTime) -> String {
     if crate::regional::current().custom {
         return crate::i18n::ltr(&crate::regional::short_date_time(t));
     }
     if english() {
-        return stored.to_owned();
+        return t.format(STAMP).to_string();
     }
     #[cfg(windows)]
     if let Some(s) = crate::win32::local_date_time(t) {
@@ -739,5 +757,34 @@ mod stamp_tests {
         let oct = super::stamp_time("Oct 28 21:44:12 2026").unwrap();
         assert!(oct < apr, "October 2026 comes before April 2027");
         assert!(super::stamp_time("not a date").is_none());
+    }
+}
+
+/// An address as typed: `www.example.com/a.zip` (no scheme, as browsers take it) is read as
+/// https; anything else as written.
+pub fn parse_address(typed: &str) -> Result<url::Url, url::ParseError> {
+    let typed = typed.trim();
+    match url::Url::parse(typed) {
+        Err(url::ParseError::RelativeUrlWithoutBase)
+            if !typed.contains(char::is_whitespace)
+                && typed
+                    .split('/')
+                    .next()
+                    .is_some_and(|host| host.contains('.')) =>
+        {
+            url::Url::parse(&format!("https://{typed}"))
+        }
+        other => other,
+    }
+}
+
+#[cfg(test)]
+mod address_tests {
+    #[test]
+    fn an_address_without_its_scheme_is_https() {
+        let u = super::parse_address(" www.example.com/a.zip ").unwrap();
+        assert_eq!(u.as_str(), "https://www.example.com/a.zip");
+        assert_eq!(super::parse_address("ftp://h/f").unwrap().scheme(), "ftp");
+        assert!(super::parse_address("not an address").is_err());
     }
 }

@@ -15,7 +15,10 @@ param(
   [int]$Port = 8099,
   [int]$TrackerPort = 6969,
   # Only these shots ("video", "torrent"); both when empty.
-  [string[]]$Only = @()
+  [string[]]$Only = @(),
+  # The torrent's other details tabs too ("peers", "trackers", "pieces", "general"), each
+  # as progress-torrent-<tab>.png (/show progress:<tab>).
+  [string[]]$TorrentTabs = @()
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -60,7 +63,7 @@ function Blank([string]$file) {
 
 # One instance with one download: start it, let it run for $wait seconds, shoot its progress
 # window. $item is the list row (its id is 1).
-function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$prepare) {
+function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$prepare, [string[]]$tabs = @()) {
   $dir = Join-Path $work $name
   New-Item -ItemType Directory -Force "$dir\data" | Out-Null
   $dirs = @("General", "Compressed", "Documents", "Music", "Programs", "Video", "Torrents") |
@@ -98,6 +101,16 @@ function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$pre
       if (-not (Blank $file)) { break }
     }
     "  progress-$name.png  ($title)"
+    foreach ($tab in $tabs) {
+      & $exe /show "progress:$tab"
+      $file = Join-Path $out "progress-$name-$tab.png"
+      for ($try = 0; $try -lt 20; $try++) {
+        Start-Sleep -Milliseconds 1500
+        & "$PSScriptRoot\cap-own.ps1" -ProcessId $app.Id -Title $pattern -Out $file | Out-Null
+        if (-not (Blank $file)) { break }
+      }
+      "  progress-$name-$tab.png"
+    }
   } finally {
     Stop-Process -Id $app.Id -ErrorAction SilentlyContinue
     Remove-Item Env:MDM_DATA_DIR, Env:MDM_OFFSCREEN -ErrorAction SilentlyContinue
@@ -165,7 +178,7 @@ try {
       New-Item -ItemType Directory -Force "$dir\data\torrents\files" | Out-Null
       Copy-Item $torrent "$dir\data\torrents\files\$hash.torrent"
     }
-    Scenario "torrent" $item 25 $saveTorrent
+    Scenario "torrent" $item 25 $saveTorrent $TorrentTabs
   }
 } finally {
   if ($srv) { Stop-Process -Id $srv.Id -ErrorAction SilentlyContinue }

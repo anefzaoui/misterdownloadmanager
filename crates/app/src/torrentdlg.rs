@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
-use egui::{Color32, Pos2, Rect, Sense, Stroke, Ui, pos2, vec2};
+use egui::{Color32, Pos2, Rect, Stroke, Ui, pos2, vec2};
 use mdm_torrent::{Meta, Source};
 
 use crate::dialogs::{Outcome, window};
@@ -24,12 +24,8 @@ const ROW: f32 = 17.0;
 type Slot = Arc<Mutex<Option<Result<Meta, String>>>>;
 
 crate::theme::themed! {
-    LIST_BG = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
     LIST_HEAD = rgb(0x19, 0x19, 0x19), rgb(0xf3, 0xf3, 0xf3);
     LIST_LINE = rgb(0x4a, 0x4a, 0x4a), rgb(0xe5, 0xe5, 0xe5);
-    ERROR = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
-    MUTED = rgb(0xa0, 0xa0, 0xa0), rgb(0x6d, 0x6d, 0x6d);
-    THUMB = rgb(0x95, 0x95, 0x95), rgb(0x85, 0x85, 0x85);
 }
 
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
@@ -58,12 +54,14 @@ pub struct TorrentDialog {
     known: HashSet<String>,
     host: Host,
     lookup: Option<Slot>,
+    /// The look-up running (Stop ends it).
+    lookup_task: Option<tokio::task::JoinHandle<()>>,
     /// When the lookup started (the loading state counts the seconds).
     started: Option<Instant>,
     meta: Option<Meta>,
     chosen: Vec<bool>,
-    /// First row shown (the list scrolls by whole rows).
-    first: usize,
+    /// The file tree's scroll and selection.
+    rows: winui::RowList,
     /// The file tree (built when the list arrives) and which folders are open.
     tree: Vec<Node>,
     open: Vec<bool>,
@@ -128,10 +126,11 @@ impl TorrentDialog {
             known,
             host,
             lookup: None,
+            lookup_task: None,
             started: None,
             meta: None,
             chosen: Vec::new(),
-            first: 0,
+            rows: Default::default(),
             tree: Vec::new(),
             open: Vec::new(),
             error: None,
@@ -148,19 +147,12 @@ impl TorrentDialog {
 
     fn look_up(&mut self, rt: &tokio::runtime::Handle, ctx: &egui::Context) {
         let text = self.source.trim().to_owned();
-        let src = match Source::magnet(&text) {
-            Some(m) => m,
-            None => match std::fs::read(text.trim_matches('"')) {
-                Ok(bytes) => Source::File(bytes),
-                Err(_) => {
-                    self.error = Some(
-                        crate::i18n::t("Enter a magnet link or choose a .torrent file").into(),
-                    );
-                    return;
-                }
-            },
-        };
-        self.from_magnet = matches!(src, Source::Magnet(_));
+        let magnet = Source::magnet(&text);
+        self.from_magnet = magnet.is_some();
+        // A .torrent file is read with the rest of the look-up, off the window's thread (a
+        // path on a slow share froze every window).
+        let path = text.trim_matches('"').to_owned();
+        let not_found = crate::i18n::t("Enter a magnet link or choose a .torrent file").to_owned();
         let slot: Slot = Arc::new(Mutex::new(None));
         let (out, host, known, ctx) = (
             slot.clone(),
@@ -168,7 +160,18 @@ impl TorrentDialog {
             self.known.clone(),
             ctx.clone(),
         );
-        rt.spawn(async move {
+        let task = rt.spawn(async move {
+            let src = match magnet {
+                Some(m) => m,
+                None => match tokio::fs::read(&path).await {
+                    Ok(bytes) => Source::File(bytes),
+                    Err(_) => {
+                        *out.lock().unwrap() = Some(Err(not_found));
+                        ctx.request_repaint();
+                        return;
+                    }
+                },
+            };
             let res = match host.session(known).await {
                 Ok(t) => t
                     .metadata(&src, METADATA_WAIT)
@@ -180,9 +183,10 @@ impl TorrentDialog {
             ctx.request_repaint();
         });
         self.lookup = Some(slot);
+        self.lookup_task = Some(task);
         self.started = Some(Instant::now());
         self.meta = None;
-        self.first = 0;
+        self.rows = Default::default();
         self.error = None;
     }
 
@@ -299,29 +303,48 @@ impl TorrentDialog {
             None,
         )
         .clicked();
-        if browse
-            && !busy
-            && let Some(f) = rfd::FileDialog::new()
-                // i18n: the kind of file the Open dialog lists
-                .add_filter(crate::i18n::t("Torrent files"), &["torrent"])
-                .set_title(crate::i18n::t("Open torrent file"))
-                .pick_file()
-        {
+        if browse && !busy {
+            // i18n: the kind of file the Open dialog lists
+            let kind = crate::i18n::t("Torrent files").to_owned();
+            let title = crate::i18n::t("Open torrent file").to_owned();
+            winui::start_pick(ui.ctx(), "torrent-file", move || {
+                rfd::FileDialog::new()
+                    .add_filter(kind, &["torrent"])
+                    .set_title(title)
+                    .pick_file()
+            });
+        }
+        if let Some(f) = winui::picked(ui.ctx(), "torrent-file") {
             self.source = f.display().to_string();
             self.look_up(rt, ui.ctx());
         }
         let can_look = !busy && !self.source.trim().is_empty();
+        // While it looks up, the button stops it (a magnet with no peers took up to 3 minutes).
         let look = winui::button(
             ui,
             r(o, 514.0, 9.0, 75.0, 21.0),
-            "Look up",
-            kind(can_look, self.meta.is_none()),
+            // i18n: button: stop looking the torrent up
+            if busy {
+                crate::i18n::mark("Stop")
+            } else {
+                crate::i18n::mark("Look up")
+            },
+            kind(can_look || busy, self.meta.is_none()),
             false,
             None,
         )
         .clicked()
-            || (edit.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) && can_look);
-        if look && can_look {
+            || (edit.has_focus()
+                && can_look
+                && winui::enter_pressed(ui)
+                && winui::take_key(ui, egui::Key::Enter));
+        if look && busy {
+            if let Some(t) = self.lookup_task.take() {
+                t.abort();
+            }
+            self.lookup = None;
+            self.started = None;
+        } else if look && can_look {
             self.look_up(rt, ui.ctx());
         }
 
@@ -341,7 +364,7 @@ impl TorrentDialog {
             };
             text(&p, o.x + 31.0, line, &msg, winui::TEXT());
         } else if let Some(e) = &self.error {
-            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, line, e, ERROR(), o.x + 589.0);
+            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, line, e, winui::ERROR(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-error", e);
             }
@@ -444,10 +467,13 @@ impl TorrentDialog {
             None,
         )
         .clicked()
-            && let Some(d) = rfd::FileDialog::new()
-                .set_directory(&self.folder)
-                .pick_folder()
         {
+            let from = self.folder.clone();
+            winui::start_pick(ui.ctx(), "torrent-folder", move || {
+                rfd::FileDialog::new().set_directory(from).pick_folder()
+            });
+        }
+        if let Some(d) = winui::picked(ui.ctx(), "torrent-folder") {
             self.folder = d.display().to_string();
             self.folder_edited = true;
         }
@@ -459,7 +485,7 @@ impl TorrentDialog {
                 &[("folder", &crate::i18n::ltr(&goes.display().to_string()))],
             );
             let (rect, cut) =
-                winui::text_fit(&p, o.x + 70.0, o.y + 402.0, &s, MUTED(), o.x + 589.0);
+                winui::text_fit(&p, o.x + 70.0, o.y + 402.0, &s, winui::MUTED(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-goes", &s);
             }
@@ -474,7 +500,8 @@ impl TorrentDialog {
             false,
             None,
         )
-        .clicked();
+        .clicked()
+            || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
             r(o, 401.0, 428.0, 91.0, 21.0),
@@ -494,7 +521,7 @@ impl TorrentDialog {
             None,
         )
         .clicked();
-        if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+        if cancel || winui::escape_pressed(ui) {
             return Outcome::Closed;
         }
         if ready && (now || later) {
@@ -524,7 +551,7 @@ impl TorrentDialog {
         // leading edge.
         let list = winui::rect(list);
         let inner = list.shrink(1.0);
-        p.rect_filled(winui::rect(inner), 0.0, LIST_BG());
+        p.rect_filled(winui::rect(inner), 0.0, winui::FIELD());
         let head = Rect::from_min_size(inner.min, vec2(inner.width(), 20.0));
         p.rect_filled(winui::rect(head), 0.0, LIST_HEAD());
         fill(
@@ -564,7 +591,7 @@ impl TorrentDialog {
                 crate::i18n::t("Reading the file list...")
             };
             let w = winui::text_width(&p, note);
-            text(&p, c.x - w / 2.0, c.y + 22.0, note, MUTED());
+            text(&p, c.x - w / 2.0, c.y + 22.0, note, winui::MUTED());
             return;
         }
         if self.meta.is_none() {
@@ -577,78 +604,101 @@ impl TorrentDialog {
                 body.center().x - w / 2.0,
                 body.center().y + 4.0,
                 note,
-                MUTED(),
+                winui::MUTED(),
             );
             return;
         }
         let rows = visible_rows(&self.tree, &self.open);
-        let page = (body.height() / ROW).floor() as usize;
-        let max_first = rows.len().saturating_sub(page);
-        if ui.rect_contains_pointer(winui::rect(body)) {
-            let dy = ui.input(|i| i.smooth_scroll_delta.y);
-            if dy < 0.0 {
-                self.first = (self.first + 1).min(max_first);
-            } else if dy > 0.0 {
-                self.first = self.first.saturating_sub(1);
-            }
-        }
-        self.first = self.first.min(max_first);
-        let right = if max_first > 0 {
-            body.right() - 16.0
-        } else {
-            body.right()
-        };
+        // The shared row list over the body (its frame on the list's): a click selects, the
+        // box, Space or a double-click on a file ticks, a double-click or the arrow opens a
+        // folder, Right / Left open and close the selected one.
+        let (tree, open, chosen) = (&self.tree, &self.open, &self.chosen);
         let mut toggle = None;
         let mut flip_open = None;
-        for (k, &n) in rows.iter().skip(self.first).take(page).enumerate() {
-            let node = &self.tree[n];
-            let top = body.top() + ROW * k as f32;
-            let row = Rect::from_min_max(pos2(body.left(), top), pos2(right, top + ROW));
-            let resp = ui.interact(
-                winui::rect(row),
-                egui::Id::unique(("torrent-node", n)),
-                Sense::click(),
-            );
-            if resp.hovered() {
-                p.rect_filled(winui::rect(row), 0.0, LIST_LINE().gamma_multiply(0.6));
-            }
-            let x = row.left() + 6.0 + 16.0 * node.depth as f32;
-            // Folders: an expander (▸ closed, ▾ open), clicked or double-clicked on the row.
-            let is_dir = node.file.is_none();
-            if is_dir {
-                let arrow = Rect::from_min_size(pos2(x, top), vec2(14.0, ROW));
-                let ar = ui.interact(
-                    winui::rect(arrow),
-                    egui::Id::unique(("torrent-arrow", n)),
-                    Sense::click(),
-                );
-                if ar.clicked() || resp.double_clicked() {
-                    flip_open = Some(n);
+        let ev = winui::row_list(
+            ui,
+            "torrent-tree",
+            winui::rect(body.expand(1.0)),
+            rows.len(),
+            ROW,
+            &mut self.rows,
+            |ui, clip, k, row, look| {
+                let n = rows[k];
+                let node = &tree[n];
+                let top = row.top();
+                let x = row.left() + 6.0 + 16.0 * node.depth as f32;
+                let is_dir = node.file.is_none();
+                if is_dir {
+                    let arrow = Rect::from_min_size(pos2(x, top), vec2(14.0, ROW));
+                    let ar = ui.interact(
+                        winui::rect(arrow),
+                        egui::Id::unique(("torrent-arrow", n)),
+                        winui::pointer_only(),
+                    );
+                    if ar.clicked() {
+                        flip_open = Some(n);
+                    }
+                    expander(clip, pos2(x + 4.0, top + 5.0), open[n]);
                 }
-                expander(&p, pos2(x + 4.0, top + 5.0), self.open[n]);
+                let state = tri_state(node, chosen);
+                let glyph = pos2(x + 16.0, top + 2.0);
+                let mut on = state == Tri::All;
+                if winui::row_check(ui, clip, glyph, &mut on, ("torrent-node", n)) {
+                    toggle = Some(n);
+                }
+                if state == Tri::Some {
+                    mixed_mark(clip, glyph);
+                }
+                let size = crate::dialogs::dialog_size(node.size);
+                let size_w = winui::text_width(clip, &size);
+                let left = glyph.x + 19.0;
+                // A name keeps its own direction (cut inside its isolate), whole on hover.
+                let name = crate::i18n::isolate(&node.name);
+                let max = row.right() - 8.0 - size_w - 12.0;
+                winui::fit(
+                    ui,
+                    clip,
+                    left,
+                    top + 12.0,
+                    &name,
+                    look.ink,
+                    max,
+                    ("torrent-name", n),
+                );
+                let size_color = if is_dir && !look.selected {
+                    winui::MUTED()
+                } else {
+                    look.ink
+                };
+                winui::text_right(clip, row.right() - 8.0, top + 12.0, &size, size_color);
+            },
+        );
+        let is_dir = |k: usize| self.tree[rows[k]].file.is_none();
+        if let Some(k) = ev.double_clicked {
+            if is_dir(k) {
+                flip_open = Some(rows[k]);
+            } else {
+                toggle = Some(rows[k]);
             }
-            let state = tri_state(node, &self.chosen);
-            let glyph = pos2(x + 16.0, top + 2.0);
-            let mut on = state == Tri::All;
-            let clicked = winui::checkbox(ui, glyph, &mut on, "", true).clicked();
-            if state == Tri::Some {
-                mixed_mark(&p, glyph);
-            }
-            if clicked || (resp.clicked() && !(is_dir && flip_open == Some(n))) {
-                toggle = Some(n);
-            }
-            let size = crate::dialogs::dialog_size(node.size);
-            let size_w = winui::text_width(&p, &size);
-            let left = glyph.x + 19.0;
-            let max = right - 8.0 - size_w - 12.0 - left;
-            // A name keeps its own direction (cut inside its isolate).
-            let name = crate::i18n::isolate(&node.name);
-            let shown = winui::ellipsize(&p, &winui::tahoma(), &name, max);
-            text(&p, left, top + 12.0, &shown, winui::TEXT());
-            let size_color = if is_dir { MUTED() } else { winui::TEXT() };
-            winui::text_right(&p, right - 8.0, top + 12.0, &size, size_color);
-            if shown != name {
-                resp.on_hover_text(node.name.clone());
+        }
+        if let Some(k) = ev.space {
+            toggle = Some(rows[k]);
+        }
+        if ev.focused {
+            let tree = &self.tree;
+            self.rows.type_to(ui, "torrent-tree", rows.len(), |k| {
+                tree[rows[k]].name.clone()
+            });
+        }
+        // Right opens the selected folder, Left closes it.
+        if ev.focused
+            && let Some(k) = self.rows.selected.filter(|k| *k < rows.len() && is_dir(*k))
+        {
+            let n = rows[k];
+            if (winui::take_key(ui, egui::Key::ArrowRight) && !self.open[n])
+                || (winui::take_key(ui, egui::Key::ArrowLeft) && self.open[n])
+            {
+                flip_open = Some(n);
             }
         }
         if let Some(n) = flip_open {
@@ -660,14 +710,6 @@ impl TorrentDialog {
             for &f in &self.tree[n].files {
                 self.chosen[f] = on;
             }
-        }
-        if max_first > 0 {
-            let track = Rect::from_min_max(pos2(right, body.top()), body.max);
-            let span = track.height() - 4.0;
-            let len = (span * page as f32 / rows.len() as f32).max(12.0);
-            let y0 = track.top() + 2.0 + (span - len) * self.first as f32 / max_first as f32;
-            let x = track.center().x.floor();
-            fill(&p, x - 1.0, y0, x, y0 + len, THUMB());
         }
     }
 }
@@ -710,7 +752,7 @@ impl TorrentSettings {
                     o.x + 32.0,
                     o.y + 44.0,
                     crate::i18n::t("Off: a finished torrent stops, like any download."),
-                    MUTED(),
+                    winui::MUTED(),
                 );
                 winui::checkbox(
                     ui,
@@ -723,10 +765,19 @@ impl TorrentSettings {
                     &p,
                     o.x + 32.0,
                     o.y + 88.0,
-                    crate::i18n::t(
-                        "For your Windows account only. Another app chosen in \"Open with\" stays first.",
-                    ),
-                    MUTED(),
+                    // What the switch does is the system's: Windows asks per account, macOS and
+                    // Linux register MDM as the handler.
+                    if cfg!(windows) {
+                        crate::i18n::t(
+                            "For your Windows account only. Another app chosen in \"Open with\" stays first.",
+                        )
+                    } else {
+                        // i18n: Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
+                        crate::i18n::t(
+                            "For your account only. Another app set as the default stays first.",
+                        )
+                    },
+                    winui::MUTED(),
                 );
                 let ok = winui::button(
                     ui,
@@ -746,9 +797,9 @@ impl TorrentSettings {
                     None,
                 )
                 .clicked();
-                if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
-                } else if ok || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                } else if ok || winui::enter_pressed(ui) {
                     Outcome::Done((self.share, self.assoc))
                 } else {
                     Outcome::Open
@@ -880,7 +931,7 @@ fn visible_rows(tree: &[Node], open: &[bool]) -> Vec<usize> {
 /// A tree expander at English point `at`: ▸ when closed (pointing into the row: ◂ in RTL), ▾
 /// when open.
 fn expander(p: &egui::Painter, at: Pos2, open: bool) {
-    let c = MUTED();
+    let c = winui::MUTED();
     let pts = if open {
         vec![at, pos2(at.x + 8.0, at.y), pos2(at.x + 4.0, at.y + 5.0)]
     } else {
@@ -896,11 +947,8 @@ fn expander(p: &egui::Painter, at: Pos2, open: bool) {
 
 /// The "some chosen" mark over an unticked checkbox glyph.
 fn mixed_mark(p: &egui::Painter, glyph: Pos2) {
-    let c = if crate::theme::dark() {
-        Color32::BLACK
-    } else {
-        rgb(0x00, 0x5f, 0xb8)
-    };
+    // The accent in both modes (black on the dark unticked box could not be seen).
+    let c = winui::accent();
     // `glyph` is English, as the check box's.
     p.rect_filled(
         winui::rect(Rect::from_min_size(

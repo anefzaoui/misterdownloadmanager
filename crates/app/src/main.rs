@@ -130,13 +130,29 @@ fn main() -> eframe::Result {
         .and_then(|z| z.parse::<f32>().ok())
         .filter(|z| (0.5..=4.0).contains(z));
     let z = zoom.unwrap_or(1.0);
+    // The list and settings, read before the window opens: it comes back where it was left.
+    let loaded = store::load();
+    #[cfg(unix)]
+    use unix::on_a_screen;
+    #[cfg(windows)]
+    use win32::on_a_screen;
+    let saved = loaded
+        .settings
+        .window
+        .filter(|_| zoom.is_none() && !offscreen())
+        .filter(|[x, y, w, h]| *w >= 600 && *h >= 300 && on_a_screen(x + 40, y + 10));
+    let size = saved.map_or([930.0 * z, 470.0 * z], |[_, _, w, h]| [w as f32, h as f32]);
     let mut viewport = quiet(
         egui::ViewportBuilder::default()
             .with_title(MAIN_TITLE)
-            .with_inner_size([930.0 * z, 470.0 * z])
+            .with_inner_size(size)
             .with_min_inner_size([600.0 * z, 300.0 * z])
+            .with_maximized(loaded.settings.window_maximized && !offscreen())
             .with_icon(app_icon()),
     );
+    if let Some([x, y, ..]) = saved {
+        viewport = viewport.with_position([x as f32, y as f32]);
+    }
     if offscreen() {
         viewport = viewport.with_position([-20000.0, -20000.0]);
     }
@@ -151,7 +167,7 @@ fn main() -> eframe::Result {
             if let Some(z) = zoom {
                 cc.egui_ctx.set_zoom_factor(z);
             }
-            Ok(Box::new(app::App::new(cc, handle, cmd)))
+            Ok(Box::new(app::App::new(cc, handle, cmd, loaded)))
         }),
     )
 }

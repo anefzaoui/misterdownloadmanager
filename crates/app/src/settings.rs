@@ -31,6 +31,15 @@ pub struct Settings {
     pub delete_files_too: bool,
     /// Categories pane frame width (IDM: 143, frame x 6..149); dragged with the splitter.
     pub categories_width: u32,
+    /// The main window as last left: position and size (points: x, y, width, height), and
+    /// maximized.
+    pub window: Option<[i32; 4]>,
+    pub window_maximized: bool,
+    /// The Categories pane shown, its branches open (All, Unfinished, Finished, Queues),
+    /// and the node last shown.
+    pub show_categories: bool,
+    pub branches: [bool; 4],
+    pub view: Option<crate::app::View>,
     /// View → Dark Mode support (IDM 6.37): follow Windows' dark app mode; off = always light.
     pub dark_mode_support: bool,
     /// Scheduler → Download limits: "Download no more than `limits_mb` MBytes every
@@ -157,6 +166,11 @@ impl Default for Settings {
             confirm_delete: true,
             delete_files_too: false,
             categories_width: 143,
+            window: None,
+            window_maximized: false,
+            show_categories: true,
+            branches: [true, false, false, false],
+            view: None,
             dark_mode_support: true,
             limits_on: false,
             limits_mb: 200,
@@ -229,6 +243,24 @@ pub fn remember(list: &mut Vec<String>, value: &str) {
 }
 
 impl Settings {
+    /// `live` with the settings a dialog changed (`from` → `to`) put in, field by field: what
+    /// changed elsewhere while it was open (the toolbar's Speed Limiter, Torrent settings, the
+    /// Categories pane) is kept, not reverted to the copy the dialog started from.
+    pub fn merge_changes(live: &Settings, from: &Settings, to: &Settings) -> Settings {
+        let value = |s: &Settings| serde_json::to_value(s).unwrap_or_default();
+        let (mut out, before, after) = (value(live), value(from), value(to));
+        if let (Some(out), Some(before), Some(after)) =
+            (out.as_object_mut(), before.as_object(), after.as_object())
+        {
+            for (k, v) in after {
+                if before.get(k) != Some(v) {
+                    out.insert(k.clone(), v.clone());
+                }
+            }
+        }
+        serde_json::from_value(out).unwrap_or_else(|_| to.clone())
+    }
+
     /// Options → Save to: the category's folder (its own choice, else `Downloads\<Category>`).
     pub fn category_dir(
         &self,
@@ -334,6 +366,18 @@ impl Settings {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_dialog_keeps_what_changed_elsewhere_meanwhile() {
+        let from = super::Settings::default();
+        let mut live = from.clone();
+        live.speed_limit_on = !from.speed_limit_on; // the toolbar, while Options was open
+        let mut to = from.clone();
+        to.max_connections = 3; // Options
+        let out = super::Settings::merge_changes(&live, &from, &to);
+        assert_eq!(out.speed_limit_on, live.speed_limit_on);
+        assert_eq!(out.max_connections, 3);
+    }
+
     use super::*;
 
     #[test]

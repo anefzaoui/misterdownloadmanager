@@ -6,23 +6,13 @@
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
-use egui::{Color32, Pos2, Rect, Sense, Ui, pos2};
+use egui::{Pos2, Ui, pos2};
 use mdm_tools::resolve::{Choice, Video};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r, text};
 
 type Slot<T> = Arc<Mutex<Option<Result<T, String>>>>;
-
-crate::theme::themed! {
-    LIST_BG = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
-    ERROR = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
-    MUTED = rgb(0xa0, 0xa0, 0xa0), rgb(0x6d, 0x6d, 0x6d);
-}
-
-const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
-    Color32::from_rgb(r, g, b)
-}
 
 /// What OK adds.
 pub struct VideoAdd {
@@ -46,10 +36,15 @@ pub struct VideoDialog {
     name: String,
     lookup: Option<Slot<Video>>,
     install: Option<(Tool, Slot<mdm_tools::Installed>)>,
+    /// The helpers found (read again when an install ends, not every frame: it reads files).
+    tools: Option<Tools>,
+    /// The address the choices were looked up for (an edited one needs Look up again).
+    looked_up: String,
     video: Option<(Video, Vec<Choice>)>,
     chosen: usize,
     /// First choice shown (the list scrolls by whole rows).
-    first: usize,
+    /// The choices list's scroll and selection.
+    rows: winui::RowList,
     error: Option<String>,
     focused: bool,
     /// Download Now (true) or Later, once chosen.
@@ -109,9 +104,11 @@ impl VideoDialog {
             name: String::new(),
             lookup: None,
             install: None,
+            tools: None,
+            looked_up: String::new(),
             video: None,
             chosen: 0,
-            first: 0,
+            rows: Default::default(),
             error: None,
             focused: false,
             start_now: None,
@@ -131,10 +128,10 @@ impl VideoDialog {
 
     /// The choices for a looked-up video: merged qualities when ffmpeg is there.
     fn set_video(&mut self, v: Video) {
-        let merge = tools().2.is_some();
+        let merge = self.tools.get_or_insert_with(tools).2.is_some();
         let choices = mdm_tools::resolve::choices(&v, merge);
         self.chosen = 0;
-        self.first = 0;
+        self.rows = Default::default();
         self.error = choices
             .is_empty()
             .then(|| crate::i18n::t("No video this can download on that page").into());
@@ -158,6 +155,7 @@ impl VideoDialog {
             .and_then(|(t, s)| s.lock().unwrap().take().map(|r| (*t, r)));
         if let Some((tool, res)) = installed {
             self.install = None;
+            self.tools = None;
             match res {
                 Err(e) => {
                     let what = if tool == Tool::YtDlp {
@@ -246,7 +244,7 @@ impl VideoDialog {
 
     fn body(&mut self, ui: &mut Ui, o: Pos2, rt: &tokio::runtime::Handle) -> Outcome<()> {
         let p = ui.painter().clone();
-        let (dir, ytdlp, ffmpeg) = tools();
+        let (dir, ytdlp, ffmpeg) = self.tools.get_or_insert_with(tools).clone();
         text(
             &p,
             o.x + 11.0,
@@ -282,7 +280,10 @@ impl VideoDialog {
             None,
         )
         .clicked()
-            || (edit.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) && can_look);
+            || (edit.has_focus()
+                && can_look
+                && winui::enter_pressed(ui)
+                && winui::take_key(ui, egui::Key::Enter));
         // Opened for a page: look it up as soon as yt-dlp is there.
         let look = look || (can_look && std::mem::take(&mut self.auto_look));
         if look
@@ -302,6 +303,7 @@ impl VideoDialog {
                 ctx.request_repaint();
             });
             self.lookup = Some(slot);
+            self.looked_up = self.page.trim().to_owned();
             self.video = None;
             self.error = None;
         }
@@ -318,12 +320,22 @@ impl VideoDialog {
                     "Video lookups use yt-dlp (about 23 MB, checked against its signature).",
                 ),
             )),
-            (Some(_), None) => Some((
+            // MDM installs ffmpeg on Windows only (its builds are Windows ones); elsewhere the
+            // system's package manager has it, and the note says so instead of a button.
+            (Some(_), None) if cfg!(windows) => Some((
                 Tool::Ffmpeg,
                 // i18n: button: download and install the ffmpeg program
                 crate::i18n::mark("Install ffmpeg"),
                 crate::i18n::t(
                     "The best qualities need ffmpeg to merge video and audio (about 80 MB).",
+                ),
+            )),
+            (Some(_), None) => Some((
+                Tool::Ffmpeg,
+                "",
+                // i18n: in Download video, on macOS and Linux (no button: the system installs it)
+                crate::i18n::t(
+                    "The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).",
                 ),
             )),
             _ => None,
@@ -352,9 +364,19 @@ impl VideoDialog {
                 winui::full_on_hover(ui, rect, "video-title", &v.title);
             }
         } else if let Some((_, _, msg)) = offer {
-            winui::text_fit(&p, o.x + 11.0, line_y, msg, MUTED(), o.x + 390.0);
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                line_y,
+                msg,
+                winui::MUTED(),
+                o.x + 390.0,
+                "video-offer",
+            );
         }
         if let Some((tool, label, _)) = offer
+            && !label.is_empty()
             && installing.is_none()
             && winui::button(
                 ui,
@@ -370,62 +392,30 @@ impl VideoDialog {
             self.install(tool, dir, rt, ui.ctx());
         }
         if let Some(e) = &self.error {
-            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, o.y + 86.0, e, ERROR(), o.x + 489.0);
+            let (rect, cut) =
+                winui::text_fit(&p, o.x + 11.0, o.y + 86.0, e, winui::ERROR(), o.x + 489.0);
             if cut {
                 winui::full_on_hover(ui, rect, "video-error", e);
             }
         }
 
-        // The choices.
+        // The choices: the shared row list.
         let list = r(o, 11.0, 94.0, 478.0, 150.0);
-        winui::solid(&p, list, rgb(0x82, 0x87, 0x90));
-        p.rect_filled(list.shrink(1.0), 0.0, LIST_BG());
         let mut picked = None;
-        if let Some((_, choices)) = &self.video {
-            // Whole rows only, scrolled by the wheel; a thin bar when they don't all fit.
-            let page = ((list.height() - 4.0) / 17.0).floor() as usize;
-            let max_first = choices.len().saturating_sub(page);
-            if ui.rect_contains_pointer(list) {
-                let dy = ui.input(|i| i.smooth_scroll_delta.y);
-                if dy < 0.0 {
-                    self.first = (self.first + 1).min(max_first);
-                } else if dy > 0.0 {
-                    self.first = self.first.saturating_sub(1);
-                }
-            }
-            self.first = self.first.min(max_first);
-            let clip = p.with_clip_rect(list.shrink(1.0));
-            // Rows laid out in English, made where they are on screen: the choice from the
-            // leading edge, its size at the trailing one, the bar after them.
-            let list = winui::rect(list);
-            let right = list.right() - if max_first > 0 { 17.0 } else { 1.0 };
-            for (k, (i, c)) in choices
-                .iter()
-                .enumerate()
-                .skip(self.first)
-                .take(page)
-                .enumerate()
-            {
-                let top = list.top() + 2.0 + 17.0 * k as f32;
-                let row = Rect::from_min_max(pos2(list.left() + 1.0, top), pos2(right, top + 17.0));
-                if ui
-                    .interact(
-                        winui::rect(row),
-                        egui::Id::unique(("video-choice", i)),
-                        Sense::click(),
-                    )
-                    .clicked()
-                {
-                    picked = Some(i);
-                }
-                let sel = i == self.chosen;
-                if sel {
-                    clip.rect_filled(winui::rect(row), 0.0, winui::SELECTION);
-                }
-                let color = if sel { Color32::WHITE } else { winui::TEXT() };
-                // A format ("1080p mp4, 60 fps") reads left to right.
+        let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
+        self.rows.selected = Some(self.chosen).filter(|c| *c < choices.len());
+        let ev = winui::row_list(
+            ui,
+            "video-choices",
+            list,
+            choices.len(),
+            17.0,
+            &mut self.rows,
+            |_, clip, i, row, look| {
+                let c = &choices[i];
+                // A format ("1080p mp4, 60 fps") reads left to right; its size at the trailing edge.
                 let label = crate::i18n::ltr(&c.label);
-                text(&clip, row.left() + 6.0, top + 12.0, &label, color);
+                text(clip, row.left() + 6.0, row.top() + 12.0, &label, look.ink);
                 let size = c
                     .size
                     // i18n: the video's file size is not known
@@ -433,15 +423,18 @@ impl VideoDialog {
                         crate::i18n::t("size unknown").into(),
                         crate::dialogs::dialog_size,
                     );
-                winui::text_right(&clip, row.right() - 6.0, top + 12.0, &size, color);
-            }
-            if max_first > 0 {
-                let (t, b) = (list.top() + 2.0, list.bottom() - 2.0);
-                let len = ((b - t) * page as f32 / choices.len() as f32).max(12.0);
-                let y0 = t + (b - t - len) * self.first as f32 / max_first as f32;
-                let x = list.right() - 9.0;
-                winui::fill_l(&p, x - 1.0, y0, x, y0 + len, MUTED());
-            }
+                winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
+            },
+        );
+        if ev.focused
+            && self.rows.type_to(ui, "video-choices", choices.len(), |i| {
+                choices[i].label.clone()
+            })
+        {
+            picked = self.rows.selected;
+        }
+        if let Some(i) = ev.picked {
+            picked = Some(i);
         }
         if let Some(i) = picked {
             self.chosen = i;
@@ -471,10 +464,13 @@ impl VideoDialog {
             None,
         )
         .clicked()
-            && let Some(d) = rfd::FileDialog::new()
-                .set_directory(&self.folder)
-                .pick_folder()
         {
+            let from = self.folder.clone();
+            winui::start_pick(ui.ctx(), "video-folder", move || {
+                rfd::FileDialog::new().set_directory(from).pick_folder()
+            });
+        }
+        if let Some(d) = winui::picked(ui.ctx(), "video-folder") {
             self.folder = d.display().to_string();
         }
         text(
@@ -492,9 +488,13 @@ impl VideoDialog {
             false,
         );
 
+        // The choices belong to the address looked up: an edited address is looked up first
+        // (it downloaded the new page with the old one's format and name).
+        let stale = self.video.is_some() && self.page.trim() != self.looked_up;
         let ready = self.video.as_ref().is_some_and(|(_, c)| !c.is_empty())
             && !self.name.trim().is_empty()
-            && !busy;
+            && !busy
+            && !stale;
         let kind = |default: bool| match (ready, default) {
             (false, _) => ButtonKind::Disabled,
             (true, true) => ButtonKind::Default,
@@ -507,8 +507,10 @@ impl VideoDialog {
             kind(true),
             false,
             None,
-        )
-        .clicked();
+        );
+        // i18n: why Download Now is greyed: the page address was changed after the look-up
+        let now = winui::why_disabled(now, stale, "Look up the new address first").clicked()
+            || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
             r(o, 335.0, 327.0, 73.0, 21.0),
@@ -528,7 +530,7 @@ impl VideoDialog {
             None,
         )
         .clicked();
-        if cancel || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+        if cancel || winui::escape_pressed(ui) {
             return Outcome::Closed;
         }
         if ready && (now || later) {

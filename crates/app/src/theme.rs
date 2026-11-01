@@ -345,6 +345,9 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
 
 pub fn apply(ctx: &egui::Context) {
     load_fonts(ctx, false);
+    // A press held for a while is still a click when let go over the control, as in Windows
+    // (egui gives it up after 0.8 s).
+    ctx.options_mut(|o| o.input_options.max_click_duration = f64::INFINITY);
     egui_extras::install_image_loaders(ctx);
     let mut v = Visuals::dark();
     v.panel_fill = WINDOW;
@@ -369,5 +372,42 @@ pub fn apply(ctx: &egui::Context) {
     v.widgets.inactive.weak_bg_fill = Color32::from_rgb(0x3a, 0x3a, 0x3a);
     v.widgets.inactive.bg_stroke = Stroke::new(1.0, Color32::from_rgb(0x6a, 0x6a, 0x6a));
     v.window_corner_radius = CornerRadius::same(0);
-    ctx.set_visuals(v);
+    // Each egui theme its own visuals (the mode switches between them): set into the theme
+    // current at start only, the other side kept egui's stock look, and which one depended on
+    // the system's mode at launch (tooltips, a multi-line box's scroll bar).
+    ctx.set_visuals_of(egui::Theme::Dark, v);
+    let mut l = Visuals::light();
+    l.panel_fill = Color32::from_gray(0xf0);
+    l.window_fill = Color32::from_gray(0xf9);
+    l.override_text_color = Some(Color32::BLACK);
+    l.selection.bg_fill = crate::winui::SELECTION;
+    l.selection.stroke = Stroke::new(1.0, Color32::WHITE);
+    for w in [
+        &mut l.widgets.noninteractive,
+        &mut l.widgets.inactive,
+        &mut l.widgets.hovered,
+        &mut l.widgets.active,
+        &mut l.widgets.open,
+    ] {
+        w.corner_radius = r;
+    }
+    l.window_corner_radius = CornerRadius::same(0);
+    // Tooltips as Windows 11's: 4 px corners, a hairline border, roomy padding, wrapped at
+    // 320 px.
+    l.menu_corner_radius = CornerRadius::same(4);
+    l.window_stroke = Stroke::new(1.0, Color32::from_gray(0xe5));
+    ctx.set_visuals_of(egui::Theme::Light, l);
+    ctx.style_mut_of(egui::Theme::Dark, |s| {
+        s.visuals.menu_corner_radius = CornerRadius::same(4);
+        s.visuals.window_stroke = Stroke::new(1.0, Color32::from_gray(0x1a));
+    });
+    ctx.all_styles_mut(|s| {
+        s.spacing.tooltip_width = 320.0;
+        s.spacing.menu_margin = egui::Margin {
+            left: 9,
+            right: 9,
+            top: 6,
+            bottom: 7,
+        };
+    });
 }

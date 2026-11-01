@@ -7,7 +7,7 @@
 
 use std::collections::HashMap;
 
-use egui::{Color32, Pos2, Rect, Sense, Stroke, TextureHandle, Ui, pos2, vec2};
+use egui::{Color32, Pos2, Rect, Stroke, TextureHandle, Ui, pos2, vec2};
 
 use crate::icons::Icon;
 use crate::scrollbar;
@@ -45,7 +45,8 @@ themed! {
     GLYPH = rgb(0xff, 0xff, 0xff), grey(0x1a);
     TEXT_DISABLED_MENU = rgb(0x6d, 0x6d, 0x6d), grey(0x9f);
     TB_DISABLED = rgb(0xa0, 0xa0, 0xa0), grey(0xa0);
-    TB_ARROW = rgb(0x28, 0x28, 0x28), grey(0x28);
+    /// A drop-down's arrow (dark: light on the dark band, where #282828 could not be seen).
+    TB_ARROW = rgb(0xd0, 0xd0, 0xd0), grey(0x28);
     CAT_FRAME = rgb(0xdc, 0xdc, 0xdc), grey(0xdc);
     TREE_BG = rgb(0x20, 0x20, 0x20), grey(0xff);
     TREE_LINES = rgb(0x6d, 0x6d, 0x6d), grey(0x6d);
@@ -213,18 +214,18 @@ fn generic_page(p: &egui::Painter, min: Pos2) {
 /// Dark mode is IDM's owner-drawn bar; light mode the standard Win32 one (text at item.x + 7,
 /// width = text + 14; light-main.md).
 const MENUS_DARK: [(&str, f32, f32, f32); 5] = [
-    ("Tasks", 0.0, 49.0, 10.0),
-    ("File", 49.0, 37.0, 58.0),
-    ("Downloads", 86.0, 84.0, 98.0),
-    ("View", 170.0, 44.0, 179.0),
-    ("Help", 214.0, 43.0, 223.0),
+    ("&Tasks", 0.0, 49.0, 10.0),
+    ("&File", 49.0, 37.0, 58.0),
+    ("&Downloads", 86.0, 84.0, 98.0),
+    ("&View", 170.0, 44.0, 179.0),
+    ("&Help", 214.0, 43.0, 223.0),
 ];
 const MENUS_LIGHT: [(&str, f32, f32, f32); 5] = [
-    ("Tasks", 0.0, 42.0, 7.0),
-    ("File", 42.0, 32.0, 49.0),
-    ("Downloads", 74.0, 73.0, 81.0),
-    ("View", 147.0, 39.0, 154.0),
-    ("Help", 186.0, 39.0, 193.0),
+    ("&Tasks", 0.0, 42.0, 7.0),
+    ("&File", 42.0, 32.0, 49.0),
+    ("&Downloads", 74.0, 73.0, 81.0),
+    ("&View", 147.0, 39.0, 154.0),
+    ("&Help", 186.0, 39.0, 193.0),
 ];
 
 /// The menu bar in the interface language: English keeps the measured rects; a translation is
@@ -257,7 +258,7 @@ pub fn menus(p: &egui::Painter) -> Vec<(&'static str, f32, f32, f32)> {
     translated
         .into_iter()
         .map(|label| {
-            let w = menu_width(p, label) + pad;
+            let w = menu_width(p, &plain(label).0) + pad;
             let item = (label, x, w, x + inset);
             x += w;
             item
@@ -300,7 +301,7 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     for (i, (label, x, w, tx)) in menus(&p).iter().enumerate() {
         // From the leading edge: the first menu at the right in RTL.
         let rc = winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H)));
-        let resp = ui.interact(rc, egui::Id::unique(("menubar", i)), Sense::click());
+        let resp = ui.interact(rc, egui::Id::unique(("menubar", i)), winui::pointer_only());
         if open == Some(i) {
             p.rect_filled(rc, 0.0, MENUBAR_OPEN());
         } else if open.is_none() && resp.hovered() {
@@ -308,11 +309,15 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
             let hot = Rect::from_min_max(rc.min + vec2(0.0, 1.0), rc.max - vec2(0.0, bottom));
             p.rect_filled(hot, 0.0, MENUBAR_HOT());
         }
-        let drawn = text_font(&p, winui::segoe(), o.x + tx, o.y + 13.0, label, TEXT());
-        // Dark mode always underlines mnemonics (1 px under the first letter's advance);
-        // light mode follows the Windows rule (only after Alt) — not drawn.
-        if crate::theme::dark() {
-            let (x0, x1) = winui::char_span(&p, &winui::segoe(), label, 0, drawn);
+        // The title without its "&", its access letter underlined (each language marks its
+        // own: French Tâches and Téléchargements both had T).
+        let (shown, letter) = plain(label);
+        let drawn = text_font(&p, winui::segoe(), o.x + tx, o.y + 13.0, &shown, TEXT());
+        // Dark mode always underlines mnemonics (1 px under the letter's advance); light mode
+        // follows the Windows rule: once the keyboard is in use (`cues`).
+        if cues(ui.ctx()) {
+            let (x0, x1) =
+                winui::char_span(&p, &winui::segoe(), &shown, letter.unwrap_or(0), drawn);
             fill(&p, x0, o.y + 15.0, x1, o.y + 15.0, TEXT());
         }
         if resp.clicked() || (open.is_some() && open != Some(i) && resp.hovered()) {
@@ -353,12 +358,25 @@ pub fn label(text: &str) -> &'static str {
 const SLOT: f32 = 22.0;
 const SEP: f32 = 9.0;
 
+/// A menu title's access letter, lower case ("&Tasks": "t"; none marked: its first letter).
+pub fn menu_letter(label: &str) -> String {
+    let (shown, at) = plain(label);
+    shown
+        .chars()
+        .nth(at.unwrap_or(0))
+        .map(|c| c.to_lowercase().to_string())
+        .unwrap_or_default()
+}
+
 fn plain(label: &str) -> (String, Option<usize>) {
     let mut out = String::new();
     let mut mnemonic = None;
     let mut chars = label.chars().peekable();
     while let Some(c) = chars.next() {
-        if c == '&' && chars.peek().is_some() {
+        if c == '&' && chars.peek() == Some(&'&') {
+            // "&&": an "&" in the text (a queue named "Tom & Jerry"), no access key.
+            out.push(chars.next().unwrap());
+        } else if c == '&' && chars.peek().is_some() {
             mnemonic = Some(out.chars().count());
             out.push(chars.next().unwrap());
         } else {
@@ -380,7 +398,9 @@ pub enum PopupResult<C> {
 /// this system shows it: macOS's symbols (⌘N, ⇧⌦), elsewhere the translated key names.
 pub fn key_label(spec: &'static str) -> String {
     if cfg!(target_os = "macos") {
-        spec.replace("Ctrl+", "\u{2318}")
+        // Translated first ("Drag on blank space", "Home / End"...), then the Mac's symbols.
+        crate::i18n::tc("key", spec)
+            .replace("Ctrl+", "\u{2318}")
             .replace("Shift+", "\u{21e7}")
             .replace("Alt+", "\u{2325}")
             .replace("Delete", "\u{2326}")
@@ -410,8 +430,24 @@ fn without_shortcut(text: &str) -> &str {
 
 /// Open a menu from the keyboard: its first item is highlighted.
 pub fn start_keyboard(ctx: &egui::Context, id: &str) {
+    show_cues(ctx);
     let kb = egui::Id::unique(("popup-sub", id)).with("kb");
     ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(usize::MAX), None)));
+}
+
+/// Keyboard cues on: the user reached for the keyboard (Alt, F10, a menu opened by keys), so
+/// light mode underlines access letters from now on, the Windows rule (dark mode always does).
+pub fn show_cues(ctx: &egui::Context) {
+    ctx.data_mut(|d| d.insert_temp(egui::Id::unique("keyboard-cues"), true));
+}
+
+/// Whether access letters are underlined: always in dark mode, after [`show_cues`] in light.
+pub fn cues(ctx: &egui::Context) -> bool {
+    crate::theme::dark()
+        || ctx.data(|d| {
+            d.get_temp::<bool>(egui::Id::unique("keyboard-cues"))
+                .unwrap_or(false)
+        })
 }
 
 /// The next item of `level` from `from` in direction `dir`, skipping separators (wraps).
@@ -460,7 +496,7 @@ fn menu_keys(i: &egui::InputState) -> Vec<egui::Key> {
 }
 
 /// Keys for an open menu (pressed in the main window or in the menu's own windows): Up and Down
-/// move the highlight, Right opens a submenu or the next menu, Left closes a submenu or opens
+/// move the highlight (Home / End to the first / last), Right opens a submenu or the next menu, Left closes a submenu or opens
 /// the previous menu, Enter or an item's underlined letter runs it, Escape closes a submenu.
 fn keyboard<C: Clone>(
     ctx: &egui::Context,
@@ -507,6 +543,11 @@ fn keyboard<C: Clone>(
         match key {
             egui::Key::ArrowDown | egui::Key::ArrowUp => {
                 let n = step(level, hl, if key == egui::Key::ArrowDown { 1 } else { -1 });
+                if in_sub { hl1 = n } else { hl0 = n }
+            }
+            // Home / End: the first / last item, as Windows' menus have them.
+            egui::Key::Home | egui::Key::End => {
+                let n = step(level, None, if key == egui::Key::Home { 1 } else { -1 });
                 if in_sub { hl1 = n } else { hl0 = n }
             }
             egui::Key::Escape if in_sub => {
@@ -591,11 +632,33 @@ pub fn popup<C: Clone>(
     hint: &dyn Fn(&C) -> Option<&'static str>,
 ) -> PopupResult<C> {
     let sub_key = egui::Id::unique(("popup-sub", id));
+    // The control that has the keys while the menu is open (a drop-down list, a text box): the
+    // menu's windows never take them, so Escape reached its window, and egui let them go there
+    // (Escape drops the focus). Escape closing the menu gives them back.
+    let opener = sub_key.with("opener");
+    let focused_now = ctx.memory(|m| m.focused());
+    if let Some(f) = focused_now {
+        ctx.data_mut(|d| d.insert_temp(opener, f));
+    }
+    let give_back = |ctx: &egui::Context| {
+        let had = ctx.data_mut(|d| {
+            let had = d.get_temp::<egui::Id>(opener);
+            d.remove::<egui::Id>(opener);
+            had
+        });
+        if let Some(had) = had
+            && focused_now.is_none()
+            && ctx.input(|i| i.key_pressed(egui::Key::Escape))
+        {
+            ctx.memory_mut(|m| m.request_focus(had));
+        }
+    };
     if let Some(r) = keyboard(ctx, entries, sub_key) {
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
         });
+        give_back(ctx);
         return r;
     }
     let origin = ctx
@@ -621,6 +684,7 @@ pub fn popup<C: Clone>(
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
         });
+        give_back(ctx);
         return PopupResult::Chosen(c);
     }
     // The menus are other windows: any press that reaches the main window, Escape, or the
@@ -645,13 +709,34 @@ pub fn popup<C: Clone>(
         && (lost_focus
             || ctx.input(|i| i.key_pressed(egui::Key::Escape) || i.pointer.any_pressed()))
     {
+        // Closed by a press: where it was, so the control that opened it doesn't take that
+        // press's click (on release) as opening it again (winui::opener_click). Read before
+        // the data lock (asking the context inside it deadlocks).
+        let press = ctx.input(|i| i.pointer.press_origin().filter(|_| i.pointer.any_pressed()));
+        let dismissed = dismissed_at_key(ctx);
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
+            if let Some(at) = press {
+                d.insert_temp(dismissed, at);
+            }
         });
+        give_back(ctx);
         return PopupResult::Dismissed;
     }
     PopupResult::Open
+}
+
+/// Where the last press that closed a popup went down, in this window.
+pub fn dismissed_at_key(ctx: &egui::Context) -> egui::Id {
+    egui::Id::unique(("popup-dismissed-at", ctx.viewport_id()))
+}
+
+/// Open a menu from the keyboard with item `i` highlighted (a drop-down list on its choice).
+pub fn start_at(ctx: &egui::Context, id: &str, i: usize) {
+    show_cues(ctx);
+    let kb = egui::Id::unique(("popup-sub", id)).with("kb");
+    ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(i), None)));
 }
 
 /// A menu label's width as Win32 sizes menus: GDI's whole-pixel width (egui's advances differ
@@ -911,9 +996,9 @@ fn popup_level<C: Clone>(
                     TEXT_DISABLED_MENU(),
                 );
             }
-            // Underlined mnemonics in dark mode only (light: the Windows rule, after Alt).
+            // Underlined mnemonics: always in dark mode, once the keyboard is in use in light.
             if let Some(m) = mn
-                && crate::theme::dark()
+                && cues(ctx)
             {
                 let (x0, x1) = winui::char_span(&painter, &winui::segoe(), &t, m, drawn);
                 fill(&painter, x0, y + 16.0, x1, y + 16.0, color);
@@ -965,10 +1050,27 @@ fn popup_level<C: Clone>(
                     }
                 }
                 MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => {
-                    // Hovering another item of the root closes an open submenu.
+                    // Resting on another item of the root closes an open submenu, after
+                    // Windows' menu delay: a pointer crossing it on the way into the submenu
+                    // (diagonally) doesn't close it.
+                    let since_key = sub_key.with(("leave-since", i));
                     if depth == 0 && hovered && open_sub.is_some() {
-                        ui.ctx().data_mut(|d| d.remove::<usize>(sub_key));
-                        sub_at = None;
+                        let now = ui.input(|inp| inp.time);
+                        let since = ui
+                            .ctx()
+                            .data_mut(|d| *d.get_temp_mut_or_insert_with(since_key, || now));
+                        if now - since >= 0.35 {
+                            ui.ctx().data_mut(|d| {
+                                d.remove::<usize>(sub_key);
+                                d.remove::<f64>(since_key);
+                            });
+                            sub_at = None;
+                        } else {
+                            ui.ctx()
+                                .request_repaint_after(std::time::Duration::from_millis(60));
+                        }
+                    } else if depth == 0 {
+                        ui.ctx().data_mut(|d| d.remove::<f64>(since_key));
                     }
                     if hovered && clicked && enabled {
                         *result = Some(c.clone());
@@ -1022,8 +1124,6 @@ pub enum ToolbarEvent {
     Click(usize),
     /// A drop-down button's arrow: its menu opens at this point (button left, y 87).
     Drop(usize, Pos2),
-    /// Right-click on any button, enabled or not (IDM's toolbar menu; none on empty space).
-    Context(Pos2),
 }
 
 /// Paint the etch (y 20, 21) and the toolbar band (y 22–91).
@@ -1088,7 +1188,7 @@ pub fn toolbar(
             pos2(x, band.top()),
             vec2(total, band_h),
         ));
-        let resp = ui.interact(rc, egui::Id::unique(("tb", i)), Sense::click());
+        let resp = ui.interact(rc, egui::Id::unique(("tb", i)), winui::pointer_only());
         let resp = if cut { resp.on_hover_text(full) } else { resp };
         let past_button = |q: Pos2| winui::mx(q.x) >= x + bw;
         if *enabled && resp.hovered() {
@@ -1205,12 +1305,14 @@ pub fn toolbar(
                 );
             }
         }
-        if resp.secondary_clicked()
-            && let Some(at) = resp.interact_pointer_pos()
+        // No right-click menu: it would offer toolbar looks (sizes, styles) and only one is
+        // built.
+        if resp.clicked()
+            && let on_arrow = dropdown && resp.interact_pointer_pos().is_some_and(past_button)
+            // The arrow is a button of its own (a split button): its menu lists every queue,
+            // so it works while the main one's button is greyed.
+            && (*enabled || on_arrow)
         {
-            event = Some(ToolbarEvent::Context(at));
-        } else if resp.clicked() && *enabled {
-            let on_arrow = dropdown && resp.interact_pointer_pos().is_some_and(past_button);
             // IDM: the drop-down menu's top-left is the button's left edge at client y 87 (light:
             // 2 px higher with the band [?]); in RTL its top-right at the button's right edge.
             event = Some(if on_arrow {
@@ -1281,6 +1383,13 @@ pub struct TreeRow<'a> {
     pub icon: IconKey,
     /// A small Silk icon overlaid at the icon's bottom-right (Finished ✓, queue stacks).
     pub badge: Option<&'static str>,
+    /// How many downloads the node holds, shown after its label (none when empty).
+    pub count: Option<usize>,
+}
+
+/// A tree node's count, after its label: "(7)".
+fn count_text(n: usize) -> String {
+    format!("({})", crate::i18n::integer(n as u64))
 }
 
 pub enum TreeEvent {
@@ -1299,6 +1408,8 @@ pub fn categories(
     bottom: f32,
     right: f32,
     rows: &[TreeRow<'_>],
+    // The tree has the keys (its chosen node shows the focus).
+    keys: bool,
 ) -> Option<TreeEvent> {
     let p = ui.painter().clone();
     let y0 = o.y + pane_top() + MENU_H; // frame top
@@ -1322,21 +1433,23 @@ pub fn categories(
         y0 + 18.0,
         CAT_FRAME(),
     ); // caption underline
-    text_font(
-        &p,
-        winui::tahoma(),
-        o.x + 12.0,
-        y0 + 13.0,
-        // i18n: title of the side pane that lists the categories
-        crate::i18n::t("Categories"),
-        TEXT(),
-    );
+    // i18n: title of the side pane that lists the categories
+    let caption = crate::i18n::t("Categories");
+    // Short of the close box: in a narrow pane or a long translation, "..." and whole on hover.
+    let shown = winui::ellipsize(&p, &winui::tahoma(), caption, right - 21.0 - (o.x + 12.0));
+    let drawn = text_font(&p, winui::tahoma(), o.x + 12.0, y0 + 13.0, &shown, TEXT());
+    if shown != caption {
+        winui::full_on_hover(ui, drawn, "categories-caption", caption);
+    }
     let mut event = None;
     let close = winui::rect(Rect::from_min_size(
         pos2(right - 19.0, y0 + 2.0),
         vec2(16.0, 15.0),
     ));
-    let cr = ui.interact(close, egui::Id::unique("cat-close"), Sense::click());
+    let cr = ui
+        .interact(close, egui::Id::unique("cat-close"), winui::pointer_only())
+        // i18n: tooltip of the × that closes the Categories pane
+        .on_hover_text(crate::i18n::t("Close"));
     if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::dark()) {
         p.rect_filled(close, 2.0, c);
     }
@@ -1361,7 +1474,13 @@ pub fn categories(
         .iter()
         .map(|r| {
             let text_x = if r.level == 0 { 51.0 } else { 70.0 };
-            text_x - 8.0 + text_width_font(&p, winui::tahoma(), crate::i18n::t(&r.label)) + 5.0
+            let count = r.count.map_or(0.0, |n| {
+                5.0 + text_width_font(&p, winui::tahoma(), &count_text(n))
+            });
+            text_x - 8.0
+                + text_width_font(&p, winui::tahoma(), crate::i18n::t(&r.label))
+                + count
+                + 5.0
         })
         .fold(0.0, f32::max)
         .ceil();
@@ -1384,9 +1503,8 @@ pub fn categories(
         .unwrap_or_default();
     let page_rows = (area.height() / 16.0).floor().max(1.0);
     if ui.rect_contains_pointer(winui::rect(tree)) {
-        let d = ui.input(|i| i.smooth_scroll_delta);
-        vpos -= d.y / 16.0;
-        hpos -= d.x;
+        vpos += winui::wheel_rows(ui, 16.0, page_rows);
+        hpos -= ui.input(|i| i.smooth_scroll_delta.x);
     }
     vpos = vpos.clamp(0.0, (rows.len() as f32 - page_rows).max(0.0));
     hpos = hpos.clamp(0.0, (content_w - area.width()).max(0.0)).round();
@@ -1400,7 +1518,7 @@ pub fn categories(
     let blank = ui.interact(
         winui::rect(area),
         egui::Id::unique("tree-blank"),
-        Sense::click(),
+        winui::pointer_only(),
     );
     if blank.secondary_clicked()
         && let Some(k) = rows.iter().position(|r| r.selected)
@@ -1474,14 +1592,15 @@ pub fn categories(
                 egui::StrokeKind::Inside,
             );
         } else if r.selected {
-            // Light (tree not focused): flat #f0f0f0 behind the label only.
+            // Light: the inactive selection grey behind the label (#f0f0f0 on the white tree
+            // could not be seen).
             winui::fill_l(
                 &tp,
                 text_x - 2.0,
                 top,
                 text_x + ext + 1.0,
                 top + 15.0,
-                grey(0xf0),
+                winui::SELECTED_INACTIVE(),
             );
         }
         if let Some(open) = r.expander {
@@ -1509,11 +1628,35 @@ pub fn categories(
             crate::i18n::t(&r.label),
             TEXT(),
         );
+        if keys && r.selected {
+            winui::focus_ring(
+                &tp,
+                winui::rect(Rect::from_min_max(
+                    pos2(text_x - 3.0, top),
+                    pos2(text_x + ext + 3.0, top + 16.0),
+                )),
+            );
+        }
+        if let Some(n) = r.count {
+            let count = count_text(n);
+            text_font(
+                &tp,
+                winui::tahoma(),
+                text_x + ext + 5.0,
+                top + 11.0,
+                &count,
+                winui::MUTED(),
+            );
+        }
 
         let row = winui::rect(
             Rect::from_min_size(pos2(area.left(), top), vec2(area.width(), 16.0)).intersect(area),
         );
-        let resp = ui.interact(row, egui::Id::unique(("tree-row", k)), Sense::click());
+        let resp = ui.interact(
+            row,
+            egui::Id::unique(("tree-row", k)),
+            winui::pointer_only(),
+        );
         if resp.clicked() {
             let on_expander = resp.interact_pointer_pos().is_some_and(|q| {
                 let x = winui::mx(q.x);

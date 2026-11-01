@@ -150,6 +150,25 @@ impl Selection {
         }
     }
 
+    /// Rows were taken off the list (`before` → `after`, as shown): if nothing selected is
+    /// left, the row after the first one gone is selected (the one before it at the end).
+    pub fn after_removal(&mut self, before: &[u64], after: &[u64]) {
+        if !self.ids.is_empty() {
+            return;
+        }
+        let Some(gone) = before.iter().position(|id| !after.contains(id)) else {
+            return;
+        };
+        let left = |id: &&u64| after.contains(id);
+        let next = before[gone..]
+            .iter()
+            .find(left)
+            .or_else(|| before[..gone].iter().rev().find(left));
+        if let Some(id) = next {
+            self.set(*id);
+        }
+    }
+
     pub fn contains(&self, id: u64) -> bool {
         self.ids.contains(&id)
     }
@@ -198,6 +217,28 @@ impl Selection {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn deleting_selects_the_row_after() {
+        let mut s = Selection::default();
+        s.set(3);
+        s.apply(Pick::Range { to: 3, add: false }, &[1, 2, 3, 4, 5, 6]);
+        // Rows 3 and 4 deleted: 5 is selected.
+        for id in s.ids().to_vec() {
+            s.forget(id);
+        }
+        s.after_removal(&[1, 2, 3, 4, 5, 6], &[1, 2, 5, 6]);
+        assert_eq!(s.ids(), &[5]);
+        // The last row deleted: the one before it.
+        s.forget(6);
+        s.set(6);
+        s.forget(6);
+        s.after_removal(&[1, 2, 5, 6], &[1, 2, 5]);
+        assert_eq!((s.ids(), s.focus()), (&[5][..], Some(5)));
+        // Something still selected: left alone.
+        s.after_removal(&[1, 2, 5], &[1, 5]);
+        assert_eq!(s.ids(), &[5]);
+    }
 
     const ROWS: [u64; 6] = [10, 11, 12, 13, 14, 15];
 

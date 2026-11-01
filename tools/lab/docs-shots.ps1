@@ -19,7 +19,9 @@ param(
   # A .torrent file: its Add torrent window becomes add-torrent.png.
   [string]$Torrent = "",
   # Only these shots (names without .png); all when empty.
-  [string[]]$Only = @()
+  [string[]]$Only = @(),
+  # Dark mode for every window (Windows' app mode must be dark too, as MDM follows it).
+  [switch]$Dark
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -104,7 +106,7 @@ try {
   New-Item -ItemType Directory -Force "$work\data", "$work\dl" | Out-Null
   # The language is chosen (no first-start picker); light mode unless asked. Every category's
   # folder is under $work, so no shot shows the user's own folders (or name).
-  $dark = $Only -contains "main-dark"
+  $dark = $Dark -or ($Only -contains "main-dark")
   $q = { param($s) ($s | ConvertTo-Json) }
   $dirs = @("General", "Compressed", "Documents", "Music", "Programs", "Video", "Torrents") |
     ForEach-Object {
