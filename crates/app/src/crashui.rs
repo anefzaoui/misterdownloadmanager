@@ -627,36 +627,17 @@ fn fields(notes: &Notes, kind: Kind, signature: &str, what: &str) -> github::Fie
 mod tests {
     #[test]
     fn the_report_fills_fields_the_crash_form_has() {
-        let form = include_str!("../../../.github/ISSUE_TEMPLATE/crash.yml").replace(
-            "
-", "
-",
-        );
+        // A Windows checkout may give the form CRLF line ends.
+        let form = include_str!("../../../.github/ISSUE_TEMPLATE/crash.yml").replace("\r\n", "\n");
         let f = super::fields(&Default::default(), super::Kind::Freeze, "freeze in x", "");
         for (id, _) in f.iter().chain([("report", String::new())].iter()) {
-            assert!(
-                form.contains(&format!(
-                    "id: {id}
-"
-                )),
-                "no field {id} in crash.yml"
-            );
+            let line = format!("id: {id}\n");
+            assert!(form.contains(&line), "no field {id} in crash.yml");
             // Text fields only (GitHub's page drops a prefilled dropdown's value).
-            let before = form
-                .split(&format!(
-                    "id: {id}
-"
-                ))
-                .next()
-                .unwrap();
+            let before = form.split(&line).next().unwrap();
             assert!(
-                before.ends_with(
-                    "- type: input
-    "
-                ) || before.ends_with(
-                    "- type: textarea
-    "
-                ),
+                before.ends_with("- type: input\n    ")
+                    || before.ends_with("- type: textarea\n    "),
                 "{id} isn't a text field"
             );
         }
