@@ -345,24 +345,21 @@ impl Batch {
                 },
             ),
         ];
-        for (label, base, y, value) in rows {
-            text(&p, o.x + 11.0, o.y + base, label, LIGHT_TEXT());
+        for (label, _, y, value) in rows {
             let rc = r(o, 102.0, y, 362.0, 18.0);
-            preview(&p, rc);
-            // An address, from the field's leading edge (an English pen in its English rect).
-            let e = winui::rect(rc);
-            let value = crate::i18n::ltr(&value);
-            let (rect, cut) = winui::text_fit(
-                &p,
-                e.left() + 4.0,
-                e.top() + 13.0,
+            // The caption on the field's text line.
+            let base = winui::baseline_in(o.y + y, 18.0);
+            text(&p, o.x + 11.0, base, label, LIGHT_TEXT());
+            // The shared read-only field (it was a hand-drawn Windows 7 sunken box): the address
+            // can be selected and copied, and screen readers read it.
+            winui::readonly_field(
+                ui,
+                rc,
                 &value,
-                LIGHT_TEXT(),
-                e.right() - 3.0,
+                LIGHT_BG(),
+                true,
+                ("batch-preview", y as i32),
             );
-            if cut {
-                winui::full_on_hover(ui, rect, ("batch-preview", y as i32), &value);
-            }
         }
         text(&p, o.x + 23.0, o.y + 317.0, "...", LIGHT_TEXT());
         if urls.len() > 2 {
@@ -456,16 +453,6 @@ fn embossed(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool) {
         text(p, x + 1.0, base + 1.0, s, winui::ETCH_LIGHT());
         text(p, x, base, s, winui::TEXT_DISABLED());
     }
-}
-
-/// A sunken preview field (WS_EX_STATICEDGE): `#a0a0a0` top/left, white bottom/right.
-fn preview(p: &egui::Painter, rc: egui::Rect) {
-    let (l, t, rr, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
-    winui::fill(p, l, t, rr, b, LIGHT_BG());
-    winui::fill(p, l, t, rr, t, winui::ETCH_SHADOW());
-    winui::fill(p, l, t, l, b, winui::ETCH_SHADOW());
-    winui::fill(p, l, b, rr, b, winui::ETCH_LIGHT());
-    winui::fill(p, rr, t, rr, b, winui::ETCH_LIGHT());
 }
 
 #[cfg(test)]

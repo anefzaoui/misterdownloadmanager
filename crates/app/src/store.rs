@@ -202,14 +202,23 @@ fn save_to(
     settings: &Settings,
     queues: &[Queue],
 ) -> std::io::Result<()> {
-    let p = p.to_owned();
-    if blocked().lock().unwrap().contains(&p) {
+    let json = encode(p, next_id, items, columns, settings, queues)?;
+    write(p, &json)
+}
+
+/// The list as it is written (refused when it couldn't be read at start: not overwritten).
+fn encode(
+    p: &Path,
+    next_id: u64,
+    items: &[Item],
+    columns: &Layout,
+    settings: &Settings,
+    queues: &[Queue],
+) -> std::io::Result<Vec<u8>> {
+    if blocked().lock().unwrap().contains(p) {
         return Err(std::io::Error::other(
             "the download list could not be read at start; not overwriting it",
         ));
-    }
-    if let Some(dir) = p.parent() {
-        std::fs::create_dir_all(dir)?;
     }
     #[derive(Serialize)]
     struct ListRef<'a> {
@@ -220,7 +229,7 @@ fn save_to(
         settings: &'a Settings,
         queues: &'a [Queue],
     }
-    let json = serde_json::to_vec_pretty(&ListRef {
+    serde_json::to_vec_pretty(&ListRef {
         version: VERSION,
         next_id,
         items,
@@ -228,9 +237,104 @@ fn save_to(
         settings,
         queues,
     })
-    .map_err(std::io::Error::other)?;
-    keep_generations(&p);
-    craft_atomic::atomic_write(&p, &json)
+    .map_err(std::io::Error::other)
+}
+
+/// Write the encoded list: the earlier ones kept as generations, the new one atomically (and
+/// flushed to the disk: slow while a big download writes, hence [`Saver`]).
+fn write(p: &Path, json: &[u8]) -> std::io::Result<()> {
+    if let Some(dir) = p.parent() {
+        std::fs::create_dir_all(dir)?;
+    }
+    keep_generations(p);
+    craft_atomic::atomic_write(p, json)
+}
+
+/// Saves the list on a thread of its own. The write ends with a flush to the disk, which waited
+/// for every byte a big download had written meanwhile: on the window's thread it froze MDM for
+/// seconds (a crash report caught it: "freeze in store::save"). The newest list waiting replaces
+/// an older one not yet written.
+pub struct Saver {
+    shared: std::sync::Arc<(std::sync::Mutex<SaverState>, std::sync::Condvar)>,
+}
+
+#[derive(Default)]
+struct SaverState {
+    waiting: Option<(std::path::PathBuf, Vec<u8>)>,
+    writing: bool,
+    /// The last write's outcome, not yet taken.
+    outcome: Option<Result<(), String>>,
+}
+
+impl Saver {
+    pub fn new() -> Saver {
+        let shared = std::sync::Arc::new((
+            std::sync::Mutex::new(SaverState::default()),
+            std::sync::Condvar::new(),
+        ));
+        let worker = shared.clone();
+        let _ = std::thread::Builder::new()
+            .name("list saver".into())
+            .spawn(move || {
+                let (lock, cv) = &*worker;
+                loop {
+                    let (p, json) = {
+                        let mut s = lock.lock().unwrap_or_else(|e| e.into_inner());
+                        while s.waiting.is_none() {
+                            s = cv.wait(s).unwrap_or_else(|e| e.into_inner());
+                        }
+                        s.writing = true;
+                        s.waiting.take().expect("checked")
+                    };
+                    let r = write(&p, &json).map_err(|e| e.to_string());
+                    let mut s = lock.lock().unwrap_or_else(|e| e.into_inner());
+                    s.writing = false;
+                    s.outcome = Some(r);
+                    cv.notify_all();
+                }
+            });
+        Saver { shared }
+    }
+
+    /// Hand the list to the saver thread; an error here is one of encoding (the list refused).
+    pub fn save(
+        &self,
+        next_id: u64,
+        items: &[Item],
+        columns: &Layout,
+        settings: &Settings,
+        queues: &[Queue],
+    ) -> std::io::Result<()> {
+        let Some(p) = path() else { return Ok(()) };
+        let json = encode(&p, next_id, items, columns, settings, queues)?;
+        self.queue(p, json);
+        Ok(())
+    }
+
+    fn queue(&self, p: std::path::PathBuf, json: Vec<u8>) {
+        let (lock, cv) = &*self.shared;
+        lock.lock().unwrap_or_else(|e| e.into_inner()).waiting = Some((p, json));
+        cv.notify_all();
+    }
+
+    /// The outcome of the last write, once.
+    pub fn outcome(&self) -> Option<Result<(), String>> {
+        self.shared
+            .0
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .outcome
+            .take()
+    }
+
+    /// Wait until nothing is waiting or being written (MDM closing).
+    pub fn flush(&self) {
+        let (lock, cv) = &*self.shared;
+        let mut s = lock.lock().unwrap_or_else(|e| e.into_inner());
+        while s.waiting.is_some() || s.writing {
+            s = cv.wait(s).unwrap_or_else(|e| e.into_inner());
+        }
+    }
 }
 
 #[cfg(test)]
@@ -245,6 +349,21 @@ mod tests {
             settings: Settings::default(),
             queues: Vec::new(),
         }
+    }
+
+    #[test]
+    fn the_saver_writes_the_newest_list_off_the_calling_thread() {
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("downloads.json");
+        let layout = crate::list::ListState::default().layout();
+        let saver = Saver::new();
+        for id in [3, 5] {
+            let json = encode(&p, id, &[], &layout, &Settings::default(), &[]).unwrap();
+            saver.queue(p.clone(), json);
+        }
+        saver.flush();
+        assert_eq!(saver.outcome(), Some(Ok(())));
+        assert_eq!(load_from(&p, empty()).next_id, 5);
     }
 
     #[test]

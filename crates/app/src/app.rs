@@ -342,6 +342,8 @@ pub struct App {
     downloads: PathBuf,
     dirty: bool,
     last_save: Instant,
+    /// Writes the list off the window's thread.
+    saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
     /// The main window's caption matches the mode.
@@ -635,6 +637,7 @@ impl App {
             downloads,
             dirty: false,
             last_save: Instant::now(),
+            saver: store::Saver::new(),
             theme_checked: None,
             caption_set: false,
             list,
@@ -750,7 +753,8 @@ impl App {
     fn status_strip(&self, ui: &Ui, o: Pos2, w: f32, h: f32, shown: usize) {
         let p = ui.painter();
         let top = o.y + h - STRIP_H;
-        let baseline = top + 14.0;
+        // Centred in the band it reads as: the strip and the 5 px gap above it, under the panes.
+        let baseline = winui::baseline_in(top - 5.0, STRIP_H + 5.0);
         let n = shown as u64;
         let mut left = crate::i18n::tn(n, "{n} download", "{n} downloads");
         let selected = self.selection.ids().len() as u64;
@@ -2823,19 +2827,32 @@ impl App {
             }
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
-            let saved = store::save(
+            // Written on the saver's thread (store::Saver); refused at once when the list
+            // couldn't be read at start.
+            if let Err(e) = self.saver.save(
                 self.next_id,
                 &self.items,
                 &self.list.layout(),
                 &self.settings,
                 &self.queues,
-            );
-            // A list that can't be saved says so, once for each reason (not every second);
-            // it was silent and a restart lost the changes.
-            match saved {
+            ) {
+                self.report_save(Err(e.to_string()));
+            }
+            self.dirty = false;
+            self.last_save = Instant::now();
+        }
+        if let Some(outcome) = self.saver.outcome() {
+            self.report_save(outcome);
+        }
+    }
+
+    /// A list that can't be saved says so, once for each reason (not every second); it was
+    /// silent and a restart lost the changes.
+    fn report_save(&mut self, outcome: Result<(), String>) {
+        {
+            match outcome {
                 Ok(()) => self.save_failed = None,
                 Err(e) => {
-                    let e = e.to_string();
                     if self.save_failed.as_ref() != Some(&e) {
                         self.notice = Some((
                             crate::i18n::mark("Mister Download Manager"),
@@ -2850,8 +2867,6 @@ impl App {
                     self.save_failed = Some(e);
                 }
             }
-            self.dirty = false;
-            self.last_save = Instant::now();
         }
     }
 
@@ -5108,6 +5123,8 @@ impl eframe::App for App {
 
 impl Drop for App {
     fn drop(&mut self) {
+        // What the saver has in hand first, then the last state, written here and now.
+        self.saver.flush();
         let _ = store::save(
             self.next_id,
             &self.items,

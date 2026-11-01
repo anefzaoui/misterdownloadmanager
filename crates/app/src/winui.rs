@@ -1556,10 +1556,12 @@ fn edit_text_with(
     color: Color32,
     align: egui::Align,
 ) -> Response {
-    // Tahoma −11: ascent 11, so the text cell top is baseline − 10 = top + 3.
+    // Tahoma −11: ascent 11, so the text cell top is baseline − 10 (top + 3 in a 21 px box),
+    // the line centred in the box at any height (baseline_in).
+    let base = baseline_in(rc.top(), rc.height());
     let inner = Rect::from_min_max(
-        pos2(rc.left() + inset, rc.top() + 3.0),
-        pos2(rc.right() - inset, rc.top() + 16.0),
+        pos2(rc.left() + inset, base - 10.0),
+        pos2(rc.right() - inset, base + 3.0),
     );
     // The whole drawn box takes clicks (the text itself fills only a strip inside it): first,
     // so the text on top still gets its own; a click elsewhere in the box focuses it.
@@ -1746,7 +1748,13 @@ pub fn readonly_field(
     } else {
         shown
     };
-    text(&p, e.left() + 5.0, e.top() + 15.0, &shown, LIGHT_TEXT());
+    text(
+        &p,
+        e.left() + 5.0,
+        baseline_in(e.top(), e.height()),
+        &shown,
+        LIGHT_TEXT(),
+    );
     let resp = ui.interact(rc, widget_id(ui, ("readonly", id)), Sense::click());
     focus_on_press(&resp);
     expose(&resp, egui::Role::TextInput, value, true, None);
@@ -2677,6 +2685,25 @@ pub fn multiline_light(
     resp
 }
 
+/// The baseline (last row of the capitals) of Tahoma −11 text centred in a control `height` tall
+/// at `top`: its 8-row capitals start at `top + floor((height − 8) / 2)`. At 21 px that is the
+/// measured `top + 13` of Windows' controls; every painter that centres a line of text in its box
+/// (buttons, text boxes, read-only fields) uses it, so they agree at any height (a fixed `+ 13`
+/// put text 1–3 px high in the 22–26 px ones).
+pub fn baseline_in(top: f32, height: f32) -> f32 {
+    top + ((height - 8.0) / 2.0).floor() + 7.0
+}
+
+/// A button label's baseline below the button's top: as measured on Windows' buttons at their
+/// usual heights (13; dark 20–23 px: 14), centred ([`baseline_in`]) in taller ones.
+fn button_baseline(height: f32, dark: bool) -> f32 {
+    match height {
+        h if dark && h > 19.0 && h <= 23.0 => 14.0,
+        h if h <= 21.0 => 13.0,
+        h => baseline_in(0.0, h),
+    }
+}
+
 /// Light push button: #fdfdfd fill, radius 3; border #d0d0d0 (bottom #bababa), default
 /// #0078d4 (bottom #006bbe), disabled #e9e9e9 with #838383 text; dotted focus rect.
 pub fn button_light(
@@ -2758,12 +2785,12 @@ fn button_face(
     let mnemonic = mnemonic.filter(|_| !cut);
     let w = text_width(p, &shown);
     let x = (rc.center().x - w / 2.0 - if dark { 1.0 } else { 0.0 }).round();
-    let baseline = rc.top()
-        + if dark && rc.height() > 19.0 {
-            14.0
-        } else {
-            13.0
-        };
+    // "..." sits on the baseline (no capitals above it): the dots themselves centred.
+    let baseline = if shown.trim() == "..." {
+        rc.top() + (rc.height() / 2.0).round() + 1.0
+    } else {
+        rc.top() + button_baseline(rc.height(), dark)
+    };
     // Centred in a rect on screen: placed by its left, not by an English pen.
     let drawn = text_at(p, tahoma(), x, baseline, &shown, face.text);
     let mut pressed_by_key = false;
@@ -4191,6 +4218,22 @@ mod tests {
             found.is_empty(),
             "context asked inside its own lock: {found:?}"
         );
+    }
+
+    #[test]
+    fn button_labels_stay_centred_in_taller_buttons() {
+        // The measured heights keep their measured baselines.
+        assert_eq!(button_baseline(21.0, false), 13.0);
+        assert_eq!(button_baseline(19.0, false), 13.0);
+        assert_eq!(button_baseline(23.0, true), 14.0);
+        assert_eq!(button_baseline(21.0, true), 14.0);
+        // Taller: the label moves down by half the extra height.
+        assert_eq!(button_baseline(25.0, false), 15.0);
+        assert_eq!(button_baseline(27.0, true), 16.0);
+        // Text boxes and read-only fields centre the same way.
+        assert_eq!(baseline_in(100.0, 21.0), 113.0);
+        assert_eq!(baseline_in(100.0, 23.0), 114.0);
+        assert_eq!(baseline_in(100.0, 26.0), 116.0);
     }
 
     #[test]

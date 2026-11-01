@@ -1261,7 +1261,8 @@ pub fn toolbar(
         // Placed, not mirrored: an icon keeps its look.
         icon.image(*enabled).paint_at(ui, winui::rect(icon_rect));
         // Label: x = btn.x + floor((w − ext)/2); dark: −1 for enabled normal buttons, last ink
-        // row at band y 59; light: +1 for drop-downs, last ink row 58. Drop-downs 1 px lower.
+        // row at band y 59; light: +1 for drop-downs, last ink row 58. Every label on one line
+        // (IDM draws the drop-downs' 1 px lower: in one row it read as a mistake).
         let mut lx = x + ((bw - ext) / 2.0).floor();
         if dark && *enabled && !dropdown {
             lx -= 1.0;
@@ -1269,7 +1270,7 @@ pub fn toolbar(
         if !dark && dropdown {
             lx += 1.0;
         }
-        let ly = top + if dark { 59.0 } else { 58.0 } + if dropdown { 1.0 } else { 0.0 };
+        let ly = top + if dark { 59.0 } else { 58.0 };
         text_font(
             &p,
             font.clone(),

@@ -894,9 +894,11 @@ impl OptionsDialog {
             ui,
             &p,
             crate::i18n::t(crate::quota::LIMITS_SENTENCE),
+            // Each line's words on its box's text baseline (the 20 px boxes at 330 and 351:
+            // winui::baseline_in gives 343 and 364; they sat 2–3 px below the numbers).
             &[
-                line(170.0, 345.0, 330.0, 8.0, 346.0),
-                line(170.0, 366.0, 351.0, 11.0, 364.0),
+                line(170.0, 343.0, 330.0, 8.0, 343.0),
+                line(170.0, 364.0, 351.0, 11.0, 364.0),
             ],
             &[("mb", vec2(36.0, 20.0)), ("hours", vec2(36.0, 20.0))],
             |p, x, baseline, s| embossed(p, x, baseline, s, on),

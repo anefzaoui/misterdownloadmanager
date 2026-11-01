@@ -1555,33 +1555,29 @@ fn date_picker(
     };
     let wd_comma = if order == DateOrder::Ymd { "" } else { "," };
     let day_comma = if order == DateOrder::Dmy { "" } else { "," };
-    // Where the fields start, from the box's leading edge: IDM's in English, month first;
-    // otherwise after the widest weekday and month (fixed-width fields, as Windows'), the box
-    // growing at its trailing edge when they need more room.
-    let mut xs: [f32; 4] = [2.0, 71.0, 121.0, 140.0];
-    if crate::i18n::code() != "en" || order != DateOrder::Mdy {
-        let widest = |names: &[&str], tail: &str| {
-            names
-                .iter()
-                .map(|n| winui::text_width(&p, &format!("{}{tail}", crate::i18n::t(n))).ceil())
-                .fold(0.0, f32::max)
+    // Where the fields start, from the box's leading edge: one after the other as the date reads
+    // (Windows' date picker flows its text too), from 5 px in as every text box's text, the box
+    // growing at its trailing edge when they need more room. IDM's fixed places let "September"
+    // (53 px) run into the day; fields sized for the widest names left gaps after short ones.
+    let mut xs: [f32; 4] = [5.0, 71.0, 121.0, 140.0];
+    {
+        let name = |n: &str, tail: &str| {
+            winui::text_width(&p, &format!("{}{tail}", crate::i18n::t(n))).ceil()
         };
         let widths = [
-            widest(&WEEKDAYS, wd_comma),
-            widest(&MONTHS, ""),
+            name(
+                WEEKDAYS[date.weekday().num_days_from_sunday() as usize],
+                wd_comma,
+            ),
+            name(MONTHS[date.month0() as usize], ""),
             winui::text_width(&p, &format!("00{day_comma}")).ceil(),
             winui::text_width(&p, "0000").ceil(),
         ];
         // The gap after each field (IDM's: 5 after the names, 4 after the numbers).
         let gaps = [5.0, 5.0, 4.0, 4.0];
-        let mut x = 2.0;
+        let mut x = 5.0;
         for &f in &visual {
-            // IDM's places where the order is IDM's and a translation fits them.
-            xs[f] = if order == DateOrder::Mdy {
-                xs[f].max(x)
-            } else {
-                x
-            };
+            xs[f] = x;
             x = xs[f] + widths[f] + gaps[f];
         }
         let need = x + 20.0;

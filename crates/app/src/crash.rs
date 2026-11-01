@@ -27,6 +27,8 @@ static EPOCH: OnceLock<Instant> = OnceLock::new();
 static FRAME_START: AtomicU64 = AtomicU64::new(0);
 /// A freeze was reported and the window hasn't answered since.
 static FROZEN: AtomicBool = AtomicBool::new(false);
+/// A panic was reported: later ones (a burst on worker threads) are logged, not dumped again.
+static PANICKED: AtomicBool = AtomicBool::new(false);
 /// The window thread (the dump's id for it; 0 where it can't be known).
 static UI_THREAD: OnceLock<u32> = OnceLock::new();
 
@@ -97,7 +99,9 @@ fn hook_panics() {
             backtrace: std::backtrace::Backtrace::force_capture().to_string(),
         };
         tracing::error!("panic: {} at {} ({})", p.message, p.location, p.thread);
-        if let Some(r) = REPORTER.get() {
+        if let Some(r) = REPORTER.get()
+            && !PANICKED.swap(true, Ordering::AcqRel)
+        {
             r.panic(&p);
             dump_now();
         }
