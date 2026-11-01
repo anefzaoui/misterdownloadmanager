@@ -5087,7 +5087,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-app"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "arboard",
  "base64 0.23.1",
@@ -5125,7 +5125,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-cli"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "anyhow",
  "clap",
@@ -5143,12 +5143,13 @@ dependencies = [
 
 [[package]]
 name = "mdm-crash"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "breakpad-symbols",
  "chrono",
  "crash-handler",
  "libc",
+ "mdm-engine",
  "minidump",
  "minidump-processor",
  "minidump-unwind",
@@ -5167,7 +5168,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-engine"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "base64 0.23.1",
  "boa_engine",
@@ -5202,7 +5203,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-ipc"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "craft-atomic",
  "dirs 7.0.0",
@@ -5213,7 +5214,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-labserver"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "anyhow",
  "axum",
@@ -5234,7 +5235,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-mcp"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "mdm-ipc",
  "rmcp",
@@ -5248,7 +5249,7 @@ dependencies = [
 
 [[package]]
 name = "mdm-nmhost"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "mdm-ipc",
  "serde",
@@ -5257,10 +5258,11 @@ dependencies = [
 
 [[package]]
 name = "mdm-tools"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "craft-atomic",
  "hex",
+ "mdm-engine",
  "mdm-ipc",
  "pgp",
  "reqwest 0.13.5",
@@ -5270,13 +5272,14 @@ dependencies = [
  "tempfile",
  "thiserror 2.0.21",
  "tokio",
+ "url",
  "win32job",
  "zip",
 ]
 
 [[package]]
 name = "mdm-torrent"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "librqbit",
  "tempfile",

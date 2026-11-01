@@ -77,7 +77,7 @@ pub fn refresh_ytdlp(rt: &tokio::runtime::Handle) {
         return;
     }
     rt.spawn(async move {
-        if let Err(e) = mdm_tools::install_latest(&dir).await {
+        if let Err(e) = mdm_tools::install_latest(&dir, &crate::settings::own_net(), None).await {
             eprintln!("yt-dlp update check: {e}"); // not translated: a log line
         }
     });
@@ -230,10 +230,11 @@ impl VideoDialog {
     ) {
         let slot: Slot<mdm_tools::Installed> = Arc::new(Mutex::new(None));
         let (out, ctx) = (slot.clone(), ctx.clone());
+        let net = crate::settings::own_net();
         rt.spawn(async move {
             let res = match tool {
-                Tool::YtDlp => mdm_tools::install_latest(&dir).await,
-                Tool::Ffmpeg => mdm_tools::ffmpeg::install_latest(&dir).await,
+                Tool::YtDlp => mdm_tools::install_latest(&dir, &net, None).await,
+                Tool::Ffmpeg => mdm_tools::ffmpeg::install_latest(&dir, &net, None).await,
             };
             *out.lock().unwrap() = Some(res.map_err(|e| e.to_string()));
             ctx.request_repaint();

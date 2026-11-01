@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	تۈر قوشۇش
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	يېڭى چۈشۈرۈش قوشۇش
 #. text in the Options window
@@ -144,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	بارلىق ھۆججەتلەر
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	ھەممىسى تەييار: سىن بار بەتتە، ۋەزىپىلەر → بەتتىن سىن چۈشۈرۈشنى ئىشلىتىڭ.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	چۈشۈرۈلۈۋاتىدۇ: {path}
@@ -191,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	تۈركۈملەپ چۈشۈرۈش
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ھەر ئىككىسى ئوچۇق كودلۇق. MDM ئۇلارنى ئۆزىنىڭ چۈشۈرگۈچىسى ئارقىلىق رەسمىي نۇسخىسىدىن ئالىدۇ ھەمدە ھەر بىر ھۆججەتنىڭ ئىمزالىق ئىسپاتىنى ئىجرا قىلىشتىن بۇرۇن تەكشۈرىدۇ. تەخمىنەن 100 MB، بىر قېتىم.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -260,10 +267,24 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	ھەر قېتىم باشلىغاندا يېڭىلاشلارنى تەكشۈرۈڭ
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	باغلىنىشىڭىزنى تەكشۈرۈپ قايتا سىناڭ ياكى كېيىن سىن كۆزنىكىدىن ئېلىڭ.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	يېڭىلاشلارنى تەكشۈرۈۋاتىدۇ...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	ھۆججەت تەكشۈرۈلۈۋاتىدۇ...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	{name} نى تەكشۈرۈۋاتىدۇ ({total} دىن {n})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -285,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	سائەت:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -491,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	بىر بەتتىن سىن چۈشۈرۈش
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	YouTube ۋە 1000+ تور بېكەتتىن سىن چۈشۈرۈش
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -526,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	يېڭىلاشنى چۈشۈرۈۋاتىدۇ... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	{name} چۈشۈرۈلۈۋاتىدۇ ({total} دىن {n})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -570,6 +600,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ئېلخەت
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	MDM نى ئاخىرلاشتۇرۇپ قايتا قوزغىتىش
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	ماگنىت ئۇلىنىشىنى كىرگۈزۈڭ ياكى .torrent ھۆججىتىنى تاللاڭ
@@ -630,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	فېۋرال
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: رەسىم بىلەن ئاۋازنى بىرلەشتۈرىدۇ
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -714,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	جۇمە
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	ھەقسىز، رەسمىي ۋە تەكشۈرۈلگەن
 #. text in the Scheduler window
 #, machine
 	Friday	جۈمە
@@ -748,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	ئادەتتىكى
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	سىن چۈشۈرۈشكە تەييارلىق قىلىڭ
 #. button in the Options window
 #, machine
 	Get System	سىستېماغا ئېرىشىش
@@ -879,8 +925,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	ئاخىرقى سىناق  {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	كېيىن
 #. text in the Options window
@@ -1086,6 +1133,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	توررېنت ئۈچۈن سانلىق مەلۇمات قىسقۇچى يوق
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	ھېچقانداق كۈن تاللانمىدى: ساقلاش بوشلۇقى قوزغالمايدۇ
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	بۇ يەردە چۈشۈرۈلمىگەن ھۆججەت يوق
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	چۈشۈرۈلمىگەن ھۆججەتلەر سۈزگۈچكە ماس كەلمەيدۇ
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	تېخى چۈشۈرۈلمىگەن ھۆججەت يوق
 #. text in a dialog box
 #, machine
 	No folders yet	تېخىچە قىسقۇچ يوق
@@ -1124,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	نۆۋەتتە ئەمەس
+#. button in helpers.rs
+#, machine
+	Not now	ھازىر ئەمەس
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	ھازىر ئەمەسمۇ؟ ئۇلارنى كېيىن ۋەزىپىلەر → بىر بەتتىن سىن چۈشۈرۈش ئارقىلىق ئېلىڭ.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ئىشلىتىلمەيدۇ: ھۆججەت بۆلەكلىرى ھۆججەتنىڭ يېنىغا يېزىلىدۇ
@@ -1202,6 +1271,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	تاماملىغاندا تۆۋەندىكى ھۆججەتنى ئېچىش:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	دوكلات قىلىنغان مەسىلىنى ئېچىش
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	تاللانغان چۈشۈرۈلمىنى ئېچىش
@@ -1231,6 +1304,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ماگنىت ئۇلىنىشىنى چاپلاڭ ياكى .torrent ھۆججىتىنى تاللاڭ، ئاندىن ئىزدەڭ.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	چۈشۈرۈش بەتتىكى تەكشۈرۈش يىغىندىسىنى چاپلاش
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1324,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	توررېنتنى ئوقۇۋاتىدۇ...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	بىر بەتنى ئوقۇيدۇ ھەمدە YouTube، Vimeo ۋە مىڭدىن ئارتۇق باشقا تور بېكەتلەردىن 4K غىچە بولغان، تور بېكەت تەمىنلىگەن ھەر بىر سۈپەتنى تىزىپ بېرىدۇ.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	تەييار: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1361,6 +1445,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	يۇلتۇزچىنى ئالماشتۇرۇش
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	MDM نى قايتا قوزغىتىش
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1558,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	تاللانغىنى: {files}، {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	GitHub غا ئەۋەتىش
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	بۇنى دوستىڭىزغا ئەۋەتىڭ:
@@ -1514,6 +1606,10 @@
 #. button in the download list
 #, machine
 	Show all	ھەممىنى كۆرسەت
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	بارلىق چۈشۈرۈلمىگەن ھۆججەتلەرنى كۆرسىتىش
 #. text in a download's progress window
 #, machine
 	Show details >>	تەپسىلاتلارنى كۆرسەت >>
@@ -1553,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	بەتكە كىرىش
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	تور بېكەتلەر ئەڭ ياخشى سۈپەتنى ئايرىم سىن ۋە ئاۋاز شەكلىدە ئەۋەتىدۇ، ffmpeg ئۇلارنى بىرلەشتۈرىدۇ. بۇ سىستېمىدا MDM سىزنىڭكىنى ئىشلىتىدۇ: ffmpeg نى بولاق باشقۇرغۇچىڭىز ئارقىلىق قاچىلاڭ.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	تور بېكەتلەر ئەڭ ياخشى سۈپەتنى ئايرىم سىن ۋە ئاۋاز شەكلىدە ئەۋەتىدۇ. ffmpeg ئۇلارنى بىر ھۆججەتكە بىرلەشتۈرۈپ، خالىغان يەردە قويغىلى بولىدۇ.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1630,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) بىلەن باشلاندى
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	باشلىنىۋاتىدۇ...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1702,6 +1808,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	چاپلاش تاختىسى ئالدىراش: قايتا سىناڭ.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	تۈۋرۈك سۈزگۈچ بۇ كۆرۈنۈشتىكى ھەر بىر چۈشۈرۈلمىگەن ھۆججەتنى يوشۇرىدۇ.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1858,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	چۈشۈرۈش كۆتۈرمىسى تاماملىنىدۇ.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	سىز قوشقان ياكى بۇ كۆزنەككە تاشلىغان چۈشۈرۈلمىگەن ھۆججەتلەر بۇ يەردە كۆرسىتىلىدۇ.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	دىسكا ياكى تور ھەمبەھىرلىنىشى ئەمدى ئىشلەتمەيدۇ
@@ -1878,12 +1992,27 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	بۇ ئىسىمدىكى تۈر ئاللىبۇرۇن بار
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	بۇ ئىسىمدىكى ساقلاش بوشلۇقى بار
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	«چۈشۈرۈش تاماملىنىش سۆزلۈك رامكىسىنى كۆرسەت» ئېچىلغاندا بۇ تەڭشەكلەر ئىشلەتمەيدۇ
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	بۇ كۆزنەكنى تاقىسىڭىزمۇ چۈشۈرۈش داۋاملىشىدۇ.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	بۇ ئادرېس ئاللىبۇرۇن چۈشۈرۈش تىزىملىكىدە بار:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	بۇ تۈر ياكى ساقلاش بوشلۇقىدا تېخى چۈشۈرۈلمىگەن ھۆججەت يوق.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	بۇ ۋاقىت ئۆتۈپ كەتتى: ساقلاش بوشلۇقى قوزغالمايدۇ
 #. text in a dialog box
 #, machine
 	This folder does not exist:	بۇ مۇندەرىجە مەۋجۇت ئەمەس:
@@ -1943,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	يۆتكەش سۈرئىتى
+#. button in helpers.rs
+#, machine
+	Try again	قايتا سىناش
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1968,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ئاچىش
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ئىككى ھەقسىز ياردەمچى ئۇنى ئىشقا ئاشۇرىدۇ. ئۇلارنى ھازىر ئېلىڭ، شۇنداق قىلغاندا بىر سىن تاپقاندا ئۇنى ساقلاش بىر چېكىشلا يىراقلىقتا.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1984,6 +2119,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	«باشقا نامدا ساقلا»غا ھۆججەت نامىنى كىرگۈزۈڭ
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	ساقلاش بوشلۇقىنىڭ نامىنى كىرگۈزۈڭ
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2261,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	ياۋايى بەلگە چوڭلۇقى
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows رەت قىلدى
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows تىلى
@@ -2144,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	ھەئە
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	ھەئە، ئۇلارنى چۈشۈرۈش (تەۋسىيە قىلىنىدۇ)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2155,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp قاچىلانمىدى (ۋەزىپىلەر → بىر بەتتىن سىن چۈشۈرۈش ئارقىلىق قاچىلاڭ)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: سىننى تاپىدۇ
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2229,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	{name} چۈشۈرۈلمىدى: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

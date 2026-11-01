@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	വിഭാഗം ചേർക്കുക
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	പുതിയ ഡൗൺലോഡ് ചേർക്കുക
 #. text in the Options window
@@ -144,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	എല്ലാ ഫയലുകളും
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	എല്ലാം സജ്ജമാണ്: ഒരു വീഡിയോ ഉള്ള പേജിൽ, ടാസ്‌ക്കുകൾ → പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക എന്നത് ഉപയോഗിക്കുക.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ഇതിനകം ഡൗൺലോഡ് ചെയ്യുന്നു: {path}
@@ -191,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ബാച്ച് ഡൗൺലോഡ്
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	രണ്ടും ഓപ്പൺ സോഴ്‌സാണ്. MDM അവയെ അതിന്റെ സ്വന്തം ഡൗൺലോഡർ ഉപയോഗിച്ച് ഔദ്യോഗിക റിലീസുകളിൽ നിന്ന് നേടുകയും പ്രവർത്തിപ്പിക്കുന്നതിന് മുമ്പ് ഓരോ ഫയലിന്റെയും ഒപ്പ് പരിശോധിക്കുകയും ചെയ്യുന്നു. ഏകദേശം 100 MB, ഒരു തവണ.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -260,10 +267,24 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	ഓരോ തവണയും ആരംഭിക്കുമ്പോൾ അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	നിങ്ങളുടെ കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ പിന്നീട് വീഡിയോ വിൻഡോയിൽ നിന്ന് അവ നേടുക.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുന്നു...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	ഫയൽ പരിശോധിക്കുന്നു...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	{name} ({n} of {total}) പരിശോധിക്കുന്നു...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -285,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ക്ലോക്ക്:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -491,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	YouTube-ൽ നിന്നും 1,000+ സൈറ്റുകളിൽ നിന്നും വീഡിയോകൾ ഡൗൺലോഡ് ചെയ്യുക
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -526,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	അപ്‌ഡേറ്റ് ഡൗൺലോഡ് ചെയ്യുന്നു... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	{name} ({n} of {total}) ഡൗൺലോഡ് ചെയ്യുന്നു... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -570,6 +600,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ഇമെയിൽ
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	MDM അവസാനിപ്പിച്ച് പുനരാരംഭിക്കുക
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	ഒരു മാഗ്നറ്റ് ലിങ്ക് നൽകുക അല്ലെങ്കിൽ ഒരു .torrent ഫയൽ തിരഞ്ഞെടുക്കുക
@@ -630,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	ഫെബ്രുവരി
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: ചിത്രവും ശബ്ദവും ഒരുമിപ്പിക്കുന്നു
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -714,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	വെ
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	സൗജന്യം, ഔദ്യോഗികം, പരിശോധിച്ചത്
 #. text in the Scheduler window
 #, machine
 	Friday	വെള്ളി
@@ -748,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	പൊതുവായത്
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	വീഡിയോ ഡൗൺലോഡുകൾക്കായി തയ്യാറെടുക്കുക
 #. button in the Options window
 #, machine
 	Get System	സിസ്റ്റം നേടുക
@@ -879,8 +925,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	അവസാന ശ്രമം {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	പിന്നീട്
 #. text in the Options window
@@ -1086,6 +1133,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	ടോറന്റുകൾക്ക് ഡാറ്റ ഫോൾഡർ ഇല്ല
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	ദിവസങ്ങളൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല: ക്യൂ ആരംഭിക്കില്ല
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	ഇവിടെ ഡൗൺലോഡുകളൊന്നുമില്ല
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	ഫിൽട്ടറുകളുമായി പൊരുത്തപ്പെടുന്ന ഡൗൺലോഡുകളൊന്നുമില്ല
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	ഇതുവരെ ഡൗൺലോഡുകളൊന്നുമില്ല
 #. text in a dialog box
 #, machine
 	No folders yet	ഫോൾഡറുകളൊന്നും ഇതുവരെയില്ല
@@ -1124,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	ഒരു ക്യൂവിലുമില്ല
+#. button in helpers.rs
+#, machine
+	Not now	ഇപ്പോൾ വേണ്ട
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	ഇപ്പോൾ വേണ്ടേ? പിന്നീട് ടാസ്‌ക്കുകൾ → ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക എന്നതിൽ നിന്ന് അവ നേടുക.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ഉപയോഗിക്കുന്നില്ല: ഫയൽ പൂർത്തിയാകുമ്പോൾ ഫയൽ ഭാഗങ്ങൾ അതിനടുത്തേക്ക് എഴുതുന്നു
@@ -1202,6 +1271,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	പൂർത്തിയാകുമ്പോൾ താഴെ പറയുന്ന ഫയൽ തുറക്കുക:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	റിപ്പോർട്ട് ചെയ്ത പ്രശ്നം തുറക്കുക
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	തിരഞ്ഞെടുത്ത ഡൗൺലോഡ് തുറക്കുക
@@ -1231,6 +1304,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ഒരു മാഗ്നറ്റ് ലിങ്ക് ഒട്ടിക്കുക അല്ലെങ്കിൽ ഒരു .torrent ഫയൽ തിരഞ്ഞെടുക്കുക, തുടർന്ന് തിരയുക.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	ഡൗൺലോഡിന്റെ പേജ് നൽകുന്ന ചെക്ക്സം ഒട്ടിക്കുക
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1324,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ടോറന്റ് വായിക്കുന്നു...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ഒരു പേജ് വായിക്കുകയും YouTube, Vimeo, ആയിരത്തിലധികം മറ്റ് സൈറ്റുകൾ എന്നിവയിൽ നിന്ന് 4K വരെ സൈറ്റ് വാഗ്ദാനം ചെയ്യുന്ന എല്ലാ ഗുണനിലവാരവും ലിസ്റ്റ് ചെയ്യുകയും ചെയ്യുന്നു.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	തയ്യാറാണ്: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1361,6 +1445,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	നക്ഷത്രചിഹ്നം ഇതിലേക്ക് മാറ്റുക
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	MDM പുനരാരംഭിക്കുക
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1558,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	തിരഞ്ഞെടുത്തവ: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	GitHub-ൽ അയയ്ക്കുക
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	ഇതൊരു സുഹൃത്തിന് അയയ്ക്കുക:
@@ -1514,6 +1606,10 @@
 #. button in the download list
 #, machine
 	Show all	എല്ലാം കാണിക്കുക
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	എല്ലാ ഡൗൺലോഡുകളും കാണിക്കുക
 #. text in a download's progress window
 #, machine
 	Show details >>	വിശദാംശങ്ങൾ കാണിക്കുക >>
@@ -1553,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	സൈറ്റുകളുടെ ലോഗിനുകൾ
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	സൈറ്റുകൾ അവയുടെ മികച്ച ഗുണനിലവാരം പ്രത്യേക വീഡിയോയും ഓഡിയോയും ആയി അയയ്ക്കുന്നു, ffmpeg അവയെ ഒരുമിപ്പിക്കുന്നു. ഈ സിസ്റ്റത്തിൽ MDM നിങ്ങളുടേത് ഉപയോഗിക്കുന്നു: നിങ്ങളുടെ പാക്കേജ് മാനേജർ ഉപയോഗിച്ച് ffmpeg ഇൻസ്റ്റാൾ ചെയ്യുക.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	സൈറ്റുകൾ അവയുടെ മികച്ച ഗുണനിലവാരം പ്രത്യേക വീഡിയോയും ഓഡിയോയും ആയി അയയ്ക്കുന്നു. ffmpeg അവയെ എവിടെയും പ്ലേ ചെയ്യാൻ കഴിയുന്ന ഒരു ഫയലായി ഒരുമിപ്പിക്കുന്നു.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1630,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) ഉപയോഗിച്ച് ആരംഭിച്ചു
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	ആരംഭിക്കുന്നു...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1702,6 +1808,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	ക്ലിപ്പ്ബോർഡ് തിരക്കിലാണ്: വീണ്ടും ശ്രമിക്കുക.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	ഈ കാഴ്ചയിലെ എല്ലാ ഡൗൺലോഡുകളും കോളം ഫിൽട്ടറുകൾ മറയ്ക്കുന്നു.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1858,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ഡൗൺലോഡ് ക്യൂ പൂർത്തിയായി.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	നിങ്ങൾ ചേർക്കുന്നതോ ഈ വിൻഡോയിൽ ഇടുന്നതോ ആയ ഡൗൺലോഡുകൾ ഇവിടെ കാണിക്കും.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	ഡ്രൈവോ നെറ്റ്‌വർക്ക് പങ്കിടലോ ലഭ്യമല്ല
@@ -1878,12 +1992,27 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ഈ പേരിൽ ഒരു വിഭാഗം ഇതിനകം ഉണ്ട്
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	ഈ പേരിൽ ഒരു ക്യൂ ഇതിനകം ഉണ്ട്
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ഡൗൺലോഡ് പൂർത്തിയായ ഡയലോഗ് കാണിക്കുക" ഓണാക്കുമ്പോൾ ഈ ക്രമീകരണങ്ങൾ ലഭ്യമല്ല
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	നിങ്ങൾ ഈ വിൻഡോ അടച്ചാലും അവ ഡൗൺലോഡ് ചെയ്യുന്നത് തുടരും.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ഈ വിലാസം ഇതിനകം ഡൗൺലോഡുകളുടെ ലിസ്റ്റിലുണ്ട്:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	ഈ വിഭാഗത്തിലോ ക്യൂവിലോ ഇതുവരെ ഡൗൺലോഡുകളൊന്നുമില്ല.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	ഈ തീയതി കഴിഞ്ഞുപോയി: ക്യൂ ആരംഭിക്കില്ല
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ഈ ഫോൾഡർ നിലവിലില്ല:
@@ -1943,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	കൈമാറ്റ നിരക്ക്
+#. button in helpers.rs
+#, machine
+	Try again	വീണ്ടും ശ്രമിക്കുക
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1968,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ഓൺ ചെയ്യുക
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	രണ്ട് സൗജന്യ സഹായികൾ ഇത് പ്രവർത്തിപ്പിക്കുന്നു. അവ ഇപ്പോൾ നേടുക, ഒരു വീഡിയോ കണ്ടെത്തുമ്പോൾ അത് സംരക്ഷിക്കാൻ ഒറ്റ ക്ലിക്ക് മതി.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1984,6 +2119,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	ഇങ്ങനെ സംരക്ഷിക്കുക എന്നതിൽ ഫയലിന്റെ പേര് ടൈപ്പ് ചെയ്യുക
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	ക്യൂവിന്റെ പേര് ടൈപ്പ് ചെയ്യുക
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2261,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	വൈൽഡ്കാർഡ് വലുപ്പം
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows നിരസിച്ചു
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows-ന്റെ ഭാഷ
@@ -2144,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	അതെ
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	അതെ, അവ ഡൗൺലോഡ് ചെയ്യുക (ശുപാർശ ചെയ്യുന്നത്)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2155,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല (ടാസ്‌ക്കുകൾ → ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക എന്നത് ഇൻസ്റ്റാൾ ചെയ്യുന്നു)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: വീഡിയോ കണ്ടെത്തുന്നു
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2229,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	{name} ഡൗൺലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

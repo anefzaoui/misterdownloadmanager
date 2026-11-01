@@ -15,5 +15,5 @@ pub mod verify;
 
 pub use download::{
     Destination, Download, Error, Event, NetKind, Options, Outcome, ProbeInfo, Proxy, Request,
-    Snapshot, probe, supported,
+    Snapshot, fetch, probe, supported,
 };

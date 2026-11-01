@@ -212,7 +212,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   margin: 0; display: flex; font-size: var(--word); font-weight: 900; line-height: 1; letter-spacing: -.06em; white-space: nowrap; pointer-events: auto;
   background: linear-gradient(100deg, var(--accent) 20%, var(--accent-b) 85%); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.hero-letter { display: inline-block; transition: transform .38s cubic-bezier(.2, 1.7, .4, 1); animation: hero-drop .9s cubic-bezier(.2, 1.5, .4, 1) both; animation-delay: calc(var(--i) * 70ms + .12s); }
+/* The name in full over the outlined MDM rows: a third of their size, so it fits the width. */
+.hero-word { font-size: clamp(26px, 6.8vw, 84px); letter-spacing: -.04em; }
+.hero-space { display: inline-block; width: .26em; }
+.hero-letter { display: inline-block; transition: transform .38s cubic-bezier(.2, 1.7, .4, 1); animation: hero-drop .9s cubic-bezier(.2, 1.5, .4, 1) both; animation-delay: calc(var(--i) * 40ms + .12s); }
 .hero-letter:hover { transform: translateY(-.12em) rotate(-6deg); }
 .hero-flyer { position: absolute; z-index: 25; animation: hero-pop .7s cubic-bezier(.2, 1.6, .4, 1) both; animation-delay: calc(.65s + var(--i) * 90ms); }
 .hero-flyer img { width: 48px; height: 48px; filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .14)); animation: bob 6s ease-in-out infinite; animation-delay: calc(var(--i) * -1.3s); }

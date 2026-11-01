@@ -1369,10 +1369,9 @@ fn vline(p: &Painter, x: f32, y0: f32, y1: f32, c: Color32) {
     fill(p, x, y0, x, y1, c);
 }
 
-/// The rounding of a control's corners (buttons, text boxes, drop-downs): IDM's dark buttons,
-/// Windows 11's light ones.
+/// The rounding of a control's corners (buttons, text boxes, drop-downs), in both modes.
 pub fn control_radius() -> f32 {
-    if crate::theme::dark() { 4.0 } else { 3.0 }
+    3.0
 }
 
 /// What a text box allows: typing, nothing (greyed), or reading and copying.
@@ -2199,6 +2198,9 @@ pub enum ButtonKind {
     Normal,
     Default,
     Disabled,
+    /// The one answer a window recommends (the default too), filled with the accent as Windows
+    /// 11's accent buttons: the first start's "Yes, download them".
+    Accent,
 }
 
 /// Push button: #333333 fill, 1 px rounded (r 4) border by state, text centred with its
@@ -2682,10 +2684,9 @@ pub fn baseline_in(top: f32, height: f32) -> f32 {
 }
 
 /// A button label's baseline below the button's top: as measured on Windows' buttons at their
-/// usual heights (13; dark 20–23 px: 14), centred ([`baseline_in`]) in taller ones.
-fn button_baseline(height: f32, dark: bool) -> f32 {
+/// usual heights (13), centred ([`baseline_in`]) in taller ones; both modes alike.
+fn button_baseline(height: f32) -> f32 {
     match height {
-        h if dark && h > 19.0 && h <= 23.0 => 14.0,
         h if h <= 21.0 => 13.0,
         h => baseline_in(0.0, h),
     }
@@ -2754,7 +2755,7 @@ fn button_face(
         Stroke::new(1.0, face.border),
         StrokeKind::Inside,
     );
-    let inset = if dark { 4.0 } else { 3.0 };
+    let inset = 3.0;
     hline(
         p,
         rc.left() + inset,
@@ -2771,12 +2772,12 @@ fn button_face(
     let (shown, cut) = fit_label(p, &shown, rc);
     let mnemonic = mnemonic.filter(|_| !cut);
     let w = text_width(p, &shown);
-    let x = (rc.center().x - w / 2.0 - if dark { 1.0 } else { 0.0 }).round();
+    let x = (rc.center().x - w / 2.0).round();
     // "..." sits on the baseline (no capitals above it): the dots themselves centred.
     let baseline = if shown.trim() == "..." {
         rc.top() + (rc.height() / 2.0).round() + 1.0
     } else {
-        rc.top() + button_baseline(rc.height(), dark)
+        rc.top() + button_baseline(rc.height())
     };
     // Centred in a rect on screen: placed by its left, not by an English pen.
     let drawn = text_at(p, tahoma(), x, baseline, &shown, face.text);
@@ -2788,13 +2789,7 @@ fn button_face(
         // Alt+letter always works.
         if crate::chrome::cues(ui.ctx()) {
             let (x0, x1) = char_span(p, &tahoma(), &shown, before.chars().count(), drawn);
-            hline(
-                p,
-                x0,
-                x1,
-                baseline + if dark { 2.0 } else { 3.0 },
-                face.text,
-            );
+            hline(p, x0, x1, baseline + 3.0, face.text);
         }
         pressed_by_key = enabled && mnemonic_pressed(ui, letter);
     }
@@ -2828,13 +2823,36 @@ struct Face {
 /// A button's colours for `kind` in `state`: dark, IDM's dark buttons; light, Windows 11's.
 fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
     let pressed = state == State::Pressed;
+    if kind == ButtonKind::Accent {
+        // The accent filled, a shade lighter under the pointer and darker pressed; light text
+        // on the light mode's blue, dark text on the dark mode's.
+        let (fill, text) = match (dark, state) {
+            (false, State::Pressed) => (rgb(0x00, 0x6c, 0xbe), rgb(0xe6, 0xf0, 0xfa)),
+            (false, State::Hot) => (rgb(0x1a, 0x86, 0xd9), Color32::WHITE),
+            (false, _) => (rgb(0x00, 0x78, 0xd4), Color32::WHITE),
+            (true, State::Pressed) => (rgb(0x52, 0xa6, 0xd0), rgb(0x1a, 0x1a, 0x1a)),
+            (true, State::Hot) => (rgb(0x5a, 0xb9, 0xe5), Color32::BLACK),
+            (true, _) => (rgb(0x60, 0xcd, 0xff), Color32::BLACK),
+        };
+        let bottom = if dark {
+            rgb(0x4f, 0xb5, 0xe4)
+        } else {
+            rgb(0x00, 0x5a, 0x9e)
+        };
+        return Face {
+            fill,
+            border: fill,
+            bottom: if pressed { fill } else { bottom },
+            text,
+        };
+    }
     let face = if dark {
         // Windows 11's dark buttons: a face a little lighter than the window, a quiet border (it
         // was IDM's bright one, white round the default button), the default button outlined in
         // the accent as in light mode.
         let (border, bottom) = match kind {
             ButtonKind::Normal => (rgb(0x55, 0x55, 0x55), rgb(0x4b, 0x4b, 0x4b)),
-            ButtonKind::Default => (accent(), rgb(0x4f, 0xb5, 0xe4)),
+            ButtonKind::Default | ButtonKind::Accent => (accent(), rgb(0x4f, 0xb5, 0xe4)),
             ButtonKind::Disabled => (rgb(0x46, 0x46, 0x46), rgb(0x46, 0x46, 0x46)),
         };
         Face {
@@ -2855,7 +2873,9 @@ fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
     } else {
         let (border, bottom) = match kind {
             ButtonKind::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xba, 0xba, 0xba)),
-            ButtonKind::Default => (rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x6b, 0xbe)),
+            ButtonKind::Default | ButtonKind::Accent => {
+                (rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x6b, 0xbe))
+            }
             ButtonKind::Disabled => (rgb(0xe9, 0xe9, 0xe9), rgb(0xe9, 0xe9, 0xe9)),
         };
         Face {
@@ -4224,15 +4244,52 @@ mod tests {
     }
 
     #[test]
+    fn no_let_in_an_if_binds_a_condition() {
+        // `if a && let x = b && c` binds `b` alone and makes `c` a condition of the `if`: 0.2.3's
+        // toolbar bound `on_arrow = dropdown && <pointer past the button>`, and only its arrows
+        // ever clicked. Such a value is computed before the `if`.
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(&dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().is_none_or(|e| e != "rs") {
+                continue;
+            }
+            let src = std::fs::read_to_string(&path).unwrap();
+            for (n, line) in src.lines().enumerate() {
+                let code = line.trim_start();
+                if code.starts_with("//") || code.contains("fn no_let_in_an_if") {
+                    continue;
+                }
+                // `let <name> = <expr> &&…` / `||…` after an `if` or `&&` on the same line.
+                for lead in ["if let ", "&& let "] {
+                    if let Some(at) = code.find(lead) {
+                        let rest = &code[at + lead.len()..];
+                        if let Some(eq) = rest.find(" = ")
+                            && rest[..eq].chars().all(|c| c.is_alphanumeric() || c == '_')
+                            && (rest[eq..].contains(" && ") || rest[eq..].contains(" || "))
+                        {
+                            found.push(format!("{}:{}", path.display(), n + 1));
+                        }
+                    }
+                }
+            }
+        }
+        assert!(
+            found.is_empty(),
+            "a let in an if binds only up to its &&: {found:?}"
+        );
+    }
+
+    #[test]
     fn button_labels_stay_centred_in_taller_buttons() {
         // The measured heights keep their measured baselines.
-        assert_eq!(button_baseline(21.0, false), 13.0);
-        assert_eq!(button_baseline(19.0, false), 13.0);
-        assert_eq!(button_baseline(23.0, true), 14.0);
-        assert_eq!(button_baseline(21.0, true), 14.0);
+        assert_eq!(button_baseline(21.0), 13.0);
+        assert_eq!(button_baseline(19.0), 13.0);
+        assert_eq!(button_baseline(23.0), 14.0);
         // Taller: the label moves down by half the extra height.
-        assert_eq!(button_baseline(25.0, false), 15.0);
-        assert_eq!(button_baseline(27.0, true), 16.0);
+        assert_eq!(button_baseline(25.0), 15.0);
+        assert_eq!(button_baseline(27.0), 16.0);
         // Text boxes and read-only fields centre the same way.
         assert_eq!(baseline_in(100.0, 21.0), 113.0);
         assert_eq!(baseline_in(100.0, 23.0), 114.0);

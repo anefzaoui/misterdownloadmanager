@@ -115,7 +115,7 @@ try {
     }
   Set-Content -Encoding utf8 "$work\data\downloads.json" (
     '{"next_id":1,"items":[],"version":2,"settings":{"language":' + (& $q $Lang) +
-    ',"language_asked":true,"dark_mode_support":' + $dark.ToString().ToLower() +
+    ',"language_asked":true,"helpers_asked":true,"dark_mode_support":' + $dark.ToString().ToLower() +
     ',"category_dirs":[' + ($dirs -join ",") + ']}}')
 
   $srv = Start-Process -PassThru -WindowStyle Hidden $Server -ArgumentList "--bind 127.0.0.1:$Port"
@@ -156,7 +156,7 @@ try {
     "properties" = "properties"; "scheduler" = "scheduler"; "about" = "about"
     "options-general" = "options:general"; "options-connection" = "options:connection"
     "options-save-to" = "options:saveto"; "options-panels" = "options:panels"; "options-regional" = "options:regional"
-    "language-picker" = "language"
+    "language-picker" = "language"; "helpers" = "helpers"
     "delete-confirm" = "delete"; "progress" = "progress"
   }
   if ($Torrent -and (Want "add-torrent")) {

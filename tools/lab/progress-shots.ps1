@@ -74,7 +74,7 @@ function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$pre
   $list = [ordered]@{
     next_id = 2; version = 2; items = @($item)
     settings = [ordered]@{
-      language = "en"; language_asked = $true; dark_mode_support = [bool]$Dark; category_dirs = $dirs
+      language = "en"; language_asked = $true; helpers_asked = $true; dark_mode_support = [bool]$Dark; category_dirs = $dirs
     }
   }
   if ($prepare) { & $prepare $dir }

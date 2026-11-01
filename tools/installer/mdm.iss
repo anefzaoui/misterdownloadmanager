@@ -8,7 +8,7 @@
 ; whether to keep the download list and settings.
 
 #ifndef AppVersion
-  #define AppVersion "0.2.3"
+  #define AppVersion "0.2.4"
 #endif
 #define AppName "Mister Download Manager"
 #define AppExe "misterdownloadmanager.exe"

@@ -64,15 +64,20 @@ fn system() -> Option<Installed> {
         })
 }
 
-/// Install the newest stable LGPL build into `dir` unless the installed one is as new.
-pub async fn install_latest(dir: &Path) -> Result<Installed, Error> {
+/// Install the newest stable LGPL build into `dir` unless the installed one is as new, the zip
+/// downloaded with MDM's engine (`net`), counted into `progress`.
+pub async fn install_latest(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&crate::update::Progress>,
+) -> Result<Installed, Error> {
     if !cfg!(windows) {
         return Err(Error::Missing(
             "an ffmpeg build for this system (install ffmpeg)".into(),
         ));
     }
     let client = reqwest::Client::builder()
-        .user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
+        .user_agent(crate::USER_AGENT)
         .build()?;
     let body = client
         .get(RELEASES)
@@ -131,16 +136,19 @@ pub async fn install_latest(dir: &Path) -> Result<Installed, Error> {
         return Err(Error::BadChecksum);
     }
 
-    // Download to a file beside the install (about 80 MB), hashing as it arrives.
+    // Download to a file beside the install (about 80 MB), checked against the checksum.
     let root = dir.join("ffmpeg");
     std::fs::create_dir_all(&root)?;
-    let zip_path = root.join(format!("{version}.zip.part"));
-    let hash =
-        crate::download_hashed(&client, &asset.browser_download_url, &zip_path, None).await?;
-    if hash != expected {
-        let _ = std::fs::remove_file(&zip_path);
-        return Err(Error::BadChecksum);
-    }
+    // Named by its checksum: one release's cut-off download resumes, never another's.
+    let zip_path = root.join(format!("ffmpeg-{}.zip", hex::encode(&expected[..8])));
+    crate::fetch_verified(
+        &asset.browser_download_url,
+        &zip_path,
+        expected,
+        net,
+        progress,
+    )
+    .await?;
     let res = unpack(&zip_path, &root, &version, &asset.browser_download_url);
     let _ = std::fs::remove_file(&zip_path);
     let exe = res?;

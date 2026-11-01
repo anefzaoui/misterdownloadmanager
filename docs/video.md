@@ -13,10 +13,12 @@ Any other page address that turns out to be a web page, not a file, is offered t
 
 ## yt-dlp and ffmpeg
 
-MDM installs its two helpers the first time they are needed, from their official releases:
+MDM offers its two helpers on its first start, and again the first time they are needed. It
+downloads them from their official releases with its own downloader, so a cut connection
+resumes, and uses your proxy settings:
 
 - **yt-dlp** (about 23 MB) looks the page up and downloads the video. The first time, click **Install yt-dlp**. MDM checks the download against the signature yt-dlp's developers publish before it uses it.
-- **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click **Install ffmpeg** when MDM offers it.
+- **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
 
 Both are kept in a `tools` folder in MDM's data folder.
 

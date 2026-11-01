@@ -61,9 +61,10 @@ impl Job {
         let (p, out, ctx) = (progress.clone(), slot.clone(), ctx.clone());
         // Repaint while it runs, for the progress bar.
         let ticker = ctx.clone();
+        let net = crate::settings::own_net();
         let task = rt.spawn(async move {
             let res = match folder() {
-                Some(dir) => mdm_tools::update::fetch(&assets, &name, &dir, &p)
+                Some(dir) => mdm_tools::update::fetch(&assets, &name, &dir, &net, &p)
                     .await
                     .map_err(|e| e.to_string()),
                 None => Err("no data folder".into()),

@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Kategorie derbäisetzen
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Neien Download derbäisetzen
 #. text in the Options window
@@ -144,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	All Dateien
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	Alles prett: op enger Säit mat engem Video, benotzt Aufgaben → Video vun enger Säit eroflueden.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	gëtt schonn erofgelueden: {path}
@@ -191,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Batch-Download
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Béid sinn Open Source. MDM kritt se vun hiren offiziellen Releases mat sengem eegenen Downloader an iwwerpréift d'Signatur vun all Datei ier se ausgefouert gëtt. Ongeféier 100 MB, eemol.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -260,10 +267,24 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	All Kéier beim Start no Updates sichen
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	Kontrolléiert Är Verbindung, da probéiert et nach eng Kéier, oder kritt se méi spéit aus der Videofenster.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Sichen no Updates...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	Fichier gëtt gepréift...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	{name} gëtt kontrolléiert ({n} vun {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -285,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Auer:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -491,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	Video vun enger Säit downloaden
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	Videoe vun YouTube an iwwer 1.000 Siten eroflueden
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -526,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Update gëtt erofgelueden... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	{name} gëtt erofgelueden ({n} vun {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -570,6 +600,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	E-Mail
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	MDM ofschléissen an nei starten
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Gitt e Magnet-Link an oder wielt eng .torrent-Datei
@@ -630,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Februar
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: verbënnt Bild an Toun
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -714,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Fr
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	Gratis, offiziell an iwwerpréift
 #. text in the Scheduler window
 #, machine
 	Friday	Freideg
@@ -748,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	Allgemeng
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	Bereet fir Video-Downloads
 #. button in the Options window
 #, machine
 	Get System	System kréien
@@ -879,8 +925,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Leschte Versuch {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Méi spéit
 #. text in the Options window
@@ -1086,6 +1133,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	keen Datendossier fir Torrents
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Kee Dag ass ugekräizt: d'Schlaang gëtt net gestart
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Keng Downloads hei
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Keng Downloads entspriechen de Filteren
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Nach keng Downloads
 #. text in a dialog box
 #, machine
 	No folders yet	Nach keng Classeuren
@@ -1124,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Net an enger Schlaang
+#. button in helpers.rs
+#, machine
+	Not now	Elo net
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	Elo net? Kritt se méi spéit iwwer Aufgaben → Video vun enger Säit eroflueden.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Net benotzt: Dateideeler ginn nieft der Datei geschriwwen
@@ -1202,6 +1271,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Folgend Datei opmaachen, wann fäerdeg:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	Gemellten Thema opmaachen
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	De gewielten Download opmaachen
@@ -1231,6 +1304,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	E Magnet-Link pechen oder eng .torrent-Datei auswielen, dann Sichen.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	De Checksum vun der Download-Säit pechen
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1324,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Torrent liesen...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Liest eng Säit a lëscht all Qualitéit, déi de Site ubitt, bis zu 4K, vun YouTube, Vimeo an iwwer dausend anere Siten.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	Prett: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1361,6 +1445,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Stärchen ersetzen duerch
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	MDM nei starten
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1558,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Ausgewielt: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	Op GitHub schécken
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Dëst un e Frënd schécken:
@@ -1514,6 +1606,10 @@
 #. button in the download list
 #, machine
 	Show all	Alles weisen
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	All Downloads weisen
 #. text in a download's progress window
 #, machine
 	Show details >>	Detailer weisen >>
@@ -1553,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Säiten-Login
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Siten schécken hir bescht Qualitéit als separat Video an Audio, an ffmpeg verbënnt se. Op dësem System benotzt MDM Ären: installéiert ffmpeg mat Ärem Package Manager.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Siten schécken hir bescht Qualitéit als separat Video an Audio. ffmpeg setzt se zesummen an eng Datei, déi iwwerall spillt.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1630,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Gestart mat yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	Starten...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1702,6 +1808,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	De Clipboard ass beschäftegt: probéiert et nach eng Kéier.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	D'Kolonnefilter verstoppen all Downloads an dëser Vue.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1858,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	D'Downloadschlaang ass fäerdeg.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	D'Downloads, déi Dir bäifügt oder an dës Fënster zitt, ginn hei ugewisen.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	den Drive oder Netzwierkshare ass net méi verfügbar
@@ -1878,12 +1992,27 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Et gëtt schonn eng Kategorie mat dësem Numm
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Et gëtt schonn eng Schlaang mat dësem Numm
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Dës Astellunge sinn net verfügbar wann "Download fäerdeg Dialog weisen" ageschalt ass
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	Si luede weider erof, wann Dir dës Fënster zoumaacht.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Dës Adress ass schonn an der Downloadlëscht:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Dës Kategorie oder Schlaang enthält nach keng Downloads.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Dësen Datum ass vergaangen: d'Schlaang gëtt net gestart
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Dësen Dossier existéiert net:
@@ -1943,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Transfertstaux
+#. button in helpers.rs
+#, machine
+	Try again	Nach eng Kéier probéieren
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1968,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Uschalten
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Zwee gratis Helfer maachen et méiglech. Kritt se elo, an e Video späicheren ass nëmmen ee Klick ewech, wann Dir een fannt.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1984,6 +2119,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Gitt den Dateinumm an "Späicheren als" an
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Numm vun der Schlaang aginn
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2261,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Gréisst vum Jokerzeechen
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows huet refuséiert
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows-Sprooch
@@ -2144,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Jo
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	Jo, eroflueden (recommandéiert)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2155,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ass net installéiert (Aufgaben → Video vun enger Säit eroflueden installéiert et)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: fënnt de Video
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2229,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	{name} konnt net erofgeluede ginn: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

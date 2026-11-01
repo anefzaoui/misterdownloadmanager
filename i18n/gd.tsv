@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Cuir roinn-seòrsa ris
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Cuir luchdachadh a-nuas ùr ris
 #. text in the Options window
@@ -144,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	A h-uile faidhle
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	Deiseil: air duilleag le bhidio, cleachd Gnìomhan → Luchdaich a-nuas bhidio bho dhuilleag.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ga luchdachadh sìos mu thràth: {path}
@@ -191,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Luchdachadh sìos baidse
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Tha an dà chuid stòr fosgailte. Gheibh MDM iad bho na fiosan oifigeil aca leis an luchd-luchdaich sìos aige fhèin agus nì e sgrùdadh air ainm-sgrìobhte gach faidhle mus ruith e. Mu 100 MB, aon uair.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -260,10 +267,24 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Thoir sùil airson ùrachaidhean gach uair a thòisicheas e
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	Thoir sùil air a’ cheangal agad, an uair sin feuch a-rithist, no faigh iad nas fhaide air adhart bho uinneag a’ bhidio.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	A' sgrùdadh airson ùrachaidhean...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	A’ sgrùdadh an fhaidhle...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	A’ sgrùdadh {name} ({n} de {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -285,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Cloc:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -491,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	Luchdaich sìos bhidio bho dhuilleag
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	Luchdaich sìos bhideothan bho YouTube agus còrr is 1,000 làrach
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -526,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	A luchdachadh sìos an ùrachaidh... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	A’ luchdachadh a-nuas {name} ({n} de {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -570,6 +600,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Post-d
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	Cuir crìoch air agus ath-thòisich MDM
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Cuir a-steach ceangal magnet no tagh faidhle .torrent
@@ -630,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	An Gearran
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: a' ceangal dealbh is fuaim
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -714,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	DiF
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	An-asgaidh, oifigeil agus air a sgrùdadh
 #. text in the Scheduler window
 #, machine
 	Friday	Dihaoine
@@ -748,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	Coitcheann
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	Dèan deiseil airson luchdachadh sìos bhidio
 #. button in the Options window
 #, machine
 	Get System	Faigh Siostam
@@ -879,8 +925,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	An oidhirp mu dheireadh {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Nas fhaide air adhart
 #. text in the Options window
@@ -1086,6 +1133,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	pasgan dàta sam bith airson torrentan
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Chan eil latha air a thaghadh: cha tòisich an ciudha
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Chan eil luchdachadh a-nuas an seo
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Chan eil luchdachadh a-nuas a’ freagairt ris na sìoltachain
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Chan eil luchdachadh a-nuas ann fhathast
 #. text in a dialog box
 #, machine
 	No folders yet	Chan eil pasganan ann fhathast
@@ -1124,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Chan ann ann an ciudha
+#. button in helpers.rs
+#, machine
+	Not now	Chan ann an-dràsta
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	Chan ann an-dràsta? Faigh iad nas fhaide air adhart bho Gnìomhan → Luchdaich sìos bhidio bho dhuilleag.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Gun chleachdadh: tha pàirtean faidhle sgrìobhte ri taobh an fhaidhle
@@ -1202,6 +1271,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Fosgail am faidhle a leanas nuair a bhios e deiseil:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	Fosgail an cùis a chaidh aithris
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Fosgail an luchdachadh a-nuas taghte
@@ -1231,6 +1304,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Cuir a-steach ceangal magnet no tagh faidhle .torrent, an uairsin Lorg.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	Cuir a-steach an t-seic-suim a tha duilleag an luchdaich a-nuas a’ toirt seachad
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1324,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	A' leughadh an torrent...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Leughaidh e duilleag agus nì e liosta de gach càileachd a tha an làrach a' tabhann, suas ri 4K, bho YouTube, Vimeo agus còrr is mìle làrach eile.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	Deiseil: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1361,6 +1445,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Cuir an rionnag an àite
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	Ath-thòisich MDM
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1558,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Taghte: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	Cuir air GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Cuir seo gu caraid:
@@ -1514,6 +1606,10 @@
 #. button in the download list
 #, machine
 	Show all	Seall na h-uile
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	Seall a h-uile luchdachadh a-nuas
 #. text in a download's progress window
 #, machine
 	Show details >>	Seall mion-fhiosrachadh >>
@@ -1553,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Logaichean a-steach làraich
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Cuiridh làraich an càileachd as fheàrr aca mar bhidio is claisneachd air leth, agus ceanglaidh ffmpeg iad. Air an t-siostam seo cleachdaidh MDM an tè agadsa: stàlaich ffmpeg leis a' mhanaidsear pacaid agad.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Cuiridh làraich an càileachd as fheàrr aca mar bhidio is claisneachd air leth. Cuiridh ffmpeg ri chèile iad ann an aon fhaidhle a chluicheas an àite sam bith.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1630,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Air a thòiseachadh le yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	A’ tòiseachadh...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1702,6 +1808,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Tha am bòrd-bhualaidh trang: feuch ris a-rithist.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	Tha na sìoltachain colbh a’ falach a h-uile luchdachadh a-nuas san t-sealladh seo.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1858,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Tha an ciudha luchdaich sìos deiseil.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	Nochdaidh na luchdachaidhean a-nuas a chuireas tu ris, no a leigeas tu air an uinneig seo, an seo.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	chan eil an draibh no an roinn lìonraidh ri fhaighinn tuilleadh
@@ -1878,12 +1992,27 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Tha roinn leis an ainm seo ann mu thràth
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Tha ciudha leis an ainm seo ann mu thràth
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Chan eil na roghainnean sin rim faighinn nuair a tha "Seall còmhradh luchdaich sìos deiseil" air a thionndadh air
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	Cumaidh iad a' luchdachadh sìos ma dhùineas tu an uinneag seo.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Tha an seòladh seo air an liosta luchdaich sìos mu thràth:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Chan eil luchdachadh a-nuas anns a’ roinn no an ciudha seo fhathast.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Tha an ceann-latha seo air a dhol seachad: cha tòisich an ciudha
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Chan eil am pasgan seo ann:
@@ -1943,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Ìre gluasaid
+#. button in helpers.rs
+#, machine
+	Try again	Feuch a-rithist
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1968,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Cuir air
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Bidh dà neach-cuideachaidh an-asgaidh ga dhèanamh ag obair. Faigh iad a-nis, agus tha sàbhaladh bhidio aon bhriogadh air falbh nuair a lorgas tu fear.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1984,6 +2119,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Taidhp ainm an fhaidhle ann an Sàbhail Mar
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Taidhp ainm a’ chiudha
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2261,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Meud iomlan
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Dhiùlt Windows
 #. text in langpick.rs
 #, machine
 	Windows' language	Cànan Windows
@@ -2144,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Tha
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	Tha, luchdaich sìos iad (air a mholadh)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2155,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	Chan eil yt-dlp air a stàladh (Stàlaichidh Gnìomhan → Luchdaich a-nuas bhidio bho dhuilleag e)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: a' lorg a' bhidio
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2229,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	Cha b’ urrainn {name} a luchdachadh a-nuas: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

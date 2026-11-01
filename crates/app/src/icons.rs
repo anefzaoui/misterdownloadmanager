@@ -30,6 +30,12 @@ pub enum Icon {
     PageLogins,
     PageSounds,
     PageRegional,
+    /// The first-start helpers window (ours): yt-dlp finds a page's video,
+    HelperVideo,
+    /// ffmpeg joins its picture and sound,
+    HelperMerge,
+    /// and both are checked before they run.
+    HelperChecked,
 }
 
 impl Icon {
@@ -126,6 +132,20 @@ impl Icon {
                 r#"<path d="M21 7.338V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2.338"/>"#,
                 r#"<path d="M3 9h5.859"/><circle cx="16" cy="16" r="6"/>"#,
             ),
+            // A screen with a play mark.
+            Icon::HelperVideo => {
+                r#"<rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 8.5v7l6-3.5z"/>"#
+            }
+            // Two streams (picture, sound) joining into one file.
+            Icon::HelperMerge => concat!(
+                r#"<path d="M2 6h5c2.5 0 3.5 1.5 4.5 3.5L13 12h9"/>"#,
+                r#"<path d="M2 18h5c2.5 0 3.5-1.5 4.5-3.5"/><path d="m18 8 4 4-4 4"/>"#,
+            ),
+            // Lucide "shield" with a check.
+            Icon::HelperChecked => concat!(
+                r#"<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>"#,
+                r#"<path d="m9 12 2 2 4-4"/>"#,
+            ),
             Icon::PageSounds => concat!(
                 r#"<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/>"#,
                 r#"<path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>"#,
@@ -154,6 +174,9 @@ impl Icon {
             Icon::PageLogins => ("#d9a514", "#9a7b2e"),
             Icon::PageSounds => ("#8a5fd0", "#d05f9a"),
             Icon::PageRegional => ("#2f7fcf", "#3fa864"),
+            Icon::HelperVideo => ("#df6a9c", "#b07ad9"),
+            Icon::HelperMerge => ("#3d8ee6", "#2bb3a3"),
+            Icon::HelperChecked => ("#3fa864", "#2f7fcf"),
         }
     }
 
@@ -180,6 +203,9 @@ impl Icon {
             Icon::PageLogins => "page-logins",
             Icon::PageSounds => "page-sounds",
             Icon::PageRegional => "page-regional",
+            Icon::HelperVideo => "helper-video",
+            Icon::HelperMerge => "helper-merge",
+            Icon::HelperChecked => "helper-checked",
         }
     }
 

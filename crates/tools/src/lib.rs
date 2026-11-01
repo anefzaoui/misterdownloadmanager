@@ -42,6 +42,9 @@ pub enum Error {
     Missing(String),
     #[error("unexpected release data: {0}")]
     BadRelease(String),
+    /// MDM's engine could not download it (its own words).
+    #[error("{0}")]
+    Download(String),
 }
 
 /// An installed tool.
@@ -123,28 +126,76 @@ pub(crate) async fn signed_list(
     Ok(String::from_utf8_lossy(&sums).into_owned())
 }
 
-/// Download `url` into `path`, hashing it as it arrives (and counting it into `progress`).
-/// Returns its SHA-256.
-pub(crate) async fn download_hashed(
-    client: &reqwest::Client,
+/// MDM's own name, sent when it fetches its helpers and its updates.
+pub const USER_AGENT: &str = concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION"));
+
+/// How MDM downloads its helpers and its updates: through its own engine (several connections,
+/// resumable), as MDM itself, through `proxy` (Options → Proxy / Socks).
+pub fn net(proxy: mdm_engine::Proxy) -> mdm_engine::Options {
+    mdm_engine::Options {
+        user_agent: USER_AGENT.to_owned(),
+        proxy,
+        ..Default::default()
+    }
+}
+
+/// Download `url` into `path` with MDM's own engine (`net`: its connections, the user's proxy),
+/// counting into `progress`, and accept it only when its SHA-256 is `expected` (the engine checks
+/// it, and so do we, on the finished file). An earlier attempt cut off is resumed from where it
+/// stopped. A file that doesn't match is removed.
+pub(crate) async fn fetch_verified(
     url: &str,
     path: &Path,
+    expected: [u8; 32],
+    net: &mdm_engine::Options,
     progress: Option<&update::Progress>,
-) -> Result<[u8; 32], Error> {
-    use std::io::Write;
-    let mut resp = client.get(url).send().await?.error_for_status()?;
-    if let (Some(p), Some(n)) = (progress, resp.content_length()) {
-        p.total.store(n, std::sync::atomic::Ordering::Relaxed);
+) -> Result<(), Error> {
+    use mdm_engine::verify::{Algo, Hash};
+    let url = url::Url::parse(url).map_err(|e| Error::BadRelease(e.to_string()))?;
+    let opts = mdm_engine::Options {
+        checksum: Some(Hash {
+            algo: Algo::Sha256,
+            value: expected.to_vec(),
+        }),
+        ..net.clone()
+    };
+    let got = mdm_engine::fetch(url, path, opts, |done, total| {
+        if let Some(p) = progress {
+            use std::sync::atomic::Ordering::Relaxed;
+            p.got.store(done, Relaxed);
+            p.total.store(total.unwrap_or(0), Relaxed);
+        }
+    })
+    .await;
+    let state = mdm_engine::state::state_path(path);
+    let forget = || {
+        let _ = std::fs::remove_file(path);
+        let _ = std::fs::remove_file(mdm_engine::naming::part_path(path));
+        let _ = std::fs::remove_file(&state);
+    };
+    match got {
+        Ok(_) if sha256_of(path)? == expected => Ok(()),
+        Ok(_) | Err(mdm_engine::Error::ChecksumMismatch(_)) => {
+            forget();
+            Err(Error::BadChecksum)
+        }
+        Err(e) => Err(Error::Download(e.to_string())),
     }
-    let mut file = std::fs::File::create(path)?;
+}
+
+/// The SHA-256 of the file at `path`.
+fn sha256_of(path: &Path) -> Result<[u8; 32], Error> {
+    use std::io::Read;
+    let mut file = std::fs::File::open(path)?;
     let mut hash = Sha256::new();
-    while let Some(chunk) = resp.chunk().await? {
-        hash.update(&chunk);
-        file.write_all(&chunk)?;
-        update::add(progress, chunk.len() as u64);
+    let mut buf = vec![0u8; 1 << 16];
+    loop {
+        let n = file.read(&mut buf)?;
+        if n == 0 {
+            return Ok(hash.finalize().into());
+        }
+        hash.update(&buf[..n]);
     }
-    file.flush()?;
-    Ok(hash.finalize().into())
 }
 
 /// The SHA-256 a `hash  name` list gives for `name`.
@@ -183,12 +234,15 @@ struct Asset {
     browser_download_url: String,
 }
 
-/// Install the latest yt-dlp release into `dir` unless the installed one is as new. Returns
-/// what is installed afterwards.
-pub async fn install_latest(dir: &Path) -> Result<Installed, Error> {
-    let client = reqwest::Client::builder()
-        .user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
-        .build()?;
+/// Install the latest yt-dlp release into `dir` unless the installed one is as new, the program
+/// downloaded with MDM's engine (`net`), counted into `progress`. Returns what is installed
+/// afterwards.
+pub async fn install_latest(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&update::Progress>,
+) -> Result<Installed, Error> {
+    let client = reqwest::Client::builder().user_agent(USER_AGENT).build()?;
     let body = client
         .get(RELEASES)
         .send()
@@ -222,7 +276,13 @@ pub async fn install_latest(dir: &Path) -> Result<Installed, Error> {
     let expected =
         sum_for(&sums, asset).ok_or_else(|| Error::Missing(format!("checksum for {asset}")))?;
     let exe_url = url(asset)?;
-    let program = get_bytes(&client, &exe_url).await?;
+    let root = dir.join("yt-dlp");
+    std::fs::create_dir_all(&root)?;
+    // Named by its checksum: one release's cut-off download resumes, never another's.
+    let download = root.join(format!("yt-dlp-{}.download", hex::encode(&expected[..8])));
+    fetch_verified(&exe_url, &download, expected, net, progress).await?;
+    let program = std::fs::read(&download)?;
+    let _ = std::fs::remove_file(&download);
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }

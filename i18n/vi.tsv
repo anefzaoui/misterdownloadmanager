@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Thêm danh mục
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Thêm tải xuống mới
 #. text in the Options window
@@ -144,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	Tất cả các tệp
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	Đã xong: trên trang có video, dùng Tác vụ → Tải xuống video từ trang.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	đang được tải xuống: {path}
@@ -191,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Tải xuống hàng loạt
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Cả hai đều là mã nguồn mở. MDM lấy chúng từ các bản phát hành chính thức của chúng bằng trình tải xuống riêng và kiểm tra chữ ký của từng tệp trước khi chạy. Khoảng 100 MB, một lần.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -260,10 +267,24 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Kiểm tra bản cập nhật mỗi khi khởi động
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	Kiểm tra kết nối của bạn, sau đó thử lại hoặc tải chúng sau từ cửa sổ video.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Đang kiểm tra bản cập nhật...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	Đang kiểm tra tệp...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	Đang kiểm tra {name} ({n} trên {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -285,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Đồng hồ:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -491,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	Tải xuống video từ một trang
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	Tải xuống video từ YouTube và hơn 1.000 trang web
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -526,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Đang tải bản cập nhật... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	Đang tải xuống {name} ({n} trên {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -570,6 +600,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Email
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	Kết thúc và khởi động lại MDM
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Nhập liên kết magnet hoặc chọn tệp .torrent
@@ -630,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Tháng 2
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: ghép hình ảnh và âm thanh
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -714,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Th 6
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	Miễn phí, chính thức và đã kiểm tra
 #. text in the Scheduler window
 #, machine
 	Friday	Thứ Sáu
@@ -748,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	Chung
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	Sẵn sàng để tải xuống video
 #. button in the Options window
 #, machine
 	Get System	Lấy Hệ thống
@@ -879,8 +925,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Lần thử cuối cùng {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Sau
 #. text in the Options window
@@ -1086,6 +1133,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	không có thư mục dữ liệu cho torrent
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Chưa chọn ngày nào: hàng đợi sẽ không bắt đầu
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Không có bản tải xuống nào ở đây
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Không có bản tải xuống nào khớp với bộ lọc
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Chưa có bản tải xuống nào
 #. text in a dialog box
 #, machine
 	No folders yet	Chưa có thư mục nào
@@ -1124,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Không có trong hàng đợi
+#. button in helpers.rs
+#, machine
+	Not now	Không phải bây giờ
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	Không phải bây giờ? Lấy chúng sau từ Tác vụ → Tải xuống video từ một trang.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Không dùng: các phần tệp được ghi cạnh tệp
@@ -1202,6 +1271,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Mở tệp sau khi hoàn tất:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	Mở vấn đề đã báo cáo
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Mở bản tải xuống đã chọn
@@ -1231,6 +1304,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Dán liên kết magnet hoặc chọn tệp .torrent, sau đó Tra cứu.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	Dán tổng kiểm mà trang tải xuống cung cấp
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1324,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Đang đọc torrent...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Đọc một trang và liệt kê mọi chất lượng mà trang web cung cấp, lên đến 4K, từ YouTube, Vimeo và hơn một nghìn trang web khác.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	Sẵn sàng: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1361,6 +1445,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Thay thế dấu hoa thị bằng
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	Khởi động lại MDM
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1558,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Đã chọn: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	Gửi trên GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Gửi cái này cho một người bạn:
@@ -1514,6 +1606,10 @@
 #. button in the download list
 #, machine
 	Show all	Hiển thị tất cả
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	Hiển thị tất cả các bản tải xuống
 #. text in a download's progress window
 #, machine
 	Show details >>	Hiển thị chi tiết >>
@@ -1553,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Đăng nhập trang web
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Các trang web gửi chất lượng tốt nhất của chúng dưới dạng video và âm thanh riêng biệt, và ffmpeg ghép chúng lại. Trên hệ thống này, MDM sử dụng của bạn: cài đặt ffmpeg bằng trình quản lý gói của bạn.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Các trang web gửi chất lượng tốt nhất của chúng dưới dạng video và âm thanh riêng biệt. ffmpeg ghép chúng lại thành một tệp có thể phát ở bất cứ đâu.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1630,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Đã bắt đầu với yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	Đang khởi động...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1702,6 +1808,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Bảng tạm đang bận: thử lại.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	Bộ lọc cột ẩn mọi bản tải xuống trong chế độ xem này.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1858,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Hàng đợi tải xuống đã hoàn tất.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	Các bản tải xuống bạn thêm hoặc kéo vào cửa sổ này sẽ hiển thị ở đây.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	ổ đĩa hoặc chia sẻ mạng không còn khả dụng
@@ -1878,12 +1992,27 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Đã có một danh mục với tên này
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Đã có một hàng đợi với tên này
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Các cài đặt này không khả dụng khi "Hiển thị hộp thoại hoàn tất tải xuống" được bật
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	Chúng vẫn tiếp tục tải xuống nếu bạn đóng cửa sổ này.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Địa chỉ này đã có trong danh sách tải xuống:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Danh mục hoặc hàng đợi này chưa chứa bản tải xuống nào.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Ngày này đã qua: hàng đợi sẽ không bắt đầu
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Thư mục này không tồn tại:
@@ -1943,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Tốc độ truyền
+#. button in helpers.rs
+#, machine
+	Try again	Thử lại
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1968,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Bật
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Hai trình trợ giúp miễn phí giúp nó hoạt động. Tải chúng ngay bây giờ và việc lưu video chỉ cần một cú nhấp chuột khi bạn tìm thấy một video.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1984,6 +2119,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Nhập tên tệp vào Lưu thành
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Nhập tên hàng đợi
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2261,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Kích thước ký tự đại diện
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows đã từ chối
 #. text in langpick.rs
 #, machine
 	Windows' language	Ngôn ngữ của Windows
@@ -2144,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Có
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	Có, tải xuống (được khuyến nghị)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2155,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp chưa được cài đặt (Tác vụ → Tải xuống video từ trang sẽ cài đặt)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: tìm video
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2229,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	Không thể tải xuống {name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

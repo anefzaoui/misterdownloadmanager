@@ -12,6 +12,7 @@ mod droptarget;
 mod errors;
 mod find;
 mod help;
+mod helpers;
 mod i18n;
 mod icons;
 mod langpick;

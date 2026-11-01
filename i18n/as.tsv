@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	শ্ৰেণী যোগ কৰক
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	নতুন ডাউনলোড যোগ কৰক
 #. text in the Options window
@@ -144,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	সকলো ফাইল
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	সকলো ঠিক আছে: এটা ভিডিঅ' থকা পৃষ্ঠাত, কাৰ্য্যসমূহ → এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক ব্যৱহাৰ কৰক।
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ইতিমধ্যে ডাউনল’ড হৈ আছে: {path}
@@ -191,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	বেচ ডাউনলোড
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	দুয়োটাই মুক্ত উৎস। MDM-এ নিজৰ ডাউনল'ডাৰৰ সৈতে সিহঁতৰ অফিচিয়েল ৰিলিজৰ পৰা সিহঁতক পায় আৰু চলাবলৈ দিয়াৰ আগতে প্ৰতিটো ফাইলৰ স্বাক্ষৰ পৰীক্ষা কৰে। প্ৰায় 100 MB, এবাৰত।
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -260,10 +267,24 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	প্ৰতিটো আৰম্ভণিতে আপডে'টৰ বাবে পৰীক্ষা কৰক
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	আপোনাৰ সংযোগ পৰীক্ষা কৰক, তাৰ পিছত পুনৰ চেষ্টা কৰক, অথবা পিছত ভিডিঅ' উইণ্ডোৰ পৰা সেইবোৰ লাভ কৰক।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	আপডেটসমূহৰ বাবে পৰীক্ষা কৰি আছে...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	ফাইল পৰীক্ষা কৰি আছে...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	{name} ({n} of {total}) পৰীক্ষা কৰা হৈছে...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -285,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ঘড়ী:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -491,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	YouTube আৰু 1,000+ চাইটৰ পৰা ভিডিঅ' ডাউনল'ড কৰক
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -526,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	আপডেট ডাউনল’ড হৈ আছে... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	{name} ({n} of {total}) ডাউনল'ড কৰা হৈছে... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -570,6 +600,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ইমেইল
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	MDM শেষ কৰক আৰু পুনৰ আৰম্ভ কৰক
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	এটা মেগনেট লিংক লিখক বা এটা .torrent ফাইল বাছনি কৰক
@@ -630,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	ফেব্ৰুৱাৰী
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: ছবি আৰু শব্দ সংযোগ কৰে
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -714,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	শুক্ৰ
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	বিনামূলীয়া, অফিচিয়েল আৰু পৰীক্ষিত
 #. text in the Scheduler window
 #, machine
 	Friday	শুক্ৰবাৰ
@@ -748,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	সাধাৰণ
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	ভিডিঅ' ডাউনল'ডৰ বাবে সাজু হওক
 #. button in the Options window
 #, machine
 	Get System	ছিষ্টেম পাওক
@@ -879,8 +925,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	অন্তিম চেষ্টা {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	পিছত
 #. text in the Options window
@@ -1086,6 +1133,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	টৰেণ্টৰ বাবে কোনো ডেটা ফ’ল্ডাৰ নাই
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	কোনো দিন টিক কৰা হোৱা নাই: শাৰী আৰম্ভ নহ'ব
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	ইয়াত কোনো ডাউনলোড নাই
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	কোনো ডাউনলোডে ফিল্টাৰসমূহৰ সৈতে মিল নাখায়
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	এতিয়ালৈকে কোনো ডাউনলোড নাই
 #. text in a dialog box
 #, machine
 	No folders yet	এতিয়ালৈ কোনো ফোল্ডাৰ নাই
@@ -1124,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	শাৰীত নাই
+#. button in helpers.rs
+#, machine
+	Not now	এতিয়া নহয়
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	এতিয়া নহয়? পিছত Task → এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক-ৰ পৰা সিহঁতক পাওক।
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ব্যৱহাৰ কৰা হোৱা নাই: ফাইলৰ অংশসমূহ ফাইলৰ কাষত লিখা হয়
@@ -1202,6 +1271,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	সম্পূৰ্ণ হ’লে তলৰ ফাইলটো খোলক:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	প্ৰতিবেদন কৰা সমস্যাটো খোলক
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	নিৰ্বাচিত ডাউনল’ড খোলক
@@ -1231,6 +1304,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	এটা মেগনেট লিংক পেষ্ট কৰক বা এটা .torrent ফাইল বাছনি কৰক, তাৰ পিছত সন্ধান কৰক।
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	ডাউনলোডৰ পৃষ্ঠাই দিয়া চেকছাম পেষ্ট কৰক
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1324,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	টৰেণ্ট পঢ়া হৈছে...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	এটা পৃষ্ঠা পঢ়ে আৰু YouTube, Vimeo আৰু হাজাৰৰো অধিক আন চাইটৰ পৰা চাইটে আগবঢ়োৱা প্ৰতিটো মান, 4K লৈকে তালিকাভুক্ত কৰে।
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	প্ৰস্তুত: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1361,6 +1445,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	তাৰকা সলনি কৰক
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	MDM পুনৰ আৰম্ভ কৰক
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1558,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	নিৰ্বাচিত: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	GitHub ত প্ৰেৰণ কৰক
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	এজন বন্ধুলৈ এইটো পঠিয়াওক:
@@ -1514,6 +1606,10 @@
 #. button in the download list
 #, machine
 	Show all	সকলো প্ৰদৰ্শন কৰক
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	সকলো ডাউনলোড দেখুৱাওক
 #. text in a download's progress window
 #, machine
 	Show details >>	বিৱৰণ প্ৰদৰ্শন কৰক >>
@@ -1553,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	ছাইটৰ লগইনসমূহ
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	চাইটে সিহঁতৰ শ্ৰেষ্ঠ মান পৃথক ভিডিঅ' আৰু অডিঅ' হিচাপে পঠিয়ায়, আৰু ffmpeg-এ সিহঁতক সংযোগ কৰে। এই ছিষ্টেমত MDM-এ আপোনাৰটো ব্যৱহাৰ কৰে: আপোনাৰ পেকেজ মেনেজাৰৰ সৈতে ffmpeg ইনষ্টল কৰক।
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	চাইটে সিহঁতৰ শ্ৰেষ্ঠ মান পৃথক ভিডিঅ' আৰু অডিঅ' হিচাপে পঠিয়ায়। ffmpeg-এ সিহঁতক একত্ৰিত কৰি এটা ফাইলত ৰাখে যি ক'তো চলে।
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1630,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) ৰ সৈতে আৰম্ভ কৰা হ'ল
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	আৰম্ভ হৈছে...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1702,6 +1808,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	ক্লিপব’ৰ্ড ব্যস্ত: পুনৰ চেষ্টা কৰক।
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	স্তম্ভ ফিল্টাৰসমূহে এই দৃশ্যত প্ৰতিটো ডাউনলোড লুকুৱাই ৰাখে।
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1858,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ডাউনলোড কিউ শেষ হৈছে।
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	আপুনি যোগ কৰা, বা এই উইণ্ডোত এৰি দিয়া ডাউনলোডসমূহ ইয়াত দেখুৱাব।
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	ড্ৰাইভ বা নেটৱৰ্ক শ্বেয়াৰ এতিয়া উপলব্ধ নহয়
@@ -1878,12 +1992,27 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	এই নামৰ এটা শ্ৰেণী ইতিমধ্যে আছে
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	এই নামেৰে এটা শাৰী ইতিমধ্যে আছে
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ডাউনলোড সম্পূৰ্ণ হোৱা ডাইলগ দেখুৱাওক" অন কৰা থাকিলে এই ছেটিংছসমূহ উপলব্ধ নহয়
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	আপুনি এই উইণ্ড'খন বন্ধ কৰিলেও সিহঁতে ডাউনল'ড কৰি থাকে।
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	এই ঠিকনাটো ইতিমধ্যে ডাউনলোডৰ তালিকাত আছে:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	এই শ্ৰেণী বা শাৰীত এতিয়ালৈকে কোনো ডাউনলোড নাই।
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	এই তাৰিখ পাৰ হৈ গৈছে: শাৰী আৰম্ভ নহ'ব
 #. text in a dialog box
 #, machine
 	This folder does not exist:	এই ফোল্ডাৰটো বিদ্যমান নহয়:
@@ -1943,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	স্থানান্তৰৰ হাৰ
+#. button in helpers.rs
+#, machine
+	Try again	পুনৰ চেষ্টা কৰক
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1968,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	চালু কৰক
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	দুটা বিনামূলীয়া সহায়কে ইয়াক কাম কৰায়। এতিয়াই সিহঁতক পাওক, আৰু আপুনি এটা ভিডিঅ' পালে ইয়াক সংৰক্ষণ কৰাটো এটা ক্লিক দূৰত।
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1984,6 +2119,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Save As ত ফাইলৰ নাম টাইপ কৰক
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	শাৰীৰ নাম টাইপ কৰক
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2261,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	ৱাইল্ডকাৰ্ড আকাৰ
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows এ অস্বীকাৰ কৰিছে
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows-ৰ ভাষা
@@ -2144,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	হয়
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	হয়, সিহঁতক ডাউনল'ড কৰক (পৰামৰ্শ দিয়া হৈছে)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2155,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ইনষ্টল কৰা হোৱা নাই (কাৰ্য্যসমূহ → এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনলোড কৰক ইনষ্টল কৰে)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: ভিডিঅ' বিচাৰে
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2229,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	{name} ডাউনল'ড কৰিব পৰা নগ'ল: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
