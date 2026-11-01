@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	ਸ਼੍ਰੇਣੀ ਸ਼ਾਮਲ ਕਰੋ
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	ਨਵਾਂ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ
 #. text in the Options window
@@ -264,6 +265,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	ਅੱਪਡੇਟਾਂ ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	ਫਾਈਲ ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -570,6 +576,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ਈਮੇਲ
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	MDM ਨੂੰ ਸਮਾਪਤ ਕਰੋ ਅਤੇ ਮੁੜ-ਚਾਲੂ ਕਰੋ
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	ਇੱਕ ਮੈਗਨੈੱਟ ਲਿੰਕ ਦਾਖਲ ਕਰੋ ਜਾਂ ਇੱਕ .torrent ਫਾਈਲ ਚੁਣੋ
@@ -879,8 +889,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	ਆਖਰੀ ਕੋਸ਼ਿਸ਼ {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	ਬਾਅਦ ਵਿੱਚ
 #. text in the Options window
@@ -1086,6 +1097,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	ਟੋਰੈਂਟਾਂ ਲਈ ਕੋਈ ਡਾਟਾ ਫੋਲਡਰ ਨਹੀਂ
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	ਕੋਈ ਦਿਨ ਟਿੱਕ ਨਹੀਂ ਕੀਤਾ ਗਿਆ: ਕਤਾਰ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋਵੇਗੀ
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	ਇੱਥੇ ਕੋਈ ਡਾਊਨਲੋਡ ਨਹੀਂ ਹਨ
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	ਕੋਈ ਡਾਊਨਲੋਡ ਫਿਲਟਰਾਂ ਨਾਲ ਮੇਲ ਨਹੀਂ ਖਾਂਦੇ
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	ਅਜੇ ਕੋਈ ਡਾਊਨਲੋਡ ਨਹੀਂ ਹਨ
 #. text in a dialog box
 #, machine
 	No folders yet	ਕੋਈ ਫੋਲਡਰ ਨਹੀਂ ਹਨ
@@ -1202,6 +1229,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	ਮੁਕੰਮਲ ਹੋਣ 'ਤੇ ਹੇਠ ਲਿਖੀ ਫਾਈਲ ਖੋਲ੍ਹੋ:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	ਰਿਪੋਰਟ ਕੀਤਾ ਮੁੱਦਾ ਖੋਲ੍ਹੋ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	ਚੁਣਿਆ ਡਾਊਨਲੋਡ ਖੋਲ੍ਹੋ
@@ -1231,6 +1262,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ਇੱਕ ਮੈਗਨੈੱਟ ਲਿੰਕ ਪੇਸਟ ਕਰੋ ਜਾਂ ਇੱਕ .torrent ਫਾਈਲ ਚੁਣੋ, ਫਿਰ ਲੁੱਕ ਅੱਪ ਕਰੋ।
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	ਡਾਊਨਲੋਡ ਦੇ ਪੰਨੇ ਦੁਆਰਾ ਦਿੱਤਾ ਗਿਆ ਚੈੱਕਸਮ ਪੇਸਟ ਕਰੋ
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1361,6 +1396,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	ਤਾਰੇ ਨੂੰ ਇਸ ਨਾਲ ਬਦਲੋ
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	MDM ਨੂੰ ਮੁੜ-ਚਾਲੂ ਕਰੋ
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1509,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	ਚੁਣਿਆ ਗਿਆ: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	GitHub 'ਤੇ ਭੇਜੋ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	ਇਹ ਕਿਸੇ ਦੋਸਤ ਨੂੰ ਭੇਜੋ:
@@ -1514,6 +1557,10 @@
 #. button in the download list
 #, machine
 	Show all	ਸਾਰੇ ਦਿਖਾਓ
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	ਸਾਰੇ ਡਾਊਨਲੋਡ ਦਿਖਾਓ
 #. text in a download's progress window
 #, machine
 	Show details >>	ਵੇਰਵੇ ਦਿਖਾਓ >>
@@ -1702,6 +1749,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	ਕਲਿੱਪਬੋਰਡ ਰੁੱਝਿਆ ਹੋਇਆ ਹੈ: ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	ਕਾਲਮ ਫਿਲਟਰ ਇਸ ਦ੍ਰਿਸ਼ ਵਿੱਚ ਹਰ ਡਾਊਨਲੋਡ ਨੂੰ ਲੁਕਾਉਂਦੇ ਹਨ।
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1799,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ਡਾਊਨਲੋਡ ਕਤਾਰ ਪੂਰੀ ਹੋ ਗਈ ਹੈ।
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	ਤੁਹਾਡੇ ਦੁਆਰਾ ਜੋੜੇ ਗਏ, ਜਾਂ ਇਸ ਵਿੰਡੋ 'ਤੇ ਛੱਡੇ ਗਏ ਡਾਊਨਲੋਡ ਇੱਥੇ ਦਿਖਾਈ ਦਿੰਦੇ ਹਨ।
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	ਡਰਾਈਵ ਜਾਂ ਨੈੱਟਵਰਕ ਸ਼ੇਅਰ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ ਹੈ
@@ -1878,12 +1933,24 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ਇਸ ਨਾਮ ਨਾਲ ਇੱਕ ਸ਼੍ਰੇਣੀ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	ਇਸ ਨਾਮ ਨਾਲ ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਕਤਾਰ ਹੈ
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋਣ ਦਾ ਡਾਇਲਾਗ ਦਿਖਾਓ" ਚਾਲੂ ਹੋਣ 'ਤੇ ਇਹ ਸੈਟਿੰਗਾਂ ਅਣਉਪਲਬਧ ਹਨ
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ਇਹ ਪਤਾ ਪਹਿਲਾਂ ਹੀ ਡਾਊਨਲੋਡਾਂ ਦੀ ਸੂਚੀ ਵਿੱਚ ਹੈ:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	ਇਸ ਸ਼੍ਰੇਣੀ ਜਾਂ ਕਤਾਰ ਵਿੱਚ ਅਜੇ ਕੋਈ ਡਾਊਨਲੋਡ ਨਹੀਂ ਹਨ।
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	ਇਹ ਮਿਤੀ ਲੰਘ ਚੁੱਕੀ ਹੈ: ਕਤਾਰ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋਵੇਗੀ
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ਇਹ ਫੋਲਡਰ ਮੌਜੂਦ ਨਹੀਂ ਹੈ:
@@ -1984,6 +2051,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	ਇਸ ਤਰ੍ਹਾਂ ਸੁਰੱਖਿਅਤ ਕਰੋ ਵਿੱਚ ਫਾਈਲ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	ਕਤਾਰ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2193,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	ਵਾਈਲਡਕਾਰਡ ਆਕਾਰ
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows ਨੇ ਇਨਕਾਰ ਕਰ ਦਿੱਤਾ
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows ਦੀ ਭਾਸ਼ਾ

@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Gehitu kategoria
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Gehitu deskarga berria
 #. text in the Options window
@@ -264,6 +265,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Eguneratzeak bilatzen...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	Fitxategia egiaztatzen...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -570,6 +576,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Posta elektronikoa
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	MDM amaitu eta berrabiarazi
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Sartu magnet esteka bat edo aukeratu .torrent fitxategi bat
@@ -879,8 +889,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Azken saiakera {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Geroago
 #. text in the Options window
@@ -1086,6 +1097,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	torrentetarako datu-karpetarik ez
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Ez da egunik markatu: ilara ez da hasiko
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Ez dago deskargatzerik hemen
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Ez dago iragazkiekin bat datozen deskargatzerik
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Oraindik ez dago deskargatzerik
 #. text in a dialog box
 #, machine
 	No folders yet	Oraindik ez dago karpetarik
@@ -1202,6 +1229,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Hau amaitutakoan, ireki fitxategi hau:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	Jakinarazitako arazoa ireki
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Ireki hautatutako deskarga
@@ -1231,6 +1262,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Itsatsi magnet esteka bat edo aukeratu .torrent fitxategi bat, eta gero Bilatu.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	Itsatsi deskargaren orrialdeak ematen duen kontrol-batura
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1361,6 +1396,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Ordeztu asteriskoa honekin
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	MDM berrabiarazi
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1509,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Hautatuta: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	Bidali GitHub-era
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Bidali hau lagun bati:
@@ -1514,6 +1557,10 @@
 #. button in the download list
 #, machine
 	Show all	Erakutsi guztiak
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	Deskarga guztiak erakutsi
 #. text in a download's progress window
 #, machine
 	Show details >>	Erakutsi xehetasunak >>
@@ -1702,6 +1749,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Arbela lanpetuta dago: saiatu berriro.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	Zutabe-iragazkiek ikuspegi honetako deskarga guztiak ezkutatzen dituzte.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1799,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Deskarga-ilarak amaitu du.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	Gehitzen dituzun edo leiho honetara arrastatzen dituzun deskargak hemen agertzen dira.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	unitatea edo sareko partekatzea ez dago erabilgarri
@@ -1878,12 +1933,24 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Dagoeneko badago kategoria bat izen honekin
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Izen hori duen ilara bat badago dagoeneko
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Ezarpen hauek ez daude erabilgarri "Erakutsi deskarga osatuaren elkarrizketa-koadroa" aktibatuta dagoenean
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Helbide hau dagoeneko deskarga-zerrendan dago:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Kategoria edo ilara honek ez du deskargatzerik oraindik.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Data hori igaro da: ilara ez da hasiko
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Karpeta hau ez da existitzen:
@@ -1984,6 +2051,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Idatzi fitxategiaren izena "Gorde honela" eremuan
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Idatzi ilararen izena
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2193,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Komodinen tamaina
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows-ek uko egin dio
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows-en hizkuntza

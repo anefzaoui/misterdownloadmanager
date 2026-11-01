@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Cuir catagóir leis
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Cuir íoslódáil nua leis
 #. text in the Options window
@@ -264,6 +265,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Ag seiceáil le haghaidh nuashonruithe...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	Ag seiceáil an chomhaid...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -570,6 +576,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Ríomhphost
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	Cuir deireadh le MDM agus atosú
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Cuir isteach nasc maighnéadach nó roghnaigh comhad .torrent
@@ -879,8 +889,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Iarracht dheireanach {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Níos déanaí
 #. text in the Options window
@@ -1086,6 +1097,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	gan fillteán sonraí do torrents
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Níl aon lá marcáilte: ní thosóidh an scuaine
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Níl aon íoslódálacha anseo
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Níl aon íoslódálacha ag teacht leis na scagairí
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Níl aon íoslódálacha fós
 #. text in a dialog box
 #, machine
 	No folders yet	Gan fillteáin fós
@@ -1202,6 +1229,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Oscail an comhad seo a leanas nuair a bheidh sé déanta:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	Oscail an cheist tuairiscithe
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Oscail an íoslódáil roghnaithe
@@ -1231,6 +1262,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Greamaigh nasc maighnéadach nó roghnaigh comhad .torrent, ansin Cuardaigh.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	Greamaigh an seiceáil suime a thugann leathanach an íoslódála
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1361,6 +1396,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Cuir réiltín in ionad
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	Atosaigh MDM
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1509,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Roghnaíodh: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	Seol ar GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Seol é seo chuig cara:
@@ -1514,6 +1557,10 @@
 #. button in the download list
 #, machine
 	Show all	Taispeáin uile
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	Taispeáin gach íoslódáil
 #. text in a download's progress window
 #, machine
 	Show details >>	Taispeáin sonraí >>
@@ -1702,6 +1749,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Tá an gearrthaisce gnóthach: bain triail eile as.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	Folaíonn na scagairí colún gach íoslódáil sa radharc seo.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1799,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Tá an scuaine íoslódála críochnaithe.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	Taispeántar anseo na híoslódálacha a chuireann tú leis, nó a scaoileann tú ar an bhfuinneog seo.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	níl an tiomántán nó an comhroinnt líonra ar fáil a thuilleadh
@@ -1878,12 +1933,24 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Tá catagóir leis an ainm seo ann cheana féin
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Tá scuaine leis an ainm seo cheana féin
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Níl na socruithe seo ar fáil nuair a bhíonn "Taispeáin dialóg críochnaithe íoslódála" casta air
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Tá an seoladh seo sa liosta íoslódálacha cheana féin:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Níl aon íoslódálacha sa chatagóir nó sa scuaine seo fós.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Tá an dáta seo caite: ní thosóidh an scuaine
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Níl an fillteán seo ann:
@@ -1984,6 +2051,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Clóscríobh ainm an chomhaid in Sábháil Mar
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Clóscríobh ainm na scuaine
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2193,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Méid an chárta fiáin
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Dhiúltaigh Windows
 #. text in langpick.rs
 #, machine
 	Windows' language	Teanga Windows

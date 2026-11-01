@@ -193,13 +193,10 @@ impl Picker {
                 }
                 self.top = self.top.clamp(0.0, (total - page).max(0.0));
 
-                // The wheel scrolls the system's lines a notch (three unless changed).
-                let list_resp = ui.interact(
-                    shown_list,
-                    egui::Id::unique("language-list"),
-                    winui::pointer_only(),
-                );
-                if list_resp.hovered() {
+                // The wheel scrolls the system's lines a notch (three unless changed). The
+                // pointer is over a row's own widget, so the list asks where it is, not whether
+                // it is the widget hovered (that one is the row: the wheel did nothing).
+                if ui.rect_contains_pointer(shown_list) {
                     let rows = winui::wheel_rows(ui, ROW, page);
                     if rows != 0.0 {
                         self.top = (self.top + rows).clamp(0.0, (total - page).max(0.0));

@@ -768,7 +768,9 @@ fn menu_width(p: &egui::Painter, label: &str) -> f32 {
     }
 }
 
-/// Size of a menu window: widest label + 98, slots of 22 (separators 9), 3 px top and bottom.
+/// Size of a menu window: the check column (38), the widest label, then 30 to the edge (48 when an
+/// item opens a submenu: its arrow), slots of 22 (separators 9), 3 px top and bottom. Fitted to
+/// its texts, so they don't float in a wide window.
 fn menu_size<C>(
     ctx: &egui::Context,
     entries: &[MenuEntry<C>],
@@ -801,7 +803,8 @@ fn menu_size<C>(
             }
         })
         .sum();
-    vec2(widest + 98.0, h + 6.0)
+    let has_sub = entries.iter().any(|e| matches!(e, MenuEntry::Sub(..)));
+    vec2(38.0 + widest + if has_sub { 48.0 } else { 30.0 }, h + 6.0)
 }
 
 /// Place a menu of `size` at screen point `at`, flipped to stay inside the monitor's work area:
@@ -1205,11 +1208,13 @@ pub fn toolbar(
         let past_button = |q: Pos2| winui::mx(q.x) >= x + bw;
         if *enabled && resp.hovered() {
             // Hover (IDM 6.42, captured 2026-10-30): the button's own width, from the band's top,
-            // square. Dark: a flat #33414d, 64 px tall. Light: Windows' hot button, #e5f3ff with a
-            // 1 px #cce8ff border, 61 px tall. Beyond IDM (which lights only the button part, user
+            // square. Dark: a flat #33414d. Light: Windows' hot button, #e5f3ff with a 1 px
+            // #cce8ff border. As much room under the label as above the icon (user request
+            // 2026-11-01: IDM's 64 / 61 px left the label on the bottom edge): dark 66, light 65
+            // tall, inside the band. Beyond IDM (which lights only the button part, user
             // request 2026-10-29): a drop-down is a split button — the part under the pointer is
             // lit (pressed while the mouse is down), the other part faintly, a 1 px divider between.
-            let h = if dark { 64.0 } else { 61.0 };
+            let h = if dark { 66.0 } else { 65.0 };
             let (hot_c, faint_c, down_c, edge_c) = if dark {
                 (
                     rgb(0x33, 0x41, 0x4d),
@@ -1320,12 +1325,12 @@ pub fn toolbar(
         }
         // No right-click menu: it would offer toolbar looks (sizes, styles) and only one is
         // built.
-        if resp.clicked()
-            && let on_arrow = dropdown && resp.interact_pointer_pos().is_some_and(past_button)
-            // The arrow is a button of its own (a split button): its menu lists every queue,
-            // so it works while the main one's button is greyed.
-            && (*enabled || on_arrow)
-        {
+        // Not a `let` inside the `if`: in a let-chain `&&` ends the binding, so the pointer test
+        // became a condition of its own and only the arrow part ever clicked (0.2.3).
+        let on_arrow = dropdown && resp.interact_pointer_pos().is_some_and(past_button);
+        // The arrow is a button of its own (a split button): its menu lists every queue, so it
+        // works while the main one's button is greyed.
+        if resp.clicked() && (*enabled || on_arrow) {
             // IDM: the drop-down menu's top-left is the button's left edge at client y 87 (light:
             // 2 px higher with the band [?]); in RTL its top-right at the button's right edge.
             event = Some(if on_arrow {

@@ -4224,6 +4224,44 @@ mod tests {
     }
 
     #[test]
+    fn no_let_in_an_if_binds_a_condition() {
+        // `if a && let x = b && c` binds `b` alone and makes `c` a condition of the `if`: 0.2.3's
+        // toolbar bound `on_arrow = dropdown && <pointer past the button>`, and only its arrows
+        // ever clicked. Such a value is computed before the `if`.
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(&dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().is_none_or(|e| e != "rs") {
+                continue;
+            }
+            let src = std::fs::read_to_string(&path).unwrap();
+            for (n, line) in src.lines().enumerate() {
+                let code = line.trim_start();
+                if code.starts_with("//") || code.contains("fn no_let_in_an_if") {
+                    continue;
+                }
+                // `let <name> = <expr> &&…` / `||…` after an `if` or `&&` on the same line.
+                for lead in ["if let ", "&& let "] {
+                    if let Some(at) = code.find(lead) {
+                        let rest = &code[at + lead.len()..];
+                        if let Some(eq) = rest.find(" = ")
+                            && rest[..eq].chars().all(|c| c.is_alphanumeric() || c == '_')
+                            && (rest[eq..].contains(" && ") || rest[eq..].contains(" || "))
+                        {
+                            found.push(format!("{}:{}", path.display(), n + 1));
+                        }
+                    }
+                }
+            }
+        }
+        assert!(
+            found.is_empty(),
+            "a let in an if binds only up to its &&: {found:?}"
+        );
+    }
+
+    #[test]
     fn button_labels_stay_centred_in_taller_buttons() {
         // The measured heights keep their measured baselines.
         assert_eq!(button_baseline(21.0, false), 13.0);

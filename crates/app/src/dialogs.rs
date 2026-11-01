@@ -1544,7 +1544,8 @@ impl TurnOffCountdown {
                 TurnOff::Hibernate => cmd.arg("/h"),
                 TurnOff::Sleep => {
                     if !crate::win32::sleep(self.force) {
-                        tell_turn_off_failed("Windows refused".to_owned());
+                        // i18n: why the computer could not be put to sleep (fills {error})
+                        tell_turn_off_failed(crate::i18n::t("Windows refused").to_owned());
                     }
                     return;
                 }

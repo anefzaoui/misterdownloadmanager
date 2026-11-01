@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Ավելացնել կատեգորիա
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Ավելացնել նոր ներբեռնում
 #. text in the Options window
@@ -264,6 +265,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Ստուգվում են թարմացումները...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	Ֆայլը ստուգվում է...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -564,6 +570,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Էլ. փոստ
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	Ավարտել և վերագործարկել MDM-ը
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Մուտքագրեք մագնիսական հղում կամ ընտրեք .torrent ֆայլ
@@ -866,8 +876,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Վերջին փորձը {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Ավելի ուշ
 #. text in the Options window
@@ -1070,6 +1081,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	տորենտների համար տվյալների պանակ չկա
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Ոչ մի օր նշված չէ. հերթը չի սկսվի
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Այստեղ ներբեռնումներ չկան
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Ներբեռնումները չեն համընկնում զտիչներին
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Դեռ ներբեռնումներ չկան
 #. text in a dialog box
 #, machine
 	No folders yet	Դեռևս թղթապանակներ չկան
@@ -1186,6 +1213,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Ավարտելուց հետո բացել հետևյալ ֆայլը:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	Բացել հաղորդված խնդիրը
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Բացել ընտրված ներբեռնումը
@@ -1215,6 +1246,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Տեղադրեք մագնիսական հղում կամ ընտրեք .torrent ֆայլ, ապա Փնտրել։
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	Տեղադրեք ներբեռնման էջի տրամադրած ստուգիչ գումարը
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1345,6 +1380,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Փոխարինել աստղանիշը
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	Վերագործարկել MDM-ը
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1454,6 +1493,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Ընտրված է՝ {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	Ուղարկել GitHub-ում
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Ուղարկել սա ընկերոջը:
@@ -1498,6 +1541,10 @@
 #. button in the download list
 #, machine
 	Show all	Ցուցադրել բոլորը
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	Ցույց տալ բոլոր ներբեռնումները
 #. text in a download's progress window
 #, machine
 	Show details >>	Ցուցադրել մանրամասները >>
@@ -1686,6 +1733,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Սեղմատախտակը զբաղված է. կրկին փորձեք։
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	Սյունակների զտիչները թաքցնում են այս դիտման բոլոր ներբեռնումները։
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1732,6 +1783,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Ներբեռնման հերթն ավարտված է։
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	Ձեր ավելացրած կամ այս պատուհանին գցած ներբեռնումները ցուցադրվում են այստեղ։
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	սկավառակը կամ ցանցային ընդհանուր թղթապանակն այլևս հասանելի չէ
@@ -1862,12 +1917,24 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Արդեն կա այս անունով կատեգորիա
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Այս անունով հերթ արդեն կա
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Այս կարգավորումները հասանելի չեն, երբ միացված է «Ցուցադրել ներբեռնման ավարտի երկխոսությունը» տարբերակը։
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Այս հասցեն արդեն ներբեռնումների ցանկում է:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Այս կատեգորիան կամ հերթը դեռ ներբեռնումներ չի պարունակում։
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Այս ամսաթիվն անցել է. հերթը չի սկսվի
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Այս թղթապանակը գոյություն չունի:
@@ -1968,6 +2035,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Մուտքագրեք ֆայլի անունը «Պահպանել որպես» դաշտում
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Մուտքագրեք հերթի անունը
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2106,6 +2177,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Վայրի քարտի չափը
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows-ը մերժեց
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows-ի լեզուն

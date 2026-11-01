@@ -88,7 +88,8 @@
 #. text in categories.rs
 #, machine
 	Add category	הוסף קטגוריה
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	הוסף הורדה חדשה
 #. text in the Options window
@@ -248,6 +249,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	בודק עדכונים...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	בודק את הקובץ...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -554,6 +560,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	דוא"ל
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	סיים והפעל מחדש את MDM
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	הזן קישור מגנט או בחר קובץ .torrent
@@ -863,8 +873,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	ניסיון אחרון {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	מאוחר יותר
 #. text in the Options window
@@ -1070,6 +1081,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	אין תיקיית נתונים לטורנטים
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	לא סומן אף יום: התור לא יופעל
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	אין כאן הורדות
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	אין הורדות התואמות למסננים
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	אין עדיין הורדות
 #. text in a dialog box
 #, machine
 	No folders yet	אין תיקיות עדיין
@@ -1186,6 +1213,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	פתח את הקובץ הבא לאחר השלמה:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	פתח את הבעיה המדווחת
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	פתח את ההורדה הנבחרת
@@ -1215,6 +1246,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	הדבק קישור מגנט או בחר קובץ .torrent, ולאחר מכן חפש.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	הדבק את סכום הבדיקה שמופיע בדף ההורדה
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1345,6 +1380,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	החלף כוכבית ב-
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	הפעל מחדש את MDM
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1454,6 +1493,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	נבחרו: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	שלח ב-GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	שלח זאת לחבר:
@@ -1498,6 +1541,10 @@
 #. button in the download list
 #, machine
 	Show all	הצג הכל
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	הצג את כל ההורדות
 #. text in a download's progress window
 #, machine
 	Show details >>	הצג פרטים >>
@@ -1686,6 +1733,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	הלוח תפוס: נסה שוב.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	מסנני העמודות מסתירים כל הורדה בתצוגה זו.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1732,6 +1783,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	תור ההורדות הסתיים.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	ההורדות שאתה מוסיף, או גורר לחלון זה, מוצגות כאן.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	הכונן או שיתוף הרשת אינם זמינים עוד
@@ -1858,12 +1913,24 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	קיימת כבר קטגוריה בשם זה
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	קיים כבר תור עם שם זה
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	הגדרות אלה אינן זמינות כאשר "הצג תיבת דו-שיח של השלמת הורדה" מופעלת
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	כתובת זו כבר נמצאת ברשימת ההורדות:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	קטגוריה או תור זה אינם מכילים הורדות עדיין.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	תאריך זה עבר: התור לא יופעל
 #. text in a dialog box
 #, machine
 	This folder does not exist:	תיקייה זו אינה קיימת:
@@ -1964,6 +2031,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	הקלד את שם הקובץ ב'שמור בשם'
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	הקלד את שם התור
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2102,6 +2173,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	גודל תו כללי
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows סירב
 #. text in langpick.rs
 #, machine
 	Windows' language	שפת Windows

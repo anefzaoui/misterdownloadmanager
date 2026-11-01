@@ -76,7 +76,8 @@
 	Add browser...	Add browser...
 #. text in categories.rs
 	Add category	Add category
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 	Add new download	Add new download
 #. text in the Options window
 	Add the duplicate and overwrite the existing file	Add the duplicate and overwrite the existing file
@@ -192,6 +193,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 	Checking for updates...	Checking for updates...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+	Checking the file...	Checking the file...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 	Checking...	Checking...
@@ -411,6 +416,9 @@
 	Edit...	Edit...
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	Email
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+	End and restart MDM	End and restart MDM
 #. text in the Add torrent window
 	Enter a magnet link or choose a .torrent file	Enter a magnet link or choose a .torrent file
 #. text in the Scheduler window
@@ -630,8 +638,9 @@
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 	Last try  {last}	Last try  {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 	Later	Later
 #. text in the Options window
 	Launch Mister Download Manager on startup	Launch Mister Download Manager on startup
@@ -777,6 +786,18 @@
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 	no data folder for torrents	no data folder for torrents
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+	No day is ticked: the queue will not start	No day is ticked: the queue will not start
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+	No downloads here	No downloads here
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+	No downloads match the filters	No downloads match the filters
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+	No downloads yet	No downloads yet
 #. text in a dialog box
 	No folders yet	No folders yet
 #. tooltip (why a control is greyed) in langpick.rs
@@ -857,6 +878,9 @@
 	Open the following file when done	Open the following file when done
 #. checkbox in the Scheduler window
 	Open the following file when done:	Open the following file when done:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+	Open the reported issue	Open the reported issue
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Open the selected download	Open the selected download
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -877,6 +901,9 @@
 	Password:	Password:
 #. text in the Add torrent window
 	Paste a magnet link or choose a .torrent file, then Look up.	Paste a magnet link or choose a .torrent file, then Look up.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+	Paste the checksum the download's page gives	Paste the checksum the download's page gives
 #. text in a download's progress window
 #. verb: pause the download
 	Pause	Pause
@@ -972,6 +999,9 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Replace asterisk to
+#. text in crashui.rs
+#. crash report window button: start MDM again
+	Restart MDM	Restart MDM
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 	Result: {result}	Result: {result}
@@ -1051,6 +1081,9 @@
 #. the files chosen: {files} = "3 files", {size} = their total size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	Selected: {files}, {size}	Selected: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+	Send on GitHub	Send on GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Send this to a friend:	Send this to a friend:
 #. text in a download's progress window
@@ -1082,6 +1115,9 @@
 	Show a download button over videos in browsers	Show a download button over videos in browsers
 #. button in the download list
 	Show all	Show all
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+	Show all downloads	Show all downloads
 #. text in a download's progress window
 	Show details >>	Show details >>
 #. checkbox in the Options window; checkbox in a download's progress window
@@ -1216,6 +1252,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 	The clipboard is busy: try again.	The clipboard is busy: try again.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+	The column filters hide every download in this view.	The column filters hide every download in this view.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 	The computer could not be turned off: {error}	The computer could not be turned off: {error}
@@ -1249,6 +1288,9 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.
 #. text in a dialog box
 	The download queue is done.	The download queue is done.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+	The downloads you add, or drop on this window, show here.	The downloads you add, or drop on this window, show here.
 #. text in errors.rs
 	the drive or network share is no longer available	the drive or network share is no longer available
 #. text in errors.rs
@@ -1342,10 +1384,19 @@
 	The web page from which this file was obtained:	The web page from which this file was obtained:
 #. text in categories.rs
 	There is already a category with this name	There is already a category with this name
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+	There is already a queue with this name	There is already a queue with this name
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	These settings are unavailable when "Show download complete dialog" is turned on
 #. text in a dialog box
 	This address is already in the list of downloads:	This address is already in the list of downloads:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+	This category or queue holds no downloads yet.	This category or queue holds no downloads yet.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+	This date has passed: the queue will not start	This date has passed: the queue will not start
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
 #. text in a download's progress window
@@ -1418,6 +1469,9 @@
 #. text in a dialog box
 #. why Start Download is greyed in Download File Info
 	Type the file's name in Save As	Type the file's name in Save As
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+	Type the queue's name	Type the queue's name
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 	Type what to find, and tick at least one place to look	Type what to find, and tick at least one place to look
@@ -1516,6 +1570,9 @@
 	What's new:	What's new:
 #. text in the Batch download window
 	Wildcard size	Wildcard size
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+	Windows refused	Windows refused
 #. text in langpick.rs
 	Windows' language	Windows' language
 #. text in langpick.rs

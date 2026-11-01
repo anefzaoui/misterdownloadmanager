@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Cuir roinn-seòrsa ris
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Cuir luchdachadh a-nuas ùr ris
 #. text in the Options window
@@ -264,6 +265,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	A' sgrùdadh airson ùrachaidhean...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	A’ sgrùdadh an fhaidhle...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -570,6 +576,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Post-d
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	Cuir crìoch air agus ath-thòisich MDM
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Cuir a-steach ceangal magnet no tagh faidhle .torrent
@@ -879,8 +889,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	An oidhirp mu dheireadh {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Nas fhaide air adhart
 #. text in the Options window
@@ -1086,6 +1097,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	pasgan dàta sam bith airson torrentan
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Chan eil latha air a thaghadh: cha tòisich an ciudha
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Chan eil luchdachadh a-nuas an seo
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Chan eil luchdachadh a-nuas a’ freagairt ris na sìoltachain
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Chan eil luchdachadh a-nuas ann fhathast
 #. text in a dialog box
 #, machine
 	No folders yet	Chan eil pasganan ann fhathast
@@ -1202,6 +1229,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Fosgail am faidhle a leanas nuair a bhios e deiseil:
+#. text in crashui.rs
+#. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
+#, machine
+	Open the reported issue	Fosgail an cùis a chaidh aithris
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Fosgail an luchdachadh a-nuas taghte
@@ -1231,6 +1262,10 @@
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Cuir a-steach ceangal magnet no tagh faidhle .torrent, an uairsin Lorg.
+#. text in the Checksum window
+#. why Verify / OK is greyed in Verify checksum
+#, machine
+	Paste the checksum the download's page gives	Cuir a-steach an t-seic-suim a tha duilleag an luchdaich a-nuas a’ toirt seachad
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1361,6 +1396,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Cuir an rionnag an àite
+#. text in crashui.rs
+#. crash report window button: start MDM again
+#, machine
+	Restart MDM	Ath-thòisich MDM
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1470,6 +1509,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Taghte: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	Cuir air GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Cuir seo gu caraid:
@@ -1514,6 +1557,10 @@
 #. button in the download list
 #, machine
 	Show all	Seall na h-uile
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	Seall a h-uile luchdachadh a-nuas
 #. text in a download's progress window
 #, machine
 	Show details >>	Seall mion-fhiosrachadh >>
@@ -1702,6 +1749,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Tha am bòrd-bhualaidh trang: feuch ris a-rithist.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	Tha na sìoltachain colbh a’ falach a h-uile luchdachadh a-nuas san t-sealladh seo.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1748,6 +1799,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Tha an ciudha luchdaich sìos deiseil.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	Nochdaidh na luchdachaidhean a-nuas a chuireas tu ris, no a leigeas tu air an uinneig seo, an seo.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	chan eil an draibh no an roinn lìonraidh ri fhaighinn tuilleadh
@@ -1878,12 +1933,24 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Tha roinn leis an ainm seo ann mu thràth
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Tha ciudha leis an ainm seo ann mu thràth
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Chan eil na roghainnean sin rim faighinn nuair a tha "Seall còmhradh luchdaich sìos deiseil" air a thionndadh air
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Tha an seòladh seo air an liosta luchdaich sìos mu thràth:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Chan eil luchdachadh a-nuas anns a’ roinn no an ciudha seo fhathast.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Tha an ceann-latha seo air a dhol seachad: cha tòisich an ciudha
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Chan eil am pasgan seo ann:
@@ -1984,6 +2051,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Taidhp ainm an fhaidhle ann an Sàbhail Mar
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Taidhp ainm a’ chiudha
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2122,6 +2193,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Meud iomlan
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Dhiùlt Windows
 #. text in langpick.rs
 #, machine
 	Windows' language	Cànan Windows

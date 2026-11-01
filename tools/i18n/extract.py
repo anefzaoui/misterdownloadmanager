@@ -9,6 +9,8 @@ the source itself. Found:
     `checkbox_light`, `radio_light`, dialog titles (`window(ctx, id, "Title", …)`, `question(…)`), light tabs
     (`label: "…"`), tree rows (context ""), Options' page titles, group boxes and labels
     (`header`, `group`, `disabled_label`);
+  * a literal alone on its line under a `// i18n:` note (or with one at its end): a text chosen
+    first (an `if` arm, a tuple, `Some(…)`) and translated where it is shown;
   * menu entries `Item`/`I`/`Radio`/`Sub`/`off`/`by` (context "menu"), toolbar buttons
     `(Icon::…, "Label", …)` ("toolbar"), list column titles (`TITLES`, "column"), the menu bar
     (`MENUS_DARK`, "menubar") and unit templates ("unit": `{n} MB` …).
@@ -129,6 +131,9 @@ PLACEHOLDERS = {
     "name": "a file name", "count": "a number", "rate": "a speed such as \"1.2 MB/sec\"",
 }
 NOTE = re.compile(r"//\s*i18n:\s*(.*)$")
+# A text chosen before it is translated (an `if`/`match` arm, a tuple, `Some(…)`, a `let`): a
+# literal alone on its line, with a `// i18n:` note above it or at its end.
+NOTED = re.compile(r"^\s*(?:Some\(\s*)?" + LIT + r"\s*\)?\s*[,;]?\s*(?://.*)?$")
 
 
 def esc(s):
@@ -197,6 +202,7 @@ def collect():
         def line_of(pos):
             return s.count("\n", 0, pos)
 
+        taken = set()  # lines whose literal a call above already took
         for m in SINK_CALL.finditer(s):
             if s[max(0, m.start() - 3):m.start()] == "fn " or in_comment(s, m.start()):
                 continue
@@ -208,6 +214,7 @@ def collect():
             text = literal(s, spans[n])
             if text is None or not any(ch.isalpha() for ch in text):
                 continue
+            taken.update(range(line_of(spans[n][0]), line_of(spans[n][1] - 1) + 1))
             # The call's line, and the text's own (a note may sit between the arguments).
             notes = code_note(lines, line_of(m.start()), line_of(spans[n][0]),
                               line_of(spans[n][1] - 1))
@@ -231,6 +238,7 @@ def collect():
             for m in rx.finditer(s):
                 base = m.start(1)
                 for lm in re.finditer(LIT, m.group(1)):
+                    taken.add(line_of(base + lm.start()))
                     out.add((ctx, unesc_rust(lm.group(1))), role, f.name,
                             code_note(lines, line_of(base + lm.start())))
         for m in PAIRS.finditer(s):
@@ -238,6 +246,14 @@ def collect():
                 out.add(("key", unesc_rust(pm.group(1))), "key name or combination", f.name,
                         ["translate key names as the keyboard shows them (e.g. Strg for Ctrl)"])
                 out.add(("", unesc_rust(pm.group(2))), "what a keyboard shortcut does", f.name)
+        for k, line in enumerate(lines):
+            nm = NOTED.match(line)
+            if not nm or k in taken:
+                continue
+            notes = code_note(lines, k)
+            text = unesc_rust(nm.group(1))
+            if notes and any(ch.isalpha() for ch in text):
+                out.add(("", text), "text", f.name, notes)
     for u in UNITS:
         out.add(("unit", u), "unit after a number", "model.rs")
     for m in json.loads(EXTENSION.read_text(encoding="utf-8")).values():

@@ -702,7 +702,7 @@ pub fn show(
                 (label != full).then_some(full)
             };
             if let Some(tip) = tip {
-                hresp.clone().on_hover_text(tip);
+                hresp.clone().on_hover_text_at_pointer(tip);
             }
         }
         let clip = p.with_clip_rect(screen(Rect::from_x_y_ranges(*x0..=*x1, ct..=ct + HEADER_H)));
@@ -924,7 +924,9 @@ pub fn show(
         }
     }
     if let Some(full) = cut_under_pointer {
-        resp.clone().on_hover_text(full);
+        // At the pointer: the list is one widget, and a tip placed by it showed under its
+        // bottom edge, far from the row.
+        resp.clone().on_hover_text_at_pointer(full);
     }
     filter_box(ui, st);
     for (_, _, x1) in cols.iter().filter(|_| !rows.is_empty()) {

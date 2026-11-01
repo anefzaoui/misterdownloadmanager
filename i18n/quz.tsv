@@ -100,7 +100,8 @@
 #. text in categories.rs
 #, machine
 	Add category	Kategoriata yapay
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
+#. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Musuq uraykuchiyta yapay
 #. text in the Options window
@@ -264,6 +265,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Musuqyachiykunata maskaspa...
+#. text in the Checksum window
+#. why Verify is greyed: the file is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the file...	Willka qillqata qhawachkan...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -566,6 +572,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Chaski
+#. text in crashui.rs
+#. crash report window button: end the frozen MDM and start it again
+#, machine
+	End and restart MDM	MDM-ta tukuchiy hinaspa hukmanta qallariy
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Magnet t'inkita qillqay utaq .torrent willañiqita akllay
@@ -875,8 +885,9 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Qhipa kallpachakuy {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
+#. button: add it now, start downloading later
 #, machine
 	Later	Qhipaman
 #. text in the Options window
@@ -1082,6 +1093,22 @@
 #. an error: the app has no folder for its torrent data
 #, machine
 	no data folder for torrents	mana willay karpita torrentkunapaq
+#. text in the Scheduler window
+#. tooltip on the Scheduler's weekdays when none is ticked
+#, machine
+	No day is ticked: the queue will not start	Manan ima p'unchawpas akllasqa kanchu: churanakuy manan qallarinqachu
+#. message or event log entry in the main window
+#. title in the empty download list (this category or queue has no downloads)
+#, machine
+	No downloads here	Manan ima uraykuchiykuna kanchu
+#. message or event log entry in the main window
+#. title in the empty download list, when the column filters hide every download
+#, machine
+	No downloads match the filters	Manan ima uraykuchiykunapas chaynallachu t'aqachakunawan
+#. message or event log entry in the main window
+#. title in the empty download list when there are no downloads at all
+#, machine
+	No downloads yet	Manan ima uraykuchiykunapas kanchu
 #. text in a dialog box
 #, machine
 	No folders yet	Manaraqmi mayqin karpetapas kanchu
@@ -1462,6 +1489,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	Selected: {files}, {size}	Akllasqa: {files}, {size}
+#. text in crashui.rs
+#. crash report window button: open GitHub's crash report form filled in
+#, machine
+	Send on GitHub	GitHub-pi kachay
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Kayta huk masiman kachay:
@@ -1506,6 +1537,10 @@
 #. button in the download list
 #, machine
 	Show all	Tukuyta rikuchiy
+#. message or event log entry in the main window
+#. link in the empty download list: go to the All Downloads view
+#, machine
+	Show all downloads	Tukuy uraykuchiykunata rikuchiy
 #. text in a download's progress window
 #, machine
 	Show details >>	Astawan willaykuna >>
@@ -1694,6 +1729,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Kopyana k'uchu ocupasqam: huktawan kutichiy.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The column filters hide every download in this view.	Kay rikuchinapiqa t'aqachakuna tukuy uraykuchiykunata pakaykun.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1740,6 +1779,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Ura k'uchu siq'i tukusqaña.
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	The downloads you add, or drop on this window, show here.	Kaypi rikuchikunqa uraykuchiykuna yapasqayki, utaq kay wintanaman churaykusqayki.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	unidad utaq llika raki manaña kanchu
@@ -1870,12 +1913,24 @@
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Kay sutiyuq k'ataqa kachkanña
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	There is already a queue with this name	Kay sutiyuq churanakuyqa kashanñam
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Kay allinchaykuna mana kanchu "Ura k'uchu hunt'asqa k'atata rikuchiy" kachkaptin
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Kay chiqaqchayqa ura k'uchu siq'ipi kachkanña:
+#. message or event log entry in the main window
+#. in the empty download list, under its title
+#, machine
+	This category or queue holds no downloads yet.	Kay t'aqapi utaq churanakuypiqa manan ima uraykuchiykunapas kanchu.
+#. text in the Scheduler window
+#. tooltip on the Scheduler's date when it is in the past
+#, machine
+	This date has passed: the queue will not start	Kay p'unchawqa pasasqañam: churanakuy manan qallarinqachu
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Kay qillqaq mana kanchu:
@@ -1976,6 +2031,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Qillqay willañiqipa sutinta Waqaychay hina nisqapi
+#. text in the Scheduler window
+#. why OK is greyed when naming a new queue
+#, machine
+	Type the queue's name	Churanakuy sutinta qillqay
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2114,6 +2173,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Sallqa sayay
+#. text in a dialog box
+#. why the computer could not be put to sleep (fills {error})
+#, machine
+	Windows refused	Windows-qa mana munanchu
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows rimay simi
