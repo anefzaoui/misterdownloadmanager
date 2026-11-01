@@ -91,33 +91,6 @@
     dialog.querySelector("[data-lang-close]").addEventListener("click", function () { dialog.close(); });
   });
 
-  // ---- The waybill leans toward the pointer ---------------------------------------------------
-  // The hero's label card turns a few degrees toward the mouse over the parcel and settles back
-  // when it leaves (--rx/--ry, styles.css). Mouse only, and never with less motion.
-  (function () {
-    var card = document.querySelector(".parcel .waybill"), area = document.querySelector(".parcel");
-    if (!card || reduce || !(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
-    var frame = 0, rx = 0, ry = 0;
-    area.addEventListener("pointermove", function (e) {
-      var r = card.getBoundingClientRect();
-      var x = (e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2);
-      var y = (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2);
-      rx = Math.max(-1, Math.min(1, -y)) * 5;
-      ry = Math.max(-1, Math.min(1, x)) * 7;
-      card.classList.add("tilting");
-      if (!frame) frame = requestAnimationFrame(function () {
-        frame = 0;
-        card.style.setProperty("--rx", rx.toFixed(2) + "deg");
-        card.style.setProperty("--ry", ry.toFixed(2) + "deg");
-      });
-    });
-    area.addEventListener("pointerleave", function () {
-      card.classList.remove("tilting");
-      card.style.setProperty("--rx", "0deg");
-      card.style.setProperty("--ry", "0deg");
-    });
-  })();
-
   // ---- Light / dark ------------------------------------------------------------------------
   // The page follows the system until the visitor picks; the pick is remembered.
   var media = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;

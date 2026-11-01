@@ -275,7 +275,7 @@ Two physical layers: the board, and paper laid on it. Sheets cast a short contac
 
 ## Shapes
 
-Gently rounded, like die-cut label stock: sheets 10px, stuck-on labels and dialogs 12px, controls and screenshots 8px, rows and stamps 6px, tags 4px, flags 2px. Rules carry the structure: 1.5px ink rules between fields and around segmented controls, 1px hairlines between quiet rows, a 2px dashed tear line above the barcode. The hero's label card is the one object with depth: about 2.2deg of tilt, held in perspective (rotateX 3deg, rotateY 9deg) and turned toward the page, lit by a soft-light sheen from the top left, with a contact shadow and a long soft one; it leans up to 5-7deg toward the mouse and settles back (never with reduced motion). It sits on the window's start corner, the owner's choice. The closing label sits turned 1.2deg; both mirror in RTL; stamps tilt 4-6deg. Everything else is square to the grid.
+Gently rounded, like die-cut label stock: sheets 10px, stuck-on labels and dialogs 12px, controls and screenshots 8px, rows and stamps 6px, tags 4px, flags 2px. Rules carry the structure: 1.5px ink rules between fields and around segmented controls, 1px hairlines between quiet rows, a 2px dashed tear line above the barcode. The hero's label card is the one object with depth, and its depth is all in the shadow under it (a contact shadow and a long soft one, `--shadow-card`, neutral black in dark): it sits flat, turned 2deg, on the window's start corner (the owner's choice), in the same grid cell as the window so the section always clears it. The closing label sits turned 1.2deg; both mirror in RTL; stamps tilt 4-6deg. Everything else is square to the grid.
 
 ## Components
 

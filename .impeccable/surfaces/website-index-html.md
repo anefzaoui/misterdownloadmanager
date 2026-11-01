@@ -41,9 +41,9 @@ faster and free, sees the delivery times against IDM, and downloads.
 
 FIRST VIEWPORT: The real main window, about 84% of the content width and set toward the end,
 as the parcel. A waybill label card, about a third of the width, is stuck across its lower start
-corner (the owner's choice, after trying the end corner): tilted about two degrees and held in
-perspective, turned a little toward the page, lit from the top left, with a contact shadow and a
-long soft one; it leans toward the mouse and settles back. It carries the sender block (logo,
+corner (the owner's choice, after trying the end corner): tilted about two degrees, its depth in
+a contact shadow and a long soft one (no 3D turn, no pointer movement: the owner's call), sharing
+the window's grid cell so the section clears it. It carries the sender block (logo,
 name), the headline set large, the subline, the green Download action, macOS and Linux with their
 icons, the fields (postage free; delivery time; for Windows 10 and 11; version and size) and the
 barcode. A slim header above. Mobile: the window full width, the card below overlapping its lower

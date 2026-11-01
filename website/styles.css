@@ -265,33 +265,26 @@ html.dialog-on { overflow: hidden; }
 /* ---- The parcel (home, first viewport) ------------------------------------------------------- */
 
 .parcel { padding: clamp(24px, 4vw, 48px) 0 clamp(96px, 12vw, 160px); }
-.parcel-inner { position: relative; }
+/* The window and its label share one cell, so the section is as tall as whichever reaches lower
+   and nothing after it can run into the label. */
+.parcel-inner { display: grid; grid-template-columns: minmax(0, 1fr); }
+.parcel-window, .parcel .waybill { grid-area: 1 / 1; }
 .parcel-window { width: min(84%, 1080px); margin: 0; margin-inline-start: auto; direction: ltr; }
 .parcel-window img { width: 100%; border-radius: 8px; box-shadow: var(--shadow-lift); }
 .parcel-window figcaption { margin-top: 14px; font-size: 13.5px; color: var(--on-board-2); text-align: end; }
 [dir="rtl"] .parcel-window figcaption { direction: rtl; text-align: start; }
 .waybill { background: var(--paper); color: var(--ink); border-radius: 12px; box-shadow: var(--shadow-lift); }
 /* The hero's label: a card stuck across the window's lower start corner (the owner's choice),
-   tilted and held in perspective, turned a little toward the page. It leans toward the pointer
-   (main.js sets --rx/--ry), lit from the top left; under it, a contact shadow and a long soft
-   one. */
+   tilted, its depth in the shadow under it: a contact shadow and a long soft one. */
 .parcel .waybill {
-  position: absolute; inset-inline-start: var(--gutter); top: clamp(110px, 16vw, 230px); z-index: 2;
-  width: clamp(360px, 33%, 420px);
-  --rx: 0deg; --ry: 0deg;
-  transform: perspective(1300px) rotateX(calc(3deg + var(--rx))) rotateY(calc(9deg + var(--ry))) rotateZ(-2.2deg);
-  transform-origin: 50% 40%;
+  position: relative; z-index: 2; align-self: start; justify-self: start;
+  /* Its end edge lands on the window's "Source" column boundary (the window starts 16% in, the
+     column ends 23.3% across it): the column it covers is covered whole, nothing peeks out. */
+  margin-top: clamp(110px, 16vw, 230px); width: max(340px, calc(35.6% + 2px));
+  transform: rotate(-2deg); transform-origin: 50% 30%;
   box-shadow: var(--shadow-card);
-  transition: transform .5s cubic-bezier(.16, 1, .3, 1);
 }
-[dir="rtl"] .parcel .waybill { transform: perspective(1300px) rotateX(calc(3deg + var(--rx))) rotateY(calc(-9deg + var(--ry))) rotateZ(2.2deg); }
-.parcel .waybill.tilting { transition: transform .12s ease-out; }
-/* The sheen: the stock catching the light, strongest at the near edge. */
-.parcel .waybill::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: linear-gradient(115deg, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, 0) 38%, rgba(0, 0, 0, 0) 70%, rgba(3, 14, 44, .07) 100%);
-  mix-blend-mode: soft-light;
-}
+[dir="rtl"] .parcel .waybill { transform: rotate(2deg); }
 .wb-band { display: flex; align-items: center; gap: 12px; padding: 12px 18px; background: var(--ink); color: var(--paper); border-radius: 12px 12px 0 0; }
 .wb-band img { flex: none; width: 40px; height: 40px; }
 .wb-from b { display: block; font-size: 17px; font-weight: 800; font-stretch: 80%; line-height: 1.15; }
@@ -730,9 +723,9 @@ html.lb-on { overflow: hidden; }
   .parcel-window figcaption { text-align: start; }
   .parcel .waybill {
     order: 2; position: relative; inset: auto; top: auto; width: min(100%, 520px); margin: -48px auto 0; align-self: center;
-    transform: perspective(1300px) rotateX(calc(2deg + var(--rx))) rotateY(calc(4deg + var(--ry))) rotateZ(-1.2deg);
+    transform: rotate(-1.2deg);
   }
-  [dir="rtl"] .parcel .waybill { transform: perspective(1300px) rotateX(calc(2deg + var(--rx))) rotateY(calc(-4deg + var(--ry))) rotateZ(1.2deg); }
+  [dir="rtl"] .parcel .waybill { transform: rotate(1.2deg); }
   .parcel-window figcaption { text-align: start; }
   .tour { grid-template-columns: 1fr; }
   .customs-inner, .facts-inner, .sender-inner, .closing-inner { grid-template-columns: 1fr; }
