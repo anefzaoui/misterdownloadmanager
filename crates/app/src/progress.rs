@@ -49,6 +49,23 @@ enum Tab {
     Completion,
 }
 
+impl Progress {
+    /// Open on a torrent's details tab by its English name in lower case ("peers"; /show
+    /// progress:peers); any other name leaves it as it is.
+    pub fn show_tab(&mut self, name: &str) {
+        let tab = match name {
+            "files" => TTab::Files,
+            "peers" => TTab::Peers,
+            "trackers" => TTab::Trackers,
+            "pieces" => TTab::Pieces,
+            "general" => TTab::General,
+            _ => return,
+        };
+        self.ttab = tab;
+        self.details = true;
+    }
+}
+
 /// A torrent's details tabs (M15, D-014), in the place of the connections table.
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum TTab {

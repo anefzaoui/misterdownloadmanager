@@ -1130,6 +1130,12 @@ impl App {
                     self.progress
                         .push(Progress::new(id, self.settings.show_complete));
                 }
+                // progress:peers and so on: a torrent's details tab (the docs' screenshots).
+                if let Some(id) = last
+                    && let Some(p) = self.progress.iter_mut().find(|p| p.id == id)
+                {
+                    p.show_tab(tab);
+                }
             }
             "options" => {
                 let page = match tab {
