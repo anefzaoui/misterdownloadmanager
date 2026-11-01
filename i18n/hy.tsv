@@ -145,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	Բոլոր ֆայլերը
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	Ամեն ինչ պատրաստ է. տեսանյութ պարունակող էջում օգտագործեք Առաջադրանքներ → Ներբեռնել տեսանյութը էջից:
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	արդեն ներբեռնվում է՝ {path}
@@ -192,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Խմբաքանակային ներբեռնում
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Երկուսն էլ բաց կոդով են։ MDM-ը դրանք ստանում է իրենց պաշտոնական թողարկումներից՝ իր սեփական ներբեռնիչով և գործարկելուց առաջ ստուգում է յուրաքանչյուր ֆայլի ստորագրությունը։ Մոտ 100 ՄԲ, մեկ անգամ։
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -261,6 +267,9 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Ստուգել թարմացումները յուրաքանչյուր գործարկման ժամանակ
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	Ստուգեք Ձեր կապը, ապա նորից փորձեք, կամ դրանք ավելի ուշ ստացեք տեսանյութի պատուհանից:
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -270,6 +279,12 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the file...	Ֆայլը ստուգվում է...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	{name}-ի ստուգում ({n}-ը {total}-ից)...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -288,7 +303,7 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	Հաճախորդ
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -491,6 +506,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	Ներբեռնել տեսանյութ էջից
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	Ներբեռնեք տեսանյութեր YouTube-ից և 1000+ կայքերից
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -526,6 +545,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Թարմացումը ներբեռնվում է... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	{name}-ի ներբեռնում ({n}-ը {total}-ից)... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -630,6 +654,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Փետրվար
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg՝ միացնում է պատկերն ու ձայնը
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -711,6 +739,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Ուր
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	Անվճար, պաշտոնական և ստուգված
 #. text in the Scheduler window
 #, machine
 	Friday	Ուրբաթ
@@ -745,6 +777,10 @@
 #. tab title: general information
 #, machine
 	General	Ընդհանուր
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	Պատրաստվեք տեսանյութերի ներբեռնմանը
 #. button in the Options window
 #, machine
 	Get System	Ստանալ համակարգը
@@ -1135,6 +1171,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Հերթում չէ
+#. button in helpers.rs
+#, machine
+	Not now	Ոչ հիմա
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	Ոչ հիմա՞։ Ստացեք դրանք ավելի ուշ՝ Առաջադրանքներ → Ներբեռնել տեսանյութ էջից։
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Չի օգտագործվում. ֆայլի մասերը գրվում են ֆայլի կողքին
@@ -1343,6 +1385,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Կարդում է torrent-ը...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Կարդում է էջը և ցուցակագրում է կայքի կողմից առաջարկվող յուրաքանչյուր որակ, մինչև 4K, YouTube-ից, Vimeo-ից և հազարից ավելի այլ կայքերից։
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	Պատրաստ է՝ {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1584,6 +1633,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Կայքերի մուտքեր
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Կայքերն իրենց լավագույն որակը ուղարկում են որպես առանձին տեսանյութ և աուդիո, իսկ ffmpeg-ը միացնում է դրանք։ Այս համակարգում MDM-ն օգտագործում է ձերնը. տեղադրեք ffmpeg-ը ձեր փաթեթի կառավարչի միջոցով։
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Կայքերն իրենց լավագույն որակը ուղարկում են որպես առանձին տեսանյութ և աուդիո։ ffmpeg-ը դրանք միացնում է մեկ ֆայլի մեջ, որը նվագարկվում է ցանկացած վայրում։
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1661,6 +1716,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Սկսվել է yt-dlp {version} ({format})-ով
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	Մեկնարկում է...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1924,6 +1983,9 @@
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Այս կարգավորումները հասանելի չեն, երբ միացված է «Ցուցադրել ներբեռնման ավարտի երկխոսությունը» տարբերակը։
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	Դրանք կշարունակեն ներբեռնվել, եթե փակեք այս պատուհանը։
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Այս հասցեն արդեն ներբեռնումների ցանկում է:
@@ -1994,6 +2056,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Փոխանցման արագություն
+#. button in helpers.rs
+#, machine
+	Try again	Կրկին փորձել
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2019,6 +2084,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Միացնել
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Երկու անվճար օգնականներ ապահովում են դրա աշխատանքը։ Ստացեք դրանք հիմա, և տեսանյութը պահպանելը մեկ սեղմումով հասանելի կլինի, երբ գտնեք այն։
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2203,6 +2271,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Այո
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	Այո, ներբեռնել դրանք (խորհուրդ է տրվում)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2214,6 +2286,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp-ը տեղադրված չէ (Առաջադրանքներ → Ներբեռնել տեսանյութ էջից տեղադրում է այն)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp՝ գտնում է տեսանյութը
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2288,6 +2364,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	{name}-ը հնարավոր չէր ներբեռնել՝ {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

@@ -8,6 +8,19 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 A fix for 0.2.3, whose toolbar buttons did nothing (only their drop-down arrows worked), and for
 dark mode, which drew everything a little bigger and in other places than day mode.
 
+### Added
+
+- **The video helpers are offered on the first start.** A window explains what yt-dlp and
+  ffmpeg do and downloads both on **Yes, download them (recommended)**; **Not now** leaves them
+  for the video window. Upgrading? It asks once too, if one of them is missing.
+
+### Changed
+
+- **MDM's own downloads use its own downloader**: yt-dlp, ffmpeg, MDM's updates and a crash
+  report's symbols now come down with several connections, resume after a cut connection and go
+  through your proxy settings. Each file is still checked against its publisher's signed
+  checksums before use.
+
 ### Fixed
 
 - **The toolbar's buttons work again**: Add URL, Add Torrent, Delete Completed, Options,

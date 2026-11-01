@@ -67,6 +67,15 @@ You can change it at any time in **View → Language**. More in [Languages](lang
 
 ![Choosing a language on first start](images/language-picker.png)
 
+## The video helpers
+
+Next, MDM offers its two free video helpers: **yt-dlp**, which finds the video on a page, and
+**ffmpeg**, which joins its picture and sound. Click **Yes, download them (recommended)** and they
+download in the background, about 100 MB, once. **Not now** leaves them for later: the video
+window offers them when you first need them. More in [Videos](video.md).
+
+![The video helpers offered on first start](images/helpers.png)
+
 ## The main window
 
 ![The main window](images/main-light.png)

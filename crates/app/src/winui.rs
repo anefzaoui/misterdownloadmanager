@@ -2198,6 +2198,9 @@ pub enum ButtonKind {
     Normal,
     Default,
     Disabled,
+    /// The one answer a window recommends (the default too), filled with the accent as Windows
+    /// 11's accent buttons: the first start's "Yes, download them".
+    Accent,
 }
 
 /// Push button: #333333 fill, 1 px rounded (r 4) border by state, text centred with its
@@ -2820,13 +2823,36 @@ struct Face {
 /// A button's colours for `kind` in `state`: dark, IDM's dark buttons; light, Windows 11's.
 fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
     let pressed = state == State::Pressed;
+    if kind == ButtonKind::Accent {
+        // The accent filled, a shade lighter under the pointer and darker pressed; light text
+        // on the light mode's blue, dark text on the dark mode's.
+        let (fill, text) = match (dark, state) {
+            (false, State::Pressed) => (rgb(0x00, 0x6c, 0xbe), rgb(0xe6, 0xf0, 0xfa)),
+            (false, State::Hot) => (rgb(0x1a, 0x86, 0xd9), Color32::WHITE),
+            (false, _) => (rgb(0x00, 0x78, 0xd4), Color32::WHITE),
+            (true, State::Pressed) => (rgb(0x52, 0xa6, 0xd0), rgb(0x1a, 0x1a, 0x1a)),
+            (true, State::Hot) => (rgb(0x5a, 0xb9, 0xe5), Color32::BLACK),
+            (true, _) => (rgb(0x60, 0xcd, 0xff), Color32::BLACK),
+        };
+        let bottom = if dark {
+            rgb(0x4f, 0xb5, 0xe4)
+        } else {
+            rgb(0x00, 0x5a, 0x9e)
+        };
+        return Face {
+            fill,
+            border: fill,
+            bottom: if pressed { fill } else { bottom },
+            text,
+        };
+    }
     let face = if dark {
         // Windows 11's dark buttons: a face a little lighter than the window, a quiet border (it
         // was IDM's bright one, white round the default button), the default button outlined in
         // the accent as in light mode.
         let (border, bottom) = match kind {
             ButtonKind::Normal => (rgb(0x55, 0x55, 0x55), rgb(0x4b, 0x4b, 0x4b)),
-            ButtonKind::Default => (accent(), rgb(0x4f, 0xb5, 0xe4)),
+            ButtonKind::Default | ButtonKind::Accent => (accent(), rgb(0x4f, 0xb5, 0xe4)),
             ButtonKind::Disabled => (rgb(0x46, 0x46, 0x46), rgb(0x46, 0x46, 0x46)),
         };
         Face {
@@ -2847,7 +2873,9 @@ fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
     } else {
         let (border, bottom) = match kind {
             ButtonKind::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xba, 0xba, 0xba)),
-            ButtonKind::Default => (rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x6b, 0xbe)),
+            ButtonKind::Default | ButtonKind::Accent => {
+                (rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x6b, 0xbe))
+            }
             ButtonKind::Disabled => (rgb(0xe9, 0xe9, 0xe9), rgb(0xe9, 0xe9, 0xe9)),
         };
         Face {

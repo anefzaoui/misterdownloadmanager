@@ -259,6 +259,8 @@ pub struct App {
     tell_friend: Option<crate::help::TellFriend>,
     /// The language picker (first start, View → Language...).
     lang_picker: Option<crate::langpick::Picker>,
+    /// The video helpers' offer (the first start's, after the language).
+    helpers: Option<crate::helpers::Helpers>,
     /// The weekly update check, while it runs.
     auto_update: Option<crate::help::Slot>,
     /// The automatic check found a new version: its window comes to the front once shown.
@@ -593,6 +595,7 @@ impl App {
             shortcuts: None,
             tell_friend: None,
             lang_picker: ask_language.then(|| crate::langpick::Picker::new(true, None)),
+            helpers: None,
             auto_update: None,
             raise_updates: false,
             started: Instant::now(),
@@ -1133,6 +1136,7 @@ impl App {
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
+            "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
@@ -4599,6 +4603,22 @@ impl App {
                 }
             }
         }
+        // Once the language is settled: the video helpers, offered once (helpers.rs).
+        if self.lang_picker.is_none()
+            && self.settings.language_asked
+            && !self.settings.helpers_asked
+        {
+            self.settings.helpers_asked = true;
+            self.dirty = true;
+            if crate::helpers::worth_asking() {
+                self.helpers = Some(crate::helpers::Helpers::new());
+            }
+        }
+        if let Some(d) = &mut self.helpers
+            && !matches!(d.show(ctx, &self.rt), Outcome::Open)
+        {
+            self.helpers = None;
+        }
         if let Some(d) = &mut self.about
             && !matches!(d.show(ctx), Outcome::Open)
         {
@@ -5083,6 +5103,7 @@ impl eframe::App for App {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         // The freeze watchdog times every frame (crash.rs).
         crate::crash::frame_begin();
+        crate::settings::share_proxy(self.settings.proxy());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
         dialogs::publish_main_rect(&ctx);

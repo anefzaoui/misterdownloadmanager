@@ -145,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	Wszystkie pliki
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	Wszystko gotowe: na stronie z filmem użyj opcji Zadania → Pobierz wideo ze strony.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	już pobierane: {path}
@@ -192,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Pobieranie wsadowe
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Oba są oprogramowaniem open source. MDM pobiera je z ich oficjalnych wydań za pomocą własnego menedżera pobierania i sprawdza podpis każdego pliku przed uruchomieniem. Około 100 MB, jednorazowo.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -261,6 +267,9 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Sprawdzaj aktualizacje przy każdym uruchomieniu
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	Sprawdź połączenie, a następnie spróbuj ponownie lub pobierz je później z okna wideo.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -270,6 +279,12 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the file...	Sprawdzanie pliku...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	Sprawdzanie {name} ({n} z {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -291,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Zegar:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -497,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	Pobierz wideo ze strony
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	Pobieraj filmy z YouTube i ponad 1000 witryn
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -532,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Pobieranie aktualizacji... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	Pobieranie {name} ({n} z {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -640,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Luty
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: łączy obraz i dźwięk
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -724,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Pt
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	Bezpłatne, oficjalne i sprawdzone
 #. text in the Scheduler window
 #, machine
 	Friday	Piątek
@@ -758,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	Ogólne
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	Przygotuj się na pobieranie filmów
 #. button in the Options window
 #, machine
 	Get System	Pobierz system
@@ -1151,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Nie w kolejce
+#. button in helpers.rs
+#, machine
+	Not now	Nie teraz
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	Nie teraz? Pobierz je później z zadań → Pobierz wideo ze strony.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Nie używane: części pliku są zapisywane obok pliku
@@ -1359,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Odczytywanie torrenta...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Odczytuje stronę i wyświetla każdą jakość oferowaną przez witrynę, do 4K, z YouTube, Vimeo i ponad tysiąca innych witryn.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	Gotowe: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1600,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Loginy do witryn
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Witryny wysyłają najlepszą jakość jako oddzielne wideo i audio, a ffmpeg je łączy. W tym systemie MDM używa Twojego: zainstaluj ffmpeg za pomocą menedżera pakietów.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Witryny wysyłają najlepszą jakość jako oddzielne wideo i audio. ffmpeg łączy je w jeden plik, który można odtwarzać wszędzie.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1677,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Uruchomiono z yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	Uruchamianie...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1940,6 +1999,9 @@
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Te ustawienia są niedostępne, gdy włączona jest opcja „Pokaż okno dialogowe ukończenia pobierania”
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	Pobieranie będzie kontynuowane po zamknięciu tego okna.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Ten adres jest już na liście pobierania:
@@ -2010,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Szybkość transferu
+#. button in helpers.rs
+#, machine
+	Try again	Spróbuj ponownie
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2035,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Włącz
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Dwa bezpłatne narzędzia pomocnicze sprawiają, że to działa. Pobierz je teraz, a zapisanie filmu będzie wymagało jednego kliknięcia, gdy go znajdziesz.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2219,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Tak
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	Tak, pobierz je (zalecane)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2230,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp nie jest zainstalowany (Zadania → Pobierz wideo ze strony instaluje go)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: znajduje wideo
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2304,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	Nie można pobrać {name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

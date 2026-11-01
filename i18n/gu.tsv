@@ -145,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	બધી ફાઇલો
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	બધું સેટ છે: વીડિયોવાળા પેજ પર, ટાસ્ક → પેજમાંથી વીડિયો ડાઉનલોડ કરો નો ઉપયોગ કરો.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	પહેલેથી ડાઉનલોડ થઈ રહ્યું છે: {path}
@@ -192,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	બૅચ ડાઉનલોડ
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	બંને ઓપન સોર્સ છે. MDM તેમને તેના પોતાના ડાઉનલોડર સાથે તેમની સત્તાવાર રિલીઝમાંથી મેળવે છે અને ચલાવતા પહેલા દરેક ફાઇલની સહી તપાસે છે. લગભગ 100 MB, એકવાર.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -261,6 +267,9 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	દરેક શરૂઆતમાં અપડેટ્સ માટે તપાસો
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	તમારું કનેક્શન તપાસો, પછી ફરી પ્રયાસ કરો અથવા પછીથી વીડિયો વિન્ડોમાંથી મેળવો.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -270,6 +279,12 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the file...	ફાઇલ તપાસી રહ્યું છે...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	{name} ({n} માંથી {total}) તપાસી રહ્યું છે...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -291,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ઘડિયાળ:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -497,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	પૃષ્ઠ પરથી વિડિઓ ડાઉનલોડ કરો
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	YouTube અને 1,000+ સાઇટ્સ પરથી વીડિયો ડાઉનલોડ કરો
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -532,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	અપડેટ ડાઉનલોડ કરી રહ્યું છે... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	{name} ({n} માંથી {total}) ડાઉનલોડ કરી રહ્યું છે... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -640,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	ફેબ્રુઆરી
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: ચિત્ર અને અવાજને જોડે છે
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -724,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	શુ
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	મફત, સત્તાવાર અને ચકાસાયેલ
 #. text in the Scheduler window
 #, machine
 	Friday	શુક્રવાર
@@ -758,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	સામાન્ય
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	વીડિયો ડાઉનલોડ માટે તૈયાર થાઓ
 #. button in the Options window
 #, machine
 	Get System	સિસ્ટમ મેળવો
@@ -1151,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	કતારમાં નથી
+#. button in helpers.rs
+#, machine
+	Not now	હમણાં નહીં
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	હમણાં નહીં? તેમને પછીથી કાર્યો → પૃષ્ઠ પરથી વીડિયો ડાઉનલોડ કરો માંથી મેળવો.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	વપરાયેલ નથી: ફાઇલના ભાગો ફાઇલની બાજુમાં લખવામાં આવે છે
@@ -1359,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ટોરેન્ટ વાંચી રહ્યું છે...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	એક પૃષ્ઠ વાંચે છે અને YouTube, Vimeo અને એક હજારથી વધુ અન્ય સાઇટ્સ પરથી 4K સુધીની દરેક ગુણવત્તાની સૂચિ આપે છે.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	તૈયાર છે: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1600,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	સાઇટ્સ લોગિન
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	સાઇટ્સ તેમની શ્રેષ્ઠ ગુણવત્તાને અલગ વીડિયો અને ઑડિયો તરીકે મોકલે છે, અને ffmpeg તેમને જોડે છે. આ સિસ્ટમ પર MDM તમારું વાપરે છે: તમારા પેકેજ મેનેજર સાથે ffmpeg ઇન્સ્ટોલ કરો.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	સાઇટ્સ તેમની શ્રેષ્ઠ ગુણવત્તાને અલગ વીડિયો અને ઑડિયો તરીકે મોકલે છે. ffmpeg તેમને એક ફાઇલમાં એકસાથે મૂકે છે જે ગમે ત્યાં ચાલે છે.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1677,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) સાથે શરૂ કર્યું
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	શરૂ કરી રહ્યું છે...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1940,6 +1999,9 @@
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ડાઉનલોડ પૂર્ણ સંવાદ બતાવો" ચાલુ હોય ત્યારે આ સેટિંગ્સ અનુપલબ્ધ હોય છે
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	જો તમે આ વિન્ડો બંધ કરશો તો પણ તેઓ ડાઉનલોડ થતા રહેશે.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	આ સરનામું પહેલેથી જ ડાઉનલોડ્સની સૂચિમાં છે:
@@ -2010,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	ટ્રાન્સફર દર
+#. button in helpers.rs
+#, machine
+	Try again	ફરી પ્રયાસ કરો
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2035,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ચાલુ કરો
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	બે મફત સહાયકો તેને કાર્યરત કરે છે. તેમને હમણાં જ મેળવો, અને જ્યારે તમને વીડિયો મળે ત્યારે તેને સાચવવું એક ક્લિક દૂર છે.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2219,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	હા
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	હા, તેમને ડાઉનલોડ કરો (ભલામણ કરેલ)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2230,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ઇન્સ્ટોલ કરેલું નથી (કાર્યો → પૃષ્ઠમાંથી વિડિઓ ડાઉનલોડ કરો તેને ઇન્સ્ટોલ કરે છે)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: વીડિયો શોધે છે
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2304,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	{name} ડાઉનલોડ કરી શકાયું નથી: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

@@ -145,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	Όλα τα αρχεία
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	Όλα έτοιμα: σε μια σελίδα με βίντεο, χρησιμοποιήστε Εργασίες → Λήψη βίντεο από σελίδα.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	γίνεται ήδη λήψη: {path}
@@ -192,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Μαζική λήψη
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Και τα δύο είναι ανοιχτού κώδικα. Το MDM τα λαμβάνει από τις επίσημες εκδόσεις τους με το δικό του πρόγραμμα λήψης και ελέγχει την υπογραφή κάθε αρχείου πριν την εκτέλεση. Περίπου 100 MB, μία φορά.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -261,6 +267,9 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Έλεγχος για ενημερώσεις σε κάθε εκκίνηση
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά ή αποκτήστε τα αργότερα από το παράθυρο βίντεο.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -270,6 +279,12 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the file...	Έλεγχος του αρχείου...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	Έλεγχος {name} ({n} από {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -291,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Ρολόι:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -497,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	Λήψη βίντεο από μια σελίδα
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	Λήψη βίντεο από το YouTube και 1.000+ τοποθεσίες
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -532,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Λήψη της ενημέρωσης... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	Λήψη {name} ({n} από {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -640,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Φεβρουάριος
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: ενώνει εικόνα και ήχο
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -724,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Πα
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	Δωρεάν, επίσημο και ελεγμένο
 #. text in the Scheduler window
 #, machine
 	Friday	Παρασκευή
@@ -758,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	Γενικά
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	Ετοιμαστείτε για λήψεις βίντεο
 #. button in the Options window
 #, machine
 	Get System	Λήψη συστήματος
@@ -1151,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Όχι σε ουρά
+#. button in helpers.rs
+#, machine
+	Not now	Όχι τώρα
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	Όχι τώρα; Αποκτήστε τα αργότερα από Εργασίες → Λήψη βίντεο από μια σελίδα.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Δεν χρησιμοποιείται: τα μέρη του αρχείου γράφονται δίπλα στο αρχείο
@@ -1359,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Ανάγνωση του torrent...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Διαβάζει μια σελίδα και παραθέτει κάθε ποιότητα που προσφέρει ο ιστότοπος, έως 4K, από το YouTube, το Vimeo και πάνω από χίλιες άλλες τοποθεσίες.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	Έτοιμο: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1600,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Συνδέσεις τοποθεσιών
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Οι τοποθεσίες στέλνουν την καλύτερη ποιότητα ως ξεχωριστό βίντεο και ήχο, και το ffmpeg τα ενώνει. Σε αυτό το σύστημα το MDM χρησιμοποιεί το δικό σας: εγκαταστήστε το ffmpeg με τον διαχειριστή πακέτων σας.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Οι τοποθεσίες στέλνουν την καλύτερη ποιότητα ως ξεχωριστό βίντεο και ήχο. Το ffmpeg τα ενώνει σε ένα αρχείο που παίζει οπουδήποτε.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1677,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Ξεκίνησε με yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	Εκκίνηση...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1940,6 +1999,9 @@
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Αυτές οι ρυθμίσεις δεν είναι διαθέσιμες όταν είναι ενεργοποιημένη η επιλογή "Εμφάνιση παραθύρου ολοκλήρωσης λήψης"
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	Συνεχίζουν τη λήψη αν κλείσετε αυτό το παράθυρο.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Αυτή η διεύθυνση υπάρχει ήδη στη λίστα λήψεων:
@@ -2010,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Ρυθμός μεταφοράς
+#. button in helpers.rs
+#, machine
+	Try again	Προσπαθήστε ξανά
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2035,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Ενεργοποίηση
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Δύο δωρεάν βοηθητικά προγράμματα το κάνουν να λειτουργεί. Αποκτήστε τα τώρα, και η αποθήκευση ενός βίντεο απέχει ένα κλικ όταν βρείτε ένα.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2219,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Ναι
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	Ναι, λήψη τους (συνιστάται)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2230,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	Το yt-dlp δεν είναι εγκατεστημένο (Εργασίες → Λήψη βίντεο από μια σελίδα το εγκαθιστά)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: βρίσκει το βίντεο
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2304,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	Δεν ήταν δυνατή η λήψη του {name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

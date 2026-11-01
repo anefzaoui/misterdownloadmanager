@@ -133,6 +133,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	כל הקבצים
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	הכול מוכן: בדף עם סרטון, השתמש במשימות ← הורד סרטון מדף.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	כבר מורד: {path}
@@ -176,6 +179,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	הורדת אצווה
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	שניהם בקוד פתוח. MDM משיג אותם מההוצאות הרשמיות שלהם עם מנהל ההורדות שלו ובודק את החתימה של כל קובץ לפני ההרצה. כ־100 מ״ב, פעם אחת.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -245,6 +251,9 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	בדוק עדכונים בכל הפעלה
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	בדוק את החיבור שלך, ואז נסה שוב, או קבל אותם מאוחר יותר מחלון הווידאו.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -254,6 +263,12 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the file...	בודק את הקובץ...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	בודק את {name} ({n} מתוך {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -275,7 +290,7 @@
 #. text in the Options window
 #, machine
 	Clock:	שעון:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -481,6 +496,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	הורדת וידאו מדף
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	הורד סרטונים מ־YouTube ומ־1,000+ אתרים
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -516,6 +535,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	מוריד את העדכון... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	מוריד את {name} ({n} מתוך {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -624,6 +648,10 @@
 #. text in the Scheduler window
 #, machine
 	February	פברואר
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: מצרף תמונה וצליל
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -708,6 +736,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	ו׳
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	חינם, רשמי ונבדק
 #. text in the Scheduler window
 #, machine
 	Friday	יום שישי
@@ -742,6 +774,10 @@
 #. tab title: general information
 #, machine
 	General	כללי
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	התכונן להורדות וידאו
 #. button in the Options window
 #, machine
 	Get System	קבל מערכת
@@ -1135,6 +1171,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	לא בתור
+#. button in helpers.rs
+#, machine
+	Not now	לא עכשיו
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	לא עכשיו? קבל אותם מאוחר יותר מתוך משימות ← הורד וידאו מדף.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	לא בשימוש: חלקי קובץ נכתבים ליד הקובץ
@@ -1343,6 +1385,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	קורא את הטורנט...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	קורא דף ומפרט כל איכות שהאתר מציע, עד 4K, מ־YouTube, Vimeo ולמעלה מאלף אתרים אחרים.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	מוכן: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1584,6 +1633,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	כניסות לאתרים
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	אתרים שולחים את האיכות הטובה ביותר שלהם כווידאו ושמע נפרדים, ו־ffmpeg מצרף אותם. במערכת זו MDM משתמש בשלך: התקן את ffmpeg עם מנהל החבילות שלך.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	אתרים שולחים את האיכות הטובה ביותר שלהם כווידאו ושמע נפרדים. ffmpeg מחבר אותם יחד לקובץ אחד שפועל בכל מקום.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1661,6 +1716,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	התחיל עם yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	מפעיל...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1920,6 +1979,9 @@
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	הגדרות אלה אינן זמינות כאשר "הצג תיבת דו-שיח של השלמת הורדה" מופעלת
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	הם ממשיכים להוריד אם תסגור חלון זה.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	כתובת זו כבר נמצאת ברשימת ההורדות:
@@ -1990,6 +2052,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	קצב העברה
+#. button in helpers.rs
+#, machine
+	Try again	נסה שוב
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2015,6 +2080,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	הפעל
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	שני עוזרים חינמיים מאפשרים זאת. קבל אותם עכשיו, ושמירת וידאו נמצאת במרחק קליק אחד כשתמצא אחד כזה.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2199,6 +2267,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	כן
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	כן, הורד אותם (מומלץ)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2210,6 +2282,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp אינו מותקן (משימות ← הורד וידאו מדף מתקין אותו)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: מוצא את הווידאו
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2284,6 +2360,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	לא ניתן היה להוריד את {name}: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

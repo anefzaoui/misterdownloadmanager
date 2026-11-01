@@ -145,6 +145,9 @@
 #. message or event log entry in the main window
 #, machine
 	All files	Gach comhad
+#. text in helpers.rs
+#, machine
+	All set: on a page with a video, use Tasks → Download video from a page.	Gach rud réidh: ar leathanach le físeán, bain úsáid as Tascanna → Íoslódáil físeán ó leathanach.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	á íoslódáil cheana: {path}
@@ -192,6 +195,9 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Íoslódáil baisce
+#. text in helpers.rs
+#, machine
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Tá an dá cheann foinse oscailte. Faigheann MDM iad óna n-eisiúintí oifigiúla lena íoslódálaí féin agus seiceálann sé síniú gach comhaid sula ritheann sé. Thart ar 100 MB, uair amháin.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -261,6 +267,9 @@
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
 	Check for updates at every start	Seiceáil le haghaidh nuashonruithe ag gach tosú
+#. text in helpers.rs
+#, machine
+	Check your connection, then try again, or get them later from the video window.	Seiceáil do nasc, ansin bain triail as arís, nó faigh iad níos déanaí ón bhfuinneog físeáin.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -270,6 +279,12 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the file...	Ag seiceáil an chomhaid...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking {name} ({n} of {total})...	Ag seiceáil {name} ({n} de {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -291,7 +306,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Clog:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -497,6 +512,10 @@
 #. window title in the Download video window
 #, machine
 	Download video from a page	Íoslódáil físeán ó leathanach
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+#, machine
+	Download videos from YouTube and 1,000+ sites	Íoslódáil físeáin ó YouTube agus ó 1,000+ suíomh
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -532,6 +551,11 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Á íoslódáil an nuashonraithe... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#, machine
+	Downloading {name} ({n} of {total})... {percent}	Ag íoslódáil {name} ({n} de {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -640,6 +664,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Feabhra
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+#, machine
+	ffmpeg: joins picture and sound	ffmpeg: cuireann sé pictiúr agus fuaim le chéile
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -724,6 +752,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	AO
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+#, machine
+	Free, official and checked	Saor in aisce, oifigiúil agus seiceáilte
 #. text in the Scheduler window
 #, machine
 	Friday	Aoine
@@ -758,6 +790,10 @@
 #. tab title: general information
 #, machine
 	General	Ginearálta
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+#, machine
+	Get ready for video downloads	Bí réidh le haghaidh íoslódálacha físeáin
 #. button in the Options window
 #, machine
 	Get System	Faigh Córas
@@ -1151,6 +1187,12 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Níl sé i scuaine
+#. button in helpers.rs
+#, machine
+	Not now	Ní anois
+#. text in helpers.rs
+#, machine
+	Not now? Get them later from Tasks → Download video from a page.	Ní anois? Faigh iad níos déanaí ó Tascanna → Íoslódáil físeán ó leathanach.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Gan úsáid: scríobhtar páirteanna comhaid in aice leis an gcomhad
@@ -1359,6 +1401,13 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Ag léamh an torrent...
+#. text in helpers.rs
+#, machine
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Léann sé leathanach agus liostaíonn sé gach cáilíocht a thairgeann an suíomh, suas le 4K, ó YouTube, Vimeo agus os cionn míle suíomh eile.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+#, machine
+	Ready: {list}	Réidh: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1600,6 +1649,12 @@
 #. tab title: user names and passwords for sites
 #, machine
 	Sites Logins	Logálacha Suíomhanna
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Seolann suíomhanna a gcáilíocht is fearr mar fhíseán agus fuaime ar leith, agus cuireann ffmpeg le chéile iad. Ar an gcóras seo úsáideann MDM do cheann féin: suiteáil ffmpeg le do bhainisteoir pacáiste.
+#. text in helpers.rs
+#, machine
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Seolann suíomhanna a gcáilíocht is fearr mar fhíseán agus fuaime ar leith. Cuireann ffmpeg le chéile iad in aon chomhad amháin a imríonn áit ar bith.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1677,6 +1732,10 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Tosaíodh le yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Starting...	Ag tosú...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1940,6 +1999,9 @@
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Níl na socruithe seo ar fáil nuair a bhíonn "Taispeáin dialóg críochnaithe íoslódála" casta air
+#. text in helpers.rs
+#, machine
+	They keep downloading if you close this window.	Leanann siad ag íoslódáil má dhúnann tú an fhuinneog seo.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Tá an seoladh seo sa liosta íoslódálacha cheana féin:
@@ -2010,6 +2072,9 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Ráta aistrithe
+#. button in helpers.rs
+#, machine
+	Try again	Bain triail as arís
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2035,6 +2100,9 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Cuir ar siúl
+#. text in helpers.rs
+#, machine
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Déanann dhá chúntóir saor in aisce é a oibriú. Faigh iad anois, agus níl ach cliceáil amháin ar shiúl ó fhíseán a shábháil nuair a aimsíonn tú ceann.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2219,6 +2287,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Tá
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#, machine
+	Yes, download them (recommended)	Sea, íoslódáil iad (molta)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -2230,6 +2302,10 @@
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	Níl yt-dlp suiteáilte (Tascanna → Íoslódáil físeán ó leathanach suiteálann sé é)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+#, machine
+	yt-dlp: finds the video	yt-dlp: aimsíonn sé an físeán
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2304,6 +2380,11 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	{name} could not be downloaded: {error}	Níorbh fhéidir {name} a íoslódáil: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

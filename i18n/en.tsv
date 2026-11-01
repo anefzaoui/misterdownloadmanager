@@ -108,6 +108,8 @@
 	All Downloads	All Downloads
 #. message or event log entry in the main window
 	All files	All files
+#. text in helpers.rs
+	All set: on a page with a video, use Tasks → Download video from a page.	All set: on a page with a video, use Tasks → Download video from a page.
 #. text in errors.rs
 	already being downloaded: {path}	already being downloaded: {path}
 #. text in crashui.rs
@@ -141,6 +143,8 @@
 	Automatically start downloading the following file types:	Automatically start downloading the following file types:
 #. window title in the Batch download window
 	Batch download	Batch download
+#. text in helpers.rs
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.
 #. button in the Options window
 #. verb: choose a folder
 	Browse	Browse
@@ -190,6 +194,8 @@
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. check box in the update window: look for a new version every time MDM starts
 	Check for updates at every start	Check for updates at every start
+#. text in helpers.rs
+	Check your connection, then try again, or get them later from the video window.	Check your connection, then try again, or get them later from the video window.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 	Checking for updates...	Checking for updates...
@@ -197,6 +203,11 @@
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
 	Checking the file...	Checking the file...
+#. text in helpers.rs
+#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+	Checking {name} ({n} of {total})...	Checking {name} ({n} of {total})...
 #. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 	Checking...	Checking...
@@ -212,7 +223,7 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -358,6 +369,9 @@
 	Download status	Download status
 #. window title in the Download video window
 	Download video from a page	Download video from a page
+#. text in helpers.rs
+#. the headline of the first start's helpers window
+	Download videos from YouTube and 1,000+ sites	Download videos from YouTube and 1,000+ sites
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 	Download {files} files at the same time	Download {files} files at the same time
@@ -384,6 +398,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	Downloading the update... {percent}
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = a file name; {n} = a number (keep the braces as they are)
+	Downloading {name} ({n} of {total})... {percent}	Downloading {name} ({n} of {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Downloads
@@ -462,6 +480,9 @@
 	Extensions separated by spaces, for example MP4 MKV R0*	Extensions separated by spaces, for example MP4 MKV R0*
 #. text in the Scheduler window
 	February	February
+#. text in helpers.rs
+#. helper name and what it does (ffmpeg is a program's name)
+	ffmpeg: joins picture and sound	ffmpeg: joins picture and sound
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 	File	File
@@ -521,6 +542,9 @@
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 	Fr	Fr
+#. text in helpers.rs
+#. a promise in the helpers window: the helpers are free, official and checked
+	Free, official and checked	Free, official and checked
 #. text in the Scheduler window
 	Friday	Friday
 #. message or event log entry in the main window
@@ -545,6 +569,9 @@
 #. tab title: general settings
 #. tab title: general information
 	General	General
+#. window title in helpers.rs
+#. title of the first start's window that offers yt-dlp and ffmpeg
+	Get ready for video downloads	Get ready for video downloads
 #. button in the Options window
 	Get System	Get System
 #. text in the Add torrent window
@@ -824,6 +851,10 @@
 	not enough disk space: {needed} needed, {free} free	not enough disk space: {needed} needed, {free} free
 #. value in a column's filter list in the download list
 	Not in a queue	Not in a queue
+#. button in helpers.rs
+	Not now	Not now
+#. text in helpers.rs
+	Not now? Get them later from Tasks → Download video from a page.	Not now? Get them later from Tasks → Download video from a page.
 #. text in the Options window
 	Not used: file parts are written next to the file	Not used: file parts are written next to the file
 #. text in a dialog box
@@ -972,6 +1003,11 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 	Reading the torrent...	Reading the torrent...
+#. text in helpers.rs
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.
+#. text in helpers.rs
+#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
+	Ready: {list}	Ready: {list}
 #. text in a download's progress window
 #. column title: how much came from the peer
 	Received	Received
@@ -1145,6 +1181,10 @@
 #. text in the Options window
 #. tab title: user names and passwords for sites
 	Sites Logins	Sites Logins
+#. text in helpers.rs
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.
+#. text in helpers.rs
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.
 #. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -1200,6 +1240,9 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 	Started with yt-dlp {version} ({format})	Started with yt-dlp {version} ({format})
+#. text in helpers.rs
+#. the trailing ... means it is still going on: keep it
+	Starting...	Starting...
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -1389,6 +1432,8 @@
 	There is already a queue with this name	There is already a queue with this name
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	These settings are unavailable when "Show download complete dialog" is turned on
+#. text in helpers.rs
+	They keep downloading if you close this window.	They keep downloading if you close this window.
 #. text in a dialog box
 	This address is already in the list of downloads:	This address is already in the list of downloads:
 #. message or event log entry in the main window
@@ -1439,6 +1484,8 @@
 	Trackers	Trackers
 #. text in a download's progress window
 	Transfer rate	Transfer rate
+#. button in helpers.rs
+	Try again	Try again
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 	Tu	Tu
@@ -1457,6 +1504,8 @@
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter on
 	Turn on	Turn on
+#. text in helpers.rs
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Type a letter in From and in To	Type a letter in From and in To
@@ -1588,6 +1637,9 @@
 	Year, month, day	Year, month, day
 #. button in a dialog box; text in a download's progress window
 	Yes	Yes
+#. button in helpers.rs
+#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+	Yes, download them (recommended)	Yes, download them (recommended)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	You have the latest version of Mister Download Manager ({version}).	You have the latest version of Mister Download Manager ({version}).
@@ -1596,6 +1648,9 @@
 	You have version {version}.	You have version {version}.
 #. message or event log entry in the main window
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp is not installed (Tasks → Download video from a page installs it)
+#. text in helpers.rs
+#. helper name and what it does (yt-dlp is a program's name)
+	yt-dlp: finds the video	yt-dlp: finds the video
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{algorithm} checksum	{algorithm} checksum
@@ -1652,6 +1707,10 @@
 #. the torrent's name, then {files} = "3 files" and {size} = its total size
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{name}  ({files}, {size})	{name}  ({files}, {size})
+#. text in helpers.rs
+#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+	{name} could not be downloaded: {error}	{name} could not be downloaded: {error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
