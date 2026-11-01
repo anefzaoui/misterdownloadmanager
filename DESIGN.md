@@ -113,7 +113,7 @@ spacing:
   gutter: "clamp(16px, 4vw, 40px)"
   wrap: "1240px"
   wrap-narrow: "880px"
-  section: "clamp(72px, 10vw, 128px)"
+  section: "clamp(56px, 7vw, 96px)"
   sheet-pad: "clamp(24px, 4vw, 56px)"
   row-pad: "clamp(18px, 3vw, 32px)"
   field: "10px 16px 11px"
@@ -275,7 +275,7 @@ Two physical layers: the board, and paper laid on it. Sheets cast a short contac
 
 ## Shapes
 
-Gently rounded, like die-cut label stock: sheets 10px, stuck-on labels and dialogs 12px, controls and screenshots 8px, rows and stamps 6px, tags 4px, flags 2px. Rules carry the structure: 1.5px ink rules between fields and around segmented controls, 1px hairlines between quiet rows, a 2px dashed tear line above the barcode. The hero's label card is the one object with depth, and its depth is all in the shadow under it (a contact shadow and a long soft one, `--shadow-card`, neutral black in dark): it sits flat, turned 2deg, on the window's start corner (the owner's choice), in the same grid cell as the window so the section always clears it. The closing label sits turned 1.2deg; both mirror in RTL; stamps tilt 4-6deg. Everything else is square to the grid.
+Gently rounded, like die-cut label stock: sheets 10px, stuck-on labels and dialogs 12px, controls and screenshots 8px, rows and stamps 6px, tags 4px, flags 2px. Rules carry the structure: 1.5px ink rules between fields and around segmented controls, 1px hairlines between quiet rows, a 2px dashed tear line above the barcode. The hero's label card is the one object with depth, and its depth is all in the shadow under it (a contact shadow and a long soft one, `--shadow-card`, neutral black in dark): it sits flat, turned 2deg, on the window's start corner (the owner's choice), in the same grid cell as the window so the section always clears it. The closing label sits turned 1.2deg; both mirror in RTL; stamps tilt 4-6deg. Everything else is square to the grid. Sections sit one rhythm apart (`--gap-section`, 56-96px): each carries the gap above it only, so gaps never stack, and the last block before the footer carries it below; an intro set beside its content has no bottom margin.
 
 ## Components
 
