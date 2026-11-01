@@ -100,6 +100,10 @@
 #. text in categories.rs
 #, machine
 	Add category	వర్గాన్ని జోడించు
+#. window title in extension.rs
+#. title of the window that offers the browser extension
+#, machine
+	Add Mister Download Manager to your browser	Mister Download Managerని మీ బ్రౌజర్‌కు జోడించండి
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
@@ -110,6 +114,13 @@
 #. text in the Options window
 #, machine
 	Add the duplicate with a numbered file name	నకిలీని నంబర్ చేయబడిన ఫైల్ పేరుతో జోడించండి
+#. text in extension.rs
+#. button in the browser extension's window: open the extension's page in that browser
+#, machine
+	Add the extension	ఎక్స్‌టెన్షన్‌ను జోడించండి
+#. text in extension.rs
+#, machine
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	ఉచిత ఎక్స్‌టెన్షన్‌ను జోడించండి: మీ బ్రౌజర్‌లో మీరు డౌన్‌లోడ్ చేసే ఫైల్‌లు ఇక్కడికి వస్తాయి, మరియు వీడియోలకు డౌన్‌లోడ్ బటన్ వస్తుంది.
 #. message or event log entry in the main window
 #, machine
 	Add to queue	క్యూకి జోడించు
@@ -244,6 +255,10 @@
 #. group box title in the Options window
 #, machine
 	Capture downloads from the following browsers:	కింది బ్రౌజర్‌ల నుండి డౌన్‌లోడ్‌లను క్యాప్చర్ చేయండి:
+#. text in extension.rs
+#. the headline of the window that offers the browser extension
+#, machine
+	Catch downloads from your browser	మీ బ్రౌజర్ నుండి డౌన్‌లోడ్‌లను పట్టుకోండి
 #. text in the main window (menus, toolbar, Categories pane)
 #. title of the side pane that lists the categories
 #, machine
@@ -311,7 +326,7 @@
 #. text in the Options window
 #, machine
 	Clock:	గడియారం:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -335,6 +350,9 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	డౌన్‌లోడ్‌ల తొలగింపును నిర్ధారించండి
+#. text in extension.rs
+#, machine
+	Connected: downloads from your browser now come here.	కనెక్ట్ చేయబడింది: మీ బ్రౌజర్ నుండి డౌన్‌లోడ్‌లు ఇప్పుడు ఇక్కడికి వస్తాయి.
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -460,6 +478,10 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	డాక్యుమెంట్లు
+#. button in extension.rs
+#. button in the browser extension's window: stop offering it at each start
+#, machine
+	Don't ask again	మళ్లీ అడగవద్దు
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	ఈ డైలాగ్‌ను మళ్లీ చూపవద్దు
@@ -1242,6 +1264,9 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Once at	ఒకసారి
+#. text in extension.rs
+#, machine
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	ఇది జోడించబడిన తర్వాత, ఈ విండో అలా చెబుతుంది. Chrome దాని తదుపరి ప్రారంభంలో కూడా స్వయంగా అడగవచ్చు.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ఒకసారి డౌన్‌లోడ్ చేయడం
@@ -1621,6 +1646,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	డౌన్‌లోడ్ పూర్తయిన డైలాగ్‌ను చూపించు
+#. text in extension.rs
+#. button in the browser extension's window: open the tutorial that adds the Firefox add-on
+#, machine
+	Show me how	నాకు ఎలాగో చూపించు
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	బ్యాచ్ డౌన్‌లోడ్ డైలాగ్‌లను మూసివేసేటప్పుడు క్యూ ఎంపిక ప్యానెల్‌ను చూపించు
@@ -2304,6 +2333,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	You have version {version}.	మీరు వెర్షన్ {version}ని కలిగి ఉన్నారు.
+#. text in extension.rs
+#. a row of the browser extension's window when no browser was found by name
+#, machine
+	Your browser	మీ బ్రౌజర్
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ఇన్‌స్టాల్ చేయబడలేదు (పనులు → పేజీ నుండి వీడియోను డౌన్‌లోడ్ చేయి ఇన్‌స్టాల్ చేస్తుంది)

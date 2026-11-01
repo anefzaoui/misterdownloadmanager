@@ -1,0 +1,216 @@
+//! The browser extension's offer: at each start, until a browser's extension has reached the
+//! app (the native host notes it: mdm_ipc::extension::seen), a window lists the browsers
+//! installed and opens the extension's page in the one picked (the Chrome Web Store for
+//! Chromium browsers, the tutorial for Firefox). Chrome may ask by itself too: registering the
+//! host also names the store's extension to it (crates/nmhost). "Don't ask again" stops the
+//! offer; `/show extension` brings it back.
+
+use std::path::PathBuf;
+use std::time::Duration;
+
+use egui::{FontFamily, FontId, Pos2, Ui};
+
+use crate::dialogs::{Outcome, window};
+use crate::winui::{self, ButtonKind, r};
+
+const W: f32 = 520.0;
+const BANNER: f32 = 84.0;
+const ROW: f32 = 34.0;
+
+/// Whether to offer the extension at this start: browser integration on and registered (not a
+/// portable copy, which registers nothing), no browser's extension seen yet, not refused.
+pub fn worth_asking(settings: &crate::settings::Settings) -> bool {
+    !settings.extension_never_ask
+        && settings.advanced_integration
+        && mdm_ipc::portable_dir().is_none()
+        && !mdm_ipc::extension::seen()
+}
+
+pub struct Extension {
+    /// The browsers installed: name and program. Empty: one row for the system's browser.
+    browsers: Vec<(&'static str, Option<PathBuf>)>,
+    /// A browser's extension has reached the app since the window opened.
+    connected: bool,
+}
+
+impl Extension {
+    pub fn new() -> Self {
+        #[cfg(windows)]
+        let found = crate::win32::browsers();
+        #[cfg(unix)]
+        let found = crate::unix::browsers();
+        let mut browsers: Vec<_> = found.into_iter().map(|(n, p)| (n, Some(p))).collect();
+        if browsers.is_empty() {
+            browsers.push(("", None));
+        }
+        Extension {
+            browsers,
+            connected: mdm_ipc::extension::seen(),
+        }
+    }
+
+    /// Open until closed; Done when "Don't ask again" was pressed.
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
+        // The host marks the extension seen when a browser starts it: look again now and then.
+        if !self.connected {
+            self.connected = mdm_ipc::extension::seen();
+            ctx.request_repaint_after(Duration::from_secs(1));
+        }
+        let h = BANNER + 16.0 + self.browsers.len() as f32 * ROW + 104.0;
+        let mut answer = None;
+        window(
+            ctx,
+            "extension",
+            // i18n: title of the window that offers the browser extension
+            "Add Mister Download Manager to your browser",
+            [W, h],
+            false,
+            winui::BG(),
+            |ui, o| {
+                self.body(ui, o, h, &mut answer);
+                match answer.take() {
+                    Some(true) => Outcome::Done(()),
+                    Some(false) => Outcome::Closed,
+                    None if winui::escape_pressed(ui) => Outcome::Closed,
+                    None => Outcome::Open,
+                }
+            },
+        )
+    }
+
+    fn body(&mut self, ui: &mut Ui, o: Pos2, h: f32, answer: &mut Option<bool>) {
+        let p = ui.painter().clone();
+        let (ink, muted) = (winui::TEXT(), winui::MUTED());
+        // The banner: the logo, what the extension does, in one line, and how.
+        p.rect_filled(winui::rect(r(o, 0.0, 0.0, W, BANNER)), 0.0, winui::FIELD());
+        winui::fill_l(
+            &p,
+            o.x,
+            o.y + BANNER,
+            o.x + W - 1.0,
+            o.y + BANNER,
+            winui::FIELD_EDGE(),
+        );
+        egui::Image::new(egui::include_image!("../assets/icons/app/mdm-48.png"))
+            .paint_at(ui, winui::rect(r(o, 18.0, 18.0, 48.0, 48.0)));
+        winui::text_font(
+            &p,
+            FontId::new(16.0, FontFamily::Name("tahoma-bold".into())),
+            o.x + 80.0,
+            o.y + 36.0,
+            // i18n: the headline of the window that offers the browser extension
+            crate::i18n::t("Catch downloads from your browser"),
+            ink,
+        );
+        winui::paragraph(
+            &p,
+            o.x + 80.0,
+            o.y + 57.0,
+            crate::i18n::t(
+                "Add the free extension: files you download in your browser come here, and videos get a Download button.",
+            ),
+            muted,
+            o.x + W - 18.0,
+            14.0,
+        );
+
+        // One row per browser: its name, and the button that opens the extension's page in it.
+        let store = mdm_ipc::extension::store_page();
+        for (k, (name, program)) in self.browsers.iter().enumerate() {
+            let y = BANNER + 16.0 + k as f32 * ROW;
+            let firefox = name.contains("Firefox");
+            winui::text_font(
+                &p,
+                winui::tahoma_bold(),
+                o.x + 22.0,
+                o.y + y + 16.0,
+                if name.is_empty() {
+                    // i18n: a row of the browser extension's window when no browser was found by name
+                    crate::i18n::t("Your browser")
+                } else {
+                    name
+                },
+                ink,
+            );
+            let label = if firefox {
+                // i18n: button in the browser extension's window: open the tutorial that adds the Firefox add-on
+                "Show me how"
+            } else {
+                // i18n: button in the browser extension's window: open the extension's page in that browser
+                "Add the extension"
+            };
+            let add = winui::button(
+                ui,
+                r(o, W - 18.0 - 150.0, y, 150.0, 25.0),
+                label,
+                if k == 0 {
+                    ButtonKind::Accent
+                } else {
+                    ButtonKind::Normal
+                },
+                false,
+                None,
+            );
+            if add.clicked() {
+                let url = if firefox {
+                    mdm_ipc::extension::GUIDE_PAGE
+                } else {
+                    store.as_str()
+                };
+                match program {
+                    #[cfg(windows)]
+                    Some(program) => crate::win32::open_in(program, url),
+                    #[cfg(unix)]
+                    Some(program) => crate::unix::open_in(program, url),
+                    None => {
+                        let _ = open::that_detached(url);
+                    }
+                }
+            }
+        }
+
+        // Where it stands, then the answer.
+        let y = h - 84.0;
+        let (line, color) = if self.connected {
+            (
+                crate::i18n::t("Connected: downloads from your browser now come here."),
+                winui::SUCCESS(),
+            )
+        } else {
+            (
+                crate::i18n::t(
+                    "Once it is added, this window says so. Chrome may also ask by itself at its next start.",
+                ),
+                muted,
+            )
+        };
+        winui::paragraph(&p, o.x + 18.0, o.y + y, line, color, o.x + W - 18.0, 14.0);
+        winui::etched_h(&p, o.x + 16.0, o.y + h - 46.0, W - 32.0);
+        let y = h - 36.0;
+        let close = winui::button(
+            ui,
+            r(o, W - 18.0 - 90.0, y, 90.0, 25.0),
+            "Close",
+            ButtonKind::Default,
+            false,
+            None,
+        );
+        if close.clicked() || winui::enter_pressed(ui) {
+            *answer = Some(false);
+        }
+        if !self.connected {
+            // i18n: button in the browser extension's window: stop offering it at each start
+            let never = winui::button(
+                ui,
+                r(o, W - 18.0 - 90.0 - 8.0 - 130.0, y, 130.0, 25.0),
+                "Don't ask again",
+                ButtonKind::Normal,
+                false,
+                None,
+            );
+            if never.clicked() {
+                *answer = Some(true);
+            }
+        }
+    }
+}

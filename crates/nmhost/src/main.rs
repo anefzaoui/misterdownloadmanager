@@ -24,10 +24,7 @@ use std::time::Duration;
 use serde::{Deserialize, Serialize};
 
 const HOST_NAME: &str = "com.misterdownloadmanager.host";
-/// The extension's fixed ID (from the public key in extension/manifest.json).
-const EXTENSION_ID: &str = "oogbclbbninliongijffeeggalppliok";
-/// The Firefox add-on's ID (extension/manifest.firefox.json).
-const FIREFOX_ID: &str = "integration@misterdownloadmanager.com";
+use mdm_ipc::extension::{CHROMIUM_IDS, FIREFOX_ID, STORE_ID, STORE_UPDATE_URL};
 /// Where each Chromium browser looks for native messaging hosts on Windows, under HKCU (one
 /// user) or HKLM (everyone).
 #[cfg(windows)]
@@ -39,6 +36,11 @@ const REGISTRY_KEYS: [&str; 3] = [
 /// Where Firefox looks.
 #[cfg(windows)]
 const FIREFOX_KEY: &str = r"Software\Mozilla\NativeMessagingHosts";
+/// Chrome's external extensions: an entry naming the store's extension makes Chrome offer it at
+/// its next start ("New extension added"), the user turning it on there. HKLM's is read from the
+/// 32-bit view on 64-bit Windows, hence /reg:32 (HKCU has one view).
+#[cfg(windows)]
+const CHROME_EXTERNAL_KEY: &str = r"Software\Google\Chrome\Extensions";
 
 /// A message from the extension.
 #[derive(Debug, Default, Deserialize, PartialEq)]
@@ -251,7 +253,12 @@ fn serve() -> io::Result<()> {
     while let Some(raw) = read_message(&mut stdin)? {
         let reply = match serde_json::from_slice::<Message>(&raw) {
             // The rules as saved now: a change in Options applies to the next download.
-            Ok(m) => answer(m, &mdm_ipc::capture::CaptureRules::load()),
+            Ok(m) => {
+                // This browser has the extension: the app stops offering it (extension.rs).
+                let ua = m.user_agent.as_deref().unwrap_or_default();
+                mdm_ipc::extension::mark_seen(mdm_ipc::capture::browser_of(ua));
+                answer(m, &mdm_ipc::capture::CaptureRules::load())
+            }
             Err(e) => Reply {
                 ok: false,
                 error: Some(e.to_string()),
@@ -273,7 +280,7 @@ fn chromium_manifest() -> Result<serde_json::Value, String> {
         "description": "Mister Download Manager",
         "path": std::env::current_exe().map_err(|e| e.to_string())?,
         "type": "stdio",
-        "allowed_origins": [format!("chrome-extension://{EXTENSION_ID}/")],
+        "allowed_origins": CHROMIUM_IDS.map(origin),
     }))
 }
 
@@ -307,11 +314,17 @@ fn portable_refused() -> Result<(), String> {
     Ok(())
 }
 
-/// Is this the caller the browsers start us for? Chromium passes the extension's origin first;
-/// Firefox passes the manifest's path, then the add-on ID.
+/// A Chromium extension's origin, as browsers name the caller.
+fn origin(id: &str) -> String {
+    format!("chrome-extension://{id}/")
+}
+
+/// Is this the caller the browsers start us for? Chromium passes the extension's origin first
+/// (unpacked or from the store); Firefox passes the manifest's path, then the add-on ID.
 fn our_caller(args: &[String]) -> bool {
-    let chrome = format!("chrome-extension://{EXTENSION_ID}/");
-    args.first().is_some_and(|a| *a == chrome) || args.get(1).is_some_and(|a| a == FIREFOX_ID)
+    args.first()
+        .is_some_and(|a| CHROMIUM_IDS.iter().any(|id| *a == origin(id)))
+        || args.get(1).is_some_and(|a| a == FIREFOX_ID)
 }
 
 /// Windows: the manifests beside this exe, and the registry entries naming them, per user
@@ -346,6 +359,18 @@ fn register(all_users: bool) -> Result<(), String> {
         &ff_path.display().to_string(),
         "/f",
     ])?;
+    reg(&[
+        "add",
+        &format!(r"{root}\{CHROME_EXTERNAL_KEY}\{STORE_ID}"),
+        "/v",
+        "update_url",
+        "/t",
+        "REG_SZ",
+        "/d",
+        STORE_UPDATE_URL,
+        "/f",
+        "/reg:32",
+    ])?;
     println!(
         "registered {HOST_NAME} for Chrome, Edge, Brave ({}) and Firefox ({})",
         path.display(),
@@ -360,6 +385,12 @@ fn unregister(all_users: bool) -> Result<(), String> {
     for key in REGISTRY_KEYS.into_iter().chain([FIREFOX_KEY]) {
         let _ = reg(&["delete", &format!(r"{root}\{key}\{HOST_NAME}"), "/f"]);
     }
+    let _ = reg(&[
+        "delete",
+        &format!(r"{root}\{CHROME_EXTERNAL_KEY}\{STORE_ID}"),
+        "/f",
+        "/reg:32",
+    ]);
     let _ = std::fs::remove_file(exe_dir()?.join(format!("{HOST_NAME}.json")));
     let _ = std::fs::remove_file(exe_dir()?.join(format!("{HOST_NAME}.firefox.json")));
     println!("unregistered {HOST_NAME}");
@@ -444,6 +475,34 @@ fn host_dirs(all_users: bool) -> Vec<(PathBuf, bool)> {
     dirs
 }
 
+/// Linux and macOS: the folder Chrome reads external extensions from (an `<id>.json` naming
+/// the store's update service makes Chrome offer that extension at its next start), when
+/// Chrome is there. macOS has one per user and one for everyone; Linux Chrome reads only the
+/// system's, so a per-user registration there leaves it to the app's own offer (extension.rs).
+#[cfg(not(windows))]
+fn chrome_external_dir(all_users: bool) -> Option<PathBuf> {
+    let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
+    let (dir, chrome) = if cfg!(target_os = "macos") {
+        if all_users {
+            (
+                PathBuf::from("/Library/Application Support/Google/Chrome/External Extensions"),
+                PathBuf::from("/Applications/Google Chrome.app"),
+            )
+        } else {
+            let chrome = home.join("Library/Application Support/Google/Chrome");
+            (chrome.join("External Extensions"), chrome)
+        }
+    } else if all_users {
+        (
+            PathBuf::from("/usr/share/google-chrome/extensions"),
+            PathBuf::from("/opt/google/chrome"),
+        )
+    } else {
+        return None;
+    };
+    chrome.exists().then_some(dir)
+}
+
 #[cfg(not(windows))]
 fn register(all_users: bool) -> Result<(), String> {
     portable_refused()?;
@@ -458,6 +517,14 @@ fn register(all_users: bool) -> Result<(), String> {
     if dirs.is_empty() {
         println!("registered {HOST_NAME} for no browser: none found");
     }
+    if let Some(dir) = chrome_external_dir(all_users) {
+        std::fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
+        write_json(
+            &dir.join(format!("{STORE_ID}.json")),
+            &serde_json::json!({ "external_update_url": STORE_UPDATE_URL }),
+        )?;
+        println!("offered the extension to Chrome in {}", dir.display());
+    }
     Ok(())
 }
 
@@ -465,6 +532,9 @@ fn register(all_users: bool) -> Result<(), String> {
 fn unregister(all_users: bool) -> Result<(), String> {
     for (dir, _) in host_dirs(all_users) {
         let _ = std::fs::remove_file(dir.join(format!("{HOST_NAME}.json")));
+    }
+    if let Some(dir) = chrome_external_dir(all_users) {
+        let _ = std::fs::remove_file(dir.join(format!("{STORE_ID}.json")));
     }
     println!("unregistered {HOST_NAME}");
     Ok(())
@@ -512,9 +582,9 @@ mod tests {
     #[test]
     fn only_our_extension_in_either_browser() {
         let s = |v: &[&str]| v.iter().map(|a| a.to_string()).collect::<Vec<_>>();
-        assert!(our_caller(&s(&[&format!(
-            "chrome-extension://{EXTENSION_ID}/"
-        )])));
+        for id in CHROMIUM_IDS {
+            assert!(our_caller(&s(&[&format!("chrome-extension://{id}/")])));
+        }
         assert!(our_caller(&s(&[r"C:\x\host.firefox.json", FIREFOX_ID])));
         assert!(!our_caller(&s(&["chrome-extension://someoneelse/"])));
         assert!(!our_caller(&s(&[r"C:\x\host.json", "evil@example.com"])));

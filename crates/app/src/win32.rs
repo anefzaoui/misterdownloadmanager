@@ -1463,3 +1463,33 @@ pub fn crash_now() {
     // SAFETY: none: a write through a null pointer, on purpose, to test the crash reports.
     unsafe { std::ptr::write_volatile(std::ptr::null_mut::<u32>(), 1) };
 }
+
+/// The browsers installed, by name, with their program: each registers it under the shell's
+/// App Paths (for this user or for everyone). The browser extension's offer (extension.rs)
+/// opens its page in each.
+pub fn browsers() -> Vec<(&'static str, std::path::PathBuf)> {
+    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+    const APP_PATHS: &str = r"Software\Microsoft\Windows\CurrentVersion\App Paths";
+    [
+        ("Google Chrome", "chrome.exe"),
+        ("Microsoft Edge", "msedge.exe"),
+        ("Brave", "brave.exe"),
+        ("Vivaldi", "vivaldi.exe"),
+        ("Opera", "opera.exe"),
+        ("Mozilla Firefox", "firefox.exe"),
+    ]
+    .into_iter()
+    .filter_map(|(name, exe)| {
+        let key = format!(r"{APP_PATHS}\{exe}");
+        let path = reg_string_in(HKEY_CURRENT_USER, &key, "")
+            .or_else(|| reg_string_in(HKEY_LOCAL_MACHINE, &key, ""))?;
+        let path = std::path::PathBuf::from(path.trim().trim_matches('"'));
+        path.is_file().then_some((name, path))
+    })
+    .collect()
+}
+
+/// Open `url` in the browser whose program is `program` (from `browsers`).
+pub fn open_in(program: &std::path::Path, url: &str) {
+    let _ = std::process::Command::new(program).arg(url).spawn();
+}

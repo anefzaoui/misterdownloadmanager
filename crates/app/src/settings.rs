@@ -63,6 +63,9 @@ pub struct Settings {
     pub language_asked: bool,
     /// The video helpers (yt-dlp, ffmpeg) have been offered once, at a start (helpers.rs).
     pub helpers_asked: bool,
+    /// The browser extension is offered at each start until a browser has it, unless "Don't ask
+    /// again" was pressed (extension.rs).
+    pub extension_never_ask: bool,
     /// General: offer to download (Download File Info) links of the listed file types copied
     /// to the clipboard. On by default: without the browser extension, copying a link is the
     /// quickest way in.
@@ -186,6 +189,7 @@ impl Default for Settings {
             language: None,
             language_asked: false,
             helpers_asked: false,
+            extension_never_ask: false,
             clipboard_autostart: true,
             mv2_extensions: true,
             advanced_integration: true,

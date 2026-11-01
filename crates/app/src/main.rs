@@ -10,6 +10,7 @@ mod crashui;
 mod dialogs;
 mod droptarget;
 mod errors;
+mod extension;
 mod find;
 mod help;
 mod helpers;

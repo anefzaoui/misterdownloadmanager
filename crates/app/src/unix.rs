@@ -286,3 +286,56 @@ pub fn crash_now() {
     // SAFETY: none: a write through a null pointer, on purpose, to test the crash reports.
     unsafe { std::ptr::write_volatile(std::ptr::null_mut::<u32>(), 1) };
 }
+
+/// The browsers installed, by name, with their program: the app bundle on macOS (in
+/// /Applications or ~/Applications), the command on the PATH on Linux. The browser extension's
+/// offer (extension.rs) opens its page in each.
+pub fn browsers() -> Vec<(&'static str, PathBuf)> {
+    let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
+    let found = |names: &[&str], dirs: &[PathBuf]| {
+        names
+            .iter()
+            .flat_map(|n| dirs.iter().map(move |d| d.join(n)))
+            .find(|p| p.exists())
+    };
+    let list: [(&str, &[&str]); 7] = if cfg!(target_os = "macos") {
+        [
+            ("Google Chrome", &["Google Chrome.app"]),
+            ("Chromium", &["Chromium.app"]),
+            ("Microsoft Edge", &["Microsoft Edge.app"]),
+            ("Brave", &["Brave Browser.app"]),
+            ("Vivaldi", &["Vivaldi.app"]),
+            ("Opera", &["Opera.app"]),
+            ("Mozilla Firefox", &["Firefox.app"]),
+        ]
+    } else {
+        [
+            ("Google Chrome", &["google-chrome", "google-chrome-stable"]),
+            ("Chromium", &["chromium", "chromium-browser"]),
+            ("Microsoft Edge", &["microsoft-edge", "microsoft-edge-stable"]),
+            ("Brave", &["brave-browser", "brave"]),
+            ("Vivaldi", &["vivaldi", "vivaldi-stable"]),
+            ("Opera", &["opera"]),
+            ("Mozilla Firefox", &["firefox"]),
+        ]
+    };
+    let dirs: Vec<PathBuf> = if cfg!(target_os = "macos") {
+        vec![PathBuf::from("/Applications"), home.join("Applications")]
+    } else {
+        std::env::var_os("PATH")
+            .map(|p| std::env::split_paths(&p).collect())
+            .unwrap_or_default()
+    };
+    list.into_iter()
+        .filter_map(|(name, names)| found(names, &dirs).map(|p| (name, p)))
+        .collect()
+}
+
+/// Open `url` in the browser whose program is `program` (from `browsers`).
+pub fn open_in(program: &Path, url: &str) {
+    if cfg!(target_os = "macos") {
+        spawn(Command::new("open").arg("-a").arg(program).arg(url));
+    } else {
+        spawn(Command::new(program).arg(url));
+    }
+}

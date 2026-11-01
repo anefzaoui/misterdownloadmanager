@@ -76,6 +76,9 @@
 	Add browser...	Add browser...
 #. text in categories.rs
 	Add category	Add category
+#. window title in extension.rs
+#. title of the window that offers the browser extension
+	Add Mister Download Manager to your browser	Add Mister Download Manager to your browser
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 	Add new download	Add new download
@@ -83,6 +86,11 @@
 	Add the duplicate and overwrite the existing file	Add the duplicate and overwrite the existing file
 #. text in the Options window
 	Add the duplicate with a numbered file name	Add the duplicate with a numbered file name
+#. text in extension.rs
+#. button in the browser extension's window: open the extension's page in that browser
+	Add the extension	Add the extension
+#. text in extension.rs
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	Add the free extension: files you download in your browser come here, and videos get a Download button.
 #. message or event log entry in the main window
 	Add to queue	Add to queue
 #. text in a dialog box
@@ -178,6 +186,9 @@
 	cannot resume: {detail}	cannot resume: {detail}
 #. group box title in the Options window
 	Capture downloads from the following browsers:	Capture downloads from the following browsers:
+#. text in extension.rs
+#. the headline of the window that offers the browser extension
+	Catch downloads from your browser	Catch downloads from your browser
 #. text in the main window (menus, toolbar, Categories pane)
 #. title of the side pane that lists the categories
 	Categories	Categories
@@ -227,7 +238,7 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -245,6 +256,8 @@
 	Confirm before deleting downloads	Confirm before deleting downloads
 #. window title in a dialog box
 	Confirm deletion of downloads	Confirm deletion of downloads
+#. text in extension.rs
+	Connected: downloads from your browser now come here.	Connected: downloads from your browser now come here.
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 	Connecting...	Connecting...
@@ -333,6 +346,9 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: documents (pdf, doc…)
 	Documents	Documents
+#. button in extension.rs
+#. button in the browser extension's window: stop offering it at each start
+	Don't ask again	Don't ask again
 #. checkbox in a dialog box
 	Don't show this dialog again	Don't show this dialog again
 #. text in the Options window
@@ -889,6 +905,8 @@
 	on download stop/resume	on download stop/resume
 #. option (radio button) in the Scheduler window
 	Once at	Once at
+#. text in extension.rs
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Once it is added, this window says so. Chrome may also ask by itself at its next start.
 #. option (radio button) in the Scheduler window
 	One-time downloading	One-time downloading
 #. text in a download's Properties window
@@ -1162,6 +1180,9 @@
 	Show details >>	Show details >>
 #. checkbox in the Options window; checkbox in a download's progress window
 	Show download complete dialog	Show download complete dialog
+#. text in extension.rs
+#. button in the browser extension's window: open the tutorial that adds the Firefox add-on
+	Show me how	Show me how
 #. checkbox in the Options window
 	Show queue selection panel on closing batch download dialogs	Show queue selection panel on closing batch download dialogs
 #. checkbox in the Options window
@@ -1650,6 +1671,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	You have version {version}.	You have version {version}.
+#. text in extension.rs
+#. a row of the browser extension's window when no browser was found by name
+	Your browser	Your browser
 #. message or event log entry in the main window
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp is not installed (Tasks → Download video from a page installs it)
 #. text in helpers.rs

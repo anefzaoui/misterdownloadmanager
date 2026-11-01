@@ -6,6 +6,7 @@
 
 pub mod api;
 pub mod capture;
+pub mod extension;
 
 use std::io::{BufRead, BufReader, Write};
 use std::net::{Ipv4Addr, SocketAddr, TcpListener, TcpStream};

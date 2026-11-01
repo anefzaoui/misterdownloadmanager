@@ -261,6 +261,9 @@ pub struct App {
     lang_picker: Option<crate::langpick::Picker>,
     /// The video helpers' offer (the first start's, after the language).
     helpers: Option<crate::helpers::Helpers>,
+    /// The browser extension's offer (extension.rs), and whether this run has weighed it.
+    extension: Option<crate::extension::Extension>,
+    extension_weighed: bool,
     /// The weekly update check, while it runs.
     auto_update: Option<crate::help::Slot>,
     /// The automatic check found a new version: its window comes to the front once shown.
@@ -596,6 +599,8 @@ impl App {
             tell_friend: None,
             lang_picker: ask_language.then(|| crate::langpick::Picker::new(true, None)),
             helpers: None,
+            extension: None,
+            extension_weighed: false,
             auto_update: None,
             raise_updates: false,
             started: Instant::now(),
@@ -1137,6 +1142,7 @@ impl App {
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
+            "extension" => self.extension = Some(crate::extension::Extension::new()),
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
@@ -4618,6 +4624,28 @@ impl App {
             && !matches!(d.show(ctx, &self.rt), Outcome::Open)
         {
             self.helpers = None;
+        }
+        // Then the browser extension, once per start until a browser has it (extension.rs).
+        if self.lang_picker.is_none()
+            && self.helpers.is_none()
+            && self.settings.language_asked
+            && !self.extension_weighed
+        {
+            self.extension_weighed = true;
+            if crate::extension::worth_asking(&self.settings) {
+                self.extension = Some(crate::extension::Extension::new());
+            }
+        }
+        if let Some(d) = &mut self.extension {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Done(()) => {
+                    self.extension = None;
+                    self.settings.extension_never_ask = true;
+                    self.dirty = true;
+                }
+                Outcome::Closed => self.extension = None,
+            }
         }
         if let Some(d) = &mut self.about
             && !matches!(d.show(ctx), Outcome::Open)

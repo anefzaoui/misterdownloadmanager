@@ -21,11 +21,23 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} byte|{n} bytes	{n} בייט|{n} בייט|{n} בייט
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download|{n} downloads	{n} הורדה|{n} הורדות|{n} הורדות
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} downloading|{n} downloading	{n} בהורדה|{n} בהורדה|{n} בהורדה
 #. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	קובץ {n}|קבצים {n}|קבצים {n}
+#. count in the main window
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} selected|{n} selected	{n} נבחר|{n} נבחרו|{n} נבחרו
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -88,6 +100,10 @@
 #. text in categories.rs
 #, machine
 	Add category	הוסף קטגוריה
+#. window title in extension.rs
+#. title of the window that offers the browser extension
+#, machine
+	Add Mister Download Manager to your browser	הוסף את Mister Download Manager לדפדפן שלך
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
@@ -98,6 +114,13 @@
 #. text in the Options window
 #, machine
 	Add the duplicate with a numbered file name	הוסף את הכפילות עם שם קובץ ממוספר
+#. text in extension.rs
+#. button in the browser extension's window: open the extension's page in that browser
+#, machine
+	Add the extension	הוסף את ההרחבה
+#. text in extension.rs
+#, machine
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	הוסף את ההרחבה החינמית: קבצים שתוריד בדפדפן שלך יגיעו לכאן, וסרטונים יקבלו לחצן הורדה.
 #. message or event log entry in the main window
 #, machine
 	Add to queue	הוסף לתור
@@ -232,6 +255,10 @@
 #. group box title in the Options window
 #, machine
 	Capture downloads from the following browsers:	לכידת הורדות מהדפדפנים הבאים:
+#. text in extension.rs
+#. the headline of the window that offers the browser extension
+#, machine
+	Catch downloads from your browser	קלוט הורדות מהדפדפן שלך
 #. text in the main window (menus, toolbar, Categories pane)
 #. title of the side pane that lists the categories
 #, machine
@@ -299,7 +326,7 @@
 #. text in the Options window
 #, machine
 	Clock:	שעון:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -323,6 +350,9 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	אשר מחיקת הורדות
+#. text in extension.rs
+#, machine
+	Connected: downloads from your browser now come here.	מחובר: הורדות מהדפדפן שלך מגיעות כעת לכאן.
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -448,6 +478,10 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	מסמכים
+#. button in extension.rs
+#. button in the browser extension's window: stop offering it at each start
+#, machine
+	Don't ask again	אל תשאל שוב
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	אל תציג דו-שיח זה שוב
@@ -1230,6 +1264,9 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Once at	פעם אחת ב-
+#. text in extension.rs
+#, machine
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	לאחר שתוסף, חלון זה יציין זאת. ייתכן ש-Chrome גם ישאל בעצמו בהפעלה הבאה שלו.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	הורדה חד-פעמית
@@ -1609,6 +1646,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	הצג תיבת דו-שיח 'ההורדה הושלמה'
+#. text in extension.rs
+#. button in the browser extension's window: open the tutorial that adds the Firefox add-on
+#, machine
+	Show me how	הראה לי כיצד
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	הצג חלונית בחירת תור בעת סגירת תיבות דו-שיח של הורדת אצווה
@@ -2292,6 +2333,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	You have version {version}.	יש לך גירסה {version}.
+#. text in extension.rs
+#. a row of the browser extension's window when no browser was found by name
+#, machine
+	Your browser	הדפדפן שלך
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp אינו מותקן (משימות ← הורד וידאו מדף מתקין אותו)

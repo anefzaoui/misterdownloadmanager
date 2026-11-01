@@ -100,6 +100,10 @@
 #. text in categories.rs
 #, machine
 	Add category	श्रेणी थप्नुहोस्
+#. window title in extension.rs
+#. title of the window that offers the browser extension
+#, machine
+	Add Mister Download Manager to your browser	Mister Download Manager लाई आफ्नो ब्राउजरमा थप्नुहोस्
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
@@ -110,6 +114,13 @@
 #. text in the Options window
 #, machine
 	Add the duplicate with a numbered file name	नम्बर गरिएको फाइल नामको साथ डुप्लिकेट थप्नुहोस्
+#. text in extension.rs
+#. button in the browser extension's window: open the extension's page in that browser
+#, machine
+	Add the extension	एक्सटेन्सन थप्नुहोस्
+#. text in extension.rs
+#, machine
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	नि:शुल्क एक्सटेन्सन थप्नुहोस्: तपाईंले आफ्नो ब्राउजरमा डाउनलोड गर्नुभएका फाइलहरू यहाँ आउँछन्, र भिडियोहरूमा डाउनलोड बटन आउँछ।
 #. message or event log entry in the main window
 #, machine
 	Add to queue	कतारमा थप्नुहोस्
@@ -148,6 +159,11 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	सबै सेट छ: भिडियो भएको पृष्ठमा, कार्यहरू → पृष्ठबाट भिडियो डाउनलोड गर्नुहोस् प्रयोग गर्नुहोस्।
+#. text in the Options window
+#. checkbox under the number of connections per download; {n} is 32
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Allow more than {n} connections	{n} भन्दा बढी जडानहरूलाई अनुमति दिनुहोस्
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	पहिले नै डाउनलोड भइरहेको छ: {path}
@@ -239,6 +255,10 @@
 #. group box title in the Options window
 #, machine
 	Capture downloads from the following browsers:	निम्न ब्राउजरहरूबाट डाउनलोडहरू क्याप्चर गर्नुहोस्:
+#. text in extension.rs
+#. the headline of the window that offers the browser extension
+#, machine
+	Catch downloads from your browser	तपाईंको ब्राउजरबाट डाउनलोडहरू समात्नुहोस्
 #. text in the main window (menus, toolbar, Categories pane)
 #. title of the side pane that lists the categories
 #, machine
@@ -306,7 +326,7 @@
 #. text in the Options window
 #, machine
 	Clock:	घडी:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -330,6 +350,9 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	डाउनलोडहरू मेटाउने पुष्टि गर्नुहोस्
+#. text in extension.rs
+#, machine
+	Connected: downloads from your browser now come here.	जडान भयो: तपाईंको ब्राउजरबाट डाउनलोडहरू अब यहाँ आउँछन्।
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -455,6 +478,10 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	कागजातहरू
+#. button in extension.rs
+#. button in the browser extension's window: stop offering it at each start
+#, machine
+	Don't ask again	फेरि नसोध्नुहोस्
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	यो संवाद फेरि नदेखाउनुहोस्
@@ -1237,6 +1264,9 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Once at	एक पटक
+#. text in extension.rs
+#, machine
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	एकपटक यो थपिएपछि, यो विन्डोले त्यसो भन्छ। Chrome ले यसको अर्को सुरुवातमा आफैंले पनि सोध्न सक्छ।
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	एक पटकको डाउनलोड
@@ -1616,6 +1646,10 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	डाउनलोड पूरा भएको संवाद देखाउनुहोस्
+#. text in extension.rs
+#. button in the browser extension's window: open the tutorial that adds the Firefox add-on
+#, machine
+	Show me how	मलाई कसरी देखाउनुहोस्
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	ब्याच डाउनलोड संवाद बन्द गर्दा लाम चयन प्यानल देखाउनुहोस्
@@ -2299,6 +2333,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	You have version {version}.	तपाईंसँग संस्करण {version} छ।
+#. text in extension.rs
+#. a row of the browser extension's window when no browser was found by name
+#, machine
+	Your browser	तपाईंको ब्राउजर
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp स्थापना गरिएको छैन (कार्यहरू → पृष्ठबाट भिडियो डाउनलोड गर्नुहोस् ले यसलाई स्थापना गर्छ)

@@ -420,7 +420,7 @@ async function run() {
       next_id: 1,
       items: [],
       version: 2,
-      settings: { language: "en", language_asked: true, show_start_dialog: false, category_dirs: dirs },
+      settings: { language: "en", language_asked: true, extension_never_ask: true, show_start_dialog: false, category_dirs: dirs },
     }),
   );
   process.env.MDM_DATA_DIR = data;

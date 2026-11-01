@@ -72,7 +72,7 @@ async function main() {
   const profile = path.join(work, "profile");
   fs.mkdirSync(data, { recursive: true });
   fs.mkdirSync(path.join(profile, "Default"), { recursive: true });
-  fs.writeFileSync(path.join(data, "downloads.json"), JSON.stringify({ next_id: 1, items: [], version: 2, settings: { language: "en", language_asked: true } }));
+  fs.writeFileSync(path.join(data, "downloads.json"), JSON.stringify({ next_id: 1, items: [], version: 2, settings: { language: "en", language_asked: true, extension_never_ask: true } }));
   // No translation offers or other bubbles over the page.
   fs.writeFileSync(path.join(profile, "Default", "Preferences"), JSON.stringify({ translate: { enabled: false }, browser: { has_seen_welcome_page: true } }));
   process.env.MDM_DATA_DIR = data;

@@ -11,6 +11,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   **Options → Connection** now takes any number from 1 to 32, typed or set with the arrows,
   and **Allow more than 32 connections** raises that to 128, for server exceptions too. Servers
   that allow fewer are still noticed and asked for fewer. The command line's `-c` takes 1 to 128.
+- **The browser extension is in the Chrome Web Store**, and MDM offers it: until a browser's
+  extension has reached MDM, each start shows **Add Mister Download Manager to your browser**,
+  with a button for every browser installed that opens the extension's page in it (Chrome, Edge,
+  Brave, Vivaldi and Opera install from the store; Firefox gets the tutorial). The window says
+  when the extension is connected; **Don't ask again** stops it. Chrome also offers the extension
+  by itself at its next start (**New extension added**) once browser integration is set up.
+- The store's copy shows no Download video button on YouTube, whose downloads the store's
+  policy forbids; **Tasks → Download video from a page** still takes any page.
 
 ## [0.2.4] - 2026-11-01
 
