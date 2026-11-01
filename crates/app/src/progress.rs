@@ -1,7 +1,7 @@
 //! The per-download progress dialog, painted to IDM 6.42's pixels
 //! (notes/ui-spec/progress-dialog.md). Coordinates are client pixels from the spec.
 
-use egui::{Color32, Pos2, Rect, Sense, Ui, ViewportBuilder, ViewportId, pos2, vec2};
+use egui::{Color32, Pos2, Ui, ViewportBuilder, ViewportId, vec2};
 use mdm_engine::Snapshot;
 use mdm_engine::download::ConnStatus;
 
@@ -14,11 +14,6 @@ use crate::winui::{self, ButtonKind, fill_l as fill, px_l as px, r, text};
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
-const HILIGHT: Color32 = rgb(0xff, 0xff, 0xff);
-const LIGHT: Color32 = rgb(0xe3, 0xe3, 0xe3);
-const SHADOW: Color32 = rgb(0xa0, 0xa0, 0xa0);
-const DKSHADOW: Color32 = rgb(0x69, 0x69, 0x69);
-const TAB_CORNER: Color32 = rgb(0xf0, 0xf0, 0xf0);
 const DISABLED: Color32 = rgb(0x80, 0x80, 0x80);
 
 /// Segment bar interior rows (top → bottom): not downloaded, downloaded, start marker.
@@ -366,205 +361,31 @@ impl Progress {
 
     /// Classic 3-D tabs over a raised page frame (spec "Tab strip").
     fn tabs(&mut self, ui: &mut Ui, o: Pos2) {
-        let order = [Tab::Status, Tab::Limiter, Tab::Completion];
-        let current = order.iter().position(|t| *t == self.tab).unwrap_or(0);
-        if let Some(i) = winui::tab_keys(ui, order.len(), current) {
-            self.tab = order[i];
-        }
-        let p = ui.painter().clone();
+        // The shared tab strip (the torrent tabs' too): one look in both themes, one Tab stop with
+        // the arrows, sized to the translated labels. It had two of its own (classic 3-D in dark).
         let tabs = [
             // i18n: tab title: how the download is going
-            (Tab::Status, crate::i18n::t("Download status"), 20.0, 111.0),
+            (Tab::Status, crate::i18n::mark("Download status")),
             // i18n: tab title: the tool that limits the download speed
-            (Tab::Limiter, crate::i18n::t("Speed Limiter"), 112.0, 187.0),
+            (Tab::Limiter, crate::i18n::mark("Speed Limiter")),
             // i18n: tab title: what happens when the download finishes
-            (
-                Tab::Completion,
-                crate::i18n::t("Options on completion"),
-                188.0,
-                305.0,
-            ),
+            (Tab::Completion, crate::i18n::mark("Options on completion")),
         ];
-        // A translation sizes the tabs to their labels, within the page (cut with "..." only
-        // when the row can't hold them, whole on hover).
-        let english = crate::i18n::code() == "en";
-        let row = if english {
-            tabs.map(|(_, label, x0, x1)| (x0, x1, label.to_owned()))
-                .to_vec()
-        } else {
-            winui::tab_row(&p, &tabs.map(|t| t.1), 20.0, 525.0, 1.0, 6.0)
-        };
-        for ((_, full, ..), (x0, x1, shown)) in tabs.iter().zip(&row) {
-            if shown != full {
-                let tab = r(o, *x0, 8.0, x1 - x0 + 1.0, 20.0);
-                winui::full_on_hover(ui, tab, ("progress-tab-label", *x0 as i32), full);
-            }
-        }
-        let tabs: [(Tab, &str, f32, f32); 3] = std::array::from_fn(|i| {
-            let (x0, x1, shown) = &row[i];
-            (tabs[i].0, shown.as_str(), *x0, *x1)
-        });
-        if !crate::theme::dark() {
-            self.tabs_light(ui, o, &tabs, english);
-            return;
-        }
-        // Page frame (EDGE_RAISED), x 18..529, y 28..171.
-        let (l, t, rr, b) = (o.x + 18.0, o.y + 28.0, o.x + 529.0, o.y + 171.0);
-        fill(&p, l, t, rr, t, HILIGHT);
-        fill(&p, l + 1.0, t + 1.0, rr - 1.0, t + 1.0, LIGHT);
-        fill(&p, l, t, l, b, HILIGHT);
-        fill(&p, l + 1.0, t + 1.0, l + 1.0, b - 1.0, LIGHT);
-        fill(&p, rr, t, rr, b, DKSHADOW);
-        fill(&p, rr - 1.0, t + 1.0, rr - 1.0, b - 1.0, SHADOW);
-        fill(&p, l, b, rr, b, DKSHADOW);
-        fill(&p, l + 1.0, b - 1.0, rr - 1.0, b - 1.0, SHADOW);
-        for (tab, label, x0, x1) in tabs {
-            let sel = tab == self.tab;
-            let (x0, x1, y0) = if sel {
-                (o.x + x0 - 2.0, o.x + x1 + 2.0, o.y + 8.0)
-            } else {
-                (o.x + x0, o.x + x1, o.y + 10.0)
-            };
-            let y1 = o.y + 27.0;
-            let hit = winui::rect(Rect::from_min_max(pos2(x0, y0), pos2(x1 + 1.0, y1 + 1.0)));
-            let resp = ui.interact(
-                hit,
-                egui::Id::unique(("progress-tab", label)),
-                Sense::click(),
-            );
-            // An unselected tab under the pointer: lighter (the torrent tabs' hover grey).
-            let body = if !sel && resp.hovered() {
-                rgb(0x45, 0x45, 0x45)
-            } else {
-                winui::BG()
-            };
-            fill(&p, x0, y0, x1, y1 + if sel { 2.0 } else { 0.0 }, body);
-            px(&p, x0, y0, TAB_CORNER);
-            px(&p, x0 + 1.0, y0, TAB_CORNER);
-            fill(&p, x0 + 2.0, y0, x1 - 2.0, y0, HILIGHT);
-            px(&p, x1 - 1.0, y0, TAB_CORNER);
-            px(&p, x1, y0, TAB_CORNER);
-            px(&p, x0, y0 + 1.0, TAB_CORNER);
-            px(&p, x0 + 1.0, y0 + 1.0, HILIGHT);
-            fill(&p, x0 + 2.0, y0 + 1.0, x1 - 2.0, y0 + 1.0, LIGHT);
-            px(&p, x1 - 1.0, y0 + 1.0, DKSHADOW);
-            px(&p, x1, y0 + 1.0, TAB_CORNER);
-            let bottom = y1 + if sel { 1.0 } else { 0.0 };
-            fill(&p, x0, y0 + 2.0, x0, bottom, HILIGHT);
-            fill(&p, x0 + 1.0, y0 + 2.0, x0 + 1.0, bottom, LIGHT);
-            fill(&p, x1 - 1.0, y0 + 2.0, x1 - 1.0, y1, SHADOW);
-            fill(&p, x1, y0 + 2.0, x1, y1, DKSHADOW);
-            let base_x = if sel { x0 + 2.0 } else { x0 };
-            text(
-                &p,
-                base_x + 5.0,
-                o.y + if sel { 22.0 } else { 21.0 },
-                label,
-                winui::TEXT(),
-            );
-            winui::show_focus(ui, &resp, hit.shrink(3.0));
-            if resp.clicked() {
-                self.tab = tab;
-            }
-        }
-    }
-
-    /// Light mode's themed tabs (light-dialogs.md §6): flat #e5e5e5 borders with small rounded
-    /// top corners, selected #f9f9f9 (inflated 2 px left, open into the page), unselected
-    /// #f3f3f3; tabs share borders at x 113 and 187; text x as in dark, baselines selected 21 /
-    /// unselected 23.
-    fn tabs_light(
-        &mut self,
-        ui: &mut Ui,
-        o: Pos2,
-        tabs: &[(Tab, &str, f32, f32); 3],
-        english: bool,
-    ) {
         let p = ui.painter().clone();
-        let border = rgb(0xe5, 0xe5, 0xe5);
-        let (sel_fill, unsel_fill) = (rgb(0xf9, 0xf9, 0xf9), rgb(0xf3, 0xf3, 0xf3));
-        // Page: 1 px border x 18 / 527, y 28 / 170, body #f9f9f9, #f3f3f3 shadow right (2 px)
-        // and bottom (1 px).
-        let (l, t, rr, b) = (o.x + 18.0, o.y + 28.0, o.x + 527.0, o.y + 170.0);
-        fill(&p, l, t, rr, b, sel_fill);
-        fill(&p, l, t, rr, t, border);
-        fill(&p, l, t, l, b, border);
-        fill(&p, rr, t, rr, b, border);
-        fill(&p, l, b, rr, b, border);
-        fill(&p, rr + 1.0, t, rr + 2.0, b + 1.0, unsel_fill);
-        fill(&p, l, b + 1.0, rr + 2.0, b + 1.0, unsel_fill);
-        // Tab boundaries (shared borders); a translation's from its tabs.
-        let edges = if english {
-            [20.0, 113.0, 187.0, 303.0]
-        } else {
-            [tabs[0].2, tabs[1].2, tabs[2].2, tabs[2].3]
-        };
-        let draw = |i: usize, sel: bool| {
-            let x0 = o.x + edges[i] - if sel { 2.0 } else { 0.0 };
-            let x1 = o.x + edges[i + 1];
-            let y0 = o.y + if sel { 8.0 } else { 10.0 };
-            let y1 = o.y + 27.0;
-            let bottom = if sel { o.y + 28.0 } else { y1 };
-            fill(
-                &p,
-                x0 + 1.0,
-                y0 + 1.0,
-                x1 - 1.0,
-                bottom,
-                if sel { sel_fill } else { unsel_fill },
-            );
-            fill(&p, x0 + 2.0, y0, x1 - 2.0, y0, border);
-            fill(&p, x0, y0 + 2.0, x0, bottom, border);
-            fill(&p, x1, y0 + 2.0, x1, bottom, border);
-            for (x, inward) in [(x0, 1.0), (x1, -1.0)] {
-                px(&p, x, y0, rgb(0xec, 0xec, 0xec));
-                px(&p, x + inward, y0, rgb(0xe6, 0xe6, 0xe6));
-                px(&p, x, y0 + 1.0, rgb(0xe6, 0xe6, 0xe6));
-                px(&p, x + inward, y0 + 1.0, rgb(0xf7, 0xf7, 0xf7));
-            }
-        };
-        let selected = tabs.iter().position(|t| t.0 == self.tab).unwrap_or(0);
-        for i in 0..3 {
-            if i != selected {
-                draw(i, false);
-            }
-        }
-        draw(selected, true);
-        for (i, (tab, label, dark_x0, _)) in tabs.iter().enumerate() {
-            let sel = i == selected;
-            let hit = winui::rect(Rect::from_min_max(
-                pos2(o.x + edges[i], o.y + 8.0),
-                pos2(o.x + edges[i + 1] + 1.0, o.y + 28.0),
-            ));
-            let resp = ui.interact(
-                hit,
-                egui::Id::unique(("progress-tab", *label)),
-                Sense::click(),
-            );
-            // An unselected tab under the pointer: lighter, as the shared light tabs.
-            if !sel && resp.hovered() {
-                fill(
-                    &p,
-                    o.x + edges[i] + 1.0,
-                    o.y + 11.0,
-                    o.x + edges[i + 1] - 1.0,
-                    o.y + 27.0,
-                    rgb(0xfd, 0xfd, 0xfd),
-                );
-            }
-            // Text x is the same as in dark mode (25 / 117 / 193).
-            let tx = o.x + dark_x0 + 5.0;
-            text(
-                &p,
-                tx,
-                o.y + if sel { 21.0 } else { 23.0 },
+        let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
+        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, 525.0, 2.0, 8.0)
+            .into_iter()
+            .zip(tabs.iter())
+            .map(|((x0, x1, _), (_, label))| winui::LightTab {
                 label,
-                winui::TEXT(),
-            );
-            winui::show_focus(ui, &resp, hit.shrink(3.0));
-            if resp.clicked() {
-                self.tab = *tab;
-            }
+                sel: (x0 - 2.0, x1 + 2.0),
+                unsel: (x0, x1),
+            })
+            .collect();
+        let current = tabs.iter().position(|t| t.0 == self.tab).unwrap_or(0);
+        // The page: x 18..529, y 28..171 (tabs_light's pane starts 20 px under its top).
+        if let Some(i) = winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0), &light, current) {
+            self.tab = tabs[i].0;
         }
     }
 

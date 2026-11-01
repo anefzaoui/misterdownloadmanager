@@ -34,12 +34,13 @@ themed! {
     /// Selected row (list focused). Dark: #2d4b63 fill, 1 px black outline, #466279 right edge
     /// (measured). Light: classic #0066cc with white text and a dotted focus outline in its
     /// inverse, #ff9933 (captured 2026-10-30).
-    SELECTED = rgb(0x2d, 0x4b, 0x63), rgb(0x00, 0x66, 0xcc);
-    SELECTED_EDGE = rgb(0x00, 0x00, 0x00), rgb(0x00, 0x66, 0xcc);
-    SELECTED_RIGHT = rgb(0x46, 0x62, 0x79), rgb(0x00, 0x66, 0xcc);
+    // A selected row: Windows' accent, as every list's (one blue across MDM).
+    SELECTED = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
+    SELECTED_EDGE = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
+    SELECTED_RIGHT = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
     TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
     /// A filtered column's funnel.
-    FILTER_ON = rgb(0x4c, 0xc2, 0xff), rgb(0x00, 0x78, 0xd7);
+    FILTER_ON = rgb(0x60, 0xcd, 0xff), rgb(0x00, 0x78, 0xd4);
 }
 
 /// Columns, by their fixed data slot in [`Row::cells`]: IDM's eight, then the user's additions:
@@ -986,7 +987,7 @@ pub fn show(
             ct,
             mark,
             ct + HEADER_H - 1.0,
-            rgb(0x00, 0x78, 0xd7),
+            winui::accent(),
         );
     }
 

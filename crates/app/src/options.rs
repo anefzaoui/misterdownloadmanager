@@ -901,7 +901,9 @@ impl OptionsDialog {
                 line(170.0, 364.0, 351.0, 11.0, 364.0),
             ],
             &[("mb", vec2(36.0, 20.0)), ("hours", vec2(36.0, 20.0))],
-            |p, x, baseline, s| embossed(p, x, baseline, s, on),
+            |p, x, baseline, s| {
+                winui::label(p, x, baseline, s, on);
+            },
         );
         winui::number_field(ui, boxes[0], &mut self.mb, 1, 999_999, on, LIGHT_PAGE());
         winui::number_field(ui, boxes[1], &mut self.hours, 1, 999, on, LIGHT_PAGE());
@@ -1993,17 +1995,7 @@ fn disabled_label(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool, 
     } else {
         x
     };
-    embossed(p, x, base, s, enabled);
-}
-
-/// [`disabled_label`]'s look for text already translated.
-fn embossed(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool) {
-    if enabled {
-        text(p, x, base, s, LIGHT_TEXT());
-    } else {
-        text(p, x + 1.0, base + 1.0, s, winui::ETCH_LIGHT());
-        text(p, x, base, s, winui::TEXT_DISABLED());
-    }
+    winui::label(p, x, base, s, enabled);
 }
 
 pub(crate) fn list_frame(p: &egui::Painter, rc: Rect) {

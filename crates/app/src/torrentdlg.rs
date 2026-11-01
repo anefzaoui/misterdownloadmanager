@@ -92,7 +92,7 @@ pub(crate) fn spinner(ui: &Ui, center: Pos2, radius: f32) {
         .collect();
     let p = ui.painter();
     p.circle_stroke(center, radius, Stroke::new(2.0, LIST_LINE()));
-    p.line(points, Stroke::new(2.0, winui::SELECTION));
+    p.line(points, Stroke::new(2.0, winui::accent()));
     ui.ctx().request_repaint();
 }
 

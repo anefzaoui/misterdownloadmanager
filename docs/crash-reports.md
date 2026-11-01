@@ -4,6 +4,8 @@
 
 If Mister Download Manager closes unexpectedly or stops responding, a **crash report** window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.
 
+![The crash report window after MDM stopped responding](images/crash-report.png)
+
 ## What you see
 
 - **Mister Download Manager closed unexpectedly**: MDM crashed, or hit an internal error and closed.

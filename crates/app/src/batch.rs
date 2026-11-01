@@ -304,7 +304,7 @@ impl Batch {
         );
         let on = self.auth;
         // i18n: noun: the user name for the server (an input box follows)
-        embossed(&p, o.x + 85.0, o.y + 236.0, crate::i18n::t("Login"), on);
+        winui::label(&p, o.x + 85.0, o.y + 236.0, crate::i18n::t("Login"), on);
         winui::edit_light(
             ui,
             r(o, 116.0, 221.0, 117.0, 23.0),
@@ -312,7 +312,7 @@ impl Batch {
             on,
             false,
         );
-        embossed(&p, o.x + 290.0, o.y + 236.0, crate::i18n::t("Password"), on);
+        winui::label(&p, o.x + 290.0, o.y + 236.0, crate::i18n::t("Password"), on);
         winui::password_light(ui, r(o, 342.0, 221.0, 113.0, 23.0), &mut self.password, on);
 
         // Preview: first, second and last file.
@@ -406,28 +406,26 @@ impl Batch {
             "to" => &mut self.to,
             _ => &mut self.size,
         };
-        let rc = r(o, x, 154.0, spin_x - x, 26.0);
+        // One box, its arrows inside (they were a separate up-down beside it).
+        let rc = r(o, x, 154.0, spin_x + 18.0 - x, 26.0);
+        let id = format!("batch-{which}");
         // The wildcard size runs 1 to 10 (what expand() makes); from and to, any number.
         let (min, max) = if which == "size" {
             (1, 10)
         } else {
             (0, 999_999_999)
         };
-        if letters {
-            winui::edit_light(ui, rc, value, true, false);
-            value.retain(|c| c.is_ascii_alphabetic());
-            value.truncate(1);
-        } else {
-            winui::number_field(ui, rc, value, min, max, true, winui::LIGHT_BG());
+        if !letters {
+            winui::spin_box(ui, rc, value, min, max, true, &id);
+            return;
         }
-        let step = winui::updown_light(
-            ui,
-            r(o, spin_x, 154.0, 18.0, 26.0),
-            true,
-            &format!("batch-{which}"),
-        );
+        let (_, step) = winui::spin_frame(ui, rc, true, &id, |ui, text| {
+            winui::field_text(ui, text, value, true)
+        });
+        value.retain(|c| c.is_ascii_alphabetic());
+        value.truncate(1);
         if step != 0 {
-            *value = if letters {
+            *value = {
                 let c = value.chars().next().unwrap_or('a');
                 // Within the letter's own case.
                 let (lo, hi) = if c.is_ascii_uppercase() {
@@ -437,21 +435,8 @@ impl Batch {
                 };
                 let n = (c as u8 as i32 + step).clamp(lo as i32, hi as i32) as u8;
                 (n as char).to_string()
-            } else {
-                let n = value.parse::<i64>().unwrap_or(0) + step as i64;
-                n.clamp(min as i64, max as i64).to_string()
             };
         }
-    }
-}
-
-/// A classic disabled static: `#a0a0a0` with a white copy at (+1, +1).
-fn embossed(p: &egui::Painter, x: f32, base: f32, s: &str, enabled: bool) {
-    if enabled {
-        text(p, x, base, s, LIGHT_TEXT());
-    } else {
-        text(p, x + 1.0, base + 1.0, s, winui::ETCH_LIGHT());
-        text(p, x, base, s, winui::TEXT_DISABLED());
     }
 }
 

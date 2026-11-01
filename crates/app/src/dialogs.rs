@@ -668,12 +668,7 @@ impl FileInfo {
                     self.url_edited(ui.ctx());
                 }
                 if self.url_bad {
-                    p.rect_stroke(
-                        url_rc,
-                        0.0,
-                        egui::Stroke::new(1.0, winui::ERROR()),
-                        egui::StrokeKind::Inside,
-                    );
+                    winui::error_frame(&p, url_rc);
                 }
 
                 // i18n: noun: label before the list of categories
