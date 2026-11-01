@@ -4056,7 +4056,7 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
         None,
     );
     let p = ui.painter();
-    button_like(&p, rc, State::of(&resp, enabled));
+    button_like(p, rc, State::of(&resp, enabled));
     show_focus(ui, &resp, rc.shrink(2.0));
     // No label of its own: its tooltip says what it does (translated).
     resp.on_hover_text(crate::i18n::t(tip))
