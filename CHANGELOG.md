@@ -3,6 +3,17 @@
 Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 `.github/workflows/release.yml`).
 
+## [0.2.3] - 2026-11-01
+
+A fix for 0.2.2, which froze on every system as soon as Add URL opened.
+
+### Fixed
+
+- **Add URL froze MDM** (Tasks → Add new download, the toolbar's Add URL, Ctrl+N), and so did
+  Download File Info: their address and Save As boxes took the keyboard focus and MDM waited on
+  itself. Everything clicked after that seemed to do nothing. A test now opens Add URL the way
+  you do, and a stricter check looks for this kind of hang in the whole app.
+
 ## [0.2.2] - 2026-11-01
 
 A sweep through every window for the small things that make a program feel finished: how each

@@ -2084,8 +2084,11 @@ pub fn combo_edit(ui: &mut Ui, rc: Rect, value: &mut String) -> Response {
         )
     };
     let resp = edit_text(ui, child, value, true, false, 2.0);
-    if resp.has_focus() != was {
-        ui.data_mut(|d| d.insert_temp(key, resp.has_focus()));
+    // Read before the data lock: has_focus asks the context too, and inside it hung the app
+    // the moment the box took the focus (0.2.2: Add URL froze as it opened).
+    let focused = resp.has_focus();
+    if focused != was {
+        ui.data_mut(|d| d.insert_temp(key, focused));
         ui.ctx().request_repaint();
     }
     resp
@@ -4118,7 +4121,14 @@ mod tests {
             ".memory_mut(|",
             ".input(|",
             ".input_mut(|",
+            ".options(|",
+            ".options_mut(|",
+            ".fonts(|",
+            ".fonts_mut(|",
         ];
+        // What asks the context again: its own methods, and a Response's that read its memory
+        // (`d.insert_temp(key, resp.has_focus())` froze every editable drop-down as it took the
+        // focus: 0.2.2's Add URL).
         let inner = [
             "ctx()",
             ".viewport_id()",
@@ -4126,6 +4136,19 @@ mod tests {
             "_key(ctx",
             "_key(ui",
             "_key(&",
+            ".has_focus()",
+            ".gained_focus()",
+            ".lost_focus()",
+            ".request_focus()",
+            ".surrender_focus()",
+            "ui.data(",
+            "ui.data_mut(",
+            "ui.memory(",
+            "ui.memory_mut(",
+            "ui.input(",
+            "ui.input_mut(",
+            "keyboard_in_use(",
+            "widget_id(",
         ];
         let mut found = Vec::new();
         for entry in std::fs::read_dir(&dir).unwrap() {

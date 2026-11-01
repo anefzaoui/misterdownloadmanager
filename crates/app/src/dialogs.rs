@@ -2176,3 +2176,41 @@ pub fn ensure_folder<T>(
             .map_or(Outcome::Open, |(_, v)| Outcome::Done(v)),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Add URL opens and its address box takes the focus, frame after frame, without the app
+    /// hanging (0.2.2 froze here: an editable drop-down asked egui's context inside its lock).
+    #[test]
+    fn add_url_opens_and_takes_the_focus() {
+        let (tx, rx) = std::sync::mpsc::channel();
+        std::thread::spawn(move || {
+            for (address, history) in [
+                ("", vec![]),
+                ("https://example.com/file.zip", vec![]),
+                (
+                    "https://example.com/file.zip",
+                    vec!["https://a.example/x.zip".to_owned()],
+                ),
+            ] {
+                let ctx = egui::Context::default();
+                let mut dlg = AddUrl {
+                    address: address.to_owned(),
+                    history,
+                    ..AddUrl::default()
+                };
+                for _ in 0..6 {
+                    let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+                        let _ = dlg.show(ui.ctx());
+                    });
+                    out.textures_delta.clear();
+                }
+            }
+            tx.send(()).unwrap();
+        });
+        rx.recv_timeout(std::time::Duration::from_secs(20))
+            .expect("Add URL hung");
+    }
+}
