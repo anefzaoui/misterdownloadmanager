@@ -68,7 +68,7 @@ To back up your list, quit MDM (**Tasks → Exit**) and copy `downloads.json`.
 
 ## Updates
 
-**Help → Check for updates...** tells you whether a newer version is out, and what is new in it. **Check for updates once a week** in that window lets MDM look by itself.
+**Help → Check for updates...** tells you whether a newer version is out, and what is new in it. **Check for updates at every start** in that window lets MDM look by itself: a few seconds after it starts, and once a day while it stays open. When there's a new version, its window opens in front.
 
 When there is one, **Update now** downloads it, checks it, puts it in place and restarts MDM; your list, settings and downloads stay as they are:
 

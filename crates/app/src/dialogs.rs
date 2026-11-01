@@ -212,6 +212,21 @@ fn dialog_window<T>(
     out
 }
 
+/// Bring dialog `id` to the front with the keyboard focus once it shows (a window that opens by
+/// itself with news, such as a new version found at start, as apps announce theirs). Call every
+/// frame while it should; true once done. Off-screen test runs never take the focus.
+pub fn focus_when_shown(ctx: &egui::Context, id: &str) -> bool {
+    let key = egui::Id::unique(("dialog-pos", id));
+    let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
+    if !shown {
+        return false;
+    }
+    if !crate::offscreen() {
+        raise(ctx, ViewportId::from_hash_of(id));
+    }
+    true
+}
+
 /// How many times the current window has closed (its text boxes' ids include it).
 pub fn opening_key(ctx: &egui::Context) -> egui::Id {
     opening_key_of(ctx.viewport_id())

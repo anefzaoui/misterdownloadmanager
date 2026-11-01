@@ -37,6 +37,18 @@ fn hex(v: u32) -> Color32 {
     rgb((v >> 16) as u8, (v >> 8) as u8, v as u8)
 }
 
+/// A segment / piece bar row's colour: IDM's; in dark mode its "not here yet" rows are the
+/// same gradient dimmed (they were a bright white strip in the dark window).
+fn seg(v: u32, missing: bool) -> Color32 {
+    let c = hex(v);
+    if missing && crate::theme::dark() {
+        let dim = |x: u8| (x as f32 * 0.22 + 22.0) as u8;
+        rgb(dim(c.r()), dim(c.g()), dim(c.b()))
+    } else {
+        c
+    }
+}
+
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Tab {
     Status,
@@ -962,7 +974,7 @@ fn piece_bar(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
         for (row, cols) in SEG_ROWS.iter().enumerate() {
             let v = if on { cols.1 } else { cols.0 };
             let y = y0 + 1.0 + row as f32;
-            fill(p, ix + c as f32, y, ix + e as f32, y, hex(v));
+            fill(p, ix + c as f32, y, ix + e as f32, y, seg(v, !on));
         }
         c = e + 1;
     }
@@ -1161,7 +1173,7 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>)
                 y0 + 1.0 + row as f32,
                 b,
                 y0 + 1.0 + row as f32,
-                hex(c),
+                seg(c, which == 0),
             );
         }
     };

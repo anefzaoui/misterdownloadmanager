@@ -261,6 +261,12 @@ pub struct App {
     lang_picker: Option<crate::langpick::Picker>,
     /// The weekly update check, while it runs.
     auto_update: Option<crate::help::Slot>,
+    /// The automatic check found a new version: its window comes to the front once shown.
+    raise_updates: bool,
+    /// When MDM started (the update check waits a few seconds after it).
+    started: Instant,
+    /// When this run last checked for updates by itself (seconds since the epoch).
+    update_checked_this_run: Option<i64>,
     progress: Vec<Progress>,
     complete: Vec<Complete>,
     settings: Settings,
@@ -588,6 +594,9 @@ impl App {
             tell_friend: None,
             lang_picker: ask_language.then(|| crate::langpick::Picker::new(true, None)),
             auto_update: None,
+            raise_updates: false,
+            started: Instant::now(),
+            update_checked_this_run: None,
             file_info: None,
             progress: Vec::new(),
             complete: Vec::new(),
@@ -4522,15 +4531,37 @@ impl App {
 
     /// IDM looks for a new version once a week; so do we (off: the switch in Check for updates). Found: the
     /// update window says so; otherwise nothing shows.
-    fn weekly_update_check(&mut self, ctx: &egui::Context) {
+    /// The automatic update check: a few seconds after every start, then once a day while MDM
+    /// runs (it was at most once a week). A new version's window comes to the front, as apps
+    /// announce theirs. Not in off-screen test runs (their windows stay as asked).
+    fn auto_update_check(&mut self, ctx: &egui::Context) {
         let now = chrono::Utc::now().timestamp();
+        let first = self.update_checked_this_run.is_none()
+            && self.started.elapsed() >= crate::help::CHECK_AFTER_START;
+        let again = self
+            .update_checked_this_run
+            .is_some_and(|t| now - t >= crate::help::CHECK_EVERY);
         if self.auto_update.is_none()
             && self.settings.update_check
-            && now - self.settings.update_checked >= crate::help::CHECK_EVERY
+            // Off-screen test runs check only when told where (MDM_UPDATE_FEED: their own feed).
+            && (!crate::offscreen() || std::env::var_os("MDM_UPDATE_FEED").is_some())
+            && (first || again)
         {
+            self.update_checked_this_run = Some(now);
             self.settings.update_checked = now;
             self.dirty = true;
             self.auto_update = Some(crate::help::check(&self.rt, ctx));
+        }
+        if self.updates.is_some() {
+            if self.raise_updates && crate::dialogs::focus_when_shown(ctx, "updates") {
+                self.raise_updates = false;
+            }
+        } else {
+            self.raise_updates = false;
+        }
+        // Until the check at start is due.
+        if self.update_checked_this_run.is_none() && self.settings.update_check {
+            ctx.request_repaint_after(crate::help::CHECK_AFTER_START);
         }
         let done = self
             .auto_update
@@ -4539,7 +4570,9 @@ impl App {
         if let Some(res) = done {
             self.auto_update = None;
             if let (Ok(crate::help::Found::Newer(rel)), None) = (res, &self.updates) {
+                tracing::info!("update available: {}", rel.version);
                 self.updates = Some(crate::help::Updates::found(rel));
+                self.raise_updates = true;
             }
         }
     }
@@ -5070,7 +5103,7 @@ impl eframe::App for App {
         self.drop_target(&ctx);
         self.main_drops(&ctx);
         self.remember_layout(&ctx);
-        self.weekly_update_check(&ctx);
+        self.auto_update_check(&ctx);
         self.apply_global_limit();
         self.watch_clipboard(&ctx);
         self.tray(&ctx);

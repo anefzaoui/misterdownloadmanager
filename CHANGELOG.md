@@ -17,9 +17,24 @@ next problem like it is caught and fixed sooner.
   ended and restarted from there. Reports leave out your download addresses and file names. See
   [Crash reports](docs/crash-reports.md).
 - **A log**, kept in MDM's data folder (`logs`), so a report can show what led to a problem.
+- **MDM checks for updates every time it starts** (it was once a week), and once a day while it
+  stays open; a new version's window opens in front. **Check for updates at every start** in
+  that window turns it off.
+
+### Changed
+
+- **One look for every kind of control**, in both themes: text boxes, read-only fields, check
+  boxes, buttons, drop-downs, tabs, lists and their headers, popups and progress bars are each
+  drawn one way everywhere (dark mode drew some windows' controls in an older style, with bright
+  borders). A number and its arrows are one box now, as Windows 11's are; text is centred in
+  controls of any height; one blue for selection and focus.
+- **A tour of the features** on the website instead of a wall of screenshots.
 
 ### Fixed
 
+- **The window froze for seconds while a big download was writing**: MDM saved its list on the
+  window's thread, and the save waited for the disk. It saves on a thread of its own now (the
+  new crash reports caught it).
 - **Add URL froze MDM** (Tasks → Add new download, the toolbar's Add URL, Ctrl+N), and so did
   Download File Info: their address and Save As boxes took the keyboard focus and MDM waited on
   itself. Everything clicked after that seemed to do nothing. A test now opens Add URL the way
