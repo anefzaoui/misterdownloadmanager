@@ -4072,6 +4072,8 @@ mod tests {
         let a = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(75.0, 23.0));
         let b = a.translate(egui::vec2(0.0, 30.0));
         let mut first_id = None;
+        // Labels from variables: the catalog's extractor takes literal ones as texts to translate.
+        let (one, two) = ("OK", "Cancel");
         let frame = |enabled: bool, first_id: &mut Option<egui::Id>| {
             let mut second = None;
             let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
@@ -4080,12 +4082,12 @@ mod tests {
                 } else {
                     ButtonKind::Disabled
                 };
-                let r = button(ui, a, "One", kind, false, None);
+                let r = button(ui, a, one, kind, false, None);
                 if first_id.is_none() {
                     r.request_focus();
                 }
                 *first_id = Some(r.id);
-                second = Some(button(ui, b, "Two", ButtonKind::Normal, false, None).id);
+                second = Some(button(ui, b, two, ButtonKind::Normal, false, None).id);
             });
             out.textures_delta.clear();
             second.unwrap()
