@@ -872,7 +872,7 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
             // i18n: label: whether the server lets a stopped download continue (Yes / No)
             crate::i18n::mark("Resume capability"),
             151.0,
-            213.0,
+            135.0,
             match item.resumable {
                 Some(true) => crate::i18n::t("Yes"),
                 Some(false) => crate::i18n::t("No"),
@@ -881,8 +881,8 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
             .to_owned(),
         ),
     ];
-    // A value starts 6 px after its label at the least (a long translation); the four rows that
-    // share IDM's column at 135 keep sharing one.
+    // A value starts 6 px after its label at the least (a long translation); the rows that share
+    // the column at 135 (all but Status) keep sharing one.
     let after = |label: &str| 33.0 + winui::text_width(p, crate::i18n::t(label)).ceil() + 6.0;
     let column = rows
         .iter()
@@ -1302,12 +1302,8 @@ fn table(
         .min(max_first);
     let body = r(o, 19.0, 299.0, 508.0, 100.0);
     if ui.rect_contains_pointer(body) {
-        let dy = ui.input(|i| i.smooth_scroll_delta.y);
-        if dy < 0.0 {
-            first = (first + 1).min(max_first);
-        } else if dy > 0.0 {
-            first = first.saturating_sub(1);
-        }
+        let step = winui::wheel_steps(ui, key, 100.0 / visible as f32, visible as f32);
+        first = first.saturating_add_signed(step).min(max_first);
         ui.ctx().data_mut(|d| d.insert_temp(key, first));
     }
     let clip = p.with_clip_rect(body);
@@ -1498,12 +1494,8 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         .min(max_first);
     let body = r(o, 19.0, 299.0, 492.0, 100.0);
     if ui.rect_contains_pointer(body) {
-        let dy = ui.input(|i| i.smooth_scroll_delta.y);
-        if dy < 0.0 {
-            first = (first + 1).min(max_first);
-        } else if dy > 0.0 {
-            first = first.saturating_sub(1);
-        }
+        let step = winui::wheel_steps(ui, key, 100.0 / visible as f32, visible as f32);
+        first = first.saturating_add_signed(step).min(max_first);
         ui.ctx().data_mut(|d| d.insert_temp(key, first));
     }
     let clip = p.with_clip_rect(body);

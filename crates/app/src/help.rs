@@ -31,7 +31,8 @@ pub fn open_page(path: &str) {
 
 /// A new GitHub issue on the Bug report form (.github/ISSUE_TEMPLATE/bug.yml), filled with
 /// what MDM knows: its version, the system and its version, how it was installed, the
-/// language. The parameters are the form's field ids; a dropdown takes an option's text.
+/// language. The parameters are the form's field ids (all text fields: GitHub's page drops a
+/// dropdown's value from the address).
 pub fn report_problem() {
     let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
     let url = report_fields().iter().fold(
@@ -979,17 +980,34 @@ mod tests {
         let form = include_str!("../../../.github/ISSUE_TEMPLATE/bug.yml").replace("\r\n", "\n");
         let has = |line: String| form.contains(&format!("{line}\n"));
         let fields = report_fields();
-        for (id, value) in &fields {
+        for (id, _) in &fields {
             assert!(has(format!("id: {id}")), "no field {id} in bug.yml");
-            // A dropdown takes one of its options' text.
-            if matches!(*id, "os" | "install") {
-                assert!(has(format!("- {value}")), "{id}: {value:?} isn't an option");
-            }
+            // Filled as text: GitHub's page put a dropdown's value from the address back to none.
+            let field = form
+                .split(&format!(
+                    "id: {id}
+"
+                ))
+                .next()
+                .unwrap();
+            assert!(
+                field.ends_with(
+                    "- type: input
+    "
+                ),
+                "{id} isn't a text field"
+            );
         }
         assert!(fields.iter().any(|(id, _)| *id == "install"));
-        // Every value Install::label() and report_fields() can give, on any system.
+        // Every value Install::label() and report_fields() can give, on any system, is one the
+        // field's description names.
+        let named = |v: &str| {
+            [format!("{v}, "), format!("{v} or "), format!(" or {v}.")]
+                .iter()
+                .any(|s| form.contains(s.as_str()))
+        };
         for install in mdm_tools::update::Install::ALL {
-            assert!(has(format!("- {}", install.label())), "{}", install.label());
+            assert!(named(install.label()), "{}", install.label());
         }
         for option in [
             "Windows 11",
@@ -999,7 +1017,7 @@ mod tests {
             "Linux",
             "Other",
         ] {
-            assert!(has(format!("- {option}")), "{option}");
+            assert!(named(option), "{option}");
         }
     }
 }

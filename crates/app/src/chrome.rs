@@ -1100,8 +1100,6 @@ pub enum ToolbarEvent {
     Click(usize),
     /// A drop-down button's arrow: its menu opens at this point (button left, y 87).
     Drop(usize, Pos2),
-    /// Right-click on any button, enabled or not (IDM's toolbar menu; none on empty space).
-    Context(Pos2),
 }
 
 /// Paint the etch (y 20, 21) and the toolbar band (y 22–91).
@@ -1283,11 +1281,9 @@ pub fn toolbar(
                 );
             }
         }
-        if resp.secondary_clicked()
-            && let Some(at) = resp.interact_pointer_pos()
-        {
-            event = Some(ToolbarEvent::Context(at));
-        } else if resp.clicked()
+        // No right-click menu: it would offer toolbar looks (sizes, styles) and only one is
+        // built.
+        if resp.clicked()
             && let on_arrow = dropdown && resp.interact_pointer_pos().is_some_and(past_button)
             // The arrow is a button of its own (a split button): its menu lists every queue,
             // so it works while the main one's button is greyed.
@@ -1483,9 +1479,8 @@ pub fn categories(
         .unwrap_or_default();
     let page_rows = (area.height() / 16.0).floor().max(1.0);
     if ui.rect_contains_pointer(winui::rect(tree)) {
-        let d = ui.input(|i| i.smooth_scroll_delta);
-        vpos -= d.y / 16.0;
-        hpos -= d.x;
+        vpos += winui::wheel_rows(ui, 16.0, page_rows);
+        hpos -= ui.input(|i| i.smooth_scroll_delta.x);
     }
     vpos = vpos.clamp(0.0, (rows.len() as f32 - page_rows).max(0.0));
     hpos = hpos.clamp(0.0, (content_w - area.width()).max(0.0)).round();

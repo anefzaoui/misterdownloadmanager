@@ -380,6 +380,24 @@ pub fn on_a_screen(x: i32, y: i32) -> bool {
     !unsafe { MonitorFromPoint(POINT { x, y }, MONITOR_DEFAULTTONULL) }.is_null()
 }
 
+/// Rows a notch of the mouse wheel scrolls (Mouse settings → "lines to scroll at a time", 3
+/// unless changed); None when it is set to a screen at a time.
+pub fn wheel_lines() -> Option<f32> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        SPI_GETWHEELSCROLLLINES, SystemParametersInfoW,
+    };
+    let mut lines: u32 = 3;
+    // SAFETY: a plain query into a u32 it writes.
+    let ok =
+        unsafe { SystemParametersInfoW(SPI_GETWHEELSCROLLLINES, 0, (&raw mut lines).cast(), 0) };
+    match lines {
+        _ if ok == 0 => Some(3.0),
+        // WHEEL_PAGESCROLL
+        u32::MAX => None,
+        n => Some(n as f32),
+    }
+}
+
 /// Seconds since the last keyboard or mouse input anywhere ("limit while I'm using the
 /// computer").
 pub fn idle_seconds() -> u64 {

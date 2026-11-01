@@ -206,8 +206,6 @@ enum Popup {
     Columns,
     /// List right-click on a row, or on blank space (None).
     Item(Option<u64>),
-    /// Right-click on a toolbar button.
-    Toolbar,
     /// The Start Queue (true) / Stop Queue drop-down arrows.
     QueueDrop(bool),
     /// The Add Torrent button's drop-down arrow.
@@ -3234,23 +3232,6 @@ impl App {
         ]
     }
 
-    /// Right-click on a toolbar button. Only the current look (large Neon buttons) is built.
-    fn toolbar_entries() -> Vec<MenuEntry<Cmd>> {
-        use MenuEntry::{Item as I, Radio, Sep};
-        vec![
-            I("Customize...", Cmd::None, false, false),
-            Sep,
-            Radio("Small Buttons", Cmd::None, false, false),
-            Radio("Large Buttons", Cmd::None, true, true),
-            Sep,
-            I("Look for new toolbars", Cmd::None, false, false),
-            Sep,
-            // i18n: name of the toolbar's icon style (a proper name; may stay as is)
-            Radio("Neon", Cmd::None, true, true),
-            Radio("3D Style", Cmd::None, false, false),
-        ]
-    }
-
     /// Categories right-click: categories (Browse, Properties, Add category, Delete; greyed
     /// on the built-in nodes) and queues (Start now, Stop, Edit queue, Schedule, Delete,
     /// Create new queue).
@@ -3634,7 +3615,6 @@ impl App {
                 Icon::AddTorrent => self.open_popup(Popup::TorrentDrop, at),
                 icon => self.open_popup(Popup::QueueDrop(matches!(icon, Icon::StartQueue)), at),
             },
-            Some(ToolbarEvent::Context(at)) => self.open_popup(Popup::Toolbar, at),
             None => {}
         }
 
@@ -3882,7 +3862,6 @@ impl App {
                 }
                 Popup::Item(None) => (self.blank_entries(), None),
                 Popup::Item(id) => (self.item_entries(id), id),
-                Popup::Toolbar => (Self::toolbar_entries(), None),
                 Popup::QueueDrop(start) => (self.queue_drop(start), None),
                 Popup::TorrentDrop => (
                     vec![

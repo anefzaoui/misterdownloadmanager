@@ -658,10 +658,10 @@ pub fn scroll_text(
     };
     let max_top = (total - visible).max(0.0);
     let mut top: f32 = ui.data(|d| d.get_temp(id)).unwrap_or(0.0);
-    // The wheel scrolls three lines a notch, as Windows text boxes do.
+    // The wheel scrolls the system's lines a notch (three unless changed), as text boxes do.
     let area_resp = ui.interact(rect(area), id.with("area"), pointer_only());
     if area_resp.hovered() {
-        top -= ui.input(|i| i.smooth_scroll_delta.y) / 40.0 * 3.0;
+        top += wheel_rows(ui, line_h, visible);
     }
     // The whole text to the clipboard from its right-click menu.
     copy_menu(&area_resp, s);
@@ -1097,7 +1097,7 @@ pub fn row_list(
     let focused = resp.has_focus();
     // The wheel: whole rows, the rest kept for the next turn of it.
     if ui.rect_contains_pointer(rect(inner)) {
-        st.wheel -= ui.input(|i| i.smooth_scroll_delta.y) / row_h;
+        st.wheel += wheel_rows(ui, row_h, page as f32);
         let whole = st.wheel.trunc();
         st.wheel -= whole;
         st.first = (st.first as f32 + whole).max(0.0) as usize;
@@ -3278,6 +3278,47 @@ pub fn opener_click(ui: &Ui, mut resp: Response) -> Response {
         ui.data_mut(|d| d.remove::<Pos2>(key));
     }
     resp
+}
+
+/// The wheel's travel this frame in rows of `row_h` points, down positive (the caller checks
+/// the pointer is over it): a notch moves the system's "lines per notch" rows, a page setting
+/// `page` rows, a trackpad its own travel. A Ctrl wheel (zoom) or a Shift wheel (sideways)
+/// isn't counted.
+pub fn wheel_rows(ui: &Ui, row_h: f32, page: f32) -> f32 {
+    #[cfg(windows)]
+    let lines = crate::win32::wheel_lines();
+    #[cfg(unix)]
+    let lines = crate::unix::wheel_lines();
+    let notch = lines.unwrap_or(page);
+    ui.input(|i| {
+        i.events
+            .iter()
+            .map(|e| match e {
+                egui::Event::MouseWheel {
+                    unit,
+                    delta,
+                    modifiers,
+                    ..
+                } if !(modifiers.ctrl || modifiers.command || modifiers.shift) => match unit {
+                    egui::MouseWheelUnit::Line => -delta.y * notch,
+                    egui::MouseWheelUnit::Page => -delta.y * page,
+                    egui::MouseWheelUnit::Point => -delta.y / row_h,
+                },
+                _ => 0.0,
+            })
+            .sum()
+    })
+}
+
+/// [`wheel_rows`] in whole rows, the rest kept under `id` for the next turn of the wheel (a
+/// trackpad's small moves add up).
+pub fn wheel_steps(ui: &Ui, id: egui::Id, row_h: f32, page: f32) -> isize {
+    let key = id.with("wheel-rest");
+    let rest: f32 = ui.ctx().data(|d| d.get_temp(key)).unwrap_or(0.0);
+    let total = rest + wheel_rows(ui, row_h, page);
+    let whole = total.trunc();
+    ui.ctx().data_mut(|d| d.insert_temp(key, total - whole));
+    whole as isize
 }
 
 /// A system file or folder dialog's answer, from its thread.

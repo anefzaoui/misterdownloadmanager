@@ -732,9 +732,8 @@ pub fn show(
     let page_rows = (body.height() / ROW_H).floor().max(1.0);
     let max_scroll = (rows.len() as f32 - page_rows).max(0.0) * ROW_H;
     if resp.hovered() {
-        let d = ui.input(|i| i.smooth_scroll_delta);
-        st.scroll -= d.y;
-        st.hscroll -= d.x;
+        st.scroll += winui::wheel_rows(ui, ROW_H, page_rows) * ROW_H;
+        st.hscroll -= ui.input(|i| i.smooth_scroll_delta.x);
     }
     if let Some(row) = st.scroll_to.take() {
         let top = row as f32 * ROW_H;

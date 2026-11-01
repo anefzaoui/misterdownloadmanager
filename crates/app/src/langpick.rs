@@ -193,17 +193,16 @@ impl Picker {
                 }
                 self.top = self.top.clamp(0.0, (total - page).max(0.0));
 
-                // The wheel scrolls three rows a notch, as Windows lists do.
+                // The wheel scrolls the system's lines a notch (three unless changed).
                 let list_resp = ui.interact(
                     shown_list,
                     egui::Id::unique("language-list"),
                     winui::pointer_only(),
                 );
                 if list_resp.hovered() {
-                    let wheel = ui.input(|i| i.smooth_scroll_delta.y);
-                    if wheel != 0.0 {
-                        self.top =
-                            (self.top - (wheel / 40.0) * 3.0).clamp(0.0, (total - page).max(0.0));
+                    let rows = winui::wheel_rows(ui, ROW, page);
+                    if rows != 0.0 {
+                        self.top = (self.top + rows).clamp(0.0, (total - page).max(0.0));
                     }
                 }
 
