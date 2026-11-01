@@ -4072,7 +4072,7 @@ mod tests {
         let a = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(75.0, 23.0));
         let b = a.translate(egui::vec2(0.0, 30.0));
         let mut first_id = None;
-        let mut frame = |enabled: bool, first_id: &mut Option<egui::Id>| {
+        let frame = |enabled: bool, first_id: &mut Option<egui::Id>| {
             let mut second = None;
             let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
                 let kind = if enabled {
