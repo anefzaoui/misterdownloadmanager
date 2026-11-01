@@ -135,7 +135,7 @@ impl Progress {
             crate::i18n::isolate(&item.file_name)
         );
         let client = if self.details {
-            [548.0, 412.0]
+            [548.0, 412.0 + torrent_drop(item)]
         } else {
             [548.0, 241.0]
         };
@@ -330,7 +330,7 @@ impl Progress {
         }
 
         if self.details && item.torrent.is_some() {
-            self.torrent_details(ui, &p, o, item);
+            self.torrent_details(ui, &p, o + egui::vec2(0.0, torrent_drop(item)), item);
         } else if self.details {
             winui::text_in_window(
                 ui,
@@ -910,6 +910,12 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
         };
         fit(label, vx, base, &value, vc);
     }
+}
+
+/// How much lower a torrent's details sit than a download's (and how much taller its window
+/// is): its tab strip, where the connections caption is, would touch the buttons above.
+fn torrent_drop(item: &Item) -> f32 {
+    if item.torrent.is_some() { 6.0 } else { 0.0 }
 }
 
 impl Progress {
