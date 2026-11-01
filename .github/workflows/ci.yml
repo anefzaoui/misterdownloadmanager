@@ -1,10 +1,18 @@
-# Build, lint and test for every push and pull request: Windows, and the experimental Linux and
+# Build, lint and test main and every pull request: Windows, and the experimental Linux and
 # macOS builds (their failures are reported but don't fail the run).
 name: CI
 
+# Pushes to main only: a pull request's branch is tested once as the pull request (a bare push:
+# ran everything twice), and a release tag's commit was already tested on main.
 on:
   push:
+    branches: [main]
   pull_request:
+
+# A newer commit on a pull request makes its older run moot: cancel it (main runs to the end).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -26,6 +34,9 @@ jobs:
             experimental: true
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental == true }}
+    # A cold build takes about 10 minutes; a hung runner (apt-get once hung for hours) is cut off
+    # instead of running to GitHub's 6 hours.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -44,6 +55,7 @@ jobs:
 
       - name: Linux libraries
         if: runner.os == 'Linux'
+        timeout-minutes: 10
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libxkbcommon-dev libwayland-dev libgl1-mesa-dev \
@@ -70,6 +82,7 @@ jobs:
   extension:
     name: browser extension
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
