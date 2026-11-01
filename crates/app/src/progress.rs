@@ -1256,30 +1256,6 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
     head(55.0, 146.0, crate::i18n::t("Downloaded"));
     // i18n: column title: what the connection is doing
     head(155.0, 496.0, crate::i18n::t("Info"));
-    // Body column lines: dark mode only.
-    let lines: &[(f32, f32)] = if crate::theme::dark() {
-        &[(47.0, 48.0), (147.0, 148.0), (497.0, 498.0)]
-    } else {
-        &[]
-    };
-    for &(a, b) in lines {
-        fill(
-            p,
-            o.x + a,
-            o.y + 299.0,
-            o.x + a,
-            o.y + 398.0,
-            rgb(0x57, 0x57, 0x57),
-        );
-        fill(
-            p,
-            o.x + b,
-            o.y + 299.0,
-            o.x + b,
-            o.y + 398.0,
-            rgb(0x35, 0x3e, 0x48),
-        );
-    }
     // Listed by connection number, like IDM (the engine reports them in arrival order).
     let mut conns: Vec<_> = snap
         .map(|s| s.connections.iter().collect())

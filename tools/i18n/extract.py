@@ -13,7 +13,7 @@ the source itself. Found:
     first (an `if` arm, a tuple, `Some(…)`) and translated where it is shown;
   * menu entries `Item`/`I`/`Radio`/`Sub`/`off`/`by` (context "menu"), toolbar buttons
     `(Icon::…, "Label", …)` ("toolbar"), list column titles (`TITLES`, "column"), the menu bar
-    (`MENUS_DARK`, "menubar") and unit templates ("unit": `{n} MB` …).
+    (`MENUS`, "menubar") and unit templates ("unit": `{n} MB` …).
 
 Each row is preceded by a translator note (`#. …` lines, comments to the catalog parser): what
 the text is (button, menu command, column title…), where it appears, what its placeholders
@@ -63,7 +63,7 @@ OTHER = [
 CONST_ARRAYS = [
     (re.compile(r"pub const TITLES: \[&str; COLS\] = \[(.*?)\];", re.S), "column",
      "column title in the download list"),
-    (re.compile(r"const MENUS_DARK: \[\(&str, f32, f32, f32\); 5\] = \[(.*?)\];", re.S), "menubar",
+    (re.compile(r"const MENUS: \[\(&str, f32, f32, f32\); 5\] = \[(.*?)\];", re.S), "menubar",
      "menu bar title"),
     # Column filters' value lists (list.rs), shown through translating checkboxes.
     (re.compile(r"pub fn filter_values\((.*?)\n\}", re.S), "",

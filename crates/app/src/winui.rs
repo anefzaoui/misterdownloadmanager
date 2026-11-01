@@ -1369,10 +1369,9 @@ fn vline(p: &Painter, x: f32, y0: f32, y1: f32, c: Color32) {
     fill(p, x, y0, x, y1, c);
 }
 
-/// The rounding of a control's corners (buttons, text boxes, drop-downs): IDM's dark buttons,
-/// Windows 11's light ones.
+/// The rounding of a control's corners (buttons, text boxes, drop-downs), in both modes.
 pub fn control_radius() -> f32 {
-    if crate::theme::dark() { 4.0 } else { 3.0 }
+    3.0
 }
 
 /// What a text box allows: typing, nothing (greyed), or reading and copying.
@@ -2682,10 +2681,9 @@ pub fn baseline_in(top: f32, height: f32) -> f32 {
 }
 
 /// A button label's baseline below the button's top: as measured on Windows' buttons at their
-/// usual heights (13; dark 20–23 px: 14), centred ([`baseline_in`]) in taller ones.
-fn button_baseline(height: f32, dark: bool) -> f32 {
+/// usual heights (13), centred ([`baseline_in`]) in taller ones; both modes alike.
+fn button_baseline(height: f32) -> f32 {
     match height {
-        h if dark && h > 19.0 && h <= 23.0 => 14.0,
         h if h <= 21.0 => 13.0,
         h => baseline_in(0.0, h),
     }
@@ -2754,7 +2752,7 @@ fn button_face(
         Stroke::new(1.0, face.border),
         StrokeKind::Inside,
     );
-    let inset = if dark { 4.0 } else { 3.0 };
+    let inset = 3.0;
     hline(
         p,
         rc.left() + inset,
@@ -2771,12 +2769,12 @@ fn button_face(
     let (shown, cut) = fit_label(p, &shown, rc);
     let mnemonic = mnemonic.filter(|_| !cut);
     let w = text_width(p, &shown);
-    let x = (rc.center().x - w / 2.0 - if dark { 1.0 } else { 0.0 }).round();
+    let x = (rc.center().x - w / 2.0).round();
     // "..." sits on the baseline (no capitals above it): the dots themselves centred.
     let baseline = if shown.trim() == "..." {
         rc.top() + (rc.height() / 2.0).round() + 1.0
     } else {
-        rc.top() + button_baseline(rc.height(), dark)
+        rc.top() + button_baseline(rc.height())
     };
     // Centred in a rect on screen: placed by its left, not by an English pen.
     let drawn = text_at(p, tahoma(), x, baseline, &shown, face.text);
@@ -2788,13 +2786,7 @@ fn button_face(
         // Alt+letter always works.
         if crate::chrome::cues(ui.ctx()) {
             let (x0, x1) = char_span(p, &tahoma(), &shown, before.chars().count(), drawn);
-            hline(
-                p,
-                x0,
-                x1,
-                baseline + if dark { 2.0 } else { 3.0 },
-                face.text,
-            );
+            hline(p, x0, x1, baseline + 3.0, face.text);
         }
         pressed_by_key = enabled && mnemonic_pressed(ui, letter);
     }
@@ -4264,13 +4256,12 @@ mod tests {
     #[test]
     fn button_labels_stay_centred_in_taller_buttons() {
         // The measured heights keep their measured baselines.
-        assert_eq!(button_baseline(21.0, false), 13.0);
-        assert_eq!(button_baseline(19.0, false), 13.0);
-        assert_eq!(button_baseline(23.0, true), 14.0);
-        assert_eq!(button_baseline(21.0, true), 14.0);
+        assert_eq!(button_baseline(21.0), 13.0);
+        assert_eq!(button_baseline(19.0), 13.0);
+        assert_eq!(button_baseline(23.0), 14.0);
         // Taller: the label moves down by half the extra height.
-        assert_eq!(button_baseline(25.0, false), 15.0);
-        assert_eq!(button_baseline(27.0, true), 16.0);
+        assert_eq!(button_baseline(25.0), 15.0);
+        assert_eq!(button_baseline(27.0), 16.0);
         // Text boxes and read-only fields centre the same way.
         assert_eq!(baseline_in(100.0, 21.0), 113.0);
         assert_eq!(baseline_in(100.0, 23.0), 114.0);

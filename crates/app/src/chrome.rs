@@ -210,17 +210,11 @@ fn generic_page(p: &egui::Painter, min: Pos2) {
 
 // ---- menu bar --------------------------------------------------------------------------------
 
-/// Top-level menus: label, item rect x and width, text x (measured, "Ta" kerned by the font).
-/// Dark mode is IDM's owner-drawn bar; light mode the standard Win32 one (text at item.x + 7,
-/// width = text + 14; light-main.md).
-const MENUS_DARK: [(&str, f32, f32, f32); 5] = [
-    ("&Tasks", 0.0, 49.0, 10.0),
-    ("&File", 49.0, 37.0, 58.0),
-    ("&Downloads", 86.0, 84.0, 98.0),
-    ("&View", 170.0, 44.0, 179.0),
-    ("&Help", 214.0, 43.0, 223.0),
-];
-const MENUS_LIGHT: [(&str, f32, f32, f32); 5] = [
+/// Top-level menus: label, item rect x and width, text x (measured, "Ta" kerned by the font):
+/// the standard Win32 bar (text at item.x + 7, width = text + 14; light-main.md), in both modes
+/// (user decision 2026-11-01: dark mode only changes colours, never sizes or places; IDM's dark
+/// bar was wider).
+const MENUS: [(&str, f32, f32, f32); 5] = [
     ("&Tasks", 0.0, 42.0, 7.0),
     ("&File", 42.0, 32.0, 49.0),
     ("&Downloads", 74.0, 73.0, 81.0),
@@ -229,15 +223,10 @@ const MENUS_LIGHT: [(&str, f32, f32, f32); 5] = [
 ];
 
 /// The menu bar in the interface language: English keeps the measured rects; a translation is
-/// laid out by the same rules (dark: text at item.x + 10, width = text + 20; light, Win32's:
-/// text at item.x + 7, width = text + 14) from the translated label's width: GDI's, or the
+/// laid out by the same rule (Win32's: text at item.x + 7, width = text + 14) from the translated label's width: GDI's, or the
 /// width it is drawn at when wider (a script drawn in a fallback font, such as Japanese).
 pub fn menus(p: &egui::Painter) -> Vec<(&'static str, f32, f32, f32)> {
-    let table = if crate::theme::dark() {
-        &MENUS_DARK
-    } else {
-        &MENUS_LIGHT
-    };
+    let table = &MENUS;
     let translated: Vec<&'static str> = table
         .iter()
         .map(|(l, ..)| crate::i18n::tc("menubar", l))
@@ -249,11 +238,7 @@ pub fn menus(p: &egui::Painter) -> Vec<(&'static str, f32, f32, f32)> {
     {
         return table.to_vec();
     }
-    let (pad, inset) = if crate::theme::dark() {
-        (20.0, 10.0)
-    } else {
-        (14.0, 7.0)
-    };
+    let (pad, inset) = (14.0, 7.0);
     let mut x = 0.0;
     translated
         .into_iter()
@@ -305,8 +290,7 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
         if open == Some(i) {
             p.rect_filled(rc, 0.0, MENUBAR_OPEN());
         } else if open.is_none() && resp.hovered() {
-            let bottom = if crate::theme::dark() { 0.0 } else { 1.0 };
-            let hot = Rect::from_min_max(rc.min + vec2(0.0, 1.0), rc.max - vec2(0.0, bottom));
+            let hot = Rect::from_min_max(rc.min + vec2(0.0, 1.0), rc.max - vec2(0.0, 1.0));
             p.rect_filled(hot, 0.0, MENUBAR_HOT());
         }
         // The title without its "&", its access letter underlined (each language marks its
@@ -1142,10 +1126,9 @@ pub enum ToolbarEvent {
 }
 
 /// Paint the etch (y 20, 21) and the toolbar band (y 22–91).
-/// Client y where the panes (Categories, list) start: below the toolbar band (dark 72, light
-/// 70 — the light band is 2 px shorter).
+/// Client y where the panes (Categories, list) start: below the toolbar band, in both modes.
 pub fn pane_top() -> f32 {
-    if crate::theme::dark() { 72.0 } else { 70.0 }
+    70.0
 }
 
 pub fn toolbar(
@@ -1158,13 +1141,10 @@ pub fn toolbar(
     let top = o.y + MENU_H;
     fill(&p, o.x, top, o.x + width - 1.0, top, grey(0xa0));
     fill(&p, o.x, top + 1.0, o.x + width - 1.0, top + 1.0, grey(0xff));
-    // Light mode (light-main.md): Tahoma labels, 66 px buttons, a 68 px band.
+    // Both modes (light-main.md; dark changes only colours): Tahoma labels, 66 px buttons, a
+    // 68 px band.
     let dark = crate::theme::dark();
-    let (font, base_w, band_h) = if dark {
-        (winui::segoe(), 70.0f32, 70.0)
-    } else {
-        (winui::tahoma(), 66.0f32, 68.0)
-    };
+    let (font, base_w, band_h) = (winui::tahoma(), 66.0f32, 68.0);
     let band = Rect::from_min_size(pos2(o.x, top + 2.0), vec2(width, band_h));
     p.rect_filled(band, 0.0, WINDOW_BG());
     let mut x = o.x;
@@ -1184,7 +1164,7 @@ pub fn toolbar(
     for (i, (icon, label, enabled)) in buttons.iter().enumerate() {
         let full = crate::i18n::tc("toolbar", label);
         let dropdown = is_dropdown(icon);
-        // IDM's buttons are 70 px (light 66); ours grow only when a full label needs it (user
+        // IDM's buttons are 66 px; ours grow only when a full label needs it (user
         // decision), up to the cap that keeps the toolbar inside the window.
         let full_ext = text_width_font(&p, font.clone(), full).round();
         let bw = base_w.max((full_ext + 12.0).min(cap));
@@ -1210,11 +1190,11 @@ pub fn toolbar(
             // Hover (IDM 6.42, captured 2026-10-30): the button's own width, from the band's top,
             // square. Dark: a flat #33414d. Light: Windows' hot button, #e5f3ff with a 1 px
             // #cce8ff border. As much room under the label as above the icon (user request
-            // 2026-11-01: IDM's 64 / 61 px left the label on the bottom edge): dark 66, light 65
-            // tall, inside the band. Beyond IDM (which lights only the button part, user
+            // 2026-11-01: IDM's 61 px left the label on the bottom edge): 65 tall, inside the
+            // band. Beyond IDM (which lights only the button part, user
             // request 2026-10-29): a drop-down is a split button — the part under the pointer is
             // lit (pressed while the mouse is down), the other part faintly, a 1 px divider between.
-            let h = if dark { 66.0 } else { 65.0 };
+            let h = 65.0;
             let (hot_c, faint_c, down_c, edge_c) = if dark {
                 (
                     rgb(0x33, 0x41, 0x4d),
@@ -1277,17 +1257,13 @@ pub fn toolbar(
         let icon_rect = Rect::from_center_size(pos2(cx, top + 25.5), icon_rect.size());
         // Placed, not mirrored: an icon keeps its look.
         icon.image(*enabled).paint_at(ui, winui::rect(icon_rect));
-        // Label: x = btn.x + floor((w − ext)/2); dark: −1 for enabled normal buttons, last ink
-        // row at band y 59; light: +1 for drop-downs, last ink row 58. Every label on one line
-        // (IDM draws the drop-downs' 1 px lower: in one row it read as a mistake).
+        // Label: x = btn.x + floor((w − ext)/2), +1 for drop-downs, last ink row 58. Every label
+        // on one line (IDM draws the drop-downs' 1 px lower: in one row it read as a mistake).
         let mut lx = x + ((bw - ext) / 2.0).floor();
-        if dark && *enabled && !dropdown {
-            lx -= 1.0;
-        }
-        if !dark && dropdown {
+        if dropdown {
             lx += 1.0;
         }
-        let ly = top + if dark { 59.0 } else { 58.0 };
+        let ly = top + 58.0;
         text_font(
             &p,
             font.clone(),
@@ -1298,7 +1274,7 @@ pub fn toolbar(
         );
         if dropdown {
             let ax = x + bw + 4.0;
-            let ay = top + if dark { 32.0 } else { 31.0 };
+            let ay = top + 31.0;
             // The split's divider at rest (user choice 2026-10-29, "B"): a classic etched
             // toolbar separator — a shadow line and a highlight beside it — 24 px tall, centred
             // on the arrow; the hover draws the full divider instead.
@@ -1331,10 +1307,10 @@ pub fn toolbar(
         // The arrow is a button of its own (a split button): its menu lists every queue, so it
         // works while the main one's button is greyed.
         if resp.clicked() && (*enabled || on_arrow) {
-            // IDM: the drop-down menu's top-left is the button's left edge at client y 87 (light:
-            // 2 px higher with the band [?]); in RTL its top-right at the button's right edge.
+            // The drop-down menu's top-left is the button's left edge at client y 85; in RTL its
+            // top-right at the button's right edge.
             event = Some(if on_arrow {
-                ToolbarEvent::Drop(i, pos2(winui::mx(x), o.y + if dark { 87.0 } else { 85.0 }))
+                ToolbarEvent::Drop(i, pos2(winui::mx(x), o.y + 85.0))
             } else {
                 ToolbarEvent::Click(i)
             });
@@ -1597,21 +1573,9 @@ pub fn categories(
         let text_x = o.x + if r.level == 0 { 51.0 } else { 70.0 };
         let ext = text_width_font(&p, winui::tahoma(), crate::i18n::t(&r.label));
         let dark = crate::theme::dark();
-        if r.selected && dark {
-            let sel = winui::rect(Rect::from_min_max(
-                pos2(icon_x - 2.0, top),
-                pos2(text_x + ext + 4.0, top + 16.0),
-            ));
-            tp.rect_filled(sel, 2.0, grey(0x33));
-            tp.rect_stroke(
-                sel,
-                2.0,
-                Stroke::new(1.0, grey(0x2f)),
-                egui::StrokeKind::Inside,
-            );
-        } else if r.selected {
-            // Light: the inactive selection grey behind the label (#f0f0f0 on the white tree
-            // could not be seen).
+        if r.selected {
+            // The inactive selection grey behind the label, in both modes (#f0f0f0 on the white
+            // tree could not be seen).
             winui::fill_l(
                 &tp,
                 text_x - 2.0,

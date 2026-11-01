@@ -30,15 +30,10 @@ themed! {
     SORT_ARROW = rgb(0xc8, 0xc8, 0xc8), rgb(0x60, 0x60, 0x60);
     /// Light: the one grid colour, 1 px lines (light-main.md).
     GRID_H = rgb(0x55, 0x55, 0x55), rgb(0xf0, 0xf0, 0xf0);
-    GRID_V_LEFT = rgb(0x57, 0x57, 0x57), rgb(0xf0, 0xf0, 0xf0);
     GRID_V_RIGHT = rgb(0x55, 0x55, 0x55), rgb(0xf0, 0xf0, 0xf0);
-    /// Selected row (list focused). Dark: #2d4b63 fill, 1 px black outline, #466279 right edge
-    /// (measured). Light: classic #0066cc with white text and a dotted focus outline in its
-    /// inverse, #ff9933 (captured 2026-10-30).
-    // A selected row: Windows' accent, as every list's (one blue across MDM).
+    /// Selected row (list focused): Windows' accent, as every list's (one blue across MDM), with
+    /// white text and a dotted focus outline in its inverse, #ff9933.
     SELECTED = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
-    SELECTED_EDGE = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
-    SELECTED_RIGHT = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
     TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
     /// A filtered column's funnel.
     FILTER_ON = rgb(0x60, 0xcd, 0xff), rgb(0x00, 0x78, 0xd4);
@@ -791,49 +786,21 @@ pub fn show(
             // The focused row's dotted outline only once the keyboard is in use, as every
             // control's focus (winui::keyboard_in_use).
             let has_focus = focus == Some(idx) && st.focused && keys_in_use;
-            if (sel || has_focus) && !crate::theme::dark() {
-                // Light: the row above its grid line; the focused row has a dotted outline
-                // (every other pixel), in the fill's inverse on a selected row.
+            if sel || has_focus {
+                // The row above its grid line; the focused row has a dotted outline (every other
+                // pixel), in the fill's inverse on a selected row. Both modes alike.
                 let (right, bottom) = (last_right - 1.0, top + ROW_H - 2.0);
                 if sel {
                     fill(&bp, cl, top, right, bottom, SELECTED());
                 }
                 if has_focus {
-                    let dot = if sel {
-                        rgb(0xff, 0x99, 0x33)
-                    } else {
-                        rgb(0x00, 0x00, 0x00)
-                    };
+                    let dot = if sel { rgb(0xff, 0x99, 0x33) } else { TEXT() };
                     dotted(&bp, cl, top, right, bottom, dot);
                 }
-            } else if has_focus && !sel {
-                // Dark: a focused row that isn't selected (Ctrl+arrows, Ctrl+Space) has a dotted
-                // outline only.
-                let (right, bottom) = (last_right - 1.0, top + ROW_H - 1.0);
-                dotted(&bp, cl, top, right, bottom, SELECTED_RIGHT());
-            } else if sel {
-                let right = last_right - 1.0;
-                fill(&bp, cl, top, right, top + ROW_H - 1.0, SELECTED_EDGE());
-                fill(
-                    &bp,
-                    cl + 1.0,
-                    top + 1.0,
-                    right - 1.0,
-                    top + ROW_H - 2.0,
-                    SELECTED(),
-                );
-                fill(
-                    &bp,
-                    right,
-                    top + 1.0,
-                    right,
-                    top + ROW_H - 2.0,
-                    SELECTED_RIGHT(),
-                );
             } else if picked {
                 // Unfocused (Find, Properties, a menu has the keys): still shown, in the inactive
                 // selection grey, as Explorer shows it, so what a command acts on stays visible.
-                let bottom = top + ROW_H - if crate::theme::dark() { 1.0 } else { 2.0 };
+                let bottom = top + ROW_H - 2.0;
                 fill(
                     &bp,
                     cl,
@@ -910,14 +877,9 @@ pub fn show(
                 text_font(&clip, font.clone(), tx, top + 12.0, &s, ink);
             }
         }
-        // Dark: the grid line is the first pixel row of the next item, over everything.
-        // Light: the item's own last row (top + 16), so icons are not clipped.
-        let gy = top
-            + if crate::theme::dark() {
-                ROW_H
-            } else {
-                ROW_H - 1.0
-            };
+        // The grid line is the item's own last row (top + 16), so icons are not clipped; in
+        // both modes (dark changes only colours).
+        let gy = top + ROW_H - 1.0;
         // An empty list has no grid (the empty state stands alone).
         if !rows.is_empty() {
             fill(&bp, cl, gy, rr, gy, GRID_H());
@@ -930,40 +892,9 @@ pub fn show(
     }
     filter_box(ui, st);
     for (_, _, x1) in cols.iter().filter(|_| !rows.is_empty()) {
-        if crate::theme::dark() {
-            fill(&bp, x1 - 1.0, body_top, x1 - 1.0, rb, GRID_V_LEFT());
-            fill(&bp, *x1, body_top, *x1, rb, GRID_V_RIGHT());
-        } else {
-            // Light: one line at col.right + 1.
-            fill(&bp, x1 + 1.0, body_top, x1 + 1.0, rb, GRID_V_RIGHT());
-        }
+        // One line at col.right + 1.
+        fill(&bp, x1 + 1.0, body_top, x1 + 1.0, rb, GRID_V_RIGHT());
     }
-    // Dark only: IDM draws a 2 px sliver right of the last column in every body row (spec
-    // "Artifact"); light mode has none.
-    for k in 0..if crate::theme::dark() && !rows.is_empty() {
-        visible
-    } else {
-        0
-    } {
-        let top = body_top + k as f32 * ROW_H - offset;
-        fill(
-            &bp,
-            last_right + 1.0,
-            top + 1.0,
-            last_right + 1.0,
-            top + ROW_H - 1.0,
-            rgb(0x97, 0x97, 0x97),
-        );
-        fill(
-            &bp,
-            last_right + 2.0,
-            top + 1.0,
-            last_right + 2.0,
-            top + ROW_H - 1.0,
-            rgb(0x29, 0x4a, 0x6c),
-        );
-    }
-
     // While a column is dragged: a translucent copy of its header follows the pointer, and a
     // 2 px mark shows where it will land.
     if let (Some(HeaderDrag::Move { col, grab }), Some(pp)) = (st.drag, pointer) {
