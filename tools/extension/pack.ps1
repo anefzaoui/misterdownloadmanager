@@ -29,6 +29,10 @@ foreach ($kind in "chromium", "firefox") {
   Copy-Item (Join-Path $src "icons") (Join-Path $dir "icons") -Recurse
   # Its texts in the browser's language (tools/extension/locales.py).
   Copy-Item (Join-Path $src "_locales") (Join-Path $dir "_locales") -Recurse
+  # Norwegian: Chrome takes only "no", Firefox looks for "nb" (Bokmål) as its users' browsers say.
+  if ($kind -eq "firefox" -and (Test-Path (Join-Path $dir "_locales/no"))) {
+    Copy-Item (Join-Path $dir "_locales/no") (Join-Path $dir "_locales/nb") -Recurse
+  }
   $manifest = if ($kind -eq "firefox") { "manifest.firefox.json" } else { "manifest.json" }
   $json = Get-Content (Join-Path $src $manifest) -Raw
   # The first "version" only (the manifest's own).

@@ -105,10 +105,14 @@ jobs:
       - name: Logic against fake Firefox and Chrome APIs
         run: node tools/extension/test.mjs
 
-      # Chrome, Edge, Brave, Opera, Vivaldi (mdm-chromium.zip) and Firefox (mdm-firefox.xpi).
+      # Chrome, Edge, Brave, Opera, Vivaldi (mdm-chromium.zip), Firefox (mdm-firefox.xpi) and
+      # the Chrome Web Store's copy (mdm-chrome-store.zip).
       - name: Pack for every browser
         shell: pwsh
         run: ./tools/extension/pack.ps1
+
+      - name: Check the packages
+        run: node tools/extension/check-pack.mjs
 
       - uses: actions/upload-artifact@v4
         with:
@@ -116,3 +120,4 @@ jobs:
           path: |
             target/extension/mdm-chromium.zip
             target/extension/mdm-firefox.xpi
+            target/extension/mdm-chrome-store.zip

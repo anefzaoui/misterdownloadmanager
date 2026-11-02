@@ -8,6 +8,9 @@ pub const UNPACKED_ID: &str = "oogbclbbninliongijffeeggalppliok";
 /// (tools/extension/pack.ps1 leaves the manifest's key out of the store's copy). A placeholder
 /// until the listing exists: [`store_id`] is then `None` and nothing names it.
 pub const STORE_ID: &str = "STORE_ID_PENDING";
+/// Its IDs in Microsoft Edge Add-ons and Opera add-ons, which give their own; placeholders until
+/// listed there, never served then (`valid_id`).
+pub const OTHER_STORE_IDS: [&str; 2] = ["EDGE_ADDONS_ID_PENDING", "OPERA_ADDONS_ID_PENDING"];
 /// The Firefox add-on's ID (extension/manifest.firefox.json).
 pub const FIREFOX_ID: &str = "integration@misterdownloadmanager.com";
 /// Chrome's update service: an external-install entry naming it makes Chrome offer the store's
@@ -25,9 +28,12 @@ pub fn store_id() -> Option<&'static str> {
     valid_id(STORE_ID).then_some(STORE_ID)
 }
 
-/// The Chromium extensions the native host serves: unpacked, and the store's once listed.
+/// The Chromium extensions the native host serves: unpacked, and each store's once listed.
 pub fn chromium_ids() -> Vec<&'static str> {
-    std::iter::once(UNPACKED_ID).chain(store_id()).collect()
+    std::iter::once(UNPACKED_ID)
+        .chain(store_id())
+        .chain(OTHER_STORE_IDS.into_iter().filter(|id| valid_id(id)))
+        .collect()
 }
 
 /// The extension's page in the Chrome Web Store (Chrome, Edge, Brave, Opera and Vivaldi all
