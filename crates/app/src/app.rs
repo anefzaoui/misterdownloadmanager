@@ -405,6 +405,27 @@ pub struct RequestParts {
     pub opts: Options,
 }
 
+/// The Referer a browser would send for `url` from page `referrer` (its default policy,
+/// strict-origin-when-cross-origin): the whole address on the same site, only the site's origin
+/// to another, nothing from https to http.
+fn sent_referrer(url: &url::Url, referrer: &str) -> Option<String> {
+    let from = url::Url::parse(referrer).ok()?;
+    if !matches!(from.scheme(), "http" | "https") {
+        return None;
+    }
+    if from.scheme() == "https" && url.scheme() == "http" {
+        return None;
+    }
+    if from.origin() == url.origin() {
+        let mut full = from.clone();
+        full.set_fragment(None);
+        let _ = full.set_username("");
+        let _ = full.set_password(None);
+        return Some(full.to_string());
+    }
+    Some(format!("{}/", from.origin().ascii_serialization()))
+}
+
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
 /// (an FTP address may carry its login).
@@ -1339,8 +1360,12 @@ impl App {
             .flatten();
         let mut headers = auth_headers(login.or(site_login.as_ref()).or(url_login.as_ref()));
         let post_type = context.post.as_ref().and(context.post_type.as_ref());
+        let referer = context
+            .referer
+            .as_deref()
+            .and_then(|r| sent_referrer(url, r));
         for (name, v) in [
-            (reqwest::header::REFERER, &context.referer),
+            (reqwest::header::REFERER, &referer),
             (reqwest::header::COOKIE, &context.cookies),
             (reqwest::header::CONTENT_TYPE, &post_type.cloned()),
         ] {
@@ -5277,6 +5302,36 @@ impl Drop for App {
             &self.list.layout(),
             &self.settings,
             &self.queues,
+        );
+    }
+}
+
+#[cfg(test)]
+mod referrer_tests {
+    use super::sent_referrer;
+
+    #[test]
+    fn referrers_as_browsers_send_them() {
+        let url = |u: &str| url::Url::parse(u).unwrap();
+        let page = "https://shop.test/orders/123?tab=2#top";
+        assert_eq!(
+            sent_referrer(&url("https://shop.test/invoice.pdf"), page).as_deref(),
+            Some("https://shop.test/orders/123?tab=2"),
+            "same site: the whole address, no fragment"
+        );
+        assert_eq!(
+            sent_referrer(&url("https://cdn.test/a.zip"), page).as_deref(),
+            Some("https://shop.test/"),
+            "another site: the origin only"
+        );
+        assert_eq!(
+            sent_referrer(&url("http://plain.test/a.zip"), page),
+            None,
+            "https to http: none"
+        );
+        assert_eq!(
+            sent_referrer(&url("https://x.test/a"), "javascript:void(0)"),
+            None
         );
     }
 }

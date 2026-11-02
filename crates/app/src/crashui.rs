@@ -457,7 +457,7 @@ impl ReportWindow {
                 o + egui::vec2(16.0, 462.0),
                 &mut self.attach,
                 // i18n: crash report window: checkbox; the .dmp file holds what MDM had in memory
-                "Also attach the crash data (.dmp): it may hold addresses MDM had in memory",
+                "Also attach the crash data (.dmp): it may hold addresses, cookies and passwords",
                 true,
             );
         }

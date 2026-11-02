@@ -245,10 +245,11 @@ fn encode(
 /// flushed to the disk: slow while a big download writes, hence [`Saver`]).
 fn write(p: &Path, json: &[u8]) -> std::io::Result<()> {
     if let Some(dir) = p.parent() {
-        std::fs::create_dir_all(dir)?;
+        mdm_ipc::private_dir(dir)?;
     }
     keep_generations(p);
-    craft_atomic::atomic_write(p, json)
+    // The list holds the saved logins: its owner's only (the folder too).
+    mdm_ipc::private_write(p, json)
 }
 
 /// Saves the list on a thread of its own. The write ends with a flush to the disk, which waited

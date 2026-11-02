@@ -66,7 +66,7 @@ pub fn mark_seen(browser: &str, version: &str) {
     lines.retain(|(b, _)| b != browser);
     lines.push(entry);
     let text: String = lines.iter().map(|(b, v)| format!("{b}\t{v}\n")).collect();
-    let _ = std::fs::create_dir_all(&dir);
+    let _ = crate::private_dir(&dir);
     let _ = std::fs::write(file, text);
 }
 

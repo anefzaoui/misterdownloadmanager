@@ -417,9 +417,13 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     more.setAttribute("aria-expanded", "false");
   }
 
-  menu.addEventListener("click", async (e) => {
+  menu.addEventListener("click", (e) => {
+    if (!e.isTrusted) return;
     const act = e.target.closest("[data-act]")?.dataset.act;
-    if (!act) return;
+    if (act) run(act);
+  });
+
+  async function run(act) {
     if (act === "download") return download();
     closeMenu();
     if (act === "hide") {
@@ -435,7 +439,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       return send({ type: "hide-site" });
     }
     if (act === "settings") send({ type: "options" });
-  });
+  }
 
   more.addEventListener("click", () => (menuOpen ? closeMenu() : openMenu()));
 
@@ -447,7 +451,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       e.stopPropagation();
     } else if (menuOpen && (e.key === "Enter" || e.key === " ") && menu.contains(shadow.activeElement)) {
       // The focused command, whatever the browser does with a key on a button.
-      shadow.activeElement.click();
+      run(shadow.activeElement.dataset.act);
       e.preventDefault();
     } else if (menuOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
       const items = [...menu.querySelectorAll("button")];
@@ -458,8 +462,9 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   });
 
   // The main part: a click downloads, a drag moves it (and is not a click).
+  // Only the user's own clicks and keys (never events a page script makes up).
   go.addEventListener("pointerdown", (e) => {
-    if (e.button !== 0 || !video) return;
+    if (e.button !== 0 || !video || !e.isTrusted) return;
     const { r, roomX, roomY } = rects();
     dragging = {
       id: e.pointerId,
@@ -524,7 +529,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   go.addEventListener("pointercancel", endDrag);
   // Keyboard: Enter / Space (a real button's click without a pointer).
   go.addEventListener("click", (e) => {
-    if (e.detail === 0) download();
+    if (e.detail === 0 && e.isTrusted) download();
   });
 
   // ---- wiring -----------------------------------------------------------------------------------

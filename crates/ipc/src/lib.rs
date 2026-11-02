@@ -126,6 +126,26 @@ pub fn data_dir() -> Option<PathBuf> {
     Some(dir)
 }
 
+/// Create the data folder `dir`, readable by its owner only on Linux and macOS (it holds the
+/// command channel's token and the saved logins; a home folder is often open to other users).
+pub fn private_dir(dir: &std::path::Path) -> std::io::Result<()> {
+    std::fs::create_dir_all(dir)?;
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        std::fs::set_permissions(dir, std::fs::Permissions::from_mode(0o700))?;
+    }
+    Ok(())
+}
+
+/// Write `bytes` to `path` atomically, readable by its owner only (Linux and macOS: mode 0600;
+/// Windows: the profile's own access rules).
+pub fn private_write(path: &std::path::Path, bytes: &[u8]) -> std::io::Result<()> {
+    craft_atomic::WriteOptions::default()
+        .with_new_file_permissions(craft_atomic::NewFilePermissions::Private)
+        .atomic_write(path, bytes)
+}
+
 /// Portable mode: the `data` folder next to the program, when it exists and can be written
 /// (else the profile folder is used). Nothing is written to the registry in this mode.
 pub fn portable_dir() -> Option<PathBuf> {
@@ -143,7 +163,7 @@ pub fn portable_dir() -> Option<PathBuf> {
 /// as long as the returned file lives. `None` when another instance holds it (or is starting).
 pub fn instance_lock() -> Option<std::fs::File> {
     let dir = data_dir()?;
-    std::fs::create_dir_all(&dir).ok()?;
+    private_dir(&dir).ok()?;
     let file = std::fs::OpenOptions::new()
         .create(true)
         .truncate(false)
@@ -240,14 +260,14 @@ pub fn serve(tx: Sender<Incoming>, wake: impl Fn() + Send + Sync + 'static) -> s
     let token = random_token();
     if let Some(path) = endpoint_path() {
         if let Some(dir) = path.parent() {
-            std::fs::create_dir_all(dir)?;
+            private_dir(dir)?;
         }
         let json = serde_json::to_vec(&Endpoint {
             port,
             token: token.clone(),
         })
         .map_err(std::io::Error::other)?;
-        craft_atomic::atomic_write(&path, &json)?;
+        private_write(&path, &json)?;
     }
     std::thread::Builder::new()
         .name("mdm-ipc".into())

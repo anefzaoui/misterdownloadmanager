@@ -126,7 +126,9 @@ pub struct Settings {
     /// NAT), else active. Named anew when FTP arrived: `ftp_pasv` was saved as false while
     /// the box was greyed.
     pub ftp_passive: bool,
-    /// Sites Logins: (site/path, user, password).
+    /// Sites Logins: (site/path, user, password). The passwords are written sealed for this
+    /// Windows account (`sealed_logins`).
+    #[serde(with = "sealed_logins")]
     pub site_logins: Vec<(String, String, String)>,
     /// Sounds: download complete, download failed, queue started, queue stopped/finished.
     pub sounds: [(bool, String); 4],
@@ -511,5 +513,83 @@ mod tests {
             mdm_engine::Proxy::Manual { ref url, https: true, http: false, .. }
                 if url == "http://10.0.0.1:3128"
         ));
+    }
+}
+
+/// Sites Logins' passwords on disk: sealed for this Windows account (`dpapi:` and base64, which
+/// only this account on this computer can open); elsewhere as they are, in the data folder only
+/// its owner may read (mdm_ipc::private_dir). A list from before reads as before, and a sealed
+/// password that can't be opened (the list copied to another account) reads as none.
+mod sealed_logins {
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    #[cfg(windows)]
+    const SEALED: &str = "dpapi:";
+
+    pub fn serialize<S: Serializer>(
+        v: &[(String, String, String)],
+        s: S,
+    ) -> Result<S::Ok, S::Error> {
+        v.iter()
+            .map(|(site, user, pw)| (site, user, seal(pw)))
+            .collect::<Vec<_>>()
+            .serialize(s)
+    }
+
+    pub fn deserialize<'de, D: Deserializer<'de>>(
+        d: D,
+    ) -> Result<Vec<(String, String, String)>, D::Error> {
+        let v = Vec::<(String, String, String)>::deserialize(d)?;
+        Ok(v.into_iter()
+            .map(|(site, user, pw)| (site, user, open(&pw)))
+            .collect())
+    }
+
+    fn seal(pw: &str) -> String {
+        #[cfg(windows)]
+        if !pw.is_empty()
+            && let Some(sealed) = crate::win32::protect(pw)
+        {
+            use base64::Engine as _;
+            return format!(
+                "{SEALED}{}",
+                base64::engine::general_purpose::STANDARD.encode(sealed)
+            );
+        }
+        pw.to_owned()
+    }
+
+    fn open(stored: &str) -> String {
+        #[cfg(windows)]
+        if let Some(b64) = stored.strip_prefix(SEALED) {
+            use base64::Engine as _;
+            return base64::engine::general_purpose::STANDARD
+                .decode(b64)
+                .ok()
+                .and_then(|b| crate::win32::unprotect(&b))
+                .unwrap_or_default();
+        }
+        stored.to_owned()
+    }
+
+    #[cfg(test)]
+    mod tests {
+        #[test]
+        fn passwords_are_sealed_on_disk_and_read_back() {
+            let s = crate::settings::Settings {
+                site_logins: vec![("example.com".into(), "me".into(), "s3cret".into())],
+                ..Default::default()
+            };
+            let json = serde_json::to_string(&s).unwrap();
+            if cfg!(windows) {
+                assert!(!json.contains("s3cret") && json.contains("dpapi:"));
+            }
+            let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
+            assert_eq!(back.site_logins, s.site_logins);
+            // A list from before (plain) still reads.
+            let plain = serde_json::json!({ "site_logins": [["a.test", "u", "pw"]] });
+            let old: crate::settings::Settings = serde_json::from_value(plain).unwrap();
+            assert_eq!(old.site_logins[0].2, "pw");
+        }
     }
 }
