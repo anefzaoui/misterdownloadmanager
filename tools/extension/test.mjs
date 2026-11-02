@@ -95,7 +95,7 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
     // The browser's language: German here.
     i18n: { getMessage: (key) => ({ menu: "Mit Mister Download Manager herunterladen" })[key] ?? "" },
   };
-  if (!firefox) api.declarativeNetRequest = { updateSessionRules: async (r) => calls.push(["dnr", r]) };
+  if (!firefox) api.declarativeNetRequest = { getSessionRules: async () => [], updateSessionRules: async (r) => calls.push(["dnr", r]) };
   return { api, calls: raw, listeners, store };
 }
 
@@ -357,6 +357,15 @@ const ok = (what) => {
   const values = rule.addRules[0].condition.responseHeaders[0].values;
   assert.ok(values.includes("application/pdf*") && values.includes("audio/mpeg*"));
   assert.ok(!values.some((v) => v.startsWith("video/mp4")), "MP4 not listed");
+  // Options' excluded sites keep opening in the browser: *. with its subdomains, a plain host
+  // by itself (an allow rule).
+  const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080" } });
+  load(ex.api, false);
+  await settle();
+  const added = ex.calls.filter((c) => c[0] === "dnr").pop()[1].addRules;
+  assert.deepEqual(added[0].condition.excludedRequestDomains, ["docs.test"]);
+  assert.equal(added[1].action.type, "allow");
+  assert.equal(added[1].condition.regexFilter, "^[a-z]+://files\\.test(:[0-9]+)?/", "the host alone, any port");
   const off = fakeApi({ firefox: false, rules: { opened: false } });
   load(off.api, false);
   await settle();

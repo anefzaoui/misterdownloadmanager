@@ -157,6 +157,8 @@ pub fn host_registered() -> bool {
         .chain(
             [
                 "/Library/Google/Chrome/NativeMessagingHosts",
+                "/Library/Application Support/Chromium/NativeMessagingHosts",
+                "/Library/Microsoft/Edge/NativeMessagingHosts",
                 "/Library/Application Support/Mozilla/NativeMessagingHosts",
             ]
             .map(PathBuf::from),
@@ -183,6 +185,7 @@ pub fn host_registered() -> bool {
             [
                 "/etc/opt/chrome/native-messaging-hosts",
                 "/etc/chromium/native-messaging-hosts",
+                "/etc/opt/edge/native-messaging-hosts",
                 "/usr/lib/mozilla/native-messaging-hosts",
                 "/usr/lib64/mozilla/native-messaging-hosts",
             ]

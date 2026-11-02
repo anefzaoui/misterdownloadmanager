@@ -128,14 +128,21 @@ jobs:
       # unlisted channel) and replaces the unsigned one; without them it stays unsigned.
       - name: Sign the Firefox add-on
         if: ${{ env.AMO_JWT_ISSUER != '' }}
-        # Mozilla refuses a version it signed already (a re-run): the unsigned one stays then.
-        continue-on-error: true
         env:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         shell: pwsh
         run: |
-          npx --yes web-ext@8 sign --source-dir target/extension/firefox --artifacts-dir target/signed `
-            --channel unlisted --api-key $env:AMO_JWT_ISSUER --api-secret $env:AMO_JWT_SECRET
+          $log = npx --yes web-ext@8 sign --source-dir target/extension/firefox --artifacts-dir target/signed `
+            --channel unlisted --api-key $env:AMO_JWT_ISSUER --api-secret $env:AMO_JWT_SECRET 2>&1
+          $log | Write-Output
+          if ($LASTEXITCODE -ne 0) {
+            # A re-run: Mozilla refuses a version it signed already. Anything else fails here.
+            if (($log -join "`n") -match "already exists") {
+              Write-Output "::warning::This version is signed already at addons.mozilla.org; the release keeps the unsigned .xpi (download the signed one from the AMO dashboard)."
+              exit 0
+            }
+            exit 1
+          }
           $v = [regex]::Match((Get-Content Cargo.toml -Raw), '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
           $signed = Get-ChildItem target/signed/*.xpi | Select-Object -First 1
           Copy-Item $signed.FullName "target/dist/MisterDownloadManager-$v-extension-firefox.xpi" -Force

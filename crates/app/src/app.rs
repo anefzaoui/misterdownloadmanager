@@ -5295,16 +5295,26 @@ impl eframe::App for App {
     }
 }
 
+/// A download no Download File Info answered: its address, login and browser context.
+type Unseen = (url::Url, Option<(String, String)>, ipc::Command);
+
 impl App {
     /// Quitting: downloads the browser handed over that never got their Download File Info
     /// (waiting their turn, or arriving at the last moment) go to the main queue as Download
     /// Later, not lost (the browser gave its own copy up). Commands after this get "gone".
     fn keep_unseen(&mut self) {
-        let mut unseen: Vec<(url::Url, ipc::Command)> = self
+        let mut unseen: Vec<Unseen> = self
             .file_info_waiting
             .drain(..)
-            .map(|(new, context)| (new.url, context))
+            .map(|(new, context)| (new.url, new.login, context))
             .collect();
+        // The one Download File Info shows, unanswered (an early download is in the list
+        // already).
+        if let Some(fi) = self.file_info.take()
+            && fi.early.is_none()
+        {
+            unseen.insert(0, (fi.url.clone(), fi.login.clone(), fi.context.clone()));
+        }
         while let Ok(inc) = self.commands.try_recv() {
             if inc.reply.is_none()
                 && let Some(url) = inc
@@ -5314,10 +5324,10 @@ impl App {
                     .and_then(|u| url::Url::parse(u.trim()).ok())
                     .filter(mdm_engine::supported)
             {
-                unseen.push((url, inc.cmd));
+                unseen.push((url, None, inc.cmd));
             }
         }
-        for (url, context) in unseen {
+        for (url, login, context) in unseen {
             let name = context
                 .name
                 .clone()
@@ -5333,7 +5343,7 @@ impl App {
                 category,
                 String::new(),
                 size,
-                None,
+                login,
                 context,
                 crate::i18n::mark("from the browser"),
             );

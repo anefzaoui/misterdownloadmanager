@@ -1752,7 +1752,7 @@ impl OptionsDialog {
                             o.x + 14.0,
                             o.y + 20.0,
                             crate::i18n::t(
-                                "One address per line; * stands for any text, as in example.com/private/*.",
+                                "One address per line; * stands for any text: example.com/private/*",
                             ),
                             LIGHT_TEXT(),
                             o.x + 406.0,

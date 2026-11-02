@@ -112,7 +112,7 @@ impl CaptureRules {
         if self
             .excluded_addresses
             .iter()
-            .any(|p| wildcard(&p.to_ascii_lowercase(), &url.to_ascii_lowercase()))
+            .any(|p| address_matches(p, url))
         {
             return Err(Declined::Address);
         }
@@ -226,6 +226,25 @@ pub fn host_matches(host: &str, pattern: &str) -> bool {
         Some(base) => host == base || host.ends_with(&format!(".{base}")),
         None => !pattern.is_empty() && host == pattern,
     }
+}
+
+/// An address pattern (Options → File types) against `url`, case-insensitive: written with a
+/// scheme (`https://example.com/private/*`) it is the whole address; without one
+/// (`example.com/private/*`), the address after its `scheme://`.
+pub fn address_matches(pattern: &str, url: &str) -> bool {
+    let (pattern, url) = (
+        pattern.trim().to_ascii_lowercase(),
+        url.to_ascii_lowercase(),
+    );
+    if pattern.is_empty() {
+        return false;
+    }
+    let text = if pattern.contains("://") {
+        url.as_str()
+    } else {
+        url.split_once("://").map_or(url.as_str(), |(_, rest)| rest)
+    };
+    wildcard(&pattern, text)
 }
 
 /// `*` matches any run of characters (IDM's address patterns).
@@ -401,6 +420,19 @@ mod tests {
         assert!(host_matches("example.com", "*.example.com"));
         assert!(!host_matches("badexample.com", "*.example.com"));
         assert!(wildcard("*/files/*.zip", "https://x.org/files/a.zip"));
+        assert!(address_matches(
+            "example.com/private/*",
+            "https://Example.com/private/a.zip"
+        ));
+        assert!(address_matches(
+            "https://example.com/private/*",
+            "https://example.com/private/a"
+        ));
+        assert!(!address_matches(
+            "https://example.com/private/*",
+            "http://example.com/private/a"
+        ));
+        assert!(!address_matches(" ", "https://x.org/"));
         assert!(!wildcard("*/files/*.zip", "https://x.org/files/a.rar"));
     }
 }

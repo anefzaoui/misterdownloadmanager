@@ -184,6 +184,13 @@ function wildcard(pattern, text) {
   return re.test(text.toLowerCase());
 }
 
+// An address pattern with a scheme is the whole address; without one, the rest after it.
+function addressMatches(pattern, url) {
+  const p = pattern.trim();
+  if (!p) return false;
+  return wildcard(p, p.includes("://") ? url : url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, ""));
+}
+
 function excluded(r, url) {
   let host = "";
   try {
@@ -193,7 +200,7 @@ function excluded(r, url) {
   }
   return (
     r.excludedSites.split(/\s+/).some((p) => p && hostMatches(host, p)) ||
-    r.excludedAddresses.some((p) => p && wildcard(p, url))
+    r.excludedAddresses.some((p) => addressMatches(p, url))
   );
 }
 
@@ -316,34 +323,40 @@ if (ext.webRequest && ext.webRequest.onResponseStarted) {
       if (d.tabId < 0) return;
       const ct = (d.responseHeaders || []).find((h) => h.name.toLowerCase() === "content-type");
       if (!MANIFEST.test(d.url) && !(ct && MANIFEST_TYPE.test(ct.value || ""))) return;
-      const list = streams.get(d.tabId) || [];
-      if (!list.some((s) => s.url === d.url)) list.push({ url: d.url, frameId: d.frameId });
-      streams.set(d.tabId, list.slice(-20));
-      keepStreams();
+      streamsBack.then(() => {
+        const list = streams.get(d.tabId) || [];
+        if (!list.some((s) => s.url === d.url)) list.push({ url: d.url, frameId: d.frameId });
+        streams.set(d.tabId, list.slice(-20));
+        keepStreams();
+      });
     },
     { urls: ["<all_urls>"], types: ["xmlhttprequest", "media", "other"] },
     ["responseHeaders"],
   );
 }
-ext.tabs.onRemoved.addListener((id) => streams.delete(id) && keepStreams());
+ext.tabs.onRemoved.addListener((id) => streamsBack.then(() => streams.delete(id) && keepStreams()));
 ext.tabs.onUpdated.addListener((id, change) => {
-  if (change.url && streams.delete(id)) keepStreams();
+  if (change.url) streamsBack.then(() => streams.delete(id) && keepStreams());
 });
 
 // Kept in the session's storage (memory only, gone with the browser): the browser stops this
 // script when idle, and a tab's player loaded its stream long before the button is clicked.
+// Read back once at start, merged with what was seen meanwhile; everything else waits for it.
 const session = ext.storage.session;
 function keepStreams() {
   if (session) session.set({ streams: [...streams] }).catch(() => {});
 }
-if (session) {
-  session
-    .get({ streams: [] })
-    .then((v) => {
-      for (const [tab, list] of v.streams || []) if (!streams.has(tab)) streams.set(tab, list);
-    })
-    .catch(() => {});
-}
+const streamsBack = session
+  ? session
+      .get({ streams: [] })
+      .then((v) => {
+        for (const [tab, list] of v.streams || []) {
+          const now = streams.get(tab) || [];
+          streams.set(tab, [...list, ...now.filter((s) => !list.some((o) => o.url === s.url))].slice(-20));
+        }
+      })
+      .catch(() => {})
+  : Promise.resolve();
 
 // The stream a frame's player loaded first (its master playlist), else the tab's.
 function streamOf(sender) {
@@ -474,7 +487,7 @@ async function drop(item) {
     // Gone already.
   }
   ext.downloads.erase({ id }).catch(() => {});
-  closeLeftTab([item.url, item.finalUrl].filter(Boolean)).catch(() => {});
+  closeLeftTab([firstUrl(item), item.url, item.finalUrl].filter(Boolean)).catch(() => {});
 }
 
 if (!FIREFOX) {
@@ -536,15 +549,29 @@ const OPENED = {
   MKV: ["video/x-matroska"],
 };
 const OPENED_RULE = 1;
+// The allow rules for exact excluded hosts follow it (ids from 2).
+const OPENED_ALLOW = 2;
 let openedTypes = [];
 
-// Options' excluded sites as domains (`*.example.com` → example.com, which covers its
-// subdomains in a rule's condition).
-function excludedDomains() {
-  return ((rules && rules.excludedSites) || "")
-    .split(/\s+/)
-    .map((p) => p.replace(/^\*\./, "").replace(/^[a-z]+:\/\//i, "").split("/")[0].toLowerCase())
-    .filter((d) => d && !d.includes("*"));
+// Options' excluded sites as the rules need them, read as the app reads them: `*.example.com`
+// is the domain and its subdomains (a rule's domain condition), a plain name that host only
+// (an allow rule of its own). As the browser writes a host: no port, punycode.
+function excludedHosts() {
+  const wide = [];
+  const exact = [];
+  for (const raw of ((rules && rules.excludedSites) || "").split(/\s+/)) {
+    const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0];
+    const sub = p.startsWith("*.");
+    let host = "";
+    try {
+      host = new URL(`http://${sub ? p.slice(2) : p}`).hostname;
+    } catch {
+      continue;
+    }
+    if (!host || host.includes("*")) continue;
+    (sub ? wide : exact).push(host);
+  }
+  return { wide, exact };
 }
 
 function openedMimes(r) {
@@ -559,6 +586,7 @@ async function syncOpenedRule() {
   openedTypes = paused || (why && why !== "update-app") ? [] : openedMimes(rules);
   const dnr = ext.declarativeNetRequest;
   if (FIREFOX || !dnr || !dnr.updateSessionRules) return;
+  const hosts = excludedHosts();
   const rule = {
     id: OPENED_RULE,
     priority: 1,
@@ -569,12 +597,23 @@ async function syncOpenedRule() {
     condition: {
       resourceTypes: ["main_frame"],
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
-      // Options' excluded sites keep opening in the browser (a domain takes its subdomains).
-      ...(excludedDomains().length ? { excludedRequestDomains: excludedDomains() } : {}),
+      // Options' excluded sites keep opening in the browser.
+      ...(hosts.wide.length ? { excludedRequestDomains: hosts.wide } : {}),
     },
   };
+  const esc = (h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const allows = hosts.exact.slice(0, 500).map((h, i) => ({
+    id: OPENED_ALLOW + i,
+    priority: 2,
+    action: { type: "allow" },
+    condition: { resourceTypes: ["main_frame"], regexFilter: `^[a-z]+://${esc(h)}(:[0-9]+)?/` },
+  }));
   try {
-    await dnr.updateSessionRules({ removeRuleIds: [OPENED_RULE], addRules: openedTypes.length ? [rule] : [] });
+    const old = (await dnr.getSessionRules()).map((r) => r.id);
+    await dnr.updateSessionRules({
+      removeRuleIds: old.filter((id) => id >= OPENED_RULE),
+      addRules: openedTypes.length ? [rule, ...allows] : [],
+    });
   } catch {
     // A browser without header conditions (Chrome before 128): it opens them as before.
   }
@@ -583,7 +622,9 @@ async function syncOpenedRule() {
 if (FIREFOX && ext.webRequest && ext.webRequest.onHeadersReceived) {
   ext.webRequest.onHeadersReceived.addListener(
     (d) => {
-      if (!openedTypes.length || bypass.has(d.url) || (rules && excluded(rules, d.url))) return {};
+      const first = (redirected.get(d.url) || {}).from || d.url;
+      if (!openedTypes.length || bypass.has(d.url) || bypass.has(first)) return {};
+      if (rules && (excluded(rules, d.url) || excluded(rules, first))) return {};
       const headers = d.responseHeaders || [];
       const get = (n) => headers.find((h) => h.name.toLowerCase() === n);
       const type = ((get("content-type") || {}).value || "").toLowerCase();
@@ -773,6 +814,7 @@ async function pageMessage(m, sender) {
     return { ok: true };
   }
   if (m.type === "video" && page) {
+    await streamsBack;
     const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : streamOf(sender);
     const reply = await native({
       video: true,

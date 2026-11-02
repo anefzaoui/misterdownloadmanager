@@ -569,11 +569,12 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   }, true);
   // Tab on the focused player moves into the button first; Tab from the button goes back to
   // the player and on from there (its own controls next), as if the button sat at its start.
-  let tabOn = false;
+  let tabOn = 0;
   function onTab(e) {
     if (e.key !== "Tab" || e.shiftKey) return;
-    if (tabOn) {
-      tabOn = false;
+    // The Tab that just left the button: on from the player, as the browser goes.
+    if (Date.now() - tabOn < 100) {
+      tabOn = 0;
       return;
     }
     if (video && playerFocused() && root.style.getPropertyValue("display") === "block") {
@@ -584,7 +585,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   addEventListener("keydown", onTab, true);
   go.addEventListener("keydown", (e) => {
     if (e.key === "Tab" && !e.shiftKey && focusedPlayer && focusedPlayer.isConnected) {
-      tabOn = true;
+      tabOn = Date.now();
       focusedPlayer.focus();
     }
   });
