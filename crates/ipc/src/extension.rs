@@ -5,9 +5,9 @@
 /// The extension's ID loaded unpacked (the public key in extension/manifest.json).
 pub const UNPACKED_ID: &str = "oogbclbbninliongijffeeggalppliok";
 /// Its ID in the Chrome Web Store, which signs it with the store's own key
-/// (tools/extension/pack.ps1 leaves the manifest's key out of the store's copy). A placeholder
-/// until the listing exists: [`store_id`] is then `None` and nothing names it.
-pub const STORE_ID: &str = "STORE_ID_PENDING";
+/// (tools/extension/pack.ps1 leaves the manifest's key out of the store's copy). [`store_id`] is
+/// `None` while this is not a valid ID (a placeholder), and then nothing names it.
+pub const STORE_ID: &str = "ejoleppdfgjdndddcjoehopknmlglojp";
 /// Its IDs in Microsoft Edge Add-ons and Opera add-ons, which give their own; placeholders until
 /// listed there, never served then (`valid_id`).
 pub const OTHER_STORE_IDS: [&str; 2] = ["EDGE_ADDONS_ID_PENDING", "OPERA_ADDONS_ID_PENDING"];
