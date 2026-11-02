@@ -2,6 +2,14 @@
  "language": "vi",
  "note": "Machine translation of the website (tools/website/translate_site.py); fix a row's text to improve it.",
  "segments": {
+  "0004ade2a3d1d57f": {
+   "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
+   "text": "Tiện ích mở rộng đã kết nối, nhưng cài đặt của MDM để trình duyệt tự tải xuống. Trong MDM, hãy kiểm tra:"
+  },
+  "00161c105e829376": {
+   "source": "Every message to MDM also says which browser it comes from (its name, as the browser tells it) and the extension's version.",
+   "text": "Mỗi tin nhắn gửi đến MDM cũng cho biết nó đến từ trình duyệt nào (tên của nó, như trình duyệt cho biết) và phiên bản của tiện ích mở rộng."
+  },
   "002232b5f1f41adf": {
    "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and .tar.gz) come with every release too; they are marked experimental because they are new and less tested. See Download.",
    "text": "Windows 10 và 11, 64-bit, là nền tảng chính. Các bản dựng cho macOS (một bản tải xuống cho máy Mac dùng chip Apple Silicon và Intel) và Linux (AppImage, .deb, .rpm và .tar.gz) cũng có trong mỗi bản phát hành; chúng được đánh dấu là thử nghiệm vì còn mới và ít được kiểm tra hơn. Xem Tải xuống."
@@ -162,6 +170,10 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
+  "04ec5358d75ceff7": {
+   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "Di chuột vào một video trên trang web và một nút <g1>Tải xuống video</g1> nhỏ sẽ xuất hiện ở cạnh của nó. Nhấp vào nút đó và cửa sổ <g2>Tải xuống video từ một trang</g2> của MDM sẽ mở ra và tìm kiếm các chất lượng mà nó có thể tải xuống. Nó sẽ tải xuống video bạn đã nhấp: tệp riêng của nó khi nó phát một tệp, hoặc luồng mà trình phát đã tải (HLS hoặc DASH), nếu không thì là trang. Các trình phát nhúng cũng hoạt động, và thông tin đăng nhập của bạn cho trang web, trang nhúng trình phát và User-Agent của trình duyệt của bạn cũng được gửi kèm, vì vậy các video dành cho thành viên, hoặc chỉ phát trên trang web nhúng chúng, có thể được tải xuống. Các trình phát âm thanh cũng có nút này."
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>Trợ giúp → Báo cáo sự cố</g1> đã điền các trường Hệ thống và Đã cài đặt của biểu mẫu chỉ trong chốc lát; giờ đây chúng vẫn được điền."
@@ -189,6 +201,10 @@
   "0570989b9bf67a64": {
    "source": "Sites change often, and a newer yt-dlp usually fixes it. MDM doesn't update yt-dlp on its own yet. To get the newest one: quit MDM (<g1>Tasks → Exit</g1>), delete the <x2/> folder in MDM's data folder (<x3/>, or the <x4/> folder of a portable copy), start MDM, open the video window and click <g5>Install yt-dlp</g5>.",
    "text": "Các trang web thường xuyên thay đổi, và một phiên bản yt-dlp mới hơn thường khắc phục được. MDM chưa tự động cập nhật yt-dlp. Để có phiên bản mới nhất: thoát MDM (<g1>Tác vụ → Thoát</g1>), xóa thư mục <x2/> trong thư mục dữ liệu của MDM (<x3/>, hoặc thư mục <x4/> của bản sao di động), khởi động MDM, mở cửa sổ video và nhấp <g5>Cài đặt yt-dlp</g5>."
+  },
+  "057b1bcb7273a7bb": {
+   "source": "<g1><g2>The browser and MDM aren't connected</g2></g1> — what the extension's red <g3>!</g3> means, reason by reason, and how to fix each.",
+   "text": "<g1><g2>Trình duyệt và MDM không kết nối</g2></g1> — ý nghĩa của dấu <g3>!</g3> màu đỏ trên tiện ích mở rộng, từng lý do và cách khắc phục."
   },
   "0588c7c82fed2d21": {
    "source": "Which browsers does it work with?",
@@ -262,6 +278,10 @@
    "source": "lines, then <x1/>.",
    "text": "dòng, sau đó <x1/>."
   },
+  "079d154ef3b379ef": {
+   "source": "When MDM isn't running, the browser starts it for each download and waits for it. It waited about 20 seconds this time and gave up.",
+   "text": "Khi MDM không chạy, trình duyệt sẽ khởi động nó cho mỗi lượt tải xuống và chờ đợi. Lần này nó đã chờ khoảng 20 giây và bỏ cuộc."
+  },
   "07ed3d6396493231": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>. <g2>Turn off</g2> gives full speed again.",
    "text": "Chọn <g1>Tải xuống → Giới hạn tốc độ → Bật</g1>. <g2>Tắt</g2> sẽ khôi phục tốc độ tối đa."
@@ -313,6 +333,10 @@
   "08e2e35d4e65f111": {
    "source": "What the assistant can do",
    "text": "Những gì trợ lý có thể làm"
+  },
+  "08f904e3d0a7032e": {
+   "source": "<g1>Options → File types → Don't take files smaller than</g1> leaves small files (a receipt, an icon) to the browser. 0 takes any size.",
+   "text": "<g1>Tùy chọn → Loại tệp → Không tải xuống các tệp nhỏ hơn</g1> để các tệp nhỏ (biên lai, biểu tượng) cho trình duyệt. 0 sẽ tải xuống bất kỳ kích thước nào."
   },
   "0942a42265a3f89c": {
    "source": "<g1>open an issue</g1> describing what should change, if you'd rather not edit the file.",
@@ -414,6 +438,10 @@
    "source": "Change which file types MDM takes →",
    "text": "Thay đổi loại tệp MDM sẽ tải xuống →"
   },
+  "0b8bc8a6db629a4c": {
+   "source": "Select part of a page and right-click it for <g1>Download selected links with Mister Download Manager</g1>, or right-click the page for <g2>Download all links with Mister Download Manager</g2>: the links open in <g3>Import</g3>, where you tick the ones you want.",
+   "text": "Chọn một phần của trang và nhấp chuột phải vào đó để chọn <g1>Tải xuống các liên kết đã chọn bằng Mister Download Manager</g1>, hoặc nhấp chuột phải vào trang để chọn <g2>Tải xuống tất cả liên kết bằng Mister Download Manager</g2>: các liên kết sẽ mở trong <g3>Nhập</g3>, nơi bạn chọn những liên kết bạn muốn."
+  },
   "0ba1ab7afd650160": {
    "source": "Getting started — Mister Download Manager help",
    "text": "Bắt đầu — Trợ giúp Mister Download Manager"
@@ -469,6 +497,10 @@
   "0e48754aa3fa3ac3": {
    "source": "Connection",
    "text": "Kết nối"
+  },
+  "0ebbf5cc3fb70cd9": {
+   "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
+   "text": "Các lượt tải xuống từ cửa sổ riêng tư sử dụng cookie của cửa sổ đó, không bao giờ sử dụng cookie thông thường và không được giữ trong danh sách của MDM sau khi nó đóng."
   },
   "0ebc8256019810c9": {
    "source": "Tick <g1>Only while I'm using the computer</g1> if you want full speed when you're away. MDM goes back to full speed after a minute without mouse or keyboard input.",
@@ -537,6 +569,10 @@
   "10b8609f61290221": {
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Tổng kiểm SHA-256</g1><g2>cho mọi tệp</g2>"
+  },
+  "11037e9a1d07f9af": {
+   "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
+   "text": "Tiện ích mở rộng phải được phép đọc trang web. Khi bạn giới hạn nó ở một số trang web (hoặc <g1>Khi nhấp</g1>), nó không thể chuyển thông tin đăng nhập của bạn, vì vậy nó sẽ để các lượt tải xuống của các trang web đó cho trình duyệt."
   },
   "110d6b2bd87a92ac": {
    "source": "Works with what you already use",
@@ -814,6 +850,10 @@
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Những câu trả lời ngắn gọn cho các câu hỏi phổ biến nhất, mỗi câu có liên kết đến hướng dẫn đầy đủ."
   },
+  "19ef176da302a2b4": {
+   "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
+   "text": "Khi trình duyệt không thể chuyển một lượt tải xuống cho MDM, nó sẽ tự giữ lượt tải xuống đó, vì vậy không có gì bị mất. Nút trên thanh công cụ của tiện ích mở rộng sau đó sẽ hiển thị dấu ! màu đỏ. Nhấp vào nó…"
+  },
   "1a0500523dbbbc89": {
    "source": "On a Mac or Linux",
    "text": "Trên máy Mac hoặc Linux"
@@ -846,6 +886,10 @@
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "Tiện ích mở rộng trình duyệt đi kèm với ứng dụng và có thể tải xuống riêng cho <g1>Chrome, Edge, Brave, Opera và Vivaldi</g1> cũng như <g2>Firefox</g2>. Các danh sách trên cửa hàng đang được triển khai. Mọi tệp đều được xây dựng từ mã nguồn công khai bởi GitHub Actions và được liệt kê cùng với tổng kiểm SHA-256 của chúng."
   },
+  "1afe0a44e06cfa4b": {
+   "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
+   "text": "Để kiểm tra phía MDM, hãy mở <g1>Tùy chọn → Chung</g1> trong MDM và nhấp vào <g2>Kiểm tra tích hợp trình duyệt...</g2>. Nó kiểm tra xem tích hợp trình duyệt đã bật chưa, đây có phải là bản cài đặt không, các trình duyệt có thể tìm thấy MDM không và tiện ích mở rộng của trình duyệt nào đã kết nối; <g3>Cách khắc phục</g3> sẽ mở phần cho lỗi đầu tiên."
+  },
   "1b049c560de69a42": {
    "source": "Find the next match",
    "text": "Tìm kết quả khớp tiếp theo"
@@ -870,6 +914,10 @@
    "source": "CPU",
    "text": "CPU"
   },
+  "1b5c1b21bdd749ea": {
+   "source": "When none of this helps, the browser keeps the download, so nothing is lost. The extension's toolbar button says why it couldn't reach MDM; see <g1>The browser and MDM aren't connected</g1>.",
+   "text": "Khi không có cách nào hiệu quả, trình duyệt sẽ giữ lại bản tải xuống, vì vậy không có gì bị mất. Nút trên thanh công cụ của tiện ích mở rộng cho biết lý do không thể kết nối với MDM; xem <g1>Trình duyệt và MDM không được kết nối</g1>."
+  },
   "1b5f580bc58179ec": {
    "source": "The download list, settings, helpers for video (yt-dlp, ffmpeg) and torrent data are kept in <x1/>, not in your Windows profile.",
    "text": "Danh sách tải xuống, cài đặt, công cụ hỗ trợ video (yt-dlp, ffmpeg) và dữ liệu torrent được lưu trong <x1/>, không phải trong hồ sơ Windows của bạn."
@@ -881,10 +929,6 @@
   "1b638519d92c59b7": {
    "source": "More about queues in <g1>Queues and the Scheduler</g1>.",
    "text": "Tìm hiểu thêm về hàng đợi trong <g1>Hàng đợi và Bộ lập lịch</g1>."
-  },
-  "1b8598b5d096034c": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click item; <g5>storage</g5> for its settings; access to all sites because downloads and videos can come from any site.",
-   "text": "Các quyền của nó, và lý do: <g1>downloads</g1> để xem và chuyển giao các lượt tải xuống; <g2>cookies</g2> để các lượt tải xuống đã đăng nhập hoạt động trong MDM; <g3>nativeMessaging</g3> để kết nối với MDM; <g4>contextMenus</g4> cho mục nhấp chuột phải; <g5>storage</g5> cho các cài đặt của nó; quyền truy cập vào tất cả các trang web vì các lượt tải xuống và video có thể đến từ bất kỳ trang web nào."
   },
   "1b87c9c9e4a611b4": {
    "source": "<g1>Alt</g1> + a menu's underlined letter",
@@ -921,6 +965,10 @@
   "1c317076c4f2bc01": {
    "source": "Open (GPL-3.0)",
    "text": "Mở (GPL-3.0)"
+  },
+  "1c41a815ee54b7d7": {
+   "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
+   "text": "MDM <g1>không có phân tích, không có báo cáo sự cố tự động, không có đo từ xa và không có quảng cáo</g1> (báo cáo sự cố chỉ được gửi đến nơi bạn tự gửi). Nó không bao giờ gửi cho chúng tôi danh sách tải xuống của bạn, các địa chỉ bạn tải xuống hoặc bất cứ điều gì khác."
   },
   "1c5f1bf427c1cf81": {
    "source": "Can it resume broken downloads?",
@@ -994,6 +1042,10 @@
    "source": "The download list — Mister Download Manager help",
    "text": "Danh sách tải xuống — Trợ giúp Mister Download Manager"
   },
+  "1e7417c5cfd48ad7": {
+   "source": "Files the browser would open",
+   "text": "Các tệp trình duyệt sẽ mở"
+  },
   "1e85323c7843fa8c": {
    "source": "Fill in <g1>Download no more than [N] MBytes every [H] hours</g1>. It starts at 200 MBytes every 5 hours.",
    "text": "Điền vào <g1>Không tải xuống quá [N] MBytes mỗi [H] giờ</g1>. Mặc định là 200 MBytes mỗi 5 giờ."
@@ -1042,13 +1094,13 @@
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "Hãy xem <g1>Khả năng tiếp tục</g1> trong cửa sổ tiến trình. <g2>Không</g2> có nghĩa là máy chủ không thể gửi tệp theo từng phần. MDM sau đó sử dụng một kết nối, và một lượt tải xuống bị dừng phải bắt đầu lại. Đối với các máy chủ như vậy, hãy tránh dừng tải xuống và tránh đặt giới hạn tốc độ quá thấp, điều này có thể khiến máy chủ ngắt kết nối."
   },
-  "20504fb177eb6cfc": {
-   "source": "To keep a site's downloads in the browser, add the site to <g1>Don't start downloading automatically from the following sites</g1>. To keep a file type in the browser, take it off the file types list.",
-   "text": "Để giữ các tệp tải xuống của một trang web trong trình duyệt, hãy thêm trang web đó vào <g1>Không tự động bắt đầu tải xuống từ các trang web sau</g1>. Để giữ một loại tệp trong trình duyệt, hãy xóa nó khỏi danh sách loại tệp."
-  },
   "20538865aca739a7": {
    "source": "Click <g1>Start Download</g1>.",
    "text": "Nhấp vào <g1>Bắt đầu tải xuống</g1>."
+  },
+  "20614bb35ecf2799": {
+   "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
+   "text": "Nó ghi lại nơi các chuyển hướng tải trang bắt đầu và kết thúc (trong bộ nhớ, trong hai phút), để MDM nhận được địa chỉ bạn đã nhấp, không chỉ nơi nó dẫn đến."
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1170,6 +1222,10 @@
    "source": "A download resumes where it stopped: after you stop it, after the connection drops, or after Windows or MDM crashes. MDM saves how far each part has got as it goes.",
    "text": "Một lượt tải xuống sẽ tiếp tục từ nơi nó đã dừng: sau khi bạn dừng, sau khi kết nối bị ngắt hoặc sau khi Windows hay MDM gặp sự cố. MDM lưu lại tiến độ của từng phần khi tải xuống."
   },
+  "246896eedd2eb25a": {
+   "source": "<g1>Mister Download Manager</g1> appears. Make sure it is turned on.",
+   "text": "<g1>Mister Download Manager</g1> sẽ hiện ra. Hãy đảm bảo rằng nó đang bật."
+  },
   "24689db86cd6a24a": {
    "source": "Click <g1>Resume</g1>. The download continues from where it stopped, using the new address.",
    "text": "Nhấp vào <g1>Tiếp tục</g1>. Lượt tải xuống tiếp tục từ nơi nó dừng lại, sử dụng địa chỉ mới."
@@ -1206,6 +1262,10 @@
    "source": "Closed",
    "text": "Đóng"
   },
+  "2542aeb0c43a3ce6": {
+   "source": "Downloads stay with the browser although MDM is connected",
+   "text": "Các lượt tải xuống vẫn ở lại với trình duyệt mặc dù MDM đã được kết nối"
+  },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
    "text": "Tải xuống video chi tiết →"
@@ -1217,6 +1277,10 @@
   "25a8339210f17932": {
    "source": "Save to",
    "text": "Lưu vào"
+  },
+  "25adb0d6be62a854": {
+   "source": "Allow <x1/> (in MDM's folder) in your antivirus or anti-malware program.",
+   "text": "Cho phép <x1/> (trong thư mục của MDM) trong chương trình diệt virus hoặc chống phần mềm độc hại của bạn."
   },
   "25b4db9aa4024862": {
    "source": "The current speed.",
@@ -1550,6 +1614,10 @@
    "source": "A torrent's progress window, on its Files tab",
    "text": "Cửa sổ tiến trình của torrent, trên tab Tệp của nó"
   },
+  "2dc02541cd79bcaa": {
+   "source": "<g1>Options → File types → Don't start downloading automatically from the following sites</g1> must not list the site. Names are separated by spaces, and <x2/> matches any part, as in <x3/>. <g4>Edit list ...</g4> below it lists whole addresses to leave alone, one per line (<x5/>).",
+   "text": "<g1>Tùy chọn → Loại tệp → Không tự động bắt đầu tải xuống từ các trang web sau</g1> không được liệt kê trang web đó. Các tên được phân tách bằng dấu cách, và <x2/> khớp với bất kỳ phần nào, như trong <x3/>. <g4>Sửa danh sách ...</g4> bên dưới liệt kê các địa chỉ đầy đủ để bỏ qua, mỗi dòng một địa chỉ (<x5/>)."
+  },
   "2dce3ab2bfd52162": {
    "source": "What you see",
    "text": "Những gì bạn thấy"
@@ -1585,6 +1653,10 @@
   "2ed1d0f221a398d5": {
    "source": "<g1>Windows portable</g1><g2>portable.zip · runs from a folder or USB stick</g2>",
    "text": "<g1>Windows di động</g1><g2>portable.zip · chạy từ thư mục hoặc USB</g2>"
+  },
+  "2ee4c3f4098357e1": {
+   "source": "<g1>Two copies installed?</g1> Open the browser's extensions page (<x2/>, <x3/>, <x4/>) and keep only one <g5>Mister Download Manager</g5>.",
+   "text": "<g1>Hai bản sao được cài đặt?</g1> Mở trang tiện ích mở rộng của trình duyệt (<x2/>, <x3/>, <x4/>) và chỉ giữ lại một <g5>Mister Download Manager</g5>."
   },
   "2f165cd363bc55e2": {
    "source": "<g1>AI assistants</g1>: <x2/>, an MCP server that comes with MDM, lets Claude, Cursor, VS Code and other MCP assistants list, add, pause, resume and remove the running app's downloads and start its queue, through the automation API (<g3>how to set it up</g3>).",
@@ -1673,10 +1745,6 @@
   "32bbe5a36745a480": {
    "source": "A magnet link has to get the torrent's file list from other peers first. That can take a minute or two, and longer for torrents with few peers. If nobody answers in about three minutes, MDM gives up; try again later, or use the <x1/> file if the site offers one.",
    "text": "Liên kết magnet phải lấy danh sách tệp torrent từ các peer khác trước. Việc này có thể mất một hoặc hai phút, và lâu hơn đối với các torrent có ít peer. Nếu không ai trả lời trong khoảng ba phút, MDM sẽ bỏ cuộc; hãy thử lại sau, hoặc sử dụng tệp <x1/> nếu trang web cung cấp."
-  },
-  "32bfd413d96b1b7c": {
-   "source": "Last updated 2026-11-01 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Cập nhật lần cuối 2026-11-01 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
   },
   "32e3899aac6c6245": {
    "source": "not to use it to break copy protection (DRM): MDM doesn't do this and isn't meant to;",
@@ -1793,10 +1861,6 @@
   "37018c365c78d873": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
    "text": "MDM được tạo bởi Ahmed Nefzaoui, một nhà phát triển độc lập, và mở cửa đón nhận đóng góp từ bất kỳ ai trên GitHub. Các báo cáo lỗi, bản dịch và mã nguồn đều…"
-  },
-  "370fffff42663165": {
-   "source": "MDM has <g1>no analytics, no crash reporting, no telemetry and no advertising</g1>. It never sends us your download list, the addresses you download, or anything else.",
-   "text": "MDM <g1>không có phân tích, không báo cáo sự cố, không đo từ xa và không quảng cáo</g1>. Nó không bao giờ gửi cho chúng tôi danh sách tải xuống của bạn, các địa chỉ bạn tải xuống hoặc bất kỳ điều gì khác."
   },
   "3713622281bf70e6": {
    "source": "<g1>MDM checks for updates every time it starts</g1> (it was once a week), and once a day while it stays open; a new version's window opens in front. <g2>Check for updates at every start</g2> in that window turns it off.",
@@ -1970,6 +2034,10 @@
    "source": "Keyboard shortcuts — Mister Download Manager help",
    "text": "Phím tắt — Trợ giúp Mister Download Manager"
   },
+  "3bfa748787f8de48": {
+   "source": "When you start a download that MDM should take, it passes <g1>the download's address (and where its redirects led), the page it came from, the site's cookies for that address, your browser's User-Agent, and the file's name, size and type</g1> to MDM on your computer, through the browser's native-messaging channel. Nothing goes over the internet.",
+   "text": "Khi bạn bắt đầu một lượt tải xuống mà MDM nên xử lý, nó sẽ chuyển <g1>địa chỉ tải xuống (và nơi các chuyển hướng của nó dẫn đến), trang gốc, cookie của trang web cho địa chỉ đó, User-Agent của trình duyệt của bạn, và tên, kích thước và loại tệp</g1> đến MDM trên máy tính của bạn, thông qua kênh nhắn tin gốc của trình duyệt. Không có gì được gửi qua internet."
+  },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+nhấp</g1> thêm hoặc xóa một bản tải xuống."
@@ -2017,6 +2085,10 @@
   "3d836c21b68654f0": {
    "source": "When a download finishes",
    "text": "Khi quá trình tải xuống hoàn tất"
+  },
+  "3d855a4cad9d1311": {
+   "source": "A download carries its site's cookies (and a form's data) to MDM. A few sites set so many that together they exceed what MDM accepts from the browser (1 MB). The browser kept this one. Signing out and back in to the site usually trims them.",
+   "text": "Một lượt tải xuống mang theo cookie của trang web (và dữ liệu của biểu mẫu) đến MDM. Một vài trang web đặt quá nhiều cookie đến mức tổng cộng chúng vượt quá giới hạn mà MDM chấp nhận từ trình duyệt (1 MB). Trình duyệt đã giữ lại lượt tải xuống này. Đăng xuất và đăng nhập lại vào trang web thường sẽ cắt bớt chúng."
   },
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
@@ -2186,10 +2258,6 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Tải xuống → Bắt đầu hàng đợi</g1> và <g2>Tải xuống → Dừng hàng đợi</g2> cũng liệt kê chúng."
   },
-  "437e6268e865984d": {
-   "source": "Some links, such as a PDF or a video file, open in the browser instead of downloading, so there is nothing for MDM to catch. Right-click the link and choose <g1>Download with Mister Download Manager</g1>. The address must still end in one of the listed file types.",
-   "text": "Một số liên kết, chẳng hạn như tệp PDF hoặc tệp video, sẽ mở trong trình duyệt thay vì tải xuống, vì vậy MDM không có gì để bắt. Nhấp chuột phải vào liên kết và chọn <g1>Tải xuống bằng Mister Download Manager</g1>. Địa chỉ vẫn phải kết thúc bằng một trong các loại tệp được liệt kê."
-  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Tích hợp trình duyệt — Trợ giúp Mister Download Manager"
@@ -2330,6 +2398,10 @@
    "source": "What you need",
    "text": "Những gì bạn cần"
   },
+  "48aad3564170ee72": {
+   "source": "MDM's helper serves only its own extension. The browser says this copy isn't one it knows.",
+   "text": "Trình hỗ trợ của MDM chỉ phục vụ tiện ích mở rộng của riêng nó. Trình duyệt nói rằng bản sao này không phải là bản mà nó biết."
+  },
   "48ca7e0fd6df660f": {
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>Tên tệp đã tải xuống được làm sạch</g1> trước khi trở thành đường dẫn, để máy chủ không thể ghi ra ngoài thư mục bạn đã chọn."
@@ -2466,6 +2538,10 @@
    "source": "Double-click the download to open its progress window.",
    "text": "Nhấp đúp vào lượt tải xuống để mở cửa sổ tiến trình của nó."
   },
+  "4d876c329eaf2379": {
+   "source": "The <g1>Mister Download Manager</g1> extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox:",
+   "text": "Tiện ích mở rộng <g1>Mister Download Manager</g1> cho Chrome, Edge, Brave, Opera, Vivaldi và Firefox:"
+  },
   "4d895f12e00559ae": {
    "source": "Can it download from Netflix or other paid streaming services?",
    "text": "Nó có thể tải xuống từ Netflix hoặc các dịch vụ phát trực tuyến trả phí khác không?"
@@ -2541,10 +2617,6 @@
   "4ffb28494afc5681": {
    "source": "With the list selected, type the first letters of a name to jump straight to it.",
    "text": "Khi danh sách được chọn, nhập các chữ cái đầu tiên của một tên để chuyển thẳng đến đó."
-  },
-  "5011681dd788fa32": {
-   "source": "<g1>Options → File types → Don't start downloading automatically from the following sites</g1> must not list the site. Names are separated by spaces, and <x2/> matches any part, as in <x3/>.",
-   "text": "<g1>Tùy chọn → Loại tệp → Không tự động bắt đầu tải xuống từ các trang web sau</g1> không được liệt kê trang web. Tên được phân tách bằng dấu cách, và <x2/> khớp với bất kỳ phần nào, như trong <x3/>."
   },
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
@@ -2642,6 +2714,10 @@
    "source": "<g1>GitHub Pages</g1> hosts it. GitHub receives your IP address and browser details when you visit and may keep them in its server logs for security; see the <g2>GitHub Privacy Statement</g2>. Download links lead to GitHub Releases.",
    "text": "<g1>GitHub Pages</g1> là nơi lưu trữ trang web. GitHub nhận địa chỉ IP và thông tin trình duyệt của bạn khi bạn truy cập và có thể lưu giữ chúng trong nhật ký máy chủ để đảm bảo an ninh; xem <g2>Tuyên bố về quyền riêng tư của GitHub</g2>. Các liên kết tải xuống dẫn đến GitHub Releases."
   },
+  "52e5904f6efffe72": {
+   "source": "The toolbar button",
+   "text": "Nút thanh công cụ"
+  },
   "531dcc0b52cbdb34": {
    "source": "JSON for scripts and programs",
    "text": "JSON cho các tập lệnh và chương trình"
@@ -2718,6 +2794,10 @@
    "source": "Click <g1>Yes</g1> to delete, or <g2>No</g2> to keep everything.",
    "text": "Nhấp <g1>Có</g1> để xóa, hoặc <g2>Không</g2> để giữ lại mọi thứ."
   },
+  "558bb1c07f16684f": {
+   "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
+   "text": "Nó ghi lại các địa chỉ của luồng video (danh sách phát HLS và DASH) mà trình phát của trang tải, trong bộ nhớ cho tab đó, để nút <g1>Tải xuống video</g1> có thể chuyển luồng. Nút của nó chỉ đọc trang để tìm trình phát video và âm thanh và đặt vị trí của nó. Nhấp vào nó sẽ chuyển địa chỉ của trang, địa chỉ của video, tiêu đề của trang, cookie của trang web, trang nhúng trình phát và User-Agent của trình duyệt của bạn đến MDM."
+  },
   "559f1edb4136e9ae": {
    "source": "End to end: command to finished file",
    "text": "Từ đầu đến cuối: từ lệnh đến tập tin hoàn tất"
@@ -2757,10 +2837,6 @@
   "56cc0ee76be4673e": {
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "Bạn có thể thêm hàng đợi của riêng mình trong Bộ lập lịch, hoặc bằng cách chọn <g1>Tạo hàng đợi mới</g1> trong menu chuột phải của một lượt tải xuống."
-  },
-  "5713d651ab6b8a5a": {
-   "source": "If MDM can't be reached at all (it was uninstalled, or the helper isn't registered), the extension resumes the download in the browser. Nothing is lost.",
-   "text": "Nếu không thể kết nối với MDM (nó đã bị gỡ cài đặt hoặc trình trợ giúp chưa được đăng ký), tiện ích mở rộng sẽ tiếp tục tải xuống trong trình duyệt. Không có gì bị mất."
   },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
@@ -2813,6 +2889,10 @@
   "58d632aa7f93ec0d": {
    "source": "<g1>MDM comes back as you left it</g1>: the window's place and size, the Categories pane, its open branches and the node shown.",
    "text": "<g1>MDM trở lại như bạn đã để nó</g1>: vị trí và kích thước của cửa sổ, ngăn Danh mục, các nhánh mở của nó và nút được hiển thị."
+  },
+  "591498dd46bd5859": {
+   "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
+   "text": "<g1>Một bản sao từ nơi khác?</g1> Gỡ bỏ nó và thêm tiện ích mở rộng như cửa sổ <g2>Thêm Mister Download Manager vào trình duyệt của bạn</g2> của MDM hiển thị (xem <g3>Tích hợp trình duyệt</g3>)."
   },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
@@ -2877,6 +2957,10 @@
   "5b408157692d7c61": {
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "Giải nén ở bất cứ đâu, cả USB; mọi thứ đều nằm trong thư mục của nó"
+  },
+  "5b4c0d90aeddada8": {
+   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
+   "text": "Tiện ích mở rộng đã được tải và bật chưa? Tìm <g1>Mister Download Manager</g1> trên trang tiện ích mở rộng của trình duyệt. Trong Firefox, tiện ích bổ sung tạm thời sẽ biến mất sau khi khởi động lại. Xem <g2>Tích hợp trình duyệt</g2>."
   },
   "5b6bfbfcf883179a": {
    "source": "Download for Mac",
@@ -2966,13 +3050,13 @@
    "source": "Every release is built from the public source code by <g1>GitHub Actions</g1>, on GitHub's servers; the build logs are public.",
    "text": "Mọi bản phát hành đều được xây dựng từ mã nguồn công khai bởi <g1>GitHub Actions</g1>, trên máy chủ của GitHub; nhật ký xây dựng là công khai."
   },
+  "5ed161293dc26f74": {
+   "source": "If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.",
+   "text": "Nếu không thể kết nối với MDM khi bạn chọn một trong các tùy chọn này, trang trợ giúp sẽ mở ở phần giải thích lý do."
+  },
   "5ef406f45fdd5c6f": {
    "source": "<g1>What were you doing when it happened?</g1> is optional. A few words, such as \"I opened Add URL\", help a lot.",
    "text": "<g1>Bạn đang làm gì khi sự cố xảy ra?</g1> là tùy chọn. Một vài từ, chẳng hạn như \"Tôi đã mở Thêm URL\", sẽ giúp ích rất nhiều."
-  },
-  "5efe3d810777487c": {
-   "source": "When you start a download that MDM should take, it passes <g1>the download's address, the page it came from, the site's cookies for that address and your browser's User-Agent</g1> to MDM on your computer, through the browser's native-messaging channel. Nothing goes over the internet.",
-   "text": "Khi bạn bắt đầu một lượt tải xuống mà MDM nên nhận, nó sẽ chuyển <g1>địa chỉ tải xuống, trang gốc, cookie của trang web cho địa chỉ đó và User-Agent của trình duyệt của bạn</g1> đến MDM trên máy tính của bạn, thông qua kênh nhắn tin gốc của trình duyệt. Không có gì được truyền qua internet."
   },
   "5f246a6b539a96be": {
    "source": "Edit this page on GitHub",
@@ -3218,9 +3302,9 @@
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>Dự án trên GitHub</g1><g2>Mã nguồn, các vấn đề và mọi bản phát hành</g2>"
   },
-  "64f7b8d339cd685b": {
-   "source": "It stays out of the way: it shows only while you point at a video (or the video has the keyboard's focus), fades when the pointer rests, and leaves out small videos and muted looping clips (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it.",
-   "text": "Nó không gây vướng víu: nó chỉ hiển thị khi bạn di chuột vào video (hoặc video đang được chọn), mờ dần khi con trỏ dừng lại và bỏ qua các video nhỏ, các clip lặp lại bị tắt tiếng (ảnh động, hình nền). Ở chế độ toàn màn hình, nó sẽ đi theo video nếu trình phát cho phép."
+  "64e9d0f93e60556f": {
+   "source": "The browser and MDM aren't connected",
+   "text": "Trình duyệt và MDM chưa kết nối"
   },
   "650f31994e698c98": {
    "source": "Free for Windows, with macOS and Linux to try. Installer, portable zip and the browser extension.",
@@ -3254,13 +3338,13 @@
    "source": "MDM first shows a 30-second countdown. <g1>Cancel</g1> stops it; <g2>Turn off now</g2> goes ahead at once.",
    "text": "MDM trước tiên hiển thị đồng hồ đếm ngược 30 giây. <g1>Hủy</g1> dừng nó; <g2>Tắt ngay</g2> thực hiện ngay lập tức."
   },
+  "672ffa07db0bd6d7": {
+   "source": "Reinstall MDM to restore its files.",
+   "text": "Cài đặt lại MDM để khôi phục các tệp của nó."
+  },
   "67c6c31e6dedb216": {
    "source": "Up to 32, or 128 if you allow it; re-split as they go",
    "text": "Tối đa 32, hoặc 128 nếu bạn cho phép; tự động chia lại khi tải"
-  },
-  "680bde7ef29fb757": {
-   "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> and <g3>Brave</g3>. <g4>Firefox</g4> support is still being tested.",
-   "text": "Tiện ích mở rộng hoạt động trong <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> và <g3>Brave</g3>. Hỗ trợ <g4>Firefox</g4> vẫn đang được thử nghiệm."
   },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
@@ -3277,10 +3361,6 @@
   "68501e4a16b6ce4f": {
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
    "text": "Máy chủ nhắn tin gốc của trình duyệt: lấy các lượt tải xuống đã bị chặn từ tiện ích mở rộng và chuyển chúng cho ứng dụng"
-  },
-  "686dafb07f79362b": {
-   "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken. The same goes for <g2>Download with Mister Download Manager</g2> on the right-click menu: if the link's address doesn't end in a listed type, nothing happens.",
-   "text": "Loại tệp có trong <g1>Tùy chọn → Loại tệp</g1> không? Chỉ các loại được liệt kê mới được lấy. Điều tương tự cũng áp dụng cho <g2>Tải xuống bằng Mister Download Manager</g2> trên menu chuột phải: nếu địa chỉ liên kết không kết thúc bằng một loại được liệt kê, sẽ không có gì xảy ra."
   },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
@@ -3301,6 +3381,10 @@
   "693f3338267d1d6a": {
    "source": "Move without changing the selection",
    "text": "Di chuyển mà không thay đổi lựa chọn"
+  },
+  "6941e88ad1cb9eb7": {
+   "source": "When a download comes from a form you submitted, it passes <g1>the form's data</g1> too, so MDM can submit it again. It notes the data of forms you submit (in memory, used for two minutes at most, never stored) only for that.",
+   "text": "Khi một lượt tải xuống đến từ một biểu mẫu bạn đã gửi, nó cũng chuyển <g1>dữ liệu của biểu mẫu</g1>, để MDM có thể gửi lại. Nó chỉ ghi lại dữ liệu của các biểu mẫu bạn gửi (trong bộ nhớ, được sử dụng tối đa hai phút, không bao giờ được lưu trữ) cho mục đích đó."
   },
   "69723576a69d29fe": {
    "source": "The file's name, with its icon.",
@@ -3370,13 +3454,13 @@
    "source": "<g1>Download Later</g1> puts the download in a queue instead of starting it. By default MDM asks which one: pick the queue under <g2>Add to queue</g2>, and tick <g3>Start the queue now</g3> if you want it to run straight away. <g4>Cancel</g4> leaves the download in the list, in no queue.",
    "text": "<g1>Tải xuống sau</g1> sẽ đưa bản tải xuống vào hàng đợi thay vì bắt đầu ngay. Theo mặc định, MDM sẽ hỏi bạn muốn đưa vào hàng đợi nào: chọn hàng đợi trong <g2>Thêm vào hàng đợi</g2>, và đánh dấu <g3>Bắt đầu hàng đợi ngay bây3</g3> nếu bạn muốn nó chạy ngay lập tức. <g4>Hủy</g4> sẽ giữ bản tải xuống trong danh sách, không thuộc hàng đợi nào."
   },
-  "6ac91a3d3467060e": {
-   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself).",
-   "text": "Nhấp chuột phải vào một liên kết, video, âm thanh hoặc hình ảnh và chọn <g1>Tải xuống bằng Mister Download Manager</g1>. MDM sẽ tải xuống bất kể loại nào: bạn đã yêu cầu, vì vậy danh sách loại tệp và các trang web bị loại trừ không áp dụng ở đây (chúng chỉ quyết định MDM tự động tiếp quản những lượt tải xuống nào)."
-  },
   "6add747d087cfb25": {
    "source": "Adds an http, https, ftp or ftps address and starts it, or only queues it. It can say which folder and file name to use. A magnet link opens <g1>Add torrent</g1> in MDM, for you to choose the files.",
    "text": "Thêm địa chỉ http, https, ftp hoặc ftps và bắt đầu tải xuống, hoặc chỉ xếp hàng. Nó có thể chỉ định thư mục và tên tệp để sử dụng. Một liên kết magnet sẽ mở <g1>Thêm torrent</g1> trong MDM, để bạn chọn các tệp."
+  },
+  "6ae2427db2e01eba": {
+   "source": "MDM isn't installed, or browser integration isn't set up",
+   "text": "MDM chưa được cài đặt, hoặc tích hợp trình duyệt chưa được thiết lập"
   },
   "6b0911ac05d6e883": {
    "source": "Linux, the AppImage or the .tar.gz",
@@ -3698,6 +3782,10 @@
    "source": "What to do",
    "text": "Cách xử lý"
   },
+  "7461d4770c6a9bbe": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Install the browser from your distribution's packages (or the browser maker's own <x1/> or <x2/>) to use browser integration.",
+   "text": "Các trình duyệt được cài đặt dưới dạng Flatpak hoặc Snap chạy trong một hộp cát có thể ngăn chúng khởi động các chương trình bên ngoài, vì vậy chúng có thể không thể truy cập MDM. Cài đặt trình duyệt từ các gói của bản phân phối của bạn (hoặc <x1/> hoặc <x2/> của nhà sản xuất trình duyệt) để sử dụng tích hợp trình duyệt."
+  },
   "74632f0763b57b9b": {
    "source": "any distribution: make it executable, run it",
    "text": "bất kỳ bản phân phối nào: đặt quyền thực thi, chạy"
@@ -3754,6 +3842,10 @@
    "source": "<g1>Synchronization queue</g1> — finished downloads stay in it instead of leaving. It is the only queue that takes finished downloads.",
    "text": "<g1>Hàng đợi đồng bộ hóa</g1> — các lượt tải xuống đã hoàn tất sẽ ở lại trong hàng đợi này thay vì rời đi. Đây là hàng đợi duy nhất chứa các lượt tải xuống đã hoàn tất."
   },
+  "76ca1f61789efab8": {
+   "source": "MDM didn't start in time",
+   "text": "MDM không khởi động kịp thời"
+  },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
    "text": "Từ trên xuống dưới:"
@@ -3802,6 +3894,10 @@
    "source": "Answer",
    "text": "Trả lời"
   },
+  "7830997efe7b81a7": {
+   "source": "MDM also takes the file types the browser would show or play itself (a PDF, an MP3), when they're listed in <g1>Options → File types</g1> and <g2>Also take files the browser would open</g2> is ticked in <g3>Options → General → Keys...</g3>. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox. Sites in MDM's excluded sites keep opening them in the browser. Hold <g4>Alt</g4> while clicking a link to leave it to the browser: Firefox then opens it, while Chromium browsers download it themselves (Alt+click is their own \"download link\").",
+   "text": "MDM cũng lấy các loại tệp mà trình duyệt sẽ hiển thị hoặc phát (PDF, MP3) nếu chúng được liệt kê trong <g1>Tùy chọn → Loại tệp</g1> và <g2>Cũng lấy các tệp mà trình duyệt sẽ mở</g2> được chọn trong <g3>Tùy chọn → Chung → Phím...</g3>. Điều này yêu cầu trình duyệt Chromium (Chrome, Edge, Brave, Opera, Vivaldi) phiên bản 128 trở lên hoặc Firefox. Các trang web trong danh sách loại trừ của MDM vẫn sẽ mở chúng trong trình duyệt. Giữ <g4>Alt</g4> trong khi nhấp vào liên kết để để trình duyệt xử lý: Firefox sẽ mở nó, trong khi các trình duyệt Chromium sẽ tự tải xuống (Alt+nhấp là \"tải xuống liên kết\" của chúng)."
+  },
   "784272a0fc664eaa": {
    "source": "Enter",
    "text": "Enter"
@@ -3849,6 +3945,10 @@
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "Thêm bản tải xuống (<g1>Thêm URL</g1>)"
+  },
+  "7a6583f7f0b33adf": {
+   "source": "The browser and MDM aren't connected — Mister Download Manager help",
+   "text": "Trình duyệt và MDM không kết nối — Trợ giúp Mister Download Manager"
   },
   "7a68d73f601fe50b": {
    "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and…",
@@ -3926,6 +4026,10 @@
    "source": "Vivaldi",
    "text": "Vivaldi"
   },
+  "7caa819cbb46080c": {
+   "source": "MDM doesn't accept this copy of the extension",
+   "text": "MDM không chấp nhận bản sao tiện ích mở rộng này"
+  },
   "7cab5b043dd16bd1": {
    "source": "The app and the extension <g1>send nothing about you to us</g1>. We don't run servers that could receive it.",
    "text": "Ứng dụng và tiện ích mở rộng <g1>không gửi bất kỳ thông tin nào về bạn cho chúng tôi</g1>. Chúng tôi không vận hành máy chủ nào có thể nhận thông tin đó."
@@ -3974,6 +4078,10 @@
    "source": "Yes. Mister Download Manager is a free, open-source download manager laid out the way IDM users expect, with a faster engine, torrents and video downloads built in.",
    "text": "Có. Mister Download Manager là một trình quản lý tải xuống miễn phí, mã nguồn mở với giao diện mà người dùng IDM mong đợi, có công cụ nhanh hơn, tích hợp tải torrent và video."
   },
+  "7d9082fb6f1abec9": {
+   "source": "Firefox 140 or later is needed.",
+   "text": "Cần có Firefox 140 trở lên."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Tác vụ → Cài đặt torrent → Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g1> có ghi vào registry, chỉ cho tài khoản Windows của bạn. Hãy tắt nó để giữ bản di động không có registry."
@@ -4006,13 +4114,13 @@
    "source": "In dialogs",
    "text": "Trong hộp thoại"
   },
-  "7e3ed952da0e1690": {
-   "source": "<g1>Mister Download Manager Integration Module</g1> appears in the list. Leave it turned on.",
-   "text": "<g1>Mô-đun Tích hợp Mister Download Manager</g1> xuất hiện trong danh sách. Hãy để nó bật."
-  },
   "7e48cc23f12b2ed9": {
    "source": "Download",
    "text": "Tải xuống"
+  },
+  "7e997f3f6fbc646c": {
+   "source": "The extension can't read this site",
+   "text": "Tiện ích mở rộng không thể đọc trang web này"
   },
   "7e9b5f493f60eac4": {
    "source": "By default MDM asks what to do when you add an address it already has. You can choose a fixed answer in <g1>Options → Downloads → If a duplicate download link is added</g1>:",
@@ -4057,6 +4165,10 @@
   "800e0762cdcbb57e": {
    "source": "Classic: toolbar, categories, list",
    "text": "Cổ điển: thanh công cụ, danh mục, danh sách"
+  },
+  "801512d2726be7fc": {
+   "source": "With a VPN or proxy program, allow connections to <x1/> (your own computer): the browser's helper reaches MDM through one.",
+   "text": "Với chương trình VPN hoặc proxy, hãy cho phép kết nối đến <x1/> (máy tính của bạn): trình hỗ trợ của trình duyệt kết nối với MDM thông qua một trong số đó."
   },
   "802bfd4bcc1b177c": {
    "source": "<g1>Your proxy</g1>, if you set one in <g2>Options → Proxy / Socks</g2>, and your network's proxy auto-config script, if you point MDM at one.",
@@ -4126,6 +4238,10 @@
    "source": "Does MDM collect my data? — Mister Download Manager",
    "text": "MDM có thu thập dữ liệu của tôi không? — Mister Download Manager"
   },
+  "8194da6d2ed769e2": {
+   "source": "The extension's button shows whether the browser reaches MDM. A red <g1>!</g1> means it doesn't; click the button to see why, and <g2>How to fix it</g2> opens the matching section of <g3>The browser and MDM aren't connected</g3>. The button also:",
+   "text": "Nút của tiện ích mở rộng cho biết trình duyệt có kết nối được với MDM hay không. Dấu <g1>!</g1> màu đỏ có nghĩa là không; nhấp vào nút để xem lý do, và <g2>Cách khắc phục</g2> mở phần tương ứng của <g3>Trình duyệt và MDM không được kết nối</g3>. Nút này cũng:"
+  },
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "Giao diện của MDM có 86 ngôn ngữ: mọi ngôn ngữ hiển thị mà Windows 11 cung cấp, từ tiếng Afrikaans đến tiếng Việt, bao gồm cả hai dạng chữ Trung Quốc, tiếng Tây Ban Nha cho…"
@@ -4153,6 +4269,10 @@
   "827d5df0769ca662": {
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (<g1>Options → General → Offer to download links copied to the clipboard</g1>, on by default). You can also paste links into <g2>Add URL</g2>, drag them onto the drop target, add a whole batch, or use the command line. See <g3>Adding downloads</g3>.",
    "text": "Có. Sao chép một liên kết đến một tệp và MDM đề xuất tải xuống ngay lập tức (<g1>Tùy chọn → Chung → Đề xuất tải xuống các liên kết đã sao chép vào bảng tạm</g1>, bật theo mặc định). Bạn cũng có thể dán liên kết vào <g2>Thêm URL</g2>, kéo chúng vào mục tiêu thả, thêm một loạt hoặc sử dụng dòng lệnh. Xem <g3>Thêm tải xuống</g3>."
+  },
+  "82889cb817f4eb65": {
+   "source": "<g1>Take downloads from this browser</g1>: untick it to pause, and every download stays with the browser until you tick it again.",
+   "text": "<g1>Tải xuống từ trình duyệt này</g1>: bỏ chọn để tạm dừng, và mọi lượt tải xuống vẫn ở lại với trình duyệt cho đến khi bạn chọn lại."
   },
   "82a5d8b104cd86f2": {
    "source": "The same setting is in <g1>Options → Connection</g1>.",
@@ -4186,17 +4306,21 @@
    "source": "A filtered column's funnel turns blue. To remove every filter, right-click a column title and choose <g1>Clear all filters</g1>. Filters last until you close MDM.",
    "text": "Biểu tượng hình phễu của cột đã lọc sẽ chuyển sang màu xanh. Để xóa tất cả bộ lọc, nhấp chuột phải vào tiêu đề cột và chọn <g1>Xóa tất cả bộ lọc</g1>. Bộ lọc sẽ tồn tại cho đến khi bạn đóng MDM."
   },
-  "839c271ee71b7c24": {
-   "source": "Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
-   "text": "Mọi thứ khác vẫn ở lại với trình duyệt. Các thay đổi trong Tùy chọn sẽ đến trình duyệt trong vòng một phút; bạn không cần phải khởi động lại nó."
-  },
   "83b7e1529c1cbdec": {
    "source": "0.00 s",
    "text": "0,00 giây"
   },
+  "83c2fa9b07b68fce": {
+   "source": "The connection to MDM failed",
+   "text": "Kết nối đến MDM thất bại"
+  },
   "83caac9f938cc79a": {
    "source": "How a program talks to MDM",
    "text": "Cách một chương trình giao tiếp với MDM"
+  },
+  "83cfeac35d769e94": {
+   "source": "It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.",
+   "text": "Nó lưu trữ các cài đặt riêng của mình (tạm dừng hay không, loại tệp và các trang web bị loại trừ của MDM, trạng thái kết nối của nó, nơi bạn đã kéo nút video trên mỗi trong số 200 trang web gần đây nhất; không có gì từ các cửa sổ riêng tư) trong bộ nhớ tiện ích mở rộng của trình duyệt, trên máy tính của bạn."
   },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
@@ -4221,10 +4345,6 @@
   "849cc793b88d90c3": {
    "source": "On a finished download, double-click shows its <g1>Properties</g1>. To open the file instead, right-click any download and choose <g2>On Double click → Open</g2>.",
    "text": "Trên một bản tải xuống đã hoàn tất, nhấp đúp sẽ hiển thị <g1>Thuộc tính</g1> của nó. Để mở tệp thay vì đó, nhấp chuột phải vào bất kỳ bản tải xuống nào và chọn <g2>Khi nhấp đúp → Mở</g2>."
-  },
-  "84a64e8448db3640": {
-   "source": "Last updated 2026-11-01",
-   "text": "Cập nhật lần cuối 2026-11-01"
   },
   "84a8b37a9cdcaee5": {
    "source": "Translations",
@@ -4302,10 +4422,6 @@
    "source": "When resuming isn't possible",
    "text": "Khi không thể tiếp tục"
   },
-  "87a2294c0228bc65": {
-   "source": "The <g1>Mister Download Manager Integration Module</g1> extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox:",
-   "text": "Tiện ích mở rộng <g1>Mô-đun Tích hợp Mister Download Manager</g1> cho Chrome, Edge, Brave, Opera, Vivaldi và Firefox:"
-  },
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "Những điểm khác biệt"
@@ -4321,6 +4437,10 @@
   "887c8bb8b7cd51b3": {
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "Nhấp vào <g1>Cài đặt</g1>, sau đó <g2>Hoàn tất</g2> để khởi động MDM."
+  },
+  "888f93dc8f248ae4": {
+   "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
+   "text": "<g1>Tệp dữ liệu sự cố (<x2/>)</g1> là ảnh chụp nhanh những gì MDM đang chạy vào thời điểm đó. Nó giúp ích nhiều nhất cho các nhà phát triển, nhưng nó có thể chứa các phần dữ liệu mà MDM có trong bộ nhớ, chẳng hạn như địa chỉ tải xuống, cookie và mật khẩu đã lưu. Nó chỉ được đính kèm khi bạn chọn <g3>Đính kèm cả dữ liệu sự cố</g3>."
   },
   "8893720638f95e94": {
    "source": "4. Third-party components",
@@ -4442,6 +4562,10 @@
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>Cấu hình proxy/socks thủ công</g1> — nhập địa chỉ proxy, <g2>Cổng</g2>, và <g3>Tên người dùng</g3> và <g4>Mật khẩu</g4> nếu cần, sau đó đánh dấu các giao thức mà nó dành cho (<g5>http</g5>, <g6>https</g6>). Đối với proxy SOCKS, viết địa chỉ là <x7/>."
   },
+  "8c699effe606d133": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
+   "text": "Các tệp MDM tải xuống từ trình duyệt được đánh dấu là đến từ internet, giống như trình duyệt đánh dấu của riêng nó: Windows kiểm tra một chương trình bằng SmartScreen trước khi chạy và Office mở một tài liệu trong Chế độ bảo vệ."
+  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>Thanh công cụ.</g1> <g2>Thêm URL</g2>, <g3>Thêm Torrent</g3>, <g4>Tiếp tục</g4>, <g5>Dừng</g5>, <g6>Dừng tất cả</g6>, <g7>Xóa</g7>, <g8>Xóa đã hoàn tất</g8>, <g9>Tùy chọn</g9>, <g10>Bộ lập lịch</g10>, <g11>Bắt đầu hàng đợi</g11>, <g12>Dừng hàng đợi</g12>. Mũi tên nhỏ bên cạnh <g13>Thêm Torrent</g13>, <g14>Bắt đầu hàng đợi</g14> và <g15>Dừng hàng đợi</g15> mở thêm các lựa chọn."
@@ -4453,6 +4577,10 @@
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "Số kết nối mỗi tệp"
+  },
+  "8cb163cde329bcf4": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
+   "text": "<g1>Mister Download Manager</g1> xuất hiện trong danh sách. Hãy bật nó. Ghim nút của nó vào thanh công cụ để xem nhanh trình duyệt có kết nối được với MDM hay không."
   },
   "8cfa4742e8d4318b": {
    "source": "The harness",
@@ -4477,6 +4605,10 @@
   "8dbeeeabcf1f6918": {
    "source": "<g1>86 interface languages</g1>, every language Windows 11 offers, chosen by flag on the first start or in <g2>View → Language...</g2>; right to left for Arabic, Hebrew, Persian, Urdu and Uyghur; fonts for every script from the system itself. The installer speaks the same languages, and the browser extension speaks your browser's (50 languages).",
    "text": "<g1>86 ngôn ngữ giao diện</g1>, mọi ngôn ngữ mà Windows 11 cung cấp, được chọn bằng cờ khi khởi động lần đầu hoặc trong <g2>Xem → Ngôn ngữ...</g2>; từ phải sang trái cho tiếng Ả Rập, tiếng Do Thái, tiếng Ba Tư, tiếng Urdu và tiếng Duy Ngô Nhĩ; phông chữ cho mọi tập lệnh từ chính hệ thống. Trình cài đặt nói cùng ngôn ngữ, và tiện ích mở rộng trình duyệt nói ngôn ngữ của trình duyệt của bạn (50 ngôn ngữ)."
+  },
+  "8de593350090e7e8": {
+   "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
+   "text": "Nếu MDM không bao giờ mở, xem <g1>Trình cài đặt hoặc MDM sẽ không khởi động</g1>."
   },
   "8dfb095805a146c6": {
    "source": "<g1>Also delete the file from disk</g1> — tick it to delete the files too. For an unfinished download, this deletes the part downloaded so far. Leave it unticked to take the downloads off the list and keep the files.",
@@ -4534,6 +4666,10 @@
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB trong 1,0 giây</g1> <g2>IDM: 5,5 giây</g2>"
   },
+  "8fe29a431a6dd71a": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
+   "text": "Nhấp chuột phải vào một liên kết, video, âm thanh hoặc hình ảnh và chọn <g1>Tải xuống bằng Mister Download Manager</g1>. MDM sẽ tải xuống bất kể loại của nó: bạn đã yêu cầu, vì vậy danh sách loại tệp và các trang web bị loại trừ không áp dụng ở đây (chúng chỉ quyết định MDM tự động tiếp quản những lượt tải xuống nào). Một video phát dưới dạng luồng sẽ chuyển đến cửa sổ <g2>Tải xuống video</g2>."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5,5 giây<g1><g2>2</g2></g1>"
@@ -4545,6 +4681,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "Bản sao <x1/> không có trình cài đặt, nhưng bạn có thể tự đăng ký trình hỗ trợ. Mở dấu nhắc lệnh trong thư mục của MDM và chạy:"
+  },
+  "90ec7723b3b09b2a": {
+   "source": "Last updated 2026-11-02",
+   "text": "Cập nhật lần cuối 2026-11-02"
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -4674,10 +4814,6 @@
    "source": "<g1>Description</g1> — a note of your own. It shows in the list's <g2>Description</g2> column and Find can search it.",
    "text": "<g1>Mô tả</g1> — ghi chú của riêng bạn. Nó hiển thị trong cột <g2>Mô tả</g2> của danh sách và Tìm kiếm có thể tìm kiếm nó."
   },
-  "946929e528c20fc9": {
-   "source": "<g1>Mister Download Manager Integration Module</g1> appears. Make sure it is turned on.",
-   "text": "<g1>Mô-đun Tích hợp Mister Download Manager</g1> xuất hiện. Đảm bảo rằng nó đã được bật."
-  },
   "94779d223bac3da1": {
    "source": "The Scheduler didn't start the queue",
    "text": "Bộ lập lịch không khởi động hàng đợi"
@@ -4762,10 +4898,6 @@
    "source": "Unzip the file to a folder you can write to (not straight into <x1/>).",
    "text": "Giải nén tệp vào một thư mục bạn có thể ghi vào (không trực tiếp vào <x1/>)."
   },
-  "96dabf126d6a950a": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens for that page and looks up the qualities it can download (the same as pasting the page's address there). It works for embedded players too: a video from another site in a page is downloaded from that site.",
-   "text": "Di chuột vào một video trên trang web, một nút nhỏ <g1>Tải xuống video</g1> sẽ hiện ra ở cạnh. Nhấp vào đó, cửa sổ <g2>Tải xuống video từ một trang</g2> của MDM sẽ mở ra cho trang đó và tìm kiếm các chất lượng có thể tải xuống (giống như dán địa chỉ trang vào đó). Nó cũng hoạt động với các trình phát nhúng: một video từ trang khác trong một trang sẽ được tải xuống từ trang đó."
-  },
   "970430e3defd4e45": {
    "source": "Browser integration →",
    "text": "Tích hợp trình duyệt →"
@@ -4785,6 +4917,14 @@
   "974c25dc825af253": {
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Cài đặt MDM bằng trình cài đặt và giữ nguyên tùy chọn <g1>Thiết lập tích hợp trình duyệt (Chrome, Edge, Brave, Firefox)</g1>. Thao tác này sẽ đăng ký trình hỗ trợ. (Bản sao di động không thể làm điều này; xem <g2>Chế độ di động</g2>.)"
+  },
+  "9752e164b9235433": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
+   "text": "Các quyền của nó và lý do: <g1>downloads</g1> để xem và chuyển giao các lượt tải xuống; <g2>cookies</g2> để các lượt tải xuống đã đăng nhập hoạt động trong MDM; <g3>nativeMessaging</g3> để giao tiếp với MDM; <g4>contextMenus</g4> cho các mục nhấp chuột phải; <g5>storage</g5> cho các cài đặt của nó; <g6>webRequest</g6> để xem các biểu mẫu đã gửi và các luồng video đã tải (nó không thay đổi gì); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge và các trình duyệt Chromium khác) để các tệp mà trình duyệt sẽ mở (một PDF) được tải xuống thay thế, cho các loại mà MDM xử lý; trong Firefox, <g8>webRequestBlocking</g8> thực hiện điều đó; <g9>scripting</g9> để đọc các liên kết của trang khi bạn yêu cầu, và để thêm nút video vào các trang đã mở khi tiện ích mở rộng được cài đặt; quyền truy cập vào tất cả các trang web vì các lượt tải xuống và video có thể đến từ bất kỳ trang web nào."
+  },
+  "976e1bc04dee0c02": {
+   "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
+   "text": "Cả địa chỉ bạn đã nhấp và địa chỉ mà các chuyển hướng của nó dẫn đến đều được kiểm tra, vì vậy một trang web bạn đã loại trừ vẫn bị loại trừ ngay cả khi nó gửi bạn đến một máy chủ khác. Mọi thứ khác vẫn ở lại với trình duyệt. Các thay đổi trong Tùy chọn sẽ đến trình duyệt trong vòng một phút; bạn không cần phải khởi động lại nó."
   },
   "9772287c22790a58": {
    "source": "Unzip it onto the stick, for example to <x1/>.",
@@ -4974,6 +5114,10 @@
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a page. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See Download a video from a page.",
    "text": "Di chuột vào video trong trình duyệt của bạn và nhấp vào nút Tải xuống video xuất hiện trên đó, hoặc dán địa chỉ trang vào Tác vụ → Tải xuống video từ một trang. MDM liệt kê mọi chất lượng mà trang web cung cấp, cùng với kích thước; chọn một và nó sẽ tải xuống như bất kỳ tệp nào. Nó sử dụng yt-dlp, hỗ trợ hàng nghìn trang web. Chỉ tải xuống những video mà bạn có quyền. Xem Tải xuống video từ một trang."
   },
+  "9d1326816ebdec07": {
+   "source": "Firefox forgets the extension after a restart",
+   "text": "Firefox quên tiện ích mở rộng sau khi khởi động lại"
+  },
   "9d148e6408c5dc4e": {
    "source": ": each report (<x1/>) and its crash data (<x2/>);",
    "text": ": mỗi báo cáo (<x1/>) và dữ liệu sự cố của nó (<x2/>);"
@@ -5010,13 +5154,13 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Bảy lượt tải xuống, mỗi lượt được cả hai ứng dụng chạy ít nhất bảy lần. Thanh biểu thị nửa giữa của các lượt chạy, đường biểu thị giá trị trung vị."
   },
+  "9eace8e71a572e6e": {
+   "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
+   "text": "Loại tệp có nằm trong <g1>Tùy chọn → Loại tệp</g1> không? Chỉ các loại được liệt kê mới được tự động tải xuống. <g2>Tải xuống bằng Mister Download Manager</g2> trong menu chuột phải sẽ tải xuống bất kỳ liên kết nào."
+  },
   "9ebe47af30bc7593": {
    "source": "Click your language above: it opens its file on GitHub, one text per row.",
    "text": "Nhấp vào ngôn ngữ của bạn ở trên: nó sẽ mở tệp của ngôn ngữ đó trên GitHub, mỗi dòng một văn bản."
-  },
-  "9ec1b2251f27d667": {
-   "source": "MDM doesn't have keys yet that force a download to MDM or keep it in the browser while you click. The <g1>Keys...</g1> button in <g2>Options → General</g2> is greyed for that reason.",
-   "text": "MDM chưa có các phím để buộc tải xuống bằng MDM hoặc giữ nó trong trình duyệt khi bạn nhấp. Nút <g1>Phím...</g1> trong <g2>Tùy chọn → Chung</g2> bị làm mờ vì lý do đó."
   },
   "9ed24f4107645a20": {
    "source": "Fixed",
@@ -5114,9 +5258,17 @@
    "source": "Some buttons are greyed. They belong to features that aren't built yet.",
    "text": "Một số nút bị làm mờ. Chúng thuộc về các tính năng chưa được xây dựng."
   },
+  "a1a366218784daae": {
+   "source": "Hold <g1>Alt</g1> while clicking a link to let the browser download it instead of MDM. In Firefox, Alt+click saves a link only when its <x2/> setting is on (in <x3/>); otherwise right-click the link and choose <g4>Save Link As...</g4>, which the browser keeps. <g5>Options → General → Keys...</g5> says so, and holds <g6>Also take files the browser would open</g6>.",
+   "text": "Giữ <g1>Alt</g1> trong khi nhấp vào một liên kết để trình duyệt tải xuống thay vì MDM. Trong Firefox, Alt+nhấp chỉ lưu một liên kết khi cài đặt <x2/> của nó được bật (trong <x3/>); nếu không, nhấp chuột phải vào liên kết và chọn <g4>Lưu liên kết thành...</g4>, mà trình duyệt sẽ giữ lại. <g5>Tùy chọn → Chung → Phím...</g5> nói như vậy, và giữ <g6>Cũng tải xuống các tệp trình duyệt sẽ mở</g6>."
+  },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
    "text": "Tại sao MDM không bắt được link tải xuống của tôi? — Mister Download Manager"
+  },
+  "a294b81a4c5134b9": {
+   "source": "Install MDM with the setup from <g1>the download page</g1>, and keep <g2>Set up browser integration</g2> ticked.",
+   "text": "Cài đặt MDM bằng trình cài đặt từ <g1>trang tải xuống</g1>, và giữ tùy chọn <g2>Thiết lập tích hợp trình duyệt</g2> được chọn."
   },
   "a297a35d3e7d0c76": {
    "source": "Mister Download Manager isn't running",
@@ -5133,6 +5285,10 @@
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Tìm hiểu danh sách tải xuống →"
+  },
+  "a30f62455a77a82a": {
+   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> is removed when Firefox closes, so for now it has to be loaded again after each restart (see <g2>Browser integration</g2>). A signed add-on that Firefox keeps is on the way.",
+   "text": "Một tiện ích bổ sung được tải bằng <g1>Tải tiện ích bổ sung tạm thời</g1> sẽ bị xóa khi Firefox đóng, vì vậy hiện tại nó phải được tải lại sau mỗi lần khởi động lại (xem <g2>Tích hợp trình duyệt</g2>). Một tiện ích bổ sung đã ký mà Firefox giữ lại đang được phát triển."
   },
   "a332d36c2ada2664": {
    "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
@@ -5182,6 +5338,10 @@
    "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
    "text": "<g1>Thêm danh mục</g1> — tạo danh mục của riêng bạn, ví dụ <g2>Sách</g2> cho <x3/>. Đặt tên, loại tệp (cách nhau bằng dấu cách, cho phép <x4/>) và một thư mục."
   },
+  "a4d3460eeaa0a1e4": {
+   "source": "Linux: Flatpak and Snap browsers",
+   "text": "Linux: Trình duyệt Flatpak và Snap"
+  },
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "Giao diện của MDM có 86 ngôn ngữ: mọi ngôn ngữ hiển thị mà Windows 11 cung cấp, từ tiếng Afrikaans đến tiếng Việt, bao gồm cả hai loại chữ Hán, tiếng Tây Ban Nha cho Tây Ban Nha và Mexico, tiếng Pháp cho Pháp và Canada, tiếng Bồ Đào Nha cho Bồ Đào Nha và Brazil, và tiếng Serbia bằng chữ Kirin và Latinh."
@@ -5205,10 +5365,6 @@
   "a55c59b0ebf8abf9": {
    "source": "<g1>Set file creation date as provided by the server</g1> — give finished files the date the server reports, not the date you downloaded them.",
    "text": "<g1>Đặt ngày tạo tệp theo máy chủ cung cấp</g1> — đặt cho các tệp đã hoàn thành ngày mà máy chủ báo cáo, chứ không phải ngày bạn tải xuống."
-  },
-  "a5970cd3b386c01b": {
-   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager Integration Module</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
-   "text": "Tiện ích mở rộng đã được tải và bật chưa? Tìm <g1>Mô-đun Tích hợp Mister Download Manager</g1> trên trang tiện ích mở rộng của trình duyệt. Trong Firefox, một tiện ích bổ sung tạm thời sẽ biến mất sau khi khởi động lại. Xem <g2>Tích hợp trình duyệt</g2>."
   },
   "a5c20256467ea927": {
    "source": "MDM is a tool, like a web browser. You agree to use it lawfully, and in particular:",
@@ -5286,9 +5442,17 @@
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>Các biểu tượng tệp trong danh sách tải xuống</g1> bị vẽ đè lên ngăn Danh mục khi danh sách được cuộn ngang (cây Danh mục và Bộ lập lịch cũng có lỗi tương tự)."
   },
+  "a7d84ef6d2022e62": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); load the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
+   "text": "MDM tự thiết lập tích hợp trình duyệt mỗi khi khởi động trên Linux và macOS (các trình duyệt đã cài đặt sẽ được tìm thấy); hãy tải tiện ích mở rộng như trong <g1>Tích hợp trình duyệt</g1>. Các trình duyệt được cài đặt dưới dạng Flatpak hoặc Snap có thể không kết nối được với MDM."
+  },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
    "text": "Bắt đầu và dừng hàng đợi"
+  },
+  "a80cb83be49f9624": {
+   "source": "A small script in every page notes only the links you click while holding <g1>Alt</g1>, so those downloads stay with the browser; the addresses are kept in memory for a few seconds.",
+   "text": "Một tập lệnh nhỏ trong mỗi trang chỉ ghi lại các liên kết bạn nhấp trong khi giữ <g1>Alt</g1>, để các lượt tải xuống đó vẫn ở trong trình duyệt; các địa chỉ được giữ trong bộ nhớ trong vài giây."
   },
   "a826f7d39e61ae44": {
    "source": "Downloading",
@@ -5338,6 +5502,10 @@
    "source": "<g1>Launch Mister Download Manager on startup</g1> in <g2>Options → General</g2> is greyed: starting with Windows needs the registry.",
    "text": "<g1>Khởi chạy Mister Download Manager khi khởi động</g1> trong <g2>Tùy chọn → Chung</g2> bị làm mờ: khởi động cùng Windows cần registry."
   },
+  "a9c0ebf6a6817e58": {
+   "source": "The browser opens PDFs and music instead of sending them",
+   "text": "Trình duyệt mở PDF và nhạc thay vì gửi chúng"
+  },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "Bắt các bản tải xuống từ trình duyệt của bạn"
@@ -5373,6 +5541,10 @@
   "ab100241dc57cf32": {
    "source": "Ctrl+F",
    "text": "Ctrl+F"
+  },
+  "ab27f8afb9ce9f2a": {
+   "source": "Also check the extension's toolbar button: with <g1>Take downloads from this browser</g1> off, everything stays with the browser.",
+   "text": "Cũng kiểm tra nút trên thanh công cụ của tiện ích mở rộng: nếu <g1>Tải xuống từ trình duyệt này</g1> tắt, mọi thứ sẽ do trình duyệt xử lý."
   },
   "ab35ea0188ea0106": {
    "source": "In MDM's data folder:",
@@ -5514,6 +5686,10 @@
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
    "text": "<g1>Địa chỉ</g1> (Thêm URL) và <g2>Lưu Thành</g2> (Thông tin tệp tải xuống) liệt kê 20 địa chỉ và thư mục gần đây nhất từ các mũi tên của chúng; <g3>...</g3> bên cạnh Lưu Thành chọn một thư mục, <g4>+</g4> bên cạnh Danh mục tạo một thư mục."
   },
+  "aef4941497a48310": {
+   "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
+   "text": "Lần khởi động đầu tiên, ổ đĩa chậm, hoặc phần mềm diệt virus đang quét MDM có thể mất nhiều thời gian như vậy. Lần sau thường sẽ nhanh chóng."
+  },
   "af2d311733924046": {
    "source": "IDM",
    "text": "IDM"
@@ -5570,6 +5746,10 @@
    "source": "marks the keyboard letter of a menu item or button. Keep one <x1/> before a letter of your translation.",
    "text": "đánh dấu chữ cái bàn phím của một mục menu hoặc nút. Giữ một <x1/> trước một chữ cái của bản dịch của bạn."
   },
+  "b0fe3e5f338ca579": {
+   "source": "On Linux and macOS, MDM sets browser integration up itself each time it starts: start MDM once.",
+   "text": "Trên Linux và macOS, MDM tự thiết lập tích hợp trình duyệt mỗi khi khởi động: hãy khởi động MDM một lần."
+  },
   "b11d8dfbcafa5912": {
    "source": "Is it safe to install?",
    "text": "Có an toàn để cài đặt không?"
@@ -5581,6 +5761,10 @@
   "b1286285f8338dd7": {
    "source": "Make a <x1/> of a file or folder (peers find it through the DHT).",
    "text": "Tạo một <x1/> của một tệp hoặc thư mục (các peer tìm thấy nó thông qua DHT)."
+  },
+  "b131e9b7540e88e0": {
+   "source": "The browser can't find the small helper program it talks to. It is registered when MDM is installed.",
+   "text": "Trình duyệt không thể tìm thấy chương trình hỗ trợ nhỏ mà nó giao tiếp. Chương trình này được đăng ký khi MDM được cài đặt."
   },
   "b132b005cfa29649": {
    "source": "Can I limit the download speed?",
@@ -5669,6 +5853,10 @@
   "b32ef7002c1dde78": {
    "source": "The main window in dark mode",
    "text": "Cửa sổ chính ở chế độ tối"
+  },
+  "b34461e3c513158b": {
+   "source": "The extension is newer than MDM",
+   "text": "Tiện ích mở rộng mới hơn MDM"
   },
   "b34ed9fb2f3ef9fb": {
    "source": "<g1>Video from a page</g1> Paste a page's address and choose a quality, up to 4K, from YouTube, Vimeo and thousands of other sites.",
@@ -5854,9 +6042,9 @@
    "source": "All the ways to add a download →",
    "text": "Tất cả các cách để thêm lượt tải xuống →"
   },
-  "ba1614a7d7ce3ce6": {
-   "source": "When none of this helps, the browser keeps the download, so nothing is lost.",
-   "text": "Khi không có cách nào trong số này giúp được, trình duyệt sẽ giữ lại lượt tải xuống, vì vậy không có gì bị mất."
+  "ba71746213a31b99": {
+   "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> and <g5>Vivaldi</g5>, and in <g6>Firefox</g6> 140 or later.",
+   "text": "Tiện ích mở rộng hoạt động trong <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> và <g5>Vivaldi</g5>, và trong <g6>Firefox</g6> 140 trở lên."
   },
   "ba7398fafefc4533": {
    "source": "Peak memory",
@@ -5925,6 +6113,10 @@
   "bc713e862e9b84d3": {
    "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
    "text": "Mỗi bản tải xuống thuộc về một danh mục theo loại tệp của nó: <g1>Chung</g1>, <g2>Đã nén</g2>, <g3>Tài liệu</g3>, <g4>Nhạc</g4>, <g5>Chương trình</g5> hoặc <g6>Video</g6>. Torrent có danh mục <g7>Torrent</g7> riêng. Mỗi danh mục có thư mục riêng, mặc định nằm trong thư mục Tải xuống của bạn (<x8/>, <x9/> và cứ thế; Chung sử dụng <x10/>)."
+  },
+  "bc81c47e31837501": {
+   "source": "Start MDM yourself and try the download again.",
+   "text": "Tự khởi động MDM và thử tải xuống lại."
   },
   "bc83548866edf95a": {
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
@@ -6010,10 +6202,6 @@
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "Mở menu đầu tiên (<g1>Tác vụ</g1>); trên máy Mac <g2>Ctrl+F2</g2>"
   },
-  "bf60e3a830cbc4c4": {
-   "source": "Browser integration is set up by the Windows installer only for now.",
-   "text": "Tích hợp trình duyệt hiện chỉ được thiết lập bởi trình cài đặt Windows."
-  },
   "bf8eed08aa80a086": {
    "source": "<g1>86 languages, right to left too</g1> It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.",
    "text": "<g1>86 ngôn ngữ, cả từ phải sang trái</g1> Nó nói ngôn ngữ của máy tính của bạn. Tiếng Ả Rập, tiếng Do Thái, tiếng Ba Tư và tiếng Urdu được bố trí từ phải sang trái."
@@ -6089,6 +6277,14 @@
   "c1b342c30dced4d7": {
    "source": "<g1>yt-dlp</g1><g2>video from thousands of sites</g2>",
    "text": "<g1>yt-dlp</g1><g2>video từ hàng ngàn trang web</g2>"
+  },
+  "c1b6b2d311bbe187": {
+   "source": "Already installed? Open MDM, then <g1>Options → General → Test browser integration</g1>, and click <g2>Set it up</g2> if it offers to.",
+   "text": "Đã cài đặt rồi? Mở MDM, sau đó <g1>Tùy chọn → Chung → Kiểm tra tích hợp trình duyệt</g1>, và nhấp vào <g2>Thiết lập</g2> nếu có tùy chọn đó."
+  },
+  "c1d36b87b24557b5": {
+   "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
+   "text": "Nó không gây cản trở: nó chỉ hiển thị khi bạn di chuột vào một video (hoặc trình phát có tiêu điểm bàn phím; <g1>Tab</g1> sau đó di chuyển đến nút), mờ dần khi con trỏ dừng lại, và bỏ qua các video nhỏ và các vòng lặp ngắn bị tắt tiếng (ảnh động, hình nền). Ở chế độ toàn màn hình, nó theo dõi video khi trình phát cho phép. Trên một video được bảo vệ bản quyền (DRM), nó sẽ nói rằng video không thể lưu được."
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -6206,6 +6402,10 @@
    "source": "3.39e-06",
    "text": "3.39e-06"
   },
+  "c696667963fca278": {
+   "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
+   "text": "Các liên kết đến tệp PDF hoặc video mà trình duyệt sẽ tự mở cũng sẽ được chuyển đến MDM nếu loại tệp đó được liệt kê. Để trình duyệt tự xử lý một liên kết, hãy giữ phím <g1>Alt</g1> trong khi nhấp vào liên kết đó (Firefox sẽ mở; Chrome và Edge sẽ tự tải xuống). Với bất kỳ liên kết nào khác: nhấp chuột phải vào liên kết đó và chọn <g2>Tải xuống bằng Mister Download Manager</g2>, tùy chọn này chấp nhận mọi loại tệp."
+  },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
    "text": "Trong địa chỉ của <g1>Thêm URL</g1> và <g2>Lưu Thành</g2> của <g3>Thông tin tệp tải xuống</g3>, <g4>Mũi tên lên</g4> / <g5>Mũi tên xuống</g5> duyệt qua các địa chỉ và thư mục đã sử dụng trước đó."
@@ -6262,6 +6462,10 @@
    "source": "The software is free of charge. Anyone selling it to you, or asking you to pay to \"unlock\" it, is not us.",
    "text": "Phần mềm này miễn phí. Bất kỳ ai bán phần mềm này cho bạn, hoặc yêu cầu bạn trả tiền để \"mở khóa\" nó, đều không phải là chúng tôi."
   },
+  "c86bd4ec9e321db1": {
+   "source": "The portable copy can't be connected: it writes nothing outside its own folder. Use the installed copy for browser integration. See <g1>Portable mode</g1>.",
+   "text": "Bản di động không thể kết nối: nó không ghi gì bên ngoài thư mục của nó. Hãy sử dụng bản cài đặt để tích hợp trình duyệt. Xem <g1>Chế độ di động</g1>."
+  },
   "c8930924d0688556": {
    "source": "No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, once a week, asks GitHub whether a newer version exists (you can turn that off in Help → Check for updates). The browser extension talks only to MDM on your own computer. The details are in the privacy policy.",
    "text": "Không. MDM không có tài khoản, không có phân tích hay đo từ xa. Nó kết nối với các máy chủ mà bạn tải xuống và, mỗi tuần một lần, hỏi GitHub xem có phiên bản mới hơn không (bạn có thể tắt tính năng này trong Trợ giúp → Kiểm tra bản cập nhật). Tiện ích mở rộng của trình duyệt chỉ giao tiếp với MDM trên máy tính của bạn. Chi tiết có trong chính sách quyền riêng tư."
@@ -6273,6 +6477,10 @@
   "c8dea75326c8ffe6": {
    "source": "Report a problem",
    "text": "Báo cáo sự cố"
+  },
+  "c9044c08663d0af5": {
+   "source": "A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in <g1>Options → File types</g1> (not on the excluded sites). To turn this off, untick <g2>Also take files the browser would open</g2> in <g3>Options → General → Keys...</g3>. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.",
+   "text": "Một tệp PDF, một bài hát hoặc một video mà trình duyệt sẽ tự hiển thị hoặc phát cũng được chuyển đến MDM, khi loại của nó nằm trong <g1>Tùy chọn → Loại tệp</g1> (không nằm trên các trang web bị loại trừ). Để tắt tính năng này, bỏ chọn <g2>Cũng tải xuống các tệp trình duyệt sẽ mở</g2> trong <g3>Tùy chọn → Chung → Phím...</g3>. Điều này yêu cầu trình duyệt Chromium (Chrome, Edge, Brave, Opera, Vivaldi) phiên bản 128 trở lên, hoặc Firefox."
   },
   "c926f50ffd807ae6": {
    "source": "Yes<g1><g2>3</g2></g1>",
@@ -6346,10 +6554,6 @@
    "source": "3. Choose how many run at once",
    "text": "3. Chọn số lượng chạy cùng lúc"
   },
-  "cb95be2ecc33a037": {
-   "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses. It is only attached when you tick <g3>Also attach the crash data</g3>.",
-   "text": "<g1>Tệp dữ liệu sự cố (<x2/>)</g1> là một ảnh chụp nhanh về những gì MDM đang chạy vào thời điểm đó. Nó giúp các nhà phát triển nhiều nhất, nhưng nó có thể chứa các phần của những gì MDM có trong bộ nhớ, chẳng hạn như địa chỉ tải xuống. Nó chỉ được đính kèm khi bạn chọn <g3>Cũng đính kèm dữ liệu sự cố</g3>."
-  },
   "cbb9f4acc876e0c8": {
    "source": "That button or control",
    "text": "Nút hoặc điều khiển đó"
@@ -6397,6 +6601,10 @@
   "cdbd4b5a71dd1ff3": {
    "source": "The one you know, down to the pixel. With torrents, video and 86 languages it never had.",
    "text": "Cái bạn đã biết, đến từng pixel. Với torrent, video và 86 ngôn ngữ mà nó chưa từng có."
+  },
+  "cdcbc0e8d8adc8ec": {
+   "source": "The file's type is listed in <g1>Options → File types</g1>.",
+   "text": "Loại tệp được liệt kê trong <g1>Tùy chọn → Loại tệp</g1>."
   },
   "cddd71be4d398e2a": {
    "source": "<g1><g2>AI assistants (MCP)</g2></g1> — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.",
@@ -6454,6 +6662,10 @@
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com là một trang web tĩnh. Ba công ty tham gia vào việc hiển thị trang web này cho bạn:"
   },
+  "d029c8a4207a6e22": {
+   "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
+   "text": "Tệp không nhỏ hơn <g1>Không lấy các tệp nhỏ hơn</g1> trong <g2>Tùy chọn → Loại tệp</g2>."
+  },
   "d02d9ac01265fff2": {
    "source": "If a video won't download",
    "text": "Nếu video không tải xuống được"
@@ -6469,6 +6681,10 @@
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "Nếu ai đó đã báo cáo cùng một vấn đề, cửa sổ sẽ thông báo điều đó (<g1>Đã báo cáo là vấn đề #…</g1>). <g2>Mở vấn đề đã báo cáo</g2> sẽ mở nó và đặt báo cáo của bạn vào khay nhớ tạm, để bạn có thể thêm nó làm bình luận."
+  },
+  "d0a89ba0fce0871f": {
+   "source": "A download's details were too large",
+   "text": "Chi tiết của một lượt tải xuống quá lớn"
   },
   "d100800d4f0e156a": {
    "source": "MDM downloads BitTorrent files from magnet links and .torrent files. Torrents appear in the same list as other downloads, marked Torrent in the Source…",
@@ -6541,10 +6757,6 @@
   "d325a1b1c8ab0caa": {
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Mister Download Manager, tiện ích mở rộng trình duyệt và trang web này làm gì với dữ liệu của bạn: ứng dụng và tiện ích mở rộng không thu thập gì; trang web đếm lượt truy cập bằng Statcounter."
-  },
-  "d39699d9affd73bc": {
-   "source": "Firefox 128 or later is needed.",
-   "text": "Cần có Firefox 128 trở lên."
   },
   "d398b17cf99a3004": {
    "source": "IDM median ms (IQR)",
@@ -6665,6 +6877,10 @@
   "d6669c4dc1a051f1": {
    "source": "Close",
    "text": "Đóng"
+  },
+  "d6823fa724cc65ec": {
+   "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
+   "text": "<g1>Mở Mister Download Manager</g1> và <g2>Tùy chọn...</g2>."
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -6818,6 +7034,10 @@
    "source": "1 GiB, fast link (our test)",
    "text": "1 GiB, đường truyền nhanh (thử nghiệm của chúng tôi)"
   },
+  "dbfaeb9bc058b8a9": {
+   "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
+   "text": "Trình duyệt đã khởi động trình hỗ trợ của MDM, nhưng nó đã dừng trước khi trả lời. Phần mềm bảo mật là nguyên nhân thông thường."
+  },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",
    "text": "Mở <g1>Tải xuống → Tùy chọn</g1> và tab <g2>Lưu vào</g2>."
@@ -6870,9 +7090,17 @@
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "Có thể tiếp tục tải xuống bị gián đoạn không? — Mister Download Manager"
   },
+  "de637b34bdd90d74": {
+   "source": "When MDM takes a download, it gets the browser's file name, size and type with it, so <g1>Download File Info</g1> shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data; a form that sends a file stays with the browser.",
+   "text": "Khi MDM tải xuống, nó nhận được tên tệp, kích thước và loại tệp của trình duyệt, vì vậy <g1>Thông tin tệp tải xuống</g1> hiển thị chúng ngay lập tức mà không cần hỏi lại máy chủ. Một lượt tải xuống từ một biểu mẫu (một nút gửi và nhận lại một tệp) được MDM gửi lại với dữ liệu của biểu mẫu; một biểu mẫu gửi một tệp vẫn ở lại với trình duyệt."
+  },
   "de8c9f450c2f7eeb": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>. Only while the API is on.",
    "text": "Mọi lượt tải xuống và tổng tốc độ: <x1/>. <x2/> là <x3/>, <x4/>, <x5/>, <x6/> hoặc <x7/>; <x8/> là <x9/> khi không xác định; <x10/> (lý do thất bại) chỉ có cho một lượt tải xuống trong <x11/>. Chỉ khi API đang bật."
+  },
+  "deb3f2db3855218f": {
+   "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
+   "text": "<g1>Không bao giờ tải xuống từ</g1> trang web hiện tại: thêm nó vào các trang web bị loại trừ của MDM."
   },
   "dee52466980c445e": {
    "source": "<g1>Sites to leave alone:</g1> <g2>Options → File types → Don't start downloading automatically from the following sites</g2>. Add the site's name, for example <x3/> or <x4/>.",
@@ -6922,6 +7150,10 @@
    "source": "New",
    "text": "Mới"
   },
+  "e063a99ff745daad": {
+   "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
+   "text": "<g1>Một MDM cũ hơn?</g1> Cập nhật MDM: một tiện ích mở rộng mới hơn có thể có một ID mà trình hỗ trợ cũ không biết."
+  },
   "e069363b1b77d1db": {
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge và nhiều trình duyệt khác"
@@ -6958,6 +7190,10 @@
    "source": "misterdownloadmanager-cli",
    "text": "misterdownloadmanager-cli"
   },
+  "e1db876325f14b62": {
+   "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
+   "text": "Các lượt tải xuống vẫn hoạt động, nhưng một số tính năng của tiện ích mở rộng cần một MDM mới hơn. Cập nhật nó bằng <g1>Trợ giúp → Kiểm tra bản cập nhật...</g1> trong MDM."
+  },
   "e1e7fd2c10af0107": {
    "source": "\"Download https://example.com/big.iso to D:\\ISOs tonight, don't start it yet.\"",
    "text": "\"Tải xuống https://example.com/big.iso vào D:\\ISOs tối nay, đừng bắt đầu ngay.\""
@@ -6973,10 +7209,6 @@
   "e255969933938cdb": {
    "source": "Where MDM keeps its data",
    "text": "Nơi MDM lưu trữ dữ liệu của nó"
-  },
-  "e299dc8597fdff06": {
-   "source": "Its <g1>Download video</g1> button reads the page only to find video elements and place the button. Clicking it passes the page's address to MDM.",
-   "text": "Nút <g1>Tải xuống video</g1> của nó chỉ đọc trang để tìm các phần tử video và đặt nút. Nhấp vào nút này sẽ chuyển địa chỉ của trang đến MDM."
   },
   "e2f5e55e73258c80": {
    "source": "<g1>Connections.</g1> Passive mode is used by default. <g2>Options → Proxy / Socks → Use FTP in PASV mode</g2> switches it off for servers that only take active connections. FTP connects to the server directly, not through the HTTP proxy.",
@@ -7006,9 +7238,17 @@
    "source": "<g1>Use FTP in PASV mode</g1> — on by default: for FTP downloads MDM opens the data connections itself (passive mode), which works through routers and firewalls. Turn it off only for a server that needs active mode (the server connects back to you). FTP never goes through the proxy above, so its <g2>ftp</g2> box stays greyed. See <g3>FTP and FTPS</g3>.",
    "text": "<g1>Sử dụng FTP ở chế độ PASV</g1> — bật theo mặc định: đối với các lượt tải xuống FTP, MDM tự mở các kết nối dữ liệu (chế độ thụ động), hoạt động thông qua bộ định tuyến và tường lửa. Chỉ tắt nó đối với máy chủ cần chế độ chủ động (máy chủ kết nối lại với bạn). FTP không bao giờ đi qua proxy ở trên, vì vậy hộp <g2>ftp</g2> của nó vẫn bị xám. Xem <g3>FTP và FTPS</g3>."
   },
+  "e393d2a019bf4cc9": {
+   "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
+   "text": "<g1>Tải xuống các liên kết đã chọn</g1> và <g2>Tải xuống tất cả các liên kết</g2> đọc các liên kết của trang (hoặc của lựa chọn của bạn) khi bạn chọn chúng, và chuyển chúng đến MDM cùng với địa chỉ của trang và cookie của trang web đó."
+  },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
    "text": "Thời gian được dùng vào đâu"
+  },
+  "e3ce2a886e89c710": {
+   "source": "Restart the browser after setting it up.",
+   "text": "Khởi động lại trình duyệt sau khi thiết lập."
   },
   "e3ce5d60681227f0": {
    "source": "<g1>GitHub, for video helpers.</g1> If you use <g2>Download video from a page</g2>, MDM downloads yt-dlp (and ffmpeg, if you want merged qualities) from their official GitHub releases, checks them, and once per session asks GitHub whether yt-dlp has a newer release. yt-dlp then talks to the video site you asked for, as your browser would.",
@@ -7058,10 +7298,6 @@
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>Máy khách.</g1> IDM và MDM, cả hai đều ở cài đặt mặc định (8 kết nối), mỗi máy được cấp quyền tải xuống thông qua cùng một dòng lệnh đã được ghi lại: <x2/>. Cả hai đều lưu vào ổ đĩa chứa thư mục tạm thời của IDM, vì vậy không bên nào phải trả phí sao chép giữa các ổ đĩa."
   },
-  "e54c910b35908f87": {
-   "source": "Downloads from a private window use that window's cookies, never the normal ones.",
-   "text": "Các lượt tải xuống từ cửa sổ riêng tư sử dụng cookie của cửa sổ đó, không bao giờ sử dụng cookie thông thường."
-  },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
    "text": "Phần mềm được cung cấp <g1>không có bất kỳ bảo hành nào</g1>: bạn tự chịu rủi ro khi sử dụng."
@@ -7097,6 +7333,10 @@
   "e646f73c14c73fff": {
    "source": "<g1>Resuming.</g1> MDM keeps the file's size and modification time. If either has changed when you resume, it says the file changed on the server instead of mixing two versions (<g2>Options → Downloads → Ignore file modification time changes</g2> skips the time check). The password is not written to the resume file next to the download: MDM gives it again when it resumes.",
    "text": "<g1>Tiếp tục.</g1> MDM giữ kích thước và thời gian sửa đổi của tệp. Nếu một trong hai đã thay đổi khi bạn tiếp tục, nó sẽ thông báo tệp đã thay đổi trên máy chủ thay vì trộn hai phiên bản (<g2>Tùy chọn → Tải xuống → Bỏ qua các thay đổi thời gian sửa đổi tệp</g2> bỏ qua kiểm tra thời gian). Mật khẩu không được ghi vào tệp tiếp tục bên cạnh bản tải xuống: MDM sẽ cung cấp lại khi nó tiếp tục."
+  },
+  "e655ba486d16b2e5": {
+   "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red <g1>!</g1>. Click it to see what's wrong, then <g2>How to fix it</g2> brings you to the matching section below.",
+   "text": "Khi trình duyệt không thể chuyển một lượt tải xuống cho MDM, nó sẽ tự giữ lượt tải xuống đó, vì vậy không có gì bị mất. Nút trên thanh công cụ của tiện ích mở rộng sẽ hiển thị dấu <g1>!</g1> màu đỏ. Nhấp vào đó để xem có gì sai, sau đó <g2>Cách khắc phục</g2> sẽ đưa bạn đến phần tương ứng bên dưới."
   },
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
@@ -7205,6 +7445,10 @@
   "ea31cb1a2b06654d": {
    "source": "How far it is, or <g1>Complete</g1>, <g2>Error</g2> and so on.",
    "text": "Đã tải được bao nhiêu, hoặc <g1>Hoàn tất</g1>, <g2>Lỗi</g2> v.v."
+  },
+  "ea4c6fc1b359b676": {
+   "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
+   "text": "Để giữ các lượt tải xuống của một trang web trong trình duyệt vĩnh viễn, hãy sử dụng nút thanh công cụ <g1>Không bao giờ tải xuống từ</g1>, hoặc thêm trang web vào <g2>Không tự động bắt đầu tải xuống từ các trang web sau</g2>. Để giữ một loại tệp trong trình duyệt, hãy xóa nó khỏi danh sách loại tệp."
   },
   "ea5d351dd9edb0f2": {
    "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed.",
@@ -7361,6 +7605,10 @@
   "efeefb4eb3f42f1d": {
    "source": "<g1>Video downloads' progress</g1> went back and forth (a stream in fragments re-estimates its size, and picture and sound arrive one after the other); it only moves forward now, from the size the video window showed.",
    "text": "<g1>Tiến trình tải xuống video</g1> đã đi đi lại lại (một luồng ở dạng phân đoạn ước tính lại kích thước của nó, và hình ảnh và âm thanh đến lần lượt); giờ đây nó chỉ di chuyển về phía trước, từ kích thước mà cửa sổ video đã hiển thị."
+  },
+  "effc1ee925dfd7a5": {
+   "source": "If MDM can't be reached at all (it was uninstalled, or the helper isn't registered), the download stays with the browser, so nothing is lost, and the toolbar button shows a red <g1>!</g1>. See <g2>The browser and MDM aren't connected</g2>, or run <g3>Options → General → Test browser integration...</g3>.",
+   "text": "Nếu không thể kết nối với MDM (nó đã bị gỡ cài đặt, hoặc trình trợ giúp chưa được đăng ký), lượt tải xuống vẫn ở lại với trình duyệt, vì vậy không có gì bị mất, và nút thanh công cụ hiển thị dấu <g1>!</g1> màu đỏ. Xem <g2>Trình duyệt và MDM không được kết nối</g2>, hoặc chạy <g3>Tùy chọn → Chung → Kiểm tra tích hợp trình duyệt...</g3>."
   },
   "f0122065c2796282": {
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
@@ -7566,6 +7814,14 @@
    "source": "Not offered on its website<g1><g2>3</g2></g1>",
    "text": "Không được cung cấp trên trang web của nó<g1><g2>3</g2></g1>"
   },
+  "f79a7f87df89d53b": {
+   "source": "Last updated 2026-11-02 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Cập nhật lần cuối 2026-11-02 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
+  },
+  "f7a4f8dcbb4812c2": {
+   "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
+   "text": "Trong Chrome, Edge và Brave, bạn có thể giới hạn tiện ích mở rộng cho một số trang web (nhấp chuột phải vào nút trên thanh công cụ của tiện ích → <g1>Tiện ích này có thể đọc và thay đổi dữ liệu trang web</g1>). Trên một trang web mà tiện ích không được phép đọc, tiện ích không thể chuyển thông tin đăng nhập của bạn, vì vậy nó sẽ để trình duyệt tự tải xuống. Chọn <g2>Trên tất cả các trang web</g2> để MDM có thể tải xuống ở mọi nơi."
+  },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
    "text": "Nó có tiếp tục tải lên sau khi torrent hoàn tất không?"
@@ -7581,6 +7837,10 @@
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "Nhấn một nút được lấy nét, đánh dấu vào hộp kiểm, đánh dấu vào hàng đã chọn của một danh sách"
+  },
+  "f89a410af1a10630": {
+   "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
+   "text": "Trang web không nằm trong <g1>Không tự động bắt đầu tải xuống từ các trang web sau</g1>, cũng như địa chỉ không nằm trong <g2>Không tự động bắt xuống từ các địa chỉ sau</g2>."
   },
   "f8c444517ab946e2": {
    "source": "From the plain zip",
@@ -7633,6 +7893,10 @@
   "fa6a5141054cb2c6": {
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The…",
    "text": "Giao diện quen thuộc có chủ đích: thanh công cụ, các danh mục, danh sách tải xuống, cửa sổ tiến trình với từng kết nối, hàng đợi và bộ lập lịch. Sự khác biệt: MDM miễn phí và mã nguồn mở, tải xuống BitTorrent và các liên kết magnet trong cùng một danh sách, hoàn thành nhanh hơn trong thử nghiệm của chúng tôi, hỗ trợ 86 ngôn ngữ và có các bản dựng thử nghiệm cho macOS và Linux. IDM là sản phẩm trưởng thành hơn, được tinh chỉnh qua nhiều năm. Xem so sánh đầy đủ."
+  },
+  "fa6b75cd98cf135f": {
+   "source": "<g1>Options → General → Use advanced browser integration</g1> is on, and your browser is ticked under <g2>Capture downloads from the following browsers</g2>.",
+   "text": "<g1>Tùy chọn → Chung → Sử dụng tích hợp trình duyệt nâng cao</g1> đã bật và trình duyệt của bạn đã được chọn trong <g2>Chụp tải xuống từ các trình duyệt sau</g2>."
   },
   "fa6e95ec9b6285a4": {
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
@@ -7737,10 +8001,6 @@
   "fdac126a9d867074": {
    "source": "<g1>Nothing to relearn.</g1> The toolbar, categories, download list, progress window, queues, Scheduler and Options sit where you expect them. Even the command-line switches are the same: <x2/>.",
    "text": "<g1>Không cần học lại.</g1> Thanh công cụ, danh mục, danh sách tải xuống, cửa sổ tiến trình, hàng đợi, Bộ lập lịch và Tùy chọn đều nằm ở vị trí bạn mong đợi. Ngay cả các tùy chọn dòng lệnh cũng giống nhau: <x2/>."
-  },
-  "fdc2f066d120b8c5": {
-   "source": "It stores its own settings (on or off, file types, where you dragged the video button) in the browser's extension storage, on your computer.",
-   "text": "Nó lưu trữ các cài đặt riêng của nó (bật hoặc tắt, loại tệp, nơi bạn kéo nút video) trong bộ nhớ tiện ích mở rộng của trình duyệt, trên máy tính của bạn."
   },
   "fdf01d37915b1a04": {
    "source": "Browser extension",

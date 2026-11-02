@@ -2,6 +2,14 @@
  "language": "fr",
  "note": "Machine translation of the website (tools/website/translate_site.py); fix a row's text to improve it.",
  "segments": {
+  "0004ade2a3d1d57f": {
+   "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
+   "text": "L’extension est connectée, mais les réglages de MDM laissent ce téléchargement au navigateur. Vérifiez, dans MDM :"
+  },
+  "00161c105e829376": {
+   "source": "Every message to MDM also says which browser it comes from (its name, as the browser tells it) and the extension's version.",
+   "text": "Chaque message à MDM indique également de quel navigateur il provient (son nom, tel que le navigateur l'indique) et la version de l'extension."
+  },
   "002232b5f1f41adf": {
    "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and .tar.gz) come with every release too; they are marked experimental because they are new and less tested. See Download.",
    "text": "Windows 10 et 11, 64 bits, est la plateforme principale. Les versions pour macOS (un seul téléchargement pour les Mac Apple Silicon et Intel) et Linux (AppImage, .deb, .rpm et .tar.gz) sont également incluses dans chaque version ; elles sont marquées comme expérimentales car elles sont nouvelles et moins testées. Voir Télécharger."
@@ -162,6 +170,10 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
+  "04ec5358d75ceff7": {
+   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "Pointez une vidéo sur une page web et un petit bouton <g1>Télécharger la vidéo</g1> apparaît sur son bord. Cliquez dessus et la fenêtre <g2>Télécharger une vidéo depuis une page</g2> de MDM s’ouvre et recherche les qualités qu’elle peut télécharger. Elle prend la vidéo sur laquelle vous avez cliqué : son propre fichier quand elle en lit un, ou le flux que le lecteur a chargé (HLS ou DASH), sinon la page. Les lecteurs intégrés fonctionnent aussi, et votre connexion au site, la page qui intègre le lecteur et l’User-Agent de votre navigateur l’accompagnent, de sorte que les vidéos pour les membres, ou qui ne sont lues que sur le site qui les intègre, peuvent être téléchargées. Les lecteurs audio obtiennent aussi le bouton."
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>Aide → Signaler un problème</g1> remplissait les champs Système et Installé du formulaire pendant un instant seulement ; ils restent remplis maintenant."
@@ -189,6 +201,10 @@
   "0570989b9bf67a64": {
    "source": "Sites change often, and a newer yt-dlp usually fixes it. MDM doesn't update yt-dlp on its own yet. To get the newest one: quit MDM (<g1>Tasks → Exit</g1>), delete the <x2/> folder in MDM's data folder (<x3/>, or the <x4/> folder of a portable copy), start MDM, open the video window and click <g5>Install yt-dlp</g5>.",
    "text": "Les sites changent souvent, et une version plus récente de yt-dlp résout généralement le problème. MDM ne met pas encore à jour yt-dlp automatiquement. Pour obtenir la version la plus récente : quittez MDM (<g1>Tâches → Quitter</g1>), supprimez le dossier <x2/> dans le dossier de données de MDM (<x3/>, ou le dossier <x4/> d'une copie portable), démarrez MDM, ouvrez la fenêtre vidéo et cliquez sur <g5>Installer yt-dlp</g5>."
+  },
+  "057b1bcb7273a7bb": {
+   "source": "<g1><g2>The browser and MDM aren't connected</g2></g1> — what the extension's red <g3>!</g3> means, reason by reason, and how to fix each.",
+   "text": "<g1><g2>Le navigateur et MDM ne sont pas connectés</g2></g1> — ce que signifie le <g3>!</g3> rouge de l'extension, raison par raison, et comment résoudre chaque problème."
   },
   "0588c7c82fed2d21": {
    "source": "Which browsers does it work with?",
@@ -262,6 +278,10 @@
    "source": "lines, then <x1/>.",
    "text": "lignes, puis <x1/>."
   },
+  "079d154ef3b379ef": {
+   "source": "When MDM isn't running, the browser starts it for each download and waits for it. It waited about 20 seconds this time and gave up.",
+   "text": "Lorsque MDM n’est pas en cours d’exécution, le navigateur le démarre pour chaque téléchargement et l’attend. Il a attendu environ 20 secondes cette fois et a abandonné."
+  },
   "07ed3d6396493231": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>. <g2>Turn off</g2> gives full speed again.",
    "text": "Choisissez <g1>Téléchargements → Limiteur de vitesse → Activer</g1>. <g2>Désactiver</g2> redonne la pleine vitesse."
@@ -313,6 +333,10 @@
   "08e2e35d4e65f111": {
    "source": "What the assistant can do",
    "text": "Ce que l'assistant peut faire"
+  },
+  "08f904e3d0a7032e": {
+   "source": "<g1>Options → File types → Don't take files smaller than</g1> leaves small files (a receipt, an icon) to the browser. 0 takes any size.",
+   "text": "<g1>Options → Types de fichiers → Ne pas prendre les fichiers de taille inférieure à</g1> laisse les petits fichiers (un reçu, une icône) au navigateur. 0 prend n’importe quelle taille."
   },
   "0942a42265a3f89c": {
    "source": "<g1>open an issue</g1> describing what should change, if you'd rather not edit the file.",
@@ -414,6 +438,10 @@
    "source": "Change which file types MDM takes →",
    "text": "Modifier les types de fichiers que MDM prend en charge →"
   },
+  "0b8bc8a6db629a4c": {
+   "source": "Select part of a page and right-click it for <g1>Download selected links with Mister Download Manager</g1>, or right-click the page for <g2>Download all links with Mister Download Manager</g2>: the links open in <g3>Import</g3>, where you tick the ones you want.",
+   "text": "Sélectionnez une partie d’une page et faites un clic droit pour <g1>Télécharger les liens sélectionnés avec Mister Download Manager</g1>, ou faites un clic droit sur la page pour <g2>Télécharger tous les liens avec Mister Download Manager</g2> : les liens s’ouvrent dans <g3>Importer</g3>, où vous cochez ceux que vous voulez."
+  },
   "0ba1ab7afd650160": {
    "source": "Getting started — Mister Download Manager help",
    "text": "Démarrer — Aide de Mister Download Manager"
@@ -469,6 +497,10 @@
   "0e48754aa3fa3ac3": {
    "source": "Connection",
    "text": "Connexion"
+  },
+  "0ebbf5cc3fb70cd9": {
+   "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.",
+   "text": "Les téléchargements depuis une fenêtre privée utilisent les cookies de cette fenêtre, jamais les cookies normaux, et ne sont pas conservés dans la liste de MDM après sa fermeture."
   },
   "0ebc8256019810c9": {
    "source": "Tick <g1>Only while I'm using the computer</g1> if you want full speed when you're away. MDM goes back to full speed after a minute without mouse or keyboard input.",
@@ -537,6 +569,10 @@
   "10b8609f61290221": {
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Sommes de contrôle SHA-256</g1><g2>pour chaque fichier</g2>"
+  },
+  "11037e9a1d07f9af": {
+   "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
+   "text": "L’extension doit être autorisée à lire le site. Lorsque vous la limitez à certains sites (ou <g1>Au clic</g1>), elle ne peut pas transmettre votre connexion, elle laisse donc les téléchargements de ces sites au navigateur."
   },
   "110d6b2bd87a92ac": {
    "source": "Works with what you already use",
@@ -814,6 +850,10 @@
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Des réponses courtes aux questions les plus fréquentes, avec un lien vers le guide complet."
   },
+  "19ef176da302a2b4": {
+   "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
+   "text": "Lorsque le navigateur ne peut pas transmettre un téléchargement à MDM, il conserve le téléchargement lui-même, donc rien n’est perdu. Le bouton de l’extension dans la barre d’outils affiche alors un ! rouge. Cliquez dessus…"
+  },
   "1a0500523dbbbc89": {
    "source": "On a Mac or Linux",
    "text": "Sur Mac ou Linux"
@@ -846,6 +886,10 @@
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "L'extension de navigateur est fournie avec l'application et en téléchargement séparé pour <g1>Chrome, Edge, Brave, Opera et Vivaldi</g1> ainsi que <g2>Firefox</g2>. Les listes de magasins sont en cours. Chaque fichier est construit à partir de la source publique par GitHub Actions et listé avec son empreinte SHA-256."
   },
+  "1afe0a44e06cfa4b": {
+   "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
+   "text": "Pour vérifier le côté de MDM, ouvrez <g1>Options → Général</g1> dans MDM et cliquez sur <g2>Tester l’intégration du navigateur...</g2>. Cela vérifie que l’intégration du navigateur est activée, qu’il s’agit de la copie installée, que les navigateurs peuvent trouver MDM et quelle extension de navigateur est connectée ; <g3>Comment le résoudre</g3> ouvre la section pour le premier échec."
+  },
   "1b049c560de69a42": {
    "source": "Find the next match",
    "text": "Rechercher la correspondance suivante"
@@ -870,6 +914,10 @@
    "source": "CPU",
    "text": "CPU"
   },
+  "1b5c1b21bdd749ea": {
+   "source": "When none of this helps, the browser keeps the download, so nothing is lost. The extension's toolbar button says why it couldn't reach MDM; see <g1>The browser and MDM aren't connected</g1>.",
+   "text": "Si rien de tout cela n'aide, le navigateur conserve le téléchargement, donc rien n'est perdu. Le bouton de la barre d'outils de l'extension indique pourquoi elle n'a pas pu joindre MDM ; voir <g1>Le navigateur et MDM ne sont pas connectés</g1>."
+  },
   "1b5f580bc58179ec": {
    "source": "The download list, settings, helpers for video (yt-dlp, ffmpeg) and torrent data are kept in <x1/>, not in your Windows profile.",
    "text": "La liste des téléchargements, les paramètres, les assistants vidéo (yt-dlp, ffmpeg) et les données de torrent sont conservés dans <x1/>, et non dans votre profil Windows."
@@ -881,10 +929,6 @@
   "1b638519d92c59b7": {
    "source": "More about queues in <g1>Queues and the Scheduler</g1>.",
    "text": "Plus d’informations sur les files d’attente dans <g1>Files d’attente et le planificateur</g1>."
-  },
-  "1b8598b5d096034c": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click item; <g5>storage</g5> for its settings; access to all sites because downloads and videos can come from any site.",
-   "text": "Ses permissions, et pourquoi : <g1>downloads</g1> pour voir et transférer les téléchargements ; <g2>cookies</g2> pour que les téléchargements connectés fonctionnent dans MDM ; <g3>nativeMessaging</g3> pour communiquer avec MDM ; <g4>contextMenus</g4> pour l’élément du clic droit ; <g5>storage</g5> pour ses paramètres ; accès à tous les sites car les téléchargements et les vidéos peuvent provenir de n’importe quel site."
   },
   "1b87c9c9e4a611b4": {
    "source": "<g1>Alt</g1> + a menu's underlined letter",
@@ -921,6 +965,10 @@
   "1c317076c4f2bc01": {
    "source": "Open (GPL-3.0)",
    "text": "Ouvert (GPL-3.0)"
+  },
+  "1c41a815ee54b7d7": {
+   "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
+   "text": "MDM n'a <g1>pas d'analyse, pas de rapport d'erreur automatique, pas de télémétrie et pas de publicité</g1> (un rapport d'erreur ne va que là où vous l'envoyez vous-même). Il ne nous envoie jamais votre liste de téléchargements, les adresses que vous téléchargez, ou quoi que ce soit d'autre."
   },
   "1c5f1bf427c1cf81": {
    "source": "Can it resume broken downloads?",
@@ -994,6 +1042,10 @@
    "source": "The download list — Mister Download Manager help",
    "text": "La liste des téléchargements — Aide de Mister Download Manager"
   },
+  "1e7417c5cfd48ad7": {
+   "source": "Files the browser would open",
+   "text": "Fichiers que le navigateur ouvrirait"
+  },
   "1e85323c7843fa8c": {
    "source": "Fill in <g1>Download no more than [N] MBytes every [H] hours</g1>. It starts at 200 MBytes every 5 hours.",
    "text": "Remplissez <g1>Ne pas télécharger plus de [N] Mo toutes les [H] heures</g1>. Cela commence à 200 Mo toutes les 5 heures."
@@ -1042,13 +1094,13 @@
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "Regardez la <g1>Capacité de reprise</g1> dans la fenêtre de progression. <g2>Non</g2> signifie que le serveur ne peut pas envoyer un fichier par parties. MDM utilise alors une seule connexion, et un téléchargement qui s’arrête doit recommencer. Pour de tels serveurs, évitez d’arrêter le téléchargement, et évitez une limite de vitesse très basse, ce qui peut faire que le serveur coupe la connexion."
   },
-  "20504fb177eb6cfc": {
-   "source": "To keep a site's downloads in the browser, add the site to <g1>Don't start downloading automatically from the following sites</g1>. To keep a file type in the browser, take it off the file types list.",
-   "text": "Pour conserver les téléchargements d’un site dans le navigateur, ajoutez le site à <g1>Ne pas démarrer automatiquement le téléchargement depuis les sites suivants</g1>. Pour conserver un type de fichier dans le navigateur, retirez-le de la liste des types de fichiers."
-  },
   "20538865aca739a7": {
    "source": "Click <g1>Start Download</g1>.",
    "text": "Cliquez sur <g1>Démarrer le téléchargement</g1>."
+  },
+  "20614bb35ecf2799": {
+   "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
+   "text": "Il note où les redirections de chargement de page ont commencé et se sont terminées (en mémoire, pendant deux minutes), afin que MDM obtienne l'adresse sur laquelle vous avez cliqué, et pas seulement là où elle a mené."
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1170,6 +1222,10 @@
    "source": "A download resumes where it stopped: after you stop it, after the connection drops, or after Windows or MDM crashes. MDM saves how far each part has got as it goes.",
    "text": "Un téléchargement reprend là où il s’est arrêté : après que vous l’avez mis en pause, après une coupure de connexion, ou après un plantage de Windows ou de MDM. MDM enregistre la progression de chaque partie au fur et à mesure."
   },
+  "246896eedd2eb25a": {
+   "source": "<g1>Mister Download Manager</g1> appears. Make sure it is turned on.",
+   "text": "<g1>Mister Download Manager</g1> apparaît. Assurez-vous qu'il est activé."
+  },
   "24689db86cd6a24a": {
    "source": "Click <g1>Resume</g1>. The download continues from where it stopped, using the new address.",
    "text": "Cliquez sur <g1>Reprendre</g1>. Le téléchargement continue là où il s’était arrêté, en utilisant la nouvelle adresse."
@@ -1206,6 +1262,10 @@
    "source": "Closed",
    "text": "Fermé"
   },
+  "2542aeb0c43a3ce6": {
+   "source": "Downloads stay with the browser although MDM is connected",
+   "text": "Les téléchargements restent avec le navigateur bien que MDM soit connecté"
+  },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
    "text": "Téléchargements de vidéos en détail →"
@@ -1217,6 +1277,10 @@
   "25a8339210f17932": {
    "source": "Save to",
    "text": "Enregistrer dans"
+  },
+  "25adb0d6be62a854": {
+   "source": "Allow <x1/> (in MDM's folder) in your antivirus or anti-malware program.",
+   "text": "Autorisez <x1/> (dans le dossier de MDM) dans votre programme antivirus ou anti-malware."
   },
   "25b4db9aa4024862": {
    "source": "The current speed.",
@@ -1550,6 +1614,10 @@
    "source": "A torrent's progress window, on its Files tab",
    "text": "La fenêtre de progression d'un torrent, sur son onglet Fichiers"
   },
+  "2dc02541cd79bcaa": {
+   "source": "<g1>Options → File types → Don't start downloading automatically from the following sites</g1> must not list the site. Names are separated by spaces, and <x2/> matches any part, as in <x3/>. <g4>Edit list ...</g4> below it lists whole addresses to leave alone, one per line (<x5/>).",
+   "text": "<g1>Options → Types de fichiers → Ne pas démarrer automatiquement le téléchargement depuis les sites suivants</g1> ne doit pas lister le site. Les noms sont séparés par des espaces, et <x2/> correspond à n’importe quelle partie, comme dans <x3/>. <g4>Modifier la liste...</g4> en dessous liste les adresses complètes à ignorer, une par ligne (<x5/>)."
+  },
   "2dce3ab2bfd52162": {
    "source": "What you see",
    "text": "Ce que vous voyez"
@@ -1585,6 +1653,10 @@
   "2ed1d0f221a398d5": {
    "source": "<g1>Windows portable</g1><g2>portable.zip · runs from a folder or USB stick</g2>",
    "text": "<g1>Windows portable</g1><g2>portable.zip · s’exécute depuis un dossier ou une clé USB</g2>"
+  },
+  "2ee4c3f4098357e1": {
+   "source": "<g1>Two copies installed?</g1> Open the browser's extensions page (<x2/>, <x3/>, <x4/>) and keep only one <g5>Mister Download Manager</g5>.",
+   "text": "<g1>Deux copies installées ?</g1> Ouvrez la page des extensions du navigateur (<x2/>, <x3/>, <x4/>) et ne conservez qu’une seule <g5>Mister Download Manager</g5>."
   },
   "2f165cd363bc55e2": {
    "source": "<g1>AI assistants</g1>: <x2/>, an MCP server that comes with MDM, lets Claude, Cursor, VS Code and other MCP assistants list, add, pause, resume and remove the running app's downloads and start its queue, through the automation API (<g3>how to set it up</g3>).",
@@ -1673,10 +1745,6 @@
   "32bbe5a36745a480": {
    "source": "A magnet link has to get the torrent's file list from other peers first. That can take a minute or two, and longer for torrents with few peers. If nobody answers in about three minutes, MDM gives up; try again later, or use the <x1/> file if the site offers one.",
    "text": "Un lien magnet doit d'abord obtenir la liste des fichiers du torrent auprès d'autres pairs. Cela peut prendre une minute ou deux, et plus longtemps pour les torrents avec peu de pairs. Si personne ne répond en trois minutes environ, MDM abandonne ; réessayez plus tard, ou utilisez le fichier <x1/> si le site en propose un."
-  },
-  "32bfd413d96b1b7c": {
-   "source": "Last updated 2026-11-01 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Dernière mise à jour le 2026-11-01 · s’applique à l’application, à l’extension de navigateur et à misterdownloadmanager.com"
   },
   "32e3899aac6c6245": {
    "source": "not to use it to break copy protection (DRM): MDM doesn't do this and isn't meant to;",
@@ -1793,10 +1861,6 @@
   "37018c365c78d873": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
    "text": "MDM est développé par Ahmed Nefzaoui, un développeur indépendant, et est ouvert aux contributions de tous sur GitHub. Les rapports de bugs, les traductions et le code sont tous..."
-  },
-  "370fffff42663165": {
-   "source": "MDM has <g1>no analytics, no crash reporting, no telemetry and no advertising</g1>. It never sends us your download list, the addresses you download, or anything else.",
-   "text": "MDM n’a <g1>pas d’analyses, pas de rapports d’erreurs, pas de télémétrie et pas de publicité</g1>. Il ne nous envoie jamais votre liste de téléchargements, les adresses que vous téléchargez, ou quoi que ce soit d’autre."
   },
   "3713622281bf70e6": {
    "source": "<g1>MDM checks for updates every time it starts</g1> (it was once a week), and once a day while it stays open; a new version's window opens in front. <g2>Check for updates at every start</g2> in that window turns it off.",
@@ -1970,6 +2034,10 @@
    "source": "Keyboard shortcuts — Mister Download Manager help",
    "text": "Raccourcis clavier — Aide de Mister Download Manager"
   },
+  "3bfa748787f8de48": {
+   "source": "When you start a download that MDM should take, it passes <g1>the download's address (and where its redirects led), the page it came from, the site's cookies for that address, your browser's User-Agent, and the file's name, size and type</g1> to MDM on your computer, through the browser's native-messaging channel. Nothing goes over the internet.",
+   "text": "Lorsque vous lancez un téléchargement que MDM doit prendre en charge, il transmet à MDM sur votre ordinateur, via le canal de messagerie native du navigateur, <g1>l'adresse du téléchargement (et les redirections qu'elle a suivies), la page d'origine, les cookies du site pour cette adresse, l'User-Agent de votre navigateur, ainsi que le nom, la taille et le type du fichier</g1>. Rien ne transite par Internet."
+  },
   "3c28e85016503a7e": {
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+clic</g1> ajoute ou supprime un téléchargement."
@@ -2017,6 +2085,10 @@
   "3d836c21b68654f0": {
    "source": "When a download finishes",
    "text": "Quand un téléchargement se termine"
+  },
+  "3d855a4cad9d1311": {
+   "source": "A download carries its site's cookies (and a form's data) to MDM. A few sites set so many that together they exceed what MDM accepts from the browser (1 MB). The browser kept this one. Signing out and back in to the site usually trims them.",
+   "text": "Un téléchargement transmet les cookies de son site (et les données d’un formulaire) à MDM. Quelques sites en définissent tellement qu’ils dépassent ce que MDM accepte du navigateur (1 Mo). Le navigateur a conservé celui-ci. Se déconnecter et se reconnecter au site les réduit généralement."
   },
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
@@ -2186,10 +2258,6 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Téléchargements → Démarrer la file d’attente</g1> et <g2>Téléchargements → Arrêter la file d’attente</g2> les listent également."
   },
-  "437e6268e865984d": {
-   "source": "Some links, such as a PDF or a video file, open in the browser instead of downloading, so there is nothing for MDM to catch. Right-click the link and choose <g1>Download with Mister Download Manager</g1>. The address must still end in one of the listed file types.",
-   "text": "Certains liens, comme un fichier PDF ou vidéo, s’ouvrent dans le navigateur au lieu d’être téléchargés, il n’y a donc rien à capturer pour MDM. Faites un clic droit sur le lien et choisissez <g1>Télécharger avec Mister Download Manager</g1>. L’adresse doit toujours se terminer par l’un des types de fichiers listés."
-  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Intégration au navigateur — Aide de Mister Download Manager"
@@ -2330,6 +2398,10 @@
    "source": "What you need",
    "text": "Ce dont vous avez besoin"
   },
+  "48aad3564170ee72": {
+   "source": "MDM's helper serves only its own extension. The browser says this copy isn't one it knows.",
+   "text": "L’aide de MDM ne sert que sa propre extension. Le navigateur indique que cette copie n’est pas une de celles qu’il connaît."
+  },
   "48ca7e0fd6df660f": {
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>Les noms de fichiers téléchargés sont nettoyés</g1> avant de devenir des chemins, de sorte qu'un serveur ne peut pas écrire en dehors du dossier que vous avez choisi."
@@ -2466,6 +2538,10 @@
    "source": "Double-click the download to open its progress window.",
    "text": "Double-cliquez sur le téléchargement pour ouvrir sa fenêtre de progression."
   },
+  "4d876c329eaf2379": {
+   "source": "The <g1>Mister Download Manager</g1> extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox:",
+   "text": "L'extension <g1>Mister Download Manager</g1> pour Chrome, Edge, Brave, Opera, Vivaldi et Firefox :"
+  },
   "4d895f12e00559ae": {
    "source": "Can it download from Netflix or other paid streaming services?",
    "text": "Peut-il télécharger depuis Netflix ou d'autres services de streaming payants ?"
@@ -2541,10 +2617,6 @@
   "4ffb28494afc5681": {
    "source": "With the list selected, type the first letters of a name to jump straight to it.",
    "text": "La liste étant sélectionnée, tapez les premières lettres d’un nom pour y accéder directement."
-  },
-  "5011681dd788fa32": {
-   "source": "<g1>Options → File types → Don't start downloading automatically from the following sites</g1> must not list the site. Names are separated by spaces, and <x2/> matches any part, as in <x3/>.",
-   "text": "L’option <g1>Options → Types de fichiers → Ne pas démarrer automatiquement le téléchargement depuis les sites suivants</g1> ne doit pas lister le site. Les noms sont séparés par des espaces, et <x2/> correspond à n’importe quelle partie, comme dans <x3/>."
   },
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
@@ -2642,6 +2714,10 @@
    "source": "<g1>GitHub Pages</g1> hosts it. GitHub receives your IP address and browser details when you visit and may keep them in its server logs for security; see the <g2>GitHub Privacy Statement</g2>. Download links lead to GitHub Releases.",
    "text": "<g1>GitHub Pages</g1> l'héberge. GitHub reçoit votre adresse IP et les détails de votre navigateur lorsque vous visitez le site et peut les conserver dans ses journaux de serveur pour des raisons de sécurité ; consultez la <g2>Déclaration de confidentialité de GitHub</g2>. Les liens de téléchargement mènent aux versions de GitHub."
   },
+  "52e5904f6efffe72": {
+   "source": "The toolbar button",
+   "text": "Le bouton de la barre d’outils"
+  },
   "531dcc0b52cbdb34": {
    "source": "JSON for scripts and programs",
    "text": "JSON pour les scripts et les programmes"
@@ -2718,6 +2794,10 @@
    "source": "Click <g1>Yes</g1> to delete, or <g2>No</g2> to keep everything.",
    "text": "Cliquez sur <g1>Oui</g1> pour supprimer, ou sur <g2>Non</g2> pour tout conserver."
   },
+  "558bb1c07f16684f": {
+   "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
+   "text": "Il note les adresses des flux vidéo (listes de lecture HLS et DASH) qu'un lecteur de page charge, en mémoire pour cet onglet, afin que le bouton <g1>Télécharger la vidéo</g1> puisse transmettre le flux. Son bouton ne lit la page que pour trouver les lecteurs vidéo et audio et se positionner. Cliquer dessus transmet à MDM l'adresse de la page, l'adresse de la vidéo, le titre de la page, les cookies du site, la page qui intègre le lecteur et l'User-Agent de votre navigateur."
+  },
   "559f1edb4136e9ae": {
    "source": "End to end: command to finished file",
    "text": "De bout en bout : de la commande au fichier terminé"
@@ -2757,10 +2837,6 @@
   "56cc0ee76be4673e": {
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "Vous pouvez ajouter vos propres files d’attente dans le planificateur, ou avec <g1>Créer une nouvelle file d’attente</g1> dans le menu contextuel d’un téléchargement."
-  },
-  "5713d651ab6b8a5a": {
-   "source": "If MDM can't be reached at all (it was uninstalled, or the helper isn't registered), the extension resumes the download in the browser. Nothing is lost.",
-   "text": "Si MDM est totalement inaccessible (il a été désinstallé, ou l’assistant n’est pas enregistré), l’extension reprend le téléchargement dans le navigateur. Rien n’est perdu."
   },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
@@ -2813,6 +2889,10 @@
   "58d632aa7f93ec0d": {
    "source": "<g1>MDM comes back as you left it</g1>: the window's place and size, the Categories pane, its open branches and the node shown.",
    "text": "<g1>MDM revient tel que vous l’avez laissé</g1> : l’emplacement et la taille de la fenêtre, le volet Catégories, ses branches ouvertes et le nœud affiché."
+  },
+  "591498dd46bd5859": {
+   "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
+   "text": "<g1>Une copie d’ailleurs ?</g1> Supprimez-la et ajoutez l’extension comme l’indique la fenêtre <g2>Ajouter Mister Download Manager à votre navigateur</g2> de MDM (voir <g3>Intégration du navigateur</g3>)."
   },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
@@ -2877,6 +2957,10 @@
   "5b408157692d7c61": {
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "Dézippez n'importe où, même sur une clé USB ; tout reste dans son dossier"
+  },
+  "5b4c0d90aeddada8": {
+   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
+   "text": "L'extension est-elle chargée et activée ? Cherchez <g1>Mister Download Manager</g1> sur la page des extensions du navigateur. Dans Firefox, un module complémentaire temporaire disparaît après un redémarrage. Voir <g2>Intégration au navigateur</g2>."
   },
   "5b6bfbfcf883179a": {
    "source": "Download for Mac",
@@ -2966,13 +3050,13 @@
    "source": "Every release is built from the public source code by <g1>GitHub Actions</g1>, on GitHub's servers; the build logs are public.",
    "text": "Chaque version est construite à partir du code source public par <g1>GitHub Actions</g1>, sur les serveurs de GitHub ; les journaux de construction sont publics."
   },
+  "5ed161293dc26f74": {
+   "source": "If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.",
+   "text": "Si MDM ne peut pas être atteint lorsque vous choisissez l’une de ces options, la page d’aide s’ouvre à la section qui explique pourquoi."
+  },
   "5ef406f45fdd5c6f": {
    "source": "<g1>What were you doing when it happened?</g1> is optional. A few words, such as \"I opened Add URL\", help a lot.",
    "text": "<g1>Que faisiez-vous quand c’est arrivé ?</g1> est facultatif. Quelques mots, comme « J’ai ouvert Ajouter une URL », sont d’une grande aide."
-  },
-  "5efe3d810777487c": {
-   "source": "When you start a download that MDM should take, it passes <g1>the download's address, the page it came from, the site's cookies for that address and your browser's User-Agent</g1> to MDM on your computer, through the browser's native-messaging channel. Nothing goes over the internet.",
-   "text": "Lorsque vous démarrez un téléchargement que MDM doit prendre en charge, il transmet <g1>l’adresse du téléchargement, la page d’origine, les cookies du site pour cette adresse et le User-Agent de votre navigateur</g1> à MDM sur votre ordinateur, via le canal de messagerie native du navigateur. Rien ne transite par internet."
   },
   "5f246a6b539a96be": {
    "source": "Edit this page on GitHub",
@@ -3218,9 +3302,9 @@
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>Le projet sur GitHub</g1><g2>Code, problèmes et chaque version</g2>"
   },
-  "64f7b8d339cd685b": {
-   "source": "It stays out of the way: it shows only while you point at a video (or the video has the keyboard's focus), fades when the pointer rests, and leaves out small videos and muted looping clips (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it.",
-   "text": "Il reste discret : il ne s’affiche que lorsque vous pointez sur une vidéo (ou que la vidéo a le focus clavier), s’estompe lorsque le pointeur est au repos, et ignore les petites vidéos et les clips en boucle coupés (images animées, arrière-plans). En plein écran, il suit la vidéo lorsque le lecteur le permet."
+  "64e9d0f93e60556f": {
+   "source": "The browser and MDM aren't connected",
+   "text": "Le navigateur et MDM ne sont pas connectés"
   },
   "650f31994e698c98": {
    "source": "Free for Windows, with macOS and Linux to try. Installer, portable zip and the browser extension.",
@@ -3254,13 +3338,13 @@
    "source": "MDM first shows a 30-second countdown. <g1>Cancel</g1> stops it; <g2>Turn off now</g2> goes ahead at once.",
    "text": "MDM affiche d’abord un compte à rebours de 30 secondes. <g1>Annuler</g1> l’arrête ; <g2>Éteindre maintenant</g2> procède immédiatement."
   },
+  "672ffa07db0bd6d7": {
+   "source": "Reinstall MDM to restore its files.",
+   "text": "Réinstallez MDM pour restaurer ses fichiers."
+  },
   "67c6c31e6dedb216": {
    "source": "Up to 32, or 128 if you allow it; re-split as they go",
    "text": "Jusqu'à 32, ou 128 si vous l'autorisez ; re-divisées au fur et à mesure"
-  },
-  "680bde7ef29fb757": {
-   "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> and <g3>Brave</g3>. <g4>Firefox</g4> support is still being tested.",
-   "text": "L’extension fonctionne avec <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2> et <g3>Brave</g3>. La prise en charge de <g4>Firefox</g4> est encore en phase de test."
   },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
@@ -3277,10 +3361,6 @@
   "68501e4a16b6ce4f": {
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
    "text": "L'hôte de messagerie native du navigateur : prend les téléchargements capturés de l'extension et les transmet à l'application"
-  },
-  "686dafb07f79362b": {
-   "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken. The same goes for <g2>Download with Mister Download Manager</g2> on the right-click menu: if the link's address doesn't end in a listed type, nothing happens.",
-   "text": "Le type de fichier est-il dans <g1>Options → Types de fichiers</g1> ? Seuls les types listés sont pris en charge. Il en va de même pour <g2>Télécharger avec Mister Download Manager</g2> dans le menu contextuel : si l’adresse du lien ne se termine pas par un type listé, rien ne se passe."
   },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
@@ -3301,6 +3381,10 @@
   "693f3338267d1d6a": {
    "source": "Move without changing the selection",
    "text": "Déplacer sans modifier la sélection"
+  },
+  "6941e88ad1cb9eb7": {
+   "source": "When a download comes from a form you submitted, it passes <g1>the form's data</g1> too, so MDM can submit it again. It notes the data of forms you submit (in memory, used for two minutes at most, never stored) only for that.",
+   "text": "Lorsqu'un téléchargement provient d'un formulaire que vous avez soumis, il transmet également <g1>les données du formulaire</g1>, afin que MDM puisse le soumettre à nouveau. Il ne note les données des formulaires que vous soumettez (en mémoire, utilisées deux minutes au maximum, jamais stockées) que pour cela."
   },
   "69723576a69d29fe": {
    "source": "The file's name, with its icon.",
@@ -3370,13 +3454,13 @@
    "source": "<g1>Download Later</g1> puts the download in a queue instead of starting it. By default MDM asks which one: pick the queue under <g2>Add to queue</g2>, and tick <g3>Start the queue now</g3> if you want it to run straight away. <g4>Cancel</g4> leaves the download in the list, in no queue.",
    "text": "<g1>Télécharger plus tard</g1> place le téléchargement dans une file d’attente au lieu de le démarrer. Par défaut, MDM demande laquelle : choisissez la file d’attente sous <g2>Ajouter à la file d’attente</g2>, et cochez <g3>Démarrer la file d’attente maintenant</g3> si vous voulez qu’elle s’exécute immédiatement. <g4>Annuler</g4> laisse le téléchargement dans la liste, sans file d’attente."
   },
-  "6ac91a3d3467060e": {
-   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself).",
-   "text": "Faites un clic droit sur un lien, une vidéo, un son ou une image et choisissez <g1>Télécharger avec Mister Download Manager</g1>. MDM le télécharge quel que soit son type : vous l’avez demandé, donc la liste des types de fichiers et les sites exclus ne s’appliquent pas ici (ils décident seulement quels téléchargements MDM prend en charge de lui-même)."
-  },
   "6add747d087cfb25": {
    "source": "Adds an http, https, ftp or ftps address and starts it, or only queues it. It can say which folder and file name to use. A magnet link opens <g1>Add torrent</g1> in MDM, for you to choose the files.",
    "text": "Ajoute une adresse http, https, ftp ou ftps et la démarre, ou la met seulement en file d'attente. Il peut indiquer le dossier et le nom de fichier à utiliser. Un lien magnet ouvre <g1>Ajouter un torrent</g1> dans MDM, pour que vous choisissiez les fichiers."
+  },
+  "6ae2427db2e01eba": {
+   "source": "MDM isn't installed, or browser integration isn't set up",
+   "text": "MDM n’est pas installé, ou l’intégration du navigateur n’est pas configurée"
   },
   "6b0911ac05d6e883": {
    "source": "Linux, the AppImage or the .tar.gz",
@@ -3698,6 +3782,10 @@
    "source": "What to do",
    "text": "Que faire"
   },
+  "7461d4770c6a9bbe": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Install the browser from your distribution's packages (or the browser maker's own <x1/> or <x2/>) to use browser integration.",
+   "text": "Les navigateurs installés en tant que Flatpak ou Snap s’exécutent dans un bac à sable qui peut les empêcher de démarrer des programmes en dehors de celui-ci, ils peuvent donc ne pas être en mesure d’atteindre MDM. Installez le navigateur à partir des paquets de votre distribution (ou du <x1/> ou <x2/> du fabricant du navigateur) pour utiliser l’intégration du navigateur."
+  },
   "74632f0763b57b9b": {
    "source": "any distribution: make it executable, run it",
    "text": "toute distribution : rendez-le exécutable, exécutez-le"
@@ -3754,6 +3842,10 @@
    "source": "<g1>Synchronization queue</g1> — finished downloads stay in it instead of leaving. It is the only queue that takes finished downloads.",
    "text": "<g1>Synchronisation de la file d’attente</g1> — les téléchargements terminés y restent au lieu de la quitter. C’est la seule file d’attente qui accepte les téléchargements terminés."
   },
+  "76ca1f61789efab8": {
+   "source": "MDM didn't start in time",
+   "text": "MDM n’a pas démarré à temps"
+  },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
    "text": "De haut en bas :"
@@ -3802,6 +3894,10 @@
    "source": "Answer",
    "text": "Réponse"
   },
+  "7830997efe7b81a7": {
+   "source": "MDM also takes the file types the browser would show or play itself (a PDF, an MP3), when they're listed in <g1>Options → File types</g1> and <g2>Also take files the browser would open</g2> is ticked in <g3>Options → General → Keys...</g3>. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox. Sites in MDM's excluded sites keep opening them in the browser. Hold <g4>Alt</g4> while clicking a link to leave it to the browser: Firefox then opens it, while Chromium browsers download it themselves (Alt+click is their own \"download link\").",
+   "text": "MDM prend aussi les types de fichiers que le navigateur afficherait ou jouerait lui-même (un PDF, un MP3), quand ils sont listés dans <g1>Options → Types de fichiers</g1> et que <g2>Prendre aussi les fichiers que le navigateur ouvrirait</g2> est coché dans <g3>Options → Général → Touches…</g3>. Cela nécessite un navigateur Chromium (Chrome, Edge, Brave, Opera, Vivaldi) version 128 ou ultérieure, ou Firefox. Les sites exclus dans MDM continuent de les ouvrir dans le navigateur. Maintenez <g4>Alt</g4> enfoncé en cliquant sur un lien pour le laisser au navigateur : Firefox l’ouvre alors, tandis que les navigateurs Chromium le téléchargent eux-mêmes (Alt+clic est leur propre « télécharger le lien »)."
+  },
   "784272a0fc664eaa": {
    "source": "Enter",
    "text": "Entrée"
@@ -3849,6 +3945,10 @@
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "Ajouter un téléchargement (<g1>Ajouter une URL</g1>)"
+  },
+  "7a6583f7f0b33adf": {
+   "source": "The browser and MDM aren't connected — Mister Download Manager help",
+   "text": "Le navigateur et MDM ne sont pas connectés — Aide de Mister Download Manager"
   },
   "7a68d73f601fe50b": {
    "source": "Windows 10 and 11, 64-bit, is the main platform. Builds for macOS (one download for Apple Silicon and Intel Macs) and Linux (AppImage, .deb, .rpm and…",
@@ -3926,6 +4026,10 @@
    "source": "Vivaldi",
    "text": "Vivaldi"
   },
+  "7caa819cbb46080c": {
+   "source": "MDM doesn't accept this copy of the extension",
+   "text": "MDM n’accepte pas cette copie de l’extension"
+  },
   "7cab5b043dd16bd1": {
    "source": "The app and the extension <g1>send nothing about you to us</g1>. We don't run servers that could receive it.",
    "text": "L’application et l’extension <g1>ne nous envoient rien vous concernant</g1>. Nous n’exploitons pas de serveurs qui pourraient les recevoir."
@@ -3974,6 +4078,10 @@
    "source": "Yes. Mister Download Manager is a free, open-source download manager laid out the way IDM users expect, with a faster engine, torrents and video downloads built in.",
    "text": "Oui. Mister Download Manager est un gestionnaire de téléchargement gratuit et open source, avec l'interface que les utilisateurs d'IDM attendent, un moteur plus rapide, les torrents et les téléchargements de vidéos intégrés."
   },
+  "7d9082fb6f1abec9": {
+   "source": "Firefox 140 or later is needed.",
+   "text": "Firefox 140 ou une version ultérieure est nécessaire."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Tâches → Paramètres du torrent → Ouvrir les liens magnet et les fichiers .torrent avec Mister Download Manager</g1> écrit bien dans le registre, mais uniquement pour votre compte Windows. Laissez cette option désactivée pour que la copie portable reste sans registre."
@@ -4006,13 +4114,13 @@
    "source": "In dialogs",
    "text": "Dans les boîtes de dialogue"
   },
-  "7e3ed952da0e1690": {
-   "source": "<g1>Mister Download Manager Integration Module</g1> appears in the list. Leave it turned on.",
-   "text": "Le <g1>Module d’intégration Mister Download Manager</g1> apparaît dans la liste. Laissez-le activé."
-  },
   "7e48cc23f12b2ed9": {
    "source": "Download",
    "text": "Télécharger"
+  },
+  "7e997f3f6fbc646c": {
+   "source": "The extension can't read this site",
+   "text": "L’extension ne peut pas lire ce site"
   },
   "7e9b5f493f60eac4": {
    "source": "By default MDM asks what to do when you add an address it already has. You can choose a fixed answer in <g1>Options → Downloads → If a duplicate download link is added</g1>:",
@@ -4057,6 +4165,10 @@
   "800e0762cdcbb57e": {
    "source": "Classic: toolbar, categories, list",
    "text": "Classique : barre d'outils, catégories, liste"
+  },
+  "801512d2726be7fc": {
+   "source": "With a VPN or proxy program, allow connections to <x1/> (your own computer): the browser's helper reaches MDM through one.",
+   "text": "Avec un programme VPN ou proxy, autorisez les connexions à <x1/> (votre propre ordinateur) : l’aide du navigateur atteint MDM par l’intermédiaire de l’un d’eux."
   },
   "802bfd4bcc1b177c": {
    "source": "<g1>Your proxy</g1>, if you set one in <g2>Options → Proxy / Socks</g2>, and your network's proxy auto-config script, if you point MDM at one.",
@@ -4126,6 +4238,10 @@
    "source": "Does MDM collect my data? — Mister Download Manager",
    "text": "MDM collecte-t-il mes données ? — Mister Download Manager"
   },
+  "8194da6d2ed769e2": {
+   "source": "The extension's button shows whether the browser reaches MDM. A red <g1>!</g1> means it doesn't; click the button to see why, and <g2>How to fix it</g2> opens the matching section of <g3>The browser and MDM aren't connected</g3>. The button also:",
+   "text": "Le bouton de l’extension indique si le navigateur atteint MDM. Un <g1>!</g1> rouge signifie que non ; cliquez sur le bouton pour voir pourquoi, et <g2>Comment le résoudre</g2> ouvre la section correspondante de <g3>Le navigateur et MDM ne sont pas connectés</g3>. Le bouton permet aussi :"
+  },
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "L'interface de MDM est disponible en 86 langues : toutes les langues d'affichage proposées par Windows 11, de l'afrikaans au vietnamien, y compris les deux écritures chinoises, l'espagnol pour…"
@@ -4153,6 +4269,10 @@
   "827d5df0769ca662": {
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (<g1>Options → General → Offer to download links copied to the clipboard</g1>, on by default). You can also paste links into <g2>Add URL</g2>, drag them onto the drop target, add a whole batch, or use the command line. See <g3>Adding downloads</g3>.",
    "text": "Oui. Copiez un lien vers un fichier et MDM propose de le télécharger immédiatement (<g1>Options → Général → Proposer de télécharger les liens copiés dans le Presse-papiers</g1>, activé par défaut). Vous pouvez également coller des liens dans <g2>Ajouter une URL</g2>, les faire glisser sur la cible de dépôt, ajouter un lot entier ou utiliser la ligne de commande. Voir <g3>Ajouter des téléchargements</g3>."
+  },
+  "82889cb817f4eb65": {
+   "source": "<g1>Take downloads from this browser</g1>: untick it to pause, and every download stays with the browser until you tick it again.",
+   "text": "<g1>Prendre les téléchargements de ce navigateur</g1> : décochez pour mettre en pause, et chaque téléchargement reste avec le navigateur jusqu’à ce que vous le recochiez."
   },
   "82a5d8b104cd86f2": {
    "source": "The same setting is in <g1>Options → Connection</g1>.",
@@ -4186,17 +4306,21 @@
    "source": "A filtered column's funnel turns blue. To remove every filter, right-click a column title and choose <g1>Clear all filters</g1>. Filters last until you close MDM.",
    "text": "L’entonnoir d’une colonne filtrée devient bleu. Pour supprimer tous les filtres, faites un clic droit sur un titre de colonne et choisissez <g1>Effacer tous les filtres</g1>. Les filtres durent jusqu’à ce que vous fermiez MDM."
   },
-  "839c271ee71b7c24": {
-   "source": "Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
-   "text": "Tout le reste reste avec le navigateur. Les modifications dans les Options parviennent au navigateur en moins d’une minute ; vous n’avez pas besoin de le redémarrer."
-  },
   "83b7e1529c1cbdec": {
    "source": "0.00 s",
    "text": "0,00 s"
   },
+  "83c2fa9b07b68fce": {
+   "source": "The connection to MDM failed",
+   "text": "La connexion à MDM a échoué"
+  },
   "83caac9f938cc79a": {
    "source": "How a program talks to MDM",
    "text": "Comment un programme communique avec MDM"
+  },
+  "83cfeac35d769e94": {
+   "source": "It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.",
+   "text": "Il stocke ses propres paramètres (en pause ou non, les types de fichiers de MDM et les sites exclus, son état de connexion, l'endroit où vous avez fait glisser le bouton vidéo sur chacun des 200 derniers sites ; rien des fenêtres privées) dans le stockage d'extension du navigateur, sur votre ordinateur."
   },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
@@ -4221,10 +4345,6 @@
   "849cc793b88d90c3": {
    "source": "On a finished download, double-click shows its <g1>Properties</g1>. To open the file instead, right-click any download and choose <g2>On Double click → Open</g2>.",
    "text": "Sur un téléchargement terminé, un double-clic affiche ses <g1>Propriétés</g1>. Pour ouvrir le fichier à la place, faites un clic droit sur n’importe quel téléchargement et choisissez <g2>Au double-clic → Ouvrir</g2>."
-  },
-  "84a64e8448db3640": {
-   "source": "Last updated 2026-11-01",
-   "text": "Dernière mise à jour : 2026-11-01"
   },
   "84a8b37a9cdcaee5": {
    "source": "Translations",
@@ -4302,10 +4422,6 @@
    "source": "When resuming isn't possible",
    "text": "Lorsque la reprise n’est pas possible"
   },
-  "87a2294c0228bc65": {
-   "source": "The <g1>Mister Download Manager Integration Module</g1> extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox:",
-   "text": "L’extension <g1>Module d’intégration Mister Download Manager</g1> pour Chrome, Edge, Brave, Opera, Vivaldi et Firefox :"
-  },
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "Ce qui est différent"
@@ -4321,6 +4437,10 @@
   "887c8bb8b7cd51b3": {
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "Cliquez sur <g1>Installer</g1>, puis sur <g2>Terminer</g2> pour démarrer MDM."
+  },
+  "888f93dc8f248ae4": {
+   "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
+   "text": "<g1>Le fichier de données d'incident (<x2/>)</g1> est un instantané de ce que MDM exécutait à ce moment-là. Il est très utile aux développeurs, mais il peut contenir des fragments de ce que MDM avait en mémoire, tels que des adresses de téléchargement, des cookies et des mots de passe enregistrés. Il n'est joint que si vous cochez <g3>Joindre aussi les données d'incident</g3>."
   },
   "8893720638f95e94": {
    "source": "4. Third-party components",
@@ -4442,6 +4562,10 @@
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>Configuration manuelle du proxy/socks</g1> — tapez l’adresse du proxy, le <g2>Port</g2>, et un <g3>Nom d’utilisateur</g3> et un <g4>Mot de passe</g4> s’il en a besoin, puis cochez les protocoles concernés (<g5>http</g5>, <g6>https</g6>). Pour un proxy SOCKS, écrivez l’adresse comme <x7/>."
   },
+  "8c699effe606d133": {
+   "source": "Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.",
+   "text": "Les fichiers que MDM télécharge depuis le navigateur sont marqués comme provenant d’internet, comme le navigateur marque les siens : Windows vérifie un programme avec SmartScreen avant son exécution et Office ouvre un document en mode protégé."
+  },
   "8c7321b31cd98d97": {
    "source": "<g1>Toolbar.</g1> <g2>Add URL</g2>, <g3>Add Torrent</g3>, <g4>Resume</g4>, <g5>Stop</g5>, <g6>Stop All</g6>, <g7>Delete</g7>, <g8>Delete Completed</g8>, <g9>Options</g9>, <g10>Scheduler</g10>, <g11>Start Queue</g11>, <g12>Stop Queue</g12>. The small arrow next to <g13>Add Torrent</g13>, <g14>Start Queue</g14> and <g15>Stop Queue</g15> opens more choices.",
    "text": "<g1>Barre d’outils.</g1> <g2>Ajouter une URL</g2>, <g3>Ajouter un torrent</g3>, <g4>Reprendre</g4>, <g5>Arrêter</g5>, <g6>Tout arrêter</g6>, <g7>Supprimer</g7>, <g8>Supprimer les téléchargements terminés</g8>, <g9>Options</g9>, <g10>Planificateur</g10>, <g11>Démarrer la file d’attente</g11>, <g12>Arrêter la file d’attente</g12>. La petite flèche à côté de <g13>Ajouter un torrent</g13>, <g14>Démarrer la file d’attente</g14> et <g15>Arrêter la file d’attente</g15> ouvre plus de choix."
@@ -4453,6 +4577,10 @@
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "Connexions par fichier"
+  },
+  "8cb163cde329bcf4": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
+   "text": "<g1>Mister Download Manager</g1> apparaît dans la liste. Laissez-le activé. Épinglez son bouton à la barre d’outils pour voir d’un coup d’œil si le navigateur atteint MDM."
   },
   "8cfa4742e8d4318b": {
    "source": "The harness",
@@ -4477,6 +4605,10 @@
   "8dbeeeabcf1f6918": {
    "source": "<g1>86 interface languages</g1>, every language Windows 11 offers, chosen by flag on the first start or in <g2>View → Language...</g2>; right to left for Arabic, Hebrew, Persian, Urdu and Uyghur; fonts for every script from the system itself. The installer speaks the same languages, and the browser extension speaks your browser's (50 languages).",
    "text": "<g1>86 langues d'interface</g1>, toutes les langues proposées par Windows 11, choisies par drapeau au premier démarrage ou dans <g2>Affichage → Langue...</g2> ; de droite à gauche pour l'arabe, l'hébreu, le persan, l'ourdou et l'ouïghour ; polices pour chaque script du système lui-même. L'installateur parle les mêmes langues, et l'extension de navigateur parle celle de votre navigateur (50 langues)."
+  },
+  "8de593350090e7e8": {
+   "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
+   "text": "Si MDM ne s’ouvre jamais, voir <g1>Le programme d’installation ou MDM ne démarre pas</g1>."
   },
   "8dfb095805a146c6": {
    "source": "<g1>Also delete the file from disk</g1> — tick it to delete the files too. For an unfinished download, this deletes the part downloaded so far. Leave it unticked to take the downloads off the list and keep the files.",
@@ -4534,6 +4666,10 @@
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 Gio en 1,0 s</g1> <g2>IDM : 5,5 s</g2>"
   },
+  "8fe29a431a6dd71a": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
+   "text": "Faites un clic droit sur un lien, une vidéo, un son ou une image et choisissez <g1>Télécharger avec Mister Download Manager</g1>. MDM le télécharge quel que soit son type : vous l’avez demandé, donc la liste des types de fichiers et les sites exclus ne s’appliquent pas ici (ils décident seulement quels téléchargements MDM prend en charge par lui-même). Une vidéo qui est lue en streaming va à la fenêtre <g2>Télécharger la vidéo</g2>."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5,5 s<g1><g2>2</g2></g1>"
@@ -4545,6 +4681,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "La version <x1/> n’a pas d’installateur, mais vous pouvez enregistrer le programme d’aide vous-même. Ouvrez une invite de commande dans le dossier de MDM et exécutez :"
+  },
+  "90ec7723b3b09b2a": {
+   "source": "Last updated 2026-11-02",
+   "text": "Dernière mise à jour le 2026-11-02"
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -4674,10 +4814,6 @@
    "source": "<g1>Description</g1> — a note of your own. It shows in the list's <g2>Description</g2> column and Find can search it.",
    "text": "<g1>Description</g1> — une note personnelle. Elle s’affiche dans la colonne <g2>Description</g2> de la liste et la fonction Rechercher peut la parcourir."
   },
-  "946929e528c20fc9": {
-   "source": "<g1>Mister Download Manager Integration Module</g1> appears. Make sure it is turned on.",
-   "text": "Le <g1>Module d’intégration Mister Download Manager</g1> apparaît. Assurez-vous qu’il est activé."
-  },
   "94779d223bac3da1": {
    "source": "The Scheduler didn't start the queue",
    "text": "Le Planificateur n’a pas démarré la file d’attente"
@@ -4762,10 +4898,6 @@
    "source": "Unzip the file to a folder you can write to (not straight into <x1/>).",
    "text": "Décompressez le fichier dans un dossier où vous pouvez écrire (pas directement dans <x1/>)."
   },
-  "96dabf126d6a950a": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens for that page and looks up the qualities it can download (the same as pasting the page's address there). It works for embedded players too: a video from another site in a page is downloaded from that site.",
-   "text": "Pointez sur une vidéo sur une page web et un petit bouton <g1>Télécharger la vidéo</g1> apparaît sur son bord. Cliquez dessus et la fenêtre <g2>Télécharger une vidéo depuis une page</g2> de MDM s’ouvre pour cette page et recherche les qualités qu’elle peut télécharger (c’est la même chose que d’y coller l’adresse de la page). Cela fonctionne aussi pour les lecteurs intégrés : une vidéo d’un autre site dans une page est téléchargée depuis ce site."
-  },
   "970430e3defd4e45": {
    "source": "Browser integration →",
    "text": "Intégration du navigateur →"
@@ -4785,6 +4917,14 @@
   "974c25dc825af253": {
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Installez MDM avec le programme d’installation et laissez la case <g1>Configurer l’intégration au navigateur (Chrome, Edge, Brave, Firefox)</g1> cochée. Cela enregistre le programme d’aide. (La version portable ne peut pas le faire ; voir <g2>Mode portable</g2>.)"
+  },
+  "9752e164b9235433": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
+   "text": "Ses autorisations, et pourquoi : <g1>downloads</g1> pour voir et transférer les téléchargements ; <g2>cookies</g2> pour que les téléchargements connectés fonctionnent dans MDM ; <g3>nativeMessaging</g3> pour communiquer avec MDM ; <g4>contextMenus</g4> pour les éléments du menu contextuel ; <g5>storage</g5> pour ses paramètres ; <g6>webRequest</g6> pour voir les formulaires soumis et les flux vidéo chargés (il ne change rien) ; <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge et autres navigateurs Chromium) pour que les fichiers que le navigateur ouvrirait (un PDF) soient téléchargés à la place, pour les types que MDM prend en charge ; dans Firefox, <g8>webRequestBlocking</g8> fait cela ; <g9>scripting</g9> pour lire les liens d'une page lorsque vous le demandez, et pour ajouter le bouton vidéo aux pages déjà ouvertes lors de l'installation de l'extension ; accès à tous les sites car les téléchargements et les vidéos peuvent provenir de n'importe quel site."
+  },
+  "976e1bc04dee0c02": {
+   "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
+   "text": "L’adresse sur laquelle vous avez cliqué et celle vers laquelle ses redirections ont mené sont toutes deux vérifiées, de sorte qu’un site que vous avez exclu reste exclu même s’il vous envoie vers un autre serveur. Tout le reste reste avec le navigateur. Les modifications dans les Options atteignent le navigateur en moins d’une minute ; vous n’avez pas besoin de le redémarrer."
   },
   "9772287c22790a58": {
    "source": "Unzip it onto the stick, for example to <x1/>.",
@@ -4974,6 +5114,10 @@
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a page. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See Download a video from a page.",
    "text": "Pointez la vidéo dans votre navigateur et cliquez sur le bouton Télécharger la vidéo qui apparaît au-dessus, ou collez l'adresse de la page dans Tâches → Télécharger une vidéo depuis une page. MDM liste toutes les qualités offertes par le site, avec leurs tailles ; choisissez-en une et elle se téléchargera comme n'importe quel fichier. Il utilise yt-dlp, qui prend en charge des milliers de sites. Ne téléchargez que les vidéos pour lesquelles vous avez les droits. Voir Télécharger une vidéo depuis une page."
   },
+  "9d1326816ebdec07": {
+   "source": "Firefox forgets the extension after a restart",
+   "text": "Firefox oublie l’extension après un redémarrage"
+  },
   "9d148e6408c5dc4e": {
    "source": ": each report (<x1/>) and its crash data (<x2/>);",
    "text": ": chaque rapport (<x1/>) et ses données de plantage (<x2/>) ;"
@@ -5010,13 +5154,13 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Sept téléchargements, chacun exécuté au moins sept fois par les deux applications. La barre représente la moitié centrale des exécutions, la ligne la médiane."
   },
+  "9eace8e71a572e6e": {
+   "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
+   "text": "Le type de fichier est-il dans <g1>Options → Types de fichiers</g1> ? Seuls les types listés sont pris en charge automatiquement. L'option <g2>Télécharger avec Mister Download Manager</g2> du menu contextuel prend n'importe quel lien."
+  },
   "9ebe47af30bc7593": {
    "source": "Click your language above: it opens its file on GitHub, one text per row.",
    "text": "Cliquez sur votre langue ci-dessus : cela ouvre son fichier sur GitHub, un texte par ligne."
-  },
-  "9ec1b2251f27d667": {
-   "source": "MDM doesn't have keys yet that force a download to MDM or keep it in the browser while you click. The <g1>Keys...</g1> button in <g2>Options → General</g2> is greyed for that reason.",
-   "text": "MDM n’a pas encore de touches qui forcent un téléchargement vers MDM ou le maintiennent dans le navigateur lorsque vous cliquez. Le bouton <g1>Clés...</g1> dans <g2>Options → Général</g2> est grisé pour cette raison."
   },
   "9ed24f4107645a20": {
    "source": "Fixed",
@@ -5114,9 +5258,17 @@
    "source": "Some buttons are greyed. They belong to features that aren't built yet.",
    "text": "Certains boutons sont grisés. Ils appartiennent à des fonctionnalités qui ne sont pas encore intégrées."
   },
+  "a1a366218784daae": {
+   "source": "Hold <g1>Alt</g1> while clicking a link to let the browser download it instead of MDM. In Firefox, Alt+click saves a link only when its <x2/> setting is on (in <x3/>); otherwise right-click the link and choose <g4>Save Link As...</g4>, which the browser keeps. <g5>Options → General → Keys...</g5> says so, and holds <g6>Also take files the browser would open</g6>.",
+   "text": "Maintenez <g1>Alt</g1> enfoncé en cliquant sur un lien pour laisser le navigateur le télécharger au lieu de MDM. Dans Firefox, Alt+clic enregistre un lien uniquement si son paramètre <x2/> est activé (dans <x3/>) ; sinon, faites un clic droit sur le lien et choisissez <g4>Enregistrer le lien sous...</g4>, que le navigateur conserve. <g5>Options → Général → Touches...</g5> l’indique, et contient <g6>Prendre aussi les fichiers que le navigateur ouvrirait</g6>."
+  },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
    "text": "Pourquoi MDM ne prend-il pas en charge mon téléchargement ? — Mister Download Manager"
+  },
+  "a294b81a4c5134b9": {
+   "source": "Install MDM with the setup from <g1>the download page</g1>, and keep <g2>Set up browser integration</g2> ticked.",
+   "text": "Installez MDM avec le programme d’installation de <g1>la page de téléchargement</g1>, et laissez <g2>Configurer l’intégration du navigateur</g2> coché."
   },
   "a297a35d3e7d0c76": {
    "source": "Mister Download Manager isn't running",
@@ -5133,6 +5285,10 @@
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Découvrir la liste de téléchargements →"
+  },
+  "a30f62455a77a82a": {
+   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> is removed when Firefox closes, so for now it has to be loaded again after each restart (see <g2>Browser integration</g2>). A signed add-on that Firefox keeps is on the way.",
+   "text": "Un module complémentaire chargé avec <g1>Charger un module complémentaire temporaire</g1> est supprimé lorsque Firefox se ferme, il doit donc pour l’instant être rechargé après chaque redémarrage (voir <g2>Intégration du navigateur</g2>). Un module complémentaire signé que Firefox conserve est en préparation."
   },
   "a332d36c2ada2664": {
    "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
@@ -5182,6 +5338,10 @@
    "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
    "text": "<g1>Ajouter une catégorie</g1> — créer la vôtre, par exemple <g2>Livres</g2> pour <x3/>. Donnez-lui un nom, les types de fichiers (séparés par des espaces, <x4/> autorisé) et un dossier."
   },
+  "a4d3460eeaa0a1e4": {
+   "source": "Linux: Flatpak and Snap browsers",
+   "text": "Linux : navigateurs Flatpak et Snap"
+  },
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "L'interface de MDM est disponible en 86 langues : toutes les langues d'affichage proposées par Windows 11, de l'afrikaans au vietnamien, y compris les deux écritures chinoises, l'espagnol pour l'Espagne et le Mexique, le français pour la France et le Canada, le portugais pour le Portugal et le Brésil, et le serbe en cyrillique et en latin."
@@ -5205,10 +5365,6 @@
   "a55c59b0ebf8abf9": {
    "source": "<g1>Set file creation date as provided by the server</g1> — give finished files the date the server reports, not the date you downloaded them.",
    "text": "<g1>Définir la date de création du fichier telle que fournie par le serveur</g1> — attribue aux fichiers terminés la date rapportée par le serveur, et non la date à laquelle vous les avez téléchargés."
-  },
-  "a5970cd3b386c01b": {
-   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager Integration Module</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
-   "text": "L’extension est-elle chargée et activée ? Cherchez <g1>Module d’intégration Mister Download Manager</g1> sur la page des extensions du navigateur. Dans Firefox, un module complémentaire temporaire disparaît après un redémarrage. Voir <g2>Intégration du navigateur</g2>."
   },
   "a5c20256467ea927": {
    "source": "MDM is a tool, like a web browser. You agree to use it lawfully, and in particular:",
@@ -5286,9 +5442,17 @@
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>Les icônes de fichiers de la liste de téléchargement</g1> étaient dessinées par-dessus le panneau Catégories lorsque la liste était défilée latéralement (l'arborescence Catégories et le Planificateur avaient le même défaut)."
   },
+  "a7d84ef6d2022e62": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); load the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
+   "text": "L'intégration au navigateur est configurée par MDM lui-même à chaque démarrage sous Linux et macOS (les navigateurs installés sont alors détectés) ; chargez l'extension comme indiqué dans <g1>Intégration au navigateur</g1>. Les navigateurs installés via Flatpak ou Snap pourraient ne pas être en mesure d'atteindre MDM."
+  },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
    "text": "Démarrer et arrêter une file d’attente"
+  },
+  "a80cb83be49f9624": {
+   "source": "A small script in every page notes only the links you click while holding <g1>Alt</g1>, so those downloads stay with the browser; the addresses are kept in memory for a few seconds.",
+   "text": "Un petit script dans chaque page ne note que les liens sur lesquels vous cliquez en maintenant la touche <g1>Alt</g1> enfoncée, afin que ces téléchargements restent avec le navigateur ; les adresses sont conservées en mémoire pendant quelques secondes."
   },
   "a826f7d39e61ae44": {
    "source": "Downloading",
@@ -5338,6 +5502,10 @@
    "source": "<g1>Launch Mister Download Manager on startup</g1> in <g2>Options → General</g2> is greyed: starting with Windows needs the registry.",
    "text": "<g1>Lancer Mister Download Manager au démarrage</g1> dans <g2>Options → Général</g2> est grisé : le démarrage avec Windows nécessite le registre."
   },
+  "a9c0ebf6a6817e58": {
+   "source": "The browser opens PDFs and music instead of sending them",
+   "text": "Le navigateur ouvre les PDF et la musique au lieu de les envoyer"
+  },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "Capturer les téléchargements de votre navigateur"
@@ -5373,6 +5541,10 @@
   "ab100241dc57cf32": {
    "source": "Ctrl+F",
    "text": "Ctrl+F"
+  },
+  "ab27f8afb9ce9f2a": {
+   "source": "Also check the extension's toolbar button: with <g1>Take downloads from this browser</g1> off, everything stays with the browser.",
+   "text": "Vérifiez aussi le bouton de l’extension dans la barre d’outils : si <g1>Prendre les téléchargements de ce navigateur</g1> est désactivé, tout reste avec le navigateur."
   },
   "ab35ea0188ea0106": {
    "source": "In MDM's data folder:",
@@ -5514,6 +5686,10 @@
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
    "text": "<g1>Adresse</g1> (Ajouter une URL) et <g2>Enregistrer sous</g2> (Informations sur le fichier à télécharger) listent les 20 dernières adresses et dossiers à partir de leurs flèches ; <g3>...</g3> à côté de Enregistrer sous choisit un dossier, <g4>+</g4> à côté de Catégorie en crée un."
   },
+  "aef4941497a48310": {
+   "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
+   "text": "Un premier démarrage, un disque lent ou un antivirus analysant MDM peuvent prendre autant de temps. La prochaine fois, c’est généralement rapide."
+  },
   "af2d311733924046": {
    "source": "IDM",
    "text": "IDM"
@@ -5570,6 +5746,10 @@
    "source": "marks the keyboard letter of a menu item or button. Keep one <x1/> before a letter of your translation.",
    "text": "marque la lettre du clavier d'un élément de menu ou d'un bouton. Gardez un <x1/> avant une lettre de votre traduction."
   },
+  "b0fe3e5f338ca579": {
+   "source": "On Linux and macOS, MDM sets browser integration up itself each time it starts: start MDM once.",
+   "text": "Sous Linux et macOS, MDM configure l’intégration du navigateur à chaque démarrage : démarrez MDM une fois."
+  },
   "b11d8dfbcafa5912": {
    "source": "Is it safe to install?",
    "text": "Est-ce sûr à installer ?"
@@ -5581,6 +5761,10 @@
   "b1286285f8338dd7": {
    "source": "Make a <x1/> of a file or folder (peers find it through the DHT).",
    "text": "Créez un <x1/> d'un fichier ou d'un dossier (les pairs le trouvent via le DHT)."
+  },
+  "b131e9b7540e88e0": {
+   "source": "The browser can't find the small helper program it talks to. It is registered when MDM is installed.",
+   "text": "Le navigateur ne trouve pas le petit programme d’aide avec lequel il communique. Il est enregistré lors de l’installation de MDM."
   },
   "b132b005cfa29649": {
    "source": "Can I limit the download speed?",
@@ -5669,6 +5853,10 @@
   "b32ef7002c1dde78": {
    "source": "The main window in dark mode",
    "text": "La fenêtre principale en mode sombre"
+  },
+  "b34461e3c513158b": {
+   "source": "The extension is newer than MDM",
+   "text": "L’extension est plus récente que MDM"
   },
   "b34ed9fb2f3ef9fb": {
    "source": "<g1>Video from a page</g1> Paste a page's address and choose a quality, up to 4K, from YouTube, Vimeo and thousands of other sites.",
@@ -5854,9 +6042,9 @@
    "source": "All the ways to add a download →",
    "text": "Toutes les façons d'ajouter un téléchargement →"
   },
-  "ba1614a7d7ce3ce6": {
-   "source": "When none of this helps, the browser keeps the download, so nothing is lost.",
-   "text": "Si rien de tout cela n’aide, le navigateur garde le téléchargement, donc rien n’est perdu."
+  "ba71746213a31b99": {
+   "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> and <g5>Vivaldi</g5>, and in <g6>Firefox</g6> 140 or later.",
+   "text": "L’extension fonctionne avec <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> et <g5>Vivaldi</g5>, ainsi qu’avec <g6>Firefox</g6> 140 ou une version ultérieure."
   },
   "ba7398fafefc4533": {
    "source": "Peak memory",
@@ -5925,6 +6113,10 @@
   "bc713e862e9b84d3": {
    "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
    "text": "Chaque téléchargement tombe dans une catégorie selon son type de fichier : <g1>Général</g1>, <g2>Compressé</g2>, <g3>Documents</g3>, <g4>Musique</g4>, <g5>Programmes</g5> ou <g6>Vidéo</g6>. Les torrents ont leur propre catégorie <g7>Torrents</g7>. Chaque catégorie a son propre dossier, par défaut à l’intérieur de votre dossier Téléchargements (<x8/>, <x9/> et ainsi de suite ; Général utilise <x10/> lui-même)."
+  },
+  "bc81c47e31837501": {
+   "source": "Start MDM yourself and try the download again.",
+   "text": "Démarrez MDM vous-même et réessayez le téléchargement."
   },
   "bc83548866edf95a": {
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
@@ -6010,10 +6202,6 @@
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "Ouvrir le premier menu (<g1>Tâches</g1>) ; sur Mac <g2>Ctrl+F2</g2>"
   },
-  "bf60e3a830cbc4c4": {
-   "source": "Browser integration is set up by the Windows installer only for now.",
-   "text": "L'intégration au navigateur n'est configurée que par l'installateur Windows pour l'instant."
-  },
   "bf8eed08aa80a086": {
    "source": "<g1>86 languages, right to left too</g1> It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.",
    "text": "<g1>86 langues, y compris de droite à gauche</g1> Il parle la langue de votre ordinateur. L'arabe, l'hébreu, le persan et l'ourdou s'affichent de droite à gauche."
@@ -6089,6 +6277,14 @@
   "c1b342c30dced4d7": {
    "source": "<g1>yt-dlp</g1><g2>video from thousands of sites</g2>",
    "text": "<g1>Vidéos yt-dlp</g1><g2>depuis des milliers de sites</g2>"
+  },
+  "c1b6b2d311bbe187": {
+   "source": "Already installed? Open MDM, then <g1>Options → General → Test browser integration</g1>, and click <g2>Set it up</g2> if it offers to.",
+   "text": "Déjà installé ? Ouvrez MDM, puis <g1>Options → Général → Tester l’intégration du navigateur</g1>, et cliquez sur <g2>Configurer</g2> si cela est proposé."
+  },
+  "c1d36b87b24557b5": {
+   "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
+   "text": "Il reste discret : il ne s’affiche que lorsque vous pointez une vidéo (ou que le lecteur a le focus du clavier ; <g1>Tab</g1> déplace alors le focus vers le bouton), s’estompe lorsque le pointeur est au repos, et exclut les petites vidéos et les courtes boucles muettes (images animées, arrière-plans). En plein écran, il suit la vidéo lorsque le lecteur le permet. Sur une vidéo protégée par copie (DRM), il indique que la vidéo ne peut pas être enregistrée."
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -6206,6 +6402,10 @@
    "source": "3.39e-06",
    "text": "3.39e-06"
   },
+  "c696667963fca278": {
+   "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
+   "text": "Les liens vers un fichier PDF ou vidéo, que le navigateur ouvrirait lui-même, sont aussi envoyés à MDM si leur type est dans la liste. Pour en laisser un au navigateur, maintenez la touche <g1>Alt</g1> enfoncée en cliquant dessus (Firefox l'ouvre ; Chrome et Edge le téléchargent eux-mêmes). Tout autre lien : faites un clic droit dessus et choisissez <g2>Télécharger avec Mister Download Manager</g2>, qui prend tous les types."
+  },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
    "text": "Dans l'adresse de <g1>Ajouter une URL</g1> et le champ <g2>Enregistrer sous</g2> des <g3>Informations sur le fichier à télécharger</g3>, les touches <g4>Haut</g4> / <g5>Bas</g5> parcourent les adresses et dossiers déjà utilisés."
@@ -6262,6 +6462,10 @@
    "source": "The software is free of charge. Anyone selling it to you, or asking you to pay to \"unlock\" it, is not us.",
    "text": "Le logiciel est gratuit. Quiconque vous le vend, ou vous demande de payer pour le « déverrouiller », n'est pas nous."
   },
+  "c86bd4ec9e321db1": {
+   "source": "The portable copy can't be connected: it writes nothing outside its own folder. Use the installed copy for browser integration. See <g1>Portable mode</g1>.",
+   "text": "La copie portable ne peut pas être connectée : elle n’écrit rien en dehors de son propre dossier. Utilisez la copie installée pour l’intégration du navigateur. Voir <g1>Mode portable</g1>."
+  },
   "c8930924d0688556": {
    "source": "No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, once a week, asks GitHub whether a newer version exists (you can turn that off in Help → Check for updates). The browser extension talks only to MDM on your own computer. The details are in the privacy policy.",
    "text": "Non. MDM n'a pas de comptes, pas d'analyse ni de télémétrie. Il se connecte aux serveurs depuis lesquels vous téléchargez et, une fois par semaine, demande à GitHub si une version plus récente existe (vous pouvez désactiver cela dans Aide → Rechercher les mises à jour). L'extension de navigateur ne communique qu'avec MDM sur votre propre ordinateur. Les détails sont dans la politique de confidentialité."
@@ -6273,6 +6477,10 @@
   "c8dea75326c8ffe6": {
    "source": "Report a problem",
    "text": "Signaler un problème"
+  },
+  "c9044c08663d0af5": {
+   "source": "A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in <g1>Options → File types</g1> (not on the excluded sites). To turn this off, untick <g2>Also take files the browser would open</g2> in <g3>Options → General → Keys...</g3>. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.",
+   "text": "Un PDF, une chanson ou une vidéo que le navigateur afficherait ou lirait lui-même va aussi à MDM, si son type est dans <g1>Options → Types de fichiers</g1> (pas sur les sites exclus). Pour désactiver cela, décochez <g2>Prendre aussi les fichiers que le navigateur ouvrirait</g2> dans <g3>Options → Général → Touches...</g3>. Cela nécessite un navigateur Chromium (Chrome, Edge, Brave, Opera, Vivaldi) version 128 ou ultérieure, ou Firefox."
   },
   "c926f50ffd807ae6": {
    "source": "Yes<g1><g2>3</g2></g1>",
@@ -6346,10 +6554,6 @@
    "source": "3. Choose how many run at once",
    "text": "3. Choisir combien de téléchargements s’exécutent en même temps"
   },
-  "cb95be2ecc33a037": {
-   "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses. It is only attached when you tick <g3>Also attach the crash data</g3>.",
-   "text": "<g1>Le fichier de données de plantage (<x2/>)</g1> est un instantané de ce que MDM exécutait à ce moment-là. Il aide le plus les développeurs, mais il peut contenir des fragments de ce que MDM avait en mémoire, comme des adresses de téléchargement. Il n’est joint que si vous cochez <g3>Joindre également les données de plantage</g3>."
-  },
   "cbb9f4acc876e0c8": {
    "source": "That button or control",
    "text": "Ce bouton ou contrôle"
@@ -6397,6 +6601,10 @@
   "cdbd4b5a71dd1ff3": {
    "source": "The one you know, down to the pixel. With torrents, video and 86 languages it never had.",
    "text": "Celle que vous connaissez, au pixel près. Avec les torrents, la vidéo et 86 langues qu'elle n'a jamais eues."
+  },
+  "cdcbc0e8d8adc8ec": {
+   "source": "The file's type is listed in <g1>Options → File types</g1>.",
+   "text": "Le type de fichier est listé dans <g1>Options → Types de fichiers</g1>."
   },
   "cddd71be4d398e2a": {
    "source": "<g1><g2>AI assistants (MCP)</g2></g1> — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.",
@@ -6454,6 +6662,10 @@
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com est un site statique. Trois entreprises participent à son affichage :"
   },
+  "d029c8a4207a6e22": {
+   "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
+   "text": "Le fichier n’est pas plus petit que <g1>Ne pas prendre les fichiers plus petits que</g1> dans <g2>Options → Types de fichiers</g2>."
+  },
   "d02d9ac01265fff2": {
    "source": "If a video won't download",
    "text": "Si une vidéo ne se télécharge pas"
@@ -6469,6 +6681,10 @@
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "Si quelqu’un a déjà signalé le même problème, la fenêtre l’indique (<g1>Déjà signalé comme problème #…</g1>). <g2>Ouvrir le problème signalé</g2> l’ouvre et met votre rapport dans le presse-papiers, afin que vous puissiez l’ajouter en tant que commentaire."
+  },
+  "d0a89ba0fce0871f": {
+   "source": "A download's details were too large",
+   "text": "Les détails d’un téléchargement étaient trop volumineux"
   },
   "d100800d4f0e156a": {
    "source": "MDM downloads BitTorrent files from magnet links and .torrent files. Torrents appear in the same list as other downloads, marked Torrent in the Source…",
@@ -6541,10 +6757,6 @@
   "d325a1b1c8ab0caa": {
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Ce que Mister Download Manager, son extension de navigateur et ce site web font de vos données : l'application et l'extension ne collectent rien ; le site web compte les visites avec Statcounter."
-  },
-  "d39699d9affd73bc": {
-   "source": "Firefox 128 or later is needed.",
-   "text": "Firefox 128 ou une version ultérieure est nécessaire."
   },
   "d398b17cf99a3004": {
    "source": "IDM median ms (IQR)",
@@ -6665,6 +6877,10 @@
   "d6669c4dc1a051f1": {
    "source": "Close",
    "text": "Fermer"
+  },
+  "d6823fa724cc65ec": {
+   "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
+   "text": "<g1>Ouvrir Mister Download Manager</g1> et <g2>Options...</g2>."
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -6818,6 +7034,10 @@
    "source": "1 GiB, fast link (our test)",
    "text": "1 GiB, lien rapide (notre test)"
   },
+  "dbfaeb9bc058b8a9": {
+   "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
+   "text": "Le navigateur a démarré l’aide de MDM, mais elle s’est arrêtée avant de répondre. Un logiciel de sécurité en est la cause habituelle."
+  },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",
    "text": "Ouvrez <g1>Téléchargements → Options</g1> et l'onglet <g2>Enregistrer dans</g2>."
@@ -6870,9 +7090,17 @@
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "Peut-il reprendre les téléchargements interrompus ? — Mister Download Manager"
   },
+  "de637b34bdd90d74": {
+   "source": "When MDM takes a download, it gets the browser's file name, size and type with it, so <g1>Download File Info</g1> shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data; a form that sends a file stays with the browser.",
+   "text": "Lorsque MDM prend un téléchargement, il obtient le nom, la taille et le type du fichier du navigateur, de sorte que <g1>Informations sur le fichier à télécharger</g1> les affiche immédiatement sans interroger à nouveau le serveur. Un téléchargement à partir d’un formulaire (un bouton qui envoie des données et reçoit un fichier) est à nouveau envoyé par MDM avec les données du formulaire ; un formulaire qui envoie un fichier reste avec le navigateur."
+  },
   "de8c9f450c2f7eeb": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>. Only while the API is on.",
    "text": "Chaque téléchargement et la vitesse totale : <x1/>. <x2/> est <x3/>, <x4/>, <x5/>, <x6/> ou <x7/> ; <x8/> est <x9/> si inconnu ; <x10/> (pourquoi il a échoué) n'est présent que pour un téléchargement en <x11/>. Uniquement lorsque l'API est activée."
+  },
+  "deb3f2db3855218f": {
+   "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
+   "text": "<g1>Ne jamais prendre les téléchargements de</g1> le site actuel : l’ajoute aux sites exclus de MDM."
   },
   "dee52466980c445e": {
    "source": "<g1>Sites to leave alone:</g1> <g2>Options → File types → Don't start downloading automatically from the following sites</g2>. Add the site's name, for example <x3/> or <x4/>.",
@@ -6922,6 +7150,10 @@
    "source": "New",
    "text": "Nouveau"
   },
+  "e063a99ff745daad": {
+   "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
+   "text": "<g1>Un MDM plus ancien ?</g1> Mettez à jour MDM : une extension plus récente peut avoir un ID qu’une ancienne aide ne connaît pas."
+  },
   "e069363b1b77d1db": {
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge et plus"
@@ -6958,6 +7190,10 @@
    "source": "misterdownloadmanager-cli",
    "text": "misterdownloadmanager-cli"
   },
+  "e1db876325f14b62": {
+   "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
+   "text": "Les téléchargements fonctionnent toujours, mais certaines fonctionnalités de l’extension nécessitent un MDM plus récent. Mettez-le à jour avec <g1>Aide → Rechercher les mises à jour...</g1> dans MDM."
+  },
   "e1e7fd2c10af0107": {
    "source": "\"Download https://example.com/big.iso to D:\\ISOs tonight, don't start it yet.\"",
    "text": "« Télécharge https://example.com/big.iso vers D:\\ISOs ce soir, ne le démarre pas encore. »"
@@ -6973,10 +7209,6 @@
   "e255969933938cdb": {
    "source": "Where MDM keeps its data",
    "text": "Où MDM conserve ses données"
-  },
-  "e299dc8597fdff06": {
-   "source": "Its <g1>Download video</g1> button reads the page only to find video elements and place the button. Clicking it passes the page's address to MDM.",
-   "text": "Son bouton <g1>Télécharger la vidéo</g1> lit la page uniquement pour trouver les éléments vidéo et placer le bouton. Cliquer dessus transmet l’adresse de la page à MDM."
   },
   "e2f5e55e73258c80": {
    "source": "<g1>Connections.</g1> Passive mode is used by default. <g2>Options → Proxy / Socks → Use FTP in PASV mode</g2> switches it off for servers that only take active connections. FTP connects to the server directly, not through the HTTP proxy.",
@@ -7006,9 +7238,17 @@
    "source": "<g1>Use FTP in PASV mode</g1> — on by default: for FTP downloads MDM opens the data connections itself (passive mode), which works through routers and firewalls. Turn it off only for a server that needs active mode (the server connects back to you). FTP never goes through the proxy above, so its <g2>ftp</g2> box stays greyed. See <g3>FTP and FTPS</g3>.",
    "text": "<g1>Utiliser le FTP en mode PASV</g1> — activé par défaut : pour les téléchargements FTP, MDM ouvre lui-même les connexions de données (mode passif), ce qui fonctionne à travers les routeurs et les pare-feu. Ne le désactivez que pour un serveur qui nécessite le mode actif (le serveur se reconnecte à vous). Le FTP ne passe jamais par le proxy ci-dessus, donc sa case <g2>ftp</g2> reste grisée. Voir <g3>FTP et FTPS</g3>."
   },
+  "e393d2a019bf4cc9": {
+   "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
+   "text": "<g1>Télécharger les liens sélectionnés</g1> et <g2>Télécharger tous les liens</g2> lisent les liens de la page (ou de votre sélection) lorsque vous les choisissez, et les transmettent à MDM avec l'adresse de la page et les cookies de son site."
+  },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
    "text": "Où passe le temps"
+  },
+  "e3ce2a886e89c710": {
+   "source": "Restart the browser after setting it up.",
+   "text": "Redémarrez le navigateur après la configuration."
   },
   "e3ce5d60681227f0": {
    "source": "<g1>GitHub, for video helpers.</g1> If you use <g2>Download video from a page</g2>, MDM downloads yt-dlp (and ffmpeg, if you want merged qualities) from their official GitHub releases, checks them, and once per session asks GitHub whether yt-dlp has a newer release. yt-dlp then talks to the video site you asked for, as your browser would.",
@@ -7058,10 +7298,6 @@
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>Clients.</g1> IDM et MDM, tous deux avec les paramètres par défaut (8 connexions), chacun recevant le téléchargement via la même ligne de commande documentée : <x2/>. Les deux enregistrent sur le lecteur qui contient le dossier temporaire d'IDM, donc aucun ne paie une copie inter-lecteur."
   },
-  "e54c910b35908f87": {
-   "source": "Downloads from a private window use that window's cookies, never the normal ones.",
-   "text": "Les téléchargements depuis une fenêtre privée utilisent les cookies de cette fenêtre, jamais les cookies normaux."
-  },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
    "text": "Il est fourni <g1>sans aucune garantie</g1> : utilisez-le à vos propres risques."
@@ -7097,6 +7333,10 @@
   "e646f73c14c73fff": {
    "source": "<g1>Resuming.</g1> MDM keeps the file's size and modification time. If either has changed when you resume, it says the file changed on the server instead of mixing two versions (<g2>Options → Downloads → Ignore file modification time changes</g2> skips the time check). The password is not written to the resume file next to the download: MDM gives it again when it resumes.",
    "text": "<g1>Reprise.</g1> MDM conserve la taille et l’heure de modification du fichier. Si l’un ou l’autre a changé lorsque vous reprenez, il indique que le fichier a changé sur le serveur au lieu de mélanger deux versions (<g2>Options → Téléchargements → Ignorer les changements d’heure de modification du fichier</g2> ignore la vérification de l’heure). Le mot de passe n’est pas écrit dans le fichier de reprise à côté du téléchargement : MDM le redonne lors de la reprise."
+  },
+  "e655ba486d16b2e5": {
+   "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red <g1>!</g1>. Click it to see what's wrong, then <g2>How to fix it</g2> brings you to the matching section below.",
+   "text": "Lorsque le navigateur ne peut pas transmettre un téléchargement à MDM, il le conserve lui-même, donc rien n’est perdu. Le bouton de la barre d’outils de l’extension affiche alors un <g1>!</g1> rouge. Cliquez dessus pour voir ce qui ne va pas, puis <g2>Comment le résoudre</g2> vous amène à la section correspondante ci-dessous."
   },
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
@@ -7205,6 +7445,10 @@
   "ea31cb1a2b06654d": {
    "source": "How far it is, or <g1>Complete</g1>, <g2>Error</g2> and so on.",
    "text": "Son avancement, ou <g1>Terminé</g1>, <g2>Erreur</g2>, etc."
+  },
+  "ea4c6fc1b359b676": {
+   "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
+   "text": "Pour conserver définitivement les téléchargements d’un site dans le navigateur, utilisez <g1>Ne jamais prendre les téléchargements de</g1> du bouton de la barre d’outils, ou ajoutez le site à <g2>Ne pas démarrer automatiquement le téléchargement depuis les sites suivants</g2>. Pour conserver un type de fichier dans le navigateur, retirez-le de la liste des types de fichiers."
   },
   "ea5d351dd9edb0f2": {
    "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed.",
@@ -7361,6 +7605,10 @@
   "efeefb4eb3f42f1d": {
    "source": "<g1>Video downloads' progress</g1> went back and forth (a stream in fragments re-estimates its size, and picture and sound arrive one after the other); it only moves forward now, from the size the video window showed.",
    "text": "<g1>La progression des téléchargements de vidéos</g1> faisait des allers-retours (un flux en fragments réestime sa taille, et l'image et le son arrivent l'un après l'autre) ; elle n'avance maintenant que de la taille affichée par la fenêtre vidéo."
+  },
+  "effc1ee925dfd7a5": {
+   "source": "If MDM can't be reached at all (it was uninstalled, or the helper isn't registered), the download stays with the browser, so nothing is lost, and the toolbar button shows a red <g1>!</g1>. See <g2>The browser and MDM aren't connected</g2>, or run <g3>Options → General → Test browser integration...</g3>.",
+   "text": "Si MDM ne peut pas être atteint du tout (il a été désinstallé, ou l’assistant n’est pas enregistré), le téléchargement reste avec le navigateur, donc rien n’est perdu, et le bouton de la barre d’outils affiche un <g1>!</g1> rouge. Voir <g2>Le navigateur et MDM ne sont pas connectés</g2>, ou exécutez <g3>Options → Général → Tester l’intégration du navigateur...</g3>."
   },
   "f0122065c2796282": {
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
@@ -7566,6 +7814,14 @@
    "source": "Not offered on its website<g1><g2>3</g2></g1>",
    "text": "Non proposé sur son site web<g1><g2>3</g2></g1>"
   },
+  "f79a7f87df89d53b": {
+   "source": "Last updated 2026-11-02 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Dernière mise à jour le 2026-11-02 · s'applique à l'application, à l'extension de navigateur et à misterdownloadmanager.com"
+  },
+  "f7a4f8dcbb4812c2": {
+   "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
+   "text": "Dans Chrome, Edge et Brave, vous pouvez limiter une extension à certains sites (clic droit sur son bouton dans la barre d’outils → <g1>Peut lire et modifier les données du site</g1>). Sur un site qu’elle ne peut pas lire, l’extension ne peut pas transmettre votre connexion, elle laisse donc le téléchargement au navigateur. Choisissez <g2>Sur tous les sites</g2> pour permettre à MDM de prendre les téléchargements partout."
+  },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
    "text": "Continue-t-il à envoyer des données une fois le torrent terminé ?"
@@ -7581,6 +7837,10 @@
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "Appuyer sur un bouton sélectionné, cocher une case, cocher la ligne sélectionnée d'une liste"
+  },
+  "f89a410af1a10630": {
+   "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
+   "text": "Le site n’est pas dans <g1>Ne pas démarrer automatiquement le téléchargement depuis les sites suivants</g1>, ni l’adresse dans <g2>Ne pas démarrer automatiquement le téléchargement depuis les adresses suivantes</g2>."
   },
   "f8c444517ab946e2": {
    "source": "From the plain zip",
@@ -7633,6 +7893,10 @@
   "fa6a5141054cb2c6": {
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The…",
    "text": "L'interface est volontairement familière : la barre d'outils, les catégories, la liste des téléchargements, la fenêtre de progression avec chaque connexion, les files d'attente et le planificateur. Les…"
+  },
+  "fa6b75cd98cf135f": {
+   "source": "<g1>Options → General → Use advanced browser integration</g1> is on, and your browser is ticked under <g2>Capture downloads from the following browsers</g2>.",
+   "text": "<g1>Options → Général → Utiliser l’intégration avancée du navigateur</g1> est activé, et votre navigateur est coché sous <g2>Capturer les téléchargements des navigateurs suivants</g2>."
   },
   "fa6e95ec9b6285a4": {
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
@@ -7737,10 +8001,6 @@
   "fdac126a9d867074": {
    "source": "<g1>Nothing to relearn.</g1> The toolbar, categories, download list, progress window, queues, Scheduler and Options sit where you expect them. Even the command-line switches are the same: <x2/>.",
    "text": "<g1>Rien à réapprendre.</g1> La barre d'outils, les catégories, la liste de téléchargements, la fenêtre de progression, les files d'attente, le Planificateur et les Options sont là où vous les attendez. Même les commutateurs de ligne de commande sont les mêmes : <x2/>."
-  },
-  "fdc2f066d120b8c5": {
-   "source": "It stores its own settings (on or off, file types, where you dragged the video button) in the browser's extension storage, on your computer.",
-   "text": "Il stocke ses propres paramètres (activé ou désactivé, types de fichiers, où vous avez glissé le bouton vidéo) dans le stockage d’extension du navigateur, sur votre ordinateur."
   },
   "fdf01d37915b1a04": {
    "source": "Browser extension",
