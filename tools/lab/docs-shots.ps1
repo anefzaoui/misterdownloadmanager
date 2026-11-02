@@ -156,6 +156,7 @@ try {
     "properties" = "properties"; "scheduler" = "scheduler"; "about" = "about"
     "options-general" = "options:general"; "options-connection" = "options:connection"
     "options-save-to" = "options:saveto"; "options-panels" = "options:panels"; "options-regional" = "options:regional"
+    "options-file-types" = "options:types"
     "language-picker" = "language"; "helpers" = "helpers"; "extension" = "extension"
     "delete-confirm" = "delete"; "progress" = "progress"
   }
