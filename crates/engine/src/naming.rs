@@ -10,24 +10,127 @@ use url::Url;
 /// File name from `Content-Disposition`, else the last URL path segment, else `download`.
 /// Always safe to use as a single path component on Windows and Unix.
 pub fn file_name(content_disposition: Option<&str>, url: &Url) -> String {
-    let from_header = content_disposition
-        .map(content_disposition::parse_content_disposition)
-        .and_then(|cd| cd.filename_full());
     let from_url = || {
         url.path_segments()
             .and_then(|mut s| s.next_back())
             .map(|s| percent_decode_str(s).decode_utf8_lossy().into_owned())
     };
-    let name = from_header.or_else(from_url).unwrap_or_default();
+    let name = content_disposition
+        .and_then(disposition_name)
+        .or_else(from_url)
+        .unwrap_or_default();
     // A header may carry a path; keep only its last component.
     let name = name.rsplit(['/', '\\']).next().unwrap_or_default();
     sanitize(name)
 }
 
-/// Make `name` a valid single file name on Windows (the strictest target).
+/// The file name a `Content-Disposition` value suggests (RFC 6266), read as browsers do:
+/// `filename*` (RFC 8187: `charset'language'percent-encoded`, UTF-8 or ISO-8859-1) wins over
+/// `filename`, which is only the fallback for clients that can't decode it. A plain
+/// `filename` is unquoted (with `\` escapes), and percent-encoded UTF-8 in it is decoded, as
+/// Chromium does. Not sanitized.
+pub fn disposition_name(value: &str) -> Option<String> {
+    let params = disposition_params(value);
+    let param = |key: &str| {
+        params
+            .iter()
+            .find(|(k, _)| k.eq_ignore_ascii_case(key))
+            .map(|(_, v)| v.as_str())
+    };
+    let extended = param("filename*").and_then(decode_extended);
+    let plain = || param("filename").map(decode_plain);
+    extended.or_else(plain).filter(|n| !n.trim().is_empty())
+}
+
+/// The `name=value` parameters after the disposition type, values unquoted. A quoted value may
+/// hold `;` and `\"`. Parameters without a type before them (`filename=x`, seen in the wild)
+/// count too.
+fn disposition_params(value: &str) -> Vec<(String, String)> {
+    let rest = match value.split_once(';') {
+        Some((kind, _)) if kind.contains('=') => value,
+        Some((_, rest)) => rest,
+        None if value.contains('=') => value,
+        None => "",
+    };
+    let mut out = Vec::new();
+    let mut it = rest.chars().peekable();
+    while it.peek().is_some() {
+        let mut name = String::new();
+        for c in it.by_ref() {
+            match c {
+                '=' => break,
+                ';' => name.clear(), // a parameter without a value
+                c => name.push(c),
+            }
+        }
+        while it.next_if(|c| c.is_whitespace()).is_some() {}
+        let mut value = String::new();
+        if it.next_if_eq(&'"').is_some() {
+            while let Some(c) = it.next() {
+                match c {
+                    '\\' => value.extend(it.next()),
+                    '"' => break,
+                    c => value.push(c),
+                }
+            }
+            // Anything after the closing quote, up to the next parameter, is not part of it.
+            for c in it.by_ref() {
+                if c == ';' {
+                    break;
+                }
+            }
+        } else {
+            for c in it.by_ref() {
+                if c == ';' {
+                    break;
+                }
+                value.push(c);
+            }
+            value.truncate(value.trim_end().len());
+        }
+        let name = name.trim();
+        if !name.is_empty() {
+            out.push((name.to_owned(), value));
+        }
+    }
+    out
+}
+
+/// `UTF-8''na%C3%AFve.txt` → `naïve.txt` (RFC 8187). Charsets other than UTF-8 and
+/// ISO-8859-1 (and its subset US-ASCII) are refused, like bytes that aren't valid UTF-8: the
+/// plain `filename` is used instead.
+fn decode_extended(v: &str) -> Option<String> {
+    let mut parts = v.splitn(3, '\'');
+    let (charset, _language, encoded) = (parts.next()?, parts.next()?, parts.next()?);
+    let bytes: Vec<u8> = percent_decode_str(encoded.trim()).collect();
+    match charset.trim().to_ascii_lowercase().as_str() {
+        "utf-8" | "utf8" => String::from_utf8(bytes).ok(),
+        "iso-8859-1" | "iso_8859-1" | "latin1" | "us-ascii" => {
+            Some(bytes.into_iter().map(char::from).collect())
+        }
+        _ => None,
+    }
+}
+
+/// A plain `filename` as given, or its percent-encoded UTF-8 decoded when that is what it
+/// holds (non-ASCII once decoded: `100%25.txt` stays as it is).
+fn decode_plain(v: &str) -> String {
+    if v.contains('%')
+        && let Ok(decoded) = percent_decode_str(v).decode_utf8()
+        && !decoded.is_ascii()
+    {
+        return decoded.into_owned();
+    }
+    v.to_owned()
+}
+
+/// Make `name` a valid single file name on Windows (the strictest target). Invisible format
+/// characters are dropped: a right-to-left override shows `invoice\u{202E}fdp.exe` as
+/// "invoiceexe.pdf".
 pub fn sanitize(name: &str) -> String {
     let cleaned: String = name
         .chars()
+        .filter(|c| !is_format(*c))
         .map(|c| {
             if c.is_control() || r#"<>:"/\|?*"#.contains(c) {
                 '_'
@@ -60,6 +163,35 @@ pub fn sanitize(name: &str) -> String {
     } else {
         cleaned
     }
+}
+
+/// Unicode's format characters (general category Cf): bidirectional marks, embeddings,
+/// overrides and isolates, zero-width spaces and joiners, the byte order mark, the soft
+/// hyphen, invisible operators, tags.
+fn is_format(c: char) -> bool {
+    matches!(c,
+        '\u{AD}'
+        | '\u{600}'..='\u{605}'
+        | '\u{61C}'
+        | '\u{6DD}'
+        | '\u{70F}'
+        | '\u{890}'..='\u{891}'
+        | '\u{8E2}'
+        | '\u{180E}'
+        | '\u{200B}'..='\u{200F}'
+        | '\u{202A}'..='\u{202E}'
+        | '\u{2060}'..='\u{2064}'
+        | '\u{2066}'..='\u{206F}'
+        | '\u{FEFF}'
+        | '\u{FFF9}'..='\u{FFFB}'
+        | '\u{110BD}'
+        | '\u{110CD}'
+        | '\u{13430}'..='\u{1343F}'
+        | '\u{1BCA0}'..='\u{1BCA3}'
+        | '\u{1D173}'..='\u{1D17A}'
+        | '\u{E0001}'
+        | '\u{E0020}'..='\u{E007F}'
+    )
 }
 
 /// Longest file name we create, in UTF-16 units: NTFS allows 255, and the part file adds
@@ -253,6 +385,108 @@ mod tests {
         );
         assert_eq!(file_name(None, &u), "b.zip");
         assert_eq!(file_name(Some("inline"), &u), "b.zip");
+    }
+
+    #[test]
+    fn the_encoded_name_wins_over_its_ascii_fallback() {
+        let u = url("http://x/get?id=7");
+        let name = "تقرير-été-日本.zip";
+        let encoded: String =
+            percent_encoding::utf8_percent_encode(name, percent_encoding::NON_ALPHANUMERIC)
+                .to_string();
+        // Either order, any case, quoted or not, with a language tag.
+        for cd in [
+            format!("attachment; filename=\"report.zip\"; filename*=UTF-8''{encoded}"),
+            format!("attachment; filename*=utf-8''{encoded}; filename=report.zip"),
+            format!("attachment; FILENAME*=UTF-8'ar'{encoded}; Filename=\"report.zip\""),
+            format!("attachment; filename*=\"UTF-8''{encoded}\""),
+        ] {
+            assert_eq!(file_name(Some(&cd), &u), name, "{cd}");
+            assert_eq!(disposition_name(&cd).as_deref(), Some(name), "{cd}");
+        }
+        assert_eq!(
+            file_name(
+                Some("attachment; filename*=ISO-8859-1''caf%E9%20cr%E8me.txt"),
+                &u
+            ),
+            "café crème.txt"
+        );
+        // An encoding it can't read, or bytes that aren't UTF-8: the plain name.
+        for cd in [
+            "attachment; filename=\"plain.txt\"; filename*=KOI8-R''%C1%C2.txt",
+            "attachment; filename=\"plain.txt\"; filename*=UTF-8''%FF%FE.txt",
+            "attachment; filename=\"plain.txt\"; filename*=broken",
+        ] {
+            assert_eq!(file_name(Some(cd), &u), "plain.txt", "{cd}");
+        }
+    }
+
+    #[test]
+    fn plain_names_are_unquoted_and_decoded() {
+        let u = url("http://x/a.bin");
+        let n = |cd: &str| file_name(Some(cd), &u);
+        assert_eq!(n("attachment; filename=\"a; b.zip\"; size=3"), "a; b.zip");
+        assert_eq!(
+            n(r#"attachment; filename="say \"hi\".txt""#),
+            "say _hi_.txt"
+        );
+        assert_eq!(n("attachment; filename=  spaced.txt  ; x=1"), "spaced.txt");
+        assert_eq!(n("filename=no-type.pdf"), "no-type.pdf");
+        // Percent-encoded UTF-8 in the plain name (Chromium decodes it); ASCII stays as sent.
+        assert_eq!(
+            n("attachment; filename=\"%E6%97%A5%E6%9C%AC.txt\""),
+            "日本.txt"
+        );
+        assert_eq!(n("attachment; filename=\"100%25.txt\""), "100%25.txt");
+        // Raw UTF-8 in the header (the download reads its bytes as UTF-8).
+        assert_eq!(n("attachment; filename=\"été.mp3\""), "été.mp3");
+        // Nothing usable: the URL's name.
+        assert_eq!(n("attachment; filename=\"\""), "a.bin");
+        assert_eq!(n("attachment"), "a.bin");
+    }
+
+    #[test]
+    fn format_characters_are_removed() {
+        // A right-to-left override would show this as "invoiceexe.pdf".
+        assert_eq!(sanitize("invoice\u{202E}fdp.exe"), "invoicefdp.exe");
+        for c in [
+            '\u{200E}',
+            '\u{200F}',
+            '\u{202A}',
+            '\u{202B}',
+            '\u{202C}',
+            '\u{202D}',
+            '\u{2066}',
+            '\u{2067}',
+            '\u{2068}',
+            '\u{2069}',
+            '\u{200B}',
+            '\u{200C}',
+            '\u{200D}',
+            '\u{FEFF}',
+            '\u{061C}',
+            '\u{00AD}',
+            '\u{E0041}',
+        ] {
+            assert_eq!(
+                sanitize(&format!("a{c}b.txt")),
+                "ab.txt",
+                "U+{:04X}",
+                c as u32
+            );
+        }
+        // Only invisible characters: nothing is left.
+        assert_eq!(sanitize("\u{202E}\u{200B}"), "download");
+        // From a header too.
+        assert_eq!(
+            file_name(
+                Some("attachment; filename*=UTF-8''photo%E2%80%AEgnp.scr"),
+                &url("http://x/")
+            ),
+            "photognp.scr"
+        );
+        // Visible text in any script is kept.
+        assert_eq!(sanitize("تقرير-été-日本.zip"), "تقرير-été-日本.zip");
     }
 
     #[test]

@@ -85,10 +85,13 @@ pub fn parse(json: &[u8]) -> Option<Video> {
 }
 
 /// Look `url` up with yt-dlp (one video, not a playlist).
-pub fn resolve(exe: &Path, url: &str) -> Result<Video, ProcError> {
-    let args: Vec<String> = ["-J", "--no-playlist", "--no-warnings"]
+pub fn resolve(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Video, ProcError> {
+    let mut args: Vec<String> = ["-J", "--no-playlist", "--no-warnings"]
         .map(String::from)
         .to_vec();
+    // Kept until yt-dlp has answered.
+    let (theirs, _cookies) = browser.args(url)?;
+    args.extend(theirs);
     let cmd = proc::ytdlp(exe, &[], &args, url)?;
     let out = proc::output(cmd, "yt-dlp", Duration::from_secs(90))?;
     parse(&out).ok_or_else(|| ProcError::Failed {

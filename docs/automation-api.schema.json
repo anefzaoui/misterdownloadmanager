@@ -184,10 +184,26 @@
             "null"
           ]
         },
+        "exclude_site": {
+          "default": null,
+          "description": "From the browser's toolbar button: leave this site's downloads (a host name) to the\nbrowser from now on (Options → File types → excluded sites).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "exit": {
           "default": false,
           "description": "`/exit` (beyond IDM): the running app saves and quits (the installer, before an upgrade\nor an uninstall). Starts nothing when no app runs.",
           "type": "boolean"
+        },
+        "final_url": {
+          "default": null,
+          "description": "From the browser: where its redirects from `url` ended (`url` stays the address asked\nfor, so an expired signed link can be renewed from it).",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "ids": {
           "default": [],
@@ -203,6 +219,21 @@
           "description": "`/a`: add to the main queue, don't start.",
           "type": "boolean"
         },
+        "links": {
+          "default": [],
+          "description": "From the browser's right-click menu: the links of a page or a selection, offered in the\nlist window to pick from (the browser's `referer` and `cookies` go with them).",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "mime": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "name": {
           "default": null,
           "type": [
@@ -217,6 +248,26 @@
             "string",
             "null"
           ]
+        },
+        "post": {
+          "default": null,
+          "description": "From the browser: a form's download, re-sent as a POST with this body and its\nContent-Type (`post_type`).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "post_type": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "private": {
+          "default": false,
+          "description": "From a private (incognito) window: the download is never written to the saved list.",
+          "type": "boolean"
         },
         "query": {
           "default": null,
@@ -246,6 +297,16 @@
           "default": false,
           "description": "`/n`: silent — no Download File Info dialog.",
           "type": "boolean"
+        },
+        "size": {
+          "default": null,
+          "description": "From the browser: the size and type its own download had (no need to look them up).",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
         },
         "start_queue": {
           "default": false,

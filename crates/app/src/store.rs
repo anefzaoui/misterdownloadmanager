@@ -224,7 +224,7 @@ fn encode(
     struct ListRef<'a> {
         version: u32,
         next_id: u64,
-        items: &'a [Item],
+        items: Vec<&'a Item>,
         columns: &'a Layout,
         settings: &'a Settings,
         queues: &'a [Queue],
@@ -232,7 +232,8 @@ fn encode(
     serde_json::to_vec_pretty(&ListRef {
         version: VERSION,
         next_id,
-        items,
+        // A private window's downloads live in memory only, as the browser keeps them.
+        items: items.iter().filter(|i| !i.context.private).collect(),
         columns,
         settings,
         queues,

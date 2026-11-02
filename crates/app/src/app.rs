@@ -39,7 +39,7 @@ pub(crate) enum View {
 /// What was being added when its address turned out to be in the list already.
 enum Pending {
     /// From the browser or the command line.
-    Command(ipc::Command),
+    Command(Box<ipc::Command>),
     /// From Add URL.
     Url(dialogs::NewUrl),
 }
@@ -252,6 +252,8 @@ pub struct App {
     queues_open: bool,
     add_url: Option<AddUrl>,
     file_info: Option<FileInfo>,
+    /// Addresses (and their browser context) waiting for Download File Info to close.
+    file_info_waiting: std::collections::VecDeque<(dialogs::NewUrl, ipc::Command)>,
     /// Help menu windows.
     about: Option<crate::help::About>,
     updates: Option<crate::help::Updates>,
@@ -394,6 +396,32 @@ fn url_login(url: &url::Url) -> Option<(String, String)> {
 }
 
 /// `Authorization: Basic …` for "Use authorization".
+/// What a download's requests carry: its headers (a login, the browser's Referer and Cookie, a
+/// form's Content-Type) and the options its requests go with (User-Agent, proxy, a form's body).
+/// Download File Info's look-up asks with the same as the download, so both get one answer.
+#[derive(Clone)]
+pub struct RequestParts {
+    pub headers: HeaderMap,
+    pub opts: Options,
+}
+
+/// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
+/// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
+/// (an FTP address may carry its login).
+fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
+    let web = matches!(url.scheme(), "http" | "https");
+    let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
+    mdm_engine::FileHook::new(move |path: &std::path::Path| {
+        if !web {
+            return;
+        }
+        #[cfg(windows)]
+        crate::win32::mark_downloaded(path, &url, referrer.as_deref());
+        #[cfg(unix)]
+        crate::unix::mark_downloaded(path, &url, referrer.as_deref());
+    })
+}
+
 pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
     let mut h = HeaderMap::new();
     if let Some((user, pass)) = login {
@@ -479,16 +507,9 @@ impl App {
     pub fn new(
         cc: &eframe::CreationContext<'_>,
         rt: tokio::runtime::Handle,
-        initial: Option<ipc::Command>,
+        commands: std::sync::mpsc::Receiver<ipc::Incoming>,
         loaded: store::Loaded,
     ) -> Self {
-        let (tx, commands) = std::sync::mpsc::channel();
-        if let Some(cmd) = initial {
-            let _ = tx.send(ipc::Incoming { cmd, reply: None });
-        }
-        let wake = cc.egui_ctx.clone();
-        // Without the channel the app still works; it just can't receive commands.
-        let _ = ipc::serve(tx, move || wake.request_repaint());
         crate::theme::apply(&cc.egui_ctx);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -606,6 +627,7 @@ impl App {
             started: Instant::now(),
             update_checked_this_run: None,
             file_info: None,
+            file_info_waiting: Default::default(),
             progress: Vec::new(),
             complete: Vec::new(),
             settings,
@@ -1202,13 +1224,39 @@ impl App {
             self.show_window(ctx);
             let dir = self.settings.category_dir(Category::Video, &self.downloads);
             crate::videodlg::refresh_ytdlp(&self.rt);
-            self.video_dlg = Some(crate::videodlg::VideoDialog::for_page(dir, page));
+            let page = page.to_owned();
+            self.video_dlg = Some(crate::videodlg::VideoDialog::for_page(dir, &page, cmd));
             return;
         }
         // Its menu: never on this site.
         if let Some(host) = cmd.panel_hide_site.as_deref() {
             self.settings.video_panel_sites =
                 mdm_ipc::capture::add_site(&self.settings.video_panel_sites, host);
+            self.dirty = true;
+            return;
+        }
+        // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
+        if !cmd.links.is_empty() {
+            self.show_window(ctx);
+            let found = cmd
+                .links
+                .iter()
+                .map(|url| crate::transfer::Imported {
+                    url: url.clone(),
+                    referer: cmd.referer.clone(),
+                    cookies: cmd.cookies.clone(),
+                    user_agent: cmd.user_agent.clone(),
+                })
+                .collect();
+            // i18n: in Import, where the addresses came from: a page in the browser
+            let source = crate::i18n::t("Links from the browser").to_owned();
+            self.show_import(found, source);
+            return;
+        }
+        // The browser's toolbar button: this site's downloads stay with the browser.
+        if let Some(host) = cmd.exclude_site.as_deref() {
+            self.settings.excluded_sites =
+                mdm_ipc::capture::add_site(&self.settings.excluded_sites, host);
             self.dirty = true;
             return;
         }
@@ -1239,7 +1287,7 @@ impl App {
             }
             return;
         };
-        if !self.duplicate_gate(&url, || Pending::Command(cmd.clone())) {
+        if !self.duplicate_gate(&url, || Pending::Command(Box::new(cmd.clone()))) {
             return;
         }
         // Options → Downloads → "Show start download dialog" off: start (or only queue) at once.
@@ -1263,25 +1311,62 @@ impl App {
             } else {
                 crate::i18n::mark("from the command line")
             };
-            let id = self.push_item(url, dest, category, String::new(), None, None, cmd, source);
+            let size = cmd.size;
+            let id = self.push_item(url, dest, category, String::new(), size, None, cmd, source);
             if later {
                 self.queues[0].items.push(id);
             } else {
                 self.start(id, true);
             }
         } else {
-            let mut fi = FileInfo::new(
-                dialogs::NewUrl { url, login: None },
-                self.downloads.clone(),
-                self.settings.category_dirs.clone(),
-                &self.rt,
-                ctx,
-            );
-            fi.context = cmd;
-            fi.remember = self.settings.change_folder_on_last;
-            fi.folders = self.settings.folder_history.clone();
-            self.file_info = Some(fi);
+            self.open_file_info(dialogs::NewUrl { url, login: None }, cmd, ctx);
         }
+    }
+
+    /// The headers and options `url`'s requests go with: the download's own `login`, else the
+    /// one Options → Sites Logins has for its address, else an FTP address's own (its resume
+    /// state keeps the address without the password); the browser's Referer, Cookie,
+    /// User-Agent and form (`context`); Options' connections, proxy and User-Agent.
+    pub fn request_parts(
+        &self,
+        url: &url::Url,
+        login: Option<&(String, String)>,
+        context: &ipc::Command,
+    ) -> RequestParts {
+        let site_login = self.settings.site_login(url);
+        let url_login = mdm_engine::ftp::is_ftp(url)
+            .then(|| url_login(url))
+            .flatten();
+        let mut headers = auth_headers(login.or(site_login.as_ref()).or(url_login.as_ref()));
+        let post_type = context.post.as_ref().and(context.post_type.as_ref());
+        for (name, v) in [
+            (reqwest::header::REFERER, &context.referer),
+            (reqwest::header::COOKIE, &context.cookies),
+            (reqwest::header::CONTENT_TYPE, &post_type.cloned()),
+        ] {
+            if let Some(v) = v.as_deref().and_then(|v| HeaderValue::from_str(v).ok()) {
+                headers.insert(name, v);
+            }
+        }
+        let ua = self.settings.user_agent.trim();
+        let opts = Options {
+            max_connections: self.settings.connections_for(url),
+            proxy: self.settings.proxy(),
+            global: Some(self.global.clone()),
+            host_limits: Some(self.host_limits.clone()),
+            ignore_mtime: self.settings.ignore_mtime,
+            server_time: self.settings.set_creation_date,
+            ftp_passive: self.settings.ftp_passive,
+            user_agent: match context.user_agent.as_deref() {
+                Some(browser) => browser.to_owned(),
+                None if ua.is_empty() => Options::default().user_agent,
+                None => ua.to_owned(),
+            },
+            post: context.post.clone().map(|body| body.into_bytes().into()),
+            on_file_created: Some(mark_hook(url, context.referer.as_deref())),
+            ..Options::default()
+        };
+        RequestParts { headers, opts }
     }
 
     /// Start or resume a download; `show` opens its progress dialog (IDM's default).
@@ -1314,61 +1399,23 @@ impl App {
             self.start_torrent(id, show);
             return;
         }
-        let Some(url) = self.item(id).map(|i| i.url.clone()) else {
+        let Some((url, login, context, own_limit, checksum)) = self.item(id).map(|i| {
+            (
+                i.url.clone(),
+                i.login.clone(),
+                i.context.clone(),
+                i.own_limit,
+                i.checksum.clone(),
+            )
+        }) else {
             return;
         };
-        let ua = self.settings.user_agent.trim();
-        let opts = Options {
-            max_connections: self.settings.connections_for(&url),
-            // The file's own remembered limit, else the Speed Limiter's.
-            speed_limit: self
-                .items
-                .iter()
-                .find(|i| i.id == id)
-                .and_then(|i| i.own_limit)
-                .or(self.settings.speed_limit()),
-            proxy: self.settings.proxy(),
-            global: Some(self.global.clone()),
-            host_limits: Some(self.host_limits.clone()),
-            ignore_mtime: self.settings.ignore_mtime,
-            server_time: self.settings.set_creation_date,
-            ftp_passive: self.settings.ftp_passive,
-            checksum: self
-                .items
-                .iter()
-                .find(|i| i.id == id)
-                .and_then(|i| i.checksum.clone()),
-            user_agent: if ua.is_empty() {
-                Options::default().user_agent
-            } else {
-                ua.to_owned()
-            },
-            ..Options::default()
-        };
-        let site_login = self.settings.site_login(&url);
+        let RequestParts { headers, mut opts } = self.request_parts(&url, login.as_ref(), &context);
+        // The file's own remembered limit, else the Speed Limiter's.
+        opts.speed_limit = own_limit.or(self.settings.speed_limit());
+        opts.checksum = checksum;
         let Some(item) = self.item(id) else { return };
         let _guard = rt.enter();
-        // The download's own login, else the one Options → Sites Logins has for its address,
-        // else an FTP address's own (its resume state keeps the address without the password).
-        let url_login = mdm_engine::ftp::is_ftp(&item.url)
-            .then(|| url_login(&item.url))
-            .flatten();
-        let mut headers = auth_headers(
-            item.login
-                .as_ref()
-                .or(site_login.as_ref())
-                .or(url_login.as_ref()),
-        );
-        let context = item.context.clone();
-        for (name, v) in [("referer", &context.referer), ("cookie", &context.cookies)] {
-            if let Some(v) = v.as_deref().and_then(|v| HeaderValue::from_str(v).ok()) {
-                headers.insert(name, v);
-            }
-        }
-        let mut opts = opts;
-        if let Some(ua) = context.user_agent.clone() {
-            opts.user_agent = ua;
-        }
         // Resume whenever there is something to resume. If that fails, say why and keep the
         // data: starting over would overwrite it, and that is only ever the user's choice.
         let state = state_path(&item.dest);
@@ -1837,7 +1884,7 @@ impl App {
             String::new(),
             add.size,
             None,
-            Default::default(),
+            add.context,
             crate::i18n::mark("from a page (yt-dlp)"),
         );
         if let Some(item) = self.item(id) {
@@ -1891,6 +1938,7 @@ impl App {
             rate,
             ffmpeg.as_ref().map(|f| f.exe.as_path()),
             item.size,
+            &crate::videodlg::from_browser(&item.context),
         );
         match started {
             Ok(job) => {
@@ -3996,10 +4044,19 @@ impl App {
         }
     }
 
-    /// Download File Info for an address from Add URL.
-    fn open_file_info(&mut self, new: dialogs::NewUrl, ctx: &egui::Context) {
+    /// Download File Info for an address from Add URL, the browser (`context`) or the command
+    /// line. One at a time: another that arrives meanwhile waits its turn (the browser has
+    /// already given its own copy up, so none may be dropped).
+    fn open_file_info(&mut self, new: dialogs::NewUrl, context: ipc::Command, ctx: &egui::Context) {
+        if self.file_info.is_some() {
+            self.file_info_waiting.push_back((new, context));
+            return;
+        }
+        let request = self.request_parts(&new.url, new.login.as_ref(), &context);
         let mut fi = FileInfo::new(
             new,
+            context,
+            request,
             self.downloads.clone(),
             self.settings.category_dirs.clone(),
             &self.rt,
@@ -4068,10 +4125,10 @@ impl App {
         match pending {
             Pending::Command(cmd) => {
                 self.duplicate_cleared = true;
-                self.handle_command(cmd, ctx);
+                self.handle_command(*cmd, ctx);
                 self.duplicate_cleared = false;
             }
-            Pending::Url(new) => self.open_file_info(new, ctx),
+            Pending::Url(new) => self.open_file_info(new, Default::default(), ctx),
         }
     }
 
@@ -4811,6 +4868,7 @@ impl App {
                     self.video_dlg = Some(crate::videodlg::VideoDialog::for_page(
                         dir,
                         new.url.as_str(),
+                        Default::default(),
                     ));
                 }
                 Outcome::Done(new) => {
@@ -4822,7 +4880,7 @@ impl App {
                             login: new.login.clone(),
                         })
                     }) {
-                        self.open_file_info(new, ctx);
+                        self.open_file_info(new, Default::default(), ctx);
                     }
                 }
             }
@@ -5080,6 +5138,12 @@ impl App {
                     None => self.add(&fi, start),
                 },
             }
+        }
+        // The next download that waited for Download File Info.
+        if self.file_info.is_none()
+            && let Some((new, context)) = self.file_info_waiting.pop_front()
+        {
+            self.open_file_info(new, context, ctx);
         }
         self.finish_stopped();
         let mut actions = Vec::new();

@@ -260,7 +260,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
-            let v = mdm_tools::resolve::resolve(&tool.exe, &url)?;
+            let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
             let merge = mdm_tools::ffmpeg::installed(&dir).is_some();
             let choices = mdm_tools::resolve::choices(&v, merge);
             if json {
@@ -399,7 +399,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
-            let v = mdm_tools::resolve::resolve(&tool.exe, &url)?;
+            let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
             let stem = mdm_engine::naming::sanitize(&v.title);
             let ffmpeg = mdm_tools::ffmpeg::installed(&dir).map(|f| f.exe);
             let job = mdm_tools::video::VideoJob::start(
@@ -412,6 +412,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                 ffmpeg.as_deref(),
                 // No size shown here: the progress steadies itself (video::Meter).
                 None,
+                &Default::default(),
             )?;
             loop {
                 tokio::time::sleep(std::time::Duration::from_millis(500)).await;

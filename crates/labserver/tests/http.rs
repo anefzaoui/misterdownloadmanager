@@ -181,3 +181,452 @@ async fn bad_query_is_rejected() {
     let r = reqwest::get(s.url("/gen/10?speed=1")).await.unwrap();
     assert_eq!(r.status(), 400);
 }
+
+#[tokio::test]
+async fn log_records_what_the_client_sent() {
+    let s = server("").await;
+    let c = reqwest::Client::new();
+    c.get(s.url("/gen/10/a.bin"))
+        .header("Referer", "http://example.test/page")
+        .header("Cookie", "sid=1")
+        .header("User-Agent", "lab-test/1")
+        .send()
+        .await
+        .unwrap()
+        .bytes()
+        .await
+        .unwrap();
+    let r = c
+        .post(s.url("/form/10/f.bin?seed=2"))
+        .header("Content-Type", "application/x-www-form-urlencoded")
+        .body("token=abc&note=hi")
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(r.status(), 200);
+    assert_eq!(r.bytes().await.unwrap(), expected(2, 0, 10));
+    let log = wait_log(&s, 2).await;
+    let get = &log[0];
+    assert_eq!(get.method, "GET");
+    assert_eq!(get.referer.as_deref(), Some("http://example.test/page"));
+    assert_eq!(get.cookie.as_deref(), Some("sid=1"));
+    assert_eq!(get.user_agent.as_deref(), Some("lab-test/1"));
+    assert_eq!(get.req_body_len, None);
+    let post = &log[1];
+    assert_eq!(post.method, "POST");
+    assert_eq!(post.path, "/form/10/f.bin");
+    assert_eq!(post.req_body_len, Some(17));
+    assert_eq!(post.req_body_head.as_deref(), Some("token=abc&note=hi"));
+    assert_eq!(
+        post.req_content_type.as_deref(),
+        Some("application/x-www-form-urlencoded")
+    );
+    // SHA-256 of "abc", the well-known test vector, to pin the hash and its hex form.
+    let r = c
+        .post(s.url("/form/10?need=x%3D"))
+        .body("abc")
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(r.status(), 403);
+    let log = wait_log(&s, 3).await;
+    assert_eq!(
+        log[2].req_body_sha256.as_deref(),
+        Some("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
+    );
+    assert_eq!(post.outcome, "complete");
+    assert!(post.req > get.req);
+}
+
+#[tokio::test]
+async fn pages_are_logged_too() {
+    let s = server("").await;
+    reqwest::get(s.url("/page?link=%2Fgen%2F1K%2Fa.zip"))
+        .await
+        .unwrap();
+    let log = wait_log(&s, 1).await;
+    assert_eq!(log[0].path, "/page");
+    assert_eq!(log[0].status, 200);
+    assert!(log[0].body_len > 0);
+    // The redirect hop is not logged (the engine's tests read the log as the file requests).
+    let c = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()
+        .unwrap();
+    c.get(s.url("/redirect?to=%2Fgen%2F10"))
+        .send()
+        .await
+        .unwrap();
+    tokio::time::sleep(Duration::from_millis(50)).await;
+    assert_eq!(s.log().len(), 1);
+}
+
+#[tokio::test]
+async fn cookie_page_sets_cookies() {
+    let s = server("").await;
+    let r = reqwest::get(s.url("/cookie?set=sid=1&httponly=auth=xyz&clear=old"))
+        .await
+        .unwrap();
+    assert_eq!(r.status(), 200);
+    assert!(
+        r.headers()["content-type"]
+            .to_str()
+            .unwrap()
+            .starts_with("text/html")
+    );
+    let set: Vec<_> = r
+        .headers()
+        .get_all("set-cookie")
+        .iter()
+        .map(|v| v.to_str().unwrap().to_owned())
+        .collect();
+    assert_eq!(
+        set,
+        [
+            "sid=1; Path=/",
+            "auth=xyz; Path=/; HttpOnly",
+            "old=; Path=/; Max-Age=0"
+        ]
+    );
+    for bad in [
+        "/cookie",
+        "/cookie?set=nope",
+        "/cookie?set=a=b%3Bc",
+        "/cookie?x=1",
+    ] {
+        let r = reqwest::get(s.url(bad)).await.unwrap();
+        assert_eq!(r.status(), 400, "{bad}");
+    }
+}
+
+#[tokio::test]
+async fn require_cookie_and_referer() {
+    let s = server("").await;
+    let c = reqwest::Client::new();
+    let url = s.url("/gen/10/a.bin?require_cookie=sid=1");
+    assert_eq!(c.get(&url).send().await.unwrap().status(), 403);
+    let wrong = c.get(&url).header("Cookie", "sid=2").send().await.unwrap();
+    assert_eq!(wrong.status(), 403);
+    let ok = c
+        .get(&url)
+        .header("Cookie", "a=b; sid=1")
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(ok.status(), 200);
+    ok.bytes().await.unwrap();
+
+    let url = s.url("/gen/10/a.bin?require_referer=http%3A%2F%2F127.0.0.1%2Fpage");
+    assert_eq!(c.get(&url).send().await.unwrap().status(), 403);
+    let ok = c
+        .get(&url)
+        .header("Referer", "http://127.0.0.1/page?x=1")
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(ok.status(), 200);
+    ok.bytes().await.unwrap();
+    let log = wait_log(&s, 5).await;
+    let count = |o: &str| log.iter().filter(|e| e.outcome == o).count();
+    assert_eq!(count("fault:require_cookie"), 2);
+    assert_eq!(count("fault:require_referer"), 1);
+
+    // Server-wide, as --faults would set it.
+    let s = server("require_cookie=sid").await;
+    assert_eq!(reqwest::get(s.url("/gen/10")).await.unwrap().status(), 403);
+}
+
+#[tokio::test]
+async fn disposition_names_and_inline_types() {
+    let s = server("").await;
+    let c = reqwest::Client::new();
+    let head = async |p: &str| c.head(s.url(p)).send().await.unwrap();
+    let r = head("/gen/10/download.php?cd=report%202026.zip").await;
+    assert_eq!(
+        r.headers()["content-disposition"],
+        "attachment; filename=\"report 2026.zip\""
+    );
+    assert_eq!(r.headers()["content-type"], "application/octet-stream");
+    let r = head("/gen/10/get?cdstar=%E6%8A%A5%E5%91%8A.zip").await;
+    assert_eq!(
+        r.headers()["content-disposition"],
+        "attachment; filename=\"fallback-name.zip\"; filename*=UTF-8''%E6%8A%A5%E5%91%8A.zip"
+    );
+    for (name, ty) in [
+        ("doc.pdf", "application/pdf"),
+        ("song.mp3", "audio/mpeg"),
+        ("clip.mp4", "video/mp4"),
+    ] {
+        let r = head(&format!("/gen/10/{name}?inline=1")).await;
+        assert_eq!(r.headers()["content-type"], ty);
+        assert_eq!(
+            r.headers()["content-disposition"],
+            format!("inline; filename=\"{name}\"")
+        );
+        let r = head(&format!("/gen/10/{name}?inline=bare")).await;
+        assert_eq!(r.headers()["content-type"], ty);
+        assert!(r.headers().get("content-disposition").is_none());
+    }
+    let r = head("/gen/10?inline=1").await;
+    assert_eq!(r.headers()["content-disposition"], "inline");
+    assert_eq!(head("/gen/10?inline=sometimes").await.status(), 400);
+}
+
+#[tokio::test]
+async fn forms_answer_only_their_post() {
+    let s = server("").await;
+    let c = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()
+        .unwrap();
+    let r = c.get(s.url("/form/1K/r.zip")).send().await.unwrap();
+    assert_eq!(r.status(), 405);
+    assert_eq!(r.headers()["allow"], "POST");
+    let post = async |path: &str, ty: &str, body: &'static str| {
+        c.post(s.url(path))
+            .header("Content-Type", ty)
+            .body(body)
+            .send()
+            .await
+            .unwrap()
+    };
+    let url = "application/x-www-form-urlencoded";
+    let r = post("/form/1K/r.zip?seed=5", url, "token=abc").await;
+    assert_eq!(r.status(), 200);
+    assert_eq!(
+        r.headers()["content-disposition"],
+        "attachment; filename=\"r.zip\""
+    );
+    assert_eq!(r.bytes().await.unwrap(), expected(5, 0, 1024));
+    assert_eq!(post("/form/1K/r.zip", url, "token=abd").await.status(), 403);
+    let r = post("/form/1K/r.zip?need=code%3D7", url, "code=7").await;
+    assert_eq!(r.status(), 200);
+    r.bytes().await.unwrap();
+    let mp = "--b0\r\nContent-Disposition: form-data; name=\"token\"\r\n\r\nabc\r\n--b0--\r\n";
+    let r = post(
+        "/form/1K/m.zip?seed=6",
+        "multipart/form-data; boundary=b0",
+        mp,
+    )
+    .await;
+    assert_eq!(r.status(), 200);
+    assert_eq!(r.bytes().await.unwrap(), expected(6, 0, 1024));
+    let r = post(
+        "/form/1K/s.zip?seed=7&see_other=1&cd=x.zip",
+        url,
+        "token=abc",
+    )
+    .await;
+    assert_eq!(r.status(), 303);
+    assert_eq!(r.headers()["location"], "/gen/1K/s.zip?seed=7&cd=x.zip");
+    let log = wait_log(&s, 6).await;
+    let outcomes: Vec<_> = log.iter().map(|e| e.outcome.as_str()).collect();
+    for o in ["method", "form", "see_other"] {
+        assert!(outcomes.contains(&o), "{o}: {outcomes:?}");
+    }
+}
+
+#[tokio::test]
+async fn one_time_links() {
+    let s = server("").await;
+    let c = reqwest::Client::new();
+    let url = s.url("/gen/1K/once.zip?once=1&seed=1");
+    let first = c.get(&url).send().await.unwrap();
+    assert_eq!(first.status(), 200);
+    assert_eq!(first.bytes().await.unwrap().len(), 1024);
+    assert_eq!(c.get(&url).send().await.unwrap().status(), 410);
+    assert_eq!(c.head(&url).send().await.unwrap().status(), 410);
+    // Another query is another link; a HEAD uses it up.
+    let other = s.url("/gen/1K/once.zip?once=1&seed=2");
+    assert_eq!(c.head(&other).send().await.unwrap().status(), 200);
+    assert_eq!(c.get(&other).send().await.unwrap().status(), 410);
+    // A refused request (no cookie) doesn't.
+    let gated = s.url("/gen/1K/g.zip?once=1&require_cookie=sid");
+    assert_eq!(c.get(&gated).send().await.unwrap().status(), 403);
+    let ok = c
+        .get(&gated)
+        .header("Cookie", "sid=1")
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(ok.status(), 200);
+    ok.bytes().await.unwrap();
+    let log = wait_log(&s, 7).await;
+    assert_eq!(log.iter().filter(|e| e.outcome == "fault:once").count(), 3);
+}
+
+async fn text(s: &LabServer, path: &str) -> (reqwest::header::HeaderMap, String) {
+    let r = reqwest::get(s.url(path)).await.unwrap();
+    assert_eq!(r.status(), 200, "{path}");
+    (r.headers().clone(), r.text().await.unwrap())
+}
+
+#[tokio::test]
+async fn page_variants() {
+    let s = server("").await;
+    let (h, page) = text(&s, "/page?video=%2Fgen%2F1M%2Fclip.mp4").await;
+    assert!(h.get("content-security-policy").is_none());
+    assert!(page.contains(
+        "<video id=video src=\"/gen/1M/clip.mp4\" width=640 height=360 controls></video>"
+    ));
+    assert!(page.contains("href=/assets/page.css"));
+    assert!(!page.contains("style="), "no inline styles (csp=strict)");
+
+    let (h, page) = text(&s, "/page?csp=strict").await;
+    assert_eq!(
+        h["content-security-policy"],
+        "default-src 'none'; style-src 'self'; img-src 'self'; media-src 'self'; script-src 'self'"
+    );
+    assert!(page.contains("<video id=video src=\"/gen/1M/clip.mp4?inline=1\""));
+
+    let (_, page) = text(&s, "/page?muted_loop=1&w=320&h=180").await;
+    assert!(page.contains("width=320 height=180 muted loop autoplay playsinline></video>"));
+    assert!(!page.contains("controls"));
+
+    let (h, page) = text(&s, "/page?iframe=1&csp=strict&w=320&h=180").await;
+    assert!(page.contains("<iframe id=frame"));
+    assert!(page.contains("width=360 height=220"));
+    assert!(!page.contains("<video"));
+    let csp = h["content-security-policy"].to_str().unwrap();
+    assert!(csp.ends_with("; frame-src 'self'"));
+    let inner = page.split("<iframe").nth(1).unwrap();
+    let inner = inner.split("src=\"").nth(1).unwrap().split('"').next();
+    let (h, inner) = text(&s, &inner.unwrap().replace("&amp;", "&")).await;
+    assert!(inner.contains("<video id=video") && inner.contains("width=320 height=180"));
+    assert!(h.contains_key("content-security-policy"));
+
+    let (_, page) = text(&s, "/page?shadow=1").await;
+    assert!(page.contains("<div id=host><template shadowrootmode=open>"));
+
+    let (_, page) = text(&s, "/page?several=2").await;
+    assert!(page.contains("id=video1") && page.contains("id=video2"));
+    assert!(page.contains("<source src=\"/gen/1M/clip2.mp4?seed=2&amp;inline=1\""));
+    assert!(!page.contains("id=video "));
+
+    let (_, page) = text(&s, "/page?audio=1&link=%2Fx").await;
+    assert!(page.contains("<audio id=audio src=\"/gen/512K/sound.mp3?inline=1\" controls>"));
+    assert!(page.contains("<a id=link href=\"/x\">"));
+    assert!(!page.contains("<video"));
+
+    let (h, page) = text(&s, "/page?hls=1&csp=strict").await;
+    assert!(page.contains("<script src=/assets/stream.js data-manifest=\"/hls/master.m3u8\">"));
+    let csp = h["content-security-policy"].to_str().unwrap();
+    assert!(csp.contains("connect-src 'self'") && csp.contains("media-src 'self' blob:"));
+    let (_, page) = text(&s, "/page?dash=1").await;
+    assert!(page.contains("data-manifest=\"/dash/manifest.mpd\""));
+
+    let (h, js) = text(&s, "/assets/stream.js").await;
+    assert!(
+        h["content-type"]
+            .to_str()
+            .unwrap()
+            .starts_with("text/javascript")
+    );
+    assert!(js.contains("fetch("));
+    let (h, _) = text(&s, "/assets/page.css").await;
+    assert!(h["content-type"].to_str().unwrap().starts_with("text/css"));
+    let r = reqwest::get(s.url("/assets/x.js")).await.unwrap();
+    assert_eq!(r.status(), 404);
+}
+
+#[tokio::test]
+async fn form_page_posts_to_form() {
+    let s = server("").await;
+    let (_, page) = text(&s, "/formpage?size=2M&token=t1&with=once%3D1").await;
+    assert!(page.contains(
+        "<form id=form method=post enctype=application/x-www-form-urlencoded \
+         action=\"/form/2M/report.zip?seed=5&amp;once=1\">"
+    ));
+    assert!(page.contains(
+        "<form id=multipart method=post enctype=multipart/form-data \
+         action=\"/form/2M/multipart-report.zip?seed=6&amp;once=1\">"
+    ));
+    assert!(
+        page.contains("action=\"/form/2M/see-other-report.zip?seed=7&amp;see_other=1&amp;once=1\"")
+    );
+    assert!(page.contains("name=token value=\"t1\""));
+    assert!(page.contains("<button id=submit-multipart>"));
+}
+
+#[tokio::test]
+async fn hls_and_dash() {
+    let s = server("").await;
+    let (h, master) = text(&s, "/hls/master.m3u8").await;
+    assert_eq!(h["content-type"], "application/vnd.apple.mpegurl");
+    assert!(master.starts_with("#EXTM3U\n"));
+    assert!(master.contains("RESOLUTION=1280x720") && master.contains("BANDWIDTH=640000"));
+    assert!(master.contains("#EXT-X-MEDIA:TYPE=AUDIO"));
+    assert!(master.contains("URI=\"audio/index.m3u8\""));
+    let variants: Vec<&str> = master.lines().filter(|l| !l.starts_with('#')).collect();
+    assert_eq!(variants, ["720p/index.m3u8", "360p/index.m3u8"]);
+    let mut seen = Vec::new();
+    for (track, len) in [("720p", 48128), ("360p", 24064), ("audio", 6016)] {
+        let (_, media) = text(&s, &format!("/hls/{track}/index.m3u8")).await;
+        assert!(media.contains("#EXT-X-ENDLIST"));
+        let segs: Vec<&str> = media.lines().filter(|l| !l.starts_with('#')).collect();
+        assert_eq!(segs, ["seg0.ts", "seg1.ts", "seg2.ts"]);
+        for seg in segs {
+            let r = reqwest::get(s.url(&format!("/hls/{track}/{seg}")))
+                .await
+                .unwrap();
+            assert_eq!(r.headers()["content-type"], "video/mp2t");
+            let b = r.bytes().await.unwrap();
+            assert_eq!(b.len(), len);
+            assert!(b.iter().step_by(188).all(|x| *x == 0x47));
+            assert!(!seen.contains(&b), "segments differ");
+            seen.push(b);
+        }
+    }
+    for missing in ["/hls/720p/seg3.ts", "/hls/1080p/index.m3u8"] {
+        let r = reqwest::get(s.url(missing)).await.unwrap();
+        assert_eq!(r.status(), 404, "{missing}");
+    }
+
+    let (h, mpd) = text(&s, "/dash/manifest.mpd").await;
+    assert_eq!(h["content-type"], "application/dash+xml");
+    assert!(mpd.contains("mediaPresentationDuration=\"PT12S\""));
+    assert!(mpd.contains("<Representation id=\"720p\""));
+    assert!(mpd.contains("<Representation id=\"audio\""));
+    let r = reqwest::get(s.url("/dash/720p/init.mp4")).await.unwrap();
+    assert_eq!(r.headers()["content-type"], "video/mp4");
+    assert_eq!(&r.bytes().await.unwrap()[4..8], b"ftyp");
+    let r = reqwest::get(s.url("/dash/audio/seg3.m4s")).await.unwrap();
+    assert_eq!(r.headers()["content-type"], "audio/mp4");
+    assert_eq!(r.bytes().await.unwrap().len(), 6016);
+    let r = reqwest::get(s.url("/dash/audio/seg0.m4s")).await.unwrap();
+    assert_eq!(r.status(), 404);
+}
+
+#[tokio::test]
+async fn help_lists_the_routes() {
+    let s = server("").await;
+    let help = reqwest::get(s.url("/"))
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+    for word in [
+        "cdstar=",
+        "inline=bare",
+        "require_cookie=",
+        "require_referer=",
+        "once=1",
+        "POST /form",
+        "/formpage",
+        "/cookie?set=",
+        "csp=strict",
+        "muted_loop",
+        "iframe=1",
+        "shadow=1",
+        "several=N",
+        "audio=",
+        "hls=1",
+        "/hls/master.m3u8",
+        "/dash/manifest.mpd",
+        "req_body_sha256",
+        "referer",
+    ] {
+        assert!(help.contains(word), "{word}");
+    }
+}

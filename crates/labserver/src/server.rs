@@ -1,36 +1,49 @@
 //! The lab HTTP server: generated files with Range support, a request log, and fault injection.
 //!
-//! Routes:
-//! - `GET|HEAD /gen/{size}[/{name}]?seed=N&<faults>` — deterministic content (see `content`)
+//! Routes (every parameter is listed by `GET /`, [`HELP`]):
+//! - `GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>` — deterministic content (see
+//!   `content`); the file params shape its headers (`cd`, `cdstar`, `inline`)
+//! - `POST /form/{size}[/{name}]?need=FIELD=VALUE[&see_other=1]&<as /gen>` — the same file, only
+//!   for a form post that carries `FIELD=VALUE`
 //! - `GET /redirect?to=URL[&ttl_ms=N]` — 302 to `URL` (cross-host redirects, credential scoping);
 //!   with `ttl_ms` the target gets `expires=<unix ms>` and answers 403 after it (signed CDN links)
+//! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
+//! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`)
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
+//!
+//! Every request is logged except `/`, `/_log` and `/redirect` (the engine's tests read the log
+//! as the requests that reached the files, the redirect hop excluded).
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::io;
 use std::net::{IpAddr, SocketAddr};
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, UNIX_EPOCH};
 
-use axum::body::Body;
-use axum::extract::{ConnectInfo, Path, RawQuery, State};
+use axum::body::{Body, HttpBody};
+use axum::extract::{ConnectInfo, Path, RawQuery, Request, State};
 use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, header};
+use axum::middleware::Next;
 use axum::response::{IntoResponse, Response};
-use axum::routing::get;
+use axum::routing::{any, get};
 use axum::{Json, Router};
 use bytes::Bytes;
+use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, utf8_percent_encode};
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use tokio::net::TcpListener;
 use tokio::task::JoinHandle;
 
 use crate::content;
-use crate::faults::{Faults, every};
+use crate::faults::{Faults, every, has_cookie, parse_flag};
+use crate::{pages, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
 /// One served request. `peer` is the client's ip:port, so the port identifies the TCP
-/// connection; `conn_req` > 1 means the connection was reused (keep-alive).
+/// connection; `conn_req` > 1 means the connection was reused (keep-alive). `req` numbers every
+/// logged request; the faults' "every Nth" count only the file requests (/gen, /form).
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct LogEntry {
     pub req: u64,
@@ -47,12 +60,28 @@ pub struct LogEntry {
     /// The `Cookie` header, to check credentials don't follow cross-host redirects.
     #[serde(default)]
     pub cookie: Option<String>,
+    /// The `Referer` header.
+    #[serde(default)]
+    pub referer: Option<String>,
+    /// The request's `Content-Type` (a form post's encoding).
+    #[serde(default)]
+    pub req_content_type: Option<String>,
+    /// The request body: its length, SHA-256 (hex) and first 256 bytes (lossy UTF-8). Set for
+    /// every method but GET and HEAD, and for those too when they carry a body.
+    #[serde(default)]
+    pub req_body_len: Option<u64>,
+    #[serde(default)]
+    pub req_body_sha256: Option<String>,
+    #[serde(default)]
+    pub req_body_head: Option<String>,
     pub status: u16,
-    /// First body byte offset within the file, and planned body length.
+    /// First body byte offset within the file, and planned body length (a page: its length).
     pub body_start: u64,
     pub body_len: u64,
     pub bytes_sent: u64,
-    /// `complete`, `dropped` (fault), `aborted` (client closed early), `head`, `error`, `fault:*`.
+    /// `complete`, `dropped` (fault), `aborted` (client closed early), `head`, `error`,
+    /// `expired`, `fault:*` (the fault that answered), `method` (405), `form` (403, the form
+    /// lacked its field), `see_other` (303).
     pub outcome: String,
     pub rate: Option<u64>,
     pub drop_at: Option<u64>,
@@ -80,7 +109,12 @@ impl Default for Config {
 struct Shared {
     faults: Faults,
     started: Instant,
+    /// File requests, for the faults' "every Nth".
     requests: AtomicU64,
+    /// Every logged request (`LogEntry::req`).
+    seq: AtomicU64,
+    /// One-time links already used (path and query).
+    used_once: Mutex<HashSet<String>>,
     conn_reqs: Mutex<HashMap<SocketAddr, u64>>,
     active: Mutex<HashMap<IpAddr, u32>>,
     log: Mutex<Vec<LogEntry>>,
@@ -90,6 +124,52 @@ struct Shared {
 impl Shared {
     fn ms(&self) -> u64 {
         self.started.elapsed().as_millis() as u64
+    }
+
+    /// The log entry of a request that starts now; `body` is the request's body.
+    fn begin(
+        &self,
+        peer: SocketAddr,
+        method: &Method,
+        path: String,
+        query: Option<String>,
+        headers: &HeaderMap,
+        body: &[u8],
+    ) -> LogEntry {
+        let conn_req = {
+            let mut m = self.conn_reqs.lock().unwrap();
+            let c = m.entry(peer).or_insert(0);
+            *c += 1;
+            *c
+        };
+        let has_body = !body.is_empty() || !matches!(*method, Method::GET | Method::HEAD);
+        LogEntry {
+            req: self.seq.fetch_add(1, Ordering::SeqCst) + 1,
+            peer,
+            conn_req,
+            t_start_ms: self.ms(),
+            t_end_ms: 0,
+            method: method.to_string(),
+            path,
+            query,
+            range: header_str(headers, header::RANGE),
+            if_range: header_str(headers, header::IF_RANGE),
+            user_agent: header_str(headers, header::USER_AGENT),
+            cookie: header_str(headers, header::COOKIE),
+            referer: header_str(headers, header::REFERER),
+            req_content_type: header_str(headers, header::CONTENT_TYPE),
+            req_body_len: has_body.then_some(body.len() as u64),
+            req_body_sha256: has_body.then(|| hex::encode(Sha256::digest(body))),
+            req_body_head: has_body
+                .then(|| String::from_utf8_lossy(&body[..body.len().min(256)]).into_owned()),
+            status: 0,
+            body_start: 0,
+            body_len: 0,
+            bytes_sent: 0,
+            outcome: String::new(),
+            rate: None,
+            drop_at: None,
+        }
     }
 
     fn record(&self, mut entry: LogEntry, status: u16, outcome: &str) {
@@ -118,18 +198,36 @@ impl LabServer {
             faults: cfg.faults,
             started: Instant::now(),
             requests: AtomicU64::new(0),
+            seq: AtomicU64::new(0),
+            used_once: Mutex::default(),
             conn_reqs: Mutex::default(),
             active: Mutex::default(),
             log: Mutex::default(),
             on_log: cfg.on_log,
         });
+        // Routes answered from memory, logged by `log_simple`.
+        let simple = Router::new()
+            .route("/page", get(pages::page))
+            .route("/formpage", get(pages::formpage))
+            .route("/cookie", get(pages::cookie))
+            .route("/assets/{file}", get(pages::asset))
+            .route("/hls/master.m3u8", get(streams::hls_master))
+            .route("/hls/{track}/{file}", get(streams::hls_file))
+            .route("/dash/manifest.mpd", get(streams::dash_manifest))
+            .route("/dash/{rep}/{file}", get(streams::dash_file))
+            .route_layer(axum::middleware::from_fn_with_state(
+                shared.clone(),
+                log_simple,
+            ));
         let app = Router::new()
             .route("/", get(help))
             .route("/gen/{size}", get(generated))
             .route("/gen/{size}/{*name}", get(generated))
+            .route("/form/{size}", any(form))
+            .route("/form/{size}/{*name}", any(form))
             .route("/redirect", get(redirect))
-            .route("/page", get(page))
             .route("/_log", get(get_log).delete(clear_log))
+            .merge(simple)
             .with_state(shared.clone());
         let task = tokio::spawn(async move {
             let svc = app.into_make_service_with_connect_info::<SocketAddr>();
@@ -169,42 +267,105 @@ impl Drop for LabServer {
     }
 }
 
+/// The index page (`GET /`): every route, parameter and fault.
+pub const HELP: &str = r#"labserver: an HTTP test server for Mister Download Manager
+
+FILES  deterministic content: byte i of seed s is the same on every request (src/content.rs)
+GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 100M, 1G
+  file params:
+    cd=NAME        Content-Disposition: attachment; filename="NAME" (whatever the path's name;
+                   UTF-8 is sent raw, as many servers do)
+    cdstar=NAME    attachment; filename="fallback-name.zip"; filename*=UTF-8''<NAME %-encoded>
+    inline=1       Content-Disposition: inline (filename: cdstar, cd or the path's name) and the
+                   name's real Content-Type (.pdf application/pdf, .mp3 audio/mpeg, .mp4
+                   video/mp4, ...): a browser displays or plays it
+    inline=bare    the real Content-Type and no Content-Disposition at all
+    expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
+  faults (also server-wide with --faults; per-URL values override):
+    rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
+    fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
+    etag=weak|per-request|none latency_ms=N
+    require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
+    require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
+    once=1         a one-time link: the first request for this path and query is served, every
+                   later one (HEAD and ranges too) gets 410 Gone; vary seed= for a fresh link
+  "every Nth" counts file requests (/gen and /form) only.
+POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
+    the file, only for a POST whose form (urlencoded, multipart or text/plain) has FIELD=VALUE
+    (default need=token=abc): 405 to other methods, 403 to a form without it;
+    see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
+GET /redirect?to=URL[&ttl_ms=N]   302 to URL (not logged); ttl_ms: a signed link expiring after N ms
+
+PAGES  for the browser extension's tests (tools/extension/e2e.mjs); styles and scripts are files
+GET /page?<any of>
+    link=PATH      <a id=link href=PATH>download</a>
+    video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
+                   when nothing else is asked for, or with muted_loop, iframe or shadow)
+    w=PX h=PX      the videos' size
+    muted_loop=1   the video muted, looping and autoplaying, without controls
+    iframe=1       the video inside <iframe id=frame> (a /page of its own)
+    shadow=1       the video inside the open shadow root of <div id=host> (declarative)
+    several=N      N more videos #video1..N, each with its own <source> /gen/1M/clipK.mp4?seed=K
+    audio=PATH|1   <audio id=audio controls> (1: /gen/512K/sound.mp3?inline=1)
+    hls=1, dash=1  <video id=player> and /assets/stream.js, which fetches /hls/master.m3u8 (or
+                   /dash/manifest.mpd), the first variant's and the audio's playlists and every
+                   segment, then sets <body data-stream=done> (or error)
+    csp=strict     Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self';
+                   media-src 'self'; script-src 'self' (+ frame-src 'self' with iframe,
+                   + connect-src 'self' and media-src blob: with hls or dash)
+GET /formpage?size=1M&name=report.zip&token=abc&with=QUERY   three forms posting to /form:
+    #form (urlencoded) to /form/SIZE/NAME?seed=5, #multipart to /form/SIZE/multipart-NAME?seed=6,
+    #see-other (urlencoded) to /form/SIZE/see-other-NAME?seed=7&see_other=1; each sends
+    token=TOKEN and note=hello world; with=QUERY is added to each action (with=once%3D1)
+GET /cookie?set=NAME=VALUE&httponly=NAME=VALUE&clear=NAME   (each repeatable) a small page with
+    Set-Cookie: NAME=VALUE; Path=/ (; HttpOnly), or NAME=; Path=/; Max-Age=0
+GET /assets/page.css  /assets/stream.js
+
+STREAMS  3 segments of 4 s per track, fake bytes (TS: a 0x47 sync byte every 188)
+GET /hls/master.m3u8   two variants (720p: 1280x720, 1280000 b/s; 360p: 640x360, 640000 b/s)
+    and an audio rendition (GROUP-ID="aud"): /hls/{720p,360p,audio}/index.m3u8 -> seg0..2.ts
+    of 48128, 24064, 6016 bytes (application/vnd.apple.mpegurl, video/mp2t)
+GET /dash/manifest.mpd  (application/dash+xml) the same tracks as Representations with a
+    SegmentTemplate: /dash/{720p,360p,audio}/init.mp4 and seg1..3.m4s (video/mp4, audio/mp4)
+
+LOG
+GET /_log   the request log as JSON: method, path, query, range, if_range, user_agent, cookie,
+            referer, req_content_type, req_body_len, req_body_sha256, req_body_head, status,
+            bytes_sent, outcome (complete, head, fault:*, ...)
+DELETE /_log   clears it
+"#;
+
 async fn help() -> &'static str {
-    "labserver\n\nGET|HEAD /gen/{size}[/{name}]?seed=N&<faults>   size: 12345, 64K, 100M, 1G\n\
-     faults: rate slow_every slow_rate max_conns drop_after drop_every fail_every fail_first\n\
-     \x20       no_range no_range_every html etag_change_every etag=weak|per-request|none latency_ms\n\
-     GET /redirect?to=URL[&ttl_ms=N]   (signed link expiring after N ms)\n\
-     GET /page?link=PATH&video=PATH   (a page with a link and a 640x360 video: browser tests)\n\
-     GET /_log   DELETE /_log\n"
+    HELP
 }
 
-/// `/page?link=PATH&video=PATH`: a web page with a link (`#link`) and a 640 × 360 video
-/// (`#video`), each there when given: what the browser extension acts on
-/// (tools/extension/e2e.mjs).
-async fn page(RawQuery(q): RawQuery) -> Response {
-    let m = q
-        .and_then(|q| serde_urlencoded::from_str::<HashMap<String, String>>(&q).ok())
+/// Logs a request to a route answered from memory (pages, streams), whose length is known.
+async fn log_simple(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    req: Request,
+    next: Next,
+) -> Response {
+    let (parts, body) = req.into_parts();
+    let body = axum::body::to_bytes(body, 16 << 20)
+        .await
         .unwrap_or_default();
-    let attr = |s: &str| {
-        s.replace('&', "&amp;")
-            .replace('"', "&quot;")
-            .replace('<', "&lt;")
-    };
-    let mut body = String::from(
-        "<!doctype html><meta charset=utf-8><title>labserver page</title>\
-         <body style=\"margin:20px;font:14px sans-serif\">",
+    let mut entry = shared.begin(
+        peer,
+        &parts.method,
+        parts.uri.path().to_owned(),
+        parts.uri.query().map(str::to_owned),
+        &parts.headers,
+        &body,
     );
-    if let Some(link) = m.get("link") {
-        body += &format!("<p><a id=link href=\"{}\">download</a></p>", attr(link));
-    }
-    if let Some(video) = m.get("video") {
-        body += &format!(
-            "<video id=video src=\"{}\" width=640 height=360 controls style=\"background:#000\">\
-             </video>",
-            attr(video)
-        );
-    }
-    ([(header::CONTENT_TYPE, "text/html; charset=utf-8")], body).into_response()
+    let head = parts.method == Method::HEAD;
+    let resp = next.run(Request::from_parts(parts, Body::from(body))).await;
+    let len = resp.body().size_hint().exact().unwrap_or(0);
+    entry.body_len = len;
+    entry.bytes_sent = if head { 0 } else { len };
+    let outcome = if head { "head" } else { "complete" };
+    shared.record(entry, resp.status().as_u16(), outcome);
+    resp
 }
 
 /// `/redirect?to=URL[&ttl_ms=N]`: 302 to `URL`; with `ttl_ms`, to a signed link that expires.
@@ -256,6 +417,17 @@ impl Drop for ActiveSlot {
     }
 }
 
+/// `/{route}/{size}[/{name}]` from the path parameters.
+fn file_path(route: &str, params: &HashMap<String, String>) -> (String, Option<String>, String) {
+    let size = params.get("size").cloned().unwrap_or_default();
+    let name = params.get("name").cloned();
+    let path = format!(
+        "/{route}/{size}{}",
+        name.as_ref().map(|x| format!("/{x}")).unwrap_or_default()
+    );
+    (size, name, path)
+}
+
 async fn generated(
     State(shared): State<Arc<Shared>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
@@ -264,61 +436,192 @@ async fn generated(
     RawQuery(query): RawQuery,
     headers: HeaderMap,
 ) -> Response {
-    let n = shared.requests.fetch_add(1, Ordering::SeqCst) + 1;
-    let conn_req = {
-        let mut m = shared.conn_reqs.lock().unwrap();
-        let c = m.entry(peer).or_insert(0);
-        *c += 1;
-        *c
-    };
-    let size_param = params.get("size").cloned().unwrap_or_default();
-    let mut entry = LogEntry {
-        req: n,
-        peer,
-        conn_req,
-        t_start_ms: shared.ms(),
-        t_end_ms: 0,
-        method: method.to_string(),
-        path: format!(
-            "/gen/{size_param}{}",
-            params
-                .get("name")
-                .map(|x| format!("/{x}"))
-                .unwrap_or_default()
-        ),
-        query: query.clone(),
-        range: header_str(&headers, header::RANGE),
-        if_range: header_str(&headers, header::IF_RANGE),
-        user_agent: header_str(&headers, header::USER_AGENT),
-        cookie: header_str(&headers, header::COOKIE),
-        status: 0,
-        body_start: 0,
-        body_len: 0,
-        bytes_sent: 0,
-        outcome: String::new(),
-        rate: None,
-        drop_at: None,
-    };
+    let (size, name, path) = file_path("gen", &params);
+    let entry = shared.begin(peer, &method, path, query.clone(), &headers, &[]);
+    let query = query.unwrap_or_default();
+    serve(shared, entry, &method, &size, name.as_deref(), &query).await
+}
 
-    let Some(size) = content::parse_size(&size_param) else {
+/// `POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>`: the file, only for a
+/// POST whose form carries `FIELD=VALUE` (default `token=abc`); 405 to any other method, 403 to
+/// a form without it; with `see_other`, 303 to the file on /gen instead.
+async fn form(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    method: Method,
+    Path(params): Path<HashMap<String, String>>,
+    RawQuery(query): RawQuery,
+    headers: HeaderMap,
+    body: Bytes,
+) -> Response {
+    let (size, name, path) = file_path("form", &params);
+    let entry = shared.begin(peer, &method, path, query.clone(), &headers, &body);
+    if method != Method::POST {
+        shared.record(entry, 405, "method");
+        return (
+            StatusCode::METHOD_NOT_ALLOWED,
+            [(header::ALLOW, "POST")],
+            "POST a form here\n",
+        )
+            .into_response();
+    }
+    let pairs: Vec<(String, String)> =
+        match serde_urlencoded::from_str(query.as_deref().unwrap_or("")) {
+            Ok(p) => p,
+            Err(e) => {
+                shared.record(entry, 400, "error");
+                return (StatusCode::BAD_REQUEST, format!("{e}\n")).into_response();
+            }
+        };
+    let mut need = "token=abc".to_owned();
+    let mut see_other = false;
+    let mut rest = Vec::new();
+    for (k, v) in pairs {
+        match k.as_str() {
+            "need" => need = v,
+            "see_other" => see_other = parse_flag(&v).unwrap_or(false),
+            _ => rest.push((k, v)),
+        }
+    }
+    let rest = serde_urlencoded::to_string(rest).unwrap_or_default();
+    let (field, value) = need.split_once('=').unwrap_or((&need, ""));
+    let fields = form_fields(entry.req_content_type.as_deref(), &body);
+    if !fields.iter().any(|(k, v)| k == field && v == value) {
+        shared.record(entry, 403, "form");
+        return (StatusCode::FORBIDDEN, format!("the form lacks {need}\n")).into_response();
+    }
+    if see_other {
+        let to = format!(
+            "/gen/{size}{}{}{rest}",
+            name.as_ref().map(|x| format!("/{x}")).unwrap_or_default(),
+            if rest.is_empty() { "" } else { "?" }
+        );
+        shared.record(entry, 303, "see_other");
+        return (StatusCode::SEE_OTHER, [(header::LOCATION, to)]).into_response();
+    }
+    serve(shared, entry, &method, &size, name.as_deref(), &rest).await
+}
+
+/// A form body's fields: `application/x-www-form-urlencoded` (also when no type is given),
+/// `multipart/form-data` (text values) or `text/plain` (`name=value` lines).
+pub(crate) fn form_fields(content_type: Option<&str>, body: &[u8]) -> Vec<(String, String)> {
+    let ct = content_type.unwrap_or("");
+    let mime = ct
+        .split(';')
+        .next()
+        .unwrap_or("")
+        .trim()
+        .to_ascii_lowercase();
+    match mime.as_str() {
+        "multipart/form-data" => multipart_fields(ct, body),
+        "text/plain" => String::from_utf8_lossy(body)
+            .lines()
+            .filter_map(|l| l.split_once('='))
+            .map(|(k, v)| (k.to_owned(), v.to_owned()))
+            .collect(),
+        _ => serde_urlencoded::from_bytes(body).unwrap_or_default(),
+    }
+}
+
+fn multipart_fields(ct: &str, body: &[u8]) -> Vec<(String, String)> {
+    let Some(boundary) = ct
+        .split(';')
+        .find_map(|p| p.trim().strip_prefix("boundary="))
+        .map(|b| b.trim_matches('"'))
+    else {
+        return Vec::new();
+    };
+    let delim = format!("--{boundary}");
+    let text = String::from_utf8_lossy(body);
+    let mut out = Vec::new();
+    for part in text.split(delim.as_str()).skip(1) {
+        if part.starts_with("--") {
+            break; // the closing delimiter
+        }
+        let part = part.strip_prefix("\r\n").unwrap_or(part);
+        let Some((head, value)) = part.split_once("\r\n\r\n") else {
+            continue;
+        };
+        let name = head
+            .lines()
+            .find(|l| l.to_ascii_lowercase().starts_with("content-disposition:"))
+            .and_then(|l| {
+                l.split(';')
+                    .find_map(|p| p.trim().strip_prefix("name="))
+                    .map(|n| n.trim_matches('"').to_owned())
+            });
+        if let Some(name) = name {
+            out.push((name, value.strip_suffix("\r\n").unwrap_or(value).to_owned()));
+        }
+    }
+    out
+}
+
+/// How a generated file is presented: `inline=` absent (attachment), `1` or `bare`.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Disposition {
+    Attachment,
+    Inline,
+    Bare,
+}
+
+/// A generated file's query: content, validity and headers, and the fault overrides.
+struct FileQuery {
+    seed: u64,
+    /// A signed link's end, unix ms.
+    expires: Option<u64>,
+    cd: Option<String>,
+    cdstar: Option<String>,
+    disposition: Disposition,
+    faults: Faults,
+}
+
+/// Serves the generated file `size`/`name` for a request whose log entry is `entry`.
+async fn serve(
+    shared: Arc<Shared>,
+    mut entry: LogEntry,
+    method: &Method,
+    size_param: &str,
+    name: Option<&str>,
+    query: &str,
+) -> Response {
+    let n = shared.requests.fetch_add(1, Ordering::SeqCst) + 1;
+    let Some(size) = content::parse_size(size_param) else {
         shared.record(entry, 404, "error");
         return (StatusCode::NOT_FOUND, "bad size\n").into_response();
     };
 
-    // `seed` selects the content; every other query key is a fault override.
-    let (seed, expires, over) = match split_query(query.as_deref().unwrap_or("")) {
+    // `seed` selects the content; the file params shape the headers; every other query key is
+    // a fault override.
+    let q = match split_query(query) {
         Ok(v) => v,
         Err(msg) => {
             shared.record(entry, 400, "error");
             return (StatusCode::BAD_REQUEST, msg).into_response();
         }
     };
-    if expires.is_some_and(|t| unix_ms() > t) {
+    let seed = q.seed;
+    if q.expires.is_some_and(|t| unix_ms() > t) {
         shared.record(entry, 403, "expired");
         return (StatusCode::FORBIDDEN, "link expired\n").into_response();
     }
-    let f = shared.faults.overridden_by(&over);
+    let f = shared.faults.overridden_by(&q.faults);
 
+    if let Some(want) = &f.require_cookie
+        && !has_cookie(entry.cookie.as_deref(), want)
+    {
+        shared.record(entry, 403, "fault:require_cookie");
+        return (StatusCode::FORBIDDEN, format!("cookie {want} required\n")).into_response();
+    }
+    if let Some(want) = &f.require_referer
+        && !entry
+            .referer
+            .as_deref()
+            .is_some_and(|r| r.starts_with(want.as_str()))
+    {
+        shared.record(entry, 403, "fault:require_referer");
+        return (StatusCode::FORBIDDEN, format!("referer {want}… required\n")).into_response();
+    }
     if let Some(ms) = f.latency_ms {
         tokio::time::sleep(Duration::from_millis(ms)).await;
     }
@@ -340,7 +643,7 @@ async fn generated(
     }
     let slot = {
         let mut active = shared.active.lock().unwrap();
-        let cur = active.entry(peer.ip()).or_insert(0);
+        let cur = active.entry(entry.peer.ip()).or_insert(0);
         if f.max_conns.is_some_and(|max| *cur >= max) {
             drop(active);
             shared.record(entry, 503, "fault:max_conns");
@@ -349,9 +652,16 @@ async fn generated(
         *cur += 1;
         ActiveSlot {
             shared: shared.clone(),
-            ip: peer.ip(),
+            ip: entry.peer.ip(),
         }
     };
+    if f.once == Some(true) {
+        let key = format!("{}?{query}", entry.path);
+        if !shared.used_once.lock().unwrap().insert(key) {
+            shared.record(entry, 410, "fault:once");
+            return (StatusCode::GONE, "this link was already used\n").into_response();
+        }
+    }
 
     let generation = f.etag_change_every.filter(|k| *k > 0).map_or(0, |k| n / k);
     let etag = match f.etag.as_deref() {
@@ -397,9 +707,14 @@ async fn generated(
     entry.body_start = start;
     entry.body_len = end - start;
 
+    let file_name = q.cdstar.as_deref().or(q.cd.as_deref()).or(name);
+    let content_type = match q.disposition {
+        Disposition::Attachment => "application/octet-stream",
+        _ => mime_type(file_name.unwrap_or("")),
+    };
     let mut builder = Response::builder()
         .status(status)
-        .header(header::CONTENT_TYPE, "application/octet-stream")
+        .header(header::CONTENT_TYPE, content_type)
         .header(header::CONTENT_LENGTH, end - start)
         .header(header::LAST_MODIFIED, &last_modified);
     if f.no_range != Some(true) {
@@ -414,11 +729,8 @@ async fn generated(
             format!("bytes {start}-{}/{size}", end - 1),
         );
     }
-    if let Some(name) = params.get("name") {
-        builder = builder.header(
-            header::CONTENT_DISPOSITION,
-            format!("attachment; filename=\"{name}\""),
-        );
+    if let Some(cd) = content_disposition(&q, name) {
+        builder = builder.header(header::CONTENT_DISPOSITION, cd);
     }
 
     if method == Method::HEAD {
@@ -457,24 +769,110 @@ async fn generated(
         .unwrap()
 }
 
-/// `seed`, `expires` (a signed link's end, unix ms) and the fault overrides.
-fn split_query(q: &str) -> Result<(u64, Option<u64>, Faults), String> {
+/// RFC 8187 `attr-char`: what `filename*=` leaves unencoded.
+const ATTR_CHAR: &AsciiSet = &NON_ALPHANUMERIC
+    .remove(b'!')
+    .remove(b'#')
+    .remove(b'$')
+    .remove(b'&')
+    .remove(b'+')
+    .remove(b'-')
+    .remove(b'.')
+    .remove(b'^')
+    .remove(b'_')
+    .remove(b'`')
+    .remove(b'|')
+    .remove(b'~');
+
+/// The `Content-Disposition` of a generated file; `path_name` is the name in its path.
+fn content_disposition(q: &FileQuery, path_name: Option<&str>) -> Option<String> {
+    let kind = match q.disposition {
+        Disposition::Attachment => "attachment",
+        Disposition::Inline => "inline",
+        Disposition::Bare => return None,
+    };
+    let quote = |s: &str| s.replace('\\', "\\\\").replace('"', "\\\"");
+    let params = if let Some(star) = &q.cdstar {
+        format!(
+            "; filename=\"fallback-name.zip\"; filename*=UTF-8''{}",
+            utf8_percent_encode(star, ATTR_CHAR)
+        )
+    } else if let Some(name) = q.cd.as_deref().or(path_name) {
+        format!("; filename=\"{}\"", quote(name))
+    } else if q.disposition == Disposition::Inline {
+        String::new()
+    } else {
+        return None;
+    };
+    Some(format!("{kind}{params}"))
+}
+
+/// The media type of a file name, by its extension.
+pub(crate) fn mime_type(name: &str) -> &'static str {
+    let ext = name.rsplit_once('.').map_or("", |(_, e)| e);
+    match ext.to_ascii_lowercase().as_str() {
+        "pdf" => "application/pdf",
+        "mp3" => "audio/mpeg",
+        "m4a" => "audio/mp4",
+        "ogg" | "oga" => "audio/ogg",
+        "wav" => "audio/wav",
+        "mp4" | "m4v" => "video/mp4",
+        "webm" => "video/webm",
+        "ts" => "video/mp2t",
+        "m3u8" => "application/vnd.apple.mpegurl",
+        "mpd" => "application/dash+xml",
+        "png" => "image/png",
+        "jpg" | "jpeg" => "image/jpeg",
+        "gif" => "image/gif",
+        "txt" => "text/plain; charset=utf-8",
+        "html" | "htm" => "text/html; charset=utf-8",
+        "json" => "application/json",
+        "zip" => "application/zip",
+        _ => "application/octet-stream",
+    }
+}
+
+/// Splits a generated file's query into its own params and the fault overrides.
+fn split_query(q: &str) -> Result<FileQuery, String> {
     let pairs: Vec<(String, String)> = serde_urlencoded::from_str(q).map_err(|e| e.to_string())?;
-    let mut seed = 0;
-    let mut expires = None;
+    let mut out = FileQuery {
+        seed: 0,
+        expires: None,
+        cd: None,
+        cdstar: None,
+        disposition: Disposition::Attachment,
+        faults: Faults::default(),
+    };
+    let name = |k: &str, v: String| {
+        if v.is_empty() || v.chars().any(char::is_control) {
+            Err(format!("invalid {k} `{}`\n", v.escape_debug()))
+        } else {
+            Ok(Some(v))
+        }
+    };
     let mut rest = Vec::new();
     for (k, v) in pairs {
-        if k == "seed" {
-            seed = v.parse().map_err(|_| format!("invalid seed `{v}`\n"))?;
-        } else if k == "expires" {
-            expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?);
-        } else {
-            rest.push((k, v));
+        match k.as_str() {
+            "seed" => out.seed = v.parse().map_err(|_| format!("invalid seed `{v}`\n"))?,
+            "expires" => {
+                out.expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?)
+            }
+            "cd" => out.cd = name(&k, v)?,
+            "cdstar" => out.cdstar = name(&k, v)?,
+            "inline" => {
+                out.disposition = match (v.as_str(), parse_flag(&v)) {
+                    ("bare" | "none", _) => Disposition::Bare,
+                    (_, Some(true)) => Disposition::Inline,
+                    (_, Some(false)) => Disposition::Attachment,
+                    _ => return Err(format!("invalid inline `{v}` (1, 0 or bare)\n")),
+                }
+            }
+            _ => rest.push((k, v)),
         }
     }
     let rest = serde_urlencoded::to_string(rest).map_err(|e| e.to_string())?;
-    let faults = Faults::parse(&rest).map_err(|e| format!("{e}\n"))?;
-    Ok((seed, expires, faults))
+    out.faults = Faults::parse(&rest).map_err(|e| format!("{e}\n"))?;
+    Ok(out)
 }
 
 /// Streams one response body; logs the request when dropped. The outcome is decided there,
@@ -538,5 +936,58 @@ impl Drop for Transfer {
             let status = entry.status;
             self.shared.record(entry, status, outcome);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn form_bodies() {
+        let url = form_fields(
+            Some("application/x-www-form-urlencoded"),
+            b"token=abc&note=hello+world",
+        );
+        assert_eq!(url[0], ("token".into(), "abc".into()));
+        assert_eq!(url[1], ("note".into(), "hello world".into()));
+        let body = "--XyZ\r\nContent-Disposition: form-data; name=\"note\"\r\n\r\nhi\r\nthere\r\n\
+                    --XyZ\r\ncontent-disposition: form-data; name=\"token\"\r\n\r\nabc\r\n--XyZ--\r\n";
+        let mp = form_fields(Some("multipart/form-data; boundary=XyZ"), body.as_bytes());
+        assert_eq!(
+            mp,
+            vec![
+                ("note".into(), "hi\r\nthere".into()),
+                ("token".into(), "abc".into())
+            ]
+        );
+        let plain = form_fields(Some("text/plain"), b"token=abc\r\nnote=x\r\n");
+        assert!(plain.contains(&("token".into(), "abc".into())));
+        assert!(form_fields(Some("multipart/form-data"), body.as_bytes()).is_empty());
+    }
+
+    #[test]
+    fn file_query_and_disposition() {
+        let q = split_query("seed=3&cd=report%20final.pdf&rate=1K").unwrap();
+        assert_eq!(q.seed, 3);
+        assert_eq!(q.faults.rate, Some(1024));
+        assert_eq!(
+            content_disposition(&q, Some("x.bin")).unwrap(),
+            "attachment; filename=\"report final.pdf\""
+        );
+        let q = split_query("cdstar=r%C3%A9sum%C3%A9%20(1).pdf&inline=1").unwrap();
+        assert_eq!(
+            content_disposition(&q, None).unwrap(),
+            "inline; filename=\"fallback-name.zip\"; filename*=UTF-8''r%C3%A9sum%C3%A9%20%281%29.pdf"
+        );
+        let q = split_query("inline=1").unwrap();
+        assert_eq!(content_disposition(&q, None).unwrap(), "inline");
+        assert!(content_disposition(&split_query("").unwrap(), None).is_none());
+        assert!(content_disposition(&split_query("inline=bare").unwrap(), Some("a.pdf")).is_none());
+        assert!(split_query("inline=maybe").is_err());
+        assert!(split_query("cd=a%0Ab").is_err());
+        assert_eq!(mime_type("A.PDF"), "application/pdf");
+        assert_eq!(mime_type("x.mp3"), "audio/mpeg");
+        assert_eq!(mime_type("noext"), "application/octet-stream");
     }
 }

@@ -83,6 +83,9 @@ pub struct Settings {
     /// sites it stays off (space separated; the native host reads both, mdm_ipc::capture).
     pub video_panel: bool,
     pub video_panel_sites: String,
+    /// General: also take the listed types the browser would open itself (a PDF in its viewer,
+    /// an MP3 in its player); holding Alt while clicking leaves one to the browser.
+    pub capture_opened: bool,
     /// Options → Regional: how dates and times are written.
     pub regional: crate::regional::Regional,
     /// Save to: a folder per category (category label → folder); missing = the default.
@@ -199,6 +202,7 @@ impl Default for Settings {
             excluded_addresses: Vec::new(),
             video_panel: true,
             video_panel_sites: String::new(),
+            capture_opened: true,
             regional: crate::regional::Regional::default(),
             category_dirs: Vec::new(),
             change_folder_on_last: true,

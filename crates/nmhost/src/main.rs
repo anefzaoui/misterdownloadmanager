@@ -24,7 +24,7 @@ use std::time::Duration;
 use serde::{Deserialize, Serialize};
 
 const HOST_NAME: &str = "com.misterdownloadmanager.host";
-use mdm_ipc::extension::{CHROMIUM_IDS, FIREFOX_ID, STORE_ID, STORE_UPDATE_URL};
+use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, STORE_UPDATE_URL, chromium_ids, store_id};
 /// Where each Chromium browser looks for native messaging hosts on Windows, under HKCU (one
 /// user) or HKLM (everyone).
 #[cfg(windows)]
@@ -46,13 +46,30 @@ const CHROME_EXTERNAL_KEY: &str = r"Software\Google\Chrome\Extensions";
 #[derive(Debug, Default, Deserialize, PartialEq)]
 #[serde(default, rename_all = "camelCase")]
 struct Message {
-    /// Only asking for the capture rules (the file types to offer).
+    /// Only asking for the capture rules (the file types to offer). `hello` (the extension
+    /// installed, or the browser started) asks the same and tells the app it is there.
     rules: bool,
+    hello: bool,
+    /// The extension's version.
+    v: Option<String>,
     url: String,
     referrer: Option<String>,
     cookies: Option<String>,
     user_agent: Option<String>,
+    /// `navigator.userAgentData` brands: Brave and Opera name themselves there, not in the
+    /// User-Agent.
+    brands: Vec<String>,
     filename: Option<String>,
+    /// Where the browser's redirects from `url` ended.
+    final_url: Option<String>,
+    /// The browser's own download: its size (bytes, when known) and type.
+    size: Option<u64>,
+    mime: Option<String>,
+    /// A form's download: the body to post again, and its Content-Type.
+    post: Option<String>,
+    post_type: Option<String>,
+    /// From a private window.
+    private: bool,
     /// The user asked for this download (right-click → Download with Mister Download Manager):
     /// Options' automatic-capture rules don't apply, as IDM's "Download with IDM" takes any link.
     explicit: bool,
@@ -62,18 +79,63 @@ struct Message {
     video: bool,
     /// The button's menu: keep it off this site (a host name).
     hide_site: Option<String>,
-    /// The button's menu: open its settings in Options.
+    /// The button's menu: open its settings in Options (`page`: the toolbar button's popup asks
+    /// for `general`).
     open_options: bool,
+    page: Option<String>,
+    /// The right-click menu: these links of a page or its selection.
+    links: Vec<String>,
+    /// The toolbar button: leave this site (a host name) to the browser.
+    exclude_site: Option<String>,
+    /// The toolbar button: bring Mister Download Manager's window up.
+    open: bool,
 }
 
-#[derive(Serialize)]
+#[derive(Default, Serialize)]
+#[serde(rename_all = "camelCase")]
 struct Reply {
     ok: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     error: Option<String>,
+    /// Why it failed, for the extension to say and to link the help page's section
+    /// (docs/browser-help.md): `not-running`, `too-large`, `refused`, `options`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    why: Option<&'static str>,
+    /// Mister Download Manager's version (this host comes with it).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    version: Option<&'static str>,
     /// For `rules`: Options → File types.
     #[serde(skip_serializing_if = "Option::is_none")]
     types: Option<String>,
+    /// For `rules`: whether this browser's downloads are taken at all (integration on, the
+    /// browser captured), and the sites and addresses left to the browser; the extension leaves
+    /// those alone without asking (the host checks again at each hand-off).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    capture: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    excluded_sites: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    excluded_addresses: Option<Vec<String>>,
+    /// For `rules`: also take listed types the browser would open itself (a PDF, an MP3).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    opened: Option<bool>,
+}
+
+impl Reply {
+    fn done() -> Reply {
+        Reply {
+            ok: true,
+            ..Default::default()
+        }
+    }
+
+    fn failed(why: &'static str, error: impl Into<String>) -> Reply {
+        Reply {
+            why: Some(why),
+            error: Some(error.into()),
+            ..Default::default()
+        }
+    }
 }
 
 /// The name a download will have: the browser's, else the address's last part.
@@ -97,25 +159,33 @@ fn file_name_of(m: &Message) -> String {
     }
 }
 
+/// The browser `m` comes from, by the names Options lists.
+fn browser(m: &Message) -> &'static str {
+    mdm_ipc::capture::browser_named(m.user_agent.as_deref().unwrap_or_default(), &m.brands)
+}
+
 /// The answer to one message, under `rules` (the app's saved Options).
 fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
-    let reply = |ok: bool, error: Option<String>| Reply {
-        ok,
-        error,
-        types: None,
-    };
-    if m.rules {
+    let browser = browser(&m);
+    if m.rules || m.hello {
         return Reply {
             ok: true,
-            error: None,
+            version: Some(env!("CARGO_PKG_VERSION")),
             types: Some(rules.auto_types.clone()),
+            capture: Some(rules.captures(browser)),
+            excluded_sites: Some(rules.excluded_sites.clone()),
+            excluded_addresses: Some(rules.excluded_addresses.clone()),
+            opened: Some(rules.capture_opened),
+            ..Default::default()
         };
     }
-    let ua = m.user_agent.clone().unwrap_or_default();
     // The video button: asked about, clicked, its menu. What it sends goes to the app (started
     // if need be), which opens its window or keeps the setting.
     if m.panel {
-        return reply(rules.panel_on(&m.url, &ua), None);
+        return Reply {
+            ok: rules.panel_on(&m.url, browser),
+            ..Default::default()
+        };
     }
     let hide = m
         .hide_site
@@ -128,49 +198,90 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
             ..Default::default()
         })
     } else if m.open_options {
+        let page = match m.page.as_deref() {
+            Some("general") => "options:general",
+            _ => "options:panels",
+        };
         Some(mdm_ipc::Command {
-            show: Some("options:general".into()),
+            show: Some(page.into()),
+            ..Default::default()
+        })
+    } else if m.open {
+        // An empty command: the running app comes to the front (a second launch's).
+        Some(mdm_ipc::Command::default())
+    } else if let Some(host) = m
+        .exclude_site
+        .as_deref()
+        .map(str::trim)
+        .filter(|h| !h.is_empty())
+    {
+        Some(mdm_ipc::Command {
+            exclude_site: Some(host.to_owned()),
+            ..Default::default()
+        })
+    } else if !m.links.is_empty() {
+        let links: Vec<String> = m
+            .links
+            .iter()
+            .filter(|l| downloadable(l))
+            .cloned()
+            .collect();
+        if links.is_empty() {
+            return Reply::failed("refused", "no link MDM downloads");
+        }
+        Some(mdm_ipc::Command {
+            links,
+            referer: m.referrer.clone().filter(|r| !r.is_empty()),
+            cookies: m.cookies.clone().filter(|c| !c.is_empty()),
+            user_agent: m.user_agent.clone(),
+            private: m.private,
             ..Default::default()
         })
     } else if m.video {
         if !(m.url.starts_with("http://") || m.url.starts_with("https://")) {
-            return reply(false, Some("not an http(s) page".into()));
+            return Reply::failed("refused", "not an http(s) page");
         }
-        if !rules.panel_on(&m.url, &ua) {
-            return reply(false, Some("the video button is off here".into()));
+        if !rules.panel_on(&m.url, browser) {
+            return Reply::failed("options", "the video button is off here");
         }
         Some(mdm_ipc::Command {
             video_page: Some(m.url.clone()),
             referer: m.referrer.clone().filter(|r| !r.is_empty()),
             cookies: m.cookies.clone().filter(|c| !c.is_empty()),
             user_agent: m.user_agent.clone(),
+            private: m.private,
             ..Default::default()
         })
     } else {
         None
     };
     if let Some(cmd) = panel_cmd {
-        return match deliver(&cmd) {
-            Ok(()) => reply(true, None),
-            Err(e) => reply(false, Some(e)),
-        };
+        return delivered(&cmd);
     }
     if !downloadable(&m.url) {
-        return reply(false, Some("not an http(s) or ftp(s) URL".into()));
+        return Reply::failed("refused", "not an http(s) or ftp(s) URL");
     }
     if let Err(why) = verdict(&m, rules) {
-        return reply(
-            false,
-            Some(format!("left to the browser by Options ({why:?})")),
+        return Reply::failed(
+            "options",
+            format!("left to the browser by Options ({why:?})"),
         );
     }
-    match deliver(&to_command(m)) {
-        Ok(()) => reply(true, None),
-        Err(e) => reply(false, Some(e)),
+    delivered(&to_command(m))
+}
+
+/// `cmd` handed to the app: the reply saying so, or why not.
+fn delivered(cmd: &mdm_ipc::Command) -> Reply {
+    match deliver(cmd) {
+        Ok(()) => Reply::done(),
+        Err(Undelivered::NotRunning(e)) => Reply::failed("not-running", e),
+        Err(Undelivered::Refused(e)) if e.starts_with("too-large") => Reply::failed("too-large", e),
+        Err(Undelivered::Refused(e)) => Reply::failed("refused", e),
     }
 }
 
-/// Whether Options let the browser hand `m` over; an explicit request always may.
+/// Whether Options let the browser hand `m` over; an explicit request always may. Both
+/// addresses must pass when redirects led elsewhere (an excluded site sending to a CDN).
 fn verdict(
     m: &Message,
     rules: &mdm_ipc::capture::CaptureRules,
@@ -178,8 +289,12 @@ fn verdict(
     if m.explicit {
         return Ok(());
     }
-    let ua = m.user_agent.clone().unwrap_or_default();
-    rules.accepts(&m.url, &file_name_of(m), &ua)
+    let (name, browser) = (file_name_of(m), browser(m));
+    rules.accepts(&m.url, &name, browser)?;
+    match m.final_url.as_deref().filter(|f| *f != m.url) {
+        Some(f) => rules.accepts(f, &name, browser),
+        None => Ok(()),
+    }
 }
 
 /// Read one native message; None at end of input.
@@ -191,8 +306,9 @@ fn read_message(r: &mut impl Read) -> io::Result<Option<Vec<u8>>> {
         Err(e) => return Err(e),
     }
     let len = u32::from_le_bytes(len) as usize;
-    // Browsers send at most 4 GB, but a download request is tiny: refuse anything silly.
-    if len > 1 << 20 {
+    // Browsers send at most 4 GB, but a download request is small: refuse anything silly (the
+    // app's channel takes this much, so whatever is read here reaches it).
+    if len > mdm_ipc::MAX_MESSAGE {
         return Err(io::Error::other("message too large"));
     }
     let mut buf = vec![0u8; len];
@@ -207,36 +323,112 @@ fn write_message(w: &mut impl Write, json: &[u8]) -> io::Result<()> {
 }
 
 fn to_command(m: Message) -> mdm_ipc::Command {
+    let some = |s: Option<String>| s.filter(|s| !s.is_empty());
+    // The browser's file name, without its folder.
+    let name = some(m.filename).and_then(|f| {
+        f.rsplit(['\\', '/'])
+            .next()
+            .filter(|n| !n.is_empty())
+            .map(str::to_owned)
+    });
     mdm_ipc::Command {
+        final_url: some(m.final_url).filter(|f| *f != m.url),
         url: Some(m.url),
-        name: m.filename.filter(|f| !f.is_empty()),
-        referer: m.referrer.filter(|r| !r.is_empty()),
-        cookies: m.cookies.filter(|c| !c.is_empty()),
+        name,
+        referer: some(m.referrer),
+        cookies: some(m.cookies),
         user_agent: m.user_agent,
+        size: m.size.filter(|s| *s > 0),
+        mime: some(m.mime),
+        post_type: m.post.as_ref().and(some(m.post_type)),
+        post: m.post,
+        private: m.private,
         ..Default::default()
     }
 }
 
-/// Hand `cmd` to Mister Download Manager, starting it if it isn't running.
-fn deliver(cmd: &mdm_ipc::Command) -> Result<(), String> {
-    if mdm_ipc::send(cmd).is_ok() {
-        return Ok(());
+/// Why a command didn't reach the app.
+enum Undelivered {
+    /// It isn't running and couldn't be started (in time).
+    NotRunning(String),
+    /// It is running and said no (or stopped answering): starting another can't help.
+    Refused(String),
+}
+
+/// How long a Mister Download Manager just started gets to open its channel (a first start, a
+/// slow disk or an antivirus scan can take a while); the browser's download waits meanwhile.
+const START_WAIT: Duration = Duration::from_secs(20);
+
+/// Hand `cmd` to Mister Download Manager, starting it only if none is running.
+fn deliver(cmd: &mdm_ipc::Command) -> Result<(), Undelivered> {
+    match mdm_ipc::send(cmd) {
+        Ok(()) => return Ok(()),
+        Err(mdm_ipc::SendError::Refused(e)) => return Err(Undelivered::Refused(e)),
+        Err(mdm_ipc::SendError::NotRunning(_)) => {}
     }
-    let app = exe_dir()?.join(if cfg!(windows) {
-        "misterdownloadmanager.exe"
-    } else {
-        "misterdownloadmanager"
-    });
-    std::process::Command::new(&app)
-        .spawn()
-        .map_err(|e| format!("cannot start {}: {e}", app.display()))?;
-    for _ in 0..50 {
+    let dir = exe_dir().map_err(Undelivered::NotRunning)?;
+    // Beside the app, or (an AppImage's host, copied out of its mount: unix.rs) the path
+    // written next to this copy.
+    let app = match std::fs::read_to_string(dir.join("app-path")) {
+        Ok(path) if !path.trim().is_empty() => PathBuf::from(path.trim()),
+        _ => dir.join(if cfg!(windows) {
+            "misterdownloadmanager.exe"
+        } else {
+            "misterdownloadmanager"
+        }),
+    };
+    let mut child = start_detached(&app)
+        .map_err(|e| Undelivered::NotRunning(format!("cannot start {}: {e}", app.display())))?;
+    let started = std::time::Instant::now();
+    while started.elapsed() < START_WAIT {
         std::thread::sleep(Duration::from_millis(100));
-        if mdm_ipc::send(cmd).is_ok() {
-            return Ok(());
+        match mdm_ipc::send(cmd) {
+            Ok(()) => return Ok(()),
+            Err(mdm_ipc::SendError::Refused(e)) => return Err(Undelivered::Refused(e)),
+            Err(mdm_ipc::SendError::NotRunning(_)) => {}
+        }
+        // It quit (another copy took over, or it failed to start): that one may answer still.
+        if child.try_wait().is_ok_and(|s| s.is_some()) && started.elapsed() > START_WAIT / 4 {
+            break;
         }
     }
-    Err("Mister Download Manager did not start".into())
+    Err(Undelivered::NotRunning(
+        "Mister Download Manager did not start".into(),
+    ))
+}
+
+/// Start the app outside the browser's reach: browsers end a host's whole process tree (on
+/// Windows a job object, elsewhere its process group) once it has answered, which would end an
+/// app this host started along with it (MDN, "Native messaging": closing the native app).
+fn start_detached(app: &std::path::Path) -> io::Result<std::process::Child> {
+    use std::process::{Command, Stdio};
+    let mut cmd = Command::new(app);
+    // The browser's message pipes are this host's standard streams: never the app's.
+    cmd.stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .stderr(Stdio::null());
+    #[cfg(windows)]
+    {
+        use std::os::windows::process::CommandExt;
+        const DETACHED_PROCESS: u32 = 0x0000_0008;
+        const CREATE_NEW_PROCESS_GROUP: u32 = 0x0000_0200;
+        const CREATE_BREAKAWAY_FROM_JOB: u32 = 0x0100_0000;
+        let flags = DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP;
+        // Leaving the job is refused when the job doesn't allow it: then without.
+        if let Ok(child) = cmd
+            .creation_flags(flags | CREATE_BREAKAWAY_FROM_JOB)
+            .spawn()
+        {
+            return Ok(child);
+        }
+        cmd.creation_flags(flags);
+    }
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        cmd.process_group(0);
+    }
+    cmd.spawn()
 }
 
 fn exe_dir() -> Result<PathBuf, String> {
@@ -255,15 +447,10 @@ fn serve() -> io::Result<()> {
             // The rules as saved now: a change in Options applies to the next download.
             Ok(m) => {
                 // This browser has the extension: the app stops offering it (extension.rs).
-                let ua = m.user_agent.as_deref().unwrap_or_default();
-                mdm_ipc::extension::mark_seen(mdm_ipc::capture::browser_of(ua));
+                mdm_ipc::extension::mark_seen(browser(&m), m.v.as_deref().unwrap_or_default());
                 answer(m, &mdm_ipc::capture::CaptureRules::load())
             }
-            Err(e) => Reply {
-                ok: false,
-                error: Some(e.to_string()),
-                types: None,
-            },
+            Err(e) => Reply::failed("refused", e.to_string()),
         };
         write_message(
             &mut stdout,
@@ -280,7 +467,7 @@ fn chromium_manifest() -> Result<serde_json::Value, String> {
         "description": "Mister Download Manager",
         "path": std::env::current_exe().map_err(|e| e.to_string())?,
         "type": "stdio",
-        "allowed_origins": CHROMIUM_IDS.map(origin),
+        "allowed_origins": chromium_ids().into_iter().map(origin).collect::<Vec<_>>(),
     }))
 }
 
@@ -323,7 +510,7 @@ fn origin(id: &str) -> String {
 /// (unpacked or from the store); Firefox passes the manifest's path, then the add-on ID.
 fn our_caller(args: &[String]) -> bool {
     args.first()
-        .is_some_and(|a| CHROMIUM_IDS.iter().any(|id| *a == origin(id)))
+        .is_some_and(|a| chromium_ids().iter().any(|id| *a == origin(id)))
         || args.get(1).is_some_and(|a| a == FIREFOX_ID)
 }
 
@@ -359,18 +546,21 @@ fn register(all_users: bool) -> Result<(), String> {
         &ff_path.display().to_string(),
         "/f",
     ])?;
-    reg(&[
-        "add",
-        &format!(r"{root}\{CHROME_EXTERNAL_KEY}\{STORE_ID}"),
-        "/v",
-        "update_url",
-        "/t",
-        "REG_SZ",
-        "/d",
-        STORE_UPDATE_URL,
-        "/f",
-        "/reg:32",
-    ])?;
+    // Chrome offers the store's extension once it is listed (never a placeholder ID).
+    if let Some(id) = store_id() {
+        reg(&[
+            "add",
+            &format!(r"{root}\{CHROME_EXTERNAL_KEY}\{id}"),
+            "/v",
+            "update_url",
+            "/t",
+            "REG_SZ",
+            "/d",
+            STORE_UPDATE_URL,
+            "/f",
+            "/reg:32",
+        ])?;
+    }
     println!(
         "registered {HOST_NAME} for Chrome, Edge, Brave ({}) and Firefox ({})",
         path.display(),
@@ -451,10 +641,13 @@ fn host_dirs(all_users: bool) -> Vec<(PathBuf, bool)> {
         ] {
             dirs.push((PathBuf::from(d), false));
         }
-        dirs.push((
-            PathBuf::from("/usr/lib/mozilla/native-messaging-hosts"),
-            true,
-        ));
+        // Firefox reads lib64's on 64-bit Fedora and openSUSE (MDN, "Native manifests").
+        for d in [
+            "/usr/lib/mozilla/native-messaging-hosts",
+            "/usr/lib64/mozilla/native-messaging-hosts",
+        ] {
+            dirs.push((PathBuf::from(d), true));
+        }
     } else {
         let config = std::env::var_os("XDG_CONFIG_HOME")
             .map(PathBuf::from)
@@ -462,6 +655,8 @@ fn host_dirs(all_users: bool) -> Vec<(PathBuf, bool)> {
             .unwrap_or_else(|| home.join(".config"));
         for d in [
             "google-chrome",
+            "google-chrome-beta",
+            "google-chrome-unstable",
             "chromium",
             "microsoft-edge",
             "BraveSoftware/Brave-Browser",
@@ -508,19 +703,28 @@ fn register(all_users: bool) -> Result<(), String> {
     portable_refused()?;
     let (chromium, firefox) = (chromium_manifest()?, firefox_manifest()?);
     let dirs = host_dirs(all_users);
+    // One browser's folder that can't be written doesn't keep the others from theirs.
+    let mut failed = Vec::new();
     for (dir, is_firefox) in &dirs {
-        std::fs::create_dir_all(dir).map_err(|e| format!("{}: {e}", dir.display()))?;
         let manifest = if *is_firefox { &firefox } else { &chromium };
-        write_json(&dir.join(format!("{HOST_NAME}.json")), manifest)?;
-        println!("registered {HOST_NAME} in {}", dir.display());
+        let written = std::fs::create_dir_all(dir)
+            .map_err(|e| format!("{}: {e}", dir.display()))
+            .and_then(|()| write_json(&dir.join(format!("{HOST_NAME}.json")), manifest));
+        match written {
+            Ok(()) => println!("registered {HOST_NAME} in {}", dir.display()),
+            Err(e) => failed.push(e),
+        }
     }
     if dirs.is_empty() {
         println!("registered {HOST_NAME} for no browser: none found");
     }
-    if let Some(dir) = chrome_external_dir(all_users) {
+    if !failed.is_empty() {
+        return Err(failed.join("; "));
+    }
+    if let (Some(dir), Some(id)) = (chrome_external_dir(all_users), store_id()) {
         std::fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
         write_json(
-            &dir.join(format!("{STORE_ID}.json")),
+            &dir.join(format!("{id}.json")),
             &serde_json::json!({ "external_update_url": STORE_UPDATE_URL }),
         )?;
         println!("offered the extension to Chrome in {}", dir.display());
@@ -582,7 +786,7 @@ mod tests {
     #[test]
     fn only_our_extension_in_either_browser() {
         let s = |v: &[&str]| v.iter().map(|a| a.to_string()).collect::<Vec<_>>();
-        for id in CHROMIUM_IDS {
+        for id in chromium_ids() {
             assert!(our_caller(&s(&[&format!("chrome-extension://{id}/")])));
         }
         assert!(our_caller(&s(&[r"C:\x\host.firefox.json", FIREFOX_ID])));
@@ -669,6 +873,94 @@ mod tests {
         let m: Message =
             serde_json::from_str(r#"{"hideSite":"tube.test","openOptions":false}"#).unwrap();
         assert_eq!(m.hide_site.as_deref(), Some("tube.test"));
+    }
+
+    #[test]
+    fn the_browsers_whole_context_reaches_the_app() {
+        let m: Message = serde_json::from_str(
+            r#"{"url":"https://x.test/get?id=1","finalUrl":"https://cdn.test/f/abc","filename":"C:\\dl\\report.pdf",
+                "size":12345,"mime":"application/pdf","post":"token=abc","postType":"application/x-www-form-urlencoded",
+                "private":true,"userAgent":"UA","brands":["Brave"],"v":"0.2.5"}"#,
+        )
+        .unwrap();
+        assert_eq!(browser(&m), "Brave Browser");
+        let c = to_command(m);
+        assert_eq!(
+            c.url.as_deref(),
+            Some("https://x.test/get?id=1"),
+            "the address asked for"
+        );
+        assert_eq!(c.final_url.as_deref(), Some("https://cdn.test/f/abc"));
+        assert_eq!(
+            c.name.as_deref(),
+            Some("report.pdf"),
+            "without the browser's folder"
+        );
+        assert_eq!(
+            (c.size, c.mime.as_deref()),
+            (Some(12345), Some("application/pdf"))
+        );
+        assert_eq!(c.post.as_deref(), Some("token=abc"));
+        assert_eq!(
+            c.post_type.as_deref(),
+            Some("application/x-www-form-urlencoded")
+        );
+        assert!(c.private);
+        // No form: no Content-Type for one.
+        let m: Message = serde_json::from_str(
+            r#"{"url":"https://x.test/a.zip","postType":"text/plain","size":0}"#,
+        )
+        .unwrap();
+        let c = to_command(m);
+        assert_eq!((c.post_type, c.size, c.final_url), (None, None, None));
+    }
+
+    #[test]
+    fn redirects_are_checked_at_both_ends() {
+        let rules = mdm_ipc::capture::CaptureRules::default();
+        let ua = "Mozilla/5.0 (Windows NT 10.0) Chrome/141.0.0.0 Safari/537.36";
+        let mut m = Message {
+            url: "https://example.com/get/a.zip".into(),
+            final_url: Some("https://download.windowsupdate.com/a.zip".into()),
+            filename: Some("a.zip".into()),
+            user_agent: Some(ua.into()),
+            ..Default::default()
+        };
+        assert_eq!(verdict(&m, &rules), Err(mdm_ipc::capture::Declined::Site));
+        m.final_url = Some("https://cdn.example.com/a.zip".into());
+        assert_eq!(verdict(&m, &rules), Ok(()));
+    }
+
+    #[test]
+    fn rules_say_everything_the_extension_needs() {
+        let mut rules = mdm_ipc::capture::CaptureRules::default();
+        let hello = || Message {
+            hello: true,
+            user_agent: Some("Mozilla/5.0 Firefox/145.0".into()),
+            ..Default::default()
+        };
+        let r = answer(hello(), &rules);
+        assert!(r.ok && r.capture == Some(true) && r.opened == Some(true));
+        assert_eq!(r.version, Some(env!("CARGO_PKG_VERSION")));
+        assert!(r.excluded_sites.unwrap().contains("windowsupdate"));
+        rules.browsers = vec![("Mozilla Firefox".into(), false)];
+        assert_eq!(
+            answer(hello(), &rules).capture,
+            Some(false),
+            "this browser off"
+        );
+        // The wire names.
+        let json = serde_json::to_string(&answer(hello(), &rules)).unwrap();
+        assert!(json.contains("\"excludedSites\"") && json.contains("\"capture\":false"));
+        // Links that aren't downloads are refused without anything sent.
+        let r = answer(
+            Message {
+                links: vec!["javascript:void(0)".into(), "mailto:a@b".into()],
+                ..Default::default()
+            },
+            &rules,
+        );
+        assert!(!r.ok && r.why == Some("refused"));
     }
 
     #[test]

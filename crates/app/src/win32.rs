@@ -1493,3 +1493,40 @@ pub fn browsers() -> Vec<(&'static str, std::path::PathBuf)> {
 pub fn open_in(program: &std::path::Path, url: &str) {
     let _ = std::process::Command::new(program).arg(url).spawn();
 }
+
+/// Mark-of-the-Web on a file being downloaded from `url` (`referrer`'s page): the zone stream
+/// browsers write, so SmartScreen checks a program, Office opens a document in Protected View and
+/// archive tools pass the mark on, as for the browser's own download. Written on the part file
+/// as it is created (the engine renames it, the stream going along).
+pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>) {
+    // Only addresses from the web: never a login's password (the engine has none in `url`).
+    let clean = |u: &str| u.split(['\r', '\n']).next().unwrap_or("").to_owned();
+    let mut text = String::from("[ZoneTransfer]\r\nZoneId=3\r\n");
+    if let Some(r) = referrer.filter(|r| r.starts_with("http")) {
+        text.push_str(&format!("ReferrerUrl={}\r\n", clean(r)));
+    }
+    text.push_str(&format!("HostUrl={}\r\n", clean(url)));
+    let mut stream = path.as_os_str().to_owned();
+    stream.push(":Zone.Identifier");
+    let _ = std::fs::write(stream, text);
+}
+
+/// Browser integration is registered: a browser looking for the native host (Chrome's key,
+/// which Chromium browsers read; Firefox's) finds a manifest that exists, for this user or for
+/// everyone (Options → General → Test browser integration).
+pub fn host_registered() -> bool {
+    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+    [
+        r"Software\Google\Chrome\NativeMessagingHosts\com.misterdownloadmanager.host",
+        r"Software\Mozilla\NativeMessagingHosts\com.misterdownloadmanager.host",
+    ]
+    .iter()
+    .any(|key| {
+        [HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE]
+            .into_iter()
+            .any(|root| {
+                reg_string_in(root, key, "")
+                    .is_some_and(|p| std::path::Path::new(p.trim().trim_matches('"')).is_file())
+            })
+    })
+}

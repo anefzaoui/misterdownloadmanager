@@ -25,6 +25,9 @@ pub struct CaptureRules {
     pub video_panel: bool,
     /// The sites it stays off (space-separated, `*.example.com` takes subdomains too).
     pub video_panel_sites: String,
+    /// Options → General: also take the listed types the browser would open itself (a PDF in
+    /// its viewer, an MP3 in its player), not only what it downloads.
+    pub capture_opened: bool,
 }
 
 impl Default for CaptureRules {
@@ -37,6 +40,7 @@ impl Default for CaptureRules {
             excluded_addresses: Vec::new(),
             video_panel: true,
             video_panel_sites: String::new(),
+            capture_opened: true,
         }
     }
 }
@@ -71,13 +75,17 @@ impl CaptureRules {
         type_listed(&self.auto_types, name)
     }
 
-    /// May the browser hand `url` (saved as `file_name`) over? `user_agent` tells which browser.
-    pub fn accepts(&self, url: &str, file_name: &str, user_agent: &str) -> Result<(), Declined> {
+    /// Are downloads from `browser` (a name `browser_named` gives) taken at all?
+    pub fn captures(&self, browser: &str) -> bool {
+        self.advanced_integration && !self.browsers.iter().any(|(b, on)| b == browser && !on)
+    }
+
+    /// May `browser` hand `url` (saved as `file_name`) over?
+    pub fn accepts(&self, url: &str, file_name: &str, browser: &str) -> Result<(), Declined> {
         if !self.advanced_integration {
             return Err(Declined::IntegrationOff);
         }
-        let browser = browser_of(user_agent);
-        if self.browsers.iter().any(|(b, on)| b == browser && !on) {
+        if !self.captures(browser) {
             return Err(Declined::Browser);
         }
         if !self.auto_type(file_name) {
@@ -103,15 +111,10 @@ impl CaptureRules {
 }
 
 impl CaptureRules {
-    /// May the download button show over videos on `page` (its address) in the browser of
-    /// `user_agent`? Integration on, that browser captured, the button on and the site not one
-    /// it stays off.
-    pub fn panel_on(&self, page: &str, user_agent: &str) -> bool {
-        let browser = browser_of(user_agent);
-        self.advanced_integration
-            && self.video_panel
-            && !self.browsers.iter().any(|(b, on)| b == browser && !on)
-            && !self.panel_hidden_on(page)
+    /// May the download button show over videos on `page` (its address) in `browser`?
+    /// Integration on, that browser captured, the button on and the site not one it stays off.
+    pub fn panel_on(&self, page: &str, browser: &str) -> bool {
+        self.captures(browser) && self.video_panel && !self.panel_hidden_on(page)
     }
 
     /// Is `page` (an address) on a site the button stays off?
@@ -123,10 +126,15 @@ impl CaptureRules {
     }
 }
 
-/// `sites` (space-separated) with `host` added, unless a pattern already covers it.
+/// `sites` (space-separated) with `host` added, unless a pattern already covers it or it isn't
+/// one host name (a space would add several patterns, `*` all sites).
 pub fn add_site(sites: &str, host: &str) -> String {
     let host = host.trim().to_ascii_lowercase();
-    if host.is_empty() || sites.split_whitespace().any(|p| host_matches(&host, p)) {
+    let one_host = !host.is_empty()
+        && host
+            .chars()
+            .all(|c| c.is_alphanumeric() || matches!(c, '.' | '-' | '_' | ':' | '[' | ']'));
+    if !one_host || sites.split_whitespace().any(|p| host_matches(&host, p)) {
         return sites.to_owned();
     }
     let mut out = sites.trim().to_owned();
@@ -150,6 +158,21 @@ pub fn type_listed(types: &str, name: &str) -> bool {
             None => ext == t,
         }
     })
+}
+
+/// The browser by the names Options lists, from its User-Agent and, for those that say who
+/// they are only there, its `navigator.userAgentData` brands (Brave, Opera).
+pub fn browser_named(user_agent: &str, brands: &[String]) -> &'static str {
+    let brand = |b: &str| brands.iter().any(|x| x == b);
+    if brand("Brave") {
+        "Brave Browser"
+    } else if brand("Opera") || brand("Opera GX") {
+        "Opera"
+    } else if brand("Microsoft Edge") {
+        "Microsoft Edge"
+    } else {
+        browser_of(user_agent)
+    }
 }
 
 /// The browser a User-Agent belongs to, by the names Options lists. Brave says it is Chrome.
@@ -224,10 +247,30 @@ fn wildcard(pattern: &str, text: &str) -> bool {
 mod tests {
     use super::*;
 
-    const CHROME: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36";
-    const EDGE: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0";
-    const FIREFOX: &str =
+    const CHROME_UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36";
+    const EDGE_UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0";
+    const FIREFOX_UA: &str =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0";
+    const CHROME: &str = "Google Chrome";
+    const EDGE: &str = "Microsoft Edge";
+    const FIREFOX: &str = "Mozilla Firefox";
+
+    #[test]
+    fn browsers_by_name() {
+        assert_eq!(browser_named(CHROME_UA, &[]), CHROME);
+        assert_eq!(browser_named(EDGE_UA, &[]), EDGE);
+        assert_eq!(browser_named(FIREFOX_UA, &[]), FIREFOX);
+        let brands = |b: &[&str]| b.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+        assert_eq!(
+            browser_named(CHROME_UA, &brands(&["Not.A/Brand", "Chromium", "Brave"])),
+            "Brave Browser"
+        );
+        assert_eq!(
+            browser_named(CHROME_UA, &brands(&["Chromium", "Google Chrome"])),
+            CHROME
+        );
+        assert_eq!(browser_named(CHROME_UA, &brands(&["Opera"])), "Opera");
+    }
 
     #[test]
     fn the_video_button_follows_its_options() {
@@ -268,6 +311,8 @@ mod tests {
             "already covered"
         );
         assert_eq!(add_site("a.test", " "), "a.test");
+        assert_eq!(add_site("a.test", "b.test *"), "a.test", "one host only");
+        assert_eq!(add_site("a.test", "*"), "a.test");
     }
 
     #[test]

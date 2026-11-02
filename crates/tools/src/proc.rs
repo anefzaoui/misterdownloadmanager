@@ -5,7 +5,7 @@
 
 use std::collections::VecDeque;
 use std::io::{BufRead, BufReader, Read};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
@@ -33,6 +33,93 @@ pub fn safe(s: &str) -> Result<&str, ProcError> {
     } else {
         Ok(s)
     }
+}
+
+/// What the browser's request for a page carried, so yt-dlp asks as the browser did: the page
+/// that embeds a player (Referer), the browser's User-Agent, and the page's cookies (a Cookie
+/// header's `name=value; …`), which sign a member's or a site's own videos in.
+#[derive(Clone, Debug, Default)]
+pub struct FromBrowser {
+    pub referer: Option<String>,
+    pub user_agent: Option<String>,
+    pub cookies: Option<String>,
+}
+
+/// A private cookie file in the Netscape format yt-dlp's `--cookies` reads, removed when
+/// dropped (yt-dlp may write it back at its end: keep it until then).
+pub struct CookieFile(PathBuf);
+
+impl Drop for CookieFile {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_file(&self.0);
+    }
+}
+
+impl FromBrowser {
+    /// yt-dlp's arguments for `url`'s page, and the cookie file they name. Cookies never go on
+    /// the command line, where other programs can read them.
+    pub fn args(&self, url: &str) -> Result<(Vec<String>, Option<CookieFile>), ProcError> {
+        fn given(s: &Option<String>) -> Option<&str> {
+            s.as_deref().map(str::trim).filter(|s| !s.is_empty())
+        }
+        let mut args = Vec::new();
+        if let Some(r) = given(&self.referer) {
+            args.extend(["--referer".to_owned(), safe(r)?.to_owned()]);
+        }
+        if let Some(ua) = given(&self.user_agent) {
+            args.extend(["--user-agent".to_owned(), safe(ua)?.to_owned()]);
+        }
+        let host = url::Url::parse(url)
+            .ok()
+            .and_then(|u| u.host_str().map(str::to_owned));
+        let file = match (given(&self.cookies), host) {
+            (Some(cookies), Some(host)) => {
+                let file = cookie_file(&host, cookies)
+                    .map_err(|e| ProcError::Start("yt-dlp".into(), e))?;
+                args.extend([
+                    "--cookies".to_owned(),
+                    file.0.to_string_lossy().into_owned(),
+                ]);
+                Some(file)
+            }
+            _ => None,
+        };
+        Ok((args, file))
+    }
+}
+
+/// `cookies` (`a=1; b=2`) for `host` and its subdomains, as session cookies, in a file only this
+/// user can read.
+fn cookie_file(host: &str, cookies: &str) -> std::io::Result<CookieFile> {
+    use std::io::Write;
+    use std::sync::atomic::{AtomicU64, Ordering};
+    static N: AtomicU64 = AtomicU64::new(0);
+    let path = std::env::temp_dir().join(format!(
+        "mdm-cookies-{}-{}.txt",
+        std::process::id(),
+        N.fetch_add(1, Ordering::Relaxed)
+    ));
+    let mut text = String::from("# Netscape HTTP Cookie File\n");
+    for pair in cookies.split(';') {
+        let Some((name, value)) = pair.trim().split_once('=') else {
+            continue;
+        };
+        if [host, name, value]
+            .iter()
+            .any(|s| s.contains(['\t', '\r', '\n', '\0']))
+        {
+            continue;
+        }
+        text.push_str(&format!(".{host}\tTRUE\t/\tFALSE\t0\t{name}\t{value}\n"));
+    }
+    let mut open = std::fs::OpenOptions::new();
+    open.write(true).create_new(true);
+    // The temporary folder is the user's own on Windows; elsewhere it may be shared.
+    #[cfg(unix)]
+    std::os::unix::fs::OpenOptionsExt::mode(&mut open, 0o600);
+    let file = CookieFile(path);
+    open.open(&file.0)?.write_all(text.as_bytes())?;
+    Ok(file)
 }
 
 /// `yt-dlp` with arguments in layers: `user` extras, then `ours`, then the fixed ones last
@@ -200,6 +287,39 @@ pub fn output(cmd: Command, name: &str, timeout: Duration) -> Result<Vec<u8>, Pr
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_browsers_context_for_ytdlp() {
+        let b = FromBrowser {
+            referer: Some("https://course.test/lesson".into()),
+            user_agent: Some("UA/1".into()),
+            cookies: Some("sid=abc; theme=dark".into()),
+        };
+        let (args, file) = b.args("https://player.test/video/1").unwrap();
+        assert_eq!(
+            &args[..4],
+            [
+                "--referer",
+                "https://course.test/lesson",
+                "--user-agent",
+                "UA/1"
+            ]
+        );
+        assert_eq!(args[4], "--cookies");
+        let file = file.unwrap();
+        let text = std::fs::read_to_string(&file.0).unwrap();
+        assert!(text.starts_with("# Netscape HTTP Cookie File"));
+        assert!(text.contains(".player.test\tTRUE\t/\tFALSE\t0\tsid\tabc\n"));
+        assert!(
+            !args.iter().any(|a| a.contains("abc")),
+            "no cookie on the command line"
+        );
+        let path = file.0.clone();
+        drop(file);
+        assert!(!path.exists(), "removed once done");
+        let none = FromBrowser::default().args("https://x.test/").unwrap();
+        assert!(none.0.is_empty() && none.1.is_none());
+    }
 
     #[test]
     fn hostile_text_never_reaches_the_argument_list() {

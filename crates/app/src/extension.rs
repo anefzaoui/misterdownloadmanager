@@ -115,10 +115,12 @@ impl Extension {
         );
 
         // One row per browser: its name, and the button that opens the extension's page in it.
+        // The store's page once the extension is listed there; until then every browser gets
+        // the tutorial, as Firefox does.
         let store = mdm_ipc::extension::store_page();
         for (k, (name, program)) in self.browsers.iter().enumerate() {
             let y = BANNER + 16.0 + k as f32 * ROW;
-            let firefox = name.contains("Firefox");
+            let firefox = name.contains("Firefox") || store.is_none();
             winui::text_font(
                 &p,
                 winui::tahoma_bold(),
@@ -152,10 +154,9 @@ impl Extension {
                 None,
             );
             if add.clicked() {
-                let url = if firefox {
-                    mdm_ipc::extension::GUIDE_PAGE
-                } else {
-                    store.as_str()
+                let url = match &store {
+                    Some(store) if !firefox => store.as_str(),
+                    _ => mdm_ipc::extension::GUIDE_PAGE,
                 };
                 match program {
                     #[cfg(windows)]
@@ -213,4 +214,98 @@ impl Extension {
             }
         }
     }
+}
+
+/// Is browser integration registered on this computer (the native host's manifests, where the
+/// browsers look)?
+pub fn registered() -> bool {
+    #[cfg(windows)]
+    return crate::win32::host_registered();
+    #[cfg(unix)]
+    return crate::unix::host_registered();
+}
+
+/// Register it now, for a copy installed without it (the setup's box unticked): the native
+/// host's own `--register`, for this user.
+pub fn set_up() {
+    #[cfg(unix)]
+    crate::unix::register_browsers();
+    #[cfg(windows)]
+    if let Ok(exe) = std::env::current_exe() {
+        let _ = std::process::Command::new(exe.with_file_name("misterdownloadmanager-nmhost.exe"))
+            .arg("--register")
+            .status();
+    }
+}
+
+/// One line of Options → General → Test browser integration: what was checked, whether it
+/// holds, and the help page's section when it doesn't.
+pub struct Check {
+    pub ok: bool,
+    pub text: String,
+    pub why: Option<&'static str>,
+}
+
+/// The checks in the order a connection needs them; the first failing one is what to fix.
+pub fn checks(settings: &crate::settings::Settings) -> Vec<Check> {
+    let check = |ok: bool, text: &str, why: Option<&'static str>| Check {
+        ok,
+        text: crate::i18n::t(text).to_owned(),
+        why: (!ok).then_some(why).flatten(),
+    };
+    let mut out = vec![
+        check(
+            settings.advanced_integration,
+            // i18n: a check of Test browser integration (Options → General)
+            "Advanced browser integration is on",
+            Some("options"),
+        ),
+        check(
+            mdm_ipc::portable_dir().is_none(),
+            // i18n: a check of Test browser integration: a portable copy can't be connected
+            "This is the installed copy, not a portable one",
+            Some("not-installed"),
+        ),
+        check(
+            registered(),
+            // i18n: a check of Test browser integration: the browsers find MDM's helper program
+            "The browsers can find Mister Download Manager",
+            Some("not-installed"),
+        ),
+    ];
+    let seen = mdm_ipc::extension::seen_browsers();
+    if seen.is_empty() {
+        out.push(check(
+            false,
+            // i18n: a check of Test browser integration: no browser's extension has reached MDM
+            "No browser's extension has connected yet",
+            None,
+        ));
+    }
+    for (browser, version) in seen {
+        let name = if browser.is_empty() {
+            crate::i18n::t("Your browser").to_owned()
+        } else {
+            browser
+        };
+        let text = if version.is_empty() {
+            crate::i18n::fmt(
+                // i18n: a check of Test browser integration: {browser} is a browser's name
+                crate::i18n::t("{browser}: the extension connected"),
+                &[("browser", &name)],
+            )
+        } else {
+            crate::i18n::fmt(
+                // i18n: a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+                crate::i18n::t("{browser}: the extension {version} connected"),
+                &[("browser", &name), ("version", &version)],
+            )
+        };
+        out.push(Check {
+            ok: true,
+            text,
+            why: None,
+        });
+    }
+    out
 }

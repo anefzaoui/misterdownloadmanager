@@ -91,11 +91,81 @@ pub fn set_run_at_startup(on: bool) {
 /// Browser integration: the host's manifests in every installed browser's folder. There is no
 /// installer step on Linux and macOS, so this runs at each start (a moved app, or a browser
 /// installed since, is picked up).
+///
+/// From an AppImage, whose programs sit in a mount that is gone once it quits, the host is first
+/// copied to the data folder with the AppImage's path beside it (`app-path`: the host starts
+/// that when MDM isn't running), and registered from there.
 pub fn register_browsers() {
     let Ok(exe) = std::env::current_exe() else {
         return;
     };
-    spawn(Command::new(exe.with_file_name("misterdownloadmanager-nmhost")).arg("--register"));
+    let host = exe.with_file_name("misterdownloadmanager-nmhost");
+    let host = match (std::env::var_os("APPIMAGE"), mdm_ipc::data_dir()) {
+        (Some(image), Some(data)) => {
+            let dir = data.join("browser-host");
+            let copy = dir.join("misterdownloadmanager-nmhost");
+            let made = std::fs::create_dir_all(&dir)
+                .and_then(|()| std::fs::copy(&host, &copy).map(|_| ()))
+                .and_then(|()| std::fs::write(dir.join("app-path"), image.as_encoded_bytes()));
+            if made.is_err() {
+                return;
+            }
+            copy
+        }
+        _ => host,
+    };
+    spawn(Command::new(host).arg("--register"));
+}
+
+/// Browser integration is registered: a host manifest in one of the browsers' folders, for this
+/// user or for everyone (Options → General → Test browser integration).
+pub fn host_registered() -> bool {
+    let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
+    let name = "com.misterdownloadmanager.host.json";
+    let dirs: Vec<PathBuf> = if cfg!(target_os = "macos") {
+        let support = home.join("Library/Application Support");
+        [
+            "Google/Chrome",
+            "Chromium",
+            "Microsoft Edge",
+            "BraveSoftware/Brave-Browser",
+            "Vivaldi",
+            "Mozilla",
+        ]
+        .iter()
+        .map(|d| support.join(d).join("NativeMessagingHosts"))
+        .chain(
+            [
+                "/Library/Google/Chrome/NativeMessagingHosts",
+                "/Library/Application Support/Mozilla/NativeMessagingHosts",
+            ]
+            .map(PathBuf::from),
+        )
+        .collect()
+    } else {
+        let config = home.join(".config");
+        [
+            "google-chrome",
+            "chromium",
+            "microsoft-edge",
+            "BraveSoftware/Brave-Browser",
+            "vivaldi",
+        ]
+        .iter()
+        .map(|d| config.join(d).join("NativeMessagingHosts"))
+        .chain([home.join(".mozilla/native-messaging-hosts")])
+        .chain(
+            [
+                "/etc/opt/chrome/native-messaging-hosts",
+                "/etc/chromium/native-messaging-hosts",
+                "/usr/lib/mozilla/native-messaging-hosts",
+                "/usr/lib64/mozilla/native-messaging-hosts",
+            ]
+            .map(PathBuf::from),
+        )
+        .collect()
+    };
+    dirs.iter().any(|d| d.join(name).is_file())
 }
 
 /// Options → Sounds: play a sound file (macOS: afplay; Linux: PulseAudio / PipeWire's paplay,
@@ -312,7 +382,10 @@ pub fn browsers() -> Vec<(&'static str, PathBuf)> {
         [
             ("Google Chrome", &["google-chrome", "google-chrome-stable"]),
             ("Chromium", &["chromium", "chromium-browser"]),
-            ("Microsoft Edge", &["microsoft-edge", "microsoft-edge-stable"]),
+            (
+                "Microsoft Edge",
+                &["microsoft-edge", "microsoft-edge-stable"],
+            ),
             ("Brave", &["brave-browser", "brave"]),
             ("Vivaldi", &["vivaldi", "vivaldi-stable"]),
             ("Opera", &["opera"]),
@@ -338,4 +411,66 @@ pub fn open_in(program: &Path, url: &str) {
     } else {
         spawn(Command::new(program).arg(url));
     }
+}
+
+/// The counterpart of win32's Mark-of-the-Web on a file being downloaded from `url`: macOS'
+/// quarantine attribute (Gatekeeper checks a program before its first start, as for a browser's
+/// download), and on Linux the freedesktop.org origin attributes file managers show.
+pub fn mark_downloaded(path: &Path, url: &str, referrer: Option<&str>) {
+    #[cfg(target_os = "macos")]
+    {
+        let _ = referrer;
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs());
+        set_xattr(
+            path,
+            "com.apple.quarantine",
+            &format!("0081;{now:x};Mister Download Manager;"),
+        );
+        let _ = url;
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        set_xattr(path, "user.xdg.origin.url", url);
+        if let Some(r) = referrer.filter(|r| r.starts_with("http")) {
+            set_xattr(path, "user.xdg.referrer.url", r);
+        }
+    }
+}
+
+/// One extended attribute; a file system without them is left as it is.
+#[allow(unsafe_code)]
+fn set_xattr(path: &Path, name: &str, value: &str) {
+    use std::ffi::CString;
+    use std::os::unix::ffi::OsStrExt;
+    let (Ok(p), Ok(n)) = (
+        CString::new(path.as_os_str().as_bytes()),
+        CString::new(name),
+    ) else {
+        return;
+    };
+    // SAFETY: both strings are NUL-terminated and live through the call; the value is a byte
+    // slice with its length.
+    #[cfg(target_os = "macos")]
+    let _ = unsafe {
+        libc::setxattr(
+            p.as_ptr(),
+            n.as_ptr(),
+            value.as_ptr().cast(),
+            value.len(),
+            0,
+            0,
+        )
+    };
+    #[cfg(not(target_os = "macos"))]
+    let _ = unsafe {
+        libc::setxattr(
+            p.as_ptr(),
+            n.as_ptr(),
+            value.as_ptr().cast(),
+            value.len(),
+            0,
+        )
+    };
 }

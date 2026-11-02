@@ -15,13 +15,17 @@ $out = Join-Path (Join-Path $root "target") "extension"
 $cargo = Get-Content (Join-Path $root "Cargo.toml") -Raw
 $version = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
 if (-not $version) { throw "no version in Cargo.toml" }
+# The stores take one to four dot-separated numbers only (no "-rc.1").
+if ($version -notmatch '^\d+(\.\d+){0,3}$') { throw "version ${version}: browsers take only numbers like 1.2.3" }
 foreach ($kind in "chromium", "firefox") {
   $dir = Join-Path $out $kind
   if (Test-Path $dir) { Remove-Item -LiteralPath $dir -Recurse -Force }
   New-Item -ItemType Directory -Force $dir | Out-Null
-  Copy-Item (Join-Path $src "background.js") $dir
-  # The download button over videos (a content script in every page).
-  Copy-Item (Join-Path $src "video.js") $dir
+  # The background part; the download button over videos and the Alt-click watcher (content
+  # scripts in every page); the toolbar button's popup.
+  foreach ($f in "background.js", "video.js", "page.js", "popup.html", "popup.css", "popup.js") {
+    Copy-Item (Join-Path $src $f) $dir
+  }
   Copy-Item (Join-Path $src "icons") (Join-Path $dir "icons") -Recurse
   # Its texts in the browser's language (tools/extension/locales.py).
   Copy-Item (Join-Path $src "_locales") (Join-Path $dir "_locales") -Recurse

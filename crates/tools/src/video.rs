@@ -292,7 +292,8 @@ const FINAL: &str = "after_move:MDMF %(filepath)s";
 impl VideoJob {
     /// Download `url` in format `selector` to `dir/<stem>.<ext>`, at most `rate` bytes/s;
     /// `ffmpeg` (its exe) merges separate video and audio into an MP4. `expected`: the size the
-    /// choice was shown with (every stream), so the progress starts from the whole.
+    /// choice was shown with (every stream), so the progress starts from the whole. `browser`:
+    /// what the browser's request for the page carried (proc::FromBrowser).
     #[allow(clippy::too_many_arguments)]
     pub fn start(
         exe: &Path,
@@ -303,6 +304,7 @@ impl VideoJob {
         rate: Option<u64>,
         ffmpeg: Option<&Path>,
         expected: Option<u64>,
+        browser: &proc::FromBrowser,
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let output = dir.join(format!("{}.%(ext)s", template_text(stem)));
@@ -325,6 +327,8 @@ impl VideoJob {
         if let Some(r) = rate {
             ours.extend(["--limit-rate".into(), r.to_string()]);
         }
+        let (theirs, cookies) = browser.args(url)?;
+        ours.extend(theirs);
         if let Some(dir) = ffmpeg.and_then(Path::parent) {
             ours.extend([
                 "--ffmpeg-location".into(),
@@ -348,6 +352,8 @@ impl VideoJob {
             let (progress, child) = (progress.clone(), child.clone());
             let (exe, url) = (exe.to_owned(), url.to_owned());
             std::thread::spawn(move || {
+                // The cookie file lives as long as the run.
+                let _cookies = cookies;
                 // A panic in here must not leave the download "running" forever.
                 let run = std::panic::AssertUnwindSafe(|| {
                     supervise(&exe, &url, &ours, &progress, &child, expected)
@@ -402,6 +408,7 @@ mod tests {
             None,
             ffmpeg.as_deref(),
             None,
+            &Default::default(),
         )
         .unwrap();
         let end = std::time::Instant::now() + std::time::Duration::from_secs(180);

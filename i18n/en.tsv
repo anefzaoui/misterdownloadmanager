@@ -112,6 +112,9 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Advanced / Socks...	Advanced / Socks...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+	Advanced browser integration is on	Advanced browser integration is on
 #. item in the Categories tree in the main window
 	All Downloads	All Downloads
 #. message or event log entry in the main window
@@ -132,6 +135,8 @@
 	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Also attach the crash data (.dmp): it may hold addresses MDM had in memory
 #. text in a dialog box
 	Also delete the file from disk	Also delete the file from disk
+#. checkbox in the Options window
+	Also take files the browser would open (PDF, music, video)	Also take files the browser would open (PDF, music, video)
 #. checkbox in a dialog box
 	Always turn on Speed Limiter on Mister Download Manager startup	Always turn on Speed Limiter on Mister Download Manager startup
 #. text in regional.rs; text in the Scheduler window
@@ -238,7 +243,7 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -617,8 +622,13 @@
 	Hide &categories	Hide &categories
 #. button in a download's progress window
 	Hide tab	Hide tab
+#. text in the Options window
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Home page	Home page
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+	How to fix it	How to fix it
 #. checkbox in the Options window
 	http	http
 #. checkbox in the Options window
@@ -674,8 +684,11 @@
 	Keep sharing torrents after they finish	Keep sharing torrents after they finish
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Keyboard shortcuts	Keyboard shortcuts
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+	Keys	Keys
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 	Keys...	Keys...
 #. text in langpick.rs
 #. window title (the interface language)
@@ -698,6 +711,9 @@
 	Licenses and credits	Licenses and credits
 #. checkbox in a dialog box
 	Limit all downloads together to	Limit all downloads together to
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+	Links from the browser	Links from the browser
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 	Lists of addresses	Lists of addresses
@@ -827,6 +843,9 @@
 	No	No
 #. text in a dialog box
 	No addresses yet	No addresses yet
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+	No browser's extension has connected yet	No browser's extension has connected yet
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 	no data folder	no data folder
@@ -1156,6 +1175,9 @@
 	Server:	Server:
 #. checkbox in the Options window
 	Set file creation date as provided by the server	Set file creation date as provided by the server
+#. button in the Options window
+#. button in Test browser integration: register MDM's helper with the browsers
+	Set it up	Set it up
 #. text in a download's progress window
 #. sent divided by received
 	Share ratio	Share ratio
@@ -1301,6 +1323,12 @@
 	Tell a friend	Tell a friend
 #. group box title in the Options window
 	Temporary directory	Temporary directory
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+	Test browser integration	Test browser integration
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+	Test browser integration...	Test browser integration...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 	Th	Th
@@ -1317,6 +1345,9 @@
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+	The browsers can find Mister Download Manager	The browsers can find Mister Download Manager
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 	The clipboard is busy: try again.	The clipboard is busy: try again.
@@ -1469,6 +1500,9 @@
 	This date has passed: the queue will not start	This date has passed: the queue will not start
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+	This is the installed copy, not a portable one	This is the installed copy, not a portable one
 #. text in a download's progress window
 	This system has no dial-up connections to hang up	This system has no dial-up connections to hang up
 #. text in the Add torrent window
@@ -1685,6 +1719,13 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{algorithm}: checked when the download finishes	{algorithm}: checked when the download finishes
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+	{browser}: the extension connected	{browser}: the extension connected
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+	{browser}: the extension {version} connected	{browser}: the extension {version} connected
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 	{column} contains	{column} contains
@@ -1795,11 +1836,28 @@ column	Transfer rate	Transfer rate
 #. the trailing ... means it is still going on: keep it
 extension	Button settings...	Button settings...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+extension	Connected to Mister Download Manager	Connected to Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+extension	Connected to Mister Download Manager {version}	Connected to Mister Download Manager {version}
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+extension	Download all links with Mister Download Manager	Download all links with Mister Download Manager
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+extension	Download selected links with Mister Download Manager	Download selected links with Mister Download Manager
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 extension	Download video	Download video
 #. text in the browser extension
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 extension	Download with Mister Download Manager	Download with Mister Download Manager
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+extension	Downloads from {site} stay with the browser	Downloads from {site} stay with the browser
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 extension	Drag to move it along the video's edge	Drag to move it along the video's edge
@@ -1807,14 +1865,32 @@ extension	Drag to move it along the video's edge	Drag to move it along the video
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 extension	Hands downloads from the browser to Mister Download Manager.	Hands downloads from the browser to Mister Download Manager.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+extension	Help	Help
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 extension	Hide on this video	Hide on this video
+#. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+extension	Hold Alt while clicking a link to let the browser download it.	Hold Alt while clicking a link to let the browser download it.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+extension	How to fix it	How to fix it
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 extension	Mister Download Manager didn't answer	Mister Download Manager didn't answer
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
-extension	Mister Download Manager Integration Module	Mister Download Manager Integration Module
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+extension	Mister Download Manager didn't start in time	Mister Download Manager didn't start in time
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager doesn't accept this copy of the extension
+#. text in the browser extension
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager isn't installed, or its browser integration isn't set up
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 extension	More options	More options
@@ -1823,8 +1899,34 @@ extension	More options	More options
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Never on {site}	Never on {site}
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+extension	Never take downloads from {site}	Never take downloads from {site}
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+extension	Open Mister Download Manager	Open Mister Download Manager
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+extension	Options...	Options...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+extension	Paused: downloads stay with the browser	Paused: downloads stay with the browser
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+extension	Take downloads from this browser	Take downloads from this browser
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+extension	The connection to Mister Download Manager failed	The connection to Mister Download Manager failed
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+extension	This download's details were too large to hand over	This download's details were too large to hand over
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+extension	Update Mister Download Manager to use everything this extension offers	Update Mister Download Manager to use everything this extension offers
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Alt+Enter	Alt+Enter

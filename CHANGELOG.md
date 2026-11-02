@@ -11,14 +11,58 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   **Options → Connection** now takes any number from 1 to 32, typed or set with the arrows,
   and **Allow more than 32 connections** raises that to 128, for server exceptions too. Servers
   that allow fewer are still noticed and asked for fewer. The command line's `-c` takes 1 to 128.
-- **The browser extension is in the Chrome Web Store**, and MDM offers it: until a browser's
-  extension has reached MDM, each start shows **Add Mister Download Manager to your browser**,
-  with a button for every browser installed that opens the extension's page in it (Chrome, Edge,
-  Brave, Vivaldi and Opera install from the store; Firefox gets the tutorial). The window says
-  when the extension is connected; **Don't ask again** stops it. Chrome also offers the extension
-  by itself at its next start (**New extension added**) once browser integration is set up.
+- **MDM offers the browser extension**: until a browser's extension has reached MDM, each start
+  shows **Add Mister Download Manager to your browser**, with a button for every browser
+  installed (the tutorial until the extension is listed in the Chrome Web Store, its store page
+  after). The window says when the extension is connected; **Don't ask again** stops it.
 - The store's copy shows no Download video button on YouTube, whose downloads the store's
   policy forbids; **Tasks → Download video from a page** still takes any page.
+- **The extension's toolbar button** says whether the browser reaches MDM. When it doesn't, a
+  red **!** and **How to fix it** lead to the new help page, [The browser and MDM aren't
+  connected](https://misterdownloadmanager.com/help/browser-help.html), at the section for the
+  reason. Its popup also pauses taking downloads, leaves the current site to the browser for
+  good, and opens MDM or its Options.
+- **Options → General → Test browser integration** checks, in order, everything between a
+  browser and MDM, and offers **Set it up** when the browsers can't find MDM.
+- **Download selected links** and **Download all links** on the browser's right-click menu: the
+  page's links go to Import, to tick there.
+- **PDFs, music and videos the browser would open itself are taken too**, when their type is in
+  **Options → File types** (**Options → General → Keys...** turns it off). Hold **Alt** while
+  clicking a link to let the browser have it.
+- **Downloads from forms** (a button that posts and gets a file back) are posted again by MDM,
+  with the form's data, instead of being lost.
+
+### Changed
+
+- The extension is called **Mister Download Manager**.
+- A download from the browser keeps the browser's name, size and type: Download File Info no
+  longer asks the server again, so a link's own name (`download="…"`), a Unicode name and a
+  download behind a sign-in show right away, and correctly. When it must ask (an address typed
+  in), it asks with the cookies, referrer and User-Agent the download will use.
+- The address the browser was given is kept along with where its redirects led, so an expired
+  signed link (a GitHub release, a cloud drive) is renewed when resumed, and a site excluded in
+  Options is left alone even when it redirects to another.
+- The download button over videos passes the page's referrer, cookies and the browser's
+  User-Agent to yt-dlp, so videos that need a sign-in or play only where they're embedded work.
+- Files from the browser are marked as downloaded from the internet, as the browser marks its
+  own: Windows' Mark of the Web (SmartScreen, Office's Protected View), macOS' quarantine.
+- Downloads from a private window are kept out of the saved list.
+
+### Fixed
+
+- A second browser download arriving while Download File Info was open replaced the first, which
+  was lost (the browser had already given it up). They now wait their turn.
+- When Firefox started MDM for a download, closing its helper could close MDM too.
+- A download with very large cookies made the browser's helper start a second MDM and wait 5
+  seconds; MDM only starts now when it isn't running, and takes what the browser sends.
+- MDM listens for the browser before its window is up, and the browser's helper waits 20 seconds
+  for a slow first start instead of 5.
+- File names can no longer hide a right-to-left mark (`invoice‮fdp.exe`), and a server's
+  Unicode `filename*` name wins over its plain fallback.
+- Browser downloads are no longer taken when the extension may not read the site (its access set
+  to **On click**): without the site's cookies they would fail.
+- The extension's right-click menu, and its translation, are set up again cleanly after an
+  update.
 
 ## [0.2.4] - 2026-11-01
 

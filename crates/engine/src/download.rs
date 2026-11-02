@@ -8,6 +8,7 @@
 //! reused between segments, TLS sessions resumed) with at most `connections()` requests at a
 //! time, since each worker has one request in flight.
 
+use std::collections::HashSet;
 use std::fs::File;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -15,8 +16,9 @@ use std::sync::atomic::{AtomicU8, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
+use bytes::Bytes;
 use reqwest::header::{self, HeaderMap, HeaderValue};
-use reqwest::{Client, Response, StatusCode};
+use reqwest::{Client, RequestBuilder, Response, StatusCode};
 use tokio::task::JoinSet;
 use tokio_util::sync::CancellationToken;
 use url::Url;
@@ -104,6 +106,36 @@ pub struct Options {
     pub ftp_passive: bool,
     /// Certificates (DER) trusted besides the system's for FTPS (tests' own CA).
     pub extra_roots: Vec<Vec<u8>>,
+    /// Send every request as POST with this body, the Content-Type coming from the headers (a
+    /// browser form's download). Redirects go as in browsers: 301, 302 and 303 turn it into a
+    /// GET without the body (and without its Content-Type), 307 and 308 keep both. A POST may
+    /// have side effects, so further connections repeat it only once an answer has shown that
+    /// the server takes ranges (206 or `Accept-Ranges: bytes`); until then the first
+    /// connection takes the whole file alone. Not stored in the resume state (like the
+    /// headers): whoever resumes gives it again. HTTP only.
+    pub post: Option<Bytes>,
+    /// Called with the part file's path right after the engine creates it, before any data
+    /// is written: once per new download (`Download::start`, `fetch`), never by a resume, which
+    /// writes into the part file it finds. The part file is renamed (never copied) to the final
+    /// name, so whatever the hook attaches to it — Windows' Mark of the Web stream, macOS'
+    /// quarantine attribute — stays with the finished file.
+    pub on_file_created: Option<FileHook>,
+}
+
+/// A callback given the path of a file the engine created (`Options::on_file_created`).
+#[derive(Clone)]
+pub struct FileHook(pub Arc<dyn Fn(&Path) + Send + Sync>);
+
+impl FileHook {
+    pub fn new(f: impl Fn(&Path) + Send + Sync + 'static) -> Self {
+        FileHook(Arc::new(f))
+    }
+}
+
+impl std::fmt::Debug for FileHook {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("FileHook")
+    }
 }
 
 /// Which proxy downloads go through (Options → Proxy / Socks).
@@ -160,6 +192,8 @@ impl Default for Options {
             server_time: false,
             ftp_passive: true,
             extra_roots: Vec::new(),
+            post: None,
+            on_file_created: None,
         }
     }
 }
@@ -452,6 +486,78 @@ fn scoped_headers(headers: &HeaderMap, from: &Url, to: &Url) -> HeaderMap {
     h
 }
 
+/// The addresses a POST download's redirects turned into GETs (301, 302, 303, as browsers
+/// do), recorded by its client's redirect policy: requests to them afterwards are GETs too.
+#[derive(Clone, Default)]
+struct AsGet(Arc<Mutex<HashSet<Url>>>);
+
+impl AsGet {
+    fn contains(&self, url: &Url) -> bool {
+        self.0.lock().unwrap().contains(url)
+    }
+
+    /// reqwest's own policy (at most 10 redirects), noting the method each hop leaves with.
+    fn policy(&self) -> reqwest::redirect::Policy {
+        let seen = self.0.clone();
+        reqwest::redirect::Policy::custom(move |attempt| {
+            let mut seen = seen.lock().unwrap();
+            // `previous` ends with the address that redirected; the first is the one asked.
+            let came_as_get = attempt.previous().len() > 1
+                && attempt.previous().last().is_some_and(|u| seen.contains(u));
+            if came_as_get || matches!(attempt.status().as_u16(), 301..=303) {
+                seen.insert(attempt.url().clone());
+            } else {
+                seen.remove(attempt.url());
+            }
+            drop(seen);
+            reqwest::redirect::Policy::default().redirect(attempt)
+        })
+    }
+}
+
+/// The body a POST download sends to an address reached with or without a redirect to a GET
+/// (`as_get`); for a GET, the body's headers go too, as browsers drop them. None: a GET.
+fn post_for(opts: &Options, as_get: bool, headers: &mut HeaderMap) -> Option<Bytes> {
+    let body = opts.post.clone()?;
+    if !as_get {
+        return Some(body);
+    }
+    for name in [
+        header::CONTENT_TYPE,
+        header::CONTENT_LENGTH,
+        header::CONTENT_ENCODING,
+    ] {
+        headers.remove(name);
+    }
+    None
+}
+
+/// A request for `url`: a POST with `post` as its body, else a GET.
+fn build(client: &Client, url: Url, post: Option<&Bytes>) -> RequestBuilder {
+    match post {
+        Some(body) => client.post(url).body(body.clone()),
+        None => client.get(url),
+    }
+}
+
+/// `Accept-Ranges: bytes`: the server says it serves ranges.
+fn accepts_ranges(h: &HeaderMap) -> bool {
+    header_str(h, header::ACCEPT_RANGES).is_some_and(|v| {
+        v.split(',')
+            .any(|unit| unit.trim().eq_ignore_ascii_case("bytes"))
+    })
+}
+
+/// A header's text: UTF-8, else ISO-8859-1 (servers send file names either way, while
+/// `HeaderValue::to_str` takes ASCII only).
+fn header_text(h: &HeaderMap, name: header::HeaderName) -> Option<String> {
+    let raw = h.get(name)?.as_bytes();
+    Some(match std::str::from_utf8(raw) {
+        Ok(s) => s.to_owned(),
+        Err(_) => raw.iter().map(|&b| char::from(b)).collect(),
+    })
+}
+
 /// What the server's range answers have shown so far.
 const RANGES_UNKNOWN: u8 = 0;
 const RANGES_YES: u8 = 1;
@@ -540,7 +646,8 @@ pub struct ProbeInfo {
     pub file_name: String,
 }
 
-/// One plain `GET` to learn the final URL, size and name; the body is not read.
+/// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name; the body
+/// is not read.
 pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<ProbeInfo, Error> {
     if crate::ftp::is_ftp(&url) {
         let site = crate::ftp::Site::new(&url, &headers, opts)?;
@@ -552,9 +659,10 @@ pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<Probe
         });
     }
     let resp = get(
-        &client(opts, &url)?,
+        &client(opts, &url, &AsGet::default())?,
         url,
         headers,
+        opts.post.as_ref(),
         &CancellationToken::new(),
     )
     .await?;
@@ -563,11 +671,8 @@ pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<Probe
         StatusCode::PARTIAL_CONTENT => parse_content_range(resp.headers())?.2,
         _ => resp.content_length(),
     };
-    let cd = resp
-        .headers()
-        .get(header::CONTENT_DISPOSITION)
-        .and_then(|v| v.to_str().ok());
-    let file_name = naming::file_name(cd, &final_url);
+    let cd = header_text(resp.headers(), header::CONTENT_DISPOSITION);
+    let file_name = naming::file_name(cd.as_deref(), &final_url);
     Ok(ProbeInfo {
         final_url,
         size,
@@ -800,6 +905,8 @@ impl Shared {
 struct Target {
     url: Url,
     headers: HeaderMap,
+    /// A POST download's body for this address (None: GET; see `post_for`).
+    post: Option<Bytes>,
     generation: u64,
 }
 
@@ -827,6 +934,13 @@ struct Ctx {
     cancel: CancellationToken,
     /// `RANGES_*`: learned from the first range answer.
     ranges: AtomicU8,
+    /// Further connections wait for a range answer (`range_answered`): a POST whose server
+    /// hasn't shown yet that it takes ranges (`Options::post`).
+    wait_for_ranges: bool,
+    /// Signalled by every 206 answer.
+    range_answered: tokio::sync::Notify,
+    /// Where a POST download's redirects turned into GETs (refreshing the target).
+    as_get: AsGet,
     /// The file itself is a web page; otherwise an HTML answer is a sign-in wall or an error.
     web_page_ok: bool,
     /// An FTP download's server and its idle sessions (else HTTP through `client`).
@@ -891,10 +1005,16 @@ impl Ctx {
         if failed_at.is_some_and(|t| t.elapsed() < REFRESH_EVERY) {
             return false;
         }
-        let Some(url) = refresh_final_url(&self.client, origin, headers, self.size, &self.cancel)
-            .await
-            .filter(|u| *u != self.target.lock().unwrap().url)
-        else {
+        let Some(url) = refresh_final_url(
+            &self.client,
+            origin,
+            headers,
+            self.opts.post.as_ref(),
+            self.size,
+            &self.cancel,
+        )
+        .await
+        .filter(|u| *u != self.target.lock().unwrap().url) else {
             *failed_at = Some(std::time::Instant::now());
             return false;
         };
@@ -903,8 +1023,11 @@ impl Ctx {
             "The address stopped working; the original address now leads to {}",
             url.host_str().unwrap_or("?")
         ));
+        let mut headers = scoped_headers(headers, origin, &url);
+        let post = post_for(&self.opts, self.as_get.contains(&url), &mut headers);
         let mut t = self.target.lock().unwrap();
-        t.headers = scoped_headers(headers, origin, &url);
+        t.headers = headers;
+        t.post = post;
         t.url = url;
         t.generation += 1;
         true
@@ -926,8 +1049,8 @@ impl Ctx {
 /// paused download doesn't come back to sockets the server already closed.
 const POOL_IDLE: Duration = Duration::from_secs(15);
 
-/// The client for a download of `url`.
-fn client(opts: &Options, url: &Url) -> Result<Client, Error> {
+/// The client for a download of `url`; a POST download's redirects are noted in `as_get`.
+fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
     let port = url.port_or_known_default().unwrap_or(443);
     let builder = Client::builder();
     let builder = match &opts.proxy {
@@ -968,6 +1091,10 @@ fn client(opts: &Options, url: &Url) -> Result<Client, Error> {
             }
             Err(_) => builder,
         },
+    };
+    let builder = match opts.post {
+        Some(_) => builder.redirect(as_get.policy()),
+        None => builder,
     };
     Ok(builder
         .dns_resolver(Arc::new(dns::Resolver::new(&opts.hosts, port)))
@@ -1014,8 +1141,10 @@ async fn run_fresh(
 ) -> Result<Outcome, Error> {
     shared.limiter.set(opts.speed_limit);
     let (shared, cancel) = (&shared, &cancel);
-    // Probe on connection 0: a plain GET whose body becomes the segment starting at 0.
-    let client0 = client(&opts, &req.url)?;
+    // Probe on connection 0: a plain GET (or the form's POST) whose body becomes the segment
+    // starting at 0.
+    let as_get = AsGet::default();
+    let client0 = client(&opts, &req.url, &as_get)?;
     shared.conn(0, |_| {});
     let (resp, ttfb) = first_get(&client0, &req.url, &req.headers, &opts, shared, cancel).await?;
     let preempt_after = (ttfb * PREEMPT_TTFB).max(PREEMPT_MIN);
@@ -1046,7 +1175,11 @@ async fn run_fresh(
         size.map_or("unknown".to_owned(), disk::human),
     ));
     // Credentials stay with the host they were given for (see `scoped_headers`).
-    let headers = scoped_headers(&req.headers, &req.url, &final_url);
+    let mut headers = scoped_headers(&req.headers, &req.url, &final_url);
+    // A POST stays one if its redirects kept it (307, 308); it is sent again only once the
+    // server has shown it takes ranges.
+    let post = post_for(&opts, as_get.contains(&final_url), &mut headers);
+    let wait_for_ranges = post.is_some() && ranges != RANGES_YES && !accepts_ranges(resp.headers());
     let h = resp.headers();
     // The expected hash: the user's, else what a full (200) answer announces for its content.
     let checksum = opts.checksum.clone().or_else(|| {
@@ -1073,12 +1206,9 @@ async fn run_fresh(
         .get(header::CONTENT_TYPE)
         .and_then(|v| v.to_str().ok())
         .map(str::to_owned);
-    let (dest, _reservation, file) = open_destination(&req.dest, size, || {
-        let cd = resp
-            .headers()
-            .get(header::CONTENT_DISPOSITION)
-            .and_then(|v| v.to_str().ok());
-        naming::file_name(cd, &final_url)
+    let (dest, _reservation, file) = open_destination(&req.dest, size, &opts, || {
+        let cd = header_text(resp.headers(), header::CONTENT_DISPOSITION);
+        naming::file_name(cd.as_deref(), &final_url)
     })
     .await?;
     downloading(shared, &dest, size, ranges);
@@ -1097,12 +1227,14 @@ async fn run_fresh(
         );
         saved.content_type = content_type.clone();
         saved.checksum = checksum.clone();
+        saved.final_get = opts.post.is_some() && post.is_none();
         let ctx = Arc::new(Ctx {
             client: client0.clone(),
             validators: Mutex::new(validators),
             target: Mutex::new(Target {
                 url: final_url.clone(),
                 headers: headers.clone(),
+                post: post.clone(),
                 generation: 0,
             }),
             origin: (req.url != final_url).then(|| (req.url.clone(), req.headers.clone())),
@@ -1115,6 +1247,9 @@ async fn run_fresh(
             // download (which may still fall back to one connection).
             cancel: cancel.child_token(),
             ranges: AtomicU8::new(ranges),
+            wait_for_ranges,
+            range_answered: Default::default(),
+            as_get,
             web_page_ok: expects_web_page(&dest, content_type.as_deref()),
             ftp: None,
         });
@@ -1125,8 +1260,7 @@ async fn run_fresh(
             Err(Error::NoRanges) => {
                 *shared.planner.lock().unwrap() = None;
                 shared.view.lock().unwrap().resumable = Some(false);
-                let h = scoped_headers(&req.headers, &req.url, &final_url);
-                let resp = get(&client0, final_url, h, cancel).await?;
+                let resp = get(&client0, final_url, headers, post.as_ref(), cancel).await?;
                 let body = Body::Http(resp);
                 single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
             }
@@ -1143,10 +1277,11 @@ async fn run_fresh(
 /// Prepare the destination of a new download of `size` bytes (if known), named `name()` in a
 /// chosen folder: the folder exists, the file fits on the drive, the name is reserved in this
 /// process, and the part file is created (exclusively, for a chosen folder: another program
-/// may have taken the name meanwhile) at its full size.
+/// may have taken the name meanwhile) at its full size, and shown to `opts.on_file_created`.
 async fn open_destination(
     dest: &Destination,
     size: Option<u64>,
+    opts: &Options,
     name: impl FnOnce() -> String,
 ) -> Result<(PathBuf, naming::Reservation, File), Error> {
     // The folder must exist: we create it, but a removed drive or offline share can't be.
@@ -1204,6 +1339,11 @@ async fn open_destination(
             }
         }
     };
+    // Before any data: a mark the hook sets (Mark of the Web, quarantine) is on the file from
+    // its first byte, and the final rename keeps it.
+    if let Some(hook) = &opts.on_file_created {
+        (hook.0)(&naming::part_path(&dest));
+    }
     if let Some(size) = size {
         // Sparse first: writes far into a merely extended file make NTFS zero-fill up to them.
         if size >= sparse::MIN_SIZE {
@@ -1262,7 +1402,7 @@ async fn run_fresh_ftp(
     };
     let stamp = opts.server_time.then_some(facts.modified).flatten();
     let (dest, _reservation, file) =
-        open_destination(&req.dest, size, || naming::file_name(None, &req.url)).await?;
+        open_destination(&req.dest, size, &opts, || naming::file_name(None, &req.url)).await?;
     downloading(shared, &dest, size, ranges);
     let file = Arc::new(file);
     let first = Body::Ftp(first);
@@ -1281,11 +1421,12 @@ async fn run_fresh_ftp(
         );
         saved.checksum = opts.checksum.clone();
         let ctx = Arc::new(Ctx {
-            client: client(&opts, &req.url)?,
+            client: client(&opts, &req.url, &AsGet::default())?,
             validators: Mutex::new(validators),
             target: Mutex::new(Target {
                 url,
                 headers: HeaderMap::new(),
+                post: None,
                 generation: 0,
             }),
             origin: None,
@@ -1296,6 +1437,9 @@ async fn run_fresh_ftp(
             shared: shared.clone(),
             cancel: cancel.child_token(),
             ranges: AtomicU8::new(ranges),
+            wait_for_ranges: false,
+            range_answered: Default::default(),
+            as_get: AsGet::default(),
             web_page_ok: true,
             ftp: Some(site.clone()),
         });
@@ -1344,17 +1488,23 @@ async fn run_resume(
     }
     // Signed links from a redirect expire: ask the original address again for today's target
     // (it must still be the same file), else keep the stored one.
-    let client = client(&opts, &saved.url)?;
-    let url = if saved.url != saved.final_url {
-        refresh_final_url(&client, &saved.url, &headers, saved.size, &cancel)
-            .await
-            .unwrap_or_else(|| saved.final_url.clone())
+    let as_get = AsGet::default();
+    let client = client(&opts, &saved.url, &as_get)?;
+    let refreshed = if saved.url != saved.final_url {
+        let post = opts.post.as_ref();
+        refresh_final_url(&client, &saved.url, &headers, post, saved.size, &cancel).await
     } else {
-        saved.final_url.clone()
+        None
+    };
+    // A POST download's target is asked with GET when its redirects turned it into one.
+    let (url, final_get) = match refreshed {
+        Some(url) => (url.clone(), as_get.contains(&url)),
+        None => (saved.final_url.clone(), saved.final_get),
     };
     let origin = (saved.url != url).then(|| (saved.url.clone(), headers.clone()));
     // Credentials stay with the host they were given for.
     headers = scoped_headers(&headers, &saved.url, &url);
+    let post = post_for(&opts, final_get, &mut headers);
     let file = std::fs::OpenOptions::new()
         .read(true)
         .write(true)
@@ -1415,9 +1565,13 @@ async fn run_resume(
             }
             v
         }),
+        // A POST's ranges may never have been tried (it came on one connection): one
+        // connection asks first, the others follow its 206.
+        wait_for_ranges: post.is_some() && ftp.is_none(),
         target: Mutex::new(Target {
             url,
             headers,
+            post,
             generation: 0,
         }),
         origin,
@@ -1429,6 +1583,8 @@ async fn run_resume(
         cancel: cancel.child_token(),
         // Ranges worked before: a 200 now is a changed file or a range-less edge.
         ranges: AtomicU8::new(RANGES_YES),
+        range_answered: Default::default(),
+        as_get,
         web_page_ok,
         ftp,
     });
@@ -1443,18 +1599,19 @@ async fn run_resume(
     finish(&shared, file, &dest, size, stamp)
 }
 
-/// Follow the original address again (with its own headers) and return where it leads now,
-/// if that is still the same file: a ranged answer with the saved size. None keeps the stored
-/// address (no redirect any more, a different file, or the site is unreachable).
+/// Follow the original address again (with its own headers, and a POST download's body) and
+/// return where it leads now, if that is still the same file: a ranged answer with the saved
+/// size. None keeps the stored address (no redirect any more, a different file, or the site is
+/// unreachable).
 async fn refresh_final_url(
     client: &Client,
     origin: &Url,
     headers: &HeaderMap,
+    post: Option<&Bytes>,
     size: u64,
     cancel: &CancellationToken,
 ) -> Option<Url> {
-    let req = client
-        .get(origin.clone())
+    let req = build(client, origin.clone(), post)
         .headers(headers.clone())
         .header(header::RANGE, "bytes=0-0");
     let resp = cancellable(cancel, async { Ok(req.send().await?) })
@@ -1613,8 +1770,11 @@ async fn save_state(
 ) -> Result<(), Error> {
     let segments = ctx.shared.with_planner(|p| p.save());
     let validators = ctx.validators.lock().unwrap().clone();
-    let final_url = ctx.target().url;
-    let meta_changed = validators != saved.validators || final_url != saved.final_url;
+    let target = ctx.target();
+    let (final_url, final_get) = (target.url, ctx.opts.post.is_some() && target.post.is_none());
+    let meta_changed = validators != saved.validators
+        || final_url != saved.final_url
+        || final_get != saved.final_get;
     let bytes: u64 = segments.iter().map(|s| s.cursor - s.start).sum();
     let due = force
         || bytes >= synced.bytes.saturating_add(sync_bytes(ctx.size))
@@ -1626,6 +1786,7 @@ async fn save_state(
         if meta_changed {
             saved.validators = validators;
             saved.final_url = final_url;
+            saved.final_get = final_get;
             let s = saved.clone();
             tokio::task::spawn_blocking(move || s.write(&path))
                 .await
@@ -1643,20 +1804,22 @@ async fn save_state(
     let mut s = saved.clone();
     s.validators = validators;
     s.final_url = final_url;
+    s.final_get = final_get;
     *saved = tokio::task::spawn_blocking(move || s.save(&path, segments, &file).map(|()| s))
         .await
         .expect("state writer panicked")?;
     Ok(())
 }
 
-/// A plain `GET` (no Range) that must answer 200 or 206.
+/// A plain `GET` (no Range), or a POST of `post`, that must answer 200 or 206.
 async fn get(
     client: &Client,
     url: Url,
     headers: HeaderMap,
+    post: Option<&Bytes>,
     cancel: &CancellationToken,
 ) -> Result<Response, Error> {
-    let req = client.get(url).headers(headers);
+    let req = build(client, url, post).headers(headers);
     let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
     match resp.status() {
         StatusCode::OK | StatusCode::PARTIAL_CONTENT => Ok(resp),
@@ -1679,7 +1842,13 @@ async fn first_get(
     cancel: &CancellationToken,
 ) -> Result<(Response, Duration), Error> {
     first_try(opts, shared, cancel, || {
-        get(client, url.clone(), headers.clone(), cancel)
+        get(
+            client,
+            url.clone(),
+            headers.clone(),
+            opts.post.as_ref(),
+            cancel,
+        )
     })
     .await
 }
@@ -1744,13 +1913,30 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
     // `min_split` as connections free up.
     let size = ctx.shared.with_planner(|p| p.size());
     let by_size = u32::try_from(size.div_ceil(INITIAL_PIECE)).unwrap_or(u32::MAX);
-    let max = max.min(by_size.max(1));
-    while next_id < max.max(1) {
+    let max = max.min(by_size.max(1)).max(1);
+    // A POST the server hasn't shown to take ranges: one connection, until a 206 says the
+    // others may follow (a second POST may do the form's work twice).
+    let mut held = ctx.wait_for_ranges;
+    while next_id < if held { 1 } else { max } {
         set.spawn(worker(ctx.clone(), next_id, None));
         next_id += 1;
     }
     let mut last_err = None;
-    while let Some(joined) = set.join_next().await {
+    loop {
+        let joined = tokio::select! {
+            joined = set.join_next() => match joined {
+                Some(joined) => joined,
+                None => break,
+            },
+            () = ctx.range_answered.notified(), if held => {
+                held = false;
+                while next_id < max {
+                    set.spawn(worker(ctx.clone(), next_id, None));
+                    next_id += 1;
+                }
+                continue;
+            }
+        };
         match joined.expect("worker panicked") {
             Err(e) if e.is_fatal() => {
                 ctx.cancel.cancel();
@@ -1955,9 +2141,7 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
         .unwrap()
         .if_range(target.url.host_str())
         .and_then(|v| HeaderValue::from_str(v).ok());
-    let mut req = ctx
-        .client
-        .get(target.url.clone())
+    let mut req = build(&ctx.client, target.url.clone(), target.post.as_ref())
         .headers(target.headers.clone())
         .header(header::RANGE, format!("bytes={from}-{}", to - 1));
     if let Some(v) = &if_range {
@@ -1968,7 +2152,10 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
         return Err(Error::GotWebPage);
     }
     match resp.status() {
-        StatusCode::PARTIAL_CONTENT => ctx.learn_ranges(true),
+        StatusCode::PARTIAL_CONTENT => {
+            ctx.learn_ranges(true);
+            ctx.range_answered.notify_one();
+        }
         // The same file under another ETag (each CDN node has its own): go on with the date.
         StatusCode::OK if per_node_etag(ctx, if_range.as_ref(), &resp) => {
             return Err(Error::RangesUnavailable);

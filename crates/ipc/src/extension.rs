@@ -5,10 +5,9 @@
 /// The extension's ID loaded unpacked (the public key in extension/manifest.json).
 pub const UNPACKED_ID: &str = "oogbclbbninliongijffeeggalppliok";
 /// Its ID in the Chrome Web Store, which signs it with the store's own key
-/// (tools/extension/pack.ps1 leaves the manifest's key out of the store's copy).
+/// (tools/extension/pack.ps1 leaves the manifest's key out of the store's copy). A placeholder
+/// until the listing exists: [`store_id`] is then `None` and nothing names it.
 pub const STORE_ID: &str = "STORE_ID_PENDING";
-/// Both: the native host serves either.
-pub const CHROMIUM_IDS: [&str; 2] = [UNPACKED_ID, STORE_ID];
 /// The Firefox add-on's ID (extension/manifest.firefox.json).
 pub const FIREFOX_ID: &str = "integration@misterdownloadmanager.com";
 /// Chrome's update service: an external-install entry naming it makes Chrome offer the store's
@@ -16,34 +15,110 @@ pub const FIREFOX_ID: &str = "integration@misterdownloadmanager.com";
 /// options").
 pub const STORE_UPDATE_URL: &str = "https://clients2.google.com/service/update2/crx";
 
-/// The extension's page in the Chrome Web Store; Chrome, Edge, Brave, Opera and Vivaldi all
-/// install from it.
-pub fn store_page() -> String {
-    format!("https://chromewebstore.google.com/detail/{STORE_ID}")
+/// A Chromium extension ID: 32 letters from a to p.
+pub fn valid_id(id: &str) -> bool {
+    id.len() == 32 && id.bytes().all(|b| (b'a'..=b'p').contains(&b))
 }
 
-/// The tutorial that adds the extension by hand (Firefox, until it has a listing of its own).
+/// The store's ID, once it is a real one.
+pub fn store_id() -> Option<&'static str> {
+    valid_id(STORE_ID).then_some(STORE_ID)
+}
+
+/// The Chromium extensions the native host serves: unpacked, and the store's once listed.
+pub fn chromium_ids() -> Vec<&'static str> {
+    std::iter::once(UNPACKED_ID).chain(store_id()).collect()
+}
+
+/// The extension's page in the Chrome Web Store (Chrome, Edge, Brave, Opera and Vivaldi all
+/// install from it), once it is listed.
+pub fn store_page() -> Option<String> {
+    store_id().map(|id| format!("https://chromewebstore.google.com/detail/{id}"))
+}
+
+/// The tutorial that adds the extension by hand (Firefox, and every browser until the store
+/// has it).
 pub const GUIDE_PAGE: &str =
     "https://misterdownloadmanager.com/help/guide-catch-browser-downloads.html";
+
+/// The help page for a browser that doesn't reach Mister Download Manager, at the section for
+/// `why` (the native host's reasons, and the app's own checks).
+pub fn help_page(why: &str) -> String {
+    format!("https://misterdownloadmanager.com/help/browser-help.html#{why}")
+}
 
 /// Marks the data folder once a browser has started the host for the extension.
 const SEEN: &str = "extension-seen";
 
 /// The host, started by a browser for the extension: the extension is installed there. The
-/// file holds the last browser's name (`capture::browser_of`), for the log.
-pub fn mark_seen(browser: &str) {
-    if let Some(dir) = crate::data_dir() {
-        let file = dir.join(SEEN);
-        let known = std::fs::read_to_string(&file).ok();
-        let new_name = !browser.is_empty() && known.as_deref() != Some(browser);
-        if known.is_none() || new_name {
-            let _ = std::fs::create_dir_all(&dir);
-            let _ = std::fs::write(file, browser);
-        }
+/// file holds one line per browser (`capture::browser_named`), with the extension's version.
+pub fn mark_seen(browser: &str, version: &str) {
+    let Some(dir) = crate::data_dir() else {
+        return;
+    };
+    let file = dir.join(SEEN);
+    let known = std::fs::read_to_string(&file).ok();
+    let mut lines: Vec<(String, String)> = known.as_deref().map(parse_seen).unwrap_or_default();
+    let entry = (browser.to_owned(), version.to_owned());
+    if known.is_some() && (browser.is_empty() || lines.contains(&entry)) {
+        return;
     }
+    lines.retain(|(b, _)| b != browser);
+    lines.push(entry);
+    let text: String = lines.iter().map(|(b, v)| format!("{b}\t{v}\n")).collect();
+    let _ = std::fs::create_dir_all(&dir);
+    let _ = std::fs::write(file, text);
+}
+
+/// The lines of `extension-seen`: (browser, extension version). An older file holds only a
+/// browser's name.
+fn parse_seen(text: &str) -> Vec<(String, String)> {
+    text.lines()
+        .filter(|l| !l.trim().is_empty())
+        .map(|l| match l.split_once('\t') {
+            Some((b, v)) => (b.to_owned(), v.to_owned()),
+            None => (l.to_owned(), String::new()),
+        })
+        .collect()
 }
 
 /// Has any browser's extension reached the app?
 pub fn seen() -> bool {
     crate::data_dir().is_some_and(|d| d.join(SEEN).exists())
+}
+
+/// The browsers whose extension has reached the app, with its version (empty when unknown).
+pub fn seen_browsers() -> Vec<(String, String)> {
+    crate::data_dir()
+        .and_then(|d| std::fs::read_to_string(d.join(SEEN)).ok())
+        .as_deref()
+        .map(parse_seen)
+        .unwrap_or_default()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn ids_are_chromium_ids() {
+        assert!(valid_id(UNPACKED_ID));
+        assert!(!valid_id("STORE_ID_PENDING") && !valid_id("abc"));
+        // A placeholder store ID is never served, registered or linked.
+        assert_eq!(store_id().is_some(), valid_id(STORE_ID));
+        assert!(chromium_ids().iter().all(|id| valid_id(id)));
+        assert_eq!(store_page().is_some(), store_id().is_some());
+    }
+
+    #[test]
+    fn seen_lines_old_and_new() {
+        assert_eq!(
+            parse_seen("Google Chrome\n"),
+            vec![("Google Chrome".into(), String::new())]
+        );
+        assert_eq!(
+            parse_seen("Google Chrome\t0.2.5\nMozilla Firefox\t0.2.5\n").len(),
+            2
+        );
+    }
 }

@@ -6,7 +6,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
 use egui::{Pos2, Ui, ViewportBuilder, ViewportId, vec2};
-use mdm_engine::{Options, ProbeInfo};
+use mdm_engine::ProbeInfo;
 use url::Url;
 
 use crate::model::{self, Category};
@@ -488,8 +488,10 @@ pub struct FileInfo {
     url_bad: bool,
     /// Save As has been given the focus (once, when the dialog opens).
     focused: bool,
-    /// To look an edited address up again.
+    /// To look an edited address up again, with the headers and options the download's own
+    /// requests carry (app::RequestParts).
     rt: tokio::runtime::Handle,
+    request: crate::app::RequestParts,
     probe: Arc<Mutex<Option<Result<ProbeInfo, String>>>>,
     info: Option<Result<ProbeInfo, String>>,
     edited: bool,
@@ -517,24 +519,51 @@ pub enum Start {
 }
 
 impl FileInfo {
-    /// Opens the dialog and looks the URL up in the background (name, size), like IDM.
+    /// Opens the dialog and looks the URL up in the background (name, size), like IDM, with
+    /// `request`'s headers (the download's own). A download from the browser needs no look-up:
+    /// the browser has had the answer, and its name (a link's `download` name, a Unicode
+    /// `filename*`) is the one it checked; asking again could get another.
     pub fn new(
         new: NewUrl,
+        context: mdm_ipc::Command,
+        request: crate::app::RequestParts,
         downloads: PathBuf,
         dirs: Vec<(String, String)>,
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) -> Self {
-        let name = mdm_engine::naming::file_name(None, &new.url);
+        let from_browser = context
+            .name
+            .as_deref()
+            .map(mdm_engine::naming::sanitize)
+            .filter(|n| !n.is_empty());
+        let name = from_browser
+            .clone()
+            .unwrap_or_else(|| mdm_engine::naming::file_name(None, &new.url));
         let category = Category::of(&name);
         let folder = crate::model::category_folder(category, &downloads, &dirs);
-        let save_as = display_path(&folder.join(&name));
-        let probe = start_probe(rt, ctx, &new.url, new.login.as_ref());
+        let save_as = display_path(&mdm_engine::naming::unique_path(&folder, &name));
+        let (probe, info) = match from_browser {
+            Some(file_name) => (
+                Arc::new(Mutex::new(None)),
+                Some(Ok(ProbeInfo {
+                    final_url: context
+                        .final_url
+                        .as_deref()
+                        .and_then(|u| Url::parse(u).ok())
+                        .unwrap_or_else(|| new.url.clone()),
+                    size: context.size,
+                    file_name,
+                })),
+            ),
+            None => (start_probe(rt, ctx, &new.url, &request), None),
+        };
         FileInfo {
             url_text: new.url.to_string(),
             url_bad: false,
             focused: false,
             rt: rt.clone(),
+            request,
             url: new.url,
             login: new.login,
             save_as,
@@ -542,12 +571,12 @@ impl FileInfo {
             description: String::new(),
             remember: false,
             probe,
-            info: None,
+            info,
             edited: false,
             downloads,
             dirs,
             category_open: false,
-            context: Default::default(),
+            context,
             asking: None,
             early: None,
             folders: Vec::new(),
@@ -573,7 +602,15 @@ impl FileInfo {
                         crate::model::category_folder(self.category, &self.downloads, &self.dirs);
                     self.save_as = display_path(&dir.join(&name));
                 }
-                self.probe = start_probe(&self.rt, ctx, &url, self.login.as_ref());
+                // Another address: the browser's name, size and form are not its own.
+                self.context.name = None;
+                self.context.size = None;
+                self.context.final_url = None;
+                self.context.post = None;
+                self.context.post_type = None;
+                self.request.opts.post = None;
+                self.request.headers.remove(reqwest::header::CONTENT_TYPE);
+                self.probe = start_probe(&self.rt, ctx, &url, &self.request);
                 self.info = None;
                 self.url = url;
             }
@@ -962,18 +999,19 @@ impl FileInfo {
     }
 }
 
-/// Look `url` up in the background (name, size), the answer landing in the slot returned.
+/// Look `url` up in the background (name, size) as the download will ask it (`request`), the
+/// answer landing in the slot returned.
 fn start_probe(
     rt: &tokio::runtime::Handle,
     ctx: &egui::Context,
     url: &Url,
-    login: Option<&(String, String)>,
+    request: &crate::app::RequestParts,
 ) -> Arc<Mutex<Option<Result<ProbeInfo, String>>>> {
     let probe = Arc::new(Mutex::new(None));
     let (slot, url, ctx) = (probe.clone(), url.clone(), ctx.clone());
-    let headers = crate::app::auth_headers(login);
+    let (headers, opts) = (request.headers.clone(), request.opts.clone());
     rt.spawn(async move {
-        let res = mdm_engine::probe(url, headers, &Options::default())
+        let res = mdm_engine::probe(url, headers, &opts)
             .await
             .map_err(|e| e.to_string());
         *slot.lock().unwrap() = Some(res);

@@ -130,6 +130,20 @@ fn main() -> eframe::Result {
     win32::mark_running();
     // What an earlier update set aside (old programs, a Mac's old app, downloaded files).
     update::tidy();
+    // The command channel opens now, before the window: the browser's host that started MDM
+    // waits for it, and what arrives meanwhile is handled at the first frame. Without it the
+    // app still works; it just can't receive commands.
+    let (tx, commands) = std::sync::mpsc::channel();
+    if let Some(cmd) = cmd {
+        let _ = tx.send(mdm_ipc::Incoming { cmd, reply: None });
+    }
+    let window: std::sync::Arc<std::sync::OnceLock<egui::Context>> = Default::default();
+    let wake = window.clone();
+    let _ = mdm_ipc::serve(tx, move || {
+        if let Some(ctx) = wake.get() {
+            ctx.request_repaint();
+        }
+    });
 
     // Downloads run on a Tokio runtime; the UI thread only reads snapshots.
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
@@ -194,7 +208,8 @@ fn main() -> eframe::Result {
             if let Some(z) = zoom {
                 cc.egui_ctx.set_zoom_factor(z);
             }
-            Ok(Box::new(app::App::new(cc, handle, cmd, loaded)))
+            let _ = window.set(cc.egui_ctx.clone());
+            Ok(Box::new(app::App::new(cc, handle, commands, loaded)))
         }),
     );
     crash::clean_exit();

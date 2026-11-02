@@ -39,6 +39,10 @@ pub struct ResumeState {
     /// The hash the finished file must have (the user's or the server's), if known.
     #[serde(default)]
     pub checksum: Option<crate::verify::Hash>,
+    /// A POST download (`Options::post`, its body not stored) whose redirects turned it into
+    /// a GET (301, 302, 303): `final_url` is asked with GET.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub final_get: bool,
 }
 
 impl ResumeState {
@@ -54,6 +58,7 @@ impl ResumeState {
             segments: Vec::new(),
             content_type: None,
             checksum: None,
+            final_get: false,
         }
     }
 

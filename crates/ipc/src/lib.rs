@@ -35,6 +35,18 @@ pub struct Command {
     pub referer: Option<String>,
     pub cookies: Option<String>,
     pub user_agent: Option<String>,
+    /// From the browser: where its redirects from `url` ended (`url` stays the address asked
+    /// for, so an expired signed link can be renewed from it).
+    pub final_url: Option<String>,
+    /// From the browser: the size and type its own download had (no need to look them up).
+    pub size: Option<u64>,
+    pub mime: Option<String>,
+    /// From the browser: a form's download, re-sent as a POST with this body and its
+    /// Content-Type (`post_type`).
+    pub post: Option<String>,
+    pub post_type: Option<String>,
+    /// From a private (incognito) window: the download is never written to the saved list.
+    pub private: bool,
     /// Automation API (off by default, beyond IDM): `"list"` asks for every download as JSON.
     pub query: Option<String>,
     /// Automation API: turn it on or off.
@@ -56,6 +68,12 @@ pub struct Command {
     pub video_page: Option<String>,
     /// From that button's menu: never show it on this site (a host name) again.
     pub panel_hide_site: Option<String>,
+    /// From the browser's right-click menu: the links of a page or a selection, offered in the
+    /// list window to pick from (the browser's `referer` and `cookies` go with them).
+    pub links: Vec<String>,
+    /// From the browser's toolbar button: leave this site's downloads (a host name) to the
+    /// browser from now on (Options → File types → excluded sites).
+    pub exclude_site: Option<String>,
 }
 
 impl Command {
@@ -143,7 +161,7 @@ pub fn send_waiting(cmd: &Command, wait: Duration) -> Result<(), String> {
     loop {
         match send(cmd) {
             Ok(()) => return Ok(()),
-            Err(e) if start.elapsed() >= wait => return Err(e),
+            Err(e) if start.elapsed() >= wait => return Err(e.to_string()),
             Err(_) => std::thread::sleep(Duration::from_millis(100)),
         }
     }
@@ -155,39 +173,63 @@ pub fn endpoint_path() -> Option<PathBuf> {
 
 /// Ask the running app something (automation API) and return its one-line answer.
 pub fn request(cmd: &Command) -> Result<String, String> {
-    exchange(cmd)
+    exchange(cmd).map_err(|e| e.to_string())
 }
 
-/// Send `cmd` to a running Mister Download Manager. Err if none is running (or it didn't answer).
-pub fn send(cmd: &Command) -> Result<(), String> {
+/// Why a command didn't reach the app.
+#[derive(Debug)]
+pub enum SendError {
+    /// No app listens (no channel file, or nothing at its port): starting one may help.
+    NotRunning(String),
+    /// An app answered but didn't take it (`too-large`, `gone` while it quits, …), or stopped
+    /// answering: starting another can't help.
+    Refused(String),
+}
+
+impl std::fmt::Display for SendError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            SendError::NotRunning(e) => write!(f, "not running: {e}"),
+            SendError::Refused(e) => write!(f, "refused: {e}"),
+        }
+    }
+}
+
+/// Send `cmd` to a running Mister Download Manager.
+pub fn send(cmd: &Command) -> Result<(), SendError> {
     let ack = exchange(cmd)?;
     if ack.trim() == "ok" {
         Ok(())
     } else {
-        Err(format!("rejected: {ack}"))
+        Err(SendError::Refused(if ack.is_empty() {
+            "no answer".into()
+        } else {
+            ack
+        }))
     }
 }
 
 /// One request line out, one answer line back.
-fn exchange(cmd: &Command) -> Result<String, String> {
-    let path = endpoint_path().ok_or("no data dir")?;
-    let ep: Endpoint = serde_json::from_slice(&std::fs::read(&path).map_err(|e| e.to_string())?)
-        .map_err(|e| e.to_string())?;
+fn exchange(cmd: &Command) -> Result<String, SendError> {
+    let not_running = |e: String| SendError::NotRunning(e);
+    let refused = |e: std::io::Error| SendError::Refused(e.to_string());
+    let path = endpoint_path().ok_or_else(|| not_running("no data dir".into()))?;
+    let ep: Endpoint =
+        serde_json::from_slice(&std::fs::read(&path).map_err(|e| not_running(e.to_string()))?)
+            .map_err(|e| not_running(e.to_string()))?;
     let addr = SocketAddr::from((Ipv4Addr::LOCALHOST, ep.port));
-    let mut s =
-        TcpStream::connect_timeout(&addr, Duration::from_millis(500)).map_err(|e| e.to_string())?;
+    let mut s = TcpStream::connect_timeout(&addr, Duration::from_millis(500))
+        .map_err(|e| not_running(e.to_string()))?;
     s.set_read_timeout(Some(Duration::from_secs(2))).ok();
     let line = serde_json::to_string(&Envelope {
         token: ep.token,
         cmd: cmd.clone(),
     })
-    .map_err(|e| e.to_string())?;
+    .map_err(|e| SendError::Refused(e.to_string()))?;
     s.write_all(format!("{line}\n").as_bytes())
-        .map_err(|e| e.to_string())?;
+        .map_err(refused)?;
     let mut ack = String::new();
-    BufReader::new(s)
-        .read_line(&mut ack)
-        .map_err(|e| e.to_string())?;
+    BufReader::new(s).read_line(&mut ack).map_err(refused)?;
     Ok(ack.trim_end().to_owned())
 }
 
@@ -250,8 +292,14 @@ fn accept_loop(
 }
 
 fn handle(conn: &TcpStream, token: &str, tx: &Sender<Incoming>, wake: &dyn Fn()) {
-    let Some(line) = read_request(conn) else {
-        return;
+    let line = match read_request(conn) {
+        Ok(line) => line,
+        // Said so, so the browser's host doesn't take silence for an app that isn't there.
+        Err(Some(TooLarge)) => {
+            let _ = (&*conn).write_all(b"too-large\n");
+            return;
+        }
+        Err(None) => return,
     };
     // A web page reaching the port (fetch / form post): no answer at all.
     if looks_like_http(&line) {
@@ -273,12 +321,19 @@ fn handle(conn: &TcpStream, token: &str, tx: &Sender<Incoming>, wake: &dyn Fn())
                 let _ = (&*conn).write_all(format!("{answer}\n").as_bytes());
                 return;
             }
-            let _ = tx.send(Incoming {
-                cmd: env.cmd,
-                reply: None,
-            });
-            wake();
-            "ok\n"
+            // The app is quitting (its receiver gone): the command would be lost.
+            if tx
+                .send(Incoming {
+                    cmd: env.cmd,
+                    reply: None,
+                })
+                .is_err()
+            {
+                "gone\n"
+            } else {
+                wake();
+                "ok\n"
+            }
         }
         _ => "denied\n",
     };
@@ -302,22 +357,32 @@ fn same_secret(a: &str, b: &str) -> bool {
             == 0
 }
 
+/// The largest message the browser's native host takes from the extension (a download with
+/// its cookies and a form's body); a request line carrying one, escaped, fits `MAX_REQUEST`.
+pub const MAX_MESSAGE: usize = 1 << 20;
 /// Largest request line accepted, and the time a client gets to send it.
-const MAX_REQUEST: usize = 64 * 1024;
+const MAX_REQUEST: usize = 2 * MAX_MESSAGE + 4096;
 const REQUEST_DEADLINE: Duration = Duration::from_secs(3);
 
+/// A request line over `MAX_REQUEST`.
+struct TooLarge;
+
 /// One request line, read with a size cap checked as bytes arrive and an overall deadline, so a
-/// client trickling bytes (or a web page probing the port) can't hold the listener.
-fn read_request(conn: &std::net::TcpStream) -> Option<String> {
+/// client trickling bytes (or a web page probing the port) can't hold the listener. `Err(None)`:
+/// nothing usable (closed, too slow, not UTF-8).
+fn read_request(conn: &std::net::TcpStream) -> Result<String, Option<TooLarge>> {
     use std::io::Read;
     let start = std::time::Instant::now();
     conn.set_read_timeout(Some(Duration::from_millis(250)))
-        .ok()?;
+        .map_err(|_| None)?;
     let mut buf = Vec::new();
     let mut chunk = [0u8; 4096];
     loop {
-        if start.elapsed() > REQUEST_DEADLINE || buf.len() > MAX_REQUEST {
-            return None;
+        if buf.len() > MAX_REQUEST {
+            return Err(Some(TooLarge));
+        }
+        if start.elapsed() > REQUEST_DEADLINE {
+            return Err(None);
         }
         match (&*conn).read(&mut chunk) {
             Ok(0) => break,
@@ -333,12 +398,13 @@ fn read_request(conn: &std::net::TcpStream) -> Option<String> {
                     e.kind(),
                     std::io::ErrorKind::WouldBlock | std::io::ErrorKind::TimedOut
                 ) => {}
-            Err(_) => return None,
+            Err(_) => return Err(None),
         }
     }
-    (buf.len() <= MAX_REQUEST)
-        .then(|| String::from_utf8(buf).ok())
-        .flatten()
+    if buf.len() > MAX_REQUEST {
+        return Err(Some(TooLarge));
+    }
+    String::from_utf8(buf).map_err(|_| None)
 }
 
 /// 128 random bits from the OS, as hex (no extra crate: the std hasher's per-process keys).
@@ -416,7 +482,7 @@ mod tests {
     }
 
     /// Send `data` to a fresh local socket and return what `read_request` makes of it.
-    fn request_from(data: Vec<u8>) -> Option<String> {
+    fn request_from(data: Vec<u8>) -> Result<String, Option<TooLarge>> {
         let l = TcpListener::bind((Ipv4Addr::LOCALHOST, 0)).unwrap();
         let addr = l.local_addr().unwrap();
         let client = std::thread::spawn(move || {
@@ -433,11 +499,14 @@ mod tests {
     #[test]
     fn request_lines_are_bounded() {
         assert_eq!(
-            request_from(b"{\"a\":1}\nrest".to_vec()).as_deref(),
+            request_from(b"{\"a\":1}\nrest".to_vec()).ok().as_deref(),
             Some("{\"a\":1}")
         );
         assert!(
-            request_from(vec![b'x'; MAX_REQUEST + 10]).is_none(),
+            matches!(
+                request_from(vec![b'x'; MAX_REQUEST + 10]),
+                Err(Some(TooLarge))
+            ),
             "oversized"
         );
     }
@@ -474,6 +543,25 @@ mod tests {
             rx.recv().unwrap().cmd.url.as_deref(),
             Some("http://x/a.zip")
         );
+    }
+
+    #[test]
+    fn too_large_and_quitting_are_said() {
+        let (port, rx) = test_server("secret");
+        let big = format!(
+            "{{\"token\":\"secret\",\"cookies\":\"{}\"}}\n",
+            "x".repeat(MAX_REQUEST + 10)
+        );
+        assert_eq!(exchange(port, big.as_bytes()), "too-large\n");
+        // A command as large as the browser's host takes still goes through.
+        let fits = format!(
+            "{{\"token\":\"secret\",\"url\":\"http://x/a.zip\",\"cookies\":\"{}\"}}\n",
+            "x".repeat(MAX_MESSAGE)
+        );
+        assert_eq!(exchange(port, fits.as_bytes()), "ok\n");
+        drop(rx);
+        let line = b"{\"token\":\"secret\",\"url\":\"http://x/a.zip\"}\n";
+        assert_eq!(exchange(port, line), "gone\n", "the app is quitting");
     }
 
     #[test]

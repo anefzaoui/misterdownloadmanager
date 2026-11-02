@@ -25,11 +25,13 @@ pub struct Faults {
     /// The first N requests fail with 503 (a server busy when the download starts).
     pub fail_first: Option<u64>,
     /// Ignore `Range` and always send the whole file with 200.
+    #[serde(deserialize_with = "flag_opt")]
     pub no_range: Option<bool>,
     /// Ignore `Range` on every Nth request only (a CDN edge without range support); the file
     /// and its validators stay the same.
     pub no_range_every: Option<u64>,
     /// Answer with a small web page (a login wall) instead of the file.
+    #[serde(deserialize_with = "flag_opt")]
     pub html: Option<bool>,
     /// ETag / Last-Modified change every N requests (resume validation).
     pub etag_change_every: Option<u64>,
@@ -38,6 +40,15 @@ pub struct Faults {
     pub etag: Option<String>,
     /// Delay before sending response headers, ms.
     pub latency_ms: Option<u64>,
+    /// 403 unless the request's `Cookie` holds this pair (`sid=1`), or a cookie of this name
+    /// (`sid`): a file behind a session.
+    pub require_cookie: Option<String>,
+    /// 403 unless the request's `Referer` starts with this (hotlink protection).
+    pub require_referer: Option<String>,
+    /// A one-time link: the first request for this path and query is served, every later one
+    /// (HEAD and ranges included) gets 410 Gone.
+    #[serde(deserialize_with = "flag_opt")]
+    pub once: Option<bool>,
 }
 
 impl Faults {
@@ -62,6 +73,12 @@ impl Faults {
             etag_change_every: over.etag_change_every.or(self.etag_change_every),
             etag: over.etag.clone().or(self.etag.clone()),
             latency_ms: over.latency_ms.or(self.latency_ms),
+            require_cookie: over.require_cookie.clone().or(self.require_cookie.clone()),
+            require_referer: over
+                .require_referer
+                .clone()
+                .or(self.require_referer.clone()),
+            once: over.once.or(self.once),
         }
     }
 }
@@ -76,6 +93,34 @@ fn size_opt<'de, D: Deserializer<'de>>(d: D) -> Result<Option<u64>, D::Error> {
     crate::content::parse_size(&s)
         .map(Some)
         .ok_or_else(|| serde::de::Error::custom(format!("invalid size `{s}`")))
+}
+
+/// `true`/`1`/`yes` or `false`/`0`/`no`.
+fn flag_opt<'de, D: Deserializer<'de>>(d: D) -> Result<Option<bool>, D::Error> {
+    let s = String::deserialize(d)?;
+    parse_flag(&s)
+        .map(Some)
+        .ok_or_else(|| serde::de::Error::custom(format!("invalid flag `{s}` (1 or 0)")))
+}
+
+pub(crate) fn parse_flag(s: &str) -> Option<bool> {
+    match s {
+        "1" | "true" | "yes" => Some(true),
+        "0" | "false" | "no" => Some(false),
+        _ => None,
+    }
+}
+
+/// True when the `Cookie` header `cookie` satisfies `require_cookie` (`name=value` or `name`).
+pub fn has_cookie(cookie: Option<&str>, want: &str) -> bool {
+    let (name, value) = match want.split_once('=') {
+        Some((n, v)) => (n.trim(), Some(v.trim())),
+        None => (want.trim(), None),
+    };
+    cookie.unwrap_or("").split(';').any(|pair| {
+        let (n, v) = pair.split_once('=').unwrap_or((pair, ""));
+        n.trim() == name && value.is_none_or(|want| v.trim() == want)
+    })
 }
 
 #[cfg(test)]
@@ -98,6 +143,21 @@ mod tests {
     fn rejects_unknown_and_bad_sizes() {
         assert!(Faults::parse("speed=1").is_err());
         assert!(Faults::parse("rate=fast").is_err());
+    }
+
+    #[test]
+    fn flags_and_refusals() {
+        let f = Faults::parse("once=1&html=0&no_range=true&require_cookie=sid=1").unwrap();
+        assert_eq!(f.once, Some(true));
+        assert_eq!(f.html, Some(false));
+        assert_eq!(f.no_range, Some(true));
+        assert_eq!(f.require_cookie.as_deref(), Some("sid=1"));
+        assert!(Faults::parse("once=maybe").is_err());
+        assert!(has_cookie(Some("a=2; sid=1"), "sid=1"));
+        assert!(has_cookie(Some("sid=7"), "sid"));
+        assert!(!has_cookie(Some("sid=11"), "sid=1"));
+        assert!(!has_cookie(Some("xsid=1"), "sid=1"));
+        assert!(!has_cookie(None, "sid"));
     }
 
     #[test]
