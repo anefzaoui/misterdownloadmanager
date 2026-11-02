@@ -75,8 +75,10 @@ struct Message {
     explicit: bool,
     /// May the download button show over videos on page `url`?
     panel: bool,
-    /// The download button was clicked: `url` is the video's page.
+    /// The download button was clicked: `url` is the video's page, `src` the video's own
+    /// address when the page plays a plain file (not a stream assembled in the page).
     video: bool,
+    src: Option<String>,
     /// The button's menu: keep it off this site (a host name).
     hide_site: Option<String>,
     /// The button's menu: open its settings in Options (`page`: the toolbar button's popup asks
@@ -119,6 +121,9 @@ struct Reply {
     /// For `rules`: also take listed types the browser would open itself (a PDF, an MP3).
     #[serde(skip_serializing_if = "Option::is_none")]
     opened: Option<bool>,
+    /// For `rules`: files smaller than this (KB) stay with the browser.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    min_kb: Option<u64>,
 }
 
 impl Reply {
@@ -176,6 +181,7 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
             excluded_sites: Some(rules.excluded_sites.clone()),
             excluded_addresses: Some(rules.excluded_addresses.clone()),
             opened: Some(rules.capture_opened),
+            min_kb: Some(rules.capture_min_kb),
             ..Default::default()
         };
     }
@@ -244,9 +250,19 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
         if !rules.panel_on(&m.url, browser) {
             return Reply::failed("options", "the video button is off here");
         }
+        // The video clicked, not the page's first one (a feed plays many): its own file when
+        // there is one, fetched as from its page.
+        let src = m
+            .src
+            .clone()
+            .filter(|s| s.starts_with("http://") || s.starts_with("https://"));
+        let referer = match &src {
+            Some(_) => Some(m.url.clone()),
+            None => m.referrer.clone().filter(|r| !r.is_empty()),
+        };
         Some(mdm_ipc::Command {
-            video_page: Some(m.url.clone()),
-            referer: m.referrer.clone().filter(|r| !r.is_empty()),
+            video_page: Some(src.unwrap_or_else(|| m.url.clone())),
+            referer,
             cookies: m.cookies.clone().filter(|c| !c.is_empty()),
             user_agent: m.user_agent.clone(),
             private: m.private,
@@ -291,6 +307,9 @@ fn verdict(
     }
     let (name, browser) = (file_name_of(m), browser(m));
     rules.accepts(&m.url, &name, browser)?;
+    if rules.too_small(m.size) {
+        return Err(mdm_ipc::capture::Declined::Small);
+    }
     match m.final_url.as_deref().filter(|f| *f != m.url) {
         Some(f) => rules.accepts(f, &name, browser),
         None => Ok(()),

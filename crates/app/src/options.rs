@@ -43,6 +43,9 @@ enum Sub {
     Keys(bool),
     /// General → Test browser integration...: the checks, as found when it opened.
     Test(Vec<crate::extension::Check>),
+    /// File types → "Don't start downloading automatically from the following addresses" →
+    /// Edit list...: one address pattern per line.
+    Addresses(String),
 }
 
 pub struct OptionsDialog {
@@ -57,6 +60,8 @@ pub struct OptionsDialog {
     /// Connection → "Default max. conn. number", as typed.
     conns: String,
     mb: String,
+    /// File types → "Don't take files smaller than", as typed (KB).
+    min_kb: String,
     hours: String,
     /// The exceptions' and site logins' lists: scroll and selection.
     exc_rows: winui::RowList,
@@ -99,6 +104,7 @@ impl OptionsDialog {
             cat_dir: display_dir(&s.category_dir(Category::General, downloads)),
             conns: s.max_connections.clamp(1, s.connection_limit()).to_string(),
             mb: s.limits_mb.to_string(),
+            min_kb: s.capture_min_kb.to_string(),
             hours: s.limits_hours.to_string(),
             s,
             page: 0,
@@ -199,6 +205,7 @@ impl OptionsDialog {
                     .unwrap_or(8)
                     .clamp(1, s.connection_limit());
                 s.limits_mb = self.mb.parse().unwrap_or(200).max(1);
+                s.capture_min_kb = self.min_kb.parse().unwrap_or(0);
                 s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
                 Outcome::Done(s)
             }
@@ -456,13 +463,28 @@ impl OptionsDialog {
             crate::i18n::t("Don't start downloading automatically from the following addresses:"),
             LIGHT_TEXT(),
         );
-        // The address list editor belongs to browser capture (M8).
-        winui::button_light(
+        if winui::button_light(
             ui,
             r(o, 22.0, 334.0, 135.0, 21.0),
             "Edit list ...",
-            ButtonKind::Disabled,
+            ButtonKind::Normal,
             false,
+        )
+        .clicked()
+        {
+            self.sub = Some(Sub::Addresses(self.s.excluded_addresses.join("\n")));
+        }
+        // MDM's: a receipt or an icon isn't worth a download window.
+        let label = crate::i18n::t("Don't take files smaller than (KB, 0 = any size):");
+        text(&p, o.x + 21.0, o.y + 383.0, label, LIGHT_TEXT());
+        winui::number_field(
+            ui,
+            r(o, 316.0, 370.0, 73.0, 21.0),
+            &mut self.min_kb,
+            0,
+            10_000_000,
+            true,
+            LIGHT_PAGE(),
         );
     }
 
@@ -1698,6 +1720,51 @@ impl OptionsDialog {
                         self.s.video_panel = on;
                         self.s.video_panel_sites =
                             sites.split_whitespace().collect::<Vec<_>>().join(" ");
+                    }
+                    Outcome::Closed => {}
+                }
+            }
+            Sub::Addresses(mut list) => {
+                let out = window(
+                    ctx,
+                    "opt-addresses",
+                    // i18n: window title: the addresses whose downloads stay with the browser
+                    "Addresses left to the browser",
+                    [420.0, 230.0],
+                    false,
+                    LIGHT_BG(),
+                    |ui, o| {
+                        let p = ui.painter().clone();
+                        winui::paragraph(
+                            &p,
+                            o.x + 14.0,
+                            o.y + 20.0,
+                            crate::i18n::t(
+                                "One address per line; * stands for any text (https://example.com/private/*).",
+                            ),
+                            LIGHT_TEXT(),
+                            o.x + 406.0,
+                            14.0,
+                        );
+                        multiline(
+                            ui,
+                            r(o, 14.0, 44.0, 392.0, 130.0),
+                            &mut list,
+                            "addresses",
+                            true,
+                        );
+                        ok_cancel(ui, o, 252.0, 192.0, true)
+                    },
+                );
+                match out {
+                    Outcome::Open => self.sub = Some(Sub::Addresses(list)),
+                    Outcome::Done(()) => {
+                        self.s.excluded_addresses = list
+                            .lines()
+                            .map(str::trim)
+                            .filter(|l| !l.is_empty())
+                            .map(str::to_owned)
+                            .collect();
                     }
                     Outcome::Closed => {}
                 }

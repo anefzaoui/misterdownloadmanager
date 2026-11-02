@@ -28,6 +28,9 @@ pub struct CaptureRules {
     /// Options → General: also take the listed types the browser would open itself (a PDF in
     /// its viewer, an MP3 in its player), not only what it downloads.
     pub capture_opened: bool,
+    /// Options → File types: files smaller than this (KB) stay with the browser (a receipt, an
+    /// icon); 0 takes any size. Only when the browser knows the size.
+    pub capture_min_kb: u64,
 }
 
 impl Default for CaptureRules {
@@ -41,6 +44,7 @@ impl Default for CaptureRules {
             video_panel: true,
             video_panel_sites: String::new(),
             capture_opened: true,
+            capture_min_kb: 0,
         }
     }
 }
@@ -53,6 +57,7 @@ pub enum Declined {
     FileType,
     Site,
     Address,
+    Small,
 }
 
 impl CaptureRules {
@@ -68,6 +73,11 @@ impl CaptureRules {
             .and_then(|b| serde_json::from_slice::<Stored>(&b).ok())
             .map(|s| s.settings)
             .unwrap_or_default()
+    }
+
+    /// Is a file of `size` bytes (the browser's figure, when it has one) too small to take?
+    pub fn too_small(&self, size: Option<u64>) -> bool {
+        size.is_some_and(|s| s > 0 && s < self.capture_min_kb.saturating_mul(1024))
     }
 
     /// Does the file name's extension appear in File types (`R0*` patterns too)?
@@ -299,6 +309,15 @@ mod tests {
         r.video_panel = true;
         r.advanced_integration = false;
         assert!(!r.panel_on("https://videos.site/", CHROME));
+    }
+
+    #[test]
+    fn small_files_by_options() {
+        let mut r = CaptureRules::default();
+        assert!(!r.too_small(Some(10)), "any size by default");
+        r.capture_min_kb = 100;
+        assert!(r.too_small(Some(15 * 1024)));
+        assert!(!r.too_small(Some(100 * 1024)) && !r.too_small(None) && !r.too_small(Some(0)));
     }
 
     #[test]

@@ -29,7 +29,7 @@ We haven't tried them ourselves yet, so you'd be among the first: please
 | `...-linux-x86_64-experimental.rpm` | For Fedora, openSUSE and RHEL: `sudo dnf install ./<file>.rpm`. |
 | `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distribution. |
 
-Browser integration is set up by the Windows installer only for now.
+Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); load the extension as in [Browser integration](browser-integration.md). Browsers installed as a Flatpak or a Snap can't reach MDM.
 
 ## Install with the setup
 

@@ -63,6 +63,8 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
     },
     tabs: {
       onCreated: event("tabCreated"),
+      onRemoved: event("tabRemoved"),
+      onUpdated: event("tabUpdated"),
       get: async (id) => ({ id, url: "about:blank", status: "complete" }),
       remove: async (id) => calls.push(["closeTab", id]),
       query: async () => [],
@@ -72,6 +74,7 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
       onBeforeRequest: event("beforeRequest"),
       onBeforeSendHeaders: event("beforeSendHeaders"),
       onHeadersReceived: event("headersReceived"),
+      onResponseStarted: event("responseStarted"),
     },
     scripting: {
       executeScript: async ({ func, args }) => (func ? [{ result: ["https://x/1.zip", "https://x/2.zip"] }] : []),
@@ -373,35 +376,6 @@ const ok = (what) => {
   ok("context menus: explicit links, a page's links, failures explained");
 }
 
-// The right-click command in the browser's language, and every locale complete: the same keys
-// as English, which both manifests' __MSG_…__ names exist in.
-{
-  const { api, calls, listeners } = fakeApi({ firefox: false });
-  load(api, false);
-  await listeners.installed({ reason: "update" });
-  const item = calls.find((c) => c[0] === "menu-item")[1];
-  assert.equal(item.title, "Mit Mister Download Manager herunterladen");
-  const dir = new URL("../../extension/_locales/", import.meta.url);
-  const english = JSON.parse(readFileSync(new URL("en/messages.json", dir), "utf8"));
-  for (const locale of readdirSync(dir)) {
-    const m = JSON.parse(readFileSync(new URL(`${locale}/messages.json`, dir), "utf8"));
-    assert.deepEqual(Object.keys(m).sort(), Object.keys(english).sort(), `${locale} has every text`);
-  }
-  for (const name of ["manifest.json", "manifest.firefox.json"]) {
-    const text = readFileSync(new URL(`../../extension/${name}`, import.meta.url), "utf8");
-    for (const [, key] of text.matchAll(/__MSG_(\w+)__/g)) assert.ok(english[key], `${name}: ${key}`);
-  }
-  // Every key the scripts use exists in English.
-  for (const file of ["background.js", "popup.js", "popup.html", "video.js"]) {
-    const text = readFileSync(new URL(`../../extension/${file}`, import.meta.url), "utf8");
-    for (const [, key] of text.matchAll(/(?:t\(|data-i18n=)"((?:menu|status|popup|video)_\w+)"/g)) assert.ok(english[key], `${file}: ${key}`);
-  }
-  for (const why of ["not_installed", "forbidden", "not_running", "host_failed", "too_large", "update_app"]) {
-    assert.ok(english[`status_${why}`], `status_${why}`);
-  }
-  ok("translations complete");
-}
-
 // The download button over videos: the page asks once a minute per site, a click opens the
 // app's video window for the page the browser says sent it (with the tab as referrer and its
 // cookies), "Never on this site" goes to the app and is remembered at once; nothing from
@@ -432,6 +406,23 @@ const ok = (what) => {
   assert.deepEqual(await ask({ type: "video" }, "javascript:alert(1)"), { ok: false });
   assert.equal(await ask({ type: "panel" }, "https://x.test/", { id: "someone-else", url: "https://x.test/", tab: {} }), undefined);
 }
+// A player playing a stream (HLS) from a blob: the button sends the manifest its frame loaded
+// first; the tab going elsewhere forgets it.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  const sender = { id: "ours", url: "https://news.test/story", frameId: 0, tab: { id: 5, url: "https://news.test/story" } };
+  listeners.responseStarted({ tabId: 5, frameId: 0, url: "https://cdn.test/v/master.m3u8?t=1", responseHeaders: [] });
+  listeners.responseStarted({ tabId: 5, frameId: 0, url: "https://cdn.test/v/720p.m3u8", responseHeaders: [] });
+  listeners.responseStarted({ tabId: 5, frameId: 0, url: "https://cdn.test/v/seg1.ts", responseHeaders: [{ name: "Content-Type", value: "video/mp2t" }] });
+  const send = (m) => new Promise((r) => listeners.message(m, sender, r));
+  await send({ type: "video", src: "" });
+  assert.equal(natives(calls).find((m) => m.video).src, "https://cdn.test/v/master.m3u8?t=1");
+  listeners.tabUpdated(5, { url: "https://news.test/other" });
+  await send({ type: "video", src: "" });
+  assert.equal(natives(calls).filter((m) => m.video)[1].src, undefined, "forgotten on another page");
+  ok("streams: the frame's manifest goes with the button");
+}
 {
   const { api, listeners } = fakeApi({ firefox: true, panelOn: false });
   load(api, true);
@@ -458,6 +449,35 @@ const ok = (what) => {
     assert.ok(!/\bIDM\b|Internet Download Manager|notes\//.test(text), `${file} names IDM or the private notes`);
   }
   ok("nothing of IDM's in the extension");
+}
+
+// The right-click command in the browser's language, and every locale complete: the same keys
+// as English, which both manifests' __MSG_…__ names exist in.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await listeners.installed({ reason: "update" });
+  const item = calls.find((c) => c[0] === "menu-item")[1];
+  assert.equal(item.title, "Mit Mister Download Manager herunterladen");
+  const dir = new URL("../../extension/_locales/", import.meta.url);
+  const english = JSON.parse(readFileSync(new URL("en/messages.json", dir), "utf8"));
+  for (const locale of readdirSync(dir)) {
+    const m = JSON.parse(readFileSync(new URL(`${locale}/messages.json`, dir), "utf8"));
+    assert.deepEqual(Object.keys(m).sort(), Object.keys(english).sort(), `${locale} has every text`);
+  }
+  for (const name of ["manifest.json", "manifest.firefox.json"]) {
+    const text = readFileSync(new URL(`../../extension/${name}`, import.meta.url), "utf8");
+    for (const [, key] of text.matchAll(/__MSG_(\w+)__/g)) assert.ok(english[key], `${name}: ${key}`);
+  }
+  // Every key the scripts use exists in English.
+  for (const file of ["background.js", "popup.js", "popup.html", "video.js"]) {
+    const text = readFileSync(new URL(`../../extension/${file}`, import.meta.url), "utf8");
+    for (const [, key] of text.matchAll(/(?:t\(|data-i18n=)"((?:menu|status|popup|video)_\w+)"/g)) assert.ok(english[key], `${file}: ${key}`);
+  }
+  for (const why of ["not_installed", "forbidden", "not_running", "host_failed", "too_large", "update_app"]) {
+    assert.ok(english[`status_${why}`], `status_${why}`);
+  }
+  ok("translations complete");
 }
 
 console.log(`extension: ${passed} checks passed`);

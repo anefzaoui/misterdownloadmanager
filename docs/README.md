@@ -54,6 +54,7 @@ These pages explain each part of the program. The tutorials walk through the thi
 
 - **[Crash reports](crash-reports.md)** — what the crash report window shows when MDM closes unexpectedly or stops responding, what a report contains, and how to send it.
 - **[Troubleshooting](troubleshooting.md)** — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.
+- **[The browser and MDM aren't connected](browser-help.md)** — what the extension's red **!** means, reason by reason, and how to fix each.
 - **[Releases](https://github.com/anefzaoui/misterdownloadmanager/releases)** — download the latest version.
 - **[Report a problem](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose)** — or use **Help → Report a problem** in MDM, which fills in your version, system and how MDM was installed for you.
 

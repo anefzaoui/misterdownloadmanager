@@ -2,7 +2,7 @@
 // frame). Our own design: a small pill at the video's edge that appears while the pointer is
 // over the video (or it has the keyboard's focus) and fades when the pointer rests or leaves.
 // Clicking it opens the app's Download video window for this page (an embedded player's own
-// address, which yt-dlp understands). It can be dragged along the video's edge, and stays where
+// address, which yt-dlp understands), with the video's own address when it has a plain one. It can be dragged along the video's edge, and stays where
 // it was put on that site. Its menu hides it on this video, keeps it off the site (the app's
 // Options → General → Download panels lists those sites), or opens those settings. The app
 // decides where it may show at all (the native host: integration on, this browser captured,
@@ -12,10 +12,12 @@
   globalThis.__mdmVideoButton = true;
   const ext = globalThis.browser ?? globalThis.chrome;
 
-  // A video worth a button: big enough to be content, not a muted looping clip (an animated
-  // picture or a background).
+  // A video worth a button: big enough to be content, not a short muted looping clip (an
+  // animated picture or a background). A sound player (<audio> with controls) gets one too.
   const MIN_W = 200;
   const MIN_H = 112;
+  const MIN_AUDIO_H = 24;
+  const CLIP_S = 15;
   // Shown this long after the pointer last moved over the video, kept while it is on the button.
   const IDLE_MS = 2600;
   const INSET = 10;
@@ -30,14 +32,30 @@
     video_hide_here: "Hide on this video",
     video_settings: "Button settings...",
     video_sent: "Sent to Mister Download Manager",
-    video_failed: "Mister Download Manager didn't answer",
+    video_failed: "Mister Download Manager isn't installed or didn't start",
+    video_off: "The download button is off on this site",
+    video_drm: "Protected video: it can't be saved",
     video_drag: "Drag to move it along the video's edge",
   };
-  const send = (m) => ext.runtime.sendMessage(m).catch(() => ({ ok: false }));
+  // To the background. After the extension was updated or removed, this page's copy of the script
+  // is cut off from it (calls throw at once): then it takes itself away.
+  const send = (m) => {
+    try {
+      if (!ext.runtime?.id) throw new Error("gone");
+      return ext.runtime.sendMessage(m).catch(() => ({ ok: false }));
+    } catch {
+      teardown();
+      return Promise.resolve({ ok: false, gone: true });
+    }
+  };
   const host = location.hostname;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // "Hide on this video": the video's address (players reuse one element for the next video),
+  // else the element.
   const dismissed = new WeakSet();
+  const dismissedSrc = new Set();
+  const isDismissed = (v) => dismissed.has(v) || (v.currentSrc && dismissedSrc.has(v.currentSrc));
   let allowed = null; // asked once per page: may it show here?
   let place = { x: 1, y: 0 }; // where on the edge: fractions of the room, top right by default
   let video = null; // the video it is over
@@ -49,16 +67,23 @@
   let flashing = false;
   let raf = 0;
   let scan = 0;
-  // Kept on screen while the keyboard is on it (not after a mouse click: that leaves focus too).
-  const keyboardOn = () => Boolean(shadow.activeElement && shadow.activeElement.matches(":focus-visible"));
+  // Kept on screen while the keyboard is on it (not after a mouse click: that leaves focus too),
+  // or on the video's player (its own controls).
+  const keyboardOn = () =>
+    Boolean(shadow.activeElement && shadow.activeElement.matches(":focus-visible")) || playerFocused();
+  let focusedPlayer = null;
+  const playerFocused = () =>
+    Boolean(video && focusedPlayer && document.activeElement === focusedPlayer && focusedPlayer.contains(video));
 
   // ---- the button: a closed shadow tree the page's styles and scripts can't reach ----------
   const root = document.createElement("mdm-video-button");
-  root.style.cssText =
-    "all:initial;position:fixed;z-index:2147483647;left:0;top:0;display:none;contain:layout style";
+  // Each with !important: a page's own rules can't hide or move it.
+  for (const [k, v] of Object.entries({
+    all: "initial", position: "fixed", "z-index": "2147483647", left: "0", top: "0", display: "none",
+    contain: "layout style", opacity: "1", visibility: "visible", "pointer-events": "auto",
+  })) root.style.setProperty(k, v, "important");
   const shadow = root.attachShadow({ mode: "closed" });
-  shadow.innerHTML = `
-<style>
+  const CSS = `
 :host { all: initial; }
 * { box-sizing: border-box; }
 /* A light, glossy panel that stands out over a dark video, with our icon: the classic download
@@ -103,7 +128,19 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
 .menu button:hover, .menu button:focus-visible { background: #dceafb; outline: none; }
 .menu hr { border: 0; border-top: 1px solid rgba(23, 50, 77, .12); margin: 4px 2px; }
 @media (prefers-reduced-motion: reduce) { .pill { transition: none; transform: none; } }
-</style>
+`;
+  // A constructed sheet: a page whose Content-Security-Policy refuses inline styles can't strip
+  // it (Firefox applies the page's policy to what a content script adds).
+  try {
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(CSS);
+    shadow.adoptedStyleSheets = [sheet];
+  } catch {
+    const style = document.createElement("style");
+    style.textContent = CSS;
+    shadow.appendChild(style);
+  }
+  shadow.innerHTML += `
 <div class="pill" part="pill">
   <button class="go" type="button">
     <img alt="" draggable="false">
@@ -144,12 +181,40 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
 
   // ---- which video ----------------------------------------------------------------------------
   const videos = document.getElementsByTagName("video");
+  const audios = document.getElementsByTagName("audio");
+
+  // Videos inside open shadow roots (players built as web components), looked for again every
+  // few seconds at most.
+  let shadowed = [];
+  let shadowedAt = 0;
+  function shadowVideos() {
+    if (Date.now() - shadowedAt < 3000) return shadowed;
+    shadowedAt = Date.now();
+    const found = [];
+    const walk = (root, depth) => {
+      if (depth > 4) return;
+      const w = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+      for (let n = w.nextNode(), seen = 0; n && seen < 20000; n = w.nextNode(), seen++) {
+        if (n.shadowRoot) {
+          found.push(...n.shadowRoot.querySelectorAll("video"));
+          walk(n.shadowRoot, depth + 1);
+        }
+      }
+    };
+    walk(document.documentElement, 0);
+    shadowed = found;
+    return found;
+  }
 
   function eligible(v) {
-    if (dismissed.has(v) || !v.isConnected) return false;
+    if (!v.isConnected || isDismissed(v)) return false;
     const r = v.getBoundingClientRect();
-    if (r.width < MIN_W || r.height < MIN_H) return false;
-    if (v.muted && v.loop && !v.controls) return false;
+    const audio = v instanceof HTMLAudioElement;
+    if (audio ? !v.controls || r.width < MIN_W || r.height < MIN_AUDIO_H : r.width < MIN_W || r.height < MIN_H) {
+      return false;
+    }
+    // A short muted loop without controls: a moving picture, not something to save.
+    if (v.muted && v.loop && !v.controls && !(v.duration > CLIP_S)) return false;
     const s = getComputedStyle(v);
     return s.visibility !== "hidden" && s.display !== "none" && Number(s.opacity) > 0.05;
   }
@@ -158,7 +223,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   // video itself rarely gets the pointer's events.
   function videoAt(x, y) {
     let best = null;
-    for (const v of videos) {
+    for (const v of [...videos, ...audios, ...shadowVideos()]) {
       const r = v.getBoundingClientRect();
       if (x < r.left || x > r.right || y < r.top || y > r.bottom || !eligible(v)) continue;
       if (!best || r.width * r.height < best.r.width * best.r.height) best = { v, r };
@@ -180,11 +245,15 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     if (!video) return;
     const { r, w, roomX, roomY } = rects();
     // A narrow video gets the icon only.
-    pill.classList.toggle("compact", r.width < 360 && !flashing);
+    pill.classList.toggle("compact", r.width < 360);
     const at = dragging ? dragging.at : place;
     const left = r.left + INSET + at.x * roomX;
-    const top = r.top + INSET + at.y * roomY;
-    root.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`;
+    // In the part of the video on screen: one scrolled half out keeps its button in view.
+    const h = pill.offsetHeight || 32;
+    const visTop = Math.max(r.top, 0) + INSET;
+    const visBottom = Math.min(r.bottom, innerHeight) - INSET - h;
+    const top = Math.min(Math.max(r.top + INSET + at.y * roomY, visTop), Math.max(visTop, visBottom));
+    root.style.setProperty("transform", `translate(${Math.round(left)}px, ${Math.round(top)}px)`, "important");
     if (menuOpen) placeMenu(top, left, w);
   }
 
@@ -228,7 +297,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       closeMenu();
     }
     if (!attach()) return hide(true);
-    root.style.display = "block";
+    root.style.setProperty("display", "block", "important");
     position();
     if (!pill.classList.contains("shown")) requestAnimationFrame(() => pill.classList.add("shown"));
     if (!raf) raf = requestAnimationFrame(tick);
@@ -246,7 +315,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     raf = 0;
     const was = video;
     setTimeout(() => {
-      if (!pill.classList.contains("shown") && video === was) root.style.display = "none";
+      if (!pill.classList.contains("shown") && video === was) root.style.setProperty("display", "none", "important");
     }, now || reduced ? 0 : 180);
   }
 
@@ -287,7 +356,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   async function ask() {
     if (allowed !== null) return;
     allowed = false; // until answered: one question per page
-    const r = await send({ type: "panel", page: location.href });
+    const r = await send({ type: "panel" });
     allowed = Boolean(r && r.on);
     if (allowed) {
       try {
@@ -301,12 +370,20 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
 
   // ---- acting ---------------------------------------------------------------------------------
   async function download() {
-    if (busy) return;
+    if (busy || !video) return;
     busy = true;
-    closeMenu();
-    const r = await send({ type: "video", page: location.href });
-    flash(r && r.ok ? "ok" : "err", t(r && r.ok ? "video_sent" : "video_failed"));
-    busy = false;
+    try {
+      closeMenu();
+      // Encrypted (DRM): no tool can save it; say so rather than send it.
+      if (video.mediaKeys) return flash("err", t("video_drm"));
+      const src = /^https?:/i.test(video.currentSrc || "") ? video.currentSrc : "";
+      const title = (document.querySelector('meta[property="og:title"]')?.content || document.title || "").trim();
+      const r = await send({ type: "video", src, title });
+      if (r.gone) return;
+      flash(r.ok ? "ok" : "err", t(r.ok ? "video_sent" : r.why === "options" ? "video_off" : "video_failed"));
+    } finally {
+      busy = false;
+    }
   }
 
   // A short confirmation on the button itself, then back to normal.
@@ -347,6 +424,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     closeMenu();
     if (act === "hide") {
       dismissed.add(video);
+      if (video.currentSrc) dismissedSrc.add(video.currentSrc);
       video = null;
       return hide(true);
     }
@@ -354,7 +432,7 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       allowed = false;
       video = null;
       hide(true);
-      return send({ type: "hide-site", host });
+      return send({ type: "hide-site" });
     }
     if (act === "settings") send({ type: "options" });
   });
@@ -424,13 +502,23 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     place = snap(d.at);
     position();
     lastMove = Date.now();
-    ext.storage.local
-      .get({ positions: {} })
-      .then(({ positions }) => {
-        positions[host] = place;
-        return ext.storage.local.set({ positions });
-      })
-      .catch(() => {});
+    // Remembered per site, not in a private window (it would keep the site's name), and the
+    // 200 sites used last only.
+    if (ext.extension?.inIncognitoContext) return;
+    try {
+      ext.storage.local
+        .get({ positions: {} })
+        .then(({ positions }) => {
+          delete positions[host];
+          positions[host] = place;
+          const sites = Object.keys(positions);
+          for (const s of sites.slice(0, Math.max(0, sites.length - 200))) delete positions[s];
+          return ext.storage.local.set({ positions });
+        })
+        .catch(() => {});
+    } catch {
+      teardown();
+    }
   };
   go.addEventListener("pointerup", endDrag);
   go.addEventListener("pointercancel", endDrag);
@@ -440,19 +528,40 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
   });
 
   // ---- wiring -----------------------------------------------------------------------------------
+  // The extension updated or removed under this page: the button and its listeners go (a fresh
+  // copy of this script comes with the new extension).
+  function teardown() {
+    cancelAnimationFrame(raf);
+    cancelAnimationFrame(scan);
+    removeEventListener("pointermove", onMove, true);
+    root.remove();
+    allowed = false;
+    globalThis.__mdmVideoButton = false;
+  }
   addEventListener("pointermove", onMove, { capture: true, passive: true });
   addEventListener("pointerdown", (e) => {
     if (menuOpen && !e.composedPath().includes(root)) closeMenu();
   }, { capture: true, passive: true });
-  // A video with the keyboard's focus (its controls) gets the button too.
+  // A video with the keyboard's focus, or a player around one (its controls), gets the button
+  // too, kept while the focus stays there; Tab goes from there to the button.
   addEventListener("focusin", (e) => {
-    const v = e.target instanceof HTMLVideoElement ? e.target : null;
-    if (v && eligible(v)) {
-      ask().then(() => {
-        if (!allowed) return;
-        lastMove = Date.now();
-        show(v);
-      });
+    if (!(e.target instanceof Element) || e.composedPath().includes(root)) return;
+    const t = e.target;
+    const v =
+      t instanceof HTMLMediaElement ? t : [...t.querySelectorAll("video, audio")].find(eligible) || null;
+    if (!v || !eligible(v)) return;
+    focusedPlayer = t;
+    ask().then(() => {
+      if (!allowed) return;
+      lastMove = Date.now();
+      show(v);
+    });
+  }, true);
+  addEventListener("keydown", (e) => {
+    // Tab on the focused player moves into the button first.
+    if (e.key === "Tab" && !e.shiftKey && video && playerFocused() && root.style.getPropertyValue("display") === "block") {
+      go.focus();
+      e.preventDefault();
     }
   }, true);
   document.addEventListener("fullscreenchange", () => video && show(video));

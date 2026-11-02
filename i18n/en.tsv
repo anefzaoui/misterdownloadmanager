@@ -109,6 +109,9 @@
 	Address changed to {host}	Address changed to {host}
 #. text in a download's Properties window
 	Address:	Address:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+	Addresses left to the browser	Addresses left to the browser
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Advanced / Socks...	Advanced / Socks...
@@ -151,6 +154,9 @@
 	As the system's region writes them	As the system's region writes them
 #. text in the Add torrent window
 	Asking peers for the file list. Magnet links can take a minute or two.	Asking peers for the file list. Magnet links can take a minute or two.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+	Audio only {type}	Audio only {type}
 #. text in the Scheduler window
 	August	August
 #. text in the Options window
@@ -360,6 +366,8 @@
 	Don't start downloading automatically from the following addresses:	Don't start downloading automatically from the following addresses:
 #. text in the Options window
 	Don't start downloading automatically from the following sites:	Don't start downloading automatically from the following sites:
+#. text in the Options window
+	Don't take files smaller than (KB, 0 = any size):	Don't take files smaller than (KB, 0 = any size):
 #. text in a download's progress window
 	Done	Done
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -878,6 +886,9 @@
 	No mail app: the message is copied, paste it in your mail.	No mail app: the message is copied, paste it in your mail.
 #. text in the Options window
 	No proxy/socks	No proxy/socks
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+	No video found on this page. Play the video, then use the Download video button over it.	No video found on this page. Play the video, then use the Download video button over it.
 #. text in the Download video window
 	No video this can download on that page	No video this can download on that page
 #. message or event log entry in the main window
@@ -1507,6 +1518,12 @@
 	This system has no dial-up connections to hang up	This system has no dial-up connections to hang up
 #. text in the Add torrent window
 	This torrent is already in the download list	This torrent is already in the download list
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+	This video is protected (DRM): no tool can save it.	This video is protected (DRM): no tool can save it.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.
 #. text in the Scheduler window
 	Thursday	Thursday
 #. text in a download's progress window; text in the Scheduler window
@@ -1880,14 +1897,14 @@ extension	How to fix it	How to fix it
 #. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
-#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
-extension	Mister Download Manager didn't answer	Mister Download Manager didn't answer
-#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 extension	Mister Download Manager didn't start in time	Mister Download Manager didn't start in time
 #. text in the browser extension
 #. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
 extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager doesn't accept this copy of the extension
+#. text in the browser extension
+#. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager isn't installed or didn't start
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager isn't installed, or its browser integration isn't set up
@@ -1913,6 +1930,9 @@ extension	Options...	Options...
 #. status when the user switched off taking downloads in the toolbar button's popup
 extension	Paused: downloads stay with the browser	Paused: downloads stay with the browser
 #. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+extension	Protected video: it can't be saved	Protected video: it can't be saved
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
 #. text in the browser extension
@@ -1921,6 +1941,9 @@ extension	Take downloads from this browser	Take downloads from this browser
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 extension	The connection to Mister Download Manager failed	The connection to Mister Download Manager failed
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+extension	The download button is off on this site	The download button is off on this site
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 extension	This download's details were too large to hand over	This download's details were too large to hand over

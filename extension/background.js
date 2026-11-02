@@ -131,6 +131,7 @@ async function askRules() {
       excludedSites: reply.excludedSites || "",
       excludedAddresses: Array.isArray(reply.excludedAddresses) ? reply.excludedAddresses : [],
       opened: reply.opened !== false,
+      minKb: Number(reply.minKb) || 0,
       at: Date.now(),
     };
     await ext.storage.local.set({ rules });
@@ -261,6 +262,40 @@ if (ext.webRequest) {
 // Links clicked with Alt held (page.js): the browser keeps their download.
 const bypass = new Map();
 
+// Streams the page's players loaded (HLS, DASH), per tab, in the order seen (a master playlist
+// comes before its variants): a player that plays from a blob: has no address of its own, so
+// the download button sends its manifest, which yt-dlp reads (qualities, separate audio).
+// Segments are never listed. Forgotten when the tab goes to another page or closes.
+const streams = new Map();
+const MANIFEST = /\.(m3u8|mpd)(?:[?#]|$)/i;
+const MANIFEST_TYPE = /mpegurl|dash\+xml/i;
+
+if (ext.webRequest && ext.webRequest.onResponseStarted) {
+  ext.webRequest.onResponseStarted.addListener(
+    (d) => {
+      if (d.tabId < 0) return;
+      const ct = (d.responseHeaders || []).find((h) => h.name.toLowerCase() === "content-type");
+      if (!MANIFEST.test(d.url) && !(ct && MANIFEST_TYPE.test(ct.value || ""))) return;
+      const list = streams.get(d.tabId) || [];
+      if (!list.some((s) => s.url === d.url)) list.push({ url: d.url, frameId: d.frameId });
+      streams.set(d.tabId, list.slice(-20));
+    },
+    { urls: ["<all_urls>"], types: ["xmlhttprequest", "media", "other"] },
+    ["responseHeaders"],
+  );
+}
+ext.tabs.onRemoved.addListener((id) => streams.delete(id));
+ext.tabs.onUpdated.addListener((id, change) => {
+  if (change.url) streams.delete(id);
+});
+
+// The stream a frame's player loaded first (its master playlist), else the tab's.
+function streamOf(sender) {
+  const list = (sender.tab && streams.get(sender.tab.id)) || [];
+  const mine = list.find((s) => s.frameId === sender.frameId);
+  return (mine || list[0] || {}).url || "";
+}
+
 // ---- the hand-off ------------------------------------------------------------------------
 
 // Cookies from the store the download belongs to, never another: Firefox names it on the
@@ -318,6 +353,9 @@ async function candidate(item, url) {
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
   const type = extensionOf(name);
   if (!type || !typePatterns(r.types).some((p) => p.test(type))) return null;
+  // Smaller than Options' minimum (when the browser knows the size already).
+  const size = item.totalBytes > 0 ? item.totalBytes : item.fileSize;
+  if (r.minKb > 0 && size > 0 && size < r.minKb * 1024) return null;
   if (!(await siteAccess(item.url))) return null;
   return name;
 }
@@ -542,7 +580,13 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
   const storeId = tab && tab.cookieStoreId;
   if (info.menuItemId === "mdm-link") {
     const url = info.linkUrl || info.srcUrl;
-    // A player's own stream (blob:, a MediaSource): its page goes to the Download video window.
+    // A player's own stream (blob:, a MediaSource) or a stream's manifest: the Download video
+    // window, which reads streams (a manifest downloaded as a file is only a short list).
+    if (url && MANIFEST.test(url)) {
+      const reply = await native({ video: true, url: info.pageUrl, src: url, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
+      if (!reply.ok && reply.why !== "options") explain(reply.why);
+      return;
+    }
     if (url && /^(blob|mediastream):/i.test(url)) {
       const page = info.frameUrl || info.pageUrl;
       const reply = await native({ video: true, url: page, referrer: info.pageUrl, cookies: await cookieHeader(page, { incognito, storeId }), private: incognito });
@@ -634,7 +678,7 @@ async function pageMessage(m, sender) {
     return { ok: true };
   }
   if (m.type === "video" && page) {
-    const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : "";
+    const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : streamOf(sender);
     const reply = await native({
       video: true,
       url: page,

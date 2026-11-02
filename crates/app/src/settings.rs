@@ -86,6 +86,8 @@ pub struct Settings {
     /// General: also take the listed types the browser would open itself (a PDF in its viewer,
     /// an MP3 in its player); holding Alt while clicking leaves one to the browser.
     pub capture_opened: bool,
+    /// File types: files smaller than this (KB) stay with the browser; 0 takes any size.
+    pub capture_min_kb: u64,
     /// Options → Regional: how dates and times are written.
     pub regional: crate::regional::Regional,
     /// Save to: a folder per category (category label → folder); missing = the default.
@@ -203,6 +205,7 @@ impl Default for Settings {
             video_panel: true,
             video_panel_sites: String::new(),
             capture_opened: true,
+            capture_min_kb: 0,
             regional: crate::regional::Regional::default(),
             category_dirs: Vec::new(),
             change_folder_on_last: true,

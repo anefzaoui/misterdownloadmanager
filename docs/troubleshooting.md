@@ -32,12 +32,12 @@ Every download keeps a log of its recent events: retries, redirects, the server'
 ## The browser doesn't send downloads to MDM
 
 1. Was MDM installed with the setup, with **Set up browser integration** ticked? A portable copy can't take browser downloads. Run the setup again to add it.
-2. Is the extension loaded and turned on? Look for **Mister Download Manager Integration Module** on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See [Browser integration](browser-integration.md).
+2. Is the extension loaded and turned on? Look for **Mister Download Manager** on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See [Browser integration](browser-integration.md).
 3. Is **Options → General → Use advanced browser integration** on, and your browser ticked under **Capture downloads from the following browsers**?
-4. Is the file's type in **Options → File types**? Only listed types are taken. The same goes for **Download with Mister Download Manager** on the right-click menu: if the link's address doesn't end in a listed type, nothing happens.
+4. Is the file's type in **Options → File types**? Only listed types are taken automatically. **Download with Mister Download Manager** on the right-click menu takes any link.
 5. Is the site in **Don't start downloading automatically from the following sites**?
 
-When none of this helps, the browser keeps the download, so nothing is lost.
+When none of this helps, the browser keeps the download, so nothing is lost. The extension's toolbar button says why it couldn't reach MDM; see [The browser and MDM aren't connected](browser-help.md).
 
 ## The Scheduler didn't start the queue
 

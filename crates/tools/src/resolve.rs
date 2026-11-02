@@ -26,6 +26,8 @@ pub struct Format {
     pub audio: bool,
     /// Bytes, exact or estimated.
     pub size: Option<u64>,
+    /// Kbit/s, when the site says (a stream's variants differ by it alone).
+    pub tbr: Option<f64>,
 }
 
 /// One line of the choice list: what to show and what to ask yt-dlp for.
@@ -57,6 +59,7 @@ struct RawFormat {
     acodec: Option<String>,
     filesize: Option<u64>,
     filesize_approx: Option<u64>,
+    tbr: Option<f64>,
 }
 
 /// Parse `yt-dlp -J` output.
@@ -79,6 +82,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
                 height: f.height,
                 fps: f.fps,
                 size: f.filesize.or(f.filesize_approx),
+                tbr: f.tbr,
             })
             .collect(),
     })
@@ -99,6 +103,9 @@ pub fn resolve(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Vid
         message: "it gave no video information".into(),
     })
 }
+
+/// The audio choice's label starts with this (the app translates it).
+pub const AUDIO_ONLY: &str = "Audio only";
 
 /// Containers that only ever hold sound.
 fn audio_container(ext: &str) -> bool {
@@ -161,15 +168,28 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
             }
         })
         .collect();
-    // Files whose resolution isn't known (generic sites): offered by type and size. Audio
-    // containers aren't videos even when the site doesn't say there is no video stream.
-    for f in v
+    // Files whose resolution isn't known (generic sites, a stream's variants with a bitrate
+    // only): offered by type, and by bitrate when there are several, best first. Audio
+    // containers, and streams with no video codec named, aren't videos.
+    let mut plain: Vec<&Format> = v
         .formats
         .iter()
         .filter(|f| f.video && f.audio && f.height.is_none() && !audio_container(&f.ext))
-    {
+        .collect();
+    plain.sort_by(|a, b| b.tbr.unwrap_or(0.0).total_cmp(&a.tbr.unwrap_or(0.0)));
+    let several = plain.len() > 1;
+    let mut labels = std::collections::HashSet::new();
+    for f in plain {
+        let label = match f.tbr.filter(|_| several) {
+            Some(kbps) => format!("{} {} kbps", f.ext.to_uppercase(), kbps.round()),
+            None => f.ext.to_uppercase(),
+        };
+        // Twins (the same type and rate under two IDs) once.
+        if !labels.insert(label.clone()) {
+            continue;
+        }
         out.push(Choice {
-            label: f.ext.to_uppercase(),
+            label,
             selector: f.id.clone(),
             ext: f.ext.clone(),
             size: f.size,
@@ -177,7 +197,8 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
     }
     if let Some(a) = best_audio {
         out.push(Choice {
-            label: format!("Audio only {}", a.ext.to_uppercase()),
+            // The app shows it in its language (videodlg::label).
+            label: format!("{AUDIO_ONLY} {}", a.ext.to_uppercase()),
             selector: "ba".into(),
             ext: a.ext.clone(),
             size: a.size,
@@ -189,6 +210,35 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_streams_variants_by_bitrate() {
+        let fmt = |id: &str, tbr: f64| Format {
+            id: id.into(),
+            ext: "mp4".into(),
+            height: None,
+            fps: None,
+            video: true,
+            audio: true,
+            size: None,
+            tbr: Some(tbr),
+        };
+        let v = Video {
+            title: "t".into(),
+            duration: None,
+            formats: vec![
+                fmt("hls-640", 640.0),
+                fmt("hls-1280", 1280.0),
+                fmt("hls-1280b", 1280.0),
+            ],
+        };
+        let labels: Vec<String> = choices(&v, true).into_iter().map(|c| c.label).collect();
+        assert_eq!(
+            labels,
+            ["MP4 1280 kbps", "MP4 640 kbps"],
+            "best first, twins once"
+        );
+    }
 
     const SAMPLE: &str = r#"{
         "title": "A talk", "duration": 61.5,

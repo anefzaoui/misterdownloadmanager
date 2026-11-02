@@ -19,11 +19,11 @@ Browser integration has two parts: a small helper program that the browser talks
 2. Turn on **Developer mode**.
 3. Click **Load unpacked** and choose the `extension\chromium` folder.
 
-**Mister Download Manager Integration Module** appears in the list. Leave it turned on.
+**Mister Download Manager** appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.
 
 ### Firefox
 
-Firefox 128 or later is needed.
+Firefox 140 or later is needed.
 
 1. Open `about:debugging` and click **This Firefox**.
 2. Click **Load Temporary Add-on** and choose `extension\mdm-firefox.xpi`.
@@ -47,25 +47,47 @@ When you click a download, the extension checks MDM's Options:
 - **Options → General → Use advanced browser integration** must be on. Turn it off to send nothing to MDM.
 - **Options → General → Capture downloads from the following browsers** must have your browser ticked.
 - **Options → File types → Automatically start downloading the following file types** must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF and many more.
-- **Options → File types → Don't start downloading automatically from the following sites** must not list the site. Names are separated by spaces, and `*` matches any part, as in `*.update.microsoft.com`.
+- **Options → File types → Don't start downloading automatically from the following sites** must not list the site. Names are separated by spaces, and `*` matches any part, as in `*.update.microsoft.com`. **Edit list ...** below it lists whole addresses to leave alone, one per line (`https://example.com/private/*`).
+- **Options → File types → Don't take files smaller than** leaves small files (a receipt, an icon) to the browser. 0 takes any size.
+- The extension must be allowed to read the site. When you limit it to some sites (or **On click**), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.
 
-Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.
+Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.
+
+When MDM takes a download, it gets the browser's file name, size and type with it, so **Download File Info** shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data.
 
 When MDM takes a download, the browser's own copy is cancelled and removed from the browser's download list. **Download File Info** opens in MDM (unless you turned it off in **Options → Downloads**). Cancelling there doesn't hand the download back to the browser.
 
-Downloads from a private window use that window's cookies, never the normal ones.
+Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.
+
+Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View.
+
+## Files the browser would open
+
+A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in **Options → File types**. To turn this off, untick **Also take files the browser would open** in **Options → General → Keys...**. This needs Chrome or Edge 128 or later, or Firefox.
+
+## The toolbar button
+
+The extension's button shows whether the browser reaches MDM. A red **!** means it doesn't; click the button to see why, and **How to fix it** opens the matching section of [The browser and MDM aren't connected](browser-help.md). The button also:
+
+- **Take downloads from this browser**: untick it to pause, and every download stays with the browser until you tick it again.
+- **Never take downloads from** the current site: adds it to MDM's excluded sites.
+- **Open Mister Download Manager** and **Options...**.
 
 ## Right-click: Download with Mister Download Manager
 
-Right-click a link, a video, a sound or a picture and choose **Download with Mister Download Manager**. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself).
+Right-click a link, a video, a sound or a picture and choose **Download with Mister Download Manager**. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the **Download video** window.
+
+Select part of a page and right-click it for **Download selected links with Mister Download Manager**, or right-click the page for **Download all links with Mister Download Manager**: the links open in **Import**, where you tick the ones you want.
+
+If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.
 
 ## The download button over videos
 
 ![The Download video button over a YouTube video in Chrome](images/video-button-youtube.png)
 
-Point at a video on a web page and a small **Download video** button appears at its edge. Click it and MDM's **Download video from a page** window opens for that page and looks up the qualities it can download (the same as pasting the page's address there). It works for embedded players too: a video from another site in a page is downloaded from that site.
+Point at a video on a web page and a small **Download video** button appears at its edge. Click it and MDM's **Download video from a page** window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.
 
-It stays out of the way: it shows only while you point at a video (or the video has the keyboard's focus), fades when the pointer rests, and leaves out small videos and muted looping clips (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it.
+It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; **Tab** then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.
 
 - **Move it**: drag it anywhere along the video's edge; it snaps to the nearest edge and stays there on that site.
 - **Its menu** (the arrow next to it): **Hide on this video**, **Never on** the site (MDM remembers the site), and **Button settings...**, which opens MDM's Options.
@@ -77,15 +99,15 @@ The button follows the rest of the integration: it doesn't show when **Use advan
 
 ## Keys to force or prevent capture
 
-MDM doesn't have keys yet that force a download to MDM or keep it in the browser while you click. The **Keys...** button in **Options → General** is greyed for that reason.
+Hold **Alt** while clicking a link to let the browser download it instead of MDM. **Options → General → Keys...** says so, and holds **Also take files the browser would open**.
 
-To keep a site's downloads in the browser, add the site to **Don't start downloading automatically from the following sites**. To keep a file type in the browser, take it off the file types list.
+To keep a site's downloads in the browser for good, use the toolbar button's **Never take downloads from**, or add the site to **Don't start downloading automatically from the following sites**. To keep a file type in the browser, take it off the file types list.
 
 ## When MDM isn't running
 
 You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.
 
-If MDM can't be reached at all (it was uninstalled, or the helper isn't registered), the extension resumes the download in the browser. Nothing is lost.
+If MDM can't be reached at all (it was uninstalled, or the helper isn't registered), the download stays with the browser, so nothing is lost, and the toolbar button shows a red **!**. See [The browser and MDM aren't connected](browser-help.md), or run **Options → General → Test browser integration...**.
 
 ![Options, General page](images/options-general.png)
 

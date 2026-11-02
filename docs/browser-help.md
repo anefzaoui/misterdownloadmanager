@@ -35,13 +35,13 @@ The browser started MDM's helper, but it stopped before answering. Security soft
 
 MDM's helper serves only its own extension. The browser says this copy isn't one it knows.
 
-- **Two copies installed?** Open the browser's extensions page (`chrome://extensions`, `edge://extensions`, `brave://extensions`) and remove the one marked **Unpacked** (a copy loaded by hand), keeping the one from the store.
-- **From another browser's store?** Install it from the link in MDM's **Add Mister Download Manager to your browser** window instead.
-- **An older MDM?** Update MDM: newer extensions may be listed under IDs an old helper doesn't know.
+- **Two copies installed?** Open the browser's extensions page (`chrome://extensions`, `edge://extensions`, `brave://extensions`) and keep only one **Mister Download Manager**.
+- **A copy from elsewhere?** Remove it and add the extension as MDM's **Add Mister Download Manager to your browser** window shows (see [Browser integration](browser-integration.md)).
+- **An older MDM?** Update MDM: a newer extension may have an ID an old helper doesn't know.
 
 ## The extension is newer than MDM {#update-app}
 
-Downloads still work, but some of the extension's features need a newer MDM. Update it with **Help → Check for updates** in MDM.
+Downloads still work, but some of the extension's features need a newer MDM. Update it with **Help → Check for updates...** in MDM.
 
 ## A download's details were too large {#too-large}
 
@@ -59,7 +59,7 @@ Also check the extension's toolbar button: with **Take downloads from this brows
 
 ## The browser opens PDFs and music instead of sending them {#opened}
 
-MDM also takes the file types the browser would show or play itself (a PDF, an MP3), when they're listed in **Options → File types** and **Options → General → Also take files the browser would open** is on. Chrome 128 or later, Edge 128 or later, and Firefox are needed for this. To let the browser open one, hold **Alt** while clicking its link.
+MDM also takes the file types the browser would show or play itself (a PDF, an MP3), when they're listed in **Options → File types** and **Also take files the browser would open** is ticked in **Options → General → Keys...**. Chrome 128 or later, Edge 128 or later, and Firefox are needed for this. To let the browser open one, hold **Alt** while clicking its link.
 
 ## The extension can't read this site {#site-access}
 
@@ -67,7 +67,7 @@ In Chrome, Edge and Brave you can limit an extension to some sites (right-click 
 
 ## Firefox forgets the extension after a restart {#firefox-temporary}
 
-An add-on loaded with **Load Temporary Add-on** is removed when Firefox closes. Install the signed add-on instead, from the link in MDM's **Add Mister Download Manager to your browser** window, or from the release's `-extension-firefox.xpi` file (open it in Firefox).
+An add-on loaded with **Load Temporary Add-on** is removed when Firefox closes, so for now it has to be loaded again after each restart (see [Browser integration](browser-integration.md)). A signed add-on that Firefox keeps is on the way.
 
 ## Linux: Flatpak and Snap browsers {#linux-sandbox}
 

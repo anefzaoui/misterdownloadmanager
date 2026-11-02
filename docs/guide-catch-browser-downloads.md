@@ -14,7 +14,7 @@ MDM must be installed with the setup, with **Set up browser integration (Chrome,
 2. Turn on **Developer mode**.
 3. Click **Load unpacked**.
 4. Choose the `extension\chromium` folder inside MDM's folder. If you installed MDM for yourself, that is `%LOCALAPPDATA%\Programs\Mister Download Manager\extension\chromium`; you can paste that path into the folder box.
-5. **Mister Download Manager Integration Module** appears. Make sure it is turned on.
+5. **Mister Download Manager** appears. Make sure it is turned on.
 6. Go to a web page and click a download link, for example a ZIP or an EXE.
 7. MDM opens **Download File Info** instead of the browser downloading the file. Click **Start Download**.
 
@@ -30,7 +30,7 @@ Everything MDM doesn't take stays with the browser.
 
 ## Download a link the browser would open
 
-Some links, such as a PDF or a video file, open in the browser instead of downloading, so there is nothing for MDM to catch. Right-click the link and choose **Download with Mister Download Manager**. The address must still end in one of the listed file types.
+Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To let the browser open one, hold **Alt** while clicking it. Any other link: right-click it and choose **Download with Mister Download Manager**, which takes any type.
 
 ![Options, General page](images/options-general.png)
 

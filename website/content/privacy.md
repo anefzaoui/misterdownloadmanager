@@ -48,14 +48,16 @@ The automation API is off by default. When you turn it on, it listens only on `1
 
 ## The browser extension
 
-The **Mister Download Manager Integration Module** extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox:
+The **Mister Download Manager** extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox:
 
-- When you start a download that MDM should take, it passes **the download's address, the page it came from, the site's cookies for that address and your browser's User-Agent** to MDM on your computer, through the browser's native-messaging channel. Nothing goes over the internet.
-- Its **Download video** button reads the page only to find video elements and place the button. Clicking it passes the page's address to MDM.
-- It stores its own settings (on or off, file types, where you dragged the video button) in the browser's extension storage, on your computer.
+- When you start a download that MDM should take, it passes **the download's address (and where its redirects led), the page it came from, the site's cookies for that address, your browser's User-Agent, and the file's name, size and type** to MDM on your computer, through the browser's native-messaging channel. Nothing goes over the internet.
+- When a download comes from a form you submitted, it passes **the form's data** too, so MDM can submit it again. It notes the data of forms you submit (kept in memory for two minutes, never stored) only for that.
+- It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the **Download video** button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address and the page's title to MDM.
+- **Download selected links** and **Download all links** read the links of the page (or of your selection) when you choose them, and pass them to MDM.
+- It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.
 - It has **no remote code, no analytics and no ads**, and sends nothing to us or anyone else.
 
-Its permissions, and why: *downloads* to see and hand over downloads; *cookies* so signed-in downloads work in MDM; *nativeMessaging* to talk to MDM; *contextMenus* for the right-click item; *storage* for its settings; access to all sites because downloads and videos can come from any site.
+Its permissions, and why: *downloads* to see and hand over downloads; *cookies* so signed-in downloads work in MDM; *nativeMessaging* to talk to MDM; *contextMenus* for the right-click items; *storage* for its settings; *webRequest* to see forms submitted and video streams loaded (it changes nothing); *declarativeNetRequest* (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, *webRequestBlocking* does that; *scripting* to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.
 
 ## This website
 

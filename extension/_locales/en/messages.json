@@ -42,7 +42,7 @@
     "description": "shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is"
   },
   "video_failed": {
-    "message": "Mister Download Manager didn't answer",
+    "message": "Mister Download Manager isn't installed or didn't start",
     "description": "shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is"
   },
   "video_drag": {
@@ -142,5 +142,13 @@
   "popup_alt": {
     "message": "Hold Alt while clicking a link to let the browser download it.",
     "description": "hint in the toolbar button's popup; Alt is the keyboard key"
+  },
+  "video_off": {
+    "message": "The download button is off on this site",
+    "description": "shown briefly on the download button over a video when the app's settings keep the button off on this web site"
+  },
+  "video_drm": {
+    "message": "Protected video: it can't be saved",
+    "description": "shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it"
   }
 }

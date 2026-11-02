@@ -166,7 +166,7 @@ impl VideoDialog {
             self.lookup = None;
             match res {
                 Ok(v) => self.set_video(v),
-                Err(e) => self.error = Some(e),
+                Err(e) => self.error = Some(lookup_error(&e)),
             }
         }
         let installed = self
@@ -438,7 +438,7 @@ impl VideoDialog {
             |_, clip, i, row, look| {
                 let c = &choices[i];
                 // A format ("1080p mp4, 60 fps") reads left to right; its size at the trailing edge.
-                let label = crate::i18n::ltr(&c.label);
+                let label = choice_label(&c.label);
                 text(clip, row.left() + 6.0, row.top() + 12.0, &label, look.ink);
                 let size = c
                     .size
@@ -571,5 +571,39 @@ pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
         referer: c.referer.clone(),
         user_agent: c.user_agent.clone(),
         cookies: c.cookies.clone(),
+    }
+}
+
+/// yt-dlp's reason in plain words where it is one users meet often; otherwise its own text.
+fn lookup_error(e: &str) -> String {
+    let lower = e.to_ascii_lowercase();
+    let plain = if lower.contains("drm") {
+        // i18n: the Download video window: the page's video is copy-protected
+        "This video is protected (DRM): no tool can save it."
+    } else if lower.contains("unsupported url") {
+        // i18n: the Download video window: yt-dlp found no video on the page
+        "No video found on this page. Play the video, then use the Download video button over it."
+    } else if lower.contains("sign in")
+        || lower.contains("login")
+        || lower.contains("private video")
+    {
+        // i18n: the Download video window: the video needs the user to be signed in
+        "This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on."
+    } else {
+        return e.to_owned();
+    };
+    crate::i18n::t(plain).to_owned()
+}
+
+/// A choice's label in the user's language: the audio choice's words translated, the rest (a
+/// resolution, a type) as they are, kept left to right.
+fn choice_label(label: &str) -> String {
+    match label.strip_prefix(mdm_tools::resolve::AUDIO_ONLY) {
+        Some(kind) => crate::i18n::fmt(
+            // i18n: a choice in the Download video window: only the sound; {type} is MP3, M4A…
+            crate::i18n::t("Audio only {type}"),
+            &[("type", &crate::i18n::ltr(kind.trim()))],
+        ),
+        None => crate::i18n::ltr(label),
     }
 }
