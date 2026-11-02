@@ -1,9 +1,9 @@
 //! The browser extension's offer: at each start, until a browser's extension has reached the
 //! app (the native host notes it: mdm_ipc::extension::seen), a window lists the browsers
-//! installed and opens the extension's page in the one picked (the Chrome Web Store for
-//! Chromium browsers, the tutorial for Firefox). Chrome may ask by itself too: registering the
-//! host also names the store's extension to it (crates/nmhost). "Don't ask again" stops the
-//! offer; `/show extension` brings it back.
+//! installed and opens the extension's page in the one picked (addons.mozilla.org for Firefox
+//! and its family, the Chrome Web Store for Chromium browsers once listed, the tutorial until
+//! then). Chrome may ask by itself too: registering the host also names the store's extension
+//! to it (crates/nmhost). "Don't ask again" stops the offer; `/show extension` brings it back.
 
 use std::path::PathBuf;
 use std::time::Duration;
@@ -52,8 +52,8 @@ fn is_seen(seen: &[String], row: &str) -> bool {
     seen.iter().any(|b| b == named)
 }
 
-/// A row for a browser of Firefox's family (Firefox, Zen, LibreWolf …): it gets the tutorial,
-/// not the Chrome Web Store.
+/// A row for a browser of Firefox's family (Firefox, Zen, LibreWolf …): it gets the add-on's
+/// page on addons.mozilla.org, not the Chrome Web Store.
 fn is_gecko(row: &str) -> bool {
     mdm_ipc::browsers::named(row).is_some_and(|b| b.family == mdm_ipc::browsers::Family::Gecko)
 }
@@ -153,13 +153,17 @@ impl Extension {
             14.0,
         );
 
-        // One row per browser: its name, and the button that opens the extension's page in it.
-        // The store's page once the extension is listed there; until then every browser gets
-        // the tutorial, as Firefox does.
+        // One row per browser: its name, and the button that opens the extension's page in it:
+        // Firefox's on addons.mozilla.org, the Chrome Web Store's for the others once listed
+        // there (until then the tutorial).
         let store = mdm_ipc::extension::store_page();
         for (k, (name, program)) in self.browsers.iter().enumerate() {
             let y = BANNER + 16.0 + k as f32 * ROW;
-            let firefox = is_gecko(name) || store.is_none();
+            let page = if is_gecko(name) {
+                Some(mdm_ipc::extension::FIREFOX_PAGE.to_owned())
+            } else {
+                store.clone()
+            };
             winui::text_font(
                 &p,
                 winui::tahoma_bold(),
@@ -187,7 +191,7 @@ impl Extension {
                     winui::SUCCESS(),
                 );
             }
-            let label = if firefox {
+            let label = if page.is_none() {
                 // i18n: button in the browser extension's window: open the tutorial that adds the Firefox add-on
                 "Show me how"
             } else {
@@ -207,10 +211,7 @@ impl Extension {
                 None,
             );
             if add.clicked() {
-                let url = match &store {
-                    Some(store) if !firefox => store.as_str(),
-                    _ => mdm_ipc::extension::GUIDE_PAGE,
-                };
+                let url = page.as_deref().unwrap_or(mdm_ipc::extension::GUIDE_PAGE);
                 match program {
                     #[cfg(windows)]
                     Some(program) => crate::win32::open_in(program, url),

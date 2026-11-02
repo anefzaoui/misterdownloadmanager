@@ -25,12 +25,7 @@ Browser integration has two parts: a small helper program that the browser talks
 
 ### Firefox
 
-Firefox 140 or later is needed.
-
-1. Open `about:debugging` and click **This Firefox**.
-2. Click **Load Temporary Add-on** and choose `extension\mdm-firefox.xpi`.
-
-Firefox removes a temporary add-on when it closes, so you have to load it again after each restart.
+Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/): click **Add to Firefox**. Firefox keeps it updated. (MDM's **Add Mister Download Manager to your browser** window opens that page for you.)
 
 ### From the plain zip
 
