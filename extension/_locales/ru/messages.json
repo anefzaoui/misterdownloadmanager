@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Модуль интеграции Mister Download Manager"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Передает загрузки из браузера в Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Отправлено в Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager не отвечает"
+    "message": "Mister Download Manager не установлен или не запустился"
   },
   "video_drag": {
     "message": "Перетащите, чтобы переместить по краю видео"
+  },
+  "menu_selected": {
+    "message": "Загрузить выбранные ссылки с Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Загрузить все ссылки с Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Подключено к Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Подключено к Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Приостановлено: загрузки остаются в браузере"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager не установлен или его интеграция с браузером не настроена"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager не принимает эту копию расширения"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager не запустился вовремя"
+  },
+  "status_host_failed": {
+    "message": "Не удалось подключиться к Mister Download Manager"
+  },
+  "status_too_large": {
+    "message": "Сведения об этой загрузке были слишком велики для передачи"
+  },
+  "status_update_app": {
+    "message": "Обновите Mister Download Manager, чтобы использовать все возможности этого расширения"
+  },
+  "popup_take": {
+    "message": "Перехватывать загрузки из этого браузера"
+  },
+  "popup_exclude_site": {
+    "message": "Никогда не загружать с $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Загрузки с $site$ остаются в браузере",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Открыть Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Параметры..."
+  },
+  "popup_help": {
+    "message": "Справка"
+  },
+  "popup_fix": {
+    "message": "Как исправить"
+  },
+  "popup_alt": {
+    "message": "Удерживайте Alt при нажатии на ссылку, чтобы браузер загрузил ее."
+  },
+  "video_off": {
+    "message": "Кнопка загрузки отключена на этом сайте"
+  },
+  "video_drm": {
+    "message": "Защищенное видео: его нельзя сохранить"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Модуль інтеграції Mister Download Manager"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Передає завантаження з браузера до Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Надіслано до Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager не відповідає"
+    "message": "Mister Download Manager не встановлено або не запущено"
   },
   "video_drag": {
     "message": "Перетягніть, щоб перемістити вздовж краю відео"
+  },
+  "menu_selected": {
+    "message": "Завантажити вибрані посилання за допомогою Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Завантажити всі посилання за допомогою Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Підключено до Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Підключено до Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Призупинено: завантаження залишаються в браузері"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager не встановлено або його інтеграцію з браузером не налаштовано"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager не приймає цю копію розширення"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager не запустився вчасно"
+  },
+  "status_host_failed": {
+    "message": "З’єднання з Mister Download Manager не вдалося"
+  },
+  "status_too_large": {
+    "message": "Деталі цього завантаження були завеликі для передачі"
+  },
+  "status_update_app": {
+    "message": "Оновіть Mister Download Manager, щоб використовувати всі можливості цього розширення"
+  },
+  "popup_take": {
+    "message": "Завантажувати файли з цього браузера"
+  },
+  "popup_exclude_site": {
+    "message": "Ніколи не завантажувати з $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Завантаження з $site$ залишаються в браузері",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Відкрити Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Параметри..."
+  },
+  "popup_help": {
+    "message": "Довідка"
+  },
+  "popup_fix": {
+    "message": "Як це виправити"
+  },
+  "popup_alt": {
+    "message": "Утримуйте Alt, натискаючи посилання, щоб браузер завантажив його."
+  },
+  "video_off": {
+    "message": "Кнопка завантаження вимкнена на цьому сайті"
+  },
+  "video_drm": {
+    "message": "Захищене відео: його неможливо зберегти"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager 통합 모듈"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "브라우저에서 Mister Download Manager으로 다운로드를 전달합니다."
@@ -33,9 +33,90 @@
     "message": "Mister Download Manager으로 보냄"
   },
   "video_failed": {
-    "message": "Mister Download Manager이(가) 응답하지 않았습니다."
+    "message": "Mister Download Manager이(가) 설치되지 않았거나 시작되지 않았습니다."
   },
   "video_drag": {
     "message": "비디오 가장자리를 따라 이동하려면 끄세요."
+  },
+  "menu_selected": {
+    "message": "Mister Download Manager으로 선택한 링크 다운로드"
+  },
+  "menu_all": {
+    "message": "Mister Download Manager으로 모든 링크 다운로드"
+  },
+  "status_connected": {
+    "message": "Mister Download Manager에 연결됨"
+  },
+  "status_connected_version": {
+    "message": "Mister Download Manager $version$에 연결됨",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "일시 중지됨: 다운로드는 브라우저에 남아 있습니다."
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager이(가) 설치되지 않았거나 브라우저 통합이 설정되지 않았습니다."
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager이(가) 이 확장 프로그램 복사본을 허용하지 않습니다."
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager이(가) 제시간에 시작되지 않았습니다."
+  },
+  "status_host_failed": {
+    "message": "Mister Download Manager에 대한 연결에 실패했습니다."
+  },
+  "status_too_large": {
+    "message": "이 다운로드의 세부 정보가 너무 커서 전달할 수 없습니다."
+  },
+  "status_update_app": {
+    "message": "이 확장에서 제공하는 모든 기능을 사용하려면 Mister Download Manager을(를) 업데이트하세요."
+  },
+  "popup_take": {
+    "message": "이 브라우저에서 다운로드 가져오기"
+  },
+  "popup_exclude_site": {
+    "message": "$site$에서 다운로드하지 않음",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "$site$에서 다운로드한 파일은 브라우저에 남아 있습니다.",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Mister Download Manager 열기"
+  },
+  "popup_options": {
+    "message": "옵션..."
+  },
+  "popup_help": {
+    "message": "도움말"
+  },
+  "popup_fix": {
+    "message": "해결 방법"
+  },
+  "popup_alt": {
+    "message": "Alt 키를 누른 채 링크를 클릭하면 브라우저가 다운로드합니다."
+  },
+  "video_off": {
+    "message": "이 사이트에서는 다운로드 단추가 꺼져 있습니다."
+  },
+  "video_drm": {
+    "message": "보호된 비디오: 저장할 수 없습니다."
   }
 }

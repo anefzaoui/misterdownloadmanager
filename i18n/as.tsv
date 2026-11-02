@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	ঠিকনা:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	ব্ৰাউজাৰৰ বাবে এৰি দিয়া ঠিকনাসমূহ
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	উন্নত / SOCKS...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	উন্নত ব্ৰাউজাৰ ইন্টিগ্ৰেচন অন আছে
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	সকলো ডাউনলোড
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	ক্ৰেশ্ব ডেটা (.dmp) ও সংলগ্ন কৰক: ইয়াত MDM-এ মেমৰিত ৰখা ঠিকনাবোৰ থাকিব পাৰে
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	ক্ৰাছ ডেটা (.dmp) সংলগ্ন কৰক: ইয়াত ঠিকনা, কুকি আৰু পাছৱৰ্ড থাকিব পাৰে
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	ডিস্কৰ পৰা ফাইলটোও মচি পেলাওক
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	ব্ৰাউজাৰে খুলিব লগা ফাইলসমূহো লওক (PDF, সংগীত, ভিডিঅ')
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager আৰম্ভ কৰিলে সদায় স্পিড লিমিটাৰ অন কৰক
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ফাইল তালিকাৰ বাবে পিয়াৰসকলক সোধা হৈছে। মেগনেট লিংকত এক বা দুই মিনিট লাগিব পাৰে।
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	কেৱল অডিঅ' {type}
 #. text in the Scheduler window
 #, machine
 	August	আগষ্ট
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	ব্ৰাউজ কৰক...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	এই কম্পিউটাৰত ব্ৰাউজাৰ ইন্টিগ্ৰেচন ছেট আপ কৰা হোৱা নাই, সেয়েহে কোনো ব্ৰাউজাৰে এতিয়ালৈকে Mister Download Manager লৈ যাব নোৱাৰে।
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ব্ৰাউজাৰ/ছিষ্টেম ইন্টিগ্ৰেচন
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ঘড়ী:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	ডাউনলোডসমূহ বিলোপ কৰাৰ নিশ্চিতকৰণ
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	সংযুক্ত
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	সংযুক্ত: আপোনাৰ ব্ৰাউজাৰৰ পৰা ডাউনলোডসমূহ এতিয়া ইয়ালৈ আহে।
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	নিম্নলিখিত ছাইটবোৰৰ পৰা স্বয়ংক্ৰিয়ভাৱে ডাউনল'ড কৰা আৰম্ভ নকৰিব:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	ইয়াতকৈ সৰু ফাইল নল'ব (KB, 0 = যিকোনো আকাৰ):
 #. text in a download's progress window
 #, machine
 	Done	সম্পূৰ্ণ হ'ল
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	টেব লুকুৱাওক
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager ৰ সলনি ব্ৰাউজাৰক ডাউনলোড কৰিবলৈ দিবলৈ এটা লিংকত ক্লিক কৰোঁতে Alt টিপি ধৰক।
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	গৃহ পৃষ্ঠা
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	ইয়াক কেনেকৈ ঠিক কৰিব
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	কীব'ৰ্ড শ্বৰ্টকাট
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	কীবোৰ্ড চাবি
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	কীবোৰ...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	সকলো ডাউনলোড একেলগে সীমিত কৰক
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	ব্ৰাউজাৰৰ পৰা লিংকসমূহ
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	এতিয়ালৈ কোনো ঠিকনা নাই
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	কোনো ব্ৰাউজাৰৰ এক্সটেনচনে এতিয়ালৈকে সংযোগ কৰা নাই
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	কোনো প্ৰক্সি/SOCKS নাই
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	এই পৃষ্ঠাত কোনো ভিডিঅ' পোৱা নগ'ল। ভিডিঅ'টো প্লে কৰক, তাৰ পিছত ইয়াৰ ওপৰত থকা ডাউনলোড ভিডিঅ' বুটামটো ব্যৱহাৰ কৰক।
 #. text in the Download video window
 #, machine
 	No video this can download on that page	এই পৃষ্ঠাত এইটোৱে ডাউনল’ড কৰিব পৰা কোনো ভিডিঅ’ নাই
@@ -1264,6 +1312,9 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Once at	এবাৰত
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	প্ৰতি শাৰীত এটা ঠিকনা; * যিকোনো পাঠৰ বাবে, যেনে example.com/private/*।
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	এককালীন ডাউনল’ডিং
@@ -1609,6 +1660,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ছাৰ্ভাৰে প্ৰদান কৰা অনুসৰি ফাইল সৃষ্টিৰ তাৰিখ ছেট কৰক
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	ছেট আপ কৰক
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1813,6 +1869,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	টেম্পোৰেৰী ডিৰেক্টৰী
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	ব্ৰাউজাৰ ইন্টিগ্ৰেচন পৰীক্ষা কৰক
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	ব্ৰাউজাৰ ইন্টিগ্ৰেচন পৰীক্ষা কৰক...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1835,6 +1899,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	শ্ৰেষ্ঠ গুণাগুণৰ বাবে ffmpeg প্ৰয়োজন: ইয়াক আপোনাৰ চিষ্টেমৰ পেকেজ মেনেজাৰৰ সৈতে ইনষ্টল কৰক (বা Homebrew)।
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	ব্ৰাউজাৰসমূহে Mister Download Manager বিচাৰি পাব পাৰে
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2047,12 +2115,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	এই ফোল্ডাৰটো বিদ্যমান নহয়:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	এইটো ইনষ্টল কৰা কপি, প'ৰ্টেবল নহয়
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	এই চিষ্টেমত হেং আপ কৰিবলৈ কোনো ডায়েল-আপ সংযোগ নাই
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	এই টৰেণ্টটো ইতিমধ্যে ডাউনলোড তালিকাত আছে
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	এই ভিডিঅ'টো সুৰক্ষিত (DRM): কোনো সঁজুলিয়ে ইয়াক সংৰক্ষণ কৰিব নোৱাৰে।
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	এই ভিডিঅ'টোৰ বাবে আপুনি ছাইন ইন কৰিব লাগিব। আপোনাৰ ব্ৰাউজাৰত ইয়াৰ ওপৰত থকা ডাউনলোড ভিডিঅ' বুটামটো ব্যৱহাৰ কৰক, যিয়ে আপোনাৰ ছাইন-ইন পাছ কৰে।
 #. text in the Scheduler window
 #, machine
 	Thursday	বৃহস্পতিবাৰ
@@ -2349,6 +2429,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: ডাউনলোড শেষ হ'লে পৰীক্ষা কৰা হ'ব
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: এক্সটেনচন সংযুক্ত হৈছে
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: এক্সটেনচন {version} সংযুক্ত হৈছে
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2495,6 +2584,23 @@ column	Transfer rate	স্থানান্তৰৰ হাৰ
 #, machine
 extension	Button settings...	বাটন ছেটিংছ...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Mister Download Manager লৈ সংযুক্ত
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} লৈ সংযুক্ত
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	Mister Download Manager ৰ সৈতে সকলো লিংক ডাউনলোড কৰক
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	Mister Download Manager ৰ সৈতে নিৰ্বাচিত লিংকসমূহ ডাউনলোড কৰক
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	ভিডিঅ' ডাউনলোড কৰক
@@ -2502,6 +2608,11 @@ extension	Download video	ভিডিঅ' ডাউনলোড কৰক
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Mister Download Manager ৰ সৈতে ডাউনলোড কৰক
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	{site} ৰ পৰা ডাউনলোডসমূহ ব্ৰাউজাৰৰ সৈতে থাকে
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2511,17 +2622,41 @@ extension	Drag to move it along the video's edge	ভিডিঅ'ৰ কাষ�
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	ব্ৰাউজাৰৰ পৰা Mister Download Manager লৈ ডাউনলোডসমূহ হস্তান্তৰ কৰে।
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	সহায়
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	এই ভিডিঅ'ত লুকুৱাওক
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	ব্ৰাউজাৰক ডাউনলোড কৰিবলৈ দিবলৈ এটা লিংকত ক্লিক কৰোঁতে Alt টিপি ধৰক।
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	ইয়াক কেনেকৈ ঠিক কৰিব
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager সময়মতে আৰম্ভ নহ'ল
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager এ এক্সটেনচনৰ এই কপি গ্ৰহণ নকৰে
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager এ সঁহাৰি নিদিলে
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ইনষ্টল কৰা হোৱা নাই বা আৰম্ভ হোৱা নাই
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Mister Download Manager ইন্টিগ্ৰেচন মডিউল
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ইনষ্টল কৰা হোৱা নাই, বা ইয়াৰ ব্ৰাউজাৰ ইন্টিগ্ৰেচন ছেট আপ কৰা হোৱা নাই
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2532,9 +2667,51 @@ extension	More options	অধিক বিকল্প
 #, machine
 extension	Never on {site}	{site} ত কেতিয়াও নহয়
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	{site} ৰ পৰা ডাউনলোড কেতিয়াও নল'ব
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Mister Download Manager খুলক
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	বিকল্পসমূহ...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	বিৰত কৰা হৈছে: ডাউনল’ডসমূহ ব্ৰাউজাৰৰ সৈতে থাকে
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	সুৰক্ষিত ভিডিঅ': ইয়াক সংৰক্ষণ কৰিব নোৱাৰি
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager লৈ প্ৰেৰণ কৰা হৈছে
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	এই ব্ৰাউজাৰৰ পৰা ডাউনল’ডসমূহ লওক
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Mister Download Manager লৈ সংযোগ বিফল হ'ল
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	এই ছাইটত ডাউনল’ড বুটাম বন্ধ আছে
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	এই ডাউনল’ডৰ বিৱৰণসমূহ হস্তান্তৰ কৰিব নোৱাৰাকৈ অতি বৃহৎ আছিল
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	এই এক্সটেনশ্বনে আগবঢ়োৱা সকলো ব্যৱহাৰ কৰিবলৈ Mister Download Manager আপডে'ট কৰক
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

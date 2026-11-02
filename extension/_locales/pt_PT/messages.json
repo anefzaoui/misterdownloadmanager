@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Módulo de Integração do Mister Download Manager"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Entrega as transferências do browser ao Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Enviado para Mister Download Manager"
   },
   "video_failed": {
-    "message": "O Mister Download Manager não respondeu"
+    "message": "Mister Download Manager não está instalado ou não iniciou"
   },
   "video_drag": {
     "message": "Arraste para o mover ao longo do limite do vídeo"
+  },
+  "menu_selected": {
+    "message": "Descarregar links selecionados com Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Descarregar todos os links com Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Ligado a Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Ligado a Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Em pausa: os downloads permanecem no navegador"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager não está instalado ou a sua integração com o navegador não está configurada"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager não aceita esta cópia da extensão"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager não iniciou a tempo"
+  },
+  "status_host_failed": {
+    "message": "A ligação ao Mister Download Manager falhou"
+  },
+  "status_too_large": {
+    "message": "Os detalhes deste download eram demasiado grandes para serem entregues"
+  },
+  "status_update_app": {
+    "message": "Atualize o Mister Download Manager para usar tudo o que esta extensão oferece"
+  },
+  "popup_take": {
+    "message": "Obter downloads deste navegador"
+  },
+  "popup_exclude_site": {
+    "message": "Nunca descarregar de $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Os downloads de $site$ ficam com o navegador",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Abrir Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Opções..."
+  },
+  "popup_help": {
+    "message": "Ajuda"
+  },
+  "popup_fix": {
+    "message": "Como corrigir"
+  },
+  "popup_alt": {
+    "message": "Mantenha Alt premido enquanto clica num link para deixar o navegador descarregá-lo."
+  },
+  "video_off": {
+    "message": "O botão de download está desativado neste site"
+  },
+  "video_drm": {
+    "message": "Vídeo protegido: não pode ser guardado"
   }
 }

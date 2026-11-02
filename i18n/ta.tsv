@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	முகவரி:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	உலாவியில் விடப்பட்ட முகவரிகள்
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	மேம்பட்ட / SOCKS...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	மேம்பட்ட உலாவி ஒருங்கிணைப்பு இயக்கத்தில் உள்ளது
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	அனைத்து பதிவிறக்கங்களும்
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	கிராஷ் தரவையும் (.dmp) இணைக்கவும்: MDM நினைவகத்தில் வைத்திருந்த முகவரிகளை இது கொண்டிருக்கலாம்
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	கிராஷ் தரவையும் (.dmp) இணைக்கவும்: அதில் முகவரிகள், குக்கீகள் மற்றும் கடவுச்சொற்கள் இருக்கலாம்
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	வட்டில் இருந்து கோப்பையும் நீக்கவும்
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	உலாவி திறக்கும் கோப்புகளையும் (PDF, இசை, வீடியோ) எடுக்கவும்
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager தொடங்கும் போது எப்போதும் வேகக் கட்டுப்படுத்தியை இயக்கவும்
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	கோப்புப் பட்டியலுக்காக பியர்களைக் கேட்கிறது. மேக்னட் இணைப்புகள் ஒன்று அல்லது இரண்டு நிமிடங்கள் ஆகலாம்.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	ஆடியோ மட்டும் {type}
 #. text in the Scheduler window
 #, machine
 	August	ஆகஸ்ட்
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	உலாவுக...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	இந்தக் கணினியில் உலாவி ஒருங்கிணைப்பு அமைக்கப்படவில்லை, எனவே எந்த உலாவியும் Mister Download Managerஐ இன்னும் அணுக முடியாது.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	உலாவி/சிஸ்டம் ஒருங்கிணைப்பு
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	கடிகாரம்:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	பதிவிறக்கங்களை நீக்குவதை உறுதிப்படுத்தவும்
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	இணைக்கப்பட்டது
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	இணைக்கப்பட்டது: உங்கள் உலாவியிலிருந்து பதிவிறக்கங்கள் இப்போது இங்கே வருகின்றன.
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	பின்வரும் தளங்களிலிருந்து தானாகவே பதிவிறக்கத்தைத் தொடங்க வேண்டாம்:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	இதைவிடச் சிறிய கோப்புகளை எடுக்க வேண்டாம் (KB, 0 = எந்த அளவும்):
 #. text in a download's progress window
 #, machine
 	Done	முடிந்தது
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	தாவலை மறை
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	ஒரு இணைப்பைக் கிளிக் செய்யும்போது Alt ஐ அழுத்திப் பிடித்தால், Mister Download Managerக்குப் பதிலாக உலாவி அதைப் பதிவிறக்கும்.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	முகப்புப் பக்கம்
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	எப்படிச் சரிசெய்வது
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	விசைப்பலகை குறுக்குவழிகள்
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	விசைகள்
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	விசைகள்...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	அனைத்து பதிவிறக்கங்களையும் ஒன்றாக வரம்பிடவும்
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	உலாவியிலிருந்து இணைப்புகள்
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	இதுவரை முகவரிகள் இல்லை
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	எந்த உலாவியின் நீட்டிப்பும் இன்னும் இணைக்கப்படவில்லை
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	ப்ராக்ஸி/SOCKS இல்லை
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	இந்த பக்கத்தில் வீடியோ எதுவும் காணப்படவில்லை. வீடியோவை இயக்கவும், பின்னர் அதன் மேல் உள்ள வீடியோவைப் பதிவிறக்கு பொத்தானைப் பயன்படுத்தவும்.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	இந்த பக்கத்தில் பதிவிறக்கக்கூடிய வீடியோ எதுவும் இல்லை
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	இது சேர்க்கப்பட்டதும், இந்த சாளரம் அதைக் கூறும். Chrome அதன் அடுத்த தொடக்கத்தில் தானாகவே கேட்கலாம்.
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	ஒரு வரிக்கு ஒரு முகவரி; * என்பது example.com/private/* இல் உள்ளதைப் போல எந்த உரையையும் குறிக்கிறது.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ஒருமுறை பதிவிறக்கம்
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	சேவையகத்தால் வழங்கப்பட்ட கோப்பு உருவாக்கப்பட்ட தேதியை அமை
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	அமைக்கவும்
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	தற்காலிக அடைவு
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	உலாவி ஒருங்கிணைப்பைச் சோதிக்கவும்
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	உலாவி ஒருங்கிணைப்பைச் சோதிக்கவும்...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	சிறந்த தரங்களுக்கு ffmpeg தேவை: உங்கள் கணினியின் தொகுப்பு மேலாளர் (அல்லது Homebrew) மூலம் அதை நிறுவவும்.
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	உலாவிகள் Mister Download Managerஐக் கண்டறிய முடியும்
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	இந்த அடைவு இல்லை:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	இது நிறுவப்பட்ட நகல், போர்ட்டபிள் நகல் அல்ல
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	இந்த கணினியில் டயல்-அப் இணைப்புகள் எதுவும் இல்லை
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	இந்த டோரண்ட் ஏற்கனவே பதிவிறக்கப் பட்டியலில் உள்ளது
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	இந்த வீடியோ பாதுகாக்கப்பட்டது (DRM): எந்தக் கருவியாலும் இதைச் சேமிக்க முடியாது.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	இந்த வீடியோவைப் பார்க்க நீங்கள் உள்நுழைய வேண்டும். உங்கள் உலாவியில் உள்ள வீடியோவைப் பதிவிறக்கு பொத்தானைப் பயன்படுத்தவும், அது உங்கள் உள்நுழைவை அனுப்பும்.
 #. text in the Scheduler window
 #, machine
 	Thursday	வியாழன்
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: பதிவிறக்கம் முடிந்ததும் சரிபார்க்கப்பட்டது
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: நீட்டிப்பு இணைக்கப்பட்டது
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: நீட்டிப்பு {version} இணைக்கப்பட்டது
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	பரிமாற்ற விகிதம்
 #, machine
 extension	Button settings...	பொத்தான் அமைப்புகள்...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Mister Download Manager உடன் இணைக்கப்பட்டது
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} உடன் இணைக்கப்பட்டது
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	Mister Download Manager உடன் அனைத்து இணைப்புகளையும் பதிவிறக்கு
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	Mister Download Manager உடன் தேர்ந்தெடுக்கப்பட்ட இணைப்புகளைப் பதிவிறக்கு
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	வீடியோவைப் பதிவிறக்கு
@@ -2505,6 +2611,11 @@ extension	Download video	வீடியோவைப் பதிவிறக்
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Mister Download Manager மூலம் பதிவிறக்கு
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	{site} இலிருந்து பதிவிறக்கங்கள் உலாவியில் இருக்கும்
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	வீடியோவின் 
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	உலாவியில் இருந்து Mister Download Managerக்கு பதிவிறக்கங்களை அனுப்புகிறது.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	உதவி
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	இந்த வீடியோவில் மறை
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	ஒரு இணைப்பைக் கிளிக் செய்யும்போது Alt ஐ அழுத்திப் பிடித்தால், உலாவி அதைப் பதிவிறக்கும்.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	எப்படிச் சரிசெய்வது
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager சரியான நேரத்தில் தொடங்கவில்லை
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager இந்த நீட்டிப்பின் நகலை ஏற்கவில்லை
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager பதிலளிக்கவில்லை
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager நிறுவப்படவில்லை அல்லது தொடங்கவில்லை
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Mister Download Manager ஒருங்கிணைப்பு தொகுதி
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager நிறுவப்படவில்லை, அல்லது அதன் உலாவி ஒருங்கிணைப்பு அமைக்கப்படவில்லை
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	மேலும் விருப்பங்கள்
 #, machine
 extension	Never on {site}	{site} தளத்தில் ஒருபோதும் காட்ட வேண்டாம்
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	{site} இலிருந்து பதிவிறக்கங்களை ஒருபோதும் எடுக்க வேண்டாம்
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Mister Download Managerஐத் திற
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	விருப்பங்கள்...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	இடைநிறுத்தப்பட்டது: பதிவிறக்கங்கள் உலாவியிலேயே இருக்கும்
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	பாதுகாக்கப்பட்ட வீடியோ: இதைச் சேமிக்க முடியாது
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager என்பதற்கு அனுப்பப்பட்டது
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	இந்த உலாவியிலிருந்து பதிவிறக்கங்களை எடு
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Mister Download Manager உடனான இணைப்பு தோல்வியடைந்தது
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	இந்தத் தளத்தில் பதிவிறக்க பொத்தான் முடக்கப்பட்டுள்ளது
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	இந்த பதிவிறக்கத்தின் விவரங்கள் கைமாற முடியாத அளவுக்கு பெரியதாக இருந்தன
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	இந்த நீட்டிப்பு வழங்கும் அனைத்தையும் பயன்படுத்த Mister Download Manager ஐப் புதுப்பிக்கவும்
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

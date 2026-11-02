@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager 集成模块"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "将下载从浏览器交给 Mister Download Manager。"
@@ -33,9 +33,90 @@
     "message": "已发送到 Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager 未响应"
+    "message": "Mister Download Manager 未安装或未启动"
   },
   "video_drag": {
     "message": "拖动以沿视频边缘移动"
+  },
+  "menu_selected": {
+    "message": "使用 Mister Download Manager 下载选定链接"
+  },
+  "menu_all": {
+    "message": "使用 Mister Download Manager 下载所有链接"
+  },
+  "status_connected": {
+    "message": "已连接到 Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "已连接到 Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "已暂停: 下载保留在浏览器中"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager 未安装，或其浏览器集成未设置"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager 不接受此扩展副本"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager 未及时启动"
+  },
+  "status_host_failed": {
+    "message": "与 Mister Download Manager 的连接失败"
+  },
+  "status_too_large": {
+    "message": "此下载的详细信息过大，无法移交"
+  },
+  "status_update_app": {
+    "message": "更新 Mister Download Manager 以使用此扩展提供的所有功能"
+  },
+  "popup_take": {
+    "message": "从此浏览器接管下载"
+  },
+  "popup_exclude_site": {
+    "message": "永不从 $site$ 获取下载",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "来自 $site$ 的下载将保留在浏览器中",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "打开 Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "选项..."
+  },
+  "popup_help": {
+    "message": "帮助"
+  },
+  "popup_fix": {
+    "message": "如何修复"
+  },
+  "popup_alt": {
+    "message": "按住 Alt 键并单击链接，让浏览器下载。"
+  },
+  "video_off": {
+    "message": "此站点上的下载按钮已关闭"
+  },
+  "video_drm": {
+    "message": "受保护视频: 无法保存"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Интеграциони модул за Mister Download Manager"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Предаје преузимања из прегледача програму Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Послато у Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager није одговорио"
+    "message": "Mister Download Manager није инсталиран или није покренут"
   },
   "video_drag": {
     "message": "Превуците да бисте га померили дуж ивице видео снимка"
+  },
+  "menu_selected": {
+    "message": "Преузми изабране везе помоћу Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Преузми све везе помоћу Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Повезано са Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Повезано са Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Паузирано: преузимања остају у прегледачу"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager није инсталиран, или његова интеграција прегледача није подешена"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager не прихвата ову копију проширења"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager није покренут на време"
+  },
+  "status_host_failed": {
+    "message": "Веза са апликацијом Mister Download Manager није успела"
+  },
+  "status_too_large": {
+    "message": "Детаљи овог преузимања су били превелики за пренос"
+  },
+  "status_update_app": {
+    "message": "Ажурирајте Mister Download Manager да бисте користили све што ова екстензија нуди"
+  },
+  "popup_take": {
+    "message": "Преузми преузимања из овог прегледача"
+  },
+  "popup_exclude_site": {
+    "message": "Никада не преузимај са $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Преузимања са $site$ остају у прегледачу",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Отвори Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Опције..."
+  },
+  "popup_help": {
+    "message": "Помоћ"
+  },
+  "popup_fix": {
+    "message": "Како то поправити"
+  },
+  "popup_alt": {
+    "message": "Држите Alt док кликћете на везу да би је прегледач преузео."
+  },
+  "video_off": {
+    "message": "Дугме за преузимање је искључено на овом сајту"
+  },
+  "video_drm": {
+    "message": "Заштићен видео: не може се сачувати"
   }
 }

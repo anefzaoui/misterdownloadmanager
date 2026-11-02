@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager integrációs modul"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Átadja a letöltéseket a böngészőből a Mister Download Manager számára."
@@ -33,9 +33,90 @@
     "message": "Elküldve a következőnek: Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager nem válaszolt"
+    "message": "Az Mister Download Manager nincs telepítve, vagy nem indult el"
   },
   "video_drag": {
     "message": "Húzza a videó szélére a mozgatáshoz"
+  },
+  "menu_selected": {
+    "message": "Kijelölt hivatkozások letöltése az Mister Download Manager alkalmazással"
+  },
+  "menu_all": {
+    "message": "Összes hivatkozás letöltése az Mister Download Manager alkalmazással"
+  },
+  "status_connected": {
+    "message": "Csatlakoztatva az Mister Download Manager alkalmazáshoz"
+  },
+  "status_connected_version": {
+    "message": "Csatlakoztatva az Mister Download Manager $version$ alkalmazáshoz",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Szüneteltetve: a letöltések a böngészőben maradnak"
+  },
+  "status_not_installed": {
+    "message": "Az Mister Download Manager nincs telepítve, vagy a böngészőintegrációja nincs beállítva"
+  },
+  "status_forbidden": {
+    "message": "Az Mister Download Manager nem fogadja el a bővítmény ezen másolatát"
+  },
+  "status_not_running": {
+    "message": "Az Mister Download Manager nem indult el időben"
+  },
+  "status_host_failed": {
+    "message": "A(z) Mister Download Manager kapcsolódása sikertelen"
+  },
+  "status_too_large": {
+    "message": "A letöltés részletei túl nagyok voltak az átadáshoz"
+  },
+  "status_update_app": {
+    "message": "Frissítse a(z) Mister Download Manager alkalmazást, hogy használhassa a bővítmény összes funkcióját"
+  },
+  "popup_take": {
+    "message": "Letöltések átvétele ebből a böngészőből"
+  },
+  "popup_exclude_site": {
+    "message": "Soha ne töltsön le fájlokat a(z) $site$ webhelyről",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "A(z) $site$ webhelyről származó letöltések a böngészőben maradnak",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Megnyitás: Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Beállítások..."
+  },
+  "popup_help": {
+    "message": "Súgó"
+  },
+  "popup_fix": {
+    "message": "Hogyan javítható"
+  },
+  "popup_alt": {
+    "message": "Tartsa lenyomva az Alt billentyűt, miközben egy hivatkozásra kattint, hogy a böngésző töltse le azt."
+  },
+  "video_off": {
+    "message": "A letöltés gomb ki van kapcsolva ezen a webhelyen"
+  },
+  "video_drm": {
+    "message": "Védett videó: nem menthető"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Integrační modul Mister Download Manager"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Předává stahování z prohlížeče do Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Odesláno do Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager neodpověděl"
+    "message": "Mister Download Manager není nainstalován nebo se nespustil"
   },
   "video_drag": {
     "message": "Přetažením přesunete podél okraje videa"
+  },
+  "menu_selected": {
+    "message": "Stáhnout vybrané odkazy pomocí Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Stáhnout všechny odkazy pomocí Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Připojeno k Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Připojeno k Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Pozastaveno: stahování zůstává v prohlížeči"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager není nainstalován nebo jeho integrace prohlížeče není nastavena"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager nepřijímá tuto kopii rozšíření"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager se nespustil včas"
+  },
+  "status_host_failed": {
+    "message": "Připojení k Mister Download Manager selhalo"
+  },
+  "status_too_large": {
+    "message": "Podrobnosti tohoto stahování byly příliš velké na předání"
+  },
+  "status_update_app": {
+    "message": "Aktualizujte Mister Download Manager, abyste mohli používat vše, co toto rozšíření nabízí"
+  },
+  "popup_take": {
+    "message": "Převzít stahování z tohoto prohlížeče"
+  },
+  "popup_exclude_site": {
+    "message": "Nikdy nepřevzít stahování z $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Stahování z $site$ zůstává v prohlížeči",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Otevřít Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Možnosti..."
+  },
+  "popup_help": {
+    "message": "Nápověda"
+  },
+  "popup_fix": {
+    "message": "Jak to opravit"
+  },
+  "popup_alt": {
+    "message": "Podržte Alt a klikněte na odkaz, aby jej stáhl prohlížeč."
+  },
+  "video_off": {
+    "message": "Tlačítko pro stahování je na tomto webu vypnuto"
+  },
+  "video_drm": {
+    "message": "Chráněné video: nelze uložit"
   }
 }

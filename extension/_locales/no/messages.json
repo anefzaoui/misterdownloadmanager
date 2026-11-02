@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager-integrasjonsmodul"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Sender nedlastinger fra nettleseren til Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Sendt til Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager svarte ikke"
+    "message": "Mister Download Manager er ikke installert eller startet ikke"
   },
   "video_drag": {
     "message": "Dra for å flytte den langs videokanten"
+  },
+  "menu_selected": {
+    "message": "Last ned valgte koblinger med Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Last ned alle koblinger med Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Tilkoblet Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Tilkoblet Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Pauset: nedlastinger blir i nettleseren"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager er ikke installert, eller nettleserintegrasjonen er ikke konfigurert"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager godtar ikke denne kopien av utvidelsen"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager startet ikke i tide"
+  },
+  "status_host_failed": {
+    "message": "Tilkoblingen til Mister Download Manager mislyktes"
+  },
+  "status_too_large": {
+    "message": "Detaljene for denne nedlastingen var for store til å overføres"
+  },
+  "status_update_app": {
+    "message": "Oppdater Mister Download Manager for å bruke alt denne utvidelsen tilbyr"
+  },
+  "popup_take": {
+    "message": "Ta nedlastinger fra denne nettleseren"
+  },
+  "popup_exclude_site": {
+    "message": "Aldri ta nedlastinger fra $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Nedlastinger fra $site$ blir igjen i nettleseren",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Åpne Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Alternativer..."
+  },
+  "popup_help": {
+    "message": "Hjelp"
+  },
+  "popup_fix": {
+    "message": "Hvordan fikse det"
+  },
+  "popup_alt": {
+    "message": "Hold Alt mens du klikker en kobling for å la nettleseren laste den ned."
+  },
+  "video_off": {
+    "message": "Nedlastingsknappen er av på dette nettstedet"
+  },
+  "video_drm": {
+    "message": "Beskyttet video: kan ikke lagres"
   }
 }

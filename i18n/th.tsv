@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	ที่อยู่:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	ที่อยู่ที่จะให้เบราว์เซอร์ดาวน์โหลด
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	ขั้นสูง / Socks...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	การรวมเบราว์เซอร์ขั้นสูงเปิดอยู่
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	การดาวน์โหลดทั้งหมด
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	แนบข้อมูลการขัดข้อง (.dmp) ด้วย: อาจมีที่อยู่ MDM ที่อยู่ในหน่วยความจำ
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	แนบข้อมูลข้อขัดข้อง (.dmp) ด้วย: อาจมีที่อยู่ คุกกี้ และรหัสผ่าน
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	ลบไฟล์ออกจากดิสก์ด้วย
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	ดาวน์โหลดไฟล์ที่เบราว์เซอร์จะเปิดด้วย (PDF, เพลง, วิดีโอ)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	เปิดตัวจำกัดความเร็วเสมอเมื่อ Mister Download Manager เริ่มทำงาน
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	กำลังขอรายการไฟล์จากเพียร์ ลิงก์แม่เหล็กอาจใช้เวลาหนึ่งหรือสองนาที
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	เฉพาะเสียง {type}
 #. text in the Scheduler window
 #, machine
 	August	สิงหาคม
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	เรียกดู...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	การรวมเบราว์เซอร์ไม่ได้ตั้งค่าบนคอมพิวเตอร์เครื่องนี้ ดังนั้นเบราว์เซอร์จึงยังไม่สามารถเข้าถึง Mister Download Manager ได้
 #. page title in the Options window
 #, machine
 	Browser/System Integration	การรวมเบราว์เซอร์/ระบบ
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	นาฬิกา:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	ยืนยันการลบการดาวน์โหลด
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	เชื่อมต่อแล้ว
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	เชื่อมต่อแล้ว: การดาวน์โหลดจากเบราว์เซอร์ของคุณจะมาที่นี่
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	ไม่ต้องเริ่มดาวน์โหลดโดยอัตโนมัติจากไซต์ต่อไปนี้:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	ไม่ดาวน์โหลดไฟล์ที่เล็กกว่า (KB, 0 = ทุกขนาด):
 #. text in a download's progress window
 #, machine
 	Done	เสร็จสิ้น
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ซ่อนแท็บ
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	กด Alt ค้างไว้ขณะคลิกลิงก์เพื่อให้เบราว์เซอร์ดาวน์โหลดแทน Mister Download Manager
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	หน้าแรก
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	วิธีแก้ไข
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	แป้นพิมพ์ลัด
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	ปุ่ม
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	คีย์...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	จำกัดการดาวน์โหลดทั้งหมดรวมกันที่
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	ลิงก์จากเบราว์เซอร์
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	ยังไม่มีที่อยู่
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	ส่วนขยายของเบราว์เซอร์ยังไม่ได้เชื่อมต่อ
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	ไม่มีพร็อกซี/SOCKS
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	ไม่พบวิดีโอในหน้านี้ โปรดเล่นวิดีโอ จากนั้นใช้ปุ่มดาวน์โหลดวิดีโอที่อยู่ด้านบน
 #. text in the Download video window
 #, machine
 	No video this can download on that page	ไม่มีวิดีโอที่สามารถดาวน์โหลดได้ในหน้านั้น
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	เมื่อเพิ่มแล้ว หน้าต่างนี้จะแจ้งให้ทราบ Chrome อาจถามเองเมื่อเริ่มต้นครั้งถัดไป
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	หนึ่งที่อยู่ต่อหนึ่งบรรทัด; * แทนข้อความใด ๆ เช่น example.com/private/*
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ดาวน์โหลดครั้งเดียว
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ตั้งค่าวันที่สร้างไฟล์ตามที่เซิร์ฟเวอร์ให้มา
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	ตั้งค่า
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	ไดเรกทอรีชั่วคราว
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	ทดสอบการรวมเบราว์เซอร์
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	ทดสอบการรวมเบราว์เซอร์...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	คุณภาพที่ดีที่สุดต้องใช้ ffmpeg: ติดตั้งด้วยตัวจัดการแพ็คเกจของระบบของคุณ (หรือ Homebrew)
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	เบราว์เซอร์สามารถค้นหา Mister Download Manager ได้
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	โฟลเดอร์นี้ไม่มีอยู่จริง:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	นี่คือสำเนาที่ติดตั้ง ไม่ใช่แบบพกพา
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ระบบนี้ไม่มีการเชื่อมต่อแบบหมุนโทรศัพท์ให้วางสาย
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ทอร์เรนต์นี้อยู่ในรายการดาวน์โหลดแล้ว
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	วิดีโอนี้ได้รับการป้องกัน (DRM): ไม่มีเครื่องมือใดสามารถบันทึกได้
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	วิดีโอนี้ต้องการให้คุณลงชื่อเข้าใช้ ใช้ปุ่มดาวน์โหลดวิดีโอที่อยู่ด้านบนในเบราว์เซอร์ของคุณ ซึ่งจะส่งการลงชื่อเข้าใช้ของคุณไป
 #. text in the Scheduler window
 #, machine
 	Thursday	วันพฤหัสบดี
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: ตรวจสอบเมื่อดาวน์โหลดเสร็จสิ้น
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: ส่วนขยายเชื่อมต่อแล้ว
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: ส่วนขยาย {version} เชื่อมต่อแล้ว
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	อัตราการถ่ายโอน
 #, machine
 extension	Button settings...	การตั้งค่าปุ่ม...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	เชื่อมต่อกับ Mister Download Manager แล้ว
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	เชื่อมต่อกับ Mister Download Manager {version} แล้ว
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	ดาวน์โหลดลิงก์ทั้งหมดด้วย Mister Download Manager
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	ดาวน์โหลดลิงก์ที่เลือกด้วย Mister Download Manager
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	ดาวน์โหลดวิดีโอ
@@ -2505,6 +2611,11 @@ extension	Download video	ดาวน์โหลดวิดีโอ
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	ดาวน์โหลดด้วย Mister Download Manager
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	การดาวน์โหลดจาก {site} จะยังคงอยู่ในเบราว์เซอร์
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	ลากเพื่อย้�
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	ส่งการดาวน์โหลดจากเบราว์เซอร์ไปยัง Mister Download Manager
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	วิธีใช้
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	ซ่อนบนวิดีโอนี้
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	กด Alt ค้างไว้ขณะคลิกลิงก์เพื่อให้เบราว์เซอร์ดาวน์โหลด
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	วิธีแก้ไข
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager ไม่เริ่มทำงานทันเวลา
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager ไม่ยอมรับส่วนขยายนี้
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager ไม่ตอบสนอง
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ไม่ได้ติดตั้งหรือไม่ได้เริ่มทำงาน
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	โมดูลการรวม Mister Download Manager
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ไม่ได้ติดตั้ง หรือไม่ได้ตั้งค่าการรวมเบราว์เซอร์
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	ตัวเลือกเพิ่มเติม
 #, machine
 extension	Never on {site}	ไม่แสดงบน {site}
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	ห้ามดาวน์โหลดจาก {site} อีก
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	เปิด Mister Download Manager
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	ตัวเลือก...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	หยุดชั่วคราว: การดาวน์โหลดจะยังคงอยู่ในเบราว์เซอร์
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	วิดีโอที่มีการป้องกัน: ไม่สามารถบันทึกได้
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	ส่งไปยัง Mister Download Manager
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	รับการดาวน์โหลดจากเบราว์เซอร์นี้
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	การเชื่อมต่อกับ Mister Download Manager ล้มเหลว
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	ปุ่มดาวน์โหลดปิดอยู่บนไซต์นี้
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	รายละเอียดการดาวน์โหลดนี้มีขนาดใหญ่เกินกว่าที่จะส่งมอบได้
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	อัปเดต Mister Download Manager เพื่อใช้ทุกสิ่งที่ส่วนขยายนี้มีให้
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

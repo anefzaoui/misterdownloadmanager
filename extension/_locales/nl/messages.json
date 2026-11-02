@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager-integratiemodule"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Geeft downloads van de browser door aan Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Verzonden naar Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager heeft niet geantwoord"
+    "message": "Mister Download Manager is niet geïnstalleerd of is niet gestart"
   },
   "video_drag": {
     "message": "Slepen om te verplaatsen langs de rand van de video"
+  },
+  "menu_selected": {
+    "message": "Geselecteerde koppelingen downloaden met Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Alle koppelingen downloaden met Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Verbonden met Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Verbonden met Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Gepauzeerd: downloads blijven bij de browser"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager is niet geïnstalleerd, of de browserintegratie is niet ingesteld"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager accepteert deze kopie van de extensie niet"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager is niet op tijd gestart"
+  },
+  "status_host_failed": {
+    "message": "De verbinding met Mister Download Manager is mislukt"
+  },
+  "status_too_large": {
+    "message": "De details van deze download waren te groot om over te dragen"
+  },
+  "status_update_app": {
+    "message": "Update Mister Download Manager om alles te gebruiken wat deze extensie biedt"
+  },
+  "popup_take": {
+    "message": "Downloads van deze browser overnemen"
+  },
+  "popup_exclude_site": {
+    "message": "Nooit downloads van $site$ overnemen",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Downloads van $site$ blijven bij de browser",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Mister Download Manager openen"
+  },
+  "popup_options": {
+    "message": "Opties..."
+  },
+  "popup_help": {
+    "message": "Help"
+  },
+  "popup_fix": {
+    "message": "Oplossen"
+  },
+  "popup_alt": {
+    "message": "Houd Alt ingedrukt terwijl u op een koppeling klikt om de browser deze te laten downloaden."
+  },
+  "video_off": {
+    "message": "De downloadknop is uitgeschakeld op deze site"
+  },
+  "video_drm": {
+    "message": "Beveiligde video: kan niet worden opgeslagen"
   }
 }

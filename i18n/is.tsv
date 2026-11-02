@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	Heimilisfang:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	Vefföng sem eru skilin eftir fyrir vafrann
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	Ítarlegt / Socks...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	Ítarleg samþætting vafra er virk
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Allt niðurhal
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Hengja einnig við hrunsgögnin (.dmp): þau gætu innihaldið vistföng sem MDM hafði í minni
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Hengja einnig við hrungögn (.dmp): þau gætu innihaldið vefföng, vafrakökur og lykilorð
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Eyða einnig skránni af diski
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	Taka einnig við skrám sem vafrinn myndi opna (PDF, tónlist, myndbönd)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Kveikja alltaf á hraðatakmarkara við ræsingu Mister Download Manager
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Biðja jafningja um skráarlista. Segultenglar geta tekið eina eða tvær mínútur.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	Aðeins hljóð {type}
 #. text in the Scheduler window
 #, machine
 	August	Ágúst
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	Fletta...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Samþætting vafra er ekki sett upp á þessari tölvu, svo enginn vafri getur náð í Mister Download Manager ennþá.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Vafra-/kerfissamþætting
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Klukka:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	Staðfesta eyðingu niðurhala
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	Tengt
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	Tengt: niðurhöl úr vafranum þínum koma nú hingað.
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	Ekki hefja niðurhal sjálfkrafa frá eftirfarandi vefsvæðum:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	Ekki taka við skrám sem eru minni en (KB, 0 = hvaða stærð sem er):
 #. text in a download's progress window
 #, machine
 	Done	Lokið
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Fela flipa
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Haltu Alt inni á meðan þú smellir á tengil til að láta vafrann hlaða honum niður í stað Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Heimasíða
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	Hvernig á að laga það
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Flýtilyklar
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	Lyklar
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	Lyklar...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Takmarka allt niðurhal saman við
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	Tenglar úr vafranum
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Engin vistföng ennþá
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	Engin vafraviðbót hefur tengst ennþá
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Enginn proxy/socks
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	Engin myndskeið fundust á þessari síðu. Spilaðu myndskeiðið og notaðu síðan „Hlaða niður myndskeiði“ hnappinn fyrir ofan það.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	Ekkert myndband sem hægt er að hlaða niður á þessari síðu
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Þegar henni hefur verið bætt við segir þessi gluggi það. Chrome gæti einnig spurt sjálfur við næstu ræsingu.
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	Eitt veffang á línu; * stendur fyrir hvaða texta sem er, eins og í example.com/private/*.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Einu sinni niðurhal
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Setja stofnunardagsetningu skráar eins og gefið er upp af þjóninum
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	Setja upp
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Tímabundin mappa
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	Prófa samþættingu vafra
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	Prófa samþættingu vafra...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Bestu gæðin þurfa ffmpeg: settu það upp með pakkastjóra kerfisins þíns (eða Homebrew).
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	Vafrarnir finna Mister Download Manager
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Þessi mappa er ekki til:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	Þetta er uppsett eintak, ekki færanlegt
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Þetta kerfi hefur engar innhringitengingar til að leggja á
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Þetta torrent er nú þegar á niðurhalslistanum
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	Þetta myndskeið er varið (DRM): ekkert tól getur vistað það.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Þetta myndskeið krefst þess að þú sért innskráður. Notaðu „Hlaða niður myndskeiði“ hnappinn fyrir ofan það í vafranum þínum, sem sendir innskráninguna þína áfram.
 #. text in the Scheduler window
 #, machine
 	Thursday	Fimmtudagur
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: athugað þegar niðurhali lýkur
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: viðbótin tengd
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: viðbótin {version} tengd
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	Flutningshraði
 #, machine
 extension	Button settings...	Hnappastillingar...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Tengt við Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Tengt við Mister Download Manager {version}
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	Hlaða niður öllum tenglum með Mister Download Manager
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	Hlaða niður völdum tenglum með Mister Download Manager
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	Hlaða niður myndbandi
@@ -2505,6 +2611,11 @@ extension	Download video	Hlaða niður myndbandi
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Sækja með Mister Download Manager
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	Niðurhal frá {site} verður áfram í vafranum
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	Dragðu til að færa hann með
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	Sendir niðurhal frá vafranum til Mister Download Manager.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	Hjálp
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	Fela á þessu myndbandi
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	Haltu Alt inni á meðan þú smellir á tengil til að láta vafrann hlaða honum niður.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	Hvernig á að laga það
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager ræstist ekki í tæka tíð
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager samþykkir ekki þetta eintak af viðbótinni
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager svaraði ekki
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager er ekki uppsett eða ræstist ekki
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Samþættingareining Mister Download Manager
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager er ekki uppsett, eða samþætting vafra er ekki sett upp
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	Fleiri valkostir
 #, machine
 extension	Never on {site}	Aldrei á {site}
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	Aldrei taka niðurhal frá {site}
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Opna Mister Download Manager
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	Valkostir...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	Gert hlé: niðurhal helst í vafranum
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	Verndað myndskeið: ekki er hægt að vista það
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Sent til Mister Download Manager
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	Taka niðurhal úr þessum vafra
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Tengingin við Mister Download Manager tókst ekki
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	Niðurhalshnappurinn er óvirkur á þessari síðu
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	Upplýsingar um þetta niðurhal voru of stórar til að afhenda
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	Uppfærðu Mister Download Manager til að nota allt sem þessi viðbót býður upp á
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

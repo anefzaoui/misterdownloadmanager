@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Moduł integracji Mister Download Manager"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Przekazuje pobieranie z przeglądarki do Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Wysłano do Mister Download Manager"
   },
   "video_failed": {
-    "message": "Aplikacja Mister Download Manager nie odpowiedziała"
+    "message": "Mister Download Manager nie jest zainstalowany lub nie uruchomił się"
   },
   "video_drag": {
     "message": "Przeciągnij, aby przesunąć wzdłuż krawędzi wideo"
+  },
+  "menu_selected": {
+    "message": "Pobierz wybrane łącza za pomocą Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Pobierz wszystkie łącza za pomocą Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Połączono z Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Połączono z Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Wstrzymano: pobieranie pozostaje w przeglądarce"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager nie jest zainstalowany lub jego integracja z przeglądarką nie jest skonfigurowana"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager nie akceptuje tej kopii rozszerzenia"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager nie uruchomił się na czas"
+  },
+  "status_host_failed": {
+    "message": "Połączenie z Mister Download Manager nie powiodło się"
+  },
+  "status_too_large": {
+    "message": "Szczegóły tego pobierania były zbyt duże, aby je przekazać"
+  },
+  "status_update_app": {
+    "message": "Zaktualizuj Mister Download Manager, aby korzystać ze wszystkich funkcji oferowanych przez to rozszerzenie"
+  },
+  "popup_take": {
+    "message": "Pobieraj pliki z tej przeglądarki"
+  },
+  "popup_exclude_site": {
+    "message": "Nigdy nie pobieraj plików z $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Pobrane pliki z $site$ pozostają w przeglądarce",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Otwórz Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Opcje..."
+  },
+  "popup_help": {
+    "message": "Pomoc"
+  },
+  "popup_fix": {
+    "message": "Jak to naprawić"
+  },
+  "popup_alt": {
+    "message": "Przytrzymaj klawisz Alt, klikając łącze, aby przeglądarka je pobrała."
+  },
+  "video_off": {
+    "message": "Przycisk pobierania jest wyłączony na tej stronie"
+  },
+  "video_drm": {
+    "message": "Wideo chronione: nie można go zapisać"
   }
 }

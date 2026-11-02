@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	Адрас:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	Адрасы, пакінутыя браўзеру
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	Дадаткова / Socks...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	Пашыраная інтэграцыя з браўзерам уключана
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Усе спампоўкі
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Таксама далучыць даныя збою (.dmp): яны могуць утрымліваць адрасы, якія MDM меў у памяці
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Таксама далучыць даныя збою (.dmp): яны могуць утрымліваць адрасы, файлы cookie і паролі
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Таксама выдаліць файл з дыска
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	Таксама браць файлы, якія браўзер адкрыў бы (PDF, музыка, відэа)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Заўсёды ўключаць абмежавальнік хуткасці пры запуску Mister Download Manager
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Запыт спісу файлаў у піраў. Магнітныя спасылкі могуць заняць хвіліну-дзве.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	Толькі аўдыя {type}
 #. text in the Scheduler window
 #, machine
 	August	Жнівень
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	Агляд...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Інтэграцыя з браўзерам не наладжана на гэтым камп’ютары, таму ніводзін браўзер пакуль не можа дасягнуць Mister Download Manager.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Інтэграцыя з браўзерам/сістэмай
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Гадзіннік:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	Пацвердзіць выдаленне загрузак
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	Падключана
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	Падключана: спампоўкі з вашага браўзера цяпер трапляюць сюды.
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	Не пачынаць загрузку аўтаматычна з наступных сайтаў:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	Не браць файлы меншыя за (КБ, 0 = любы памер):
 #. text in a download's progress window
 #, machine
 	Done	Гатова
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Схаваць укладку
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Утрымлівайце Alt, націскаючы на спасылку, каб браўзер спампаваў яе замест Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Хатняя старонка
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	Як выправіць
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Спалучэнні клавіш
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	Клавішы
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	Клавішы...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Абмежаваць усе загрузкі разам да
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	Спасылкі з браўзера
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Пакуль няма адрасоў
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	Пакуль ніводнае пашырэнне браўзера не падключылася
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Без проксі/SOCKS
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	На гэтай старонцы відэа не знойдзена. Прайграйце відэа, затым выкарыстоўвайце кнопку «Спампаваць відэа» над ім.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	На гэтай старонцы няма відэа, якое можна загрузіць
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Пасля дадання гэта акно паведаміць пра гэта. Chrome таксама можа запытаць сам пры наступным запуску.
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	Адзін адрас на радок; * азначае любы тэкст, напрыклад example.com/private/*.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Аднаразовая загрузка
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Усталяваць дату стварэння файла, прадастаўленую серверам
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	Наладзіць
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Часовы каталог
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	Тэст інтэграцыі з браўзерам
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	Тэст інтэграцыі з браўзерам...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Для лепшай якасці патрэбны ffmpeg: усталюйце яго з дапамогай мэнэджара пакетаў вашай сістэмы (або Homebrew).
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	Браўзеры могуць знайсці Mister Download Manager
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Гэтай папкі не існуе:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	Гэта ўсталяваная копія, а не партатыўная
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	У гэтай сістэме няма камутаваных злучэнняў для разрыву
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Гэты торэнт ужо ёсць у спісе загрузак
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	Гэта відэа абаронена (DRM): ніякі інструмент не можа яго захаваць.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Для гэтага відэа вам трэба ўвайсці. Выкарыстоўвайце кнопку «Спампаваць відэа» над ім у вашым браўзеры, які перадае ваш уваход.
 #. text in the Scheduler window
 #, machine
 	Thursday	Чацвер
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: правяраецца пасля завяршэння спампоўвання
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: пашырэнне падключана
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: пашырэнне {version} падключана
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	Хуткасць перадачы
 #, machine
 extension	Button settings...	Налады кнопкі...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Падключана да Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Падключана да Mister Download Manager {version}
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	Спампаваць усе спасылкі з Mister Download Manager
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	Спампаваць выбраныя спасылкі з Mister Download Manager
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	Спампаваць відэа
@@ -2505,6 +2611,11 @@ extension	Download video	Спампаваць відэа
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Спампаваць з дапамогай Mister Download Manager
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	Спампоўкі з {site} застаюцца ў браўзеры
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	Перацягніце, каб 
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	Перадае спампоўкі з браўзера ў Mister Download Manager.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	Даведка
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	Схаваць на гэтым відэа
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	Утрымлівайце Alt, націскаючы на спасылку, каб браўзер спампаваў яе.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	Як выправіць
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager не запусціўся своечасова
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager не прымае гэтую копію пашырэння
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager не адказаў
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager не ўсталяваны або не запушчаны
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Модуль інтэграцыі Mister Download Manager
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager не ўсталяваны або яго інтэграцыя з браўзерам не наладжана
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	Дадатковыя параметры
 #, machine
 extension	Never on {site}	Ніколі на {site}
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	Ніколі не браць спампоўкі з {site}
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Адкрыць Mister Download Manager
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	Параметры...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	Прыпынена: спампоўкі застаюцца ў браўзеры
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	Абароненае відэа: яго нельга захаваць
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Адпраўлена ў Mister Download Manager
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	Забіраць спампоўкі з гэтага браўзера
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Злучэнне з Mister Download Manager не ўстаноўлена
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	Кнопка спампоўкі адключана на гэтым сайце
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	Падрабязнасці гэтай спампоўкі былі занадта вялікія для перадачы
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	Абнавіце Mister Download Manager, каб выкарыстоўваць усе магчымасці гэтага пашырэння
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

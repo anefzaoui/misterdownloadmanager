@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager 統合モジュール"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "ブラウザーから Mister Download Manager にダウンロードを渡します。"
@@ -33,9 +33,90 @@
     "message": "Mister Download Manager に送信済み"
   },
   "video_failed": {
-    "message": "Mister Download Manager が応答しませんでした"
+    "message": "Mister Download Manager がインストールされていないか、起動していません"
   },
   "video_drag": {
     "message": "ドラッグして動画の端に沿って移動"
+  },
+  "menu_selected": {
+    "message": "Mister Download Manager で選択したリンクをダウンロード"
+  },
+  "menu_all": {
+    "message": "Mister Download Manager で全リンクをダウンロード"
+  },
+  "status_connected": {
+    "message": "Mister Download Manager に接続済み"
+  },
+  "status_connected_version": {
+    "message": "Mister Download Manager $version$ に接続済み",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "一時停止: ダウンロードはブラウザーに残ります"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager がインストールされていないか、ブラウザー統合が設定されていません"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager はこの拡張機能のコピーを受け入れません"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager が時間内に起動しませんでした"
+  },
+  "status_host_failed": {
+    "message": "Mister Download Manager への接続に失敗しました"
+  },
+  "status_too_large": {
+    "message": "このダウンロードの詳細は大きすぎて引き渡せませんでした"
+  },
+  "status_update_app": {
+    "message": "この拡張機能のすべての機能を使用するには、Mister Download Manager を更新してください"
+  },
+  "popup_take": {
+    "message": "このブラウザーからのダウンロードを取得する"
+  },
+  "popup_exclude_site": {
+    "message": "$site$ からのダウンロードは今後取得しない",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "$site$ からのダウンロードはブラウザーに残ります",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Mister Download Manager を開く"
+  },
+  "popup_options": {
+    "message": "オプション..."
+  },
+  "popup_help": {
+    "message": "ヘルプ"
+  },
+  "popup_fix": {
+    "message": "修正方法"
+  },
+  "popup_alt": {
+    "message": "リンクをクリックするときに Alt キーを押したままにすると、ブラウザーでダウンロードされます。"
+  },
+  "video_off": {
+    "message": "このサイトではダウンロード ボタンがオフになっています"
+  },
+  "video_drm": {
+    "message": "保護されたビデオ: 保存できません"
   }
 }

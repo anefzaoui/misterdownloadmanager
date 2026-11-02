@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	Manzil:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	Brauzerga qoldirilgan manzillar
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	Kengaytirilgan / Socks...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	Kengaytirilgan brauzer integratsiyasi yoqilgan
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Barcha yuklab olinganlar
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Shuningdek, avariya maʼlumotlarini (.dmp) biriktiring: u MDM xotirasidagi manzillarni oʻz ichiga olishi mumkin
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Halokat maʼlumotlarini (.dmp) ham biriktirish: u manzillar, cookie-fayllar va parollarni oʻz ichiga olishi mumkin
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Faylni diskdan ham oʻchirish
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	Brauzer ochadigan fayllarni ham olish (PDF, musiqa, video)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ishga tushganda Tezlik cheklagichini har doim yoqish
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Fayl roʻyxati uchun tengdoshlardan soʻralmoqda. Magnit havolalar bir-ikki daqiqa vaqt olishi mumkin.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	Faqat audio {type}
 #. text in the Scheduler window
 #, machine
 	August	Avgust
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	Koʻrib chiqish...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Brauzer integratsiyasi ushbu kompyuterda oʻrnatilmagan, shuning uchun hozircha hech bir brauzer Mister Download Manager ga kira olmaydi.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Brauzer/Tizim integratsiyasi
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Soat:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	Yuklab olishlarni oʻchirishni tasdiqlash
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	Ulandi
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	Ulandi: brauzeringizdan yuklamalar endi shu yerga keladi.
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	Quyidagi saytlardan avtomatik yuklab olishni boshlamang:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	Kichikroq fayllarni olmaslik (KB, 0 = istalgan oʻlcham):
 #. text in a download's progress window
 #, machine
 	Done	Bajarildi
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Yorliqni yashirish
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager oʻrniga brauzer yuklab olishi uchun havolani bosayotganda Alt tugmasini bosing.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Bosh sahifa
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	Qanday tuzatish kerak
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Klaviatura yorliqlari
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	Tugmalar
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	Kalitlar...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Barcha yuklab olishlarni birgalikda cheklash
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	Brauzerdagi havolalar
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Hozircha manzillar yoʻq
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	Hozircha hech bir brauzer kengaytmasi ulanmagan
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Proksi/SOCKS yoʻq
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	Ushbu sahifada video topilmadi. Videoni ijro eting, soʻngra ustidagi Videoni yuklab olish tugmasidan foydalaning.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	Ushbu sahifada yuklab olish mumkin boʻlgan video yoʻq
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	U qoʻshilgandan soʻng, bu oyna shuni bildiradi. Chrome keyingi ishga tushirishda oʻzi ham soʻrashi mumkin.
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	Har bir qatorda bitta manzil; * istalgan matnni bildiradi, masalan, example.com/private/*.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Bir martalik yuklab olish
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Fayl yaratish sanasini server tomonidan taqdim etilganidek oʻrnatish
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	Oʻrnatish
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Vaqtinchalik katalog
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	Brauzer integratsiyasini sinash
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	Brauzer integratsiyasini sinash...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Eng yaxshi sifatlar uchun ffmpeg kerak: uni tizimingizning paket menejeri (yoki Homebrew) bilan oʻrnating.
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	Brauzerlar Mister Download Manager ni topa oladi
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Bu jild mavjud emas:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	Bu oʻrnatilgan nusxa, koʻchma nusxa emas
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Bu tizimda osib qoʻyish uchun dial-up ulanishlari yoʻq
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Bu torrent yuklab olish roʻyxatida allaqachon mavjud
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	Bu video himoyalangan (DRM): hech qanday vosita uni saqlay olmaydi.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Bu video uchun tizimga kirishingiz kerak. Brauzeringizda ustidagi Videoni yuklab olish tugmasidan foydalaning, bu sizning tizimga kirishingizni oʻtkazadi.
 #. text in the Scheduler window
 #, machine
 	Thursday	Payshanba
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: yuklab olish tugagach tekshiriladi
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: kengaytma ulandi
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: {version} kengaytmasi ulandi
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	Oʻtkazish tezligi
 #, machine
 extension	Button settings...	Tugma sozlamalari...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Mister Download Manager ga ulandi
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} ga ulandi
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	Barcha havolalarni Mister Download Manager bilan yuklab olish
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	Tanlangan havolalarni Mister Download Manager bilan yuklab olish
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	Videoni yuklab olish
@@ -2505,6 +2611,11 @@ extension	Download video	Videoni yuklab olish
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Mister Download Manager yordamida yuklab olish
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	{site} dan yuklamalar brauzerda qoladi
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	Videoning cheti boʻylab haraka
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	Yuklab olinadigan fayllarni brauzerdan Mister Download Managerga uzatadi.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	Yordam
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	Ushbu videoda yashirish
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	Havolani bosayotganda Alt tugmasini bosing, shunda brauzer uni yuklab oladi.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	Qanday tuzatish kerak
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager oʻz vaqtida ishga tushmadi
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager kengaytmaning ushbu nusxasini qabul qilmaydi
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager javob bermadi
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager oʻrnatilmagan yoki ishga tushmadi
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Mister Download Manager integratsiya moduli
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager oʻrnatilmagan yoki uning brauzer integratsiyasi sozlanmagan
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	Qoʻshimcha parametrlar
 #, machine
 extension	Never on {site}	{site} saytida hech qachon koʻrsatma
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	{site} dan yuklamalarni hech qachon olmaslik
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Mister Download Manager ni ochish
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	Parametrlar...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	Toʻxtatildi: yuklamalar brauzerda qoladi
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	Himoyalangan video: uni saqlab boʻlmaydi
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ga yuborildi
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	Ushbu brauzerdan yuklamalarni oling
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Mister Download Manager bilan ulanish amalga oshmadi
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	Ushbu saytda yuklab olish tugmasi oʻchirilgan
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	Ushbu yuklamaning tafsilotlari topshirish uchun juda katta edi
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	Ushbu kengaytma taklif qilgan barcha narsadan foydalanish uchun Mister Download Manager dasturini yangilang
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

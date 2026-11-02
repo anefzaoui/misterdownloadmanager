@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	მისამართი:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	ბრაუზერისთვის დატოვებული მისამართები
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	გაფართოებული / SOCKS...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	ბრაუზერის გაფართოებული ინტეგრაცია ჩართულია
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	ყველა ჩამოტვირთვა
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	ასევე დაურთეთ ავარიის მონაცემები (.dmp): მას შეიძლება შეიცავდეს მისამართებს, რომლებიც MDM-ს მეხსიერებაში ჰქონდა
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	ასევე დაურთეთ ავარიის მონაცემები (.dmp): ის შეიძლება შეიცავდეს მისამართებს, ქუქი-ფაილებს და პაროლებს
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	ასევე წაშალეთ ფაილი დისკიდან
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	ასევე მიიღეთ ფაილები, რომლებსაც ბრაუზერი გახსნიდა (PDF, მუსიკა, ვიდეო)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	ყოველთვის ჩართეთ სიჩქარის შემზღუდველი Mister Download Manager-ის გაშვებისას
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ფაილების სიის მოთხოვნა პირებისგან. მაგნიტური ბმულების დამუშავებას შეიძლება ერთი-ორი წუთი დასჭირდეს.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	მხოლოდ აუდიო {type}
 #. text in the Scheduler window
 #, machine
 	August	აგვისტო
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	დათვალიერება...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	ბრაუზერის ინტეგრაცია ამ კომპიუტერზე არ არის დაყენებული, ამიტომ არცერთ ბრაუზერს არ შეუძლია Mister Download Manager-თან დაკავშირება.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ბრაუზერის/სისტემის ინტეგრაცია
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	საათი:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	ჩამოტვირთვების წაშრის დადასტურება
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	დაკავშირებულია
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	დაკავშირებულია: ჩამოტვირთვები თქვენი ბრაუზერიდან ახლა აქ მოდის.
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	არ დაიწყოთ ჩამოტვირთვა ავტომატურად შემდეგი საიტებიდან:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	არ მიიღოთ ფაილები, რომლებიც უფრო მცირეა ვიდრე (კბ, 0 = ნებისმიერი ზომა):
 #. text in a download's progress window
 #, machine
 	Done	დასრულებულია
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ჩანართის დამალვა
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	დააჭირეთ Alt-ს ბმულზე დაწკაპუნებისას, რათა ბრაუზერმა ჩამოტვირთოს ის Mister Download Manager-ის ნაცვლად.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	მთავარი გვერდი
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	როგორ გამოვასწოროთ
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	კლავიატურის მალსახმობები
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	კლავიშები
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	კლავიშები...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	ყველა ჩამოტვირთვის ერთად შეზღუდვა
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	ბმულები ბრაუზერიდან
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	ჯერ არ არის მისამართები
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	ბრაუზერის არცერთი გაფართოება ჯერ არ დაკავშირებულა
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	პროქსი/SOCKS არ არის
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	ამ გვერდზე ვიდეო ვერ მოიძებნა. გაუშვით ვიდეო, შემდეგ გამოიყენეთ ღილაკი „ვიდეოს ჩამოტვირთვა“.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	ამ გვერდზე ვიდეო არ არის, რომლის ჩამოტვირთვაც შესაძლებელია
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	როგორც კი დაემატება, ეს ფანჯარა ამას იტყვის. Chrome-მა შესაძლოა თავად იკითხოს შემდეგი გაშვებისას.
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	ერთი მისამართი თითო ხაზზე; * ნიშნავს ნებისმიერ ტექსტს, მაგალითად example.com/private/*.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ერთჯერადი ჩამოტვირთვა
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ფაილის შექმნის თარიღის დაყენება სერვერის მიერ მოწოდებულის მიხედვით
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	დააყენეთ
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	დროებითი საქაღალდე
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	ბრაუზერის ინტეგრაციის ტესტირება
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	ბრაუზერის ინტეგრაციის ტესტირება...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	საუკეთესო ხარისხისთვის საჭიროა ffmpeg: დააინსტალირეთ ის თქვენი სისტემის პაკეტის მენეჯერით (ან Homebrew-ით).
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	ბრაუზერებს შეუძლიათ Mister Download Manager-ის პოვნა
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ეს საქაღალდე არ არსებობს:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	ეს არის დაინსტალირებული ასლი და არა პორტატული
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ამ სისტემას არ აქვს აკრეფითი კავშირები გასათიშად
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ეს ტორენტი უკვე არის ჩამოტვირთვის სიაში
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	ეს ვიდეო დაცულია (DRM): ვერცერთი ხელსაწყო ვერ შეინახავს მას.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	ამ ვიდეოს სანახავად საჭიროა შესვლა. გამოიყენეთ ღილაკი „ვიდეოს ჩამოტვირთვა“ თქვენს ბრაუზერში, რომელიც გადასცემს თქვენს შესვლის მონაცემებს.
 #. text in the Scheduler window
 #, machine
 	Thursday	ხუთშაბათი
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: შემოწმებულია ჩამოტვირთვის დასრულებისას
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: გაფართოება დაკავშირებულია
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: გაფართოება {version} დაკავშირებულია
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	გადაცემის სიჩქარე
 #, machine
 extension	Button settings...	ღილაკის პარამეტრები...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	დაკავშირებულია Mister Download Manager-თან
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	დაკავშირებულია Mister Download Manager {version}-თან
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	ყველა ბმულის ჩამოტვირთვა Mister Download Manager-ით
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	არჩეული ბმულების ჩამოტვირთვა Mister Download Manager-ით
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	ვიდეოს ჩამოტვირთვა
@@ -2505,6 +2611,11 @@ extension	Download video	ვიდეოს ჩამოტვირთვა
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	ჩამოტვირთვა Mister Download Manager-ით
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	{site}-დან ჩამოტვირთვები რჩება ბრაუზერთან
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	გადაათრიეთ 
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	გადასცემს ჩამოტვირთვებს ბრაუზერიდან Mister Download Manager-ს.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	დახმარება
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	დამალვა ამ ვიდეოზე
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	დააჭირეთ Alt-ს ბმულზე დაწკაპუნებისას, რათა ბრაუზერმა ჩამოტვირთოს ის.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	როგორ გამოვასწოროთ
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager დროულად არ დაიწყო
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager არ იღებს გაფართოების ამ ასლს
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager-მა არ უპასუხა
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager არ არის დაინსტალირებული ან არ დაიწყო
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Mister Download Manager ინტეგრაციის მოდული
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager არ არის დაინსტალირებული, ან მისი ბრაუზერის ინტეგრაცია არ არის დაყენებული
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	მეტი პარამეტრი
 #, machine
 extension	Never on {site}	არასოდეს {site}-ზე
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	არასოდეს მიიღოთ ჩამოტვირთვები {site}-დან
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Mister Download Manager-ის გახსნა
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	პარამეტრები...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	პაუზა: ჩამოტვირთვები რჩება ბრაუზერში
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	დაცული ვიდეო: მისი შენახვა შეუძლებელია
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	გაგზავნილია Mister Download Manager-ში
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	ჩამოტვირთვების მიღება ამ ბრაუზერიდან
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	კავშირი Mister Download Manager-თან ვერ მოხერხდა
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	ჩამოტვირთვის ღილაკი გამორთულია ამ საიტზე
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	ამ ჩამოტვირთვის დეტალები ძალიან დიდი იყო გადასაცემად
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	განაახლეთ Mister Download Manager, რათა გამოიყენოთ ყველაფერი, რასაც ეს გაფართოება გთავაზობთ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

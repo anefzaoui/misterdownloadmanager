@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Managerin integrointimoduuli"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Siirtää lataukset selaimesta Mister Download Manageriin."
@@ -33,9 +33,90 @@
     "message": "Lähetetty kohteeseen Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager ei vastannut"
+    "message": "Mister Download Manager ei ole asennettu tai ei käynnistynyt"
   },
   "video_drag": {
     "message": "Vedä siirtääksesi sitä videon reunaa pitkin"
+  },
+  "menu_selected": {
+    "message": "Lataa valitut linkit sovelluksella Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Lataa kaikki linkit sovelluksella Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Yhdistetty sovellukseen Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Yhdistetty sovellukseen Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Keskeytetty: lataukset pysyvät selaimessa"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager ei ole asennettu, tai sen selainintegrointia ei ole määritetty"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager ei hyväksy tätä laajennuksen kopiota"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager ei käynnistynyt ajoissa"
+  },
+  "status_host_failed": {
+    "message": "Yhteys sovellukseen Mister Download Manager epäonnistui"
+  },
+  "status_too_large": {
+    "message": "Tämän latauksen tiedot olivat liian suuria siirrettäväksi"
+  },
+  "status_update_app": {
+    "message": "Päivitä Mister Download Manager käyttääksesi kaikkia tämän laajennuksen tarjoamia ominaisuuksia"
+  },
+  "popup_take": {
+    "message": "Ota lataukset tästä selaimesta"
+  },
+  "popup_exclude_site": {
+    "message": "Älä koskaan ota latauksia sivustolta $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Lataukset sivustolta $site$ jäävät selaimelle",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Avaa Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Asetukset..."
+  },
+  "popup_help": {
+    "message": "Ohje"
+  },
+  "popup_fix": {
+    "message": "Miten korjata"
+  },
+  "popup_alt": {
+    "message": "Pidä Alt-näppäintä painettuna napsauttaessasi linkkiä, jotta selain lataa sen."
+  },
+  "video_off": {
+    "message": "Latauspainike on pois käytöstä tällä sivustolla"
+  },
+  "video_drm": {
+    "message": "Suojattu video: sitä ei voi tallentaa"
   }
 }

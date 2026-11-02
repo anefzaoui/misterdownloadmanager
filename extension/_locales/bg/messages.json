@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Модул за интеграция на Mister Download Manager"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Прехвърля изтеглянията от браузъра към Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Изпратено до Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager не отговори"
+    "message": "Mister Download Manager не е инсталиран или не е стартиран"
   },
   "video_drag": {
     "message": "Плъзнете, за да го преместите по ръба на видеоклипа"
+  },
+  "menu_selected": {
+    "message": "Изтеглете избрани връзки с Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Изтеглете всички връзки с Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Свързан с Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Свързан с Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "На пауза: изтеглянията остават в браузъра"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager не е инсталиран или интеграцията му с браузъра не е настроена"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager не приема това копие на разширението"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager не стартира навреме"
+  },
+  "status_host_failed": {
+    "message": "Връзката с Mister Download Manager не бе осъществена"
+  },
+  "status_too_large": {
+    "message": "Подробностите за това изтегляне бяха твърде големи, за да бъдат предадени"
+  },
+  "status_update_app": {
+    "message": "Актуализирайте Mister Download Manager, за да използвате всичко, което предлага това разширение"
+  },
+  "popup_take": {
+    "message": "Приемане на изтегляния от този браузър"
+  },
+  "popup_exclude_site": {
+    "message": "Никога не вземайте изтегляния от $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Изтеглянията от $site$ остават в браузъра",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Отворете Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Опции..."
+  },
+  "popup_help": {
+    "message": "Помощ"
+  },
+  "popup_fix": {
+    "message": "Как да го поправите"
+  },
+  "popup_alt": {
+    "message": "Задръжте Alt, докато щраквате върху връзка, за да позволите на браузъра да я изтегли."
+  },
+  "video_off": {
+    "message": "Бутонът за изтегляне е изключен за този сайт"
+  },
+  "video_drm": {
+    "message": "Защитено видео: не може да бъде записано"
   }
 }

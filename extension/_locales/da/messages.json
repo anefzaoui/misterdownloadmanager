@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager-integrationsmodul"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Overfører downloads fra browseren til Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Sendt til Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager svarede ikke"
+    "message": "Mister Download Manager er ikke installeret eller startede ikke"
   },
   "video_drag": {
     "message": "Træk for at flytte den langs videoens kant"
+  },
+  "menu_selected": {
+    "message": "Download valgte links med Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Download alle links med Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Forbundet til Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Forbundet til Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Sat på pause: downloads forbliver i browseren"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager er ikke installeret, eller dens browserintegration er ikke konfigureret"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager accepterer ikke denne kopi af udvidelsen"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager startede ikke til tiden"
+  },
+  "status_host_failed": {
+    "message": "Forbindelsen til Mister Download Manager mislykkedes"
+  },
+  "status_too_large": {
+    "message": "Detaljerne for denne download var for store til at overføre"
+  },
+  "status_update_app": {
+    "message": "Opdater Mister Download Manager for at bruge alt, hvad denne udvidelse tilbyder"
+  },
+  "popup_take": {
+    "message": "Tag downloads fra denne browser"
+  },
+  "popup_exclude_site": {
+    "message": "Tag aldrig downloads fra $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Downloads fra $site$ forbliver i browseren",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Åbn Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Indstillinger..."
+  },
+  "popup_help": {
+    "message": "Hjælp"
+  },
+  "popup_fix": {
+    "message": "Sådan løser du det"
+  },
+  "popup_alt": {
+    "message": "Hold Alt nede, mens du klikker på et link for at lade browseren downloade det."
+  },
+  "video_off": {
+    "message": "Downloadknappen er slået fra på dette websted"
+  },
+  "video_drm": {
+    "message": "Beskyttet video: den kan ikke gemmes"
   }
 }

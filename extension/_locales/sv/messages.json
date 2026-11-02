@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager-integrationsmodul"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Överför nedladdningar från webbläsaren till Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "Skickades till Mister Download Manager"
   },
   "video_failed": {
-    "message": "Mister Download Manager svarade inte"
+    "message": "Mister Download Manager är inte installerad eller startade inte"
   },
   "video_drag": {
     "message": "Dra för att flytta den längs videons kant"
+  },
+  "menu_selected": {
+    "message": "Ladda ner valda länkar med Mister Download Manager"
+  },
+  "menu_all": {
+    "message": "Ladda ner alla länkar med Mister Download Manager"
+  },
+  "status_connected": {
+    "message": "Ansluten till Mister Download Manager"
+  },
+  "status_connected_version": {
+    "message": "Ansluten till Mister Download Manager $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Pausad: nedladdningar stannar i webbläsaren"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager är inte installerad, eller dess webbläsarintegrering är inte inställd"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager accepterar inte den här kopian av tillägget"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager startade inte i tid"
+  },
+  "status_host_failed": {
+    "message": "Anslutningen till Mister Download Manager misslyckades"
+  },
+  "status_too_large": {
+    "message": "Informationen om den här nedladdningen var för stor för att överlämnas"
+  },
+  "status_update_app": {
+    "message": "Uppdatera Mister Download Manager för att använda allt som det här tillägget erbjuder"
+  },
+  "popup_take": {
+    "message": "Ta nedladdningar från den här webbläsaren"
+  },
+  "popup_exclude_site": {
+    "message": "Ta aldrig nedladdningar från $site$",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Nedladdningar från $site$ stannar kvar i webbläsaren",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Öppna Mister Download Manager"
+  },
+  "popup_options": {
+    "message": "Alternativ..."
+  },
+  "popup_help": {
+    "message": "Hjälp"
+  },
+  "popup_fix": {
+    "message": "Så här åtgärdar du det"
+  },
+  "popup_alt": {
+    "message": "Håll Alt nedtryckt när du klickar på en länk för att låta webbläsaren ladda ner den."
+  },
+  "video_off": {
+    "message": "Nedladdningsknappen är inaktiverad på den här webbplatsen"
+  },
+  "video_drm": {
+    "message": "Skyddad video: den kan inte sparas"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager ಇಂಟಿಗ್ರೇಶನ್ ಮಾಡ್ಯೂಲ್"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "ಬ್ರೌಸರ್‌ನಿಂದ Mister Download Manager ಗೆ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಹಸ್ತಾಂತರಿಸುತ್ತದೆ."
@@ -33,9 +33,90 @@
     "message": "Mister Download Manager ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ"
   },
   "video_failed": {
-    "message": "Mister Download Manager ಉತ್ತರಿಸಲಿಲ್ಲ"
+    "message": "Mister Download Manager ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ ಅಥವಾ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ"
   },
   "video_drag": {
     "message": "ವೀಡಿಯೊದ ಅಂಚಿನಲ್ಲಿ ಅದನ್ನು ಸರಿಸಲು ಎಳೆಯಿರಿ"
+  },
+  "menu_selected": {
+    "message": "Mister Download Manager ನೊಂದಿಗೆ ಆಯ್ದ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ"
+  },
+  "menu_all": {
+    "message": "Mister Download Manager ನೊಂದಿಗೆ ಎಲ್ಲಾ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ"
+  },
+  "status_connected": {
+    "message": "Mister Download Manager ಗೆ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ"
+  },
+  "status_connected_version": {
+    "message": "Mister Download Manager $version$ ಗೆ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ: ಡೌನ್‌ಲೋಡ್‌ಗಳು ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಉಳಿಯುತ್ತವೆ"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ, ಅಥವಾ ಅದರ ಬ್ರೌಸರ್ ಏಕೀಕರಣವನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager ವಿಸ್ತರಣೆಯ ಈ ನಕಲನ್ನು ಸ್ವೀಕರಿಸುವುದಿಲ್ಲ"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager ಸಮಯಕ್ಕೆ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ"
+  },
+  "status_host_failed": {
+    "message": "Mister Download Manager ಗೆ ಸಂಪರ್ಕ ವಿಫಲವಾಗಿದೆ"
+  },
+  "status_too_large": {
+    "message": "ಈ ಡೌನ್‌ಲೋಡ್‌ನ ವಿವರಗಳು ಹಸ್ತಾಂತರಿಸಲು ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ"
+  },
+  "status_update_app": {
+    "message": "ಈ ವಿಸ್ತರಣೆಯು ನೀಡುವ ಎಲ್ಲವನ್ನೂ ಬಳಸಲು Mister Download Manager ಅನ್ನು ನವೀಕರಿಸಿ"
+  },
+  "popup_take": {
+    "message": "ಈ ಬ್ರೌಸರ್‌ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ"
+  },
+  "popup_exclude_site": {
+    "message": "$site$ ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಎಂದಿಗೂ ತೆಗೆದುಕೊಳ್ಳಬೇಡಿ",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "$site$ ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಬ್ರೌಸರ್‌ನೊಂದಿಗೆ ಉಳಿಯುತ್ತವೆ",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Mister Download Manager ತೆರೆಯಿರಿ"
+  },
+  "popup_options": {
+    "message": "ಆಯ್ಕೆಗಳು..."
+  },
+  "popup_help": {
+    "message": "ಸಹಾಯ"
+  },
+  "popup_fix": {
+    "message": "ಅದನ್ನು ಹೇಗೆ ಸರಿಪಡಿಸುವುದು"
+  },
+  "popup_alt": {
+    "message": "ಬ್ರೌಸರ್ ಅದನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಲಿಂಕ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡುವಾಗ Alt ಅನ್ನು ಹಿಡಿದುಕೊಳ್ಳಿ."
+  },
+  "video_off": {
+    "message": "ಈ ಸೈಟ್‌ನಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಬಟನ್ ಆಫ್ ಆಗಿದೆ"
+  },
+  "video_drm": {
+    "message": "ರಕ್ಷಿತ ವೀಡಿಯೊ: ಇದನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
   }
 }

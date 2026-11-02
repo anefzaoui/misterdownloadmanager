@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	Address:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	Mga address na naiwan sa browser
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	Advanced / Socks...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	Naka-on ang advanced na integrasyon ng browser
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Lahat ng Download
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Ikabit din ang data ng pag-crash (.dmp): maaaring naglalaman ito ng mga address na nasa memorya ng MDM
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Ilakip din ang data ng pag-crash (.dmp): maaaring naglalaman ito ng mga address, cookie, at password
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Tanggalin din ang file mula sa disk
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	Kunin din ang mga file na bubuksan ng browser (PDF, musika, video)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Palaging i-on ang Speed Limiter sa pagsisimula ng Mister Download Manager
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Humihingi ng listahan ng file sa mga peer. Maaaring tumagal ng isa o dalawang minuto ang mga magnet link.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	Audio lang {type}
 #. text in the Scheduler window
 #, machine
 	August	Agosto
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	I-browse...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Hindi pa naka-set up ang integrasyon ng browser sa computer na ito, kaya wala pang browser ang makakaabot sa Mister Download Manager.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Pagsasama ng Browser/System
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Orasan:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	Kumpirmahin ang pagtanggal ng mga download
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	Nakakonekta
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	Nakakonekta: ang mga download mula sa iyong browser ay mapupunta na rito.
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	Huwag awtomatikong simulan ang pag-download mula sa mga sumusunod na site:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	Huwag kumuha ng mga file na mas maliit sa (KB, 0 = anumang laki):
 #. text in a download's progress window
 #, machine
 	Done	Tapos na
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Itago ang tab
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Pindutin ang Alt habang nagki-click ng link para hayaang i-download ito ng browser sa halip na Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Home page
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	Paano ayusin
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Mga keyboard shortcut
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	Mga Susi
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	Mga Susi...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Limitahan ang lahat ng download nang magkasama sa
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	Mga link mula sa browser
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Wala pang address
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	Wala pang extension ng browser ang nakakonekta
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Walang proxy/socks
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	Walang nakitang video sa page na ito. I-play ang video, pagkatapos ay gamitin ang button na I-download ang video sa itaas nito.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	Walang video na maaaring i-download sa pahinang iyon
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Kapag naidagdag na ito, sasabihin ng window na ito. Maaari ring magtanong ang Chrome nang mag-isa sa susunod nitong pagsisimula.
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	Isang address bawat linya; ang * ay kumakatawan sa anumang text, gaya ng sa example.com/private/*.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Isahang beses na pag-download
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Itakda ang petsa ng paggawa ng file ayon sa ibinigay ng server
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	I-set up ito
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Pansamantalang direktoryo
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	Subukan ang integrasyon ng browser
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	Subukan ang integrasyon ng browser...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Ang pinakamahusay na kalidad ay nangangailangan ng ffmpeg: i-install ito gamit ang package manager ng iyong system (o Homebrew).
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	Mahahanap ng mga browser ang Mister Download Manager
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Hindi umiiral ang folder na ito:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	Ito ang naka-install na kopya, hindi isang portable
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Walang dial-up na koneksyon ang system na ito para i-hang up
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Nasa listahan na ng download ang torrent na ito
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	Protektado ang video na ito (DRM): walang tool ang makakapag-save nito.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Kailangan mong mag-sign in sa video na ito. Gamitin ang button na I-download ang video sa itaas nito sa iyong browser, na magpapasa ng iyong pag-sign in.
 #. text in the Scheduler window
 #, machine
 	Thursday	Huwebes
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: sinuri kapag natapos ang pag-download
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: nakakonekta ang extension
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: nakakonekta ang extension {version}
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	Rate ng paglipat
 #, machine
 extension	Button settings...	Mga setting ng button...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Nakakonekta sa Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Nakakonekta sa Mister Download Manager {version}
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	I-download ang lahat ng link gamit ang Mister Download Manager
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	I-download ang mga napiling link gamit ang Mister Download Manager
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	I-download ang video
@@ -2505,6 +2611,11 @@ extension	Download video	I-download ang video
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	I-download gamit ang Mister Download Manager
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	Mananatili sa browser ang mga download mula sa {site}
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	I-drag para ilipat ito sa gilid
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	Ibinibigay ang mga download mula sa browser sa Mister Download Manager.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	Tulong
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	Itago sa video na ito
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	Pindutin ang Alt habang nagki-click ng link para hayaang i-download ito ng browser.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	Paano ayusin
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Hindi nagsimula sa oras ang Mister Download Manager
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Hindi tinatanggap ng Mister Download Manager ang kopyang ito ng extension
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Hindi sumagot ang Mister Download Manager
+extension	Mister Download Manager isn't installed or didn't start	Hindi naka-install ang Mister Download Manager o hindi nagsimula
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Module ng Integrasyon ng Mister Download Manager
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Hindi naka-install ang Mister Download Manager, o hindi naka-set up ang integrasyon ng browser nito
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	Higit pang opsyon
 #, machine
 extension	Never on {site}	Huwag kailanman sa {site}
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	Huwag kailanman kumuha ng mga download mula sa {site}
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Buksan ang Mister Download Manager
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	Mga Opsyon...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	Naka-pause: mananatili ang mga download sa browser
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	Protektadong video: hindi ito maise-save
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Ipinadala sa Mister Download Manager
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	Kumuha ng mga download mula sa browser na ito
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Nabigo ang koneksyon sa Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	Naka-off ang button ng download sa site na ito
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	Masyadong malaki ang mga detalye ng download na ito para maibigay
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	I-update ang Mister Download Manager para magamit ang lahat ng iniaalok ng extension na ito
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

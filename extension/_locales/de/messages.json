@@ -1,6 +1,6 @@
 {
   "name": {
-    "message": "Mister Download Manager-Integrationsmodul"
+    "message": "Mister Download Manager"
   },
   "description": {
     "message": "Übergibt Downloads vom Browser an Mister Download Manager."
@@ -33,9 +33,90 @@
     "message": "An Mister Download Manager gesendet"
   },
   "video_failed": {
-    "message": "Mister Download Manager hat nicht geantwortet"
+    "message": "Mister Download Manager ist nicht installiert oder wurde nicht gestartet"
   },
   "video_drag": {
     "message": "Ziehen, um es am Videorand zu verschieben"
+  },
+  "menu_selected": {
+    "message": "Ausgewählte Links mit Mister Download Manager herunterladen"
+  },
+  "menu_all": {
+    "message": "Alle Links mit Mister Download Manager herunterladen"
+  },
+  "status_connected": {
+    "message": "Mit Mister Download Manager verbunden"
+  },
+  "status_connected_version": {
+    "message": "Mit Mister Download Manager $version$ verbunden",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.2.5"
+      }
+    }
+  },
+  "status_paused": {
+    "message": "Angehalten: Downloads verbleiben im Browser"
+  },
+  "status_not_installed": {
+    "message": "Mister Download Manager ist nicht installiert oder die Browserintegration ist nicht eingerichtet"
+  },
+  "status_forbidden": {
+    "message": "Mister Download Manager akzeptiert diese Kopie der Erweiterung nicht"
+  },
+  "status_not_running": {
+    "message": "Mister Download Manager wurde nicht rechtzeitig gestartet"
+  },
+  "status_host_failed": {
+    "message": "Die Verbindung zu Mister Download Manager ist fehlgeschlagen"
+  },
+  "status_too_large": {
+    "message": "Die Details dieses Downloads waren zu groß, um sie zu übergeben"
+  },
+  "status_update_app": {
+    "message": "Aktualisieren Sie Mister Download Manager, um alle Funktionen dieser Erweiterung nutzen zu können"
+  },
+  "popup_take": {
+    "message": "Downloads von diesem Browser übernehmen"
+  },
+  "popup_exclude_site": {
+    "message": "Niemals Downloads von $site$ übernehmen",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_excluded": {
+    "message": "Downloads von $site$ bleiben beim Browser",
+    "placeholders": {
+      "site": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "popup_open": {
+    "message": "Mister Download Manager öffnen"
+  },
+  "popup_options": {
+    "message": "Optionen..."
+  },
+  "popup_help": {
+    "message": "Hilfe"
+  },
+  "popup_fix": {
+    "message": "So beheben Sie es"
+  },
+  "popup_alt": {
+    "message": "Halten Sie Alt gedrückt, während Sie auf einen Link klicken, damit der Browser ihn herunterlädt."
+  },
+  "video_off": {
+    "message": "Die Download-Schaltfläche ist auf dieser Website deaktiviert"
+  },
+  "video_drm": {
+    "message": "Geschütztes Video: kann nicht gespeichert werden"
   }
 }

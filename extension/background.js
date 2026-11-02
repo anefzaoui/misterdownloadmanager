@@ -276,6 +276,29 @@ function postOf(url) {
   return { body: params.toString(), type: "application/x-www-form-urlencoded" };
 }
 
+// Where page loads' redirects started, by where they ended (two minutes): Firefox names a
+// download by its last address only, and the app keeps the first (an expired signed link is
+// renewed from it).
+const redirected = new Map();
+if (ext.webRequest && ext.webRequest.onBeforeRedirect) {
+  ext.webRequest.onBeforeRedirect.addListener(
+    (d) => {
+      forget(redirected, 120000);
+      const first = (redirected.get(d.url) || {}).from || d.url;
+      redirected.set(d.redirectUrl, { from: first, at: Date.now() });
+    },
+    { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
+  );
+}
+
+// The address a download was first asked for: the browser's own (Chromium), else the start of
+// the redirects that led to it.
+function firstUrl(item) {
+  if (item.finalUrl && item.finalUrl !== item.url) return item.url;
+  const r = redirected.get(item.url);
+  return r && Date.now() - r.at < 120000 ? r.from : item.url;
+}
+
 // Links clicked with Alt held (page.js): the browser keeps their download.
 const bypass = new Map();
 
@@ -296,15 +319,31 @@ if (ext.webRequest && ext.webRequest.onResponseStarted) {
       const list = streams.get(d.tabId) || [];
       if (!list.some((s) => s.url === d.url)) list.push({ url: d.url, frameId: d.frameId });
       streams.set(d.tabId, list.slice(-20));
+      keepStreams();
     },
     { urls: ["<all_urls>"], types: ["xmlhttprequest", "media", "other"] },
     ["responseHeaders"],
   );
 }
-ext.tabs.onRemoved.addListener((id) => streams.delete(id));
+ext.tabs.onRemoved.addListener((id) => streams.delete(id) && keepStreams());
 ext.tabs.onUpdated.addListener((id, change) => {
-  if (change.url) streams.delete(id);
+  if (change.url && streams.delete(id)) keepStreams();
 });
+
+// Kept in the session's storage (memory only, gone with the browser): the browser stops this
+// script when idle, and a tab's player loaded its stream long before the button is clicked.
+const session = ext.storage.session;
+function keepStreams() {
+  if (session) session.set({ streams: [...streams] }).catch(() => {});
+}
+if (session) {
+  session
+    .get({ streams: [] })
+    .then((v) => {
+      for (const [tab, list] of v.streams || []) if (!streams.has(tab)) streams.set(tab, list);
+    })
+    .catch(() => {});
+}
 
 // The stream a frame's player loaded first (its master playlist), else the tab's.
 function streamOf(sender) {
@@ -364,29 +403,31 @@ async function candidate(item, url) {
   if (paused) return null;
   forget(bypass, 10000);
   if (bypass.has(item.url) || bypass.has(url)) return null;
-  if (postOf(item.url) === null) return null; // a form that can't be posted again
+  const first = firstUrl(item);
+  if (bypass.has(first) || postOf(first) === null) return null; // Alt; a form not to post again
   const r = await currentRules();
-  if (!r || !r.capture || excluded(r, item.url) || excluded(r, url)) return null;
+  if (!r || !r.capture || excluded(r, first) || excluded(r, url)) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
   const type = extensionOf(name);
   if (!type || !typePatterns(r.types).some((p) => p.test(type))) return null;
   // Smaller than Options' minimum (when the browser knows the size already).
   const size = item.totalBytes > 0 ? item.totalBytes : item.fileSize;
   if (r.minKb > 0 && size > 0 && size < r.minKb * 1024) return null;
-  if (!(await siteAccess(item.url))) return null;
+  if (!(await siteAccess(first))) return null;
   return name;
 }
 
 // Offer the download to the app under `name`; true if it took it.
 async function offer(item, url, name) {
+  const first = firstUrl(item);
   const reply = await handOff({
-    url: item.url,
+    url: first,
     finalUrl: url,
     referrer: item.referrer,
     filename: name,
     size: item.totalBytes > 0 ? item.totalBytes : item.fileSize,
     mime: item.mime,
-    post: postOf(item.url),
+    post: postOf(first),
     incognito: item.incognito,
     storeId: item.cookieStoreId,
   });

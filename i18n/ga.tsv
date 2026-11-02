@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	Seoladh:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	Seoltaí a fhágtar don bhrabhsálaí
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	Ardghnéithe / Socks...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	Tá comhtháthú ardleibhéil an bhrabhsálaí ar siúl
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Gach Íoslódáil
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	Ceangail na sonraí tuairteála (.dmp) freisin: d'fhéadfadh seoltaí a bhí ag MDM sa chuimhne a bheith iontu
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Ceangail sonraí an tuairisceáin tuairte (dmp) freisin: d’fhéadfadh seoltaí, fianáin agus pasfhocail a bheith ann
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Scrios an comhad ón diosca freisin
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	Tóg comhaid a d’osclódh an brabhsálaí freisin (PDF, ceol, físeán)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Cuir Teorainn Luais ar siúl i gcónaí nuair a thosaíonn Mister Download Manager
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Ag iarraidh liosta comhad ar chomhghleacaithe. Féadfaidh sé nóiméad nó dhó a thógáil le naisc mhaighnéadacha.
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	Fuaim amháin {type}
 #. text in the Scheduler window
 #, machine
 	August	Lúnasa
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	Brabhsáil...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Níl comhtháthú an bhrabhsálaí socraithe ar an ríomhaire seo, mar sin ní féidir le brabhsálaí ar bith Mister Download Manager a shroicheadh fós.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Comhtháthú Brabhsálaí/Córais
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Clog:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	Deimhnítear scriosadh íoslódálacha
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	Ceangailte
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	Ceangailte: tagann íoslódálacha ó do bhrabhsálaí anseo anois.
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	Ná cuir tús le híoslódáil go huathoibríoch ó na suíomhanna seo a leanas:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	Ná tóg comhaid níos lú ná (KB, 0 = aon mhéid):
 #. text in a download's progress window
 #, machine
 	Done	Déanta
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Folaigh cluaisín
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Coinnigh Alt agus tú ag cliceáil ar nasc chun ligean don bhrabhsálaí é a íoslódáil in ionad Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Leathanach baile
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	Conas é a shocrú
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Aicearraí méarchláir
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	Eochracha
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	Eochracha...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Teorannaigh gach íoslódáil le chéile go
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	Naisc ón mbrabhsálaí
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Gan seoltaí fós
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	Níl síneadh brabhsálaí ar bith ceangailte fós
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Gan seachfhreastalaí/socks
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	Níor aimsíodh aon fhíseán ar an leathanach seo. Seinn an físeán, ansin bain úsáid as an gcnaipe Íoslódáil físeán os a chionn.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	Níl aon fhíseán anseo is féidir a íoslódáil ar an leathanach sin
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Nuair a chuirtear leis é, deir an fhuinneog seo amhlaidh. Féadfaidh Chrome fiafraí as féin freisin ag a chéad tosú eile.
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	Seoladh amháin in aghaidh an líne; seasann * d’aon téacs, mar atá in example.com/private/*.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Íoslódáil aonuaire
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Socraigh dáta cruthaithe an chomhaid mar a sholáthraíonn an freastalaí
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	Socraigh é
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Eolaire sealadach
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	Tástáil comhtháthú an bhrabhsálaí
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	Tástáil comhtháthú an bhrabhsálaí...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	Teastaíonn ffmpeg ó na cáilíochtaí is fearr: suiteáil é le bainisteoir pacáiste do chórais (nó Homebrew).
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	Is féidir leis na brabhsálaithe Mister Download Manager a aimsiú
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Níl an fillteán seo ann:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	Is é seo an chóip suiteáilte, ní cóip iniompartha
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Níl aon naisc dhiailithe ag an gcóras seo le crochadh suas
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Tá an torrent seo sa liosta íoslódálacha cheana féin
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	Tá an físeán seo cosanta (DRM): ní féidir le haon uirlis é a shábháil.
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Éilíonn an físeán seo go bhfuil tú sínithe isteach. Bain úsáid as an gcnaipe Íoslódáil físeán os a chionn i do bhrabhsálaí, a chuireann do shíniú isteach ar aghaidh.
 #. text in the Scheduler window
 #, machine
 	Thursday	Déardaoin
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: seiceáilte nuair a chríochnaíonn an íoslódáil
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: ceangailte an síneadh
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: ceangailte an síneadh {version}
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	Ráta aistrithe
 #, machine
 extension	Button settings...	Socruithe cnaipe...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Ceangailte le Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Ceangailte le Mister Download Manager {version}
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	Íoslódáil na naisc go léir le Mister Download Manager
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	Íoslódáil na naisc roghnaithe le Mister Download Manager
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	Íoslódáil físeán
@@ -2505,6 +2611,11 @@ extension	Download video	Íoslódáil físeán
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Íoslódáil le Mister Download Manager
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	Fanann íoslódálacha ó {site} leis an mbrabhsálaí
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	Tarraing chun é a bhogadh fead
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	Seachadann sé íoslódálacha ón mbrabhsálaí chuig Mister Download Manager.
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	Cabhair
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	Folaigh ar an bhfíseán seo
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	Coinnigh Alt agus tú ag cliceáil ar nasc chun ligean don bhrabhsálaí é a íoslódáil.
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	Conas é a shocrú
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Níor thosaigh Mister Download Manager in am
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Ní ghlacann Mister Download Manager leis an gcóip seo den síneadh
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Níor fhreagair Mister Download Manager
+extension	Mister Download Manager isn't installed or didn't start	Níl Mister Download Manager suiteáilte nó níor thosaigh sé
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Modúl Comhtháthaithe Mister Download Manager
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Níl Mister Download Manager suiteáilte, nó níl a chomhtháthú brabhsálaí socraithe
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	Tuilleadh roghanna
 #, machine
 extension	Never on {site}	Ná taispeáin riamh ar {site}
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	Ná tóg íoslódálacha ó {site} choíche
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Oscail Mister Download Manager
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	Roghanna...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	Sosaithe: fanann íoslódálacha leis an mbrabhsálaí
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	Físeán cosanta: ní féidir é a shábháil
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Seolta chuig Mister Download Manager
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	Glac íoslódálacha ón mbrabhsálaí seo
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Theip ar an nasc le Mister Download Manager
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	Tá an cnaipe íoslódála múchta ar an suíomh seo
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	Bhí sonraí na híoslódála seo ró-mhór le tabhairt ar láimh
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	Nuashonraigh Mister Download Manager chun gach rud a thairgeann an síneadh seo a úsáid
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

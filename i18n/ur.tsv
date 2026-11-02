@@ -146,10 +146,18 @@
 #. text in a download's Properties window
 #, machine
 	Address:	پتہ:
+#. window title in the Options window
+#. window title: the addresses whose downloads stay with the browser
+#, machine
+	Addresses left to the browser	براؤزر کے لیے چھوڑے گئے پتے
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Advanced / Socks...	اعلی درجے کی / SOCKS...
+#. text in extension.rs
+#. a check of Test browser integration (Options → General)
+#, machine
+	Advanced browser integration is on	ایڈوانسڈ براؤزر انٹیگریشن آن ہے
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	تمام ڈاؤن لوڈز
@@ -174,10 +182,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses MDM had in memory	کریش ڈیٹا (.dmp) بھی منسلک کریں: اس میں وہ ایڈریسز ہو سکتے ہیں جو MDM کی میموری میں تھے۔
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	کریش ڈیٹا (.dmp) بھی منسلک کریں: اس میں پتے، کوکیز اور پاس ورڈز ہو سکتے ہیں
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	فائل کو ڈسک سے بھی حذف کریں
+#. checkbox in the Options window
+#, machine
+	Also take files the browser would open (PDF, music, video)	وہ فائلیں بھی لیں جو براؤزر کھولے گا (PDF، موسیقی، ویڈیو)
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager کے آغاز پر ہمیشہ اسپیڈ لیمیٹر آن کریں
@@ -198,6 +209,10 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	فائل کی فہرست کے لیے ہم مرتبہ سے پوچھ رہا ہے۔ میگنیٹ لنکس میں ایک یا دو منٹ لگ سکتے ہیں۔
+#. text in the Download video window
+#. a choice in the Download video window: only the sound; {type} is MP3, M4A…
+#, machine
+	Audio only {type}	صرف آڈیو {type}
 #. text in the Scheduler window
 #, machine
 	August	اگست
@@ -222,6 +237,9 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	براؤز کریں...
+#. text in extension.rs
+#, machine
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	اس کمپیوٹر پر براؤزر انٹیگریشن سیٹ اپ نہیں ہے، لہذا کوئی براؤزر ابھی تک Mister Download Manager تک نہیں پہنچ سکتا۔
 #. page title in the Options window
 #, machine
 	Browser/System Integration	براؤزر/سسٹم انٹیگریشن
@@ -326,7 +344,7 @@
 #. text in the Options window
 #, machine
 	Clock:	گھڑی:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes the filter box
@@ -350,6 +368,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	ڈاؤن لوڈز کو حذف کرنے کی تصدیق کریں
+#. text in extension.rs
+#. in the browser extension's window, beside a browser whose extension reached MDM
+#, machine
+	Connected	مربوط
 #. text in extension.rs
 #, machine
 	Connected: downloads from your browser now come here.	منسلک: آپ کے براؤزر سے ڈاؤن لوڈز اب یہاں آتے ہیں۔
@@ -491,6 +513,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	مندرجہ ذیل سائٹس سے خودکار طور پر ڈاؤن لوڈ کرنا شروع نہ کریں:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	اس سے چھوٹی فائلیں نہ لیں (KB، 0 = کوئی بھی سائز):
 #. text in a download's progress window
 #, machine
 	Done	ہو گیا
@@ -855,9 +880,16 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ٹیب چھپائیں
+#. text in the Options window
+#, machine
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	کسی لنک پر کلک کرتے وقت Alt دبائے رکھیں تاکہ براؤزر اسے Mister Download Manager کے بجائے ڈاؤن لوڈ کرے۔
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	ہوم پیج
+#. button in the Options window
+#. button in Test browser integration: open the help page's section for the problem
+#, machine
+	How to fix it	اسے کیسے ٹھیک کریں
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -937,8 +969,12 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	کی بورڈ شارٹ کٹس
-#. text in the Options window
-#. the trailing ... means it is still going on: keep it
+#. window title in the Options window
+#. window title: the keys that force or prevent downloading with MDM
+#, machine
+	Keys	کیز
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	کیز...
 #. text in langpick.rs
@@ -970,6 +1006,10 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	تمام ڈاؤن لوڈز کو ایک ساتھ محدود کریں
+#. message or event log entry in the main window
+#. in Import, where the addresses came from: a page in the browser
+#, machine
+	Links from the browser	براؤزر سے لنکس
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1152,6 +1192,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	کوئی پتہ نہیں
+#. text in extension.rs
+#. a check of Test browser integration: no browser's extension has reached MDM
+#, machine
+	No browser's extension has connected yet	کسی براؤزر کی ایکسٹینشن ابھی تک منسلک نہیں ہوئی ہے۔
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -1196,6 +1240,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	کوئی پراکسی/SOCKS نہیں
+#. text in the Download video window
+#. the Download video window: yt-dlp found no video on the page
+#, machine
+	No video found on this page. Play the video, then use the Download video button over it.	اس صفحہ پر کوئی ویڈیو نہیں ملی۔ ویڈیو چلائیں، پھر اس کے اوپر ڈاؤن لوڈ ویڈیو بٹن استعمال کریں۔
 #. text in the Download video window
 #, machine
 	No video this can download on that page	اس صفحے پر کوئی ویڈیو نہیں ہے جسے یہ ڈاؤن لوڈ کر سکے
@@ -1267,6 +1315,9 @@
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	ایک بار جب یہ شامل ہو جاتا ہے، تو یہ ونڈو ایسا کہتی ہے۔ Chrome خود بھی اپنی اگلی شروعات پر پوچھ سکتا ہے۔
+#. text in the Options window
+#, machine
+	One address per line; * stands for any text, as in example.com/private/*.	ہر لائن پر ایک پتہ؛ * کسی بھی متن کے لیے ہے، جیسا کہ example.com/private/* میں۔
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ایک بار کا ڈاؤن لوڈ
@@ -1612,6 +1663,11 @@
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	فائل بنانے کی تاریخ سرور کے ذریعہ فراہم کردہ کے مطابق سیٹ کریں
+#. button in extension.rs; button in the Options window
+#. button in the browser extension's window: register MDM's helper with the browsers
+#. button in Test browser integration: register MDM's helper with the browsers
+#, machine
+	Set it up	سیٹ اپ کریں
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1816,6 +1872,14 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	عارضی ڈائریکٹری
+#. window title in the Options window
+#. window title: Options → General → Test browser integration
+#, machine
+	Test browser integration	براؤزر انٹیگریشن کی جانچ کریں
+#. button in the Options window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Test browser integration...	براؤزر انٹیگریشن کی جانچ کریں...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1838,6 +1902,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).	بہترین کوالٹیز کے لیے ffmpeg کی ضرورت ہے: اسے اپنے سسٹم کے پیکیج مینیجر (یا Homebrew) کے ساتھ انسٹال کریں۔
+#. text in extension.rs
+#. a check of Test browser integration: the browsers find MDM's helper program
+#, machine
+	The browsers can find Mister Download Manager	براؤزر Mister Download Manager کو تلاش کر سکتے ہیں
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -2050,12 +2118,24 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	یہ فولڈر موجود نہیں ہے:
+#. text in extension.rs
+#. a check of Test browser integration: a portable copy can't be connected
+#, machine
+	This is the installed copy, not a portable one	یہ انسٹال شدہ کاپی ہے، پورٹیبل نہیں
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	اس سسٹم میں ہینگ اپ کرنے کے لیے کوئی ڈائل اپ کنکشن نہیں ہے
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	یہ ٹورینٹ پہلے ہی ڈاؤن لوڈ کی فہرست میں ہے۔
+#. text in the Download video window
+#. the Download video window: the page's video is copy-protected
+#, machine
+	This video is protected (DRM): no tool can save it.	یہ ویڈیو محفوظ ہے (DRM): کوئی ٹول اسے محفوظ نہیں کر سکتا۔
+#. text in the Download video window
+#. the Download video window: the video needs the user to be signed in
+#, machine
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	اس ویڈیو کے لیے آپ کو سائن ان ہونا ضروری ہے۔ اپنے براؤزر میں اس کے اوپر ڈاؤن لوڈ ویڈیو بٹن استعمال کریں، جو آپ کے سائن ان کو آگے بڑھاتا ہے۔
 #. text in the Scheduler window
 #, machine
 	Thursday	جمعرات
@@ -2352,6 +2432,15 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{algorithm}: checked when the download finishes	{algorithm}: ڈاؤن لوڈ مکمل ہونے پر چیک کیا گیا
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name
+#, machine
+	{browser}: the extension connected	{browser}: ایکسٹینشن منسلک ہو گئی
+#. text in extension.rs
+#. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	{browser}: the extension {version} connected	{browser}: ایکسٹینشن {version} منسلک ہو گئی
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -2498,6 +2587,23 @@ column	Transfer rate	منتقلی کی شرح
 #, machine
 extension	Button settings...	بٹن کی ترتیبات...
 #. text in the browser extension
+#. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
+#, machine
+extension	Connected to Mister Download Manager	Mister Download Manager سے منسلک
+#. text in the browser extension
+#. the toolbar button's status when the browser reaches the app, with the app's version number; keep the name Mister Download Manager as it is
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} سے منسلک
+#. text in the browser extension
+#. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
+#, machine
+extension	Download all links with Mister Download Manager	Mister Download Manager کے ساتھ تمام لنکس ڈاؤن لوڈ کریں
+#. text in the browser extension
+#. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
+#, machine
+extension	Download selected links with Mister Download Manager	Mister Download Manager کے ساتھ منتخب لنکس ڈاؤن لوڈ کریں
+#. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
 extension	Download video	ویڈیو ڈاؤن لوڈ کریں
@@ -2505,6 +2611,11 @@ extension	Download video	ویڈیو ڈاؤن لوڈ کریں
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
 extension	Download with Mister Download Manager	Mister Download Manager کے ساتھ ڈاؤن لوڈ کریں
+#. text in the browser extension
+#. shown in the toolbar button's popup after the site was excluded
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Downloads from {site} stay with the browser	{site} سے ڈاؤن لوڈز براؤزر کے ساتھ رہیں گے
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
@@ -2514,17 +2625,41 @@ extension	Drag to move it along the video's edge	ویڈیو کے کنارے کے
 #, machine
 extension	Hands downloads from the browser to Mister Download Manager.	براؤزر سے ڈاؤن لوڈز کو Mister Download Manager کے حوالے کرتا ہے۔
 #. text in the browser extension
+#. link in the toolbar button's popup to the help page
+#, machine
+extension	Help	مدد
+#. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
 extension	Hide on this video	اس ویڈیو پر چھپائیں
 #. text in the browser extension
+#. hint in the toolbar button's popup; Alt is the keyboard key
+#, machine
+extension	Hold Alt while clicking a link to let the browser download it.	کسی لنک پر کلک کرتے وقت Alt دبائے رکھیں تاکہ براؤزر اسے ڈاؤن لوڈ کرے۔
+#. text in the browser extension
+#. link under a connection problem in the toolbar button's popup, to the help page's section for it
+#, machine
+extension	How to fix it	اسے کیسے ٹھیک کریں
+#. text in the browser extension
+#. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager	Mister Download Manager
+#. text in the browser extension
+#. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't start in time	Mister Download Manager وقت پر شروع نہیں ہوا
+#. text in the browser extension
+#. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager ایکسٹینشن کی اس کاپی کو قبول نہیں کرتا
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager didn't answer	Mister Download Manager نے جواب نہیں دیا
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager انسٹال نہیں ہے یا شروع نہیں ہوا
 #. text in the browser extension
-#. the extension's name in the browser's list of extensions; keep the name Mister Download Manager as it is
+#. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager Integration Module	Mister Download Manager انٹیگریشن ماڈیول
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager انسٹال نہیں ہے، یا اس کی براؤزر انٹیگریشن سیٹ اپ نہیں ہے
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -2535,9 +2670,51 @@ extension	More options	مزید اختیارات
 #, machine
 extension	Never on {site}	{site} پر کبھی نہیں
 #. text in the browser extension
+#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+extension	Never take downloads from {site}	{site} سے کبھی ڈاؤن لوڈز نہ لیں
+#. text in the browser extension
+#. button in the toolbar button's popup; keep the name Mister Download Manager as it is
+#, machine
+extension	Open Mister Download Manager	Mister Download Manager کھولیں
+#. text in the browser extension
+#. button in the toolbar button's popup: open the app's Options
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Options...	اختیارات...
+#. text in the browser extension
+#. status when the user switched off taking downloads in the toolbar button's popup
+#, machine
+extension	Paused: downloads stay with the browser	موقوف ہے: ڈاؤن لوڈز براؤزر کے ساتھ رہتے ہیں
+#. text in the browser extension
+#. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
+#, machine
+extension	Protected video: it can't be saved	محفوظ ویڈیو: اسے محفوظ نہیں کیا جا سکتا
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager کو بھیجا گیا
+#. text in the browser extension
+#. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
+#, machine
+extension	Take downloads from this browser	اس براؤزر سے ڈاؤن لوڈز لیں
+#. text in the browser extension
+#. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
+#, machine
+extension	The connection to Mister Download Manager failed	Mister Download Manager سے کنکشن ناکام ہو گیا
+#. text in the browser extension
+#. shown briefly on the download button over a video when the app's settings keep the button off on this web site
+#, machine
+extension	The download button is off on this site	اس سائٹ پر ڈاؤن لوڈ بٹن بند ہے
+#. text in the browser extension
+#. status when a download carried too much data (very large cookies) to give to the app
+#, machine
+extension	This download's details were too large to hand over	اس ڈاؤن لوڈ کی تفصیلات اتنی بڑی تھیں کہ ہینڈ اوور نہیں کی جا سکیں
+#. text in the browser extension
+#. status when the app is older than the extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Update Mister Download Manager to use everything this extension offers	اس ایکسٹینشن کی پیش کردہ ہر چیز کو استعمال کرنے کے لیے Mister Download Manager کو اپ ڈیٹ کریں
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
