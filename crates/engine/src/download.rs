@@ -540,14 +540,6 @@ fn build(client: &Client, url: Url, post: Option<&Bytes>) -> RequestBuilder {
     }
 }
 
-/// `Accept-Ranges: bytes`: the server says it serves ranges.
-fn accepts_ranges(h: &HeaderMap) -> bool {
-    header_str(h, header::ACCEPT_RANGES).is_some_and(|v| {
-        v.split(',')
-            .any(|unit| unit.trim().eq_ignore_ascii_case("bytes"))
-    })
-}
-
 /// A header's text: UTF-8, else ISO-8859-1 (servers send file names either way, while
 /// `HeaderValue::to_str` takes ASCII only).
 fn header_text(h: &HeaderMap, name: header::HeaderName) -> Option<String> {
@@ -1177,9 +1169,10 @@ async fn run_fresh(
     // Credentials stay with the host they were given for (see `scoped_headers`).
     let mut headers = scoped_headers(&req.headers, &req.url, &final_url);
     // A POST stays one if its redirects kept it (307, 308); it is sent again only once the
-    // server has shown it takes ranges.
+    // server has answered a range (206): `Accept-Ranges` alone isn't proof, and a form may do
+    // something each time it is posted (an export, an order).
     let post = post_for(&opts, as_get.contains(&final_url), &mut headers);
-    let wait_for_ranges = post.is_some() && ranges != RANGES_YES && !accepts_ranges(resp.headers());
+    let wait_for_ranges = post.is_some() && ranges != RANGES_YES;
     let h = resp.headers();
     // The expected hash: the user's, else what a full (200) answer announces for its content.
     let checksum = opts.checksum.clone().or_else(|| {

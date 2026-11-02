@@ -4,7 +4,7 @@
 
 With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work.
 
-The extension works in **Google Chrome**, **Microsoft Edge** and **Brave**. **Firefox** support is still being tested.
+The extension works in **Google Chrome**, **Microsoft Edge**, **Brave**, **Opera** and **Vivaldi**, and in **Firefox** 140 or later.
 
 ## Set it up
 
@@ -53,7 +53,7 @@ When you click a download, the extension checks MDM's Options:
 
 Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.
 
-When MDM takes a download, it gets the browser's file name, size and type with it, so **Download File Info** shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data.
+When MDM takes a download, it gets the browser's file name, size and type with it, so **Download File Info** shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data; a form that sends a file stays with the browser.
 
 When MDM takes a download, the browser's own copy is cancelled and removed from the browser's download list. **Download File Info** opens in MDM (unless you turned it off in **Options → Downloads**). Cancelling there doesn't hand the download back to the browser.
 
@@ -63,7 +63,7 @@ Files MDM downloads from the browser are marked as coming from the internet, as 
 
 ## Files the browser would open
 
-A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in **Options → File types**. To turn this off, untick **Also take files the browser would open** in **Options → General → Keys...**. This needs Chrome or Edge 128 or later, or Firefox.
+A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in **Options → File types** (not on the excluded sites). To turn this off, untick **Also take files the browser would open** in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.
 
 ## The toolbar button
 

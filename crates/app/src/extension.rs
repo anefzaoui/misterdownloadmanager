@@ -40,10 +40,15 @@ pub struct Extension {
 }
 
 /// Whether `row` (a browser as the window lists it) is among the browsers seen (as Options
-/// names them).
+/// names them). Vivaldi and Chromium say they are Chrome (no brand of their own): they share
+/// Chrome's status.
 fn is_seen(seen: &[String], row: &str) -> bool {
-    seen.iter()
-        .any(|b| b == row || (row == "Brave" && b == "Brave Browser"))
+    let named = match row {
+        "Brave" => "Brave Browser",
+        "Vivaldi" | "Chromium" => "Google Chrome",
+        other => other,
+    };
+    seen.iter().any(|b| b == named)
 }
 
 impl Extension {
@@ -73,6 +78,7 @@ impl Extension {
             self.looked = std::time::Instant::now();
             self.connected = mdm_ipc::extension::seen();
             self.seen = seen_names();
+            self.registered = registered();
         }
         ctx.request_repaint_after(Duration::from_secs(1));
         let h = BANNER + 16.0 + self.browsers.len() as f32 * ROW + 104.0;
@@ -299,10 +305,10 @@ pub fn registered() -> bool {
 }
 
 /// Register it now, for a copy installed without it (the setup's box unticked): the native
-/// host's own `--register`, for this user.
+/// host's own `--register`, for this user, waited for (the checks read the result next).
 pub fn set_up() {
     #[cfg(unix)]
-    crate::unix::register_browsers();
+    crate::unix::register_browsers_now();
     #[cfg(windows)]
     if let Ok(exe) = std::env::current_exe() {
         let _ = std::process::Command::new(exe.with_file_name("misterdownloadmanager-nmhost.exe"))

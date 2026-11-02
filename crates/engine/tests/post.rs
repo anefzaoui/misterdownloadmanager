@@ -355,8 +355,10 @@ async fn a_post_that_claims_ranges_but_ignores_them_still_completes() {
     assert!(s.seen().iter().all(is_form_post));
 }
 
+/// `Accept-Ranges` on the form's answer is no proof: a form may do something each time it is
+/// posted, so only a range actually answered (206) lets more connections post it again.
 #[tokio::test]
-async fn a_post_that_takes_ranges_uses_many_connections() {
+async fn a_post_that_only_announces_ranges_is_posted_once() {
     let all = data(4 << 20);
     let file_data = all.clone();
     let s = Server::start(move |r| {
@@ -369,15 +371,9 @@ async fn a_post_that_takes_ranges_uses_many_connections() {
     .await;
     fetch(&s, "/export", post_opts(), &all).await;
     let seen = s.seen();
-    assert!(
-        seen.iter().all(is_form_post),
-        "every request carries the form"
-    );
-    assert!(
-        seen.iter().filter(|r| r.range.is_some()).count() >= 2,
-        "{seen:?}"
-    );
-    assert!(s.peak.load(Ordering::SeqCst) >= 2);
+    assert!(seen.iter().all(is_form_post), "the form, every time");
+    assert_eq!(seen.len(), 1, "posted once: {seen:?}");
+    assert_eq!(s.peak.load(Ordering::SeqCst), 1);
 }
 
 #[tokio::test]

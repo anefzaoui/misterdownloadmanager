@@ -797,7 +797,11 @@ fn content_disposition(q: &FileQuery, path_name: Option<&str>) -> Option<String>
             "; filename=\"fallback-name.zip\"; filename*=UTF-8''{}",
             utf8_percent_encode(star, ATTR_CHAR)
         )
-    } else if let Some(name) = q.cd.as_deref().or(path_name) {
+    } else if let Some(name) =
+        q.cd.as_deref()
+            // A name with a control character in the path can't go in a header: none then.
+            .or(path_name.filter(|n| !n.chars().any(char::is_control)))
+    {
         format!("; filename=\"{}\"", quote(name))
     } else if q.disposition == Disposition::Inline {
         String::new()

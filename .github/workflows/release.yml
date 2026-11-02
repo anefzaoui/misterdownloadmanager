@@ -128,6 +128,8 @@ jobs:
       # unlisted channel) and replaces the unsigned one; without them it stays unsigned.
       - name: Sign the Firefox add-on
         if: ${{ env.AMO_JWT_ISSUER != '' }}
+        # Mozilla refuses a version it signed already (a re-run): the unsigned one stays then.
+        continue-on-error: true
         env:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         shell: pwsh

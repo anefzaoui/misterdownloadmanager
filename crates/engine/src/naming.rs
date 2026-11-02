@@ -37,9 +37,11 @@ pub fn disposition_name(value: &str) -> Option<String> {
             .find(|(k, _)| k.eq_ignore_ascii_case(key))
             .map(|(_, v)| v.as_str())
     };
-    let extended = param("filename*").and_then(decode_extended);
-    let plain = || param("filename").map(decode_plain);
-    extended.or_else(plain).filter(|n| !n.trim().is_empty())
+    // An empty `filename*` doesn't hide the plain name.
+    let given = |n: &String| !n.trim().is_empty();
+    let extended = param("filename*").and_then(decode_extended).filter(given);
+    let plain = || param("filename").map(decode_plain).filter(given);
+    extended.or_else(plain)
 }
 
 /// The `name=value` parameters after the disposition type, values unquoted. A quoted value may

@@ -88,9 +88,12 @@ async function readStatus() {
 async function noteStatus(why, app) {
   const now = await readStatus();
   if (now.why === why && (!app || now.app === app)) return;
+  const was = !now.why || now.why === "update-app";
   status = { why, app: app || now.app || null, at: Date.now() };
   await ext.storage.local.set({ status });
   await showStatus();
+  // Unreachable, PDFs and music open in the browser again (and back once connected).
+  if (was !== (!why || why === "update-app")) await syncOpenedRule();
 }
 
 async function showStatus() {
@@ -206,16 +209,17 @@ function forget(map, ms) {
   for (const [k, v] of map) if (now - v.at > ms) map.delete(k);
 }
 
-// A form's body as the browser sent it: urlencoded (formData), or the raw bytes when they are
-// text. Anything else (a file upload) can't be sent again: `body: null` leaves its download
+// A form's body as the browser sent it: its fields (formData: put together again in the
+// form's own encoding once its Content-Type is known, `postOf`), or the raw bytes when they
+// are text. Anything else (a file upload) can't be sent again: `body: null` leaves its download
 // to the browser.
 function formBody(details) {
   const rb = details.requestBody;
   if (!rb) return { body: null };
   if (rb.formData) {
-    const params = new URLSearchParams();
-    for (const [k, values] of Object.entries(rb.formData)) for (const v of values) params.append(k, v);
-    return { body: params.toString(), type: "application/x-www-form-urlencoded" };
+    const fields = Object.entries(rb.formData).flatMap(([k, values]) => values.map((v) => [k, String(v)]));
+    const size = fields.reduce((n, [k, v]) => n + k.length + v.length + 2, 0);
+    return size > BODY_LIMIT ? { body: null } : { fields, type: "application/x-www-form-urlencoded" };
   }
   if (Array.isArray(rb.raw) && rb.raw.every((p) => p.bytes)) {
     const size = rb.raw.reduce((n, p) => n + p.bytes.byteLength, 0);
@@ -257,6 +261,19 @@ if (ext.webRequest) {
     navigations,
     ["requestHeaders"],
   );
+}
+
+// The form posted to `url` (within two minutes), as the app sends it again: urlencoded fields,
+// or a raw text body with its own type. null: it can't be sent again (a file in it; a multipart
+// form, whose fields the browser gives without its files): the browser keeps the download.
+function postOf(url) {
+  const p = posts.get(url);
+  if (!p || Date.now() - p.at > 120000) return undefined;
+  if (p.body === null || (p.fields && /multipart/i.test(p.type || ""))) return null;
+  if (!p.fields) return { body: p.body, type: p.type };
+  const params = new URLSearchParams();
+  for (const [k, v] of p.fields) params.append(k, v);
+  return { body: params.toString(), type: "application/x-www-form-urlencoded" };
 }
 
 // Links clicked with Alt held (page.js): the browser keeps their download.
@@ -315,7 +332,8 @@ async function cookieHeader(url, { incognito, storeId }) {
 async function siteAccess(url) {
   try {
     const u = new URL(url);
-    return await ext.permissions.contains({ origins: [`${u.protocol}//${u.host}/*`] });
+    // By host name: Firefox's match patterns take no port.
+    return await ext.permissions.contains({ origins: [`${u.protocol}//${u.hostname}/*`] });
   } catch {
     return false;
   }
@@ -346,8 +364,7 @@ async function candidate(item, url) {
   if (paused) return null;
   forget(bypass, 10000);
   if (bypass.has(item.url) || bypass.has(url)) return null;
-  const post = posts.get(item.url);
-  if (post && post.body === null) return null; // a form that can't be posted again
+  if (postOf(item.url) === null) return null; // a form that can't be posted again
   const r = await currentRules();
   if (!r || !r.capture || excluded(r, item.url) || excluded(r, url)) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";
@@ -369,7 +386,7 @@ async function offer(item, url, name) {
     filename: name,
     size: item.totalBytes > 0 ? item.totalBytes : item.fileSize,
     mime: item.mime,
-    post: posts.get(item.url),
+    post: postOf(item.url),
     incognito: item.incognito,
     storeId: item.cookieStoreId,
   });
@@ -390,7 +407,8 @@ async function closeLeftTab(urls) {
     try {
       const tab = await ext.tabs.get(id);
       const at = tab.pendingUrl || tab.url || "";
-      if (urls.includes(at) || ((at === "" || at === "about:blank") && tab.status !== "loading")) {
+      // Only a tab opened for the download's own address (never a new tab the user opened).
+      if (urls.includes(at)) {
         newTabs.delete(id);
         await ext.tabs.remove(id);
       }
@@ -479,6 +497,15 @@ const OPENED = {
 const OPENED_RULE = 1;
 let openedTypes = [];
 
+// Options' excluded sites as domains (`*.example.com` → example.com, which covers its
+// subdomains in a rule's condition).
+function excludedDomains() {
+  return ((rules && rules.excludedSites) || "")
+    .split(/\s+/)
+    .map((p) => p.replace(/^\*\./, "").replace(/^[a-z]+:\/\//i, "").split("/")[0].toLowerCase())
+    .filter((d) => d && !d.includes("*"));
+}
+
 function openedMimes(r) {
   if (!r || !r.capture || !r.opened) return [];
   const listed = new Set(r.types.split(/\s+/).map((s) => s.toUpperCase()));
@@ -501,6 +528,8 @@ async function syncOpenedRule() {
     condition: {
       resourceTypes: ["main_frame"],
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
+      // Options' excluded sites keep opening in the browser (a domain takes its subdomains).
+      ...(excludedDomains().length ? { excludedRequestDomains: excludedDomains() } : {}),
     },
   };
   try {
@@ -513,12 +542,15 @@ async function syncOpenedRule() {
 if (FIREFOX && ext.webRequest && ext.webRequest.onHeadersReceived) {
   ext.webRequest.onHeadersReceived.addListener(
     (d) => {
-      if (!openedTypes.length || bypass.has(d.url)) return {};
+      if (!openedTypes.length || bypass.has(d.url) || (rules && excluded(rules, d.url))) return {};
       const headers = d.responseHeaders || [];
       const get = (n) => headers.find((h) => h.name.toLowerCase() === n);
       const type = ((get("content-type") || {}).value || "").toLowerCase();
       const cd = get("content-disposition");
       if (!openedTypes.some((m) => type.startsWith(m)) || (cd && /^\s*attachment/i.test(cd.value))) return {};
+      // Under Options' minimum it would only go back to the browser as a download: it opens.
+      const size = Number((get("content-length") || {}).value) || 0;
+      if (rules && rules.minKb > 0 && size > 0 && size < rules.minKb * 1024) return {};
       return {
         responseHeaders: [
           ...headers.filter((h) => h.name.toLowerCase() !== "content-disposition"),
@@ -570,9 +602,12 @@ function pageLinks(selectedOnly) {
   return links;
 }
 
-// When the user asked and it couldn't be done: the help page's section opens beside.
+// When the user asked and it couldn't be done: the help page's section opens beside (a link
+// MDM refused has none of its own: the connection's).
+const SECTIONS = ["not-installed", "forbidden", "not-running", "host-failed", "too-large", "update-app", "options"];
 function explain(why) {
-  ext.tabs.create({ url: `${HELP}#${why || "host-failed"}` }).catch(() => {});
+  const at = SECTIONS.includes(why) ? why : "host-failed";
+  ext.tabs.create({ url: `${HELP}#${at}` }).catch(() => {});
 }
 
 ext.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -639,10 +674,29 @@ ext.runtime.onStartup.addListener(() => {
 // button waits for a reload).
 async function injectOpenTabs() {
   if (!ext.scripting) return;
-  const files = ext.runtime.getManifest().content_scripts.flatMap((c) => c.js);
   const tabs = await ext.tabs.query({ url: ["http://*/*", "https://*/*"] }).catch(() => []);
-  for (const tab of tabs) {
-    ext.scripting.executeScript({ target: { tabId: tab.id, allFrames: true }, files }).catch(() => {});
+  // A match pattern's host and path as a test (`*://*.youtube.com/*`).
+  const matcher = (pattern) => {
+    const [, host = "", path = "/*"] = /^[^:]+:\/\/([^/]*)(\/.*)?$/.exec(pattern) || [];
+    const glob = (s) => s.split("*").map((x) => x.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*");
+    const h = host.startsWith("*.") ? new RegExp(`^(.*\\.)?${glob(host.slice(2))}$`, "i") : new RegExp(`^${glob(host)}$`, "i");
+    const pth = new RegExp(`^${glob(path)}$`);
+    return (u) => h.test(u.hostname) && pth.test(u.pathname + u.search);
+  };
+  for (const entry of ext.runtime.getManifest().content_scripts || []) {
+    const excludes = (entry.exclude_matches || []).map(matcher);
+    for (const tab of tabs) {
+      let u;
+      try {
+        u = new URL(tab.url);
+      } catch {
+        continue;
+      }
+      if (excludes.some((m) => m(u))) continue;
+      ext.scripting
+        .executeScript({ target: { tabId: tab.id, allFrames: Boolean(entry.all_frames) }, files: entry.js })
+        .catch(() => {});
+    }
   }
 }
 

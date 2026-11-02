@@ -96,8 +96,26 @@ pub fn set_run_at_startup(on: bool) {
 /// copied to the data folder with the AppImage's path beside it (`app-path`: the host starts
 /// that when MDM isn't running), and registered from there.
 pub fn register_browsers() {
+    if let Some(mut cmd) = register_command() {
+        spawn(&mut cmd);
+    }
+}
+
+/// `register_browsers`, waiting for it to finish (Test browser integration's Set it up).
+pub fn register_browsers_now() {
+    if let Some(mut cmd) = register_command() {
+        let _ = cmd
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+    }
+}
+
+/// The host's `--register`, from a copy outside an AppImage's mount when it runs from one.
+fn register_command() -> Option<Command> {
     let Ok(exe) = std::env::current_exe() else {
-        return;
+        return None;
     };
     let host = exe.with_file_name("misterdownloadmanager-nmhost");
     let host = match (std::env::var_os("APPIMAGE"), mdm_ipc::data_dir()) {
@@ -108,13 +126,15 @@ pub fn register_browsers() {
                 .and_then(|()| std::fs::copy(&host, &copy).map(|_| ()))
                 .and_then(|()| std::fs::write(dir.join("app-path"), image.as_encoded_bytes()));
             if made.is_err() {
-                return;
+                return None;
             }
             copy
         }
         _ => host,
     };
-    spawn(Command::new(host).arg("--register"));
+    let mut cmd = Command::new(host);
+    cmd.arg("--register");
+    Some(cmd)
 }
 
 /// Browser integration is registered: a host manifest in one of the browsers' folders, for this
@@ -143,9 +163,14 @@ pub fn host_registered() -> bool {
         )
         .collect()
     } else {
-        let config = home.join(".config");
+        let config = std::env::var_os("XDG_CONFIG_HOME")
+            .map(PathBuf::from)
+            .filter(|p| p.is_absolute())
+            .unwrap_or_else(|| home.join(".config"));
         [
             "google-chrome",
+            "google-chrome-beta",
+            "google-chrome-unstable",
             "chromium",
             "microsoft-edge",
             "BraveSoftware/Brave-Browser",

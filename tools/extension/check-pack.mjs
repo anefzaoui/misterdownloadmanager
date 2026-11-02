@@ -37,7 +37,8 @@ for (const kind of ["chromium", "chrome-store", "firefox"]) {
   if (kind === "chromium") assert.equal(idOf(m.key), unpackedId, "the key gives the ID the host serves");
   if (kind === "chrome-store") {
     assert.equal(m.key, undefined, "the store signs it with its own key");
-    assert.ok(m.content_scripts[0].exclude_matches.some((p) => p.includes("youtube.com")), "no button on YouTube");
+    const video = m.content_scripts.find((c) => c.js.includes("video.js"));
+    assert.ok(video && (video.exclude_matches || []).some((p) => p.includes("youtube.com")), "no button on YouTube");
   }
   if (kind === "firefox") assert.equal(m.browser_specific_settings.gecko.id, firefoxId);
 }

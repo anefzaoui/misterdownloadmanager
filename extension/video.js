@@ -8,8 +8,11 @@
 // decides where it may show at all (the native host: integration on, this browser captured,
 // the button on, the site not excluded).
 (() => {
-  if (globalThis.__mdmVideoButton) return;
-  globalThis.__mdmVideoButton = true;
+  // One button per page: a copy cut off from the extension (after an update) gives way to the
+  // new one.
+  const prev = globalThis.__mdmVideoButton;
+  if (prev && typeof prev === "object" && prev.alive()) return;
+  if (prev && typeof prev.teardown === "function") prev.teardown();
   const ext = globalThis.browser ?? globalThis.chrome;
 
   // A video worth a button: big enough to be content, not a short muted looping clip (an
@@ -539,10 +542,12 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
     cancelAnimationFrame(raf);
     cancelAnimationFrame(scan);
     removeEventListener("pointermove", onMove, true);
+    removeEventListener("keydown", onTab, true);
     root.remove();
     allowed = false;
-    globalThis.__mdmVideoButton = false;
+    video = null;
   }
+  globalThis.__mdmVideoButton = { alive: () => Boolean(ext.runtime?.id), teardown };
   addEventListener("pointermove", onMove, { capture: true, passive: true });
   addEventListener("pointerdown", (e) => {
     if (menuOpen && !e.composedPath().includes(root)) closeMenu();
@@ -562,13 +567,27 @@ button:focus-visible { outline: 2px solid #2a78d6; outline-offset: -2px; }
       show(v);
     });
   }, true);
-  addEventListener("keydown", (e) => {
-    // Tab on the focused player moves into the button first.
-    if (e.key === "Tab" && !e.shiftKey && video && playerFocused() && root.style.getPropertyValue("display") === "block") {
+  // Tab on the focused player moves into the button first; Tab from the button goes back to
+  // the player and on from there (its own controls next), as if the button sat at its start.
+  let tabOn = false;
+  function onTab(e) {
+    if (e.key !== "Tab" || e.shiftKey) return;
+    if (tabOn) {
+      tabOn = false;
+      return;
+    }
+    if (video && playerFocused() && root.style.getPropertyValue("display") === "block") {
       go.focus();
       e.preventDefault();
     }
-  }, true);
+  }
+  addEventListener("keydown", onTab, true);
+  go.addEventListener("keydown", (e) => {
+    if (e.key === "Tab" && !e.shiftKey && focusedPlayer && focusedPlayer.isConnected) {
+      tabOn = true;
+      focusedPlayer.focus();
+    }
+  });
   document.addEventListener("fullscreenchange", () => video && show(video));
   addEventListener("blur", () => hide());
 })();

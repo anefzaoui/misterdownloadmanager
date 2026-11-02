@@ -36,7 +36,7 @@ Your download list, settings, logins you save in **Sites Logins**, the history o
 - **Torrent peers and trackers.** When you download a torrent, MDM connects to the trackers listed in the torrent, to the BitTorrent DHT network and to other peers, who see your IP address and which pieces you have. To accept connections it may ask your router to open a port (UPnP). This is how BitTorrent works; it ends when the torrent stops.
 - **Your AI assistant, only if you connect one.** MDM's MCP server (`misterdownloadmanager-mcp`) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see [AI assistants](/help/ai-assistants.html).
 
-MDM has **no analytics, no crash reporting, no telemetry and no advertising**. It never sends us your download list, the addresses you download, or anything else.
+MDM has **no analytics, no automatic crash reporting, no telemetry and no advertising** (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.
 
 ### Reporting a problem
 
@@ -51,13 +51,15 @@ The automation API is off by default. When you turn it on, it listens only on `1
 The **Mister Download Manager** extension for Chrome, Edge, Brave, Opera, Vivaldi and Firefox:
 
 - When you start a download that MDM should take, it passes **the download's address (and where its redirects led), the page it came from, the site's cookies for that address, your browser's User-Agent, and the file's name, size and type** to MDM on your computer, through the browser's native-messaging channel. Nothing goes over the internet.
-- When a download comes from a form you submitted, it passes **the form's data** too, so MDM can submit it again. It notes the data of forms you submit (kept in memory for two minutes, never stored) only for that.
-- It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the **Download video** button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address and the page's title to MDM.
-- **Download selected links** and **Download all links** read the links of the page (or of your selection) when you choose them, and pass them to MDM.
+- When a download comes from a form you submitted, it passes **the form's data** too, so MDM can submit it again. It notes the data of forms you submit (in memory, used for two minutes at most, never stored) only for that.
+- It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the **Download video** button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.
+- **Download selected links** and **Download all links** read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.
+- A small script in every page notes only the links you click while holding **Alt**, so those downloads stay with the browser; the addresses are kept in memory for a few seconds.
+- Every message to MDM also says which browser it comes from (its name, as the browser tells it) and the extension's version.
 - It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.
 - It has **no remote code, no analytics and no ads**, and sends nothing to us or anyone else.
 
-Its permissions, and why: *downloads* to see and hand over downloads; *cookies* so signed-in downloads work in MDM; *nativeMessaging* to talk to MDM; *contextMenus* for the right-click items; *storage* for its settings; *webRequest* to see forms submitted and video streams loaded (it changes nothing); *declarativeNetRequest* (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, *webRequestBlocking* does that; *scripting* to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.
+Its permissions, and why: *downloads* to see and hand over downloads; *cookies* so signed-in downloads work in MDM; *nativeMessaging* to talk to MDM; *contextMenus* for the right-click items; *storage* for its settings; *webRequest* to see forms submitted and video streams loaded (it changes nothing); *declarativeNetRequestWithHostAccess* (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, *webRequestBlocking* does that; *scripting* to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.
 
 ## This website
 

@@ -48,7 +48,10 @@ if (Test-Path $store) { Remove-Item -LiteralPath $store -Recurse -Force }
 Copy-Item (Join-Path $out "chromium") $store -Recurse
 $manifest = Get-Content (Join-Path $store "manifest.json") -Raw | ConvertFrom-Json
 $manifest.PSObject.Properties.Remove("key")
-$manifest.content_scripts[0] | Add-Member -NotePropertyName exclude_matches -NotePropertyValue @(
+# The video button's entry, by its file (not its place in the list).
+$video = $manifest.content_scripts | Where-Object { $_.js -contains "video.js" } | Select-Object -First 1
+if (-not $video) { throw "no content script entry runs video.js" }
+$video | Add-Member -NotePropertyName exclude_matches -NotePropertyValue @(
   "*://*.youtube.com/*", "*://*.youtube-nocookie.com/*", "*://youtu.be/*")
 $json = $manifest | ConvertTo-Json -Depth 10
 [IO.File]::WriteAllText((Join-Path $store "manifest.json"), $json, (New-Object Text.UTF8Encoding $false))

@@ -317,7 +317,9 @@ fn verdict(
 }
 
 /// Read one native message; None at end of input.
-fn read_message(r: &mut impl Read) -> io::Result<Option<Vec<u8>>> {
+/// Read one native message; None at end of input. `Err` inside: a message over the limit (its
+/// size), read past and dropped, to be answered "too-large".
+fn read_message(r: &mut impl Read) -> io::Result<Option<Result<Vec<u8>, usize>>> {
     let mut len = [0u8; 4];
     match r.read_exact(&mut len) {
         Ok(()) => {}
@@ -326,13 +328,15 @@ fn read_message(r: &mut impl Read) -> io::Result<Option<Vec<u8>>> {
     }
     let len = u32::from_le_bytes(len) as usize;
     // Browsers send at most 4 GB, but a download request is small: refuse anything silly (the
-    // app's channel takes this much, so whatever is read here reaches it).
+    // app's channel takes this much, so whatever is read here reaches it). Read past it, so
+    // the extension hears why instead of a closed host.
     if len > mdm_ipc::MAX_MESSAGE {
-        return Err(io::Error::other("message too large"));
+        io::copy(&mut r.take(len as u64), &mut io::sink())?;
+        return Ok(Some(Err(len)));
     }
     let mut buf = vec![0u8; len];
     r.read_exact(&mut buf)?;
-    Ok(Some(buf))
+    Ok(Some(Ok(buf)))
 }
 
 fn write_message(w: &mut impl Write, json: &[u8]) -> io::Result<()> {
@@ -462,6 +466,17 @@ fn serve() -> io::Result<()> {
     let mut stdin = io::stdin().lock();
     let mut stdout = io::stdout().lock();
     while let Some(raw) = read_message(&mut stdin)? {
+        let raw = match raw {
+            Ok(raw) => raw,
+            Err(len) => {
+                let reply = Reply::failed("too-large", format!("a message of {len} bytes"));
+                write_message(
+                    &mut stdout,
+                    &serde_json::to_vec(&reply).map_err(io::Error::other)?,
+                )?;
+                continue;
+            }
+        };
         let reply = match serde_json::from_slice::<Message>(&raw) {
             // The rules as saved now: a change in Options applies to the next download.
             Ok(m) => {
@@ -989,7 +1004,7 @@ mod tests {
         assert_eq!(&buf[..4], &25u32.to_le_bytes());
         let mut r = &buf[..];
         assert_eq!(
-            read_message(&mut r).unwrap().unwrap(),
+            read_message(&mut r).unwrap().unwrap().unwrap(),
             br#"{"url":"https://x/a.zip"}"#
         );
         assert!(
@@ -999,9 +1014,17 @@ mod tests {
     }
 
     #[test]
-    fn refuses_huge_messages() {
-        let mut r: &[u8] = &(2u32 << 20).to_le_bytes();
-        assert!(read_message(&mut r).is_err());
+    fn huge_messages_are_read_past_and_said() {
+        let big = 2usize << 20;
+        let mut input = (big as u32).to_le_bytes().to_vec();
+        input.extend(vec![b'x'; big]);
+        write_message(&mut input, br#"{"rules":true}"#).unwrap();
+        let mut r = &input[..];
+        assert_eq!(read_message(&mut r).unwrap(), Some(Err(big)));
+        assert!(
+            matches!(read_message(&mut r).unwrap(), Some(Ok(_))),
+            "the next one reads"
+        );
     }
 
     #[test]

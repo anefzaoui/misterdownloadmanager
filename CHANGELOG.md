@@ -22,15 +22,19 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   connected](https://misterdownloadmanager.com/help/browser-help.html), at the section for the
   reason. Its popup also pauses taking downloads, leaves the current site to the browser for
   good, and opens MDM or its Options.
-- **Options → General → Test browser integration** checks, in order, everything between a
-  browser and MDM, and offers **Set it up** when the browsers can't find MDM.
+- **Options → General → Test browser integration** checks MDM's side in order (integration on,
+  the installed copy, the browsers can find MDM, which browsers' extension connected) and
+  offers **Set it up** when the browsers can't find MDM.
+- **Options → File types → Don't take files smaller than** leaves small files (a receipt, an
+  icon) to the browser, and **Edit list ...** for the addresses left to the browser works.
 - **Download selected links** and **Download all links** on the browser's right-click menu: the
   page's links go to Import, to tick there.
 - **PDFs, music and videos the browser would open itself are taken too**, when their type is in
   **Options → File types** (**Options → General → Keys...** turns it off). Hold **Alt** while
   clicking a link to let the browser have it.
 - **Downloads from forms** (a button that posts and gets a file back) are posted again by MDM,
-  with the form's data, instead of being lost.
+  with the form's data, instead of being lost. A form that sends a file (multipart) stays with
+  the browser.
 
 ### Changed
 
@@ -44,14 +48,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Options is left alone even when it redirects to another.
 - The download button over videos passes the page's referrer, cookies and the browser's
   User-Agent to yt-dlp, so videos that need a sign-in or play only where they're embedded work.
-- Files from the browser are marked as downloaded from the internet, as the browser marks its
-  own: Windows' Mark of the Web (SmartScreen, Office's Protected View), macOS' quarantine.
+- Files downloaded from the web are marked as downloaded from the internet, as the browser marks
+  its own: Windows' Mark of the Web (SmartScreen, Office's Protected View), macOS' quarantine.
 - Downloads from a private window are kept out of the saved list.
 
 ### Fixed
 
 - A second browser download arriving while Download File Info was open replaced the first, which
-  was lost (the browser had already given it up). They now wait their turn.
+  was lost (the browser had already given it up). They now wait their turn, and those still
+  waiting when MDM quits are kept in the main queue (Download Later).
 - When Firefox started MDM for a download, closing its helper could close MDM too.
 - A download with very large cookies made the browser's helper start a second MDM and wait 5
   seconds; MDM only starts now when it isn't running, and takes what the browser sends.

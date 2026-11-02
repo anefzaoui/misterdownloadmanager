@@ -34,7 +34,7 @@ It does **not** contain:
 
 If an error message quotes something you typed, that text is in the report, so read it before sending.
 
-**The crash data file (`.dmp`)** is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses. It is only attached when you tick **Also attach the crash data**.
+**The crash data file (`.dmp`)** is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick **Also attach the crash data**.
 
 ## Where reports are kept
 

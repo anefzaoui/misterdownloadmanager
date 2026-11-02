@@ -602,7 +602,14 @@ impl FileInfo {
                         crate::model::category_folder(self.category, &self.downloads, &self.dirs);
                     self.save_as = display_path(&dir.join(&name));
                 }
-                // Another address: the browser's name, size and form are not its own.
+                // Another address: the browser's name, size and form are not its own, and on
+                // another site neither are its cookies and page (never sent there).
+                if url.origin() != self.url.origin() {
+                    self.context.cookies = None;
+                    self.context.referer = None;
+                    self.request.headers.remove(reqwest::header::COOKIE);
+                    self.request.headers.remove(reqwest::header::REFERER);
+                }
                 self.context.name = None;
                 self.context.size = None;
                 self.context.final_url = None;

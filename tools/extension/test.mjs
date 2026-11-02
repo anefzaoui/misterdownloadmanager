@@ -280,6 +280,14 @@ const ok = (what) => {
   await settle();
   assert.ok(suggested);
   assert.equal(natives(calls).length, 1);
+  // A multipart form: the browser gives its fields without their files, so it stays there too.
+  listeners.beforeRequest({ method: "POST", url: "https://x/multi", requestId: "11", requestBody: { formData: { a: ["1"] } } });
+  listeners.beforeSendHeaders({ method: "POST", url: "https://x/multi", requestId: "11", requestHeaders: [{ name: "Content-Type", value: "multipart/form-data; boundary=xyz" }] });
+  let kept = false;
+  listeners.determining({ id: 42, url: "https://x/multi", filename: "out.zip" }, () => (kept = true));
+  await settle();
+  assert.ok(kept);
+  assert.equal(natives(calls).length, 1);
   ok("forms: posted again with their body, or left to the browser");
 }
 

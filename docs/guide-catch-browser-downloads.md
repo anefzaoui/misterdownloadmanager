@@ -30,7 +30,7 @@ Everything MDM doesn't take stays with the browser.
 
 ## Download a link the browser would open
 
-Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To let the browser open one, hold **Alt** while clicking it. Any other link: right-click it and choose **Download with Mister Download Manager**, which takes any type.
+Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold **Alt** while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose **Download with Mister Download Manager**, which takes any type.
 
 ![Options, General page](images/options-general.png)
 

@@ -1267,6 +1267,7 @@ impl App {
                     referer: cmd.referer.clone(),
                     cookies: cmd.cookies.clone(),
                     user_agent: cmd.user_agent.clone(),
+                    private: cmd.private,
                 })
                 .collect();
             // i18n: in Import, where the addresses came from: a page in the browser
@@ -4383,6 +4384,7 @@ impl App {
                     referer: None,
                     cookies: None,
                     user_agent: None,
+                    private: false,
                 })
                 .collect();
             // i18n: in Import, where the addresses came from: dragged onto the window
@@ -4525,6 +4527,7 @@ impl App {
                 referer: d.referer,
                 cookies: d.cookies,
                 user_agent: d.user_agent,
+                private: d.private,
                 ..Default::default()
             };
             let id = self.push_item(
@@ -5292,8 +5295,58 @@ impl eframe::App for App {
     }
 }
 
+impl App {
+    /// Quitting: downloads the browser handed over that never got their Download File Info
+    /// (waiting their turn, or arriving at the last moment) go to the main queue as Download
+    /// Later, not lost (the browser gave its own copy up). Commands after this get "gone".
+    fn keep_unseen(&mut self) {
+        let mut unseen: Vec<(url::Url, ipc::Command)> = self
+            .file_info_waiting
+            .drain(..)
+            .map(|(new, context)| (new.url, context))
+            .collect();
+        while let Ok(inc) = self.commands.try_recv() {
+            if inc.reply.is_none()
+                && let Some(url) = inc
+                    .cmd
+                    .url
+                    .as_deref()
+                    .and_then(|u| url::Url::parse(u.trim()).ok())
+                    .filter(mdm_engine::supported)
+            {
+                unseen.push((url, inc.cmd));
+            }
+        }
+        for (url, context) in unseen {
+            let name = context
+                .name
+                .clone()
+                .unwrap_or_else(|| mdm_engine::naming::file_name(None, &url));
+            let name = mdm_engine::naming::sanitize(&name);
+            let category = Category::of(&name);
+            let dir = self.settings.category_dir(category, &self.downloads);
+            let dest = mdm_engine::naming::unique_path(&dir, &name);
+            let size = context.size;
+            let id = self.push_item(
+                url,
+                dest,
+                category,
+                String::new(),
+                size,
+                None,
+                context,
+                crate::i18n::mark("from the browser"),
+            );
+            self.queues[0].items.push(id);
+        }
+        // The channel's receiver goes with it: later commands are answered "gone".
+        self.commands = std::sync::mpsc::channel().1;
+    }
+}
+
 impl Drop for App {
     fn drop(&mut self) {
+        self.keep_unseen();
         // What the saver has in hand first, then the last state, written here and now.
         self.saver.flush();
         let _ = store::save(

@@ -17,6 +17,8 @@ pub struct Imported {
     pub referer: Option<String>,
     pub cookies: Option<String>,
     pub user_agent: Option<String>,
+    /// From a private window's page: kept out of the saved list.
+    pub private: bool,
 }
 
 /// One address per line.
@@ -335,6 +337,7 @@ mod tests {
                     referer: Some("https://x.org/".into()),
                     cookies: Some("sid=1".into()),
                     user_agent: None,
+                    private: false,
                 },
                 Imported {
                     url: "https://y.org/b.iso".into(),

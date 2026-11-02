@@ -476,7 +476,19 @@ impl OptionsDialog {
         }
         // MDM's: a receipt or an icon isn't worth a download window.
         let label = crate::i18n::t("Don't take files smaller than (KB, 0 = any size):");
-        text(&p, o.x + 21.0, o.y + 383.0, label, LIGHT_TEXT());
+        // Before its box: a longer translation is cut with "..." and shown whole on hover.
+        let (rect, cut) = winui::label_into(
+            &p,
+            o.x + 21.0,
+            o.y + 383.0,
+            label,
+            LIGHT_TEXT(),
+            o.x + 316.0,
+            o.x + 21.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, ("types-min", 383), label);
+        }
         winui::number_field(
             ui,
             r(o, 316.0, 370.0, 73.0, 21.0),
@@ -1740,7 +1752,7 @@ impl OptionsDialog {
                             o.x + 14.0,
                             o.y + 20.0,
                             crate::i18n::t(
-                                "One address per line; * stands for any text (https://example.com/private/*).",
+                                "One address per line; * stands for any text, as in example.com/private/*.",
                             ),
                             LIGHT_TEXT(),
                             o.x + 406.0,
