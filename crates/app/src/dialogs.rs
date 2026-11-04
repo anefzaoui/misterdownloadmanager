@@ -102,7 +102,7 @@ pub(crate) fn window<T>(
     bg: egui::Color32,
     body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
-    dialog_window(ctx, id, title, client, minimize, bg, false, body)
+    dialog_window(ctx, id, title, client, minimize, bg, Kind::Plain, body)
 }
 
 /// A question that must be answered (Yes / No, a countdown): a `window` that stays above the
@@ -118,7 +118,50 @@ pub(crate) fn question<T>(
     bg: egui::Color32,
     body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
-    dialog_window(ctx, id, title, client, minimize, bg, true, body)
+    dialog_window(ctx, id, title, client, minimize, bg, Kind::Question, body)
+}
+
+/// News that must not go unseen (Download complete, as IDM shows it): a `window` shown above
+/// every other program's while `on_top`, without taking the keyboard focus from the one being
+/// typed in. The caller drops `on_top` once it has been clicked (`notice_seen`).
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn notice<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    on_top: bool,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::Notice { on_top },
+        body,
+    )
+}
+
+/// Whether notice `id` has the keyboard focus (it was clicked, or activated): seen.
+pub(crate) fn notice_seen(ctx: &egui::Context, id: &str) -> bool {
+    ctx.input_for(ViewportId::from_hash_of(id), |i| i.viewport().focused) == Some(true)
+}
+
+/// How a dialog's window behaves towards the others.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Kind {
+    Plain,
+    /// Above the app's windows, taking the focus when it opens (`question`).
+    Question,
+    /// Never takes the focus by itself; above every program's windows while `on_top` (`notice`).
+    Notice {
+        on_top: bool,
+    },
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -129,9 +172,10 @@ fn dialog_window<T>(
     client: [f32; 2],
     minimize: bool,
     bg: egui::Color32,
-    modal: bool,
+    kind: Kind,
     mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
+    let modal = kind == Kind::Question;
     let key = egui::Id::unique(("dialog-pos", id));
     // The title in the interface language (Win32 finds the window by it, so it is used as is
     // from here on).
@@ -148,6 +192,15 @@ fn dialog_window<T>(
     builder = crate::quiet(builder.with_icon(crate::app_icon()));
     if modal {
         builder = builder.with_always_on_top();
+    }
+    if let Kind::Notice { on_top } = kind {
+        // Shown without activating it (winit: SW_SHOWNOACTIVATE), and the level always given,
+        // so that dropping `on_top` turns topmost off (a missing level changes nothing).
+        builder = builder.with_active(false).with_window_level(if on_top {
+            egui::WindowLevel::AlwaysOnTop
+        } else {
+            egui::WindowLevel::Normal
+        });
     }
     if let Some(p) = place(ctx, key, client) {
         builder = builder.with_position(p);
@@ -1061,6 +1114,9 @@ pub struct Complete {
     pub path: PathBuf,
     pub size: u64,
     pub dont_show: bool,
+    /// Clicked (or activated) once: from then on a window like any other, no longer above every
+    /// program's (it shows above them until then, as IDM's does: #77).
+    pub seen: bool,
 }
 
 impl Complete {
@@ -1070,13 +1126,15 @@ impl Complete {
         icons: &mut crate::chrome::ShellIcons,
     ) -> Outcome<()> {
         let id = format!("complete-{}", self.id);
-        window(
+        self.seen |= notice_seen(ctx, &id);
+        notice(
             ctx,
             &id,
             "Download complete",
             [455.0, 215.0],
             true,
             winui::BG(),
+            !self.seen,
             |ui, o| {
                 let p = ui.painter().clone();
                 // Windows' own open-folder icon (IDM shows an open folder here).

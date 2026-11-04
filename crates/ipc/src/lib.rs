@@ -95,6 +95,16 @@ pub struct Incoming {
 struct Endpoint {
     port: u16,
     token: String,
+    /// The app's process id (0: written by an older app), so a client that may bring windows to
+    /// the front can let the app do it (the native host on Windows: `AllowSetForegroundWindow`).
+    #[serde(default)]
+    pid: u32,
+}
+
+/// The running app's process id, as its ipc.json says (None: not running, or an older app).
+pub fn app_pid() -> Option<u32> {
+    let ep: Endpoint = serde_json::from_slice(&std::fs::read(endpoint_path()?).ok()?).ok()?;
+    (ep.pid != 0).then_some(ep.pid)
 }
 
 /// One request line: the token from ipc.json and the command's fields.
@@ -267,6 +277,7 @@ pub fn serve(tx: Sender<Incoming>, wake: impl Fn() + Send + Sync + 'static) -> s
         let json = serde_json::to_vec(&Endpoint {
             port,
             token: token.clone(),
+            pid: std::process::id(),
         })
         .map_err(std::io::Error::other)?;
         private_write(&path, &json)?;
