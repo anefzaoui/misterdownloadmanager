@@ -693,7 +693,9 @@ async fn torrents() -> anyhow::Result<(mdm_torrent::Torrents, tempfile::TempDir)
 fn torrent_source(s: &str) -> anyhow::Result<mdm_torrent::Source> {
     match mdm_torrent::Source::magnet(s) {
         Some(m) => Ok(m),
-        None => Ok(mdm_torrent::Source::File(std::fs::read(s)?)),
+        None => Ok(mdm_torrent::Source::File(mdm_torrent::read_file(
+            std::path::Path::new(s),
+        )?)),
     }
 }
 

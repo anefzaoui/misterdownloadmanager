@@ -167,9 +167,20 @@ impl TorrentDialog {
         let task = rt.spawn(async move {
             let src = match magnet {
                 Some(m) => m,
-                None => match tokio::fs::read(&path).await {
-                    Ok(bytes) => Source::File(bytes),
-                    Err(_) => {
+                // At most mdm_torrent::MAX_TORRENT_FILE (#40): a bigger file isn't a torrent.
+                None => match tokio::task::spawn_blocking(move || {
+                    mdm_torrent::read_file(std::path::Path::new(&path))
+                })
+                .await
+                {
+                    Ok(Ok(bytes)) => Source::File(bytes),
+                    Ok(Err(e)) if e.kind() == std::io::ErrorKind::InvalidData => {
+                        let e = crate::errors::torrent(&mdm_torrent::TorrentError::NotATorrent);
+                        *out.lock().unwrap() = Some(Err(e));
+                        ctx.request_repaint();
+                        return;
+                    }
+                    _ => {
                         *out.lock().unwrap() = Some(Err(not_found));
                         ctx.request_repaint();
                         return;

@@ -43,6 +43,26 @@ fn engine(e: impl std::fmt::Display) -> TorrentError {
     TorrentError::Engine(e.to_string())
 }
 
+/// The most a .torrent file may be (#40): the largest real ones (a great many files) are a few
+/// MB; anything bigger isn't one, and would be read whole into memory.
+pub const MAX_TORRENT_FILE: u64 = 10 << 20;
+
+/// A .torrent file from disk, at most `MAX_TORRENT_FILE` (a bigger one: `InvalidData`).
+pub fn read_file(path: &Path) -> std::io::Result<Vec<u8>> {
+    use std::io::Read;
+    let mut bytes = Vec::new();
+    std::fs::File::open(path)?
+        .take(MAX_TORRENT_FILE + 1)
+        .read_to_end(&mut bytes)?;
+    if bytes.len() as u64 > MAX_TORRENT_FILE {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidData,
+            "larger than a .torrent file can be",
+        ));
+    }
+    Ok(bytes)
+}
+
 /// A .torrent file's bytes: a torrent, whose names are safe for this system (`names`).
 fn check_bytes(torrent: &[u8]) -> Result<(), TorrentError> {
     let meta = librqbit::torrent_from_bytes(torrent).map_err(|_| TorrentError::NotATorrent)?;
@@ -760,6 +780,21 @@ mod tests {
 
     /// #40: a kept torrent keeps only the trackers MDM may contact, in session.json and in its
     /// .torrent (whose info, so its hash, stays the same); with a proxy, UDP ones go too.
+    #[test]
+    fn torrent_files_are_read_up_to_their_cap() {
+        let dir = tempfile::tempdir().unwrap();
+        let small = dir.path().join("small.torrent");
+        std::fs::write(&small, torrent_naming("a.bin")).unwrap();
+        assert_eq!(read_file(&small).unwrap(), torrent_naming("a.bin"));
+        let big = dir.path().join("big.torrent");
+        std::fs::write(&big, vec![b'x'; MAX_TORRENT_FILE as usize + 1]).unwrap();
+        assert_eq!(
+            read_file(&big).unwrap_err().kind(),
+            std::io::ErrorKind::InvalidData
+        );
+        assert!(read_file(&dir.path().join("none.torrent")).is_err());
+    }
+
     #[test]
     fn kept_torrents_lose_the_trackers_dropped() {
         let dir = tempfile::tempdir().unwrap();
