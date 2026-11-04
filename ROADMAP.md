@@ -49,7 +49,8 @@ Everything below ships together, in one release.
 
 ### Bugs being looked into
 
-- 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57))
+- 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
+  most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A long video title overflows the window ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62))
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
