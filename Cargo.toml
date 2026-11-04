@@ -107,7 +107,10 @@ unsafe_code = "deny"
 all = { level = "warn", priority = -1 }
 
 [profile.release]
-lto = "thin"
+# Whole-program optimisation in one unit: smaller and a little faster programs, for a slower
+# release build (#25).
+lto = "fat"
+codegen-units = 1
 # Function names and file:line for crash reports. The debug info doesn't ship: CI turns it into the
 # release's symbols zip (tools/installer/symbols.py); Windows keeps it in the .pdb, which no
 # download includes, and Linux and macOS strip it from the programs they ship.

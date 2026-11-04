@@ -35,10 +35,15 @@ fn main() {
 }
 
 /// Embed every translation catalog, `i18n/<locale>.tsv` at the repository root (craft-i18n's
-/// format; D-019), as the `Embedded` list craft-i18n reads: `OUT_DIR/catalogs.rs`.
+/// format; D-019), as the `Embedded` list craft-i18n reads: `OUT_DIR/catalogs.rs`. The comment
+/// lines (`#`: translators' notes, `#, machine`) are more than half of the text and craft-i18n
+/// skips them unread, so the embedded copies have them blanked (#25), each kept as an empty line so
+/// a problem's "line N" still points into the catalog file.
 fn catalogs() {
     let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../i18n");
     println!("cargo:rerun-if-changed={}", root.display());
+    let embedded = std::path::Path::new(&std::env::var("OUT_DIR").unwrap()).join("catalogs");
+    std::fs::create_dir_all(&embedded).unwrap();
     let mut rows = Vec::new();
     if let Ok(dir) = std::fs::read_dir(&root) {
         let mut files: Vec<_> = dir.flatten().map(|e| e.path()).collect();
@@ -56,10 +61,16 @@ fn catalogs() {
                 continue;
             }
             println!("cargo:rerun-if-changed={}", path.display());
-            let path = path.canonicalize().unwrap_or(path);
+            let text = std::fs::read_to_string(&path).expect("a translation catalog");
+            let rows_only: Vec<&str> = text
+                .split('\n')
+                .map(|line| if line.starts_with('#') { "" } else { line })
+                .collect();
+            let copy = embedded.join(format!("{stem}.tsv"));
+            std::fs::write(&copy, rows_only.join("\n")).unwrap();
             rows.push(format!(
                 "    ({stem:?}, \"\", include_str!({:?})),",
-                path.display().to_string()
+                copy.display().to_string()
             ));
         }
     }

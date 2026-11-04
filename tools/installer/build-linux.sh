@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Builds the Linux release into target/dist/ (experimental: built by CI, not yet tested by us):
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.AppImage  runs on most distros
+#   MisterDownloadManager-<version>-linux-x86_64-experimental.AppImage.zsync  its updates (AppImage tools)
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.tar.gz    the plain programs
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.deb       Debian, Ubuntu, Mint
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.rpm       Fedora, RHEL, openSUSE
-# Needs: cargo, pwsh (the extension), python3 with Pillow (the icon), dpkg-deb, rpmbuild, curl (appimagetool is fetched).
+# Needs: cargo, pwsh (the extension), python3 with Pillow (the icon), dpkg-deb, rpmbuild, curl (appimagetool is fetched),
+# and zsyncmake if the appimagetool fetched doesn't write the .zsync itself.
 # Build on the oldest Ubuntu you want to support: the programs need its glibc or newer.
 #   tools/installer/build-linux.sh [--no-build]
 set -euo pipefail
@@ -128,8 +130,18 @@ tool="$stage/appimagetool"
 curl -fsSL -o "$tool" \
   https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 chmod +x "$tool"
+# Update information (#24): AppImageLauncher, Gear Lever and AppImageUpdate read it from the
+# AppImage, find the latest release's .zsync and download only the parts that changed. MDM's own
+# Update now doesn't need it. The pattern also matches a later name without "-experimental".
+update="gh-releases-zsync|anefzaoui|misterdownloadmanager|latest|MisterDownloadManager-*-linux-x86_64*.AppImage.zsync"
 # No FUSE on CI runners: the tool runs from its own extracted copy.
-APPIMAGE_EXTRACT_AND_RUN=1 ARCH=x86_64 "$tool" "$appdir" "$dist/$name.AppImage"
+APPIMAGE_EXTRACT_AND_RUN=1 ARCH=x86_64 "$tool" -u "$update" "$appdir" "$dist/$name.AppImage"
+# appimagetool writes the .zsync itself (beside the AppImage, or in the current folder); with
+# one that doesn't, zsyncmake makes it.
+[ -f "$name.AppImage.zsync" ] && mv "$name.AppImage.zsync" "$dist/"
+if [ ! -f "$dist/$name.AppImage.zsync" ]; then
+  (cd "$dist" && zsyncmake -u "$name.AppImage" -o "$name.AppImage.zsync" "$name.AppImage")
+fi
 
 rm -rf "$stage"
 (cd "$dist" && sha256sum "$name".* > SHA256SUMS-linux.txt)

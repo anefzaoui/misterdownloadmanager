@@ -7,6 +7,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The Linux AppImage updates through AppImage tools too** ([#24](https://github.com/anefzaoui/misterdownloadmanager/issues/24)):
+  it carries the address of its updates, and each release has its `.AppImage.zsync`, so
+  AppImageLauncher, Gear Lever and AppImageUpdate download only the parts that changed.
+  **Update now** works as before.
 - **More than 32 connections per download, if you want them** ([#12](https://github.com/anefzaoui/misterdownloadmanager/issues/12)):
   **Options → Connection** now takes any number from 1 to 32, typed or set with the arrows,
   and **Allow more than 32 connections** raises that to 128, for server exceptions too. Servers
@@ -38,6 +42,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **The app is about a quarter smaller** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
+  `misterdownloadmanager.exe` went from 62 MB to 47 MB and the command line from 28 MB to 22 MB.
+  The translations no longer carry the translators' notes inside the program, and the programs
+  are optimised as a whole.
 - The extension is called **Mister Download Manager**.
 - A download from the browser keeps the browser's name, size and type: Download File Info no
   longer asks the server again, so a link's own name (`download="…"`), a Unicode name and a
