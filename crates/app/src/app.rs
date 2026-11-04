@@ -317,6 +317,8 @@ pub struct App {
     video_dlg: Option<crate::videodlg::VideoDialog>,
     torrent_dlg: Option<crate::torrentdlg::TorrentDialog>,
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
+    /// Since when no torrent has needed the torrent engine (`torrent_tick`).
+    torrent_idle_since: Option<Instant>,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
@@ -682,6 +684,7 @@ impl App {
             video_dlg: None,
             torrent_dlg: None,
             torrent_settings: None,
+            torrent_idle_since: None,
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             find: None,
@@ -1195,6 +1198,34 @@ impl App {
     fn name_guessed(&mut self, id: u64, guessed: bool) {
         if guessed && let Some(item) = self.item(id) {
             item.name_from_url = true;
+        }
+    }
+
+    /// Every 2 s (#40): Torrent settings for the next torrent session, and the running one stopped
+    /// once no torrent has needed it for a minute (none running or sharing, no Add torrent open),
+    /// when Torrent settings say so or their network settings changed.
+    fn torrent_tick(&mut self) {
+        let cfg = crate::torrents::state_dir().and_then(|d| self.settings.torrent_config(d));
+        self.torrent_host.set_config(cfg);
+        let sharing = self.settings.torrent_keep_sharing
+            && self
+                .items
+                .iter()
+                .any(|i| i.torrent.is_some() && i.status == Status::Complete);
+        let busy = sharing
+            || self.torrent_dlg.is_some()
+            || self
+                .items
+                .iter()
+                .any(|i| i.torrent.is_some() && i.live.is_some());
+        if busy {
+            self.torrent_idle_since = None;
+            return;
+        }
+        let since = *self.torrent_idle_since.get_or_insert_with(Instant::now);
+        if since.elapsed() >= Duration::from_secs(60) {
+            self.torrent_host
+                .stop_if_idle(&self.rt, true, self.settings.torrent_stop_idle);
         }
     }
 
@@ -5350,6 +5381,7 @@ impl eframe::App for App {
                 self.queues.len(),
                 ctx.pixels_per_point(),
             );
+            self.torrent_tick();
         }
         ctx.request_repaint_after(Duration::from_secs(2));
         egui::CentralPanel::no_frame()

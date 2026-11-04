@@ -140,6 +140,20 @@ pub struct Settings {
     pub torrent_keep_sharing: bool,
     /// Windows opens magnet links and .torrent files with MDM (D-018: opt-in, current user).
     pub torrent_associations: bool,
+    /// Torrent settings → Network (#40, `torrent_config`): accept incoming connections, map
+    /// the port with the router's UPnP, a fixed port (0: any, picked at each start), the DHT,
+    /// finding peers on the local network.
+    pub torrent_incoming: bool,
+    pub torrent_upnp: bool,
+    pub torrent_port: u16,
+    pub torrent_dht: bool,
+    pub torrent_lsd: bool,
+    /// Torrents go through Proxy / Socks' SOCKS5 proxy (a manual `socks5://` one only).
+    pub torrent_proxy: bool,
+    /// A blocklist's address (empty: none), fetched again every `BLOCKLIST_DAYS`.
+    pub torrent_blocklist: String,
+    /// Stop the torrent engine when no torrent runs (it stops listening; new settings apply).
+    pub torrent_stop_idle: bool,
     /// Help: look for a newer release once a week (D-020; its switch is in Check for updates:
     /// Options → General has no free row in IDM's layout).
     pub update_check: bool,
@@ -256,6 +270,14 @@ impl Default for Settings {
             automation_api: false,
             torrent_keep_sharing: false,
             torrent_associations: false,
+            torrent_incoming: true,
+            torrent_upnp: true,
+            torrent_port: 0,
+            torrent_dht: true,
+            torrent_lsd: true,
+            torrent_proxy: false,
+            torrent_blocklist: String::new(),
+            torrent_stop_idle: true,
             update_check: true,
             update_checked: 0,
             custom_categories: Vec::new(),
@@ -309,6 +331,50 @@ impl Settings {
 
     /// Options → Proxy / Socks for the engine. An automatic configuration script (PAC) is run
     /// once it has been fetched (pacfetch.rs); until then, the system's settings.
+    /// The SOCKS5 proxy torrents may use: Proxy / Socks' manual one when its address is a
+    /// `socks5://` (or `socks5h://`) one, with its login; librqbit takes no other kind.
+    pub fn socks5_proxy(&self) -> Option<String> {
+        let host = self.proxy_host.trim();
+        let (scheme, rest) = host.split_once("://")?;
+        if self.proxy_mode != 3
+            || !matches!(scheme.to_ascii_lowercase().as_str(), "socks5" | "socks5h")
+        {
+            return None;
+        }
+        let mut url = url::Url::parse(&format!("{}://{rest}", scheme.to_ascii_lowercase())).ok()?;
+        if let Ok(port) = self.proxy_port.trim().parse::<u16>() {
+            let _ = url.set_port(Some(port));
+        }
+        if !self.proxy_user.is_empty() {
+            let _ = url.set_username(&self.proxy_user);
+            let _ = url.set_password(Some(&self.proxy_pass));
+        }
+        Some(url.as_str().trim_end_matches('/').to_owned())
+    }
+
+    /// The torrent engine as Torrent settings say (#40), its data in `state_dir`. None when they
+    /// say to use the proxy and Proxy / Socks has no SOCKS5 one: torrents then don't start, never
+    /// going around the proxy unasked.
+    pub fn torrent_config(&self, state_dir: std::path::PathBuf) -> Option<mdm_torrent::Config> {
+        let proxy = match (self.torrent_proxy, self.socks5_proxy()) {
+            (true, None) => return None,
+            (true, proxy) => proxy,
+            (false, _) => None,
+        };
+        let blocklist = (!self.torrent_blocklist.trim().is_empty())
+            .then(|| state_dir.join(crate::torrents::BLOCKLIST_FILE));
+        Some(mdm_torrent::Config {
+            listen: self.torrent_incoming,
+            upnp: self.torrent_upnp,
+            port: (self.torrent_port != 0).then_some(self.torrent_port),
+            dht: self.torrent_dht,
+            lsd: self.torrent_lsd,
+            proxy,
+            blocklist,
+            ..mdm_torrent::Config::new(state_dir)
+        })
+    }
+
     pub fn proxy(&self) -> mdm_engine::Proxy {
         use mdm_engine::Proxy;
         match self.proxy_mode {
@@ -449,6 +515,45 @@ mod tests {
     }
 
     use super::*;
+
+    /// #40: torrents use only a manual SOCKS5 proxy, with its login; asked for one and given
+    /// none, they don't start (no config) rather than go around it.
+    #[test]
+    fn torrents_use_a_socks5_proxy_or_none() {
+        let dir = std::path::PathBuf::from("state");
+        let mut s = Settings {
+            proxy_mode: 3,
+            proxy_host: "socks5://127.0.0.1".into(),
+            proxy_port: "1080".into(),
+            proxy_user: "ann".into(),
+            proxy_pass: "p@ss".into(),
+            ..Settings::default()
+        };
+        assert_eq!(
+            s.socks5_proxy().as_deref(),
+            Some("socks5://ann:p%40ss@127.0.0.1:1080")
+        );
+        assert_eq!(
+            s.torrent_config(dir.clone()).unwrap().proxy,
+            None,
+            "not asked"
+        );
+        s.torrent_proxy = true;
+        assert!(s.torrent_config(dir.clone()).unwrap().proxy.is_some());
+        s.proxy_host = "http://127.0.0.1".into();
+        assert_eq!(s.socks5_proxy(), None, "an HTTP proxy isn't for torrents");
+        assert!(
+            s.torrent_config(dir.clone()).is_none(),
+            "asked, none there: not started"
+        );
+        s.torrent_port = 51413;
+        s.torrent_proxy = false;
+        let c = s.torrent_config(dir).unwrap();
+        assert_eq!(
+            (c.port, c.listen, c.dht, c.lsd),
+            (Some(51413), true, true, true)
+        );
+    }
 
     /// #41: a list saved before Zen was known gets it, captured; a choice made is kept.
     #[test]

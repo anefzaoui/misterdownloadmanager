@@ -14,7 +14,6 @@ use mdm_engine::Snapshot;
 use mdm_engine::download::State;
 use mdm_torrent::{Config, Phase, Torrents};
 use serde::{Deserialize, Serialize};
-use tokio::sync::OnceCell;
 
 /// What a torrent download keeps in the list (downloads.json).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -46,49 +45,91 @@ pub fn save_torrent(hash: &str, bytes: &[u8]) -> std::io::Result<()> {
     std::fs::write(path, bytes)
 }
 
-/// The app's one session, started on first use.
+/// The blocklist as MDM converted it (mdm_torrent::blocklist), in the torrent data folder.
+pub const BLOCKLIST_FILE: &str = "blocklist.p2p";
+
+/// The app's one session, started on first use, as Torrent settings say (`set_config`); it
+/// stops when no torrent needs it (`stop_if_idle`), and a new one takes the settings of then.
 #[derive(Clone)]
 pub struct Host {
-    cell: Arc<OnceCell<Arc<Torrents>>>,
+    cell: Arc<tokio::sync::Mutex<Option<Arc<Torrents>>>>,
+    /// The settings the next session starts with (None: they can't be met, see
+    /// Settings::torrent_config) and those of the one running.
+    wanted: Arc<Mutex<Option<Config>>>,
+    running: Arc<Mutex<Option<Config>>>,
 }
 
 impl Host {
     pub fn new() -> Self {
         Host {
-            cell: Arc::new(OnceCell::new()),
+            cell: Arc::new(tokio::sync::Mutex::new(None)),
+            wanted: Arc::new(Mutex::new(state_dir().map(Config::new))),
+            running: Arc::new(Mutex::new(None)),
         }
+    }
+
+    /// The settings for the next session (Torrent settings changed, or at start).
+    pub fn set_config(&self, cfg: Option<Config>) {
+        *self.wanted.lock().unwrap() = cfg;
     }
 
     /// The session if it already runs.
     pub fn get(&self) -> Option<Arc<Torrents>> {
-        self.cell.get().cloned()
+        self.cell.try_lock().ok().and_then(|s| s.clone())
+    }
+
+    /// Whether the running session was started with other settings than those wanted now.
+    pub fn settings_changed(&self) -> bool {
+        self.get().is_some() && *self.running.lock().unwrap() != *self.wanted.lock().unwrap()
     }
 
     /// The session, started if needed. `known`: the torrents the list has (the rest of what
     /// the session restores is forgotten).
     pub async fn session(&self, known: HashSet<String>) -> Result<Arc<Torrents>, String> {
-        self.cell
-            .get_or_try_init(|| async move {
-                // i18n: an error: the app has no folder for its torrent data
-                let dir = state_dir().ok_or(crate::i18n::t("no data folder for torrents"))?;
-                let t = Torrents::start(Config::new(dir)).await.map_err(|e| {
-                    crate::i18n::fmt(
-                        // i18n: an error, with the reason
-                        crate::i18n::t("torrents could not start: {error}"),
-                        &[("error", &e.to_string())],
-                    )
-                })?;
-                for hash in t.hashes() {
-                    if known.contains(&hash) {
-                        let _ = t.pause(&hash).await;
-                    } else {
-                        let _ = t.remove(&hash, false).await;
-                    }
-                }
-                Ok(Arc::new(t))
-            })
-            .await
-            .cloned()
+        let mut cell = self.cell.lock().await;
+        if let Some(t) = cell.as_ref() {
+            return Ok(t.clone());
+        }
+        // i18n: an error: the app has no folder for its torrent data
+        state_dir().ok_or(crate::i18n::t("no data folder for torrents"))?;
+        let cfg = self.wanted.lock().unwrap().clone().ok_or_else(|| {
+            // i18n: an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+            crate::i18n::t(
+                "Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy",
+            )
+            .to_owned()
+        })?;
+        let t = Torrents::start(cfg.clone()).await.map_err(|e| {
+            crate::i18n::fmt(
+                // i18n: an error, with the reason
+                crate::i18n::t("torrents could not start: {error}"),
+                &[("error", &e.to_string())],
+            )
+        })?;
+        for hash in t.hashes() {
+            if known.contains(&hash) {
+                let _ = t.pause(&hash).await;
+            } else {
+                let _ = t.remove(&hash, false).await;
+            }
+        }
+        let t = Arc::new(t);
+        *cell = Some(t.clone());
+        *self.running.lock().unwrap() = Some(cfg);
+        Ok(t)
+    }
+
+    /// Stop the session when no torrent needs it (`idle`) and Torrent settings say so, or its
+    /// settings changed: it stops listening, and the next one starts with the new ones.
+    pub fn stop_if_idle(&self, rt: &tokio::runtime::Handle, idle: bool, stop_idle: bool) {
+        if !idle || !(stop_idle || self.settings_changed()) {
+            return;
+        }
+        let Some(t) = self.cell.try_lock().ok().and_then(|mut s| s.take()) else {
+            return;
+        };
+        *self.running.lock().unwrap() = None;
+        rt.spawn(async move { t.stop().await });
     }
 
     /// Keep sharing (true) or stop sharing (false) finished torrents: `hashes` are the list's
