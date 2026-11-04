@@ -116,11 +116,13 @@ fn load_from(p: &Path, empty: Loaded) -> Loaded {
                     q.files_at_once = 4;
                 }
             }
+            let mut settings = f.settings;
+            settings.list_known_browsers();
             Loaded {
                 next_id: f.next_id.max(1),
                 items: f.items,
                 columns: f.columns,
-                settings: f.settings,
+                settings,
                 queues: f.queues,
             }
         }

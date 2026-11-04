@@ -142,59 +142,16 @@ fn register_command() -> Option<Command> {
 /// user or for everyone (Options → General → Test browser integration).
 pub fn host_registered() -> bool {
     let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
-    let name = "com.misterdownloadmanager.host.json";
-    let dirs: Vec<PathBuf> = if cfg!(target_os = "macos") {
-        let support = home.join("Library/Application Support");
-        [
-            "Google/Chrome",
-            "Chromium",
-            "Microsoft Edge",
-            "BraveSoftware/Brave-Browser",
-            "Vivaldi",
-            "Mozilla",
-        ]
-        .iter()
-        .map(|d| support.join(d).join("NativeMessagingHosts"))
-        .chain(
-            [
-                "/Library/Google/Chrome/NativeMessagingHosts",
-                "/Library/Application Support/Chromium/NativeMessagingHosts",
-                "/Library/Microsoft/Edge/NativeMessagingHosts",
-                "/Library/Application Support/Mozilla/NativeMessagingHosts",
-            ]
-            .map(PathBuf::from),
-        )
-        .collect()
-    } else {
-        let config = std::env::var_os("XDG_CONFIG_HOME")
-            .map(PathBuf::from)
-            .filter(|p| p.is_absolute())
-            .unwrap_or_else(|| home.join(".config"));
-        [
-            "google-chrome",
-            "google-chrome-beta",
-            "google-chrome-unstable",
-            "chromium",
-            "microsoft-edge",
-            "BraveSoftware/Brave-Browser",
-            "vivaldi",
-        ]
-        .iter()
-        .map(|d| config.join(d).join("NativeMessagingHosts"))
-        .chain([home.join(".mozilla/native-messaging-hosts")])
-        .chain(
-            [
-                "/etc/opt/chrome/native-messaging-hosts",
-                "/etc/chromium/native-messaging-hosts",
-                "/etc/opt/edge/native-messaging-hosts",
-                "/usr/lib/mozilla/native-messaging-hosts",
-                "/usr/lib64/mozilla/native-messaging-hosts",
-            ]
-            .map(PathBuf::from),
-        )
-        .collect()
-    };
-    dirs.iter().any(|d| d.join(name).is_file())
+    let config = std::env::var_os("XDG_CONFIG_HOME")
+        .map(PathBuf::from)
+        .filter(|p| p.is_absolute())
+        .unwrap_or_else(|| home.join(".config"));
+    let mac = cfg!(target_os = "macos");
+    // The folders the native host writes (mdm_ipc::browsers), for this user and for everyone.
+    [false, true]
+        .into_iter()
+        .flat_map(|all| mdm_ipc::browsers::host_dirs(&home, &config, mac, all))
+        .any(|(d, _)| d.join("com.misterdownloadmanager.host.json").is_file())
 }
 
 /// Options → Sounds: play a sound file (macOS: afplay; Linux: PulseAudio / PipeWire's paplay,
@@ -473,39 +430,22 @@ pub fn browsers() -> Vec<(&'static str, PathBuf)> {
             .flat_map(|n| dirs.iter().map(move |d| d.join(n)))
             .find(|p| p.exists())
     };
-    let list: [(&str, &[&str]); 7] = if cfg!(target_os = "macos") {
-        [
-            ("Google Chrome", &["Google Chrome.app"]),
-            ("Chromium", &["Chromium.app"]),
-            ("Microsoft Edge", &["Microsoft Edge.app"]),
-            ("Brave", &["Brave Browser.app"]),
-            ("Vivaldi", &["Vivaldi.app"]),
-            ("Opera", &["Opera.app"]),
-            ("Mozilla Firefox", &["Firefox.app"]),
-        ]
-    } else {
-        [
-            ("Google Chrome", &["google-chrome", "google-chrome-stable"]),
-            ("Chromium", &["chromium", "chromium-browser"]),
-            (
-                "Microsoft Edge",
-                &["microsoft-edge", "microsoft-edge-stable"],
-            ),
-            ("Brave", &["brave-browser", "brave"]),
-            ("Vivaldi", &["vivaldi", "vivaldi-stable"]),
-            ("Opera", &["opera"]),
-            ("Mozilla Firefox", &["firefox"]),
-        ]
-    };
-    let dirs: Vec<PathBuf> = if cfg!(target_os = "macos") {
+    let mac = cfg!(target_os = "macos");
+    let dirs: Vec<PathBuf> = if mac {
         vec![PathBuf::from("/Applications"), home.join("Applications")]
     } else {
         std::env::var_os("PATH")
             .map(|p| std::env::split_paths(&p).collect())
             .unwrap_or_default()
     };
-    list.into_iter()
-        .filter_map(|(name, names)| found(names, &dirs).map(|p| (name, p)))
+    // A Flatpak browser (`app.zen_browser.zen` …) isn't listed: its sandbox can't start the
+    // native host, so the extension couldn't reach MDM (docs/browser-help.md).
+    mdm_ipc::browsers::BROWSERS
+        .iter()
+        .filter_map(|b| {
+            let names = if mac { b.mac_apps } else { b.linux_cmds };
+            found(names, &dirs).map(|p| (b.name, p))
+        })
         .collect()
 }
 

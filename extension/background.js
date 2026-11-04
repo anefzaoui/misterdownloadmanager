@@ -17,8 +17,13 @@ const HELP = "https://misterdownloadmanager.com/help/browser-help.html";
 const action = ext.action ?? ext.browserAction;
 // Firefox has no pause before the file name (onDeterminingFilename): its own paths below.
 const FIREFOX = !ext.downloads.onDeterminingFilename;
-// Brave and Opera say who they are only in the client hints (Options lists them by name).
+// Brave and Opera say who they are only in the client hints, Firefox's forks (Zen, LibreWolf,
+// Floorp, Waterfox) only in runtime.getBrowserInfo, which only Firefox's family has. Both go to
+// the host as `brands` (Options lists them by name; crates/ipc capture::browser_named).
 const BRANDS = (globalThis.navigator?.userAgentData?.brands || []).map((b) => b.brand);
+const APP_NAME = ext.runtime.getBrowserInfo
+  ? ext.runtime.getBrowserInfo().then((i) => (i && i.name) || null, () => null)
+  : Promise.resolve(null);
 
 const t = (key, ...subs) => ext.i18n.getMessage(key, subs) || key;
 
@@ -51,7 +56,9 @@ function hostProblem(error) {
 // browser's status, and the rules depend on the browser). Never throws: failures come back as
 // `{ok: false, why}`.
 async function native(message, ms = HOST_WAIT) {
-  const sent = { ...message, userAgent: navigator.userAgent, brands: BRANDS, v: VERSION };
+  const app = await APP_NAME;
+  const brands = app ? [...BRANDS, app] : BRANDS;
+  const sent = { ...message, userAgent: navigator.userAgent, brands, v: VERSION };
   try {
     const reply = (await withTimeout(ext.runtime.sendNativeMessage(HOST, sent), ms)) || {};
     if (reply.version) await noteStatus(older(reply.version, VERSION) ? "update-app" : null, reply.version);

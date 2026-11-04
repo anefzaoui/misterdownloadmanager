@@ -171,3 +171,53 @@ fn strangers_are_refused() {
     assert!(!ok && replies.is_empty());
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+/// #41: a user with only Zen and Helium (no ~/.mozilla, no Chrome) gets the manifests where
+/// those two read them: Mozilla's folder, created, and Helium's own. `--unregister` takes them
+/// away. (Windows registers in the registry, which every one of them reads.)
+#[cfg(not(windows))]
+#[test]
+fn zen_and_helium_alone_are_registered() {
+    let home = data_dir("zen-helium", serde_json::json!({}));
+    let mac = cfg!(target_os = "macos");
+    let support = home.join("Library/Application Support");
+    let (zen, helium, mozilla_hosts, helium_hosts) = if mac {
+        (
+            support.join("Zen"),
+            support.join("net.imput.helium"),
+            support.join("Mozilla/NativeMessagingHosts"),
+            support.join("net.imput.helium/NativeMessagingHosts"),
+        )
+    } else {
+        (
+            home.join(".zen"),
+            home.join(".config/net.imput.helium"),
+            home.join(".mozilla/native-messaging-hosts"),
+            home.join(".config/net.imput.helium/NativeMessagingHosts"),
+        )
+    };
+    std::fs::create_dir_all(&zen).unwrap();
+    std::fs::create_dir_all(&helium).unwrap();
+    let host = |arg: &str| {
+        let out = Command::new(HOST)
+            .arg(arg)
+            .env("HOME", &home)
+            .env_remove("XDG_CONFIG_HOME")
+            .env("MDM_DATA_DIR", &home)
+            .output()
+            .unwrap();
+        assert!(out.status.success(), "{arg}: {out:?}");
+    };
+    host("--register");
+    let manifest = |dir: &std::path::Path| -> serde_json::Value {
+        let file = dir.join("com.misterdownloadmanager.host.json");
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap()
+    };
+    assert!(manifest(&mozilla_hosts)["allowed_extensions"].is_array());
+    assert!(manifest(&helium_hosts)["allowed_origins"].is_array());
+    host("--unregister");
+    for dir in [&mozilla_hosts, &helium_hosts] {
+        assert!(!dir.join("com.misterdownloadmanager.host.json").exists());
+    }
+    let _ = std::fs::remove_dir_all(&home);
+}

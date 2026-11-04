@@ -10,7 +10,8 @@ const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
 // A fake extension API; `firefox` picks which download event exists. `reply` is the app's
 // answer to a download; `types` its Options -> File types when the rules are asked (`host: false`:
 // the host isn't registered and every native message fails, as the browser says then).
-function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = true, finished, panelOn, access = true, rules = {} }) {
+// `appName`: what runtime.getBrowserInfo says (Firefox's family only; "Zen").
+function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = true, finished, panelOn, access = true, rules = {}, appName }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
   const calls = { push: (c) => raw.push(JSON.parse(JSON.stringify(c))) };
@@ -96,6 +97,7 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
     i18n: { getMessage: (key) => ({ menu: "Mit Mister Download Manager herunterladen" })[key] ?? "" },
   };
   if (!firefox) api.declarativeNetRequest = { getSessionRules: async () => [], updateSessionRules: async (r) => calls.push(["dnr", r]) };
+  if (appName) api.runtime.getBrowserInfo = async () => ({ name: appName, vendor: "Mozilla", version: "1.0" });
   return { api, calls: raw, listeners, store };
 }
 
@@ -151,6 +153,18 @@ const ok = (what) => {
   assert.deepEqual(m.brands, ["Chromium", "Brave"]);
   assert.deepEqual(steps(calls), ["pause", "cancel", "erase"]);
   ok("Firefox: taken with its container's cookies, size and type");
+}
+
+// Zen (Firefox's family) says its own name through runtime.getBrowserInfo: it goes with the
+// brands, so the app tells Zen from Firefox (#41).
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true, appName: "Zen" });
+  load(api, true);
+  listeners.created({ id: 8, url: "https://x/b.zip", filename: "C:\\dl\\b.zip", totalBytes: 10, mime: "application/zip" });
+  await settle();
+  const m = natives(calls)[0];
+  assert.deepEqual(m.brands, ["Chromium", "Brave", "Zen"]);
+  ok("Zen: its own name goes with the brands");
 }
 
 // Firefox: the app doesn't take it → the browser's download resumes; nothing is lost.

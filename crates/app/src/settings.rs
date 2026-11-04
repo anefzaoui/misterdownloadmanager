@@ -154,17 +154,34 @@ pub struct Settings {
 
 /// Options → File types defaults (IDM 6.42), shared with the browser host (mdm_ipc::capture).
 pub use mdm_ipc::capture::{DEFAULT_AUTO_TYPES, DEFAULT_EXCLUDED_SITES};
-/// The browsers IDM 6.42 lists (all captured on).
-pub const BROWSERS: [&str; 8] = [
+/// The browsers IDM 6.42 lists, plus Firefox's forks MDM tells apart (#41; capture::browser_named),
+/// all captured on.
+pub const BROWSERS: [&str; 12] = [
     "Apple Safari",          // not translated: a product name
     "Brave Browser",         // not translated: a product name
+    "Floorp",                // not translated: a product name
     "Google Chrome",         // not translated: a product name
     "Internet Explorer",     // not translated: a product name
+    "LibreWolf",             // not translated: a product name
     "Microsoft Edge",        // not translated: a product name
     "Microsoft Edge Legacy", // not translated: a product name
     "Mozilla Firefox",       // not translated: a product name
     "Opera",                 // not translated: a product name
+    "Waterfox",              // not translated: a product name
+    "Zen Browser",           // not translated: a product name
 ];
+
+impl Settings {
+    /// A list saved before a browser was known gets it, captured (as an unlisted browser
+    /// already is, capture::CaptureRules::captures), so Options shows it.
+    pub fn list_known_browsers(&mut self) {
+        for b in BROWSERS {
+            if !self.browsers.iter().any(|(n, _)| n == b) {
+                self.browsers.push((b.to_owned(), true));
+            }
+        }
+    }
+}
 
 impl Default for Settings {
     fn default() -> Self {
@@ -432,6 +449,21 @@ mod tests {
     }
 
     use super::*;
+
+    /// #41: a list saved before Zen was known gets it, captured; a choice made is kept.
+    #[test]
+    fn saved_browser_lists_get_new_browsers() {
+        let mut s = Settings {
+            browsers: vec![("Google Chrome".into(), false)],
+            ..Settings::default()
+        };
+        s.list_known_browsers();
+        assert_eq!(s.browsers[0], ("Google Chrome".into(), false));
+        assert!(s.browsers.contains(&("Zen Browser".into(), true)));
+        assert_eq!(s.browsers.len(), BROWSERS.len());
+        s.list_known_browsers();
+        assert_eq!(s.browsers.len(), BROWSERS.len(), "each once");
+    }
 
     #[test]
     fn history_keeps_each_entry_once_newest_first() {

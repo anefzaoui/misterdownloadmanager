@@ -5,6 +5,7 @@
 //! Only connections from 127.0.0.1 with the right token are accepted.
 
 pub mod api;
+pub mod browsers;
 pub mod capture;
 pub mod extension;
 

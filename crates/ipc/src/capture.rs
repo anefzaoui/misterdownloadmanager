@@ -171,10 +171,20 @@ pub fn type_listed(types: &str, name: &str) -> bool {
 }
 
 /// The browser by the names Options lists, from its User-Agent and, for those that say who
-/// they are only there, its `navigator.userAgentData` brands (Brave, Opera).
+/// they are only there, its `brands`: `navigator.userAgentData`'s (Brave, Opera), and for
+/// Firefox's forks the name `runtime.getBrowserInfo` gives (Zen, LibreWolf, Floorp, Waterfox;
+/// extension/background.js). Helium names itself Google Chrome on purpose.
 pub fn browser_named(user_agent: &str, brands: &[String]) -> &'static str {
     let brand = |b: &str| brands.iter().any(|x| x == b);
-    if brand("Brave") {
+    if brand("Zen") {
+        "Zen Browser"
+    } else if brand("LibreWolf") {
+        "LibreWolf"
+    } else if brand("Floorp") {
+        "Floorp"
+    } else if brand("Waterfox") {
+        "Waterfox"
+    } else if brand("Brave") {
         "Brave Browser"
     } else if brand("Opera") || brand("Opera GX") {
         "Opera"
@@ -299,6 +309,21 @@ mod tests {
             CHROME
         );
         assert_eq!(browser_named(CHROME_UA, &brands(&["Opera"])), "Opera");
+        // #41: Firefox's forks by runtime.getBrowserInfo's name; Firefox itself by its UA.
+        assert_eq!(browser_named(FIREFOX_UA, &brands(&["Zen"])), "Zen Browser");
+        assert_eq!(
+            browser_named(FIREFOX_UA, &brands(&["LibreWolf"])),
+            "LibreWolf"
+        );
+        assert_eq!(browser_named(FIREFOX_UA, &brands(&["Firefox"])), FIREFOX);
+        // Helium's brands are Chrome's (spoofed on purpose).
+        assert_eq!(
+            browser_named(
+                CHROME_UA,
+                &brands(&["Chromium", "Google Chrome", "Not.A/Brand"])
+            ),
+            CHROME
+        );
     }
 
     #[test]
