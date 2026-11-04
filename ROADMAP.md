@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Video downloads: subtitles, beside the video or inside it
+  ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
   from the internet, network switches (incoming, UPnP, port, DHT, local peers), SOCKS5 proxy and
   IP blocklist ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40))
@@ -37,6 +39,10 @@ Everything below ships together, in one release.
   ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81))
 - ✅ No crash when a window opens while MDM is minimized
   ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22))
+- ✅ Long file names stay inside the progress window: the Save to path is shortened in the
+  middle, in every language ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62))
+- ✅ Every button translated: Download complete's Open with... no longer stays in English
+  ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80))
 - ✅ A smaller download ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)),
   AppImage updates with zsync ([#24](https://github.com/anefzaoui/misterdownloadmanager/issues/24)),
   the Bangladesh flag for Bangla ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27))
@@ -54,13 +60,11 @@ Everything below ships together, in one release.
 - 🔄 Torrents: speed limits per torrent and under the global cap, then upload limits, a share
   ratio that survives restarts, seeding limits, more torrent actions, and RSS feeds with
   auto-download rules ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
-- 🔄 Video downloads: subtitles ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
 
 ### Bugs being looked into
 
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   most likely a computer busy just after start; freeze reports now measure it, so the next one says
-- 🔍 A long video title overflows the window ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62))
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
 - 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))

@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	Totul este gata: pe o pagină cu un videoclip, utilizați Activități → Descărcați videoclipul de pe o pagină.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	Toate ale încărcătorului
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -370,9 +374,10 @@
 #. text in the Options window
 #, machine
 	Clock:	Ceas:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
+#. verb: closes this window
 #. verb: closes the filter box
 #, machine
 	Close	Închidere
@@ -440,7 +445,7 @@
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	Personalizați elementele de meniu MDM în meniul contextual al browserelor
-#. option (radio button) in the Scheduler window
+#. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	Zilnic
@@ -567,7 +572,7 @@
 #. window title in a dialog box
 #, machine
 	Download later	Descărcați mai târziu
-#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
 	Download limits	Limite de descărcare
@@ -1330,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Nu au fost găsite adrese web în {file}.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	Niciunul
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	Niciunul pe această pagină
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Niciunul: peer-ii provin din DHT și de la alți peer-i
@@ -1393,7 +1406,7 @@
 #. text in a download's progress window
 #, machine
 	on download stop/resume	la oprirea/reluarea descărcării
-#. option (radio button) in the Scheduler window
+#. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	O dată la
 #. text in extension.rs
@@ -1412,15 +1425,20 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Doar o descărcare finalizată sau una care nu a început încă poate fi mutată. Opriți-o și finalizați-o mai întâi.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	Doar videoclipurile MP4 și MKV pot conține subtitrări
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Doar în timp ce folosesc computerul
-#. text in a dialog box; button in a download's Properties window
+#. button in a dialog box; text in a dialog box; button in a download's Properties window
+#. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	Deschidere
-#. button in crashui.rs
+#. button in crashui.rs; button in a dialog box
 #. crash report window button: show the report's file in its folder
 #, machine
 	Open folder	Deschideți folderul
@@ -1449,6 +1467,10 @@
 #. message or event log entry in the main window; text in the Add torrent window
 #, machine
 	Open torrent file	Deschideți fișierul torrent
+#. button in a dialog box
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Open with...	Deschidere cu...
 #. text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
@@ -1543,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	Puneți un * în adresă unde se duc numerele sau literele
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	Introduceți-le în videoclip
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1887,7 +1913,7 @@
 #. button in a dialog box
 #, machine
 	Start Download	Pornire descărcare
-#. checkbox in the Scheduler window
+#. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Start download at	Porniți descărcarea la
 #. checkbox in the Scheduler window
@@ -1933,7 +1959,7 @@
 #. text in the Add torrent window
 #, machine
 	Stop	Oprire
-#. checkbox in the Scheduler window
+#. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Opriți descărcarea la
 #. text in the tray icon's menu
@@ -1959,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	Du
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	Subtitrări
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Subtitrările în {language} au venit la a doua încercare: sunt lângă videoclip, nu în el.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	Subtitrările în {language} nu au putut fi descărcate: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Subtitrările în {language} nu au putut fi descărcate: {site} a refuzat (prea multe solicitări).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	Duminică
@@ -2242,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Aceasta este copia instalată, nu una portabilă
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	Aceasta necesită ffmpeg
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2410,7 +2457,7 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	Utilizați alt program...
-#. checkbox in the Batch download window; checkbox in a dialog box
+#. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
 	Use authorization	Utilizați autorizarea
 #. text in the Options window
@@ -2663,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} oră(e) {m} min
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, automat
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

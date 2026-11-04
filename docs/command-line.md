@@ -44,7 +44,7 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `get URL [-o folder\|file] [-c connections] [-H "Header: value"]... [--checksum hash]` | Download a file with up to 8 connections (`-c`, 1 to 128), showing progress. `Ctrl+C` pauses it; `resume` continues. `--checksum` checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (`sha256:…`). |
 | `resume file.mdm.json [-c connections] [-H ...]` | Continue a paused or broken download from the `.mdm.json` file next to it. |
 | `video-info URL` | What video a page holds (YouTube, Vimeo, ...), and the qualities to choose from. |
-| `video-get URL [-f selector] [-o folder]` | Download a video; `-f` takes a quality's selector from `video-info` (`b` = the best single file; `mp3:320`, `mp3:256`, `mp3:192` or `mp3:128` = the sound as an MP3 at that bitrate, `mp3:0` at its best variable one; MP3 needs ffmpeg). |
+| `video-get URL [-f selector] [-o folder] [--subs langs] [--auto-subs] [--embed-subs]` | Download a video; `-f` takes a quality's selector from `video-info` (`b` = the best single file; `mp3:320`, `mp3:256`, `mp3:192` or `mp3:128` = the sound as an MP3 at that bitrate, `mp3:0` at its best variable one; MP3 needs ffmpeg). `--subs` saves subtitles beside it: language codes from `video-info` (`en,fr`), or `all` for every one the uploader gave; `--auto-subs` takes the site's automatic captions instead; `--embed-subs` puts them into the video (needs ffmpeg, MP4 or MKV). |
 | `install-ytdlp`, `install-ffmpeg` | Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (Windows; on macOS and Linux MDM uses the system's). |
 | `torrent-info SOURCE` | A torrent's name, files (numbered) and size; `SOURCE` is a magnet link or a `.torrent` file. |
 | `torrent-get SOURCE [-o folder] [--files 0,2] [--use-existing]` | Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; `--use-existing` uses them instead (what matches is kept, the rest downloaded). |
@@ -69,9 +69,9 @@ With `--json` (before or after the command), every command prints JSON instead o
 | Command | Prints |
 |---|---|
 | `get`, `resume` | A `{"event": "progress", "downloaded", "size", "speed", "connections", "segments"}` line every half second, then `{"event": "done", "path", "size", "seconds"}`, or `{"event": "paused", "state"}` after `Ctrl+C` (`state` is the file `resume` takes). |
-| `video-get` | `{"event": "progress", "downloaded", "size", "speed"}` lines, then `{"event": "done", "path"}`. |
+| `video-get` | `{"event": "progress", "downloaded", "size", "speed"}` lines, then `{"event": "done", "path", "subtitles", "subtitle_problems"}`: the subtitle files saved beside it, and the languages the site refused (`{"code", "name", "reason", "beside"}`; `beside`: they came on a second try, beside the video instead of in it). |
 | `torrent-get` | `{"event": "progress", "phase", "downloaded", "size", "speed", "peers", "peers_seen"}` lines, then `{"event": "done", "path", "size"}`, or `{"event": "stopped", "downloaded", "seconds"}` with `--seconds`. |
-| `video-info` | `{"title", "choices": [{"label", "format", "size"}]}`; a choice's `format` is what `video-get -f` takes. |
+| `video-info` | `{"title", "choices": [{"label", "format", "size"}], "subtitles": [{"code", "name", "automatic"}]}`; a choice's `format` is what `video-get -f` takes, a subtitle's `code` what `--subs` takes. |
 | `torrent-info` | `{"name", "info_hash", "size", "files": [{"index", "size", "path"}]}`. |
 | `torrent-create` | `{"info_hash", "path"}`. |
 | `install-ytdlp`, `install-ffmpeg` | `{"tool", "version", "path"}`. |

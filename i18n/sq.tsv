@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	Gati: në një faqe me video, përdorni Detyrat → Shkarkoni videon nga një faqe.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	Të gjitha të ngarkuesit
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -370,9 +374,10 @@
 #. text in the Options window
 #, machine
 	Clock:	Ora:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
+#. verb: closes this window
 #. verb: closes the filter box
 #, machine
 	Close	Mbyll
@@ -440,7 +445,7 @@
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	Personalizo artikujt e menysë së MDM-së në menynë e kontekstit të shfletuesve
-#. option (radio button) in the Scheduler window
+#. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	Përditë
@@ -567,7 +572,7 @@
 #. window title in a dialog box
 #, machine
 	Download later	Shkarko më vonë
-#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
 	Download limits	Kufijtë e shkarkimit
@@ -1330,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Nuk u gjetën adresa uebi te {file}.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	Asnjë
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	Asnjë në këtë faqe
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Asnjë: shokët vijnë nga DHT dhe shokë të tjerë
@@ -1393,7 +1406,7 @@
 #. text in a download's progress window
 #, machine
 	on download stop/resume	në ndalimin/rifillimin e shkarkimit
-#. option (radio button) in the Scheduler window
+#. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Një herë në
 #. text in extension.rs
@@ -1412,15 +1425,20 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Vetëm një shkarkim i përfunduar, ose një që nuk ka filluar ende, mund të zhvendoset. Ndalojeni dhe përfundojeni fillimisht.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	Vetëm videot MP4 dhe MKV mund të mbajnë titra
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Vetëm kur jam duke përdorur kompjuterin
-#. text in a dialog box; button in a download's Properties window
+#. button in a dialog box; text in a dialog box; button in a download's Properties window
+#. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 #, machine
 	Open	Hap
-#. button in crashui.rs
+#. button in crashui.rs; button in a dialog box
 #. crash report window button: show the report's file in its folder
 #, machine
 	Open folder	Hapni dosjen
@@ -1449,6 +1467,10 @@
 #. message or event log entry in the main window; text in the Add torrent window
 #, machine
 	Open torrent file	Hapni skedarin torrent
+#. button in a dialog box
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Open with...	Hap me...
 #. text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
@@ -1543,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	Vendosni një * në adresën ku shkojnë numrat ose shkronjat
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	Vendosini në video
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1887,7 +1913,7 @@
 #. button in a dialog box
 #, machine
 	Start Download	Fillo Shkarkimin
-#. checkbox in the Scheduler window
+#. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Start download at	Fillo shkarkimin në
 #. checkbox in the Scheduler window
@@ -1933,7 +1959,7 @@
 #. text in the Add torrent window
 #, machine
 	Stop	Ndalo
-#. checkbox in the Scheduler window
+#. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Ndal shkarkimin në
 #. text in the tray icon's menu
@@ -1959,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	Di
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	Titra
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Titrat e gjuhës {language} erdhën në provën e dytë: ato janë pranë videos, jo brenda saj.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	Titrat e gjuhës {language} nuk mund të shkarkoheshin: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Titrat e gjuhës {language} nuk mund të shkarkoheshin: {site} refuzoi (shumë kërkesa).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	E diel
@@ -2242,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Kjo është kopja e instaluar, jo një kopje portative
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	Kjo kërkon ffmpeg
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2410,7 +2457,7 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	Përdorni një program tjetër...
-#. checkbox in the Batch download window; checkbox in a dialog box
+#. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
 	Use authorization	Përdor autorizimin
 #. text in the Options window
@@ -2663,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} orë {m} min
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, automatike
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

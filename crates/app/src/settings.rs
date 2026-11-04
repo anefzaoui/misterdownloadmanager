@@ -167,6 +167,9 @@ pub struct Settings {
     /// Tasks → Show drop target: shown, and where (screen, logical points).
     pub drop_target: bool,
     pub drop_target_pos: Option<(i32, i32)>,
+    /// Download video from a page: the subtitles last chosen (#68), offered again for the
+    /// next video when it has that language (none at first).
+    pub video_subs: mdm_tools::video::Subs,
 }
 
 /// Options → File types defaults (IDM 6.42), shared with the browser host (mdm_ipc::capture).
@@ -287,6 +290,7 @@ impl Default for Settings {
             custom_categories: Vec::new(),
             drop_target: false,
             drop_target_pos: None,
+            video_subs: Default::default(),
         }
     }
 }

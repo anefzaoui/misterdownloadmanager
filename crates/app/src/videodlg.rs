@@ -7,7 +7,8 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 use egui::{Pos2, Ui, pos2};
-use mdm_tools::resolve::{Choice, Video};
+use mdm_tools::resolve::{Choice, SubChoice, Video};
+use mdm_tools::video::{ALL_UPLOADERS, Subs};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r, text};
@@ -24,6 +25,11 @@ pub struct VideoAdd {
     /// What the browser's request for the page carried (its button), for yt-dlp to ask the
     /// same; none for an address typed or edited here.
     pub context: mdm_ipc::Command,
+    /// The subtitles to save with it (#68; none for a sound-only choice).
+    pub subs: Subs,
+    /// The Subtitles choice to remember for the next video (settings.video_subs); none when
+    /// the page had no subtitles to choose from (the last real choice stays).
+    pub remember: Option<Subs>,
 }
 
 /// Which helper is being installed.
@@ -61,6 +67,14 @@ pub struct VideoDialog {
     asking: Option<(crate::dialogs::CreateFolder, ())>,
     /// Helpers...: where yt-dlp and ffmpeg come from (#51).
     helpers: Option<crate::helpers::Programs>,
+    /// The looked-up video's subtitle languages (#68) and the one chosen in the Subtitles list
+    /// (0: none, then "All the uploader's" when offered, then `subs` in order).
+    subs: Vec<SubChoice>,
+    sub_pick: usize,
+    /// Put the subtitles into the video rather than beside it.
+    embed: bool,
+    /// The last video's choice (settings.video_subs), applied to each video looked up.
+    pref: Subs,
 }
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
@@ -125,7 +139,18 @@ impl VideoDialog {
             auto_look: false,
             asking: None,
             helpers: None,
+            subs: Vec::new(),
+            sub_pick: 0,
+            embed: false,
+            pref: Subs::default(),
         }
+    }
+
+    /// Offer `pref` (the last video's subtitles, settings.video_subs) for the videos looked up.
+    pub fn with_subs(mut self, pref: Subs) -> Self {
+        self.embed = pref.embed;
+        self.pref = pref;
+        self
     }
 
     /// Opened for `page` (Add URL was given a video's page, or the browser's button was
@@ -158,8 +183,57 @@ impl VideoDialog {
         self.error = choices
             .is_empty()
             .then(|| crate::i18n::t("No video this can download on that page").into());
+        self.subs = mdm_tools::resolve::sub_choices(&v, crate::i18n::code());
+        self.sub_pick = pick_for(&self.subs, &self.pref);
         self.video = Some((v, choices));
         self.name_from_choice();
+    }
+
+    /// The Subtitles list's choice as yt-dlp is asked for it.
+    fn chosen_subs(&self) -> Subs {
+        let embed = self.embed;
+        let all = all_offered(&self.subs);
+        match self.sub_pick {
+            0 => Subs {
+                embed,
+                ..Default::default()
+            },
+            1 if all => Subs {
+                langs: vec![ALL_UPLOADERS.into()],
+                automatic: false,
+                embed,
+            },
+            i => match self.subs.get(i - 1 - usize::from(all)) {
+                Some(c) => Subs {
+                    langs: vec![c.code.clone()],
+                    automatic: c.automatic,
+                    embed,
+                },
+                None => Subs {
+                    embed,
+                    ..Default::default()
+                },
+            },
+        }
+    }
+
+    /// A looked-up video with subtitles in four languages, without yt-dlp or the network
+    /// (`/show video-subs`: the window's check in every language, its screenshots).
+    pub fn show_sample(&mut self) {
+        const SAMPLE: &str = r#"{"title": "A conference talk about download managers, recorded in Lisbon",
+            "duration": 1830, "language": "en", "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 29000000},
+            {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a", "filesize": 61000000},
+            {"format_id": "137", "ext": "mp4", "height": 1080, "vcodec": "avc1", "acodec": "none", "filesize": 412000000}],
+            "subtitles": {"de": [{"name": "German"}], "pt-PT": [{"name": "Portuguese (Portugal)"}],
+                "ar": [{"name": "Arabic"}]},
+            "automatic_captions": {"en-orig": [{"name": "English (Original)"}], "en": [{"name": "English"}]}}"#;
+        if let Some(v) = mdm_tools::resolve::parse(SAMPLE.as_bytes()) {
+            self.page = "https://video.example/talk".into();
+            self.looked_up = self.page.clone();
+            self.auto_look = false;
+            self.set_video(v);
+        }
     }
 
     /// Helpers..., as its button does (`/show video-helpers`).
@@ -212,7 +286,7 @@ impl VideoDialog {
             ctx,
             "video-page",
             "Download video from a page",
-            [500.0, 360.0],
+            [500.0, 391.0],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
@@ -240,6 +314,7 @@ impl VideoDialog {
                 };
                 let c = &choices[self.chosen.min(choices.len() - 1)];
                 let name = mdm_engine::naming::sanitize(self.name.trim());
+                let chosen = self.chosen_subs();
                 Outcome::Done(VideoAdd {
                     page,
                     selector: c.selector.clone(),
@@ -247,6 +322,17 @@ impl VideoDialog {
                     size: c.size,
                     start_now: self.start_now.unwrap_or(true),
                     context: self.context(),
+                    // Into the video only where its file type holds them (and with ffmpeg,
+                    // which VideoJob checks).
+                    subs: if mdm_tools::resolve::is_audio(c) {
+                        Subs::default()
+                    } else {
+                        Subs {
+                            embed: chosen.embed && mdm_tools::resolve::holds_subtitles(c),
+                            ..chosen.clone()
+                        }
+                    },
+                    remember: (!self.subs.is_empty()).then_some(chosen),
                 })
             }
         }
@@ -483,16 +569,36 @@ impl VideoDialog {
             self.name_from_choice();
         }
 
-        text(
-            &p,
-            o.x + 11.0,
-            o.y + 266.0,
+        // The labels before the boxes: a column as wide as the longest of them in this
+        // language (German's "Speichern unter" is past the English 59 px), up to 150 px, the
+        // boxes after it; longer still, a label is cut and shown whole on hover.
+        let labels = [
             crate::i18n::t("Save to"),
-            winui::TEXT(),
-        );
+            crate::i18n::t("File name"),
+            // i18n: label before the list of a video's subtitle languages
+            crate::i18n::t("Subtitles"),
+        ];
+        let widest = labels
+            .iter()
+            .map(|l| winui::text_width(&p, l))
+            .fold(0.0, f32::max);
+        let bx = (11.0 + widest + 6.0).clamp(70.0, 150.0);
+        let label = |ui: &Ui, y: f32, s: &str, color| {
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                o.y + y,
+                s,
+                color,
+                o.x + bx - 5.0,
+                ("video-label", y as i32),
+            );
+        };
+        label(ui, 266.0, labels[0], winui::TEXT());
         winui::edit(
             ui,
-            r(o, 70.0, 253.0, 389.0, 21.0),
+            r(o, bx, 253.0, 459.0 - bx, 21.0),
             &mut self.folder,
             true,
             false,
@@ -515,20 +621,21 @@ impl VideoDialog {
         if let Some(d) = winui::picked(ui.ctx(), "video-folder") {
             self.folder = d.display().to_string();
         }
-        text(
-            &p,
-            o.x + 11.0,
-            o.y + 297.0,
-            crate::i18n::t("File name"),
-            winui::TEXT(),
-        );
+        label(ui, 297.0, labels[1], winui::TEXT());
         winui::edit(
             ui,
-            r(o, 70.0, 284.0, 419.0, 21.0),
+            r(o, bx, 284.0, 489.0 - bx, 21.0),
             &mut self.name,
             true,
             false,
         );
+        let on = self.subtitles_row(ui, o, bx, ffmpeg.is_some());
+        let shade = if on {
+            winui::TEXT()
+        } else {
+            winui::TEXT_DISABLED()
+        };
+        label(ui, 328.0, labels[2], shade);
 
         // The choices belong to the address looked up: an edited address is looked up first
         // (it downloaded the new page with the old one's format and name).
@@ -545,7 +652,7 @@ impl VideoDialog {
         // Where yt-dlp and ffmpeg come from: MDM's own copies or the person's (#51).
         if winui::button(
             ui,
-            r(o, 11.0, 327.0, 90.0, 21.0),
+            r(o, 11.0, 358.0, 90.0, 21.0),
             // i18n: button in Download video: where MDM takes yt-dlp and ffmpeg from
             "Helpers...",
             ButtonKind::Normal,
@@ -558,7 +665,7 @@ impl VideoDialog {
         }
         let now = winui::button(
             ui,
-            r(o, 222.0, 327.0, 105.0, 21.0),
+            r(o, 222.0, 358.0, 105.0, 21.0),
             "Download Now",
             kind(true),
             false,
@@ -569,7 +676,7 @@ impl VideoDialog {
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, 335.0, 327.0, 73.0, 21.0),
+            r(o, 335.0, 358.0, 73.0, 21.0),
             // i18n: button: add it now, start downloading later
             "Later",
             kind(false),
@@ -579,7 +686,7 @@ impl VideoDialog {
         .clicked();
         let cancel = winui::button(
             ui,
-            r(o, 416.0, 327.0, 73.0, 21.0),
+            r(o, 416.0, 358.0, 73.0, 21.0),
             "Cancel",
             ButtonKind::Normal,
             false,
@@ -595,6 +702,124 @@ impl VideoDialog {
         }
         Outcome::Open
     }
+}
+
+impl VideoDialog {
+    /// Subtitles (#68): a language the video has, from the uploader or the site's automatic
+    /// captions, saved beside the video (`<name>.<language>.srt`) or put into it (ffmpeg).
+    /// The list starts at `bx`, after the labels' column; true when it can be chosen from (its
+    /// label is greyed otherwise).
+    fn subtitles_row(&mut self, ui: &mut Ui, o: Pos2, bx: f32, ffmpeg: bool) -> bool {
+        let choice = self
+            .video
+            .as_ref()
+            .and_then(|(_, c)| c.get(self.chosen))
+            .cloned();
+        let audio = choice.as_ref().is_some_and(mdm_tools::resolve::is_audio);
+        let on = !self.subs.is_empty() && !audio;
+        let items = sub_items(&self.subs, self.video.is_some());
+        let shown: Vec<&str> = items.iter().map(String::as_str).collect();
+        let pick = if on { self.sub_pick } else { 0 };
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, bx, 315.0, 200.0, 21.0),
+            &shown,
+            pick.min(shown.len().saturating_sub(1)),
+            on,
+            "video-subs",
+        ) {
+            self.sub_pick = i;
+        }
+        let chosen = on && self.sub_pick > 0;
+        let holds = choice
+            .as_ref()
+            .is_some_and(mdm_tools::resolve::holds_subtitles);
+        let mut embed = self.embed && chosen && ffmpeg && holds;
+        let resp = winui::checkbox_until(
+            ui,
+            pos2(o.x + bx + 212.0, o.y + 319.0),
+            &mut embed,
+            // i18n: checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+            "Put them into the video",
+            chosen && ffmpeg && holds,
+            Some(o.x + 489.0),
+        );
+        let resp = winui::why_disabled(
+            resp,
+            chosen && !ffmpeg,
+            // i18n: why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+            "This needs ffmpeg",
+        );
+        winui::why_disabled(
+            resp,
+            chosen && ffmpeg && !holds,
+            // i18n: why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+            "Only MP4 and MKV videos can hold subtitles",
+        );
+        if chosen && ffmpeg && holds {
+            self.embed = embed;
+        }
+        on
+    }
+}
+
+/// "All the uploader's" is offered when they gave two languages or more.
+fn all_offered(subs: &[SubChoice]) -> bool {
+    subs.iter().filter(|s| !s.automatic).count() >= 2
+}
+
+/// The Subtitles list (English where it is MDM's words; combo_light shows them translated):
+/// None, All the uploader's, then each language, the automatic ones marked.
+fn sub_items(subs: &[SubChoice], looked_up: bool) -> Vec<String> {
+    let mut out = vec![if looked_up && subs.is_empty() {
+        // i18n: in the Subtitles list of Download video: the video has no subtitles
+        crate::i18n::mark("None on this page").to_owned()
+    } else {
+        // i18n: in the Subtitles list of Download video: download no subtitles
+        crate::i18n::mark("None").to_owned()
+    }];
+    if all_offered(subs) {
+        // i18n: in the Subtitles list of Download video: every language the video's uploader gave
+        out.push(crate::i18n::mark("All the uploader's").to_owned());
+    }
+    for s in subs {
+        out.push(if s.automatic {
+            crate::i18n::fmt(
+                // i18n: in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+                crate::i18n::t("{language}, automatic"),
+                &[("language", &s.name)],
+            )
+        } else {
+            s.name.clone()
+        });
+    }
+    out
+}
+
+/// The entry of the Subtitles list that `pref` (the last video's choice) stands for in this
+/// video's: the same language (the uploader's before the automatic one, then any variant of
+/// it: `pt` for `pt-BR`), every uploader's language again, or none.
+fn pick_for(subs: &[SubChoice], pref: &Subs) -> usize {
+    let all = all_offered(subs);
+    let first = 1 + usize::from(all);
+    let Some(want) = pref.langs.first() else {
+        return 0;
+    };
+    if want == ALL_UPLOADERS {
+        return if all {
+            1
+        } else {
+            subs.iter()
+                .position(|s| !s.automatic)
+                .map_or(0, |i| i + first)
+        };
+    }
+    let base = |c: &str| c.split(['-', '_']).next().unwrap_or(c).to_ascii_lowercase();
+    subs.iter()
+        .position(|s| s.code == *want && s.automatic == pref.automatic)
+        .or_else(|| subs.iter().position(|s| s.code == *want))
+        .or_else(|| subs.iter().position(|s| base(&s.code) == base(want)))
+        .map_or(0, |i| i + first)
 }
 
 /// yt-dlp's view of the browser's request context.
@@ -637,5 +862,78 @@ fn choice_label(label: &str) -> String {
             &[("type", &crate::i18n::ltr(kind.trim()))],
         ),
         None => crate::i18n::ltr(label),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn sub(code: &str, automatic: bool) -> SubChoice {
+        SubChoice {
+            code: code.into(),
+            name: code.into(),
+            automatic,
+        }
+    }
+
+    fn want(langs: &[&str], automatic: bool) -> Subs {
+        Subs {
+            langs: langs.iter().map(|l| l.to_string()).collect(),
+            automatic,
+            embed: false,
+        }
+    }
+
+    /// The Subtitles list (#68): None, All the uploader's when they gave two or more, then each
+    /// language, the automatic ones marked.
+    #[test]
+    fn subtitle_list_entries() {
+        let subs = [sub("de", false), sub("fr", false), sub("en", true)];
+        assert_eq!(
+            sub_items(&subs, true),
+            ["None", "All the uploader's", "de", "fr", "en, automatic"]
+        );
+        assert_eq!(sub_items(&subs[2..], true), ["None", "en, automatic"]);
+        assert_eq!(sub_items(&[], true), ["None on this page"]);
+        assert_eq!(sub_items(&[], false), ["None"]);
+    }
+
+    /// The last video's choice finds its place in the next video's list: the same language
+    /// (the uploader's first), a variant of it, every uploader's again, or none.
+    #[test]
+    fn the_last_choice_is_offered_again() {
+        let subs = [sub("de", false), sub("pt-BR", false), sub("en", true)];
+        assert_eq!(pick_for(&subs, &Subs::default()), 0);
+        assert_eq!(pick_for(&subs, &want(&[ALL_UPLOADERS], false)), 1);
+        assert_eq!(pick_for(&subs, &want(&["de"], false)), 2);
+        assert_eq!(pick_for(&subs, &want(&["pt"], false)), 3, "pt for pt-BR");
+        assert_eq!(
+            pick_for(&subs, &want(&["en"], false)),
+            4,
+            "the automatic one"
+        );
+        assert_eq!(pick_for(&subs, &want(&["ja"], false)), 0);
+        // One uploader's language only: "all" stands for it.
+        let one = [sub("fr", false), sub("en", true)];
+        assert_eq!(pick_for(&one, &want(&[ALL_UPLOADERS], false)), 1);
+    }
+
+    /// Each entry stands for what yt-dlp is asked.
+    #[test]
+    fn entries_ask_for_their_subtitles() {
+        let mut d = VideoDialog::new(PathBuf::from("."));
+        d.subs = vec![sub("de", false), sub("fr", false), sub("en-orig", true)];
+        d.embed = true;
+        let mut at = |i: usize| {
+            d.sub_pick = i;
+            d.chosen_subs()
+        };
+        assert!(at(0).langs.is_empty());
+        assert_eq!(at(1).langs, [ALL_UPLOADERS]);
+        assert_eq!(at(3).langs, ["fr"]);
+        let auto = at(4);
+        assert_eq!(auto.langs, ["en-orig"]);
+        assert!(auto.automatic && auto.embed);
     }
 }
