@@ -47,6 +47,80 @@ pub fn save_torrent(hash: &str, bytes: &[u8]) -> std::io::Result<()> {
 
 /// The blocklist as MDM converted it (mdm_torrent::blocklist), in the torrent data folder.
 pub const BLOCKLIST_FILE: &str = "blocklist.p2p";
+/// The address it was fetched from (another address: fetched again).
+const BLOCKLIST_SOURCE: &str = "blocklist.source";
+/// How often a blocklist is fetched again.
+pub const BLOCKLIST_DAYS: u64 = 7;
+
+/// When the blocklist at `url` was last converted (None: never, or from another address).
+pub fn blocklist_updated(url: &str) -> Option<std::time::SystemTime> {
+    let dir = state_dir()?;
+    let source = std::fs::read_to_string(dir.join(BLOCKLIST_SOURCE)).ok()?;
+    (source.trim() == url.trim())
+        .then(|| {
+            std::fs::metadata(dir.join(BLOCKLIST_FILE))
+                .ok()?
+                .modified()
+                .ok()
+        })
+        .flatten()
+}
+
+/// Fetch and convert the blocklist at `url` (#40) when it was never converted, comes from
+/// another address now, or is older than `BLOCKLIST_DAYS`; in the background, one at a time
+/// (`busy`), with MDM's own downloader (Proxy / Socks applies). A list that isn't one keeps the
+/// last good one. The torrent session reads it when it starts.
+pub fn refresh_blocklist(
+    rt: &tokio::runtime::Handle,
+    url: &str,
+    busy: &Arc<std::sync::atomic::AtomicBool>,
+) {
+    use std::sync::atomic::Ordering;
+    let url = url.trim().to_owned();
+    let Some(dir) = state_dir() else { return };
+    let Ok(parsed) = url::Url::parse(&url) else {
+        return;
+    };
+    let fresh = blocklist_updated(&url)
+        .and_then(|t| t.elapsed().ok())
+        .is_some_and(|age| age < std::time::Duration::from_secs(BLOCKLIST_DAYS * 86_400));
+    if url.is_empty() || fresh || busy.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    let busy = busy.clone();
+    rt.spawn(async move {
+        let _ = std::fs::create_dir_all(&dir);
+        let download = dir.join("blocklist.download");
+        let fetched =
+            mdm_engine::fetch(parsed, &download, crate::settings::own_net(), |_, _| {}).await;
+        match fetched {
+            Ok(_) => match std::fs::read(&download)
+                .ok()
+                .as_deref()
+                .and_then(mdm_torrent::blocklist::convert)
+            {
+                Some(list) => {
+                    let tmp = dir.join(format!("{BLOCKLIST_FILE}.tmp"));
+                    if std::fs::write(&tmp, &list.text).is_ok()
+                        && std::fs::rename(&tmp, dir.join(BLOCKLIST_FILE)).is_ok()
+                    {
+                        let _ = std::fs::write(dir.join(BLOCKLIST_SOURCE), &url);
+                        tracing::info!(
+                            "blocklist: {} ranges ({} lines skipped)",
+                            list.ranges,
+                            list.skipped
+                        );
+                    }
+                }
+                None => tracing::warn!("blocklist: {url} is not a list MDM can read"),
+            },
+            Err(e) => tracing::warn!("blocklist: {e}"),
+        }
+        let _ = std::fs::remove_file(&download);
+        let _ = std::fs::remove_file(mdm_engine::state::state_path(&download));
+        busy.store(false, Ordering::SeqCst);
+    });
+}
 
 /// The app's one session, started on first use, as Torrent settings say (`set_config`); it
 /// stops when no torrent needs it (`stop_if_idle`), and a new one takes the settings of then.

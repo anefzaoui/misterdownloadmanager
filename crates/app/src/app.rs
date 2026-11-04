@@ -319,6 +319,8 @@ pub struct App {
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Since when no torrent has needed the torrent engine (`torrent_tick`).
     torrent_idle_since: Option<Instant>,
+    /// A blocklist is being fetched (torrents::refresh_blocklist).
+    blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
@@ -685,6 +687,7 @@ impl App {
             torrent_dlg: None,
             torrent_settings: None,
             torrent_idle_since: None,
+            blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             find: None,
@@ -1207,6 +1210,13 @@ impl App {
     fn torrent_tick(&mut self) {
         let cfg = crate::torrents::state_dir().and_then(|d| self.settings.torrent_config(d));
         self.torrent_host.set_config(cfg);
+        if !self.settings.torrent_blocklist.trim().is_empty() {
+            crate::torrents::refresh_blocklist(
+                &self.rt,
+                &self.settings.torrent_blocklist,
+                &self.blocklist_busy,
+            );
+        }
         let sharing = self.settings.torrent_keep_sharing
             && self
                 .items
