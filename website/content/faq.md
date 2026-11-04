@@ -55,7 +55,7 @@ Open Windows **Settings → Apps**, find Mister Download Manager and choose Unin
 
 ### Which browsers does it work with? {#browsers}
 
-Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds **Download with Mister Download Manager** to the right-click menu and a **Download video** button over videos. See [Browser integration](/help/browser-integration.html).
+Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds **Download with Mister Download Manager** to the right-click menu and a **Download video** button over videos. See [Browser integration](/help/browser-integration.html).
 
 ### How do I install the browser extension? {#install-extension}
 

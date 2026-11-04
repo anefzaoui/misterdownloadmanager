@@ -902,6 +902,10 @@
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>영원히 무료입니다.</g1> 만료되는 평가판, 라이선스 키, 광고가 없습니다. GNU GPL은 무료를 보장합니다."
   },
+  "1accfe27df04b7d9": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support…",
+   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 Helium과 같은 해당 브라우저 기반의 브라우저에서 작동합니다. Firefox 지원…"
+  },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "브라우저 확장 프로그램은 앱과 함께 제공되며 <g1>Chrome, Edge, Brave, Opera, Vivaldi</g1> 및 <g2>Firefox</g2>용으로 별도 다운로드도 가능합니다. 스토어 등록은 진행 중입니다. 모든 파일은 GitHub Actions를 통해 공개 소스에서 빌드되며 SHA-256 체크섬과 함께 나열됩니다."
@@ -1273,6 +1277,10 @@
   "24d1e3612712c5a7": {
    "source": "<g1>Downloads</g1> — <g2>Pause All</g2>, <g3>Stop All</g3>, <g4>Delete All Completed</g4>, <g5>Find</g5>, the <g6>Scheduler</g6>, queues, the <g7>Speed Limiter</g7> and <g8>Options</g8>.",
    "text": "<g1>다운로드</g1> — <g2>모두 일시 중지</g2>, <g3>모두 중지</g3>, <g4>완료된 항목 모두 삭제</g4>, <g5>찾기</g5>, <g6>예약 관리자</g6>, 대기열, <g7>속도 제한</g7> 및 <g8>옵션</g8>."
+  },
+  "24f2c9647a2b9363": {
+   "source": "<g1>Zen, Helium or another browser built on Firefox or Chromium, as your only browser on Linux or macOS?</g1> Older versions of MDM set browser integration up only for the browsers they knew. Update MDM and start it once.",
+   "text": "<g1>Zen, Helium 또는 Linux나 macOS에서 유일한 브라우저로 Firefox나 Chromium 기반의 다른 브라우저를 사용하시나요?</g1> 이전 버전의 MDM은 알려진 브라우저에만 브라우저 통합을 설정했습니다. MDM을 업데이트하고 한 번 시작하세요."
   },
   "2508774439912aac": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any other download. Turn on Keep sharing torrents after they finish in Options if you'd like to give back.",
@@ -3802,10 +3810,6 @@
    "source": "What to do",
    "text": "해결 방법"
   },
-  "7461d4770c6a9bbe": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Install the browser from your distribution's packages (or the browser maker's own <x1/> or <x2/>) to use browser integration.",
-   "text": "Flatpak 또는 Snap으로 설치된 브라우저는 샌드박스에서 실행되므로 외부 프로그램을 시작하지 못할 수 있으며, 따라서 MDM에 연결하지 못할 수 있습니다. 브라우저 통합을 사용하려면 배포판 패키지(또는 브라우저 제작사의 자체 <x1/> 또는 <x2/>)에서 브라우저를 설치하세요."
-  },
   "74632f0763b57b9b": {
    "source": "any distribution: make it executable, run it",
    "text": "모든 배포판: 실행 가능하게 만들고 실행"
@@ -4606,10 +4610,6 @@
    "source": "3. Using it responsibly",
    "text": "3. 책임감 있는 사용"
   },
-  "8d38b34a197f5a70": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi에서 작동합니다. Firefox 지원은 개발 완료 후 테스트 중입니다. 확장 프로그램은 다운로드를 MDM으로 넘길 때 쿠키와 리퍼러를 함께 전달하므로, 로그인해야 접근할 수 있는 파일도 다운로드할 수 있습니다. 또한, 마우스 오른쪽 클릭 메뉴에 Mister Download Manager으로 다운로드를 추가하고, 비디오 위에 비디오 다운로드 버튼을 추가합니다. 브라우저 통합을 참조하세요."
-  },
   "8d8e052bd62085d8": {
    "source": "<g1>Statistics.</g1> Medians with interquartile ranges, bootstrap 95% intervals (10,000 resamples) for each median and for the ratio of medians, and a two-sided Mann–Whitney U test.",
    "text": "<g1>통계.</g1> 중앙값과 사분위수 범위, 각 중앙값 및 중앙값 비율에 대한 부트스트랩 95% 신뢰 구간(10,000회 재샘플링), 그리고 양측 Mann–Whitney U 테스트."
@@ -4737,6 +4737,10 @@
   "91e1fe6fec5ba25a": {
    "source": "3.1 s",
    "text": "3.1초"
+  },
+  "920f5f8c86e123ee": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 Helium과 같은 해당 브라우저 기반의 브라우저에서 작동합니다. Zen 및 LibreWolf를 포함한 Firefox 지원은 개발 및 테스트 중입니다. 확장 프로그램은 다운로드를 쿠키 및 리퍼러와 함께 MDM으로 전달하므로 로그인 뒤에 있는 파일도 여전히 작동하며, 마우스 오른쪽 버튼 메뉴에 Mister Download Manager으로 다운로드를 추가하고 비디오 위에 비디오 다운로드 버튼을 추가합니다. 브라우저 통합을 참조하십시오."
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -5954,10 +5958,6 @@
    "source": "Read this page in your language?",
    "text": "이 페이지를 귀하의 언어로 읽으시겠습니까?"
   },
-  "b5a3624faa9a94b8": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
-   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi에서 작동합니다. Firefox 지원은 개발 완료 후 테스트 중입니다. 확장 프로그램은 다운로드를 MDM으로 넘길 때 쿠키와 리퍼러를 함께 전달하므로, 로그인해야 접근할 수 있는 파일도 다운로드할 수 있습니다. 또한, 마우스 오른쪽 클릭 메뉴에 <g1>Mister Download Manager으로 다운로드</g1>를 추가하고, 비디오 위에 <g2>비디오 다운로드</g2> 버튼을 추가합니다. <g3>브라우저 통합</g3>을 참조하세요."
-  },
   "b5ce8e1194ffd521": {
    "source": "If the address is a video's page (YouTube, Vimeo, TikTok and others), the video window opens instead. See <g1>Video downloads</g1>. A magnet link opens <g2>Add torrent</g2>; see <g3>Torrents</g3>.",
    "text": "주소가 비디오 페이지(YouTube, Vimeo, TikTok 등)인 경우, 대신 비디오 창이 열립니다. <g1>비디오 다운로드</g1>를 참조하세요. 마그넷 링크는 <g2>토렌트 추가</g2>를 엽니다. <g3>토렌트</g3>를 참조하세요."
@@ -6088,7 +6088,7 @@
   },
   "ba71746213a31b99": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> and <g5>Vivaldi</g5>, and in <g6>Firefox</g6> 140 or later.",
-   "text": "이 확장 프로그램은 <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4>, <g5>Vivaldi</g5> 및 <g6>Firefox</g6> 140 이상에서 작동합니다."
+   "text": "<g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4>, <g5>Vivaldi</g5> 및 <g6>Firefox</g6> 140 이상에서 확장 프로그램이 작동합니다."
   },
   "ba7398fafefc4533": {
    "source": "Peak memory",
@@ -6546,6 +6546,10 @@
    "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
    "text": "MDM은 토렌트를 읽고 해당 파일을 폴더 트리로 표시합니다. <x1/> 파일은 즉시 읽힙니다. 마그넷 링크는 먼저 다른 피어로부터 파일 목록을 가져와야 하므로 1~2분 정도 걸릴 수 있습니다."
   },
+  "c9d39512b1b393af": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
+   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 Helium과 같은 해당 브라우저 기반의 브라우저에서 작동합니다. Zen 및 LibreWolf를 포함한 Firefox 지원은 개발 및 테스트 중입니다. 확장 프로그램은 다운로드를 쿠키 및 리퍼러와 함께 MDM으로 전달하므로 로그인 뒤에 있는 파일도 여전히 작동하며, 마우스 오른쪽 버튼 메뉴에 <g1>Mister Download Manager으로 다운로드</g1>를 추가하고 비디오 위에 <g2>비디오 다운로드</g2> 버튼을 추가합니다. <g3>브라우저 통합</g3>을 참조하십시오."
+  },
   "c9da130585eae7fa": {
    "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
    "text": "이 사이트에는 광고나 다른 추적기가 없습니다. 글꼴과 스크립트는 사이트 자체에서 제공됩니다. 라이트 모드 또는 다크 모드 선택은 브라우저의 로컬 저장소에 저장되며 어디로도 전송되지 않습니다."
@@ -6686,6 +6690,10 @@
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
    "text": "자신만의 목록을 저장하려면 <g1>작업 → 내보내기 → 텍스트 파일</g1>(한 줄에 한 주소) 또는 <g2>IDM 내보내기 파일</g2>을 사용하세요."
   },
+  "cf5e8ed8c0381b7f": {
+   "source": "Browsers built on them work too: Chromium and Helium take the extension as Chrome does, Zen and LibreWolf as Firefox does. On Windows, Zen has a bug of its own (see <g1>The browser and MDM aren't connected</g1>).",
+   "text": "이들을 기반으로 구축된 브라우저도 작동합니다. Chromium 및 Helium은 Chrome과 동일하게 확장 프로그램을 사용하며, Zen 및 LibreWolf는 Firefox와 동일하게 사용합니다. Windows에서 Zen은 자체 버그가 있습니다 (<g1>브라우저와 MDM이 연결되지 않음</g1> 참조)."
+  },
   "cf86019a0378cdea": {
    "source": "The downloads join the <g1>Main download queue</g1>, ready to start. <g2>Tasks → Import → From IDM export file</g2> reads an <x3/> file, with each download's referrer and cookies.",
    "text": "다운로드는 <g1>기본 다운로드 대기열</g1>에 추가되어 시작할 준비가 됩니다. <g2>작업 → 가져오기 → IDM 내보내기 파일에서</g2>는 각 다운로드의 리퍼러 및 쿠키가 포함된 <x3/> 파일을 읽습니다."
@@ -6745,10 +6753,6 @@
   "d1432f447b205626": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux의 신호, macOS의 Mach 예외), 패닉 또는 멈추면 모니터에 덤프를 요청합니다. 멈춤은 창의 프레임이 8초 이상 실행되는 것으로, 잠든 시간을 무시하는 감시 스레드에 의해 감지됩니다. 그러면 모니터는 <x3/> 및 <x4/>를 통해 외부에서 모든 스레드의 <g2>미니덤프</g2>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 마찬가지입니다."
-  },
-  "d14cab1a03533aa1": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands…",
-   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi에서 작동합니다. Firefox 지원은 개발 완료 후 테스트 중입니다. 확장 프로그램은…"
   },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
@@ -7106,6 +7110,10 @@
    "source": "3. Tell your assistant",
    "text": "3. 어시스턴트에 알리기"
   },
+  "dd95eb457eff61cf": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
+   "text": "Flatpak 또는 Snap으로 설치된 브라우저는 샌드박스에서 실행되므로 외부 프로그램을 시작하지 못할 수 있으며, MDM에 연결하지 못할 수도 있습니다. Flatpak 브라우저(예: Zen의 <x1/>)는 MDM의 도우미를 시작할 수 없으므로 MDM은 <g2>브라우저에 Mister Download Manager 추가</g2>에 해당 브라우저를 표시하지 않습니다. 브라우저 통합을 사용하려면 배포판 패키지(또는 브라우저 제작사의 자체 <x3/>, <x4/>, tarball 또는 AppImage)에서 브라우저를 설치하세요."
+  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>이동/이름 바꾸기</g1> (<g2>Ctrl+M</g2>)는 완료된 다운로드 또는 아직 시작되지 않은 다운로드의 파일 이름을 바꾸거나 이동합니다."
@@ -7245,6 +7253,10 @@
   "e255969933938cdb": {
    "source": "Where MDM keeps its data",
    "text": "MDM이 데이터를 저장하는 위치"
+  },
+  "e2e30d683ce66b3d": {
+   "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",
+   "text": "<g1>Windows의 Zen:</g1> Zen 1.21.15b 이상 버전에는 애드온이 도우미 프로그램에 연결되지 못하게 하는 자체 버그(<g2>zen-browser/desktop#15432</g2>)가 있습니다. Zen이 이 문제를 해결할 때까지는 Zen 1.21.14b가 작동합니다."
   },
   "e2f5e55e73258c80": {
    "source": "<g1>Connections.</g1> Passive mode is used by default. <g2>Options → Proxy / Socks → Use FTP in PASV mode</g2> switches it off for servers that only take active connections. FTP connects to the server directly, not through the HTTP proxy.",

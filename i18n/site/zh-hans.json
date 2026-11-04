@@ -902,6 +902,10 @@
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>永久免费。</g1> 没有试用期，没有许可证密钥，没有广告。GNU GPL 保证它始终免费。"
   },
+  "1accfe27df04b7d9": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support…",
+   "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，以及基于它们构建的浏览器，例如 Helium。对 Firefox 的支持…"
+  },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "浏览器扩展程序随应用提供，也可单独下载，支持 <g1>Chrome、Edge、Brave、Opera 和 Vivaldi</g1> 以及 <g2>Firefox</g2>。应用商店上架正在进行中。所有文件均由 GitHub Actions 从公共源代码构建，并列出其 SHA-256 校验和。"
@@ -1273,6 +1277,10 @@
   "24d1e3612712c5a7": {
    "source": "<g1>Downloads</g1> — <g2>Pause All</g2>, <g3>Stop All</g3>, <g4>Delete All Completed</g4>, <g5>Find</g5>, the <g6>Scheduler</g6>, queues, the <g7>Speed Limiter</g7> and <g8>Options</g8>.",
    "text": "<g1>下载</g1> — <g2>暂停所有</g2>、<g3>停止所有</g3>、<g4>删除所有已完成</g4>、<g5>查找</g5>、<g6>计划程序</g6>、队列、<g7>速度限制器</g7>和<g8>选项</g8>。"
+  },
+  "24f2c9647a2b9363": {
+   "source": "<g1>Zen, Helium or another browser built on Firefox or Chromium, as your only browser on Linux or macOS?</g1> Older versions of MDM set browser integration up only for the browsers they knew. Update MDM and start it once.",
+   "text": "<g1>Zen、Helium 或其他基于 Firefox 或 Chromium 构建的浏览器，是您在 Linux 或 macOS 上唯一的浏览器吗？</g1> 旧版 MDM 仅为它们已知的浏览器设置了浏览器集成。请更新 MDM 并启动一次。"
   },
   "2508774439912aac": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any other download. Turn on Keep sharing torrents after they finish in Options if you'd like to give back.",
@@ -3802,10 +3810,6 @@
    "source": "What to do",
    "text": "如何操作"
   },
-  "7461d4770c6a9bbe": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Install the browser from your distribution's packages (or the browser maker's own <x1/> or <x2/>) to use browser integration.",
-   "text": "作为 Flatpak 或 Snap 安装的浏览器在沙盒中运行，这可能会阻止它们启动外部程序，因此它们可能无法访问 MDM。从您的发行版软件包（或浏览器制造商自己的<x1/>或<x2/>）安装浏览器以使用浏览器集成。"
-  },
   "74632f0763b57b9b": {
    "source": "any distribution: make it executable, run it",
    "text": "任何发行版：使其可执行，然后运行"
@@ -4606,10 +4610,6 @@
    "source": "3. Using it responsibly",
    "text": "3. 负责任地使用"
   },
-  "8d38b34a197f5a70": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi。Firefox 支持已完成编写，正在测试中。该扩展会将下载任务及其 Cookie 和引用页移交给 MDM，因此需要登录才能访问的文件也能正常下载。它还会将“使用 Mister Download Manager 下载”添加到右键菜单，并在视频上方添加一个“下载视频”按钮。请参阅浏览器集成。"
-  },
   "8d8e052bd62085d8": {
    "source": "<g1>Statistics.</g1> Medians with interquartile ranges, bootstrap 95% intervals (10,000 resamples) for each median and for the ratio of medians, and a two-sided Mann–Whitney U test.",
    "text": "<g1>统计。</g1> 中位数及四分位距，每个中位数和中位数比率的自举 95% 置信区间（10,000 次重采样），以及双侧 Mann–Whitney U 检验。"
@@ -4737,6 +4737,10 @@
   "91e1fe6fec5ba25a": {
    "source": "3.1 s",
    "text": "3.1 秒"
+  },
+  "920f5f8c86e123ee": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，以及基于它们构建的浏览器，例如 Helium。对 Firefox（也包括 Zen 和 LibreWolf）的支持已完成编写，正在测试中。该扩展会将下载任务及其 Cookie 和 referrer 移交给 MDM，因此需要登录才能下载的文件仍然有效，它还会将“使用 Mister Download Manager 下载”添加到右键菜单，并在视频上方添加一个“下载视频”按钮。请参阅“浏览器集成”。"
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -5954,10 +5958,6 @@
    "source": "Read this page in your language?",
    "text": "要用您的语言阅读此页面吗？"
   },
-  "b5a3624faa9a94b8": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
-   "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi。Firefox 支持已完成编写，正在测试中。该扩展会将下载任务及其 Cookie 和引用页移交给 MDM，因此需要登录才能访问的文件也能正常下载。它还会将<g1>使用 Mister Download Manager 下载</g1>添加到右键菜单，并在视频上方添加一个<g2>下载视频</g2>按钮。请参阅<g3>浏览器集成</g3>。"
-  },
   "b5ce8e1194ffd521": {
    "source": "If the address is a video's page (YouTube, Vimeo, TikTok and others), the video window opens instead. See <g1>Video downloads</g1>. A magnet link opens <g2>Add torrent</g2>; see <g3>Torrents</g3>.",
    "text": "如果地址是视频页面（YouTube、Vimeo、TikTok 等），则会打开视频窗口。请参阅<g1>视频下载</g1>。磁力链接会打开<g2>添加种子</g2>；请参阅<g3>种子</g3>。"
@@ -6546,6 +6546,10 @@
    "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
    "text": "MDM 读取种子并将其文件显示为文件夹树。<x1/> 文件会立即读取。磁力链接首先需要从其他对等方获取文件列表，这可能需要一两分钟。"
   },
+  "c9d39512b1b393af": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
+   "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，以及基于它们构建的浏览器，例如 Helium。对 Firefox（也包括 Zen 和 LibreWolf）的支持已完成编写，正在测试中。该扩展会将下载任务及其 Cookie 和 referrer 移交给 MDM，因此需要登录才能下载的文件仍然有效，它还会将<g1>使用 Mister Download Manager 下载</g1>添加到右键菜单，并在视频上方添加一个<g2>下载视频</g2>按钮。请参阅<g3>浏览器集成</g3>。"
+  },
   "c9da130585eae7fa": {
    "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
    "text": "本网站没有广告，也没有其他跟踪器。其字体和脚本均由网站本身提供。您选择的浅色或深色模式会保存在您浏览器的本地存储中，绝不会发送到任何地方。"
@@ -6686,6 +6690,10 @@
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
    "text": "要保存您自己的列表，请使用<g1>任务 → 导出 → 导出到文本文件</g1>（每行一个地址）或<g2>导出到 IDM 文件</g2>。"
   },
+  "cf5e8ed8c0381b7f": {
+   "source": "Browsers built on them work too: Chromium and Helium take the extension as Chrome does, Zen and LibreWolf as Firefox does. On Windows, Zen has a bug of its own (see <g1>The browser and MDM aren't connected</g1>).",
+   "text": "基于这些浏览器构建的浏览器也适用：Chromium 和 Helium 像 Chrome 一样安装扩展程序，Zen 和 LibreWolf 像 Firefox 一样安装。在 Windows 上，Zen 有一个自己的错误（请参阅<g1>浏览器和 MDM 未连接</g1>）。"
+  },
   "cf86019a0378cdea": {
    "source": "The downloads join the <g1>Main download queue</g1>, ready to start. <g2>Tasks → Import → From IDM export file</g2> reads an <x3/> file, with each download's referrer and cookies.",
    "text": "下载会加入<g1>主下载队列</g1>，准备开始。<g2>任务 → 导入 → 从 IDM 导出文件</g2>会读取<x3/>文件，其中包含每个下载的引用页和 Cookie。"
@@ -6745,10 +6753,6 @@
   "d1432f447b205626": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>捕获问题。</g1>当 MDM 崩溃（Windows 异常、Linux 上的信号、macOS 上的 Mach 异常）、恐慌或冻结时，它会向监视器请求转储。冻结是指窗口运行超过 8 秒的帧，由一个忽略休眠时间的看门狗线程检测到。然后，监视器通过<x3/>和<x4/>从外部写入每个线程的<g2>minidump</g2>。崩溃的进程从不写入自己的转储，Firefox、Crashpad 和 Sentry 也是这样做的。"
-  },
-  "d14cab1a03533aa1": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension. Firefox support is written and in testing. The extension hands…",
-   "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi。Firefox 支持已完成编写，正在测试中。该扩展会将…"
   },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
@@ -7106,6 +7110,10 @@
    "source": "3. Tell your assistant",
    "text": "3. 告知您的助手"
   },
+  "dd95eb457eff61cf": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
+   "text": "以 Flatpak 或 Snap 形式安装的浏览器在沙盒中运行，这可能会阻止它们启动沙盒之外的程序，因此它们可能无法访问 MDM。Flatpak 浏览器（例如 Zen 的 <x1/>）无法启动 MDM 的辅助程序，因此 MDM 不会在<g2>将 Mister Download Manager 添加到您的浏览器</g2>中列出它们。请从您的发行版软件包（或浏览器制造商自己的 <x3/>、<x4/>、tarball 或 AppImage）安装浏览器以使用浏览器集成。"
+  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>移动/重命名</g1> (<g2>Ctrl+M</g2>) 移动或重命名已完成下载的文件，或尚未开始的下载的文件。"
@@ -7245,6 +7253,10 @@
   "e255969933938cdb": {
    "source": "Where MDM keeps its data",
    "text": "MDM 存储数据的位置"
+  },
+  "e2e30d683ce66b3d": {
+   "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",
+   "text": "<g1>Windows 上的 Zen：</g1> Zen 1.21.15b 及更高版本存在一个自身错误，导致附加组件无法访问其辅助程序（<g2>zen-browser/desktop#15432</g2>），任何使用辅助程序的附加组件都会受影响。在 Zen 修复此问题之前，Zen 1.21.14b 是可用的。"
   },
   "e2f5e55e73258c80": {
    "source": "<g1>Connections.</g1> Passive mode is used by default. <g2>Options → Proxy / Socks → Use FTP in PASV mode</g2> switches it off for servers that only take active connections. FTP connects to the server directly, not through the HTTP proxy.",

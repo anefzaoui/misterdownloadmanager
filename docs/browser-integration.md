@@ -6,6 +6,8 @@ With the MDM extension, clicking a download link in your browser hands the downl
 
 The extension works in **Google Chrome**, **Microsoft Edge**, **Brave**, **Opera** and **Vivaldi**, and in **Firefox** 140 or later.
 
+Browsers built on them work too: Chromium and Helium take the extension as Chrome does, Zen and LibreWolf as Firefox does. On Windows, Zen has a bug of its own (see [The browser and MDM aren't connected](browser-help.md#not-installed)).
+
 ## Set it up
 
 Browser integration has two parts: a small helper program that the browser talks to, and the extension itself.

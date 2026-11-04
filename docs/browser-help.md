@@ -15,6 +15,8 @@ The browser can't find the small helper program it talks to. It is registered wh
 3. The portable copy can't be connected: it writes nothing outside its own folder. Use the installed copy for browser integration. See [Portable mode](portable.md).
 4. On Linux and macOS, MDM sets browser integration up itself each time it starts: start MDM once.
 5. Restart the browser after setting it up.
+6. **Zen, Helium or another browser built on Firefox or Chromium, as your only browser on Linux or macOS?** Older versions of MDM set browser integration up only for the browsers they knew. Update MDM and start it once.
+7. **Zen on Windows:** Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program ([zen-browser/desktop#15432](https://github.com/zen-browser/desktop/issues/15432)), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.
 
 ## MDM didn't start in time {#not-running}
 
@@ -73,7 +75,7 @@ An add-on loaded with **Load Temporary Add-on** is removed when Firefox closes, 
 
 ## Linux: Flatpak and Snap browsers {#linux-sandbox}
 
-Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Install the browser from your distribution's packages (or the browser maker's own `.deb` or `.rpm`) to use browser integration.
+Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's `app.zen_browser.zen`) can't start MDM's helper, so MDM doesn't list them in **Add Mister Download Manager to your browser**. Install the browser from your distribution's packages (or the browser maker's own `.deb`, `.rpm`, tarball or AppImage) to use browser integration.
 
 ## Next steps
 

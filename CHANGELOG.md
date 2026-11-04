@@ -17,6 +17,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Zen, Helium and other browsers built on Firefox or Chromium** ([#41](https://github.com/anefzaoui/misterdownloadmanager/issues/41)):
+  the extension reaches MDM in them, also when one is the only browser on Linux or macOS (Zen
+  reads Firefox's folder, which MDM now creates; Helium its own). **Add Mister Download Manager
+  to your browser** lists them, Zen, LibreWolf, Floorp and Waterfox by their own names (Options
+  too), and sends Firefox's family to the right page. On Windows MDM lists the browsers Windows
+  itself lists, so Helium is no longer taken for Chrome. Flatpak browsers can't start MDM's
+  helper, which the help page now says.
 - **A video's sound as MP3, at the quality you pick** ([#32](https://github.com/anefzaoui/misterdownloadmanager/issues/32)):
   **Download video** lists **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256,
   192 and 128 kbps, after the sound in the site's own format. ffmpeg converts it (on Windows MDM
