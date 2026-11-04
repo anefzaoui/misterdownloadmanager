@@ -40,9 +40,14 @@ Everything below ships together, in one release.
 - ✅ A smaller download ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)),
   AppImage updates with zsync ([#24](https://github.com/anefzaoui/misterdownloadmanager/issues/24)),
   the Bangladesh flag for Bangla ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27))
+- ✅ Download complete shows above other windows, Options from the extension comes to the front
+  ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), and dragging the file out
+  of Download complete works in every language
+  ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
-  MDM with IDM and with nine other free download managers, each checked on its own site
+  MDM with IDM and with nine other free download managers, each checked on its own site, with
+  their logos, a feature-by-feature form and an MDM-vs-IDM label with the benchmark's times to scale
 
 ### Being built
 
