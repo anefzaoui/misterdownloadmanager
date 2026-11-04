@@ -22,6 +22,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **View → Always dark** ([#60](https://github.com/anefzaoui/misterdownloadmanager/issues/60)):
+  MDM stays dark whatever the system says, for a desktop that reports no light or dark
+  preference (MDM also reads it on Linux now, see Fixed).
 - **Torrent settings: the network is yours to choose**
   ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40)): accept incoming connections
   or not, map the port with UPnP or not, a fixed port, the DHT, finding peers on the local network,

@@ -99,6 +99,8 @@ enum Cmd {
     ToggleCategories,
     /// View → Dark Mode support.
     ToggleDarkMode,
+    /// View → Always dark (#60).
+    ToggleAlwaysDark,
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -2725,6 +2727,11 @@ impl App {
                 self.theme_checked = None;
                 self.dirty = true;
             }
+            Cmd::ToggleAlwaysDark => {
+                self.settings.always_dark = !self.settings.always_dark;
+                self.theme_checked = None;
+                self.dirty = true;
+            }
             Cmd::Open => {
                 if let Some(id) = target {
                     self.open_item(id);
@@ -3232,6 +3239,14 @@ impl App {
                     Cmd::ToggleDarkMode,
                     true,
                     self.settings.dark_mode_support,
+                ),
+                // MDM's (#60): dark whatever the system says (a desktop that reports nothing).
+                I(
+                    // i18n: View menu: a check item; dark mode on, whatever the system's setting
+                    "Always dark",
+                    Cmd::ToggleAlwaysDark,
+                    true,
+                    self.settings.always_dark,
                 ),
                 // i18n: noun: the list's font (submenu)
                 Sub("Font", false, vec![]),
@@ -5375,7 +5390,11 @@ impl eframe::App for App {
             .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
         {
             self.theme_checked = Some(Instant::now());
-            let changed = crate::theme::update(self.settings.dark_mode_support, &ctx);
+            let changed = crate::theme::update(
+                self.settings.dark_mode_support,
+                self.settings.always_dark,
+                &ctx,
+            );
             // The caption follows (first check: the window may not exist yet; retried).
             if changed || !self.caption_set {
                 crate::theme::apply_mode(&ctx);
