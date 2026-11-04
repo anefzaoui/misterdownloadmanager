@@ -174,6 +174,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Darmowy i open source. Interfejs, który już znasz, szybszy silnik pod spodem, wbudowane torrenty i wideo."
   },
+  "04917582aad4754c": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (około 80 MB) łączy obraz i dźwięk, gdy strona internetowa przechowuje je oddzielnie, co większość stron robi dla wyższych jakości, a także zamienia dźwięk na MP3. Kliknij <g2>Zainstaluj ffmpeg</g2>, gdy MDM to zaproponuje. MDM sprawdza go pod kątem sum kontrolnych opublikowanych w jego wydaniu."
+  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -1146,10 +1150,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "Kliknij <g1>Załaduj tymczasowy dodatek</g1> i wybierz <x2/>."
   },
-  "20ff7c25a0a83544": {
-   "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
-   "text": "Dla najlepszych jakości MDM oferuje instalację <g1>ffmpeg</g1> (około 80 MB), który łączy obraz i dźwięk. Kliknij <g2>Zainstaluj ffmpeg</g2>, jeśli chcesz z nich skorzystać. Bez niego otrzymasz jakości, które zawierają już dźwięk."
-  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "Główne okno Mister Download Manager: klasyczny układ z paskiem narzędzi, kategoriami i listą pobierania."
@@ -1609,6 +1609,10 @@
   "2d6f7386c4547cc8": {
    "source": "The server",
    "text": "Serwer"
+  },
+  "2d7508c5d79aed56": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
+   "text": "Wybierz jedną. Bez ffmpeg, wyświetlane są tylko te jakości, które zawierają dźwięk, i nie ma MP3 (ffmpeg go tworzy)."
   },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
@@ -2146,10 +2150,6 @@
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "Nie musisz najpierw uruchamiać MDM. Gdy przeglądarka przekazuje pobieranie, a MDM nie działa, pomocnik uruchamia go i przekazuje pobieranie."
   },
-  "3e87ae5d71f126c6": {
-   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end.",
-   "text": "Poczekaj, aż MDM wyszuka stronę. Pojawi się lista jakości, najlepsze na początku, z <g1>Tylko dźwięk</g1> na końcu."
-  },
   "3ea161193b709aad": {
    "source": "Help translate",
    "text": "Pomóż tłumaczyć"
@@ -2665,10 +2665,6 @@
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "Zachowaj część prędkości dla innych zadań — pomoc Mister Download Manager"
-  },
-  "50e20b27a3d70d25": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, and <g1>Audio only</g1> at the end.",
-   "text": "Poczekaj na listę. Pokazuje każdą rozdzielczość z jej rozmiarem, najlepsze na początku, a <g1>Tylko dźwięk</g1> na końcu."
   },
   "50e96773503a15a6": {
    "source": "<g1>Clean room.</g1> MDM contains no code, binaries, artwork, icons, sounds or text from Internet Download Manager or any other download manager. Never disassemble, decompile or patch another program, and never bypass anyone's licensing. See <g2>Not a reverse-engineering project</g2>.",
@@ -4974,6 +4970,10 @@
    "source": "Select the downloads in the box",
    "text": "Zaznacz pobierania w polu"
   },
+  "9806786dcda7c9ff": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
+   "text": "Poczekaj na listę. Pokazuje ona każdą rozdzielczość z jej rozmiarem, najlepszą na początku, następnie <g1>Tylko dźwięk</g1> w formacie strony (M4A lub WebM, w zależności od tego, jak strona go udostępnia), a następnie <g2>Tylko dźwięk MP3</g2> w najlepszej zmiennej przepływności (VBR) oraz w 320, 256, 192 i 128 kbps."
+  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "Zapisz pod tą nazwą."
@@ -5305,6 +5305,10 @@
   "a2ceba74b65417fa": {
    "source": "Use a zip copy",
    "text": "Użyj kopii zip"
+  },
+  "a2d96f4a163d77b8": {
+   "source": "For the best qualities and MP3, MDM needs <g1>ffmpeg</g1>, which joins the picture and the sound, and makes the MP3. On Windows MDM offers to install it (about 80 MB): click <g2>Install ffmpeg</g2> if you want them. On Linux and macOS MDM uses the system's ffmpeg. Without it, you get the qualities that come with their sound.",
+   "text": "Dla najlepszych jakości i MP3, MDM potrzebuje <g1>ffmpeg</g1>, który łączy obraz i dźwięk oraz tworzy MP3. W systemie Windows MDM oferuje jego instalację (około 80 MB): kliknij <g2>Zainstaluj ffmpeg</g2>, jeśli chcesz z nich skorzystać. W systemach Linux i macOS MDM używa systemowego ffmpeg. Bez niego otrzymasz jakości, które są dostępne z ich dźwiękiem."
   },
   "a2ecbbee3658b831": {
    "source": "480 connections against 2.",
@@ -6098,10 +6102,6 @@
    "source": "6. Limitation of liability",
    "text": "6. Ograniczenie odpowiedzialności"
   },
-  "bb154512f21f1dec": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (około 80 MB) łączy wideo i dźwięk, gdy witryna przechowuje je oddzielnie, co większość witryn robi dla wyższych jakości. Kliknij <g2>Zainstaluj ffmpeg</g2>, gdy MDM to zaproponuje. MDM sprawdza go pod kątem sum kontrolnych opublikowanych w jego wydaniu."
-  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>Sieć</g1> (serwer WWW) lub <g2>Torrent</g2>."
@@ -6630,6 +6630,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "W oknie <g1>Informacje o pliku do pobrania</g1> kliknij <g2>Pobierz później</g2>."
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "Pobierz wideo; <x1/> pobiera selektor jakości z <x2/> (<x3/> = najlepszy pojedynczy plik; <x4/>, <x5/>, <x6/> lub <x7/> = dźwięk jako MP3 z tą przepływnością, <x8/> z najlepszą zmienną; MP3 wymaga ffmpeg)."
+  },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "Wyłącznie Ty jesteś odpowiedzialny za pobierane pliki i sposób korzystania z oprogramowania."
@@ -6865,10 +6869,6 @@
   "d523b3399c313ed9": {
    "source": "<g1>Finished</g1> — complete downloads, by category.",
    "text": "<g1>Ukończone</g1> — ukończone pobierania, według kategorii."
-  },
-  "d555f716c2eaa36f": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file).",
-   "text": "Pobierz wideo; <x1/> pobiera selektor jakości z <x2/> (<x3/> = najlepszy pojedynczy plik)."
   },
   "d5820405986dce29": {
    "source": "<g1>The servers you download from.</g1> To download a file, MDM connects to the server that holds it and sends what any browser would: the request, and the cookies, referrer and browser identification the extension passed along, so downloads that need you to be signed in keep working. Those servers see your IP address, as they would if your browser downloaded the file.",
@@ -7482,10 +7482,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Aby na stałe zachować pobierane pliki z witryny w przeglądarce, użyj przycisku paska narzędzi <g1>Nigdy nie pobieraj plików z</g1> lub dodaj witrynę do <g2>Nie rozpoczynaj automatycznego pobierania z następujących witryn</g2>. Aby zachować typ pliku w przeglądarce, usuń go z listy typów plików."
   },
-  "ea5d351dd9edb0f2": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed.",
-   "text": "Wybierz jedną. Bez ffmpeg, wyświetlane są tylko te jakości, które zawierają dźwięk."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Otwórz Ustawienia Windows → Aplikacje, znajdź Mister Download Manager i wybierz Odinstaluj. Dezinstalator zapyta, czy usunąć również listę pobierania i ustawienia. Pobrane pliki nigdy nie są usuwane. W przypadku wersji przenośnej usuń jej folder."
@@ -7861,6 +7857,10 @@
   "f7f2e0ba07d3545b": {
    "source": "An HTTP Range server with a request log and fault injection, and an FTP/FTPS server with its own faults, for tests and benchmarks",
    "text": "Serwer HTTP Range z logiem żądań i wstrzykiwaniem błędów, oraz serwer FTP/FTPS z własnymi błędami, do testów i benchmarków"
+  },
+  "f7f35f6dda096e0a": {
+   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
+   "text": "Poczekaj, aż MDM sprawdzi stronę. Pojawi się lista jakości, najlepsze na początku, z <g1>Tylko dźwięk</g1> na końcu: dźwięk w takiej postaci, w jakiej jest na stronie, a następnie, z ffmpeg (następny krok), jako MP3 z najlepszą zmienną przepływnością lub 320, 256, 192 lub 128 kbps."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

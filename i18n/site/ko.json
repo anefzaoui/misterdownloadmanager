@@ -174,6 +174,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "무료 오픈 소스입니다. 이미 익숙한 인터페이스와 더 빠른 엔진, 토렌트 및 비디오 기능이 내장되어 있습니다."
   },
+  "04917582aad4754c": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "사이트에서 영상과 소리를 분리하여 제공하는 경우(대부분의 고화질 영상이 그렇습니다), <g1>ffmpeg</g1>(약 80MB)은 이를 합치고 소리를 MP3로 변환합니다. MDM에서 <g2>ffmpeg 설치</g2>를 제안하면 클릭하세요. MDM은 릴리스에 게시된 체크섬과 비교하여 확인합니다."
+  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -1146,10 +1150,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "<g1>임시 부가 기능 로드</g1>를 클릭하고 <x2/>를 선택합니다."
   },
-  "20ff7c25a0a83544": {
-   "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
-   "text": "최고 품질의 경우 MDM은 그림과 소리를 결합하는 <g1>ffmpeg</g1>(약 80MB) 설치를 제안합니다. 원하시면 <g2>ffmpeg 설치</g2>를 클릭하세요. 이것이 없으면 소리가 포함된 품질을 얻게 됩니다."
-  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "Mister Download Manager의 메인 창: 도구 모음, 카테고리 및 다운로드 목록이 있는 클래식 레이아웃."
@@ -1609,6 +1609,10 @@
   "2d6f7386c4547cc8": {
    "source": "The server",
    "text": "서버"
+  },
+  "2d7508c5d79aed56": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
+   "text": "하나를 선택하세요. ffmpeg가 없으면 소리가 포함된 품질만 나열되며 MP3는 표시되지 않습니다(MP3는 ffmpeg가 만듭니다)."
   },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
@@ -2146,10 +2150,6 @@
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "MDM을 먼저 시작할 필요가 없습니다. 브라우저가 다운로드를 넘겨주고 MDM이 실행 중이 아니면, 도우미가 MDM을 시작하고 다운로드를 전달합니다."
   },
-  "3e87ae5d71f126c6": {
-   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end.",
-   "text": "MDM이 페이지를 찾는 동안 기다리세요. 품질 목록이 가장 좋은 것부터 나타나며, 맨 끝에는 <g1>오디오만</g1>이 있습니다."
-  },
   "3ea161193b709aad": {
    "source": "Help translate",
    "text": "번역 돕기"
@@ -2665,10 +2665,6 @@
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "다른 작업에 속도 남겨두기 — Mister Download Manager 도움말"
-  },
-  "50e20b27a3d70d25": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, and <g1>Audio only</g1> at the end.",
-   "text": "목록을 기다리세요. 각 해상도가 크기와 함께 표시되며, 가장 좋은 것이 먼저 오고, 마지막에 <g1>오디오만</g1>이 표시됩니다."
   },
   "50e96773503a15a6": {
    "source": "<g1>Clean room.</g1> MDM contains no code, binaries, artwork, icons, sounds or text from Internet Download Manager or any other download manager. Never disassemble, decompile or patch another program, and never bypass anyone's licensing. See <g2>Not a reverse-engineering project</g2>.",
@@ -4974,6 +4970,10 @@
    "source": "Select the downloads in the box",
    "text": "상자에 있는 다운로드 선택"
   },
+  "9806786dcda7c9ff": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
+   "text": "목록이 나타날 때까지 기다리세요. 각 해상도가 크기와 함께 표시되며, 가장 좋은 것부터 먼저 나옵니다. 그 다음으로 사이트 자체 형식(<g1>오디오만</g1> M4A 또는 WebM)이 표시되고, 이어서 <g2>오디오만 MP3</g2>가 가장 좋은 가변 비트레이트(VBR)와 320, 256, 192, 128kbps로 표시됩니다."
+  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "이 이름으로 저장합니다."
@@ -5305,6 +5305,10 @@
   "a2ceba74b65417fa": {
    "source": "Use a zip copy",
    "text": "zip 파일 사용"
+  },
+  "a2d96f4a163d77b8": {
+   "source": "For the best qualities and MP3, MDM needs <g1>ffmpeg</g1>, which joins the picture and the sound, and makes the MP3. On Windows MDM offers to install it (about 80 MB): click <g2>Install ffmpeg</g2> if you want them. On Linux and macOS MDM uses the system's ffmpeg. Without it, you get the qualities that come with their sound.",
+   "text": "최고 품질 및 MP3를 위해 MDM은 그림과 소리를 합치고 MP3를 만드는 <g1>ffmpeg</g1>이 필요합니다. Windows에서는 MDM이 설치를 제안합니다(약 80MB): 원하시면 <g2>ffmpeg 설치</g2>를 클릭하세요. Linux 및 macOS에서는 MDM이 시스템의 ffmpeg을 사용합니다. ffmpeg이 없으면 소리와 함께 제공되는 품질만 얻을 수 있습니다."
   },
   "a2ecbbee3658b831": {
    "source": "480 connections against 2.",
@@ -6098,10 +6102,6 @@
    "source": "6. Limitation of liability",
    "text": "6. 책임의 제한"
   },
-  "bb154512f21f1dec": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1>(약 80MB)는 대부분의 사이트에서 더 높은 품질을 위해 비디오와 사운드를 분리할 때 이를 결합합니다. MDM이 제공할 때 <g2>ffmpeg 설치</g2>를 클릭하세요. MDM은 릴리스에서 게시한 체크섬과 대조하여 확인합니다."
-  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>웹</g1> (웹 서버) 또는 <g2>토렌트</g2>."
@@ -6630,6 +6630,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>파일 정보 다운로드</g1>에서 <g2>나중에 다운로드</g2>를 클릭합니다."
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "동영상 다운로드; <x1/>는 <x2/>에서 화질 선택자를 가져옵니다 (<x3/> = 가장 좋은 단일 파일; <x4/>, <x5/>, <x6/> 또는 <x7/> = 해당 비트레이트의 MP3 사운드, <x8/>는 가장 좋은 가변 비트레이트; MP3는 ffmpeg 필요)."
+  },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "다운로드하는 파일과 소프트웨어 사용 방식에 대한 책임은 전적으로 귀하에게 있습니다."
@@ -6865,10 +6869,6 @@
   "d523b3399c313ed9": {
    "source": "<g1>Finished</g1> — complete downloads, by category.",
    "text": "<g1>완료됨</g1> — 완료된 다운로드를 범주별로 표시합니다."
-  },
-  "d555f716c2eaa36f": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file).",
-   "text": "비디오를 다운로드합니다. <x1/>은 <x2/>에서 품질 선택기를 가져옵니다 (<x3/> = 가장 좋은 단일 파일)."
   },
   "d5820405986dce29": {
    "source": "<g1>The servers you download from.</g1> To download a file, MDM connects to the server that holds it and sends what any browser would: the request, and the cookies, referrer and browser identification the extension passed along, so downloads that need you to be signed in keep working. Those servers see your IP address, as they would if your browser downloaded the file.",
@@ -7482,10 +7482,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "사이트의 다운로드를 영구적으로 브라우저에 유지하려면 도구 모음 버튼의 <g1>다음에서 다운로드 절대 가져오지 않음</g1>을 사용하거나, <g2>다음 사이트에서 자동으로 다운로드 시작 안 함</g2>에 사이트를 추가하십시오. 파일 유형을 브라우저에 유지하려면 파일 유형 목록에서 제거하십시오."
   },
-  "ea5d351dd9edb0f2": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed.",
-   "text": "하나를 선택하세요. ffmpeg가 없으면 사운드가 포함된 품질만 나열됩니다."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windows 설정 → 앱을 열고 Mister Download Manager를 찾아 제거를 선택하세요. 제거 프로그램이 다운로드 목록과 설정을 함께 삭제할지 묻습니다. 다운로드한 파일은 절대 건드리지 않습니다. 휴대용 버전의 경우 해당 폴더를 삭제하세요."
@@ -7861,6 +7857,10 @@
   "f7f2e0ba07d3545b": {
    "source": "An HTTP Range server with a request log and fault injection, and an FTP/FTPS server with its own faults, for tests and benchmarks",
    "text": "요청 로그 및 오류 주입 기능이 있는 HTTP Range 서버, 자체 오류가 있는 FTP/FTPS 서버(테스트 및 벤치마크용)"
+  },
+  "f7f35f6dda096e0a": {
+   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
+   "text": "MDM이 페이지를 찾는 동안 기다려 주세요. 품질 목록이 가장 좋은 것부터 나타나며, 맨 끝에는 <g1>오디오만</g1> 있습니다. 사이트에서 제공하는 오디오, 그리고 ffmpeg(다음 단계)을 사용하여 최고 가변 비트레이트 또는 320, 256, 192, 128kbps MP3로 변환된 오디오가 표시됩니다."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

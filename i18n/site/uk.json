@@ -174,6 +174,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Безкоштовний та з відкритим кодом. Інтерфейс, який ви вже знаєте, швидший рушій, вбудовані торренти та відео."
   },
+  "04917582aad4754c": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (близько 80 МБ) об'єднує відео та його звук, коли сайт зберігає їх окремо, що більшість сайтів робить для вищої якості, і перетворює звук на MP3. Натисніть <g2>Інсталювати ffmpeg</g2>, коли MDM запропонує це. MDM перевіряє його за контрольними сумами, опублікованими в його випуску."
+  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -1146,10 +1150,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "Натисніть <g1>Завантажити тимчасове доповнення</g1> та виберіть <x2/>."
   },
-  "20ff7c25a0a83544": {
-   "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
-   "text": "Для найкращих якостей MDM пропонує інсталювати <g1>ffmpeg</g1> (близько 80 МБ), який об'єднує зображення та звук. Натисніть <g2>Інсталювати ffmpeg</g2>, якщо ви їх бажаєте. Без нього ви отримаєте якості, які постачаються зі звуком."
-  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "Головне вікно Mister Download Manager: класичний інтерфейс з панеллю інструментів, категоріями та списком завантажень."
@@ -1609,6 +1609,10 @@
   "2d6f7386c4547cc8": {
    "source": "The server",
    "text": "Сервер"
+  },
+  "2d7508c5d79aed56": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
+   "text": "Виберіть один. Без ffmpeg перераховуються лише ті якості, що постачаються зі звуком, і без MP3 (його створює ffmpeg)."
   },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
@@ -2146,10 +2150,6 @@
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "Вам не потрібно спочатку запускати MDM. Коли браузер передає завантаження, а MDM не запущено, помічник запускає його та передає завантаження."
   },
-  "3e87ae5d71f126c6": {
-   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end.",
-   "text": "Зачекайте, поки MDM знайде сторінку. З'явиться список якостей, найкращі спочатку, з <g1>Лише аудіо</g1> в кінці."
-  },
   "3ea161193b709aad": {
    "source": "Help translate",
    "text": "Допомогти з перекладом"
@@ -2665,10 +2665,6 @@
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "Залиште швидкість для всього іншого — довідка Mister Download Manager"
-  },
-  "50e20b27a3d70d25": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, and <g1>Audio only</g1> at the end.",
-   "text": "Дочекайтеся списку. Він показує кожну роздільну здатність з її розміром, найкращі спочатку, а <g1>Тільки аудіо</g1> в кінці."
   },
   "50e96773503a15a6": {
    "source": "<g1>Clean room.</g1> MDM contains no code, binaries, artwork, icons, sounds or text from Internet Download Manager or any other download manager. Never disassemble, decompile or patch another program, and never bypass anyone's licensing. See <g2>Not a reverse-engineering project</g2>.",
@@ -4974,6 +4970,10 @@
    "source": "Select the downloads in the box",
    "text": "Вибрати завантаження в полі"
   },
+  "9806786dcda7c9ff": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
+   "text": "Дочекайтеся списку. Він показує кожну роздільну здатність з її розміром, найкращі спочатку, потім <g1>Тільки аудіо</g1> у власному форматі сайту (M4A або WebM, як його надає сайт), потім <g2>Тільки аудіо MP3</g2> з найкращим змінним бітрейтом (VBR) та 320, 256, 192 і 128 кбіт/с."
+  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "Зберегти під цим ім'ям."
@@ -5305,6 +5305,10 @@
   "a2ceba74b65417fa": {
    "source": "Use a zip copy",
    "text": "Використання zip-копії"
+  },
+  "a2d96f4a163d77b8": {
+   "source": "For the best qualities and MP3, MDM needs <g1>ffmpeg</g1>, which joins the picture and the sound, and makes the MP3. On Windows MDM offers to install it (about 80 MB): click <g2>Install ffmpeg</g2> if you want them. On Linux and macOS MDM uses the system's ffmpeg. Without it, you get the qualities that come with their sound.",
+   "text": "Для найкращих якостей та MP3 MDM потрібен <g1>ffmpeg</g1>, який об'єднує зображення та звук, а також створює MP3. У Windows MDM пропонує його інсталювати (близько 80 МБ): натисніть <g2>Інсталювати ffmpeg</g2>, якщо ви їх бажаєте. У Linux та macOS MDM використовує системний ffmpeg. Без нього ви отримаєте якості, які постачаються зі своїм звуком."
   },
   "a2ecbbee3658b831": {
    "source": "480 connections against 2.",
@@ -6098,10 +6102,6 @@
    "source": "6. Limitation of liability",
    "text": "6. Обмеження відповідальності"
   },
-  "bb154512f21f1dec": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (близько 80 МБ) об'єднує відео та його звук, коли сайт розділяє їх, що більшість сайтів роблять для вищої якості. Натисніть <g2>Інсталювати ffmpeg</g2>, коли MDM запропонує це. MDM перевіряє його за контрольними сумами, опублікованими в його релізі."
-  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>Веб</g1> (вебсервер) або <g2>Торрент</g2>."
@@ -6630,6 +6630,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "У вікні <g1>Інформація про файл завантаження</g1> натисніть <g2>Завантажити пізніше</g2>."
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "Завантажити відео; <x1/> приймає селектор якості з <x2/> (<x3/> = найкращий окремий файл; <x4/>, <x5/>, <x6/> або <x7/> = звук як MP3 з таким бітрейтом, <x8/> з найкращим змінним; для MP3 потрібен ffmpeg)."
+  },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "Ви несете повну відповідальність за файли, які ви завантажуєте, та за те, як ви використовуєте програмне забезпечення."
@@ -6865,10 +6869,6 @@
   "d523b3399c313ed9": {
    "source": "<g1>Finished</g1> — complete downloads, by category.",
    "text": "<g1>Завершено</g1> — завершені завантаження, за категоріями."
-  },
-  "d555f716c2eaa36f": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file).",
-   "text": "Завантажити відео; <x1/> бере селектор якості з <x2/> (<x3/> = найкращий окремий файл)."
   },
   "d5820405986dce29": {
    "source": "<g1>The servers you download from.</g1> To download a file, MDM connects to the server that holds it and sends what any browser would: the request, and the cookies, referrer and browser identification the extension passed along, so downloads that need you to be signed in keep working. Those servers see your IP address, as they would if your browser downloaded the file.",
@@ -7482,10 +7482,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Щоб назавжди залишити завантаження з сайту в браузері, скористайтеся кнопкою на панелі інструментів <g1>Ніколи не перехоплювати завантаження з</g1> або додайте сайт до <g2>Не починати завантаження автоматично з наступних сайтів</g2>. Щоб залишити тип файлу в браузері, видаліть його зі списку типів файлів."
   },
-  "ea5d351dd9edb0f2": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed.",
-   "text": "Виберіть один. Без ffmpeg перераховуються лише ті якості, які мають свій звук."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Відкрийте Налаштування Windows → Програми, знайдіть Mister Download Manager та оберіть Видалити. Програма видалення запитає, чи потрібно також видалити ваш список завантажень та налаштування. Завантажені вами файли ніколи не видаляються. Для портативної версії просто видаліть її теку."
@@ -7861,6 +7857,10 @@
   "f7f2e0ba07d3545b": {
    "source": "An HTTP Range server with a request log and fault injection, and an FTP/FTPS server with its own faults, for tests and benchmarks",
    "text": "Сервер HTTP Range з журналом запитів та впровадженням помилок, а також сервер FTP/FTPS з власними помилками, для тестів та бенчмарків"
+  },
+  "f7f35f6dda096e0a": {
+   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
+   "text": "Зачекайте, поки MDM знайде сторінку. З'явиться список якостей, найкращі спочатку, з <g1>Тільки аудіо</g1> в кінці: звук, як він є на сайті, потім, за допомогою ffmpeg (наступний крок), як MP3 з найкращим змінним бітрейтом або 320, 256, 192 чи 128 кбіт/с."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

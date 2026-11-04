@@ -174,6 +174,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "免费开源。您已熟悉的界面，更快的底层引擎，内置种子下载和视频下载功能。"
   },
+  "04917582aad4754c": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1>（约 80 MB）用于合并视频和音频，当网站将它们分开存储时（大多数网站为了提供更高质量的视频都会这样做），并能将音频转换为 MP3。当 MDM 提示时，点击<g2>安装 ffmpeg</g2>。MDM 会根据其发布版本提供的校验和进行检查。"
+  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome、Firefox、Edge<g1><g2>3</g2></g1>"
@@ -1146,10 +1150,6 @@
    "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
    "text": "点击<g1>加载临时附加组件</g1>，然后选择<x2/>。"
   },
-  "20ff7c25a0a83544": {
-   "source": "For the best qualities, MDM offers to install <g1>ffmpeg</g1> (about 80 MB), which joins the picture and the sound. Click <g2>Install ffmpeg</g2> if you want them. Without it, you get the qualities that come with their sound.",
-   "text": "对于最佳画质，MDM 会提示安装<g1>ffmpeg</g1>（约 80 MB），它用于合并图像和声音。如果您需要它们，请点击<g2>安装 ffmpeg</g2>。如果没有它，您将获得自带声音的画质。"
-  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "Mister Download Manager 的主窗口：带有工具栏、类别和下载列表的经典布局。"
@@ -1609,6 +1609,10 @@
   "2d6f7386c4547cc8": {
    "source": "The server",
    "text": "服务器"
+  },
+  "2d7508c5d79aed56": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
+   "text": "选择一个。如果没有 ffmpeg，则只会列出自带音频的质量选项，并且没有 MP3（MP3 由 ffmpeg 生成）。"
   },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
@@ -2146,10 +2150,6 @@
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "您无需先启动 MDM。当浏览器移交下载而 MDM 未运行时，助手会启动它并传递下载。"
   },
-  "3e87ae5d71f126c6": {
-   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end.",
-   "text": "等待 MDM 查找页面。画质列表将出现，最佳画质排在最前面，<g1>仅音频</g1>排在最后。"
-  },
   "3ea161193b709aad": {
    "source": "Help translate",
    "text": "帮助翻译"
@@ -2665,10 +2665,6 @@
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
    "text": "为其他任务保留网速 — Mister Download Manager 帮助"
-  },
-  "50e20b27a3d70d25": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, and <g1>Audio only</g1> at the end.",
-   "text": "等待列表加载。它会显示每个分辨率及其大小，最佳的排在最前面，<g1>仅音频</g1>排在最后。"
   },
   "50e96773503a15a6": {
    "source": "<g1>Clean room.</g1> MDM contains no code, binaries, artwork, icons, sounds or text from Internet Download Manager or any other download manager. Never disassemble, decompile or patch another program, and never bypass anyone's licensing. See <g2>Not a reverse-engineering project</g2>.",
@@ -4974,6 +4970,10 @@
    "source": "Select the downloads in the box",
    "text": "选择框中的下载"
   },
+  "9806786dcda7c9ff": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
+   "text": "等待列表显示。它会显示每个分辨率及其大小，最佳的排在最前面，然后是网站自身格式的<g1>仅音频</g1>（M4A 或 WebM，取决于网站提供的方式），接着是最佳可变比特率（VBR）以及 320、256、192 和 128 kbps 的<g2>仅音频 MP3</g2>。"
+  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "以此名称保存。"
@@ -5305,6 +5305,10 @@
   "a2ceba74b65417fa": {
    "source": "Use a zip copy",
    "text": "使用 zip 副本"
+  },
+  "a2d96f4a163d77b8": {
+   "source": "For the best qualities and MP3, MDM needs <g1>ffmpeg</g1>, which joins the picture and the sound, and makes the MP3. On Windows MDM offers to install it (about 80 MB): click <g2>Install ffmpeg</g2> if you want them. On Linux and macOS MDM uses the system's ffmpeg. Without it, you get the qualities that come with their sound.",
+   "text": "为了获得最佳质量和 MP3，MDM 需要 <g1>ffmpeg</g1>，它负责将图像和声音合并，并制作 MP3。在 Windows 上，MDM 会提供安装它（约 80 MB）：如果您需要，请点击<g2>安装 ffmpeg</g2>。在 Linux 和 macOS 上，MDM 使用系统的 ffmpeg。如果没有它，您将只能获得自带声音的质量。"
   },
   "a2ecbbee3658b831": {
    "source": "480 connections against 2.",
@@ -6098,10 +6102,6 @@
    "source": "6. Limitation of liability",
    "text": "6. 责任限制"
   },
-  "bb154512f21f1dec": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1>（约 80 MB）用于合并视频和音频，当网站将它们分开时（大多数网站为了更高质量会这样做）。当 MDM 提示时，点击<g2>安装 ffmpeg</g2>。MDM 会根据其发布时提供的校验和进行检查。"
-  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>Web</g1>（一个 Web 服务器）或<g2>Torrent</g2>。"
@@ -6630,6 +6630,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "在<g1>下载文件信息</g1>中，点击<g2>稍后下载</g2>。"
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单文件；<x4/>、<x5/>、<x6/> 或 <x7/> = 该比特率的 MP3 音频，<x8/> 为最佳可变比特率；MP3 需要 ffmpeg）。"
+  },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "您独自对您下载的文件以及您如何使用本软件负责。"
@@ -6865,10 +6869,6 @@
   "d523b3399c313ed9": {
    "source": "<g1>Finished</g1> — complete downloads, by category.",
    "text": "<g1>已完成</g1> — 已完成的下载，按类别显示。"
-  },
-  "d555f716c2eaa36f": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file).",
-   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单个文件）。"
   },
   "d5820405986dce29": {
    "source": "<g1>The servers you download from.</g1> To download a file, MDM connects to the server that holds it and sends what any browser would: the request, and the cookies, referrer and browser identification the extension passed along, so downloads that need you to be signed in keep working. Those servers see your IP address, as they would if your browser downloaded the file.",
@@ -7482,10 +7482,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "要永久将某个网站的下载保留在浏览器中，请使用工具栏按钮的 <g1>从不接管来自</g1>，或将该网站添加到 <g2>不自动从以下网站开始下载</g2>。要将某种文件类型保留在浏览器中，请将其从文件类型列表中删除。"
   },
-  "ea5d351dd9edb0f2": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed.",
-   "text": "选择一个。如果没有 ffmpeg，则只列出自带音频的质量选项。"
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "打开 Windows 设置 → 应用，找到 Mister Download Manager 并选择“卸载”。卸载程序会询问是否同时删除您的下载列表和设置。您已下载的文件永远不会被触及。对于便携版，请删除其文件夹。"
@@ -7861,6 +7857,10 @@
   "f7f2e0ba07d3545b": {
    "source": "An HTTP Range server with a request log and fault injection, and an FTP/FTPS server with its own faults, for tests and benchmarks",
    "text": "一个带请求日志和故障注入的 HTTP Range 服务器，以及一个带自身故障的 FTP/FTPS 服务器，用于测试和基准测试"
+  },
+  "f7f35f6dda096e0a": {
+   "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
+   "text": "请等待 MDM 查找页面。质量列表将出现，最佳质量在前，<g1>仅音频</g1>在最后：网站提供的原始音频，然后，通过 ffmpeg（下一步），以最佳可变比特率或 320、256、192 或 128 kbps 的 MP3 格式。"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
