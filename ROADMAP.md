@@ -43,6 +43,8 @@ Everything below ships together, in one release.
   of Download complete works in every language
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
+- ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
+  MDM with IDM and with nine other free download managers, each checked on its own site
 
 ### Being built
 
@@ -53,7 +55,8 @@ Everything below ships together, in one release.
 
 ### Bugs being looked into
 
-- 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57))
+- 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
+  most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A long video title overflows the window ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62))
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22

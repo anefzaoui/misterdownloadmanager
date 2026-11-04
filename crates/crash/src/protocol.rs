@@ -60,6 +60,23 @@ pub struct Freeze {
     #[serde(default)]
     pub main: bool,
     pub seconds: u64,
+    /// How much the window thread ran while the frame went on (None: not measured, by an older
+    /// MDM or on macOS). It tells a loop from a wait from a computer too busy to run MDM.
+    #[serde(default)]
+    pub busy: Option<Busy>,
+}
+
+/// The window thread's use of the processor over a stretch of a frozen frame.
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Busy {
+    /// The stretch measured, in ms of real time.
+    pub wall_ms: u64,
+    /// The processor time the window thread got in it (user + kernel), in ms.
+    pub cpu_ms: u64,
+    /// Page faults in it (Windows: the whole process's, soft ones included; Linux: the window
+    /// thread's from disk). None where unknown.
+    #[serde(default)]
+    pub faults: Option<u64>,
 }
 
 /// What MDM had open and running (counts only: no addresses or file names).

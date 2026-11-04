@@ -16,7 +16,7 @@ use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 
 use mdm_crash::client::Reporter;
-use mdm_crash::protocol::{AppState, Freeze, Panic, Session};
+use mdm_crash::protocol::{AppState, Busy, Freeze, Panic, Session};
 
 /// A frame running this long is a freeze (Windows calls a window "Not responding" after 5 s).
 pub const FREEZE_AFTER: Duration = Duration::from_secs(8);
@@ -177,16 +177,23 @@ fn watchdog() {
     // Frames that started before this are past a sleep: judged from `awake_from` instead.
     let mut awake_from = 0u64;
     let mut reported_frame = 0u64;
+    let ui = UI_THREAD.get().copied().unwrap_or(0);
+    // The window thread's use when this tick first saw the current frame: (frame, ms, use).
+    let mut seen: Option<(u64, u64, Option<Usage>)> = None;
     loop {
         std::thread::sleep(tick);
         let now = now_ms();
         if now.saturating_sub(last) > 3_000 {
             awake_from = now;
+            seen = None;
         }
         last = now;
         let start = FRAME_START.load(Ordering::Acquire);
         if start == 0 || start == reported_frame {
             continue;
+        }
+        if seen.is_none_or(|(frame, _, _)| frame != start) {
+            seen = Some((start, now, usage(ui)));
         }
         let since = (start - 1).max(awake_from);
         let ran = now.saturating_sub(since);
@@ -199,15 +206,54 @@ fn watchdog() {
             "the window stopped responding ({} s into a frame)",
             ran / 1000
         );
+        let busy = seen.and_then(|(_, at, before)| {
+            let (before, after) = (before?, usage(ui)?);
+            Some(Busy {
+                wall_ms: now.saturating_sub(at),
+                cpu_ms: after.cpu_ms.saturating_sub(before.cpu_ms),
+                faults: before
+                    .faults
+                    .zip(after.faults)
+                    .map(|(b, a)| a.saturating_sub(b)),
+            })
+        });
+        if let Some(b) = busy {
+            tracing::warn!(
+                "the window thread ran {} of {} ms meanwhile ({:?} page faults)",
+                b.cpu_ms,
+                b.wall_ms,
+                b.faults
+            );
+        }
         if let Some(r) = REPORTER.get() {
             r.freeze(&Freeze {
-                ui_thread: UI_THREAD.get().copied().unwrap_or(0),
+                ui_thread: ui,
                 main: true,
                 seconds: ran / 1000,
+                busy,
             });
             dump_now();
         }
     }
+}
+
+/// A thread's processor time so far and the page faults counted so far (see `Busy::faults`).
+#[derive(Clone, Copy, Debug)]
+pub struct Usage {
+    pub cpu_ms: u64,
+    pub faults: Option<u64>,
+}
+
+/// The window thread's use so far. None on macOS: the dump can't name the window thread there
+/// (`thread_id` is 0), so its use isn't measured either.
+fn usage(ui_thread: u32) -> Option<Usage> {
+    if ui_thread == 0 {
+        return None;
+    }
+    #[cfg(windows)]
+    return crate::win32::thread_usage(ui_thread);
+    #[cfg(unix)]
+    return crate::unix::thread_usage(ui_thread);
 }
 
 /// The session's description for the monitor.
@@ -242,7 +288,7 @@ pub fn session(language: &str, dark: bool) -> Session {
 
 /// MDM_CRASH_TEST=1 lets `/show crash-test:<what>` crash MDM on purpose (the crash reports'
 /// own end-to-end check): panic, crash (an access violation / SIGSEGV), freeze (a deadlock on
-/// the window thread), abort.
+/// the window thread), spin (the window thread busy for 12 s, then it answers again), abort.
 pub fn test(what: &str) {
     if std::env::var_os("MDM_CRASH_TEST").is_none_or(|v| v != "1") {
         return;
@@ -257,8 +303,19 @@ pub fn test(what: &str) {
             crate::unix::crash_now();
         }
         "freeze" => crash_test_freeze(),
+        "spin" => crash_test_spin(),
         "abort" => std::process::abort(),
         _ => {}
+    }
+}
+
+/// The window thread runs for 12 s without a break, as an endless loop would.
+#[inline(never)]
+fn crash_test_spin() {
+    let until = Instant::now() + Duration::from_secs(12);
+    let mut n = 0u64;
+    while Instant::now() < until {
+        n = std::hint::black_box(n.wrapping_add(1));
     }
 }
 

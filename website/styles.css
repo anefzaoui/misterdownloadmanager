@@ -801,7 +801,34 @@ html.lb-on { overflow: hidden; }
   .conn-grid i { opacity: 1; transform: none; }
 }
 
-/* ---- Other languages (tools/website/sitei18n.py) ------------------------------------------------ */
+/* ---- The free IDM alternative page (idm-alternative.html) -------------------------------------- */
+
+.alt-act { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin-top: 28px; }
+.alt-shot { margin-top: clamp(28px, 4vw, 44px); }
+.alt-shot img { width: 100%; height: auto; box-shadow: var(--shadow-lift); }
+.alt-head + .sec { padding-top: var(--gap-section); }
+/* The roundup: what it's good at gets the room. */
+.alt-list .fields { grid-template-columns: minmax(0, 2fr) minmax(0, 1.15fr) minmax(0, .85fr); }
+.alt-list .service :is(h2, h3) { font-size: 23px; }
+.alt-ours { background: var(--paper-2); }
+/* Feature by feature: products are the rows. */
+.alt-table { min-width: 1040px; }
+.alt-table td:nth-child(2) { font-weight: inherit; }
+.alt-table tbody th { white-space: nowrap; }
+.alt-table .alt-ours :is(th, td) { font-weight: 650; }
+.alt-body { margin-bottom: 0; }
+@media (max-width: 980px) {
+  .alt-list .fields { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .alt-table { min-width: 0; }
+  .alt-table tbody th { white-space: normal; }
+  .alt-wrap { padding-inline: 18px; }
+  /* Each cell names its column (translated with the page). */
+  .compare.alt-table td::before { content: attr(data-label); }
+}
+
+/* ---- Other languages (tools/website/sitei18n.py)------------------------------------------------ */
 
 /* Arrows that point somewhere point the other way. */
 [dir="rtl"] .lb-nav svg { transform: scaleX(-1); }

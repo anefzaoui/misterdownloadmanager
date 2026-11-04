@@ -57,6 +57,7 @@ fn main() {
                         ui_thread: ui,
                         main: true,
                         seconds: 1,
+                        busy: None,
                     });
                     simulate(&h);
                     // The dump is written while this thread waits for the answer: done.
