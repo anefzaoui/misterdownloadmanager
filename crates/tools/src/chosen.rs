@@ -41,7 +41,11 @@ const FILE: &str = "programs.json";
 fn read(dir: &Path) -> Programs {
     std::fs::read(dir.join(FILE))
         .ok()
-        .and_then(|b| serde_json::from_slice(&b).ok())
+        .and_then(|b| {
+            // A file edited by hand may start with a UTF-8 byte-order mark (Notepad, PowerShell).
+            let json = b.strip_prefix(b"\xef\xbb\xbf").unwrap_or(&b);
+            serde_json::from_slice(json).ok()
+        })
         .unwrap_or_default()
 }
 
@@ -153,6 +157,54 @@ mod tests {
         assert_eq!(parse_version(Helper::YtDlp, ""), None);
     }
 
+    /// A chosen program is used first, and MDM's updates leave it alone: no download, no
+    /// network (an address that can't answer would fail the test otherwise).
+    #[tokio::test]
+    async fn chosen_programs_are_used_and_not_updated() {
+        let dir = tempfile::tempdir().unwrap();
+        let exe = dir.path().join("my-yt-dlp");
+        std::fs::write(&exe, b"x").unwrap();
+        let mine = Installed {
+            version: "2026.01.01".into(),
+            exe: exe.clone(),
+        };
+        write(
+            dir.path(),
+            &Programs {
+                ytdlp: Some(mine.clone()),
+                ffmpeg: Some(mine.clone()),
+            },
+        )
+        .unwrap();
+        assert_eq!(crate::installed(dir.path()), Some(mine.clone()));
+        assert_eq!(crate::ffmpeg::installed(dir.path()), Some(mine.clone()));
+        let net = mdm_engine::Options::default();
+        assert_eq!(
+            crate::install_latest(dir.path(), &net, None).await.unwrap(),
+            mine
+        );
+        assert_eq!(
+            crate::ffmpeg::install_latest(dir.path(), &net, None)
+                .await
+                .unwrap(),
+            mine
+        );
+        assert!(!dir.path().join("yt-dlp").exists(), "nothing downloaded");
+    }
+
+    #[test]
+    fn a_file_saved_with_a_byte_order_mark_is_read() {
+        let dir = tempfile::tempdir().unwrap();
+        let exe = dir.path().join("ff");
+        std::fs::write(&exe, b"x").unwrap();
+        let json = format!(
+            "\u{feff}{{\"ffmpeg\": {{\"version\": \"8.0\", \"exe\": {}}}}}",
+            serde_json::to_string(&exe).unwrap()
+        );
+        std::fs::write(dir.path().join(FILE), json).unwrap();
+        assert_eq!(chosen(dir.path(), Helper::Ffmpeg).map(|i| i.exe), Some(exe));
+    }
+
     #[test]
     fn chosen_programs_are_kept_and_forgotten() {
         let dir = tempfile::tempdir().unwrap();
@@ -162,11 +214,13 @@ mod tests {
             "ffmpeg"
         });
         std::fs::write(&exe, b"x").unwrap();
-        let mut p = Programs::default();
-        p.ffmpeg = Some(Installed {
-            version: "8.0".into(),
-            exe: exe.clone(),
-        });
+        let p = Programs {
+            ytdlp: None,
+            ffmpeg: Some(Installed {
+                version: "8.0".into(),
+                exe: exe.clone(),
+            }),
+        };
         write(dir.path(), &p).unwrap();
         assert_eq!(
             chosen(dir.path(), Helper::Ffmpeg).map(|i| i.exe),

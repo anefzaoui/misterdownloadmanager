@@ -323,6 +323,11 @@
 #, machine
 	Checking the file...	फाइल तपासत आहे...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	प्रोग्राम तपासत आहे...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +343,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager ज्या भाषेत त्याच्या विंडो दाखवतो ती भाषा निवडा:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	{name} निवडा
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -877,6 +886,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	मदत
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	सहाय्यक...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -1121,6 +1135,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} उपलब्ध आहे ({date} रोजी रिलीज झाले).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Mister Download Manager ची स्वतःची प्रत, आवृत्ती {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1283,6 +1302,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	रांगेत नाही
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	अद्याप स्थापित केले नाही
 #. button in helpers.rs
 #, machine
 	Not now	आत्ता नको
@@ -2159,6 +2182,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ही स्थापित केलेली प्रत आहे, पोर्टेबल नाही
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	हा प्रोग्राम {name} नाही
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	या सिस्टममध्ये हँग अप करण्यासाठी कोणतेही डायल-अप कनेक्शन नाहीत
@@ -2313,6 +2341,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	प्रगत ब्राउझर एकत्रीकरण वापरा
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	दुसरा प्रोग्राम वापरा...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	प्राधिकरण वापरा
@@ -2322,6 +2355,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV मोडमध्ये FTP वापरा
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	MDM ची स्वतःची प्रत वापरा
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2383,6 +2420,10 @@
 #. category name: video files
 #, machine
 	Video	व्हिडिओ
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	व्हिडिओ सहाय्यक
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	व्हिडिओ लुकअप yt-dlp वापरतात (सुमारे 23 MB, त्याच्या स्वाक्षरीविरुद्ध तपासले).
@@ -2464,6 +2505,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	तुमचा ब्राउझर
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	तुमचा स्वतःचा प्रोग्राम: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	तुमच्या सिस्टमचा: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp स्थापित नाही (कार्य → पृष्ठावरून व्हिडिओ डाउनलोड करा ते स्थापित करते)

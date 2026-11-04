@@ -414,3 +414,213 @@ impl Helpers {
         }
     }
 }
+
+// ---- Video helpers: MDM's own copies or the person's (#51) ------------------------------------
+
+use mdm_tools::chosen::Helper;
+
+/// Video helpers (Download video from a page → Helpers...): for yt-dlp and ffmpeg, where MDM
+/// takes it from (its own copy, or a program of the person's), and the way to choose another:
+/// one copy of each for every program that uses them (#51).
+pub struct Programs {
+    dir: Option<std::path::PathBuf>,
+    /// The helpers as found (read again after each change, not every frame: it reads files).
+    found: [Option<mdm_tools::Installed>; 2],
+    /// A chosen program being checked (`--version`), and what it answered.
+    checking: Option<(Helper, Answer)>,
+    error: Option<String>,
+}
+
+const HELPERS: [Helper; 2] = [Helper::YtDlp, Helper::Ffmpeg];
+
+/// A check's answer, once it has one (Err: why the program wasn't taken, in words).
+type Answer = Arc<Mutex<Option<Result<(), String>>>>;
+
+impl Programs {
+    pub fn new() -> Self {
+        let mut p = Programs {
+            dir: mdm_tools::tools_dir(),
+            found: [None, None],
+            checking: None,
+            error: None,
+        };
+        p.look();
+        p
+    }
+
+    fn look(&mut self) {
+        let Some(dir) = self.dir.as_deref() else {
+            return;
+        };
+        self.found = [mdm_tools::installed(dir), mdm_tools::ffmpeg::installed(dir)];
+    }
+
+    /// Open until Close.
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
+        let answered = self
+            .checking
+            .as_ref()
+            .and_then(|(_, slot)| slot.lock().unwrap().take());
+        if let Some(res) = answered {
+            self.error = res.err();
+            self.checking = None;
+            self.look();
+        }
+        for h in HELPERS {
+            if let Some(path) = winui::picked(ctx, &format!("helper-{}", h.name()))
+                && let Some(dir) = self.dir.clone()
+            {
+                let slot = Arc::new(Mutex::new(None));
+                let (out, wake) = (slot.clone(), ctx.clone());
+                std::thread::spawn(move || {
+                    let res = mdm_tools::chosen::choose(&dir, h, &path)
+                        .map(|_| ())
+                        .map_err(|e| crate::errors::tools(&e));
+                    *out.lock().unwrap() = Some(res);
+                    wake.request_repaint();
+                });
+                self.checking = Some((h, slot));
+                self.error = None;
+            }
+        }
+        window(
+            ctx,
+            "video-helpers",
+            // i18n: window title: where MDM takes yt-dlp and ffmpeg from
+            "Video helpers",
+            [500.0, 214.0],
+            false,
+            winui::BG(),
+            |ui, o| self.body(ui, o),
+        )
+    }
+
+    fn body(&mut self, ui: &mut Ui, o: Pos2) -> Outcome<()> {
+        let p = ui.painter().clone();
+        for (k, h) in HELPERS.into_iter().enumerate() {
+            let y = o.y + 8.0 + k as f32 * 78.0;
+            winui::text_font(
+                &p,
+                winui::tahoma_bold(),
+                o.x + 14.0,
+                y + 16.0,
+                h.name(),
+                winui::TEXT(),
+            );
+            let found = self.found[k].as_ref();
+            let mine = self
+                .dir
+                .as_deref()
+                .and_then(|d| mdm_tools::chosen::chosen(d, h))
+                .is_some();
+            let status = match found {
+                _ if self.checking.as_ref().is_some_and(|(c, _)| *c == h) => {
+                    // i18n: Video helpers: a program just chosen is being checked
+                    crate::i18n::t("Checking the program...").to_owned()
+                }
+                Some(i) if mine => crate::i18n::fmt(
+                    // i18n: Video helpers: {path} = the program the person chose, {version} = its version
+                    crate::i18n::t("Your own program: {path} ({version})"),
+                    &[
+                        ("path", &crate::i18n::ltr(&i.exe.display().to_string())),
+                        ("version", &i.version),
+                    ],
+                ),
+                Some(i) if i.version == "system" => crate::i18n::fmt(
+                    // i18n: Video helpers (macOS, Linux): {path} = the system's ffmpeg
+                    crate::i18n::t("Your system's: {path}"),
+                    &[("path", &crate::i18n::ltr(&i.exe.display().to_string()))],
+                ),
+                Some(i) => crate::i18n::fmt(
+                    // i18n: Video helpers: {version} = the version of MDM's own copy
+                    crate::i18n::t("Mister Download Manager's own copy, version {version}"),
+                    &[("version", &i.version)],
+                ),
+                // i18n: Video helpers: no copy of this helper yet
+                None => crate::i18n::t("Not installed yet").to_owned(),
+            };
+            winui::fit(
+                ui,
+                &p,
+                o.x + 14.0,
+                y + 36.0,
+                &status,
+                winui::MUTED(),
+                o.x + 486.0,
+                ("helper", k),
+            );
+            let busy = self.checking.is_some();
+            if winui::button(
+                ui,
+                r(o, 14.0, y - o.y + 46.0, 180.0, 21.0),
+                // i18n: Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+                "Use another program...",
+                if busy {
+                    ButtonKind::Disabled
+                } else {
+                    ButtonKind::Normal
+                },
+                false,
+                None,
+            )
+            .clicked()
+            {
+                // i18n: file picker title; {name} = yt-dlp or ffmpeg
+                let title =
+                    crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", h.name())]);
+                winui::start_pick(ui.ctx(), &format!("helper-{}", h.name()), move || {
+                    rfd::FileDialog::new().set_title(title).pick_file()
+                });
+            }
+            if winui::button(
+                ui,
+                r(o, 202.0, y - o.y + 46.0, 180.0, 21.0),
+                // i18n: Video helpers: button: go back to the copy MDM downloads and checks itself
+                "Use MDM's own copy",
+                if mine && !busy {
+                    ButtonKind::Normal
+                } else {
+                    ButtonKind::Disabled
+                },
+                false,
+                None,
+            )
+            .clicked()
+                && let Some(dir) = self.dir.as_deref()
+            {
+                self.error = mdm_tools::chosen::forget(dir, h)
+                    .err()
+                    .map(|e| crate::errors::tools(&e));
+                self.look();
+            }
+            if k == 0 {
+                winui::etched_h(&p, o.x + 14.0, o.y + 82.0, 472.0);
+            }
+        }
+        if let Some(e) = &self.error {
+            winui::fit(
+                ui,
+                &p,
+                o.x + 14.0,
+                o.y + 176.0,
+                e,
+                winui::ERROR(),
+                o.x + 400.0,
+                "helper-error",
+            );
+        }
+        let close = winui::button(
+            ui,
+            r(o, 413.0, 182.0, 77.0, 21.0),
+            "Close",
+            ButtonKind::Default,
+            false,
+            None,
+        );
+        if close.clicked() || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
+            Outcome::Done(())
+        } else {
+            Outcome::Open
+        }
+    }
+}

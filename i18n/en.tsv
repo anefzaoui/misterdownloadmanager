@@ -236,6 +236,10 @@
 #. the trailing ... means it is still going on: keep it
 	Checking the file...	Checking the file...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+	Checking the program...	Checking the program...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -247,6 +251,9 @@
 	Choose a language	Choose a language
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Choose the language Mister Download Manager shows its windows in:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+	Choose {name}	Choose {name}
 #. button in the download list
 #. verb: clears this filter
 	Clear	Clear
@@ -633,6 +640,10 @@
 #. button in the Options window
 #. noun: button that opens the help
 	Help	Help
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+	Helpers...	Helpers...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 	Hibernate	Hibernate
@@ -807,6 +818,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} is available (released {date}).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+	Mister Download Manager's own copy, version {version}	Mister Download Manager's own copy, version {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Mo
@@ -921,6 +936,9 @@
 	not enough disk space: {needed} needed, {free} free	not enough disk space: {needed} needed, {free} free
 #. value in a column's filter list in the download list
 	Not in a queue	Not in a queue
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+	Not installed yet	Not installed yet
 #. button in helpers.rs
 	Not now	Not now
 #. text in helpers.rs
@@ -1548,6 +1566,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+	this program isn't {name}	this program isn't {name}
 #. text in a download's progress window
 	This system has no dial-up connections to hang up	This system has no dial-up connections to hang up
 #. text in errors.rs
@@ -1659,12 +1681,19 @@
 	URL	URL
 #. text in the Options window
 	Use advanced browser integration	Use advanced browser integration
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+	Use another program...	Use another program...
 #. checkbox in the Batch download window; checkbox in a dialog box
 	Use authorization	Use authorization
 #. text in the Options window
 	Use automatic configuration script	Use automatic configuration script
 #. checkbox in the Options window
 	Use FTP in PASV mode	Use FTP in PASV mode
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+	Use MDM's own copy	Use MDM's own copy
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Use one * only	Use one * only
@@ -1708,6 +1737,9 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+	Video helpers	Video helpers
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
@@ -1766,6 +1798,13 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	Your browser
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+	Your own program: {path} ({version})	Your own program: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+	Your system's: {path}	Your system's: {path}
 #. message or event log entry in the main window
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp is not installed (Tasks → Download video from a page installs it)
 #. text in helpers.rs

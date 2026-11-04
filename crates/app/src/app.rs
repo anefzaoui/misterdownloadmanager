@@ -1214,6 +1214,14 @@ impl App {
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
+            "video-page" => self.run(Cmd::VideoPage, None, ctx),
+            // Download video from a page → Helpers... (#51).
+            "video-helpers" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.open_helpers();
+                }
+            }
             "existing-files" => {
                 let dir = self.downloads.join("Big Buck Bunny");
                 self.shown_existing = Some(crate::dialogs::ExistingFiles::new(&[

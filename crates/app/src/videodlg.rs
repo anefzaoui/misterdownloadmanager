@@ -59,6 +59,8 @@ pub struct VideoDialog {
     auto_look: bool,
     /// Asking to create a missing folder.
     asking: Option<(crate::dialogs::CreateFolder, ())>,
+    /// Helpers...: where yt-dlp and ffmpeg come from (#51).
+    helpers: Option<crate::helpers::Programs>,
 }
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
@@ -122,6 +124,7 @@ impl VideoDialog {
             start_now: None,
             auto_look: false,
             asking: None,
+            helpers: None,
         }
     }
 
@@ -157,6 +160,13 @@ impl VideoDialog {
             .then(|| crate::i18n::t("No video this can download on that page").into());
         self.video = Some((v, choices));
         self.name_from_choice();
+    }
+
+    /// Helpers..., as its button does (`/show video-helpers`).
+    pub fn open_helpers(&mut self) {
+        if self.helpers.is_none() {
+            self.helpers = Some(crate::helpers::Programs::new());
+        }
     }
 
     pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<VideoAdd> {
@@ -207,6 +217,16 @@ impl VideoDialog {
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
         );
+        // Helpers... open: on Close, the helpers are read again (another program, or MDM's own).
+        if let Some(h) = &mut self.helpers
+            && !matches!(h.show(ctx), Outcome::Open)
+        {
+            self.helpers = None;
+            self.tools = None;
+            if let Some((v, _)) = self.video.take() {
+                self.set_video(v);
+            }
+        }
         let folder = PathBuf::from(self.folder.trim());
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
         match out {
@@ -522,6 +542,20 @@ impl VideoDialog {
             (true, true) => ButtonKind::Default,
             (true, false) => ButtonKind::Normal,
         };
+        // Where yt-dlp and ffmpeg come from: MDM's own copies or the person's (#51).
+        if winui::button(
+            ui,
+            r(o, 11.0, 327.0, 90.0, 21.0),
+            // i18n: button in Download video: where MDM takes yt-dlp and ffmpeg from
+            "Helpers...",
+            ButtonKind::Normal,
+            false,
+            None,
+        )
+        .clicked()
+        {
+            self.open_helpers();
+        }
         let now = winui::button(
             ui,
             r(o, 222.0, 327.0, 105.0, 21.0),

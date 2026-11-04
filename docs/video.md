@@ -22,6 +22,10 @@ resumes, and uses your proxy settings:
 
 Both are kept in a `tools` folder in MDM's data folder.
 
+### Use your own copies
+
+Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in **Download video from a page**, click **Helpers...**, then **Use another program...** beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: `yt-dlp -U`, or your package manager). **Use MDM's own copy** goes back to the one MDM downloads and checks.
+
 ## Choose the quality
 
 1. Wait for the list. It shows each resolution with its size, best first, then **Audio only** in the site's own format (M4A or WebM, as the site serves it), then **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.

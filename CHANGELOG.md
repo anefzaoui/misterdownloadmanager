@@ -17,6 +17,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Your own yt-dlp and ffmpeg** ([#51](https://github.com/anefzaoui/misterdownloadmanager/issues/51)):
+  **Download video from a page → Helpers...** shows where each comes from, and **Use another
+  program...** takes a copy you already have instead of MDM's own (checked once, then used by
+  the window and the command line alike; MDM leaves its updates to you). **Use MDM's own copy**
+  goes back.
 - **Zen, Helium and other browsers built on Firefox or Chromium** ([#41](https://github.com/anefzaoui/misterdownloadmanager/issues/41)):
   the extension reaches MDM in them, also when one is the only browser on Linux or macOS (Zen
   reads Firefox's folder, which MDM now creates; Helium its own). **Add Mister Download Manager

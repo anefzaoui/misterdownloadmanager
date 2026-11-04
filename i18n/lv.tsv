@@ -323,6 +323,11 @@
 #, machine
 	Checking the file...	Notiek faila pārbaude...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	Programmas pārbaude...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +343,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Izvēlieties valodu, kurā Mister Download Manager rāda savus logus:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	Izvēlēties {name}
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -877,6 +886,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Palīdzība
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	Palīgrīki...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -1121,6 +1135,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Ir pieejama Mister Download Manager {version} (izlaista {date}).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Programmas Mister Download Manager kopija, versija {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1283,6 +1302,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Nav rindā
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	Vēl nav instalēts
 #. button in helpers.rs
 #, machine
 	Not now	Ne tagad
@@ -2159,6 +2182,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Šī ir instalētā kopija, nevis portatīvā
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	šī programma nav {name}
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Šai sistēmai nav iezvanpieejas savienojumu, ko pārtraukt
@@ -2313,6 +2341,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Izmantot paplašinātu pārlūkprogrammas integrāciju
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	Izmantot citu programmu...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	Izmantot autorizāciju
@@ -2322,6 +2355,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Izmantot FTP PASV režīmā
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	Izmantot MDM kopiju
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2383,6 +2420,10 @@
 #. category name: video files
 #, machine
 	Video	Video
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	Video palīgrīki
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video meklēšanai tiek izmantots yt-dlp (apmēram 23 MB, pārbaudīts pēc paraksta).
@@ -2464,6 +2505,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Jūsu pārlūkprogramma
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	Jūsu programma: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	Jūsu sistēmas: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp nav instalēts (Uzdevumi → Lejupielādēt video no lapas to instalē)

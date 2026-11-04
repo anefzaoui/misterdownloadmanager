@@ -62,7 +62,7 @@ pub struct Command {
     /// `/show <window>` (beyond IDM): the running app opens one of its windows by name, for
     /// screenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,
     /// `scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,
-    /// `progress`, `existing-files`,
+    /// `progress`, `existing-files`, `video-page`, `video-helpers`,
     /// `options[:general|types|saveto|downloads|connection|proxy|logins|sounds|regional|panels]`.
     pub show: Option<String>,
     /// From the browser's download button over a video: open the Download video window for this

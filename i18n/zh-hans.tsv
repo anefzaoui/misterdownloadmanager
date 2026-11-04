@@ -323,6 +323,11 @@
 #, machine
 	Checking the file...	正在检查文件...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	正在检查程序...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +343,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	选择 Mister Download Manager 显示窗口的语言：
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	选择 {name}
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -877,6 +886,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	帮助
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	帮助程序...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -1121,6 +1135,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} 已可用（发布于 {date}）。
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Mister Download Manager 的副本，版本 {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1283,6 +1302,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	不在队列中
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	尚未安装
 #. button in helpers.rs
 #, machine
 	Not now	暂不
@@ -2159,6 +2182,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	这是已安装副本，不是便携版
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	此程序不是 {name}
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	此系统没有可挂断的拨号连接
@@ -2313,6 +2341,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	使用高级浏览器集成
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	使用其他程序...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	使用授权
@@ -2322,6 +2355,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	在 PASV 模式下使用 FTP
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	使用 MDM 自己的副本
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2383,6 +2420,10 @@
 #. category name: video files
 #, machine
 	Video	视频
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	视频帮助程序
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	视频查找使用 yt-dlp（约 23 MB，已根据其签名进行检查）。
@@ -2464,6 +2505,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	您的浏览器
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	您的程序: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	您的系统: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	未安装 yt-dlp（任务 → 从页面下载视频可安装）
