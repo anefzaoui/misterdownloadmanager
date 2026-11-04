@@ -57,9 +57,20 @@ enum Tab {
 }
 
 impl Progress {
-    /// Open on a torrent's details tab by its English name in lower case ("peers"; /show
-    /// progress:peers); any other name leaves it as it is.
+    /// Open on a tab by its English name in lower case: a top tab ("status", "limit", "done") or
+    /// a torrent's details tab ("peers"; /show progress:peers, for the docs' screenshots and the
+    /// fit audit); any other name leaves it as it is.
     pub fn show_tab(&mut self, name: &str) {
+        let top = match name {
+            "status" => Some(Tab::Status),
+            "limit" => Some(Tab::Limiter),
+            "done" => Some(Tab::Completion),
+            _ => None,
+        };
+        if let Some(t) = top {
+            self.tab = t;
+            return;
+        }
         let tab = match name {
             "files" => TTab::Files,
             "peers" => TTab::Peers,
@@ -499,19 +510,29 @@ impl Progress {
     /// Returns true when "Hide tab" is pressed.
     fn completion_page(&mut self, ui: &mut Ui, o: Pos2, item: &Item) -> bool {
         let p = ui.painter().clone();
-        text(
+        // The label as wide as its language makes it (half the row at most), then the path to
+        // the row's end, shortened in the middle so the file's name stays in sight (#62).
+        let (left, right) = (o.x + 33.0, o.x + 33.0 + 474.0);
+        let label = winui::fit(
+            ui,
             &p,
-            o.x + 33.0,
+            left,
             o.y + 45.0,
             crate::i18n::t("Save To:"),
             winui::TEXT(),
+            left + 237.0,
+            "save-to-label",
         );
-        text(
+        winui::fit_middle(
+            ui,
             &p,
-            o.x + 90.0,
+            // From the label's width: its rect is mirrored in a right-to-left interface.
+            (left + label.width() + 6.0).max(o.x + 90.0),
             o.y + 45.0,
             &display_path(&item.dest),
             winui::TEXT(),
+            right,
+            "save-to-path",
         );
         winui::checkbox(
             ui,

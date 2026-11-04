@@ -147,6 +147,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):
+  on the **Options on completion** tab, a longer translation of "Save To:" (Turkish, German…)
+  ran into the path, and the path ran past the window's edge. The label now takes the room its
+  language needs, and the path is shortened in the middle, keeping the file's name in sight,
+  and shown whole on hover; right-to-left languages included.
 - **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
   the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).
 - **Download File Info's errors are worded in the interface language**, as the list's are.
