@@ -283,6 +283,9 @@ pub struct App {
     auto_update: Option<crate::help::Slot>,
     /// The automatic check found a new version: its window comes to the front once shown.
     raise_updates: bool,
+    /// Options was asked for from outside (the extension's Button settings..., `/show`): it comes
+    /// to the front once shown, or it would open behind the browser (#77).
+    raise_options: bool,
     /// When MDM started (the update check waits a few seconds after it).
     started: Instant,
     /// When this run last checked for updates by itself (seconds since the epoch).
@@ -697,6 +700,7 @@ impl App {
             extension_weighed: false,
             auto_update: None,
             raise_updates: false,
+            raise_options: false,
             started: Instant::now(),
             update_checked_this_run: None,
             file_info: None,
@@ -1129,6 +1133,7 @@ impl App {
                         size: i.size.unwrap_or(i.downloaded),
                         dont_show: false,
                         notices: i.notices.clone(),
+                        seen: false,
                     });
                 }
             } else if !live {
@@ -1350,6 +1355,7 @@ impl App {
                 };
                 self.run(Cmd::Options, None, ctx);
                 self.options = self.options.take().map(|o| o.on_page(page));
+                self.raise_options = true;
                 // General → Download panels → Edit... (the video button's settings).
                 if tab == "panels" {
                     self.options = self.options.take().map(|o| o.with_panels());
@@ -3104,6 +3110,7 @@ impl App {
                     size: i.size.unwrap_or(i.downloaded),
                     dont_show: false,
                     notices: i.notices.clone(),
+                    seen: false,
                 });
             }
         }
@@ -4395,6 +4402,7 @@ impl App {
                 size: i.size.unwrap_or(i.downloaded),
                 dont_show: false,
                 notices: i.notices.clone(),
+                seen: false,
             });
         } else if i.live.is_none() {
             self.start(id, true);
@@ -4860,6 +4868,13 @@ impl App {
             }
         } else {
             self.raise_updates = false;
+        }
+        if self.options.is_some() {
+            if self.raise_options && crate::dialogs::focus_when_shown(ctx, "options") {
+                self.raise_options = false;
+            }
+        } else {
+            self.raise_options = false;
         }
         // Until the check at start is due.
         if self.update_checked_this_run.is_none() && self.settings.update_check {
