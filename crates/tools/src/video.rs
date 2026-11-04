@@ -401,7 +401,7 @@ impl VideoJob {
     pub fn stop(&self) {
         self.progress.lock().unwrap().state = State::Stopped;
         if let Some(s) = self.child.lock().unwrap().as_mut() {
-            let _ = s.child.kill();
+            s.kill();
         }
     }
 }
@@ -450,6 +450,69 @@ mod tests {
             "{:?}",
             p.state
         );
+    }
+
+    /// Live (#61): `MDM_LIVE_YTDLP=<yt-dlp.exe> MDM_LIVE_SLOW=<a slow file's address>
+    /// cargo test -p mdm-tools live_stop -- --ignored --nocapture` (the lab server:
+    /// `/gen/20M/clip.mp4?rate=50K`). Stopping a video download ends every yt-dlp process it
+    /// started (Windows: the launcher and its child), and the part file stops growing.
+    #[test]
+    #[ignore]
+    fn live_stop_ends_every_process() {
+        let exe = PathBuf::from(std::env::var("MDM_LIVE_YTDLP").expect("MDM_LIVE_YTDLP"));
+        let url = std::env::var("MDM_LIVE_SLOW").expect("MDM_LIVE_SLOW");
+        let dir = tempfile::tempdir().unwrap();
+        let job = VideoJob::start(
+            &exe,
+            &url,
+            "b",
+            dir.path(),
+            "clip",
+            None,
+            None,
+            None,
+            &Default::default(),
+        )
+        .unwrap();
+        let size = || {
+            std::fs::read_dir(dir.path())
+                .unwrap()
+                .filter_map(Result::ok)
+                .map(|e| e.metadata().map_or(0, |m| m.len()))
+                .sum::<u64>()
+        };
+        std::thread::sleep(std::time::Duration::from_secs(8));
+        println!("before stop: {} bytes, {:?}", size(), job.progress().state);
+        job.stop();
+        std::thread::sleep(std::time::Duration::from_secs(3));
+        let stopped = size();
+        std::thread::sleep(std::time::Duration::from_secs(4));
+        println!("after stop: {stopped} then {} bytes", size());
+        assert_eq!(size(), stopped, "nothing downloads after Stop");
+        // Started again: it continues the same part file (nothing else holds it now).
+        let again = VideoJob::start(
+            &exe,
+            &url,
+            "b",
+            dir.path(),
+            "clip",
+            None,
+            None,
+            None,
+            &Default::default(),
+        )
+        .unwrap();
+        std::thread::sleep(std::time::Duration::from_secs(8));
+        // yt-dlp's own count (a file open in another process shows a stale size on Windows).
+        let p = again.progress();
+        println!("resumed: yt-dlp at {} bytes, {:?}", p.downloaded, p.state);
+        assert!(p.downloaded > stopped, "it went on from where it stopped");
+        assert!(
+            !matches!(p.state, State::Failed(_)),
+            "resumed without an error: {:?}",
+            p.state
+        );
+        again.stop();
     }
 
     fn run(expected: Option<u64>, lines: &[&str]) -> Vec<(u64, Option<u64>)> {

@@ -22,6 +22,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **View → Always dark** ([#60](https://github.com/anefzaoui/misterdownloadmanager/issues/60)):
+  MDM stays dark whatever the system says, for a desktop that reports no light or dark
+  preference (MDM also reads it on Linux now, see Fixed).
 - **Torrent settings: the network is yours to choose**
   ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40)): accept incoming connections
   or not, map the port with UPnP or not, a fixed port, the DHT, finding peers on the local network,
@@ -128,6 +131,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Stopping a video download left yt-dlp downloading in the background** on Windows
+  ([#61](https://github.com/anefzaoui/misterdownloadmanager/issues/61)): `yt-dlp.exe` starts a
+  second process that does the work, and only the first was ended. Resuming then failed ("yt-dlp
+  did not provide information") and a new try crawled, sharing the line with the old one. Each
+  helper now runs in a job of its own that Stop ends whole.
+- **Linux: menus opened in the middle of the screen** in a Wayland session
+  ([#50](https://github.com/anefzaoui/misterdownloadmanager/issues/50)): Wayland lets no program
+  place its windows, and MDM's menus and drop-down lists are windows it places. MDM now runs
+  through XWayland when it is there (`MDM_WAYLAND=1` keeps Wayland).
 - **ffmpeg could fail to install** with "the release has no an LGPL Windows build": BtbN, whose
   builds MDM installs, publishes a dated build each day and then remakes its `latest` release,
   and meanwhile GitHub's "latest" is the dated one, whose files are named differently. MDM now

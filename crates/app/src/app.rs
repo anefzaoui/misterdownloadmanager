@@ -99,6 +99,8 @@ enum Cmd {
     ToggleCategories,
     /// View → Dark Mode support.
     ToggleDarkMode,
+    /// View → Always dark (#60).
+    ToggleAlwaysDark,
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -1795,7 +1797,11 @@ impl App {
         if self.tray.is_some() && !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
             // Wayland can't hide a window: it goes to the dock / task list instead.
-            if cfg!(target_os = "linux") && std::env::var_os("WAYLAND_DISPLAY").is_some() {
+            #[cfg(target_os = "linux")]
+            let wayland = crate::unix::on_wayland();
+            #[cfg(not(target_os = "linux"))]
+            let wayland = false;
+            if wayland {
                 ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
             } else {
                 ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
@@ -2725,6 +2731,11 @@ impl App {
                 self.theme_checked = None;
                 self.dirty = true;
             }
+            Cmd::ToggleAlwaysDark => {
+                self.settings.always_dark = !self.settings.always_dark;
+                self.theme_checked = None;
+                self.dirty = true;
+            }
             Cmd::Open => {
                 if let Some(id) = target {
                     self.open_item(id);
@@ -3232,6 +3243,14 @@ impl App {
                     Cmd::ToggleDarkMode,
                     true,
                     self.settings.dark_mode_support,
+                ),
+                // MDM's (#60): dark whatever the system says (a desktop that reports nothing).
+                I(
+                    // i18n: View menu: a check item; dark mode on, whatever the system's setting
+                    "Always dark",
+                    Cmd::ToggleAlwaysDark,
+                    true,
+                    self.settings.always_dark,
                 ),
                 // i18n: noun: the list's font (submenu)
                 Sub("Font", false, vec![]),
@@ -5375,7 +5394,11 @@ impl eframe::App for App {
             .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
         {
             self.theme_checked = Some(Instant::now());
-            let changed = crate::theme::update(self.settings.dark_mode_support, &ctx);
+            let changed = crate::theme::update(
+                self.settings.dark_mode_support,
+                self.settings.always_dark,
+                &ctx,
+            );
             // The caption follows (first check: the window may not exist yet; retried).
             if changed || !self.caption_set {
                 crate::theme::apply_mode(&ctx);

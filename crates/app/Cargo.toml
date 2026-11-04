@@ -60,6 +60,9 @@ tray-icon = "0.26.1"
 # KDE, and GNOME with its AppIndicator extension), no GTK.
 [target.'cfg(target_os = "linux")'.dependencies]
 eframe = { workspace = true, features = ["wayland", "x11"] }
+# Choosing X11 (XWayland) over Wayland when both are there (unix.rs prefer_x11, #50); the
+# workspace's patched winit, as eframe's.
+winit = { version = "0.30.13", default-features = false, features = ["x11"] }
 tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] }
 # The desktop's light or dark preference from the freedesktop portal (unix.rs); already in the
 # tree through the tray (ksni) and AccessKit, with the same features.

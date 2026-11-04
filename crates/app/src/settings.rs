@@ -45,6 +45,9 @@ pub struct Settings {
     pub view: Option<crate::app::View>,
     /// View → Dark Mode support (IDM 6.37): follow Windows' dark app mode; off = always light.
     pub dark_mode_support: bool,
+    /// View → Always dark (#60): dark whatever the system says (a desktop that reports no
+    /// preference, or a dark MDM on a light desktop).
+    pub always_dark: bool,
     /// Scheduler → Download limits: "Download no more than `limits_mb` MBytes every
     /// `limits_hours` hours" (IDM defaults 200 / 5), with a warning before stopping.
     pub limits_on: bool,
@@ -219,6 +222,7 @@ impl Default for Settings {
             branches: [true, false, false, false],
             view: None,
             dark_mode_support: true,
+            always_dark: false,
             limits_on: false,
             limits_mb: 200,
             limits_hours: 5,
