@@ -874,6 +874,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+空格"
   },
+  "1970ad20e03db6c3": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>捕获问题。</g1>当 MDM 崩溃（Windows 异常、Linux 信号、macOS Mach 异常）、恐慌或冻结时，它会向监视器请求转储。冻结是指窗口运行超过 8 秒的帧，由一个忽略休眠时间的看门狗线程检测。看门狗还会测量窗口线程在此期间获得了多少处理器时间，报告会说明这意味着什么：它一直在运行（一个循环），它在锁或 I/O 上等待（一个死锁），或者它在普通代码中几乎没有运行，这很可能是计算机太忙而无法运行 MDM 或从磁盘加载它太慢，而不是 MDM 的错误（这些共享一个签名，<x2/>）。macOS 尚未测量此项。然后，监视器通过 <x4/> 和 <x5/> 从外部写入每个线程的<g3>minidump</g3>。崩溃的进程从不写入自己的转储，Firefox、Crashpad 和 Sentry 也是这样做的。"
+  },
   "19810b030c072070": {
    "source": "Path",
    "text": "路径"
@@ -4886,6 +4890,10 @@
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>显示“下载文件信息”对话框时立即开始下载</g1> — 默认开启，因此在您选择文件夹时下载已在进行中。"
   },
+  "92964c9bc3c4b26a": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
+   "text": "<g1>测试。</g1><x2/> 运行真实的冻结、恐慌和崩溃（<x3/>），并检查每个报告的签名。要在应用程序中尝试，请使用 <x4/> 启动 MDM，然后运行 <x5/>（一个死锁；或 <x6/>，12 秒的繁忙窗口线程，<x7/>，<x8/>，<x9/>）。"
+  },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
    "text": "如何安装浏览器扩展？— Mister Download Manager"
@@ -5241,10 +5249,6 @@
   "9c6bacc12d96f229": {
    "source": "Product",
    "text": "产品"
-  },
-  "9c82ae2e3182cb93": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (or <x6/>, <x7/>, <x8/>).",
-   "text": "<g1>测试。</g1> <x2/> 运行真实的冻结、恐慌和崩溃 (<x3/>)，并检查每个报告的签名。要在应用程序中尝试，请使用 <x4/> 启动 MDM，然后运行 <x5/>（或 <x6/>、<x7/>、<x8/>）。"
   },
   "9c9751edd8659026": {
    "source": "Close the dialog (an open drop-down list first)",
@@ -6921,10 +6925,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "每个正在进行的下载都有自己的进度窗口。它在下载开始时打开；要再次打开它，请双击列表中的下载。"
-  },
-  "d1432f447b205626": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>捕获问题。</g1>当 MDM 崩溃（Windows 异常、Linux 上的信号、macOS 上的 Mach 异常）、恐慌或冻结时，它会向监视器请求转储。冻结是指窗口运行超过 8 秒的帧，由一个忽略休眠时间的看门狗线程检测到。然后，监视器通过<x3/>和<x4/>从外部写入每个线程的<g2>minidump</g2>。崩溃的进程从不写入自己的转储，Firefox、Crashpad 和 Sentry 也是这样做的。"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",

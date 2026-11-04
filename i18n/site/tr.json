@@ -874,6 +874,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Ara Çubuğu"
   },
+  "1970ad20e03db6c3": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>Sorunları yakalama.</g1> MDM çöktüğünde (Windows istisnası, Linux'ta sinyal, macOS'ta Mach istisnası), paniklediğinde veya donduğunda, monitörden bir döküm ister. Donma, uyku modunda geçirilen süreyi göz ardı eden bir izleme iş parçacığı tarafından görülen, 8 saniyeden fazla çalışan pencerenin bir karesidir. İzleme iş parçacığı ayrıca bu sırada pencere iş parçacığının ne kadar işlemci süresi aldığını da ölçer ve rapor bunun ne anlama geldiğini belirtir: sürekli çalıştı (bir döngü), bir kilitte veya G/Ç'de bekledi (bir kilitlenme) veya sıradan kodda neredeyse hiç çalışmadı, bu da bilgisayarın MDM'yi çalıştırmak için çok meşgul olduğu veya diskten yüklemek için yavaş olduğu anlamına gelir, büyük olasılıkla MDM'nin hatası değildir (bunlar tek bir imzayı paylaşır, <x2/>). macOS bunu henüz ölçmez. Monitör daha sonra <x4/> ve <x5/> aracılığıyla dışarıdan her iş parçacığının bir <g3>minidump</g3>'ını yazar. Çöken bir işlem asla kendi dökümünü yazmaz, Firefox, Crashpad ve Sentry de bunu böyle yapar."
+  },
   "19810b030c072070": {
    "source": "Path",
    "text": "Yol"
@@ -4886,6 +4890,10 @@
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>\"Dosya Bilgilerini İndir\" iletişim kutusu görüntülenirken hemen indirmeye başla</g1> — varsayılan olarak açıktır, böylece bir klasör seçerken indirme zaten devam eder."
   },
+  "92964c9bc3c4b26a": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
+   "text": "<g1>Test etme.</g1> <x2/> gerçek bir donma, panik ve çökme (<x3/>) çalıştırır ve her raporun imzasını kontrol eder. Uygulamada denemek için MDM'yi <x4/> ile başlatın, ardından <x5/> (bir kilitlenme; veya <x6/>, meşgul bir pencere iş parçacığının 12 saniyesi, <x7/>, <x8/>, <x9/>) çalıştırın."
+  },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
    "text": "Tarayıcı eklentisini nasıl kurarım? — Mister Download Manager"
@@ -5241,10 +5249,6 @@
   "9c6bacc12d96f229": {
    "source": "Product",
    "text": "Ürün"
-  },
-  "9c82ae2e3182cb93": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (or <x6/>, <x7/>, <x8/>).",
-   "text": "<g1>Test etme.</g1> <x2/> gerçek bir donma, panik ve çökme (<x3/>) çalıştırır ve her raporun imzasını kontrol eder. Uygulamada denemek için MDM'yi <x4/> ile başlatın, ardından <x5/>'i (veya <x6/>, <x7/>, <x8/>) çalıştırın."
   },
   "9c9751edd8659026": {
    "source": "Close the dialog (an open drop-down list first)",
@@ -6921,10 +6925,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Her çalışan indirme işleminin kendi ilerleme penceresi vardır. İndirme başladığında açılır; tekrar açmak için listedeki indirme işlemine çift tıklayın."
-  },
-  "d1432f447b205626": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Sorunları yakalama.</g1> MDM çöktüğünde (bir Windows istisnası, Linux'ta bir sinyal, macOS'ta bir Mach istisnası), paniklediğinde veya donduğunda, izleyiciden bir döküm ister. Donma, uykuya harcanan zamanı göz ardı eden bir izleyici iş parçacığı tarafından görülen, 8 saniyeden fazla çalışan pencerenin bir çerçevesidir. İzleyici daha sonra <x3/> ve <x4/> aracılığıyla dışarıdan her iş parçacığının bir <g2>minidump</g2>'ını yazar. Çöken bir işlem asla kendi dökümünü yazmaz, Firefox, Crashpad ve Sentry de bunu böyle yapar."
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",

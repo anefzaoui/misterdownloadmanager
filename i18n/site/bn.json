@@ -874,6 +874,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "1970ad20e03db6c3": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>সমস্যা ধরা।</g1> যখন MDM ক্র্যাশ করে (Windows-এ একটি ব্যতিক্রম, Linux-এ একটি সিগন্যাল, macOS-এ একটি ম্যাক ব্যতিক্রম), প্যানিক করে, বা ফ্রিজ হয়ে যায়, তখন এটি মনিটরের কাছে একটি ডাম্পের জন্য অনুরোধ করে। একটি ফ্রিজ হলো উইন্ডোর একটি ফ্রেম যা 8 সেকেন্ডের বেশি সময় ধরে চলে, যা একটি ওয়াচডগ থ্রেড দ্বারা দেখা হয় যা ঘুমানোর সময়কে উপেক্ষা করে। ওয়াচডগ এই সময়ের মধ্যে উইন্ডো থ্রেড কতটা প্রসেসর সময় পেয়েছে তাও পরিমাপ করে, এবং রিপোর্টে বলা হয় এর অর্থ কী: এটি সব সময় চলছিল (একটি লুপ), এটি একটি লক বা I/O-এর জন্য অপেক্ষা করছিল (একটি ডেডলক), অথবা এটি সাধারণ কোডে খুব কমই চলছিল, যার অর্থ হলো কম্পিউটার MDM চালানোর জন্য খুব ব্যস্ত বা ডিস্ক থেকে লোড করতে ধীর, যা সম্ভবত MDM-এর বাগ নয় (এগুলি একটি স্বাক্ষর ভাগ করে, <x2/>)। macOS এখনও এটি পরিমাপ করে না। মনিটর তখন বাইরে থেকে প্রতিটি থ্রেডের একটি <g3>মিনিডাম্প</g3> লেখে, <x4/> এবং <x5/> এর মাধ্যমে। একটি ক্র্যাশ হওয়া প্রক্রিয়া কখনও নিজের ডাম্প লেখে না, যা Firefox, Crashpad এবং Sentry-ও করে থাকে।"
+  },
   "19810b030c072070": {
    "source": "Path",
    "text": "পথ"
@@ -4886,6 +4890,10 @@
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>\"ফাইল তথ্য ডাউনলোড করুন\" ডায়ালগ প্রদর্শনের সময় অবিলম্বে ডাউনলোড শুরু করুন</g1> — ডিফল্টরূপে চালু থাকে, তাই আপনি একটি ফোল্ডার নির্বাচন করার সময় ডাউনলোড ইতিমধ্যেই চলছে।"
   },
+  "92964c9bc3c4b26a": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
+   "text": "<g1>এটি পরীক্ষা করা।</g1> <x2/> একটি বাস্তব ফ্রিজ, প্যানিক এবং ক্র্যাশ (<x3/>) চালায় এবং প্রতিটি রিপোর্টের স্বাক্ষর পরীক্ষা করে। অ্যাপে এটি চেষ্টা করতে, <x4/> দিয়ে MDM শুরু করুন, তারপর <x5/> চালান (একটি ডেডলক; অথবা <x6/>, একটি ব্যস্ত উইন্ডো থ্রেডের 12 সেকেন্ড, <x7/>, <x8/>, <x9/>)।"
+  },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
    "text": "ব্রাউজার এক্সটেনশন কীভাবে ইনস্টল করব? — Mister Download Manager"
@@ -5241,10 +5249,6 @@
   "9c6bacc12d96f229": {
    "source": "Product",
    "text": "পণ্য"
-  },
-  "9c82ae2e3182cb93": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (or <x6/>, <x7/>, <x8/>).",
-   "text": "<g1>এটি পরীক্ষা করা।</g1> <x2/> একটি বাস্তব ফ্রিজ, প্যানিক এবং ক্র্যাশ (<x3/>) চালায় এবং প্রতিটি রিপোর্টের স্বাক্ষর পরীক্ষা করে। অ্যাপে এটি চেষ্টা করতে, <x4/> দিয়ে MDM শুরু করুন, তারপর <x5/> (অথবা <x6/>, <x7/>, <x8/>) চালান।"
   },
   "9c9751edd8659026": {
    "source": "Close the dialog (an open drop-down list first)",
@@ -6921,10 +6925,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে; এটি আবার খুলতে, তালিকার ডাউনলোডে ডাবল-ক্লিক করুন।"
-  },
-  "d1432f447b205626": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>সমস্যা ধরা।</g1> যখন MDM ক্র্যাশ করে (একটি Windows ব্যতিক্রম, Linux-এ একটি সিগন্যাল, macOS-এ একটি Mach ব্যতিক্রম), প্যানিক করে, অথবা জমে যায়, তখন এটি মনিটরের কাছে একটি ডাম্প চায়। একটি ফ্রিজ হল উইন্ডোর একটি ফ্রেম যা 8 সেকেন্ডের বেশি চলে, যা একটি ওয়াচডগ থ্রেড দ্বারা দেখা হয় যা ঘুমানোর সময়কে উপেক্ষা করে। মনিটর তখন <x3/> এবং <x4/> এর মাধ্যমে বাইরে থেকে প্রতিটি থ্রেডের একটি <g2>মিনিডাম্প</g2> লেখে। একটি ক্র্যাশ করা প্রক্রিয়া কখনোই নিজের ডাম্প লেখে না, যা Firefox, Crashpad এবং Sentry-ও করে।"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",

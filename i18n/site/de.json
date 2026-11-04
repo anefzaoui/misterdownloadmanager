@@ -874,6 +874,10 @@
    "source": "Ctrl+Space",
    "text": "Strg+Leertaste"
   },
+  "1970ad20e03db6c3": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>Probleme erkennen.</g1> Wenn MDM abstürzt (eine Windows-Ausnahme, ein Signal unter Linux, eine Mach-Ausnahme unter macOS), in Panik gerät oder einfriert, fordert es vom Monitor einen Dump an. Ein Einfrieren ist ein Fenster-Frame, der länger als 8 Sekunden läuft, beobachtet von einem Watchdog-Thread, der die Schlafzeit ignoriert. Der Watchdog misst auch, wie viel Prozessorzeit der Fenster-Thread in der Zwischenzeit erhalten hat, und der Bericht sagt aus, was das bedeutet: Er lief die ganze Zeit (eine Schleife), er wartete in einer Sperre oder auf E/A (ein Deadlock), oder er lief kaum in gewöhnlichem Code, was bedeutet, dass der Computer zu beschäftigt ist, um MDM auszuführen, oder zu langsam, um es von der Festplatte zu laden, höchstwahrscheinlich kein MDM-Fehler (diese teilen sich eine Signatur, <x2/>). macOS misst dies noch nicht. Der Monitor schreibt dann einen <g3>Minidump</g3> jedes Threads von außen, über <x4/> und <x5/>. Ein abgestürzter Prozess schreibt niemals seinen eigenen Dump, so wie es auch Firefox, Crashpad und Sentry tun."
+  },
   "19810b030c072070": {
    "source": "Path",
    "text": "Pfad"
@@ -4886,6 +4890,10 @@
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>Download sofort starten, während das Dialogfeld „Dateiinformationen herunterladen“ angezeigt wird</g1> – standardmäßig aktiviert, sodass der Download bereits läuft, während Sie einen Ordner auswählen."
   },
+  "92964c9bc3c4b26a": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
+   "text": "<g1>Testen.</g1> <x2/> führt ein echtes Einfrieren, eine Panik und einen Absturz (<x3/>) aus und überprüft die Signatur jedes Berichts. Um es in der App auszuprobieren, starten Sie MDM mit <x4/> und führen Sie dann <x5/> aus (ein Deadlock; oder <x6/>, 12 Sekunden eines beschäftigten Fenster-Threads, <x7/>, <x8/>, <x9/>)."
+  },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
    "text": "Wie installiere ich die Browser-Erweiterung? — Mister Download Manager"
@@ -5241,10 +5249,6 @@
   "9c6bacc12d96f229": {
    "source": "Product",
    "text": "Produkt"
-  },
-  "9c82ae2e3182cb93": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (or <x6/>, <x7/>, <x8/>).",
-   "text": "<g1>Testen.</g1> <x2/> führt einen echten Freeze, Panic und Crash (<x3/>) aus und überprüft die Signatur jedes Berichts. Um es in der App auszuprobieren, starten Sie MDM mit <x4/> und führen Sie dann <x5/> (oder <x6/>, <x7/>, <x8/>) aus."
   },
   "9c9751edd8659026": {
    "source": "Close the dialog (an open drop-down list first)",
@@ -6921,10 +6925,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Jeder laufende Download hat sein eigenes Fortschrittsfenster. Es öffnet sich, wenn der Download startet; um es erneut zu öffnen, doppelklicken Sie in der Liste auf den Download."
-  },
-  "d1432f447b205626": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Probleme abfangen.</g1> Wenn MDM abstürzt (eine Windows-Ausnahme, ein Signal unter Linux, eine Mach-Ausnahme unter macOS), Panik bekommt oder einfriert, fordert es vom Monitor einen Dump an. Ein Einfrieren ist ein Fensterrahmen, der länger als 8 Sekunden läuft, beobachtet von einem Watchdog-Thread, der die im Ruhezustand verbrachte Zeit ignoriert. Der Monitor schreibt dann einen <g2>Minidump</g2> jedes Threads von außen, über <x3/> und <x4/>. Ein abgestürzter Prozess schreibt niemals seinen eigenen Dump, was auch bei Firefox, Crashpad und Sentry so gehandhabt wird."
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",

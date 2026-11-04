@@ -874,6 +874,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Spasi"
   },
+  "1970ad20e03db6c3": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>Menangkap masalah.</g1> Ketika MDM mengalami crash (pengecualian Windows, sinyal di Linux, pengecualian Mach di macOS), panik, atau macet, MDM meminta monitor untuk membuat dump. Macet adalah ketika jendela berjalan lebih dari 8 detik, yang dilihat oleh thread pengawas yang mengabaikan waktu tidur. Pengawas juga mengukur berapa banyak waktu prosesor yang didapatkan oleh thread jendela, dan laporan tersebut menyatakan artinya: apakah berjalan terus-menerus (loop), menunggu dalam kunci atau I/O (deadlock), atau hampir tidak berjalan dalam kode biasa, yang berarti komputer terlalu sibuk untuk menjalankan MDM atau lambat memuatnya dari disk, kemungkinan besar bukan bug MDM (ini berbagi satu tanda tangan, <x2/>). macOS belum mengukurnya. Monitor kemudian menulis <g3>minidump</g3> dari setiap thread dari luar, melalui <x4/> dan <x5/>. Proses yang crash tidak pernah menulis dump-nya sendiri, seperti yang dilakukan Firefox, Crashpad, dan Sentry."
+  },
   "19810b030c072070": {
    "source": "Path",
    "text": "Jalur"
@@ -4886,6 +4890,10 @@
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>Mulai mengunduh segera saat menampilkan dialog \"Info File Unduhan\"</g1> — aktif secara default, sehingga unduhan sudah berjalan saat Anda memilih folder."
   },
+  "92964c9bc3c4b26a": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
+   "text": "<g1>Mengujinya.</g1> <x2/> menjalankan pembekuan, kepanikan, dan crash yang sebenarnya (<x3/>) dan memeriksa tanda tangan setiap laporan. Untuk mencobanya di aplikasi, mulai MDM dengan <x4/>, lalu jalankan <x5/> (deadlock; atau <x6/>, 12 detik dari thread jendela yang sibuk, <x7/>, <x8/>, <x9/>)."
+  },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
    "text": "Bagaimana cara memasang ekstensi peramban? — Mister Download Manager"
@@ -5241,10 +5249,6 @@
   "9c6bacc12d96f229": {
    "source": "Product",
    "text": "Produk"
-  },
-  "9c82ae2e3182cb93": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (or <x6/>, <x7/>, <x8/>).",
-   "text": "<g1>Mengujinya.</g1> <x2/> menjalankan pembekuan, kepanikan, dan crash yang nyata (<x3/>) dan memeriksa tanda tangan setiap laporan. Untuk mencobanya di aplikasi, mulai MDM dengan <x4/>, lalu jalankan <x5/> (atau <x6/>, <x7/>, <x8/>)."
   },
   "9c9751edd8659026": {
    "source": "Close the dialog (an open drop-down list first)",
@@ -6921,10 +6925,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Setiap unduhan yang berjalan memiliki jendela progresnya sendiri. Jendela ini terbuka saat unduhan dimulai; untuk membukanya lagi, klik dua kali unduhan tersebut dalam daftar."
-  },
-  "d1432f447b205626": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Menangkap masalah.</g1> Ketika MDM mengalami kerusakan (pengecualian Windows, sinyal di Linux, pengecualian Mach di macOS), panik, atau membeku, ia meminta monitor untuk membuang data. Pembekuan adalah bingkai jendela yang berjalan lebih dari 8 detik, dilihat oleh utas pengawas yang mengabaikan waktu yang dihabiskan untuk tidur. Monitor kemudian menulis <g2>minidump</g2> dari setiap utas dari luar, melalui <x3/> dan <x4/>. Proses yang rusak tidak pernah menulis dump-nya sendiri, yang juga dilakukan oleh Firefox, Crashpad, dan Sentry."
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
