@@ -151,6 +151,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80)). The tool that collects
   MDM's texts for translation now also finds labels given through a window's own helpers, and
   checks in CI that it keeps finding them.
+- **Download complete shows above other programs' windows**, as IDM's does, so the end of a
+  download isn't missed ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)):
+  it doesn't take the keyboard from the program being typed in, and once clicked it is a window
+  like any other.
+- **Options opened from the extension's Button settings... comes to the front**
+  ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), instead of opening behind
+  the browser on Windows.
+- **Dragging the file out of Download complete works in every language**
+  ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78)): the handle looked for the
+  English window title, so outside English the drag did nothing. The handle now says what it does
+  on hover. It is Windows only, and no longer shown on Linux and macOS, where it did nothing.
 - **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
   the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).
 - **Download File Info's errors are worded in the interface language**, as the list's are.
