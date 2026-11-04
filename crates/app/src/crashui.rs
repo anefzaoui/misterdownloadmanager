@@ -100,7 +100,11 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
             crate::theme::apply(&cc.egui_ctx);
             crate::i18n::set_lang(settings.language.as_deref());
             crate::theme::language_fonts(&cc.egui_ctx);
-            crate::theme::update(settings.dark_mode_support, &cc.egui_ctx);
+            crate::theme::update(
+                settings.dark_mode_support,
+                settings.always_dark,
+                &cc.egui_ctx,
+            );
             Ok(Box::new(ReportWindow::new(
                 cc.egui_ctx.clone(),
                 Job {

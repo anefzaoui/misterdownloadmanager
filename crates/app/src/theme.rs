@@ -48,7 +48,9 @@ pub fn system_theme(dark: bool) -> egui::SystemTheme {
 /// Decide the mode from the setting and the system's: Windows' app mode; on Linux the desktop's
 /// preference (the freedesktop portal), else what the window system reports; on macOS the
 /// appearance the window system reports (light when nothing says). True if it changed.
-pub fn update(dark_mode_support: bool, ctx: &egui::Context) -> bool {
+/// `always_dark` (View → Always dark, #60): dark whatever the system says, for desktops that
+/// report no preference.
+pub fn update(dark_mode_support: bool, always_dark: bool, ctx: &egui::Context) -> bool {
     #[cfg(windows)]
     let system_dark = {
         let _ = ctx;
@@ -59,8 +61,13 @@ pub fn update(dark_mode_support: bool, ctx: &egui::Context) -> bool {
         .unwrap_or_else(|| ctx.system_theme() == Some(egui::Theme::Dark));
     #[cfg(not(any(windows, target_os = "linux")))]
     let system_dark = ctx.system_theme() == Some(egui::Theme::Dark);
-    let want = dark_mode_support && system_dark;
+    let want = wanted(dark_mode_support, always_dark, system_dark);
     DARK.swap(want, Ordering::Relaxed) != want
+}
+
+/// Dark or not: View → Always dark, else the system's mode while Dark Mode support is on.
+fn wanted(dark_mode_support: bool, always_dark: bool, system_dark: bool) -> bool {
+    always_dark || (dark_mode_support && system_dark)
 }
 
 /// Colours that differ between IDM's dark and light modes: each becomes a function of the
@@ -414,4 +421,21 @@ pub fn apply(ctx: &egui::Context) {
             bottom: 7,
         };
     });
+}
+
+#[cfg(test)]
+mod mode_tests {
+    use super::wanted;
+
+    /// #60: Always dark wins whatever the system says; otherwise Dark Mode support follows it.
+    #[test]
+    fn always_dark_wins_else_the_system_decides() {
+        for system in [false, true] {
+            for support in [false, true] {
+                assert!(wanted(support, true, system), "always dark");
+            }
+            assert_eq!(wanted(true, false, system), system, "following the system");
+            assert!(!wanted(false, false, system), "support off: light");
+        }
+    }
 }
