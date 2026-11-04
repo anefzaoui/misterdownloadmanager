@@ -126,6 +126,63 @@ async fn every_link_form_downloads_the_file() {
     }
 }
 
+/// Drive's hosts are asked with a browser's agent (PR #67), every other site with MDM's own, and
+/// an agent handed over by the browser wins.
+#[tokio::test]
+async fn drive_is_asked_with_a_browsers_agent() {
+    use mdm_engine::download::DEFAULT_USER_AGENT;
+    use mdm_engine::sites::gdrive::USER_AGENT;
+    let s = server("").await;
+    let id = drive::id("big", "2M", &["uuid"]);
+    let url = link(&s, drive::HOSTS[0], "/file/d/ID/view", &id);
+    let (_dir, out) = download(url.clone(), HeaderMap::new(), opts()).await;
+    check(&out.unwrap(), &id, 2 << 20);
+    let other = s.url("/gen/64K/other.bin?seed=3");
+    let (_dir, out) = download(other.parse().unwrap(), HeaderMap::new(), opts()).await;
+    out.unwrap();
+    let entries = log(&s).await;
+    let agents = |pick: &dyn Fn(&LogEntry) -> bool| -> Vec<Option<String>> {
+        entries
+            .iter()
+            .filter(|e| pick(e))
+            .map(|e| e.user_agent.clone())
+            .collect()
+    };
+    let drive_agents = agents(&|e| e.path == "/download");
+    assert!(drive_agents.len() >= 2, "the warning page, then the file");
+    assert!(
+        drive_agents
+            .iter()
+            .all(|a| a.as_deref() == Some(USER_AGENT)),
+        "{drive_agents:?}"
+    );
+    let others = agents(&|e| e.path.starts_with("/gen/"));
+    assert!(
+        !others.is_empty()
+            && others
+                .iter()
+                .all(|a| a.as_deref() == Some(DEFAULT_USER_AGENT)),
+        "{others:?}"
+    );
+
+    s.clear_log();
+    let browser = "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0";
+    let opts = Options {
+        user_agent: browser.into(),
+        ..opts()
+    };
+    let (_dir, out) = download(url, HeaderMap::new(), opts).await;
+    check(&out.unwrap(), &id, 2 << 20);
+    let entries = log(&s).await;
+    assert!(
+        entries
+            .iter()
+            .filter(|e| e.path == "/download")
+            .all(|e| e.user_agent.as_deref() == Some(browser)),
+        "the browser's agent wins"
+    );
+}
+
 /// A short link (another site's redirect) to a Drive file: the viewer it lands on leads to the
 /// file.
 #[tokio::test]

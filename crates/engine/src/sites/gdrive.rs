@@ -23,6 +23,15 @@ const SIGN_IN: &str = "accounts.google.com";
 /// The longest Drive message kept (its error pages say a paragraph at most).
 const MESSAGE_MAX: usize = 300;
 
+/// The User-Agent Drive's hosts are asked with: a current browser's, as a browser asks them.
+/// Google's file host answers MDM's default (D-007's Internet Explorer 11 agent) with "500
+/// Internal Server Error" for every file, so the maintainer decided (PR #67): Drive's three hosts
+/// get a current Chrome-style agent; every other site keeps D-007's, and an agent the browser
+/// handed over (the extension's downloads) wins everywhere (`download::request_agent`). Keep the
+/// version a recent stable Chrome's.
+pub const USER_AGENT: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \
+                              (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
+
 /// What a Drive link names.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Kind {
@@ -436,6 +445,11 @@ pub(crate) fn refused(asked: &Url, at: &Url, status: u16) -> Option<Refusal> {
         return Some(Refusal::SignIn);
     }
     (is_drive_host(at) && matches!(status, 401 | 403)).then_some(Refusal::NoAccess)
+}
+
+/// The agent a request to `url` goes with when it is one of Drive's hosts (`USER_AGENT`).
+pub(crate) fn user_agent(url: &Url) -> Option<&'static str> {
+    is_drive_host(url).then_some(USER_AGENT)
 }
 
 /// Two of Drive's hosts on the same port: one party. The browser sends its `.google.com` sign-in

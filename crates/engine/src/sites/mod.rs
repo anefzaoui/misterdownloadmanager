@@ -86,6 +86,12 @@ pub(crate) fn same_party(a: &Url, b: &Url) -> bool {
     gdrive::same_party(a, b)
 }
 
+/// The User-Agent a site's hosts want instead of MDM's default (Drive: a browser's, see
+/// `gdrive::USER_AGENT`). None: the download's own.
+pub(crate) fn user_agent(url: &Url) -> Option<&'static str> {
+    gdrive::user_agent(url)
+}
+
 /// Where to ask once more before a site's refusal at `at` is reported (Drive: whether the ID is
 /// a Google Doc, which Drive's file address answers with an error page).
 pub(crate) fn second_look(at: &Url) -> Option<Url> {

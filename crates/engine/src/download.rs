@@ -560,12 +560,36 @@ fn post_for(opts: &Options, as_get: bool, headers: &mut HeaderMap) -> Option<Byt
     None
 }
 
-/// A request for `url`: a POST with `post` as its body, else a GET.
-fn build(client: &Client, url: Url, post: Option<&Bytes>) -> RequestBuilder {
-    match post {
+/// A request for `url` with `headers`: a POST with `post` as its body, else a GET. `agent` is the
+/// download's User-Agent (`Options::user_agent`, the client's default); a site that wants a
+/// browser's gets it instead when `agent` is MDM's default (`request_agent`).
+fn build(
+    client: &Client,
+    url: Url,
+    post: Option<&Bytes>,
+    headers: &HeaderMap,
+    agent: &str,
+) -> RequestBuilder {
+    let mut headers = headers.clone();
+    if let Some(site) = request_agent(agent, &url)
+        && !headers.contains_key(header::USER_AGENT)
+    {
+        headers.insert(header::USER_AGENT, HeaderValue::from_static(site));
+    }
+    let req = match post {
         Some(body) => client.post(url).body(body.clone()),
         None => client.get(url),
-    }
+    };
+    req.headers(headers)
+}
+
+/// The User-Agent a request to `url` carries instead of the download's own `agent`: a site's
+/// browser agent (`sites::user_agent`: Google Drive's hosts), only when `agent` is MDM's default
+/// (D-007). A browser's agent handed over with the download, or one the user set, always wins.
+fn request_agent(agent: &str, url: &Url) -> Option<&'static str> {
+    (agent == DEFAULT_USER_AGENT)
+        .then(|| sites::user_agent(url))
+        .flatten()
 }
 
 /// A header's text: UTF-8, else ISO-8859-1 (servers send file names either way, while
@@ -726,6 +750,7 @@ pub async fn probe_kept(
         url.clone(),
         headers,
         opts.post.as_ref(),
+        &opts.user_agent,
         &CancellationToken::new(),
     )
     .await?;
@@ -1093,6 +1118,7 @@ impl Ctx {
             origin,
             headers,
             self.opts.post.as_ref(),
+            &self.opts.user_agent,
             self.size,
             &self.cancel,
         )
@@ -1358,7 +1384,9 @@ async fn run_fresh(
             Err(Error::NoRanges) => {
                 *shared.planner.lock().unwrap() = None;
                 shared.view.lock().unwrap().resumable = Some(false);
-                let (resp, ..) = get(&client0, final_url, headers, post.as_ref(), cancel).await?;
+                let agent = &opts.user_agent;
+                let (resp, ..) =
+                    get(&client0, final_url, headers, post.as_ref(), agent, cancel).await?;
                 let body = Body::Http(resp);
                 single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
             }
@@ -1590,7 +1618,11 @@ async fn run_resume(
     let client = client(&opts, &saved.url, &as_get)?;
     let refreshed = if saved.url != saved.final_url {
         let post = opts.post.as_ref();
-        refresh_final_url(&client, &saved.url, &headers, post, saved.size, &cancel).await
+        let agent = &opts.user_agent;
+        refresh_final_url(
+            &client, &saved.url, &headers, post, agent, saved.size, &cancel,
+        )
+        .await
     } else {
         None
     };
@@ -1708,12 +1740,13 @@ async fn refresh_final_url(
     origin: &Url,
     headers: &HeaderMap,
     post: Option<&Bytes>,
+    agent: &str,
     size: u64,
     cancel: &CancellationToken,
 ) -> Option<(Url, HeaderMap)> {
     let mut asked = headers.clone();
     asked.insert(header::RANGE, HeaderValue::from_static("bytes=0-0"));
-    let (resp, mut headers, _) = get(client, origin.clone(), asked, post, cancel)
+    let (resp, mut headers, _) = get(client, origin.clone(), asked, post, agent, cancel)
         .await
         .ok()?;
     headers.remove(header::RANGE);
@@ -1931,6 +1964,7 @@ async fn get(
     url: Url,
     headers: HeaderMap,
     post: Option<&Bytes>,
+    agent: &str,
     cancel: &CancellationToken,
 ) -> Result<(Response, HeaderMap, Duration), Error> {
     let (mut url, mut headers) = (url, headers);
@@ -1954,7 +1988,7 @@ async fn get(
     // Redirects between a site's own hosts followed here (`get_policy`).
     let mut party_hops = 0;
     loop {
-        let req = build(client, url.clone(), post).headers(headers.clone());
+        let req = build(client, url.clone(), post, &headers, agent);
         let asked = std::time::Instant::now();
         let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
         let took = asked.elapsed();
@@ -2196,6 +2230,7 @@ async fn first_get(
             url.clone(),
             headers.clone(),
             opts.post.as_ref(),
+            &opts.user_agent,
             cancel,
         )
     })
@@ -2491,9 +2526,14 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
         .unwrap()
         .if_range(target.url.host_str())
         .and_then(|v| HeaderValue::from_str(v).ok());
-    let mut req = build(&ctx.client, target.url.clone(), target.post.as_ref())
-        .headers(target.headers.clone())
-        .header(header::RANGE, format!("bytes={from}-{}", to - 1));
+    let mut req = build(
+        &ctx.client,
+        target.url.clone(),
+        target.post.as_ref(),
+        &target.headers,
+        &ctx.opts.user_agent,
+    )
+    .header(header::RANGE, format!("bytes={from}-{}", to - 1));
     if let Some(v) = &if_range {
         req = req.header(header::IF_RANGE, v);
     }
@@ -3079,6 +3119,43 @@ mod tests {
                 "{to}"
             );
         }
+    }
+
+    #[test]
+    fn drive_gets_a_browsers_agent_and_only_drive() {
+        let u = |s: &str| Url::parse(s).unwrap();
+        let browser = Some(sites::gdrive::USER_AGENT);
+        for drive in [
+            "https://drive.google.com/file/d/x/view",
+            "https://drive.usercontent.google.com/download?id=x",
+            "http://docs.google.com:8080/document/d/x/export",
+        ] {
+            assert_eq!(
+                request_agent(DEFAULT_USER_AGENT, &u(drive)),
+                browser,
+                "{drive}"
+            );
+        }
+        for other in [
+            "https://example.com/a.zip",
+            "https://accounts.google.com/ServiceLogin",
+            "https://doc-0.docs.googleusercontent.com/export/x",
+            "https://drive.google.com.evil.test/x",
+        ] {
+            assert_eq!(
+                request_agent(DEFAULT_USER_AGENT, &u(other)),
+                None,
+                "{other}"
+            );
+        }
+        // The browser's own agent (handed over with the download) or the user's wins.
+        assert_eq!(
+            request_agent(
+                "Mozilla/5.0 Firefox/140.0",
+                &u("https://drive.google.com/x")
+            ),
+            None
+        );
     }
 
     #[test]
