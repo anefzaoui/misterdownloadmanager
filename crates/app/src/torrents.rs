@@ -155,6 +155,31 @@ pub struct Run {
     stopped: Arc<Mutex<bool>>,
     /// Keep sharing once finished (D-018; off by default).
     keep_sharing: bool,
+    /// Where its files are (`TorrentSpec::folder`).
+    folder: PathBuf,
+    /// Its files' Mark-of-the-Web (#40): 0 not yet, 1 once librqbit created them, 2 finished.
+    marked: Arc<std::sync::atomic::AtomicU8>,
+}
+
+/// The origin a torrent's files are marked with: not one website, and never the magnet link
+/// (its trackers), as Windows' guidance for an unknown source says (and qBittorrent does).
+const TORRENT_ORIGIN: &str = "about:internet";
+
+/// Mark `files` (padding left out) under `folder` as downloaded from the internet, as web
+/// downloads are (Windows' zone, so SmartScreen and Office's Protected View check them; macOS'
+/// quarantine; Linux's origin attribute, which nothing enforces). Every file of the torrent,
+/// ticked or not: librqbit creates them all.
+fn mark_files(folder: &Path, files: &[mdm_torrent::FileEntry]) {
+    for f in files.iter().filter(|f| !f.padding) {
+        let path = folder.join(&f.path);
+        if !path.is_file() {
+            continue;
+        }
+        #[cfg(windows)]
+        crate::win32::mark_downloaded(&path, TORRENT_ORIGIN, None);
+        #[cfg(unix)]
+        crate::unix::mark_downloaded(&path, TORRENT_ORIGIN, None);
+    }
 }
 
 /// What the progress window's torrent tabs show.
@@ -220,7 +245,29 @@ impl Run {
             url,
             stopped: Arc::new(Mutex::new(false)),
             keep_sharing,
+            folder: spec.folder.clone(),
+            marked: Arc::new(std::sync::atomic::AtomicU8::new(0)),
         }
+    }
+
+    /// Mark its files once librqbit has created them (it leaves Checking) and again once it
+    /// finishes, off the window's thread.
+    fn mark_when(&self, t: &Arc<Torrents>, phase: Phase) {
+        use std::sync::atomic::Ordering;
+        // Paused: perhaps never started, its files not created yet.
+        let step = match phase {
+            Phase::Downloading => 1,
+            Phase::Finished => 2,
+            Phase::Checking | Phase::Paused | Phase::Error => return,
+        };
+        if self.marked.fetch_max(step, Ordering::SeqCst) >= step {
+            return;
+        }
+        let Some((files, _, _)) = t.files(&self.hash) else {
+            return;
+        };
+        let folder = self.folder.clone();
+        self.rt.spawn_blocking(move || mark_files(&folder, &files));
     }
 
     fn session(&self) -> Option<Arc<Torrents>> {
@@ -277,6 +324,7 @@ impl Run {
             Phase::Error => State::Failed,
         };
         s.error = st.error;
+        self.mark_when(&t, st.phase);
         // Done: it stops sharing (a download manager finishes downloads; D-018), unless the
         // person chose to keep sharing.
         if s.state == State::Done && !self.keep_sharing {
@@ -374,5 +422,36 @@ mod tests {
         let u = magnet_url("0123456789abcdef0123456789abcdef01234567", "A & B");
         assert_eq!(u.scheme(), "magnet");
         assert!(u.as_str().contains("dn=A+%26+B"), "{u}");
+    }
+
+    /// #40: a torrent's files get the internet zone, with no address but `about:internet`
+    /// (never the magnet link); padding files and files not there are left alone.
+    #[cfg(windows)]
+    #[test]
+    fn torrent_files_are_marked_from_the_internet() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(dir.path().join("sub")).unwrap();
+        std::fs::write(dir.path().join("sub/a.exe"), b"x").unwrap();
+        std::fs::write(dir.path().join(".pad0"), b"").unwrap();
+        let entry = |p: &str, padding| mdm_torrent::FileEntry {
+            path: PathBuf::from(p),
+            size: 1,
+            padding,
+        };
+        mark_files(
+            dir.path(),
+            &[entry("sub/a.exe", false), entry(".pad0", true), entry("gone.bin", false)],
+        );
+        let zone = |p: &Path| {
+            let mut s = p.as_os_str().to_owned();
+            s.push(":Zone.Identifier");
+            std::fs::read_to_string(s).ok()
+        };
+        assert_eq!(
+            zone(&dir.path().join("sub/a.exe")).as_deref(),
+            Some("[ZoneTransfer]\r\nZoneId=3\r\nHostUrl=about:internet\r\n")
+        );
+        assert_eq!(zone(&dir.path().join(".pad0")), None, "padding isn't marked");
+        assert!(!dir.path().join("gone.bin").exists(), "nothing created");
     }
 }
