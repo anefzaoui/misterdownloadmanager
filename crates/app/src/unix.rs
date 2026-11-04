@@ -1,8 +1,9 @@
 //! Linux and macOS counterparts of what `win32` does through Windows (experimental builds):
 //! starting with the session, the browsers' host registration, sounds, showing a file in its
 //! folder, and the torrent link handler. Each runs the system's own tool, so nothing here needs
-//! a library; the crash reports (at the end) are the exception: signals and Mach exceptions
-//! through crash-handler, thread and process ids through libc.
+//! a library; the exceptions are the desktop's dark mode on Linux (D-Bus, through zbus) and the
+//! crash reports (at the end): signals and Mach exceptions through crash-handler, thread and
+//! process ids through libc.
 
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
@@ -298,6 +299,82 @@ pub fn wheel_lines() -> Option<f32> {
     Some(3.0)
 }
 
+/// The desktop's light or dark preference on Linux, as the freedesktop portal tells it
+/// (`org.freedesktop.appearance` `color-scheme`, which KDE, GNOME, Cinnamon, COSMIC and the
+/// others set): `Some(true)` dark, `Some(false)` light, `None` when no portal answers or the
+/// desktop has no preference (then the window system's answer is used). X11 reports no theme to
+/// winit at all, so without this "Dark Mode support" never turns dark there. The first call
+/// starts a thread that reads it and follows its changes (D-Bus can take seconds to answer, or
+/// start the portal); `ctx` is repainted when it changes.
+#[cfg(target_os = "linux")]
+pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
+    use std::sync::atomic::{AtomicU8, Ordering};
+    // 0: not known, 1: dark, 2: light.
+    static SCHEME: AtomicU8 = AtomicU8::new(0);
+    static WATCH: std::sync::Once = std::sync::Once::new();
+    WATCH.call_once(|| {
+        let ctx = ctx.clone();
+        let _ = std::thread::Builder::new()
+            .name("desktop-theme".into())
+            .spawn(move || {
+                let set = |v: &zbus::zvariant::Value| {
+                    let scheme = match color_scheme(v) {
+                        Some(1) => 1,
+                        Some(2) => 2,
+                        _ => 0,
+                    };
+                    if SCHEME.swap(scheme, Ordering::Relaxed) != scheme {
+                        ctx.request_repaint();
+                    }
+                };
+                let watch = || -> zbus::Result<()> {
+                    let conn = zbus::blocking::Connection::session()?;
+                    let portal = zbus::blocking::Proxy::new(
+                        &conn,
+                        "org.freedesktop.portal.Desktop",
+                        "/org/freedesktop/portal/desktop",
+                        "org.freedesktop.portal.Settings",
+                    )?;
+                    let changes = portal.receive_signal("SettingChanged")?;
+                    let key = ("org.freedesktop.appearance", "color-scheme");
+                    // ReadOne since version 2 of the portal; Read (the value wrapped once more)
+                    // before it.
+                    let now: zbus::zvariant::OwnedValue = portal
+                        .call("ReadOne", &key)
+                        .or_else(|_| portal.call("Read", &key))?;
+                    set(&now);
+                    for change in changes {
+                        let (namespace, name, value): (String, String, zbus::zvariant::OwnedValue) =
+                            change.body().deserialize()?;
+                        if (namespace.as_str(), name.as_str()) == key {
+                            set(&value);
+                        }
+                    }
+                    Ok(())
+                };
+                if let Err(e) = watch() {
+                    tracing::info!("desktop theme: no answer from the portal ({e})");
+                }
+            });
+    });
+    match SCHEME.load(Ordering::Relaxed) {
+        1 => Some(true),
+        2 => Some(false),
+        _ => None,
+    }
+}
+
+/// The portal's `color-scheme` number (0 no preference, 1 dark, 2 light), unwrapped from the
+/// variants `Read` adds around it.
+#[cfg(target_os = "linux")]
+fn color_scheme(v: &zbus::zvariant::Value) -> Option<u32> {
+    match v {
+        zbus::zvariant::Value::U32(n) => Some(*n),
+        zbus::zvariant::Value::Value(inner) => color_scheme(inner),
+        _ => None,
+    }
+}
+
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {
@@ -501,4 +578,20 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
             0,
         )
     };
+}
+
+#[cfg(all(test, target_os = "linux"))]
+mod tests {
+    use zbus::zvariant::Value;
+
+    /// `ReadOne` answers the number, `Read` the number wrapped in one more variant.
+    #[test]
+    fn color_scheme_unwraps_the_portals_answers() {
+        assert_eq!(super::color_scheme(&Value::U32(1)), Some(1));
+        assert_eq!(
+            super::color_scheme(&Value::Value(Box::new(Value::U32(2)))),
+            Some(2)
+        );
+        assert_eq!(super::color_scheme(&Value::Str("dark".into())), None);
+    }
 }

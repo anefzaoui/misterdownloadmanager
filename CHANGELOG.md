@@ -54,6 +54,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- MDM closed with an internal error when a window opened while the main window was minimized
+  or hidden, for example Download File Info for a browser download
+  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22)). The cause was in egui,
+  the toolkit MDM is drawn with ([emilk/egui#8470](https://github.com/emilk/egui/issues/8470)),
+  and is fixed in MDM's copy of it.
+- **View → Dark Mode support** did nothing on Linux: MDM asked the window system for the
+  desktop's light or dark setting, and X11 never says. It now asks the desktop itself (the
+  freedesktop portal, which KDE, GNOME and most others answer) and follows it as it changes.
 - A second browser download arriving while Download File Info was open replaced the first, which
   was lost (the browser had already given it up). They now wait their turn, and those still
   waiting when MDM quits are kept in the main queue (Download Later).

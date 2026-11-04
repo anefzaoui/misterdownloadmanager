@@ -45,15 +45,19 @@ pub fn system_theme(dark: bool) -> egui::SystemTheme {
     }
 }
 
-/// Decide the mode from the setting and the system's: Windows' app mode, elsewhere the light or
-/// dark appearance the window system reports (light when it says nothing). True if it changed.
+/// Decide the mode from the setting and the system's: Windows' app mode; on Linux the desktop's
+/// preference (the freedesktop portal), else what the window system reports; on macOS the
+/// appearance the window system reports (light when nothing says). True if it changed.
 pub fn update(dark_mode_support: bool, ctx: &egui::Context) -> bool {
     #[cfg(windows)]
     let system_dark = {
         let _ = ctx;
         crate::win32::apps_use_dark()
     };
-    #[cfg(not(windows))]
+    #[cfg(target_os = "linux")]
+    let system_dark = crate::unix::desktop_dark(ctx)
+        .unwrap_or_else(|| ctx.system_theme() == Some(egui::Theme::Dark));
+    #[cfg(not(any(windows, target_os = "linux")))]
     let system_dark = ctx.system_theme() == Some(egui::Theme::Dark);
     let want = dark_mode_support && system_dark;
     DARK.swap(want, Ordering::Relaxed) != want
