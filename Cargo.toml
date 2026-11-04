@@ -32,7 +32,9 @@ egui = "0.37.0"
 egui_extras = { version = "0.37.0", features = ["svg", "image"] }
 image = { version = "0.25.10", default-features = false, features = ["png"] }
 dirs = "7.0.0"
-arboard = { version = "3.7.0", default-features = false }
+# Gzipped IP blocklists, read to convert them for librqbit (crates/torrent blocklist.rs).
+flate2 = "1.1.10"
+arboard ={ version = "3.7.0", default-features = false }
 windows-sys = { version = "0.61.2", features = [
     "Win32_Foundation",
     "Win32_Globalization",
