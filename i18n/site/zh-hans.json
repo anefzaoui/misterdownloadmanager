@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "将鼠标指向网页上的视频，其边缘会出现一个小的 <g1>下载视频</g1> 按钮。点击它，MDM 的 <g2>从页面下载视频</g2> 窗口会打开并查找可下载的质量。它会下载您点击的视频：如果播放的是自己的文件，则下载该文件；如果是播放器加载的流（HLS 或 DASH），则下载该流；否则下载页面。嵌入式播放器也适用，您的网站登录信息、嵌入播放器的页面以及您的浏览器用户代理都会随之发送，因此会员视频或仅在嵌入它们的网站上播放的视频也可以下载。音频播放器也会显示该按钮。"
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "到达您计算机的内容"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "现在，<g1>帮助 → 报告问题</g1> 填写的表单中的“系统”和“已安装”信息会一直保留，而不会只显示一小会儿。"
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "启动一个本地测试服务器，该服务器会根据您的要求（慢速连接、中断、繁忙响应、无范围；<x1/> 列出了它们）提供生成的文件，这样无需互联网即可测试下载。"
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "发现安全问题？请在 GitHub 上私下报告（<g1>安全 → 报告漏洞</g1>，请参阅<g2>SECURITY.md</g2>），而不是在公共问题中报告。"
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "Mister Download Manager 夜间模式下的主窗口。"
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "从页面下载视频：提供的画质，从 2160p 60fps 向下，并显示其大小。"
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "种子引擎是用 Rust 编写的，这排除了许多内存错误，并且 MDM 会根据种子的指纹检查每一块，因此对等点无法插入更改的数据。MDM 会及时更新引擎，以获取其作者发布的修复程序。"
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>不再显示此对话框</g1> — MDM 不再询问，并执行您本次的回答。要再次询问，请勾选<g2>选项 → 常规 → 删除下载前确认</g2>。"
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDM 在种子首次需要时启动其种子引擎。如果<g1>没有种子运行时停止种子引擎</g1>处于开启状态（默认），则在没有种子运行或共享一分钟后，它会再次停止。当它运行时，其他对等点可以连接到 MDM，MDM 会要求您的路由器转发其端口 (UPnP)。Windows 可能会询问是否允许 MDM 通过防火墙：仅在专用网络上允许它。"
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>每个连接，实时显示</g1> 每个连接的进度、速度和剩余时间都会实时显示。防崩溃续传功能可在中断处继续下载。"
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+单击</g1>添加或删除一个下载。"
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>种子和您的安全</g2></g1> — 他人可见的信息、网络切换、阻止列表、代理。"
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "安装程序或 MDM 无法启动"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "下载列表 →"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "种子会命名 MDM 请求对等点的跟踪器。MDM 不会联系您自己计算机或本地网络上的跟踪器（<x1/>、<x2/>、<x3/> 等），因此种子无法使 MDM 向其所在的网络发送请求。"
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1 GiB，快速链接"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "MDM 的种子不使用<g1>加密</g1>（有时称为“协议加密”）。这种加密只能隐藏来自简单过滤器的流量。它永远不会隐藏您的身份，因此 MDM 不声称提供它。一些需要它的对等点将无法连接。"
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "计划程序"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "便携版 MDM 可以直接从 U 盘运行，并将下载列表和设置保存在 U 盘上。通过一些设置，它还可以将下载文件保存到 U 盘。"
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDM 会拒绝文件名无法安全写入您系统的种子，并会说明是哪个文件名，且不写入任何内容。其他人可以看到的内容、<g1>种子设置</g1> 中的网络开关、黑名单和代理：<g2>种子与您的安全</g2>。"
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "种子 — Mister Download Manager 帮助"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "种子可以包含任何内容，任何人都可以制作一个。只打开您信任的人的程序，如有疑问请扫描它们。"
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "尚未翻译的文本会显示为英文。大多数翻译都是机器翻译的，正在等待母语人士进行校对，因此某些措辞可能听起来不正确。"
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "要下载的地址。"
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "种子来自其他人的计算机，而不是来自一个网站。这改变了您可以信任的内容以及其他人可以看到的内容。本页面明确说明了 MDM 的功能和限制。其中提到的开关位于<g1>任务 → 种子设置...</g1>中。"
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM 可以在不显示窗口的情况下通过以下三种方式运行："
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM 的代理/Socks 设置适用于网页和 FTP 下载。种子也可以使用 SOCKS5 代理：在<g2>选项 → 代理/Socks</g2>中设置<x1/>代理，并在“种子设置”中打开<g3>使用代理</g3>。代理仅覆盖与对等点和网页跟踪器的连接，因此 MDM 会关闭 DHT、本地对等点发现、传入连接和 UDP 跟踪器。如果该开关打开时代理从“代理/Socks”中消失，则种子不会启动，而不是绕过它。"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "高亮显示（默认）的按钮；聚焦的按钮按下该按钮"
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>您正在使用 MDM。</g1> 对等点会看到“MisterDownloadManager”的名称及其主要版本，而不是确切的构建版本。"
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "在列表中选择该下载。"
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "助手提示"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>阻止此列表中的地址</g1>采用公共 IP 阻止列表的地址，格式为 P2P (PeerGuardian) 或 eMule <x2/> 格式，纯文本或 gzipped。MDM 使用自己的下载器下载它（您的代理/Socks 设置适用），检查它，并每 7 天再次获取它。其中的对等点将被拒绝。MDM 无法读取的列表将被忽略，并保留上次有效的列表。引擎在启动时读取列表。"
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "在开始时间，队列会自动启动。早上，已完成的文件会在类别下的<g1>已完成</g1>中。"
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "要通过另一个网络路由<g1>所有内容</g1>，请为整个计算机使用 VPN。MDM 无法将种子绑定到 Windows 上的一个网络适配器。"
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "种子和您的安全"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "是 Internet Download Manager 的副本或破解版吗？— Mister Download Manager"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "种子来自其他人的计算机，而不是来自一个网站。这改变了您可以信任的内容以及其他人可以看到的内容。本页面明确说明了..."
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>报告问题</g2></g1> — 或者在 MDM 中使用<g3>帮助 → 报告问题</g3>，它会自动填写您的版本、系统以及 MDM 的安装方式。"
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "选择框中的下载"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "其他人可以看到什么"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "两款应用都至少运行了七次下载，每次下载七个文件。条形图表示运行时间中间一半的范围，线表示中位数。"
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "阻止地址"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "文件类型是否在<g1>选项 → 文件类型</g1>中？只有列出的类型才会自动下载。右键菜单上的<g2>使用 Mister Download Manager 下载</g2>可以下载任何链接。"
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp 和 ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "种子和您的安全 — Mister Download Manager 帮助"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "在“种子设置”中，您可以关闭<g1>接受传入连接</g1>和<g2>在路由器上映射端口 (UPnP)</g2>，或 DHT。下载仍然有效，有时速度会较慢。固定的<g3>端口</g3>可保持防火墙和路由器规则正常工作。这些更改在引擎下次启动时生效，即在没有种子运行时生效。"
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "打开下拉列表"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>地址未填写：</g1>剪贴板中没有网页地址。请自行粘贴到<g2>地址</g2>中。"
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>您在本地网络上下载的内容。</g1> MDM 会告诉您网络上的其他计算机它有哪些种子，以便它们可以更快地共享。在公共 Wi-Fi 上，请关闭<g2>在本地网络上查找对等点</g2>。"
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>捕获问题。</g1>当 MDM 崩溃（Windows 异常、Linux 上的信号、macOS 上的 Mach 异常）、恐慌或冻结时，它会向监视器请求转储。冻结是指窗口运行超过 8 秒的帧，由一个忽略休眠时间的看门狗线程检测到。然后，监视器通过<x3/>和<x4/>从外部写入每个线程的<g2>minidump</g2>。崩溃的进程从不写入自己的转储，Firefox、Crashpad 和 Sentry 也是这样做的。"
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "来自种子的文件被标记为<g1>从互联网下载</g1>，就像浏览器的下载一样。Windows SmartScreen 在程序首次运行前检查它，Office 在受保护视图中打开文档。在 Mac 上，Gatekeeper 检查应用程序。"
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "安全 — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>打开 Mister Download Manager</g1> 和 <g2>选项...</g2>。"
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "来自种子的文件"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多 32 个连接（如果允许，可达 128 个），并持续重新分配：当一个连接完成其部分时，它会接管剩余最大部分的一半，这样就不会有慢速连接拖延整个下载。它还会记住拒绝额外连接的服务器，并停止向它们请求。请参阅<g1>连接和速度</g1>。"
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>您的 IP 地址。</g1>所有共享同一种子的人，以及其跟踪器和 DHT（对等点用来相互查找的网络），都可以看到它。BitTorrent 就是这样工作的，MDM 中的任何设置都无法改变它。要隐藏您的地址，请在您的整个计算机上使用 VPN。"
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "按以下步骤，在您使用的每个浏览器中加载扩展。扩展文件位于MDM安装目录下的<x1/>文件夹中：如果您是为自己安装的，路径是<x2/>；如果您是为所有人安装的，路径是<x3/>。每个版本也提供单独的下载：<x4/>（Chrome、Edge、Brave、Opera、Vivaldi；请先解压）和<x5/>。"
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "跟踪器"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "下载安装程序"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "MDM有我的语言版本吗？"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "未经询问，MDM 绝不会写入已存在的文件。"
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "送达"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "选项 →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "代理"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",

@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "웹 페이지의 비디오에 마우스를 가져가면 작은 <g1>비디오 다운로드</g1> 버튼이 가장자리에 나타납니다. 이 버튼을 클릭하면 MDM의 <g2>페이지에서 비디오 다운로드</g2> 창이 열리고 다운로드할 수 있는 품질을 검색합니다. 클릭한 비디오를 가져옵니다. 자체 파일을 재생할 때, 또는 플레이어가 로드한 스트림(HLS 또는 DASH), 그렇지 않으면 페이지를 가져옵니다. 임베디드 플레이어도 작동하며, 사이트 로그인 정보, 플레이어를 임베드하는 페이지 및 브라우저의 User-Agent가 함께 전달되므로, 회원 전용 비디오 또는 임베드된 사이트에서만 재생되는 비디오도 다운로드할 수 있습니다. 사운드 플레이어에도 버튼이 나타납니다."
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "컴퓨터에 도달하는 것"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>도움말 → 문제 보고</g1> 양식의 시스템 및 설치됨 필드가 잠시만 채워졌다가 사라지던 문제가 이제 해결되어 계속 채워져 있습니다."
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "요청하는 모든 문제(느린 연결, 끊김, 응답 지연, 범위 없음; <x1/>에 나열됨)가 있는 생성된 파일을 제공하는 로컬 테스트 서버를 시작하여 인터넷 없이도 다운로드를 테스트할 수 있습니다."
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "보안 문제를 발견하셨습니까? 공개적인 문제로 보고하는 대신 GitHub(<g1>보안 → 취약점 보고</g1>, <g2>SECURITY.md</g2> 참조)에 비공개로 보고해 주십시오."
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "야간 모드의 Mister Download Manager 메인 창."
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "페이지에서 비디오 다운로드: 2160p 60fps부터 그 이하까지 제공되는 품질과 크기입니다."
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "토렌트 엔진은 Rust로 작성되어 많은 메모리 버그를 배제하며, MDM은 모든 조각을 토렌트의 지문과 비교하여 피어가 변경된 데이터를 몰래 넣을 수 없도록 합니다. MDM은 저자가 게시하는 수정 사항으로 엔진을 최신 상태로 유지합니다."
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>이 대화 상자를 다시 표시 안 함</g1> — MDM은 더 이상 묻지 않고 이번에 답변한 대로 수행합니다. 다시 질문을 받으려면 <g2>옵션 → 일반 → 다운로드 삭제 전 확인</g2>을 선택하세요."
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDM은 토렌트가 필요할 때 처음으로 토렌트 엔진을 시작합니다. <g1>토렌트 엔진이 필요 없을 때 토렌트 엔진 중지</g1>가 켜져 있으면(기본값) 토렌트가 실행되거나 공유되지 않은 후 1분 후에 다시 중지됩니다. 실행되는 동안 다른 피어가 MDM에 연결할 수 있으며, MDM은 라우터에 포트(UPnP)를 전달하도록 요청합니다. Windows는 MDM을 방화벽을 통해 허용할지 물을 수 있습니다. 개인 네트워크에서만 허용하십시오."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>모든 연결, 실시간</g1> 각 연결은 채워지는 대로 속도와 남은 시간과 함께 그려집니다. 충돌 방지 재개는 중단된 지점부터 다시 시작합니다."
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+클릭</g1>은 하나의 다운로드를 추가하거나 제거합니다."
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>토렌트와 보안</g2></g1> — 다른 사람이 볼 수 있는 것, 네트워크 스위치, 차단 목록, 프록시."
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "설치 프로그램 또는 MDM이 시작되지 않습니다"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "다운로드 목록 →"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "토렌트는 MDM이 피어를 요청하는 트래커의 이름을 지정합니다. MDM은 자체 컴퓨터나 로컬 네트워크(<x1/>, <x2/>, <x3/> 등)의 트래커에 연결하지 않으므로 토렌트가 MDM이 있는 네트워크로 요청을 보내도록 만들 수 없습니다."
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1GiB, 빠른 링크"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "MDM의 토렌트는 <g1>암호화</g1>(때로는 \"프로토콜 암호화\"라고도 함)를 사용하지 않습니다. 이러한 종류의 암호화는 단순한 필터로부터 트래픽을 숨길 뿐입니다. 귀하가 누구인지는 절대 숨기지 않으므로 MDM은 이를 제공한다고 주장하지 않습니다. 이를 요구하는 일부 피어는 연결되지 않습니다."
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "예약 관리자"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "휴대용 MDM은 USB 스틱에서 바로 실행되며, 다운로드 목록과 설정을 스틱에 저장합니다. 몇 가지 설정을 변경하면 다운로드 파일도 스틱에 저장할 수 있습니다."
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDM은 시스템이 안전하게 쓸 수 없는 파일 이름의 토렌트를 거부하고, 어떤 이름인지 알려주며, 아무것도 쓰지 않습니다. 다른 사람들이 볼 수 있는 것, <g1>토렌트 설정</g1>의 네트워크 스위치, 차단 목록 및 프록시에 대해서는 <g2>토렌트 및 보안</g2>을 참조하세요."
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "토렌트 — Mister Download Manager 도움말"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "토렌트에는 무엇이든 포함될 수 있으며, 누구든지 만들 수 있습니다. 신뢰하는 사람의 프로그램만 열고, 의심스러우면 스캔하십시오."
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "아직 번역되지 않은 텍스트는 영어로 표시됩니다. 대부분의 번역은 기계로 작성되었으며 원어민이 검토하기를 기다리고 있으므로 일부 표현이 잘못 들릴 수 있습니다."
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "다운로드할 주소입니다."
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "토렌트는 단일 웹사이트가 아닌 다른 사람들의 컴퓨터에서 옵니다. 이는 신뢰할 수 있는 것과 다른 사람들이 볼 수 있는 것을 바꿉니다. 이 페이지는 MDM이 무엇을 하고 무엇을 하지 않는지 명확하게 설명합니다. 언급된 스위치는 <g1>작업 → 토렌트 설정...</g1>에 있습니다."
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM은 창 없이 다음 세 가지 방법으로 실행할 수 있습니다."
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM의 프록시/Socks 설정은 웹 및 FTP 다운로드용입니다. 토렌트도 SOCKS5를 사용할 수 있습니다. <g2>옵션 → 프록시/Socks</g2>에서 <x1/> 프록시를 설정하고 토렌트 설정에서 <g3>프록시 사용</g3>을 켜십시오. 프록시는 피어 및 웹 트래커에 대한 연결만 다루므로, 이를 사용하면 MDM은 DHT, 로컬 피어 검색, 들어오는 연결 및 UDP 트래커를 끕니다. 해당 스위치가 켜져 있는 동안 프록시/Socks에서 프록시가 사라지면 토렌트는 프록시를 우회하는 대신 시작되지 않습니다."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "강조 표시된 (기본) 버튼; 포커스된 버튼은 해당 버튼을 누릅니다."
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>MDM을 사용한다는 사실.</g1> 피어는 정확한 빌드가 아닌 \"MisterDownloadManager\"라는 이름과 주요 버전을 봅니다."
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "목록에서 다운로드를 선택합니다."
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "어시스턴트 메시지"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>이 목록의 주소 차단</g1>은 P2P(PeerGuardian) 또는 eMule <x2/> 형식의 공용 IP 차단 목록 주소를 가져오며, 일반 또는 gzipped 형식입니다. MDM은 자체 다운로더로 다운로드하고(프록시/Socks 설정 적용), 확인하고, 7일마다 다시 가져옵니다. 목록에 있는 피어는 거부됩니다. MDM이 읽을 수 없는 목록은 제외되며, 마지막으로 올바른 목록이 유지됩니다. 엔진은 시작될 때 목록을 읽습니다."
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "시작 시간에 대기열이 자동으로 시작됩니다. 아침에는 완료된 파일이 카테고리의 <g1>완료됨</g1> 아래에 있습니다."
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "<g1>모든 것</g1>을 다른 네트워크를 통해 라우팅하려면 전체 컴퓨터에 VPN을 사용하십시오. MDM은 Windows에서 토렌트를 하나의 네트워크 어댑터에 연결할 수 없습니다."
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "토렌트와 보안"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Internet Download Manager의 복사본 또는 크랙인가요? — Mister Download Manager"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "토렌트는 단일 웹사이트가 아닌 다른 사람들의 컴퓨터에서 옵니다. 이는 신뢰할 수 있는 것과 다른 사람들이 볼 수 있는 것을 바꿉니다. 이 페이지는 명확하게..."
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>문제 보고</g2></g1> — 또는 MDM에서 <g3>도움말 → 문제 보고</g3>를 사용하세요. 그러면 사용자 버전, 시스템 및 MDM 설치 방식이 자동으로 채워집니다."
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "상자에 있는 다운로드 선택"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "다른 사람들이 볼 수 있는 것"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "두 앱 모두 각 다운로드를 최소 7회 실행했습니다. 막대는 실행 시간의 중간 절반을, 선은 중앙값을 나타냅니다."
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "주소 차단"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "파일 형식이 <g1>옵션 → 파일 형식</g1>에 있나요? 나열된 형식만 자동으로 처리됩니다. 마우스 오른쪽 버튼 메뉴의 <g2>Mister Download Manager으로 다운로드</g2>는 모든 링크를 처리합니다."
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp 및 ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "토렌트 및 보안 — Mister Download Manager 도움말"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "토렌트 설정에서 <g1>들어오는 연결 수락</g1> 및 <g2>라우터에서 포트 매핑(UPnP)</g2> 또는 DHT를 끌 수 있습니다. 다운로드는 여전히 작동하지만 때로는 더 느리게 작동합니다. 고정된 <g3>포트</g3>는 방화벽 및 라우터 규칙이 작동하도록 유지합니다. 이러한 변경 사항은 엔진이 다음에 시작될 때 적용되므로 토렌트가 실행되지 않을 때 적용됩니다."
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "드롭다운 목록 열기"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>주소가 채워지지 않음:</g1> 클립보드에 웹 주소가 없었습니다. <g2>주소</g2>에 직접 붙여넣으세요."
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>로컬 네트워크에서 다운로드하는 내용.</g1> MDM은 네트워크의 다른 컴퓨터에 어떤 토렌트를 가지고 있는지 알려주어 더 빠르게 공유할 수 있도록 합니다. 공용 Wi-Fi에서는 <g2>로컬 네트워크에서 피어 찾기</g2>를 끄십시오."
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux의 신호, macOS의 Mach 예외), 패닉 또는 멈추면 모니터에 덤프를 요청합니다. 멈춤은 창의 프레임이 8초 이상 실행되는 것으로, 잠든 시간을 무시하는 감시 스레드에 의해 감지됩니다. 그러면 모니터는 <x3/> 및 <x4/>를 통해 외부에서 모든 스레드의 <g2>미니덤프</g2>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 마찬가지입니다."
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "토렌트의 파일은 브라우저의 다운로드와 마찬가지로 <g1>인터넷에서 다운로드됨</g1>으로 표시됩니다. Windows SmartScreen은 프로그램이 처음 실행되기 전에 확인하고, Office는 문서를 보호된 보기로 엽니다. Mac에서는 Gatekeeper가 앱을 확인합니다."
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "보안 — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>Mister Download Manager 열기</g1> 및 <g2>옵션...</g2>."
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "토렌트의 파일"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "브라우저는 한 번에 하나의 연결로 파일을 가져옵니다. MDM은 서버에 파일의 여러 부분을 동시에 요청하며, 최대 32개(허용하는 경우 128개)의 연결을 사용하고 계속해서 재분할합니다. 즉, 한 연결이 자신의 부분을 완료하면 아직 남아있는 가장 큰 부분의 절반을 가져가므로 느린 연결이 완료를 지연시키지 않습니다. 또한 추가 연결을 거부하는 서버를 기억하고 더 이상 요청하지 않습니다. <g1>연결 및 속도</g1>를 참조하십시오."
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>귀하의 IP 주소.</g1> 동일한 토렌트를 공유하는 모든 사람과 트래커 및 DHT(피어가 서로를 찾는 데 사용하는 네트워크)가 이를 볼 수 있습니다. 이것이 BitTorrent의 작동 방식이며 MDM의 어떤 설정도 이를 변경하지 않습니다. 주소를 숨기려면 전체 컴퓨터에서 VPN을 사용하십시오."
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "아래와 같이 사용하는 각 브라우저에 확장 프로그램을 로드합니다. 확장 프로그램 파일은 MDM이 설치된 <x1/> 폴더에 있습니다. 자신을 위해 설치한 경우 <x2/>, 모든 사용자를 위해 설치한 경우 <x3/>입니다. 모든 릴리스에는 자체 다운로드로도 제공됩니다: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; 먼저 압축을 풀어야 함) 및 <x5/>."
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "트래커"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "설치 프로그램 다운로드"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "MDM이 제 언어로 제공되나요?"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "MDM은 묻지 않고 이미 있는 파일에 절대 쓰지 않습니다."
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "지원"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "옵션 →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "프록시"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",

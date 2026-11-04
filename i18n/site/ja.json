@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "ウェブページのビデオにポインターを合わせると、小さな<g1>動画をダウンロード</g1>ボタンが端に表示されます。これをクリックすると、MDMの<g2>ページからビデオをダウンロード</g2>ウィンドウが開き、ダウンロード可能な品質を検索します。クリックしたビデオを取得します。再生するファイル自体、またはプレーヤーがロードしたストリーム（HLSまたはDASH）、そうでなければページです。埋め込みプレーヤーも機能し、サイトのサインイン、プレーヤーを埋め込むページ、およびブラウザーのUser-Agentも一緒に送信されるため、メンバー向けのビデオや、埋め込みサイトでのみ再生されるビデオもダウンロードできます。サウンドプレーヤーにもボタンが表示されます。"
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "コンピューターに到達するもの"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>ヘルプ → 問題の報告</g1>で、フォームのシステムとインストール済みが瞬間的にしか入力されなかった問題を修正しました。これからは入力されたままになります。"
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "は、要求された問題（低速接続、切断、ビジー応答、範囲なし。<x1/>にリストされています）を含む生成ファイルを配信するローカルテストサーバーを起動するため、インターネットなしでダウンロードをテストできます。"
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "セキュリティ上の問題を発見しましたか？公開の問題ではなく、GitHubで非公開で報告してください（<g1>セキュリティ → 脆弱性を報告する</g1>、<g2>SECURITY.md</g2>を参照）。"
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "ナイトモードの Mister Download Manager のメインウィンドウ。"
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "ページからビデオをダウンロード：2160p 60fpsからそれ以下の品質まで、利用可能な品質とサイズが表示されます。"
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "トレントエンジンはRustで書かれており、多くのメモリバグを排除しています。MDMは、すべてのピースをトレントのフィンガープリントと照合してチェックするため、ピアが改ざんされたデータを忍び込ませることはできません。MDMは、作者が公開する修正でエンジンを最新の状態に保ちます。"
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>今後このダイアログを表示しない</g1> — MDMは尋ねるのをやめ、今回答えたとおりに実行します。再度尋ねられるようにするには、<g2>オプション → 一般 → ダウンロードを削除する前に確認する</g2>をチェックします。"
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDMは、トレントが必要とする最初のときにトレントエンジンを起動します。<g1>トレントが実行されていないときにトレント エンジンを停止する</g1>がオン（デフォルト）の場合、トレントが実行または共有されていない1分後に再び停止します。実行中は、他のピアがMDMに接続でき、MDMはルーターにポート転送（UPnP）を要求します。Windowsは、ファイアウォールを介してMDMを許可するかどうかを尋ねる場合があります。プライベートネットワークでのみ許可してください。"
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>すべての接続をライブで</g1> 各接続が埋まっていく様子を、速度と残り時間とともに表示。クラッシュしても安全な再開で、停止した場所から再開します。"
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+クリック</g1>でダウンロードを1つ追加または削除します。"
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>トレントとセキュリティ</g2></g1> — 他のユーザーに見える情報、ネットワークスイッチ、ブロックリスト、プロキシについて。"
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "セットアップまたはMDMが起動しない"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "ダウンロードリスト →"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "トレントは、MDMがピアを要求するトラッカーの名前を付けます。MDMは、自分のコンピューターやローカルネットワーク上のトラッカー（<x1/>、<x2/>、<x3/>など）に連絡しないため、トレントがMDMに、それが存在するネットワークにリクエストを送信させることはできません。"
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1 GiB、高速リンク"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "MDMのトレントは<g1>暗号化</g1>（「プロトコル暗号化」と呼ばれることもあります）を使用しません。この種の暗号化は、単純なフィルターからトラフィックを隠すだけであり、あなたが誰であるかを隠すことは決してありません。そのため、MDMはそれを提供すると主張しません。それを必要とする一部のピアは接続しません。"
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "スケジューラ"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "ポータブル版は USB スティックから直接実行でき、ダウンロードリストと設定をそこに保存します。いくつかの設定で、ダウンロードもスティックに保存できます。"
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDMは、システムが安全に書き込めないファイル名を持つトレントを拒否し、どのファイル名であるかを伝え、何も書き込みません。他のユーザーが見られる情報、<g1>トレント設定</g1>のネットワークスイッチ、ブロックリスト、プロキシについては、<g2>トレントとセキュリティ</g2>をご覧ください。"
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "トレント — Mister Download Manager ヘルプ"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "トレントには何でも含まれる可能性があり、誰でも作成できます。信頼できる人からのプログラムのみを開き、疑わしい場合はスキャンしてください。"
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "まだ翻訳されていないテキストは英語で表示されます。ほとんどの翻訳は機械翻訳であり、ネイティブスピーカーによる確認を待っているため、一部の表現が不自然に聞こえる場合があります。"
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "ダウンロードするアドレス。"
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "トレントは、1つのウェブサイトからではなく、他の人々のコンピューターから提供されます。これにより、信頼できるものと他の人が見ることができるものが変わります。このページでは、MDMが何を行い、何を行わないかを明確に説明しています。言及されているスイッチは、<g1>タスク → トレント設定...</g1>にあります。"
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDMは、ウィンドウを表示せずに次の3つの方法で操作できます。"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5を使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにします。プロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア検出、受信接続、UDPトラッカーをオフにします。そのスイッチがオンの間にプロキシがプロキシ / SOCKSからなくなると、トレントはそれを回避するのではなく、開始されません。"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "強調表示された（デフォルトの）ボタン。フォーカスされたボタンはそのボタンを押す"
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>MDMを使用していること。</g1>ピアは「MisterDownloadManager」という名前とそのメジャーバージョンを見ることができ、正確なビルドは表示されません。"
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "リスト内でダウンロードを選択します。"
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "アシスタントの表示"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>このリストのアドレスをブロックする</g1>は、P2P（PeerGuardian）またはeMule <x2/>形式の公開IPブロックリストのアドレスを、プレーンまたはgzip形式で取得します。MDMは独自のダウンローダーでそれをダウンロードし（プロキシ / SOCKS設定が適用されます）、チェックし、7日ごとに再度フェッチします。その中のピアは拒否されます。MDMが読み取れないリストは除外され、最後の良好なリストが残ります。エンジンは起動時にリストを読み取ります。"
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "開始時刻になるとキューは自動的に開始されます。朝には、完了したファイルはカテゴリの<g1>完了</g1>の下にあります。"
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "<g1>すべて</g1>を別のネットワーク経由でルーティングするには、コンピューター全体でVPNを使用してください。MDMは、Windowsでトレントを1つのネットワークアダプターに結び付けることはできません。"
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "トレントとセキュリティ"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Internet Download Managerのコピーまたはクラックですか？ — Mister Download Manager"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "トレントは、1つのウェブサイトからではなく、他の人々のコンピューターから提供されます。これにより、信頼できるものと他の人が見ることができるものが変わります。このページでは、MDMが何を行い、何を行わないかを明確に説明しています。"
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>問題の報告</g2></g1> — またはMDMで<g3>ヘルプ → 問題の報告</g3>を使用してください。これにより、バージョン、システム、MDMのインストール方法が自動入力されます。"
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "ボックス内のダウンロードを選択"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "他の人が見ることができるもの"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "各アプリで7回以上実行された7つのダウンロード。棒グラフは実行の中央半分、線は中央値を示します。"
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "アドレスのブロック"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "ファイルのタイプは<g1>オプション → ファイルの種類</g1>にありますか？リストにあるタイプのみが自動的に取得されます。右クリックメニューの<g2>Mister Download Manager でダウンロード</g2>は、どのリンクでも取得します。"
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp と ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "トレントとセキュリティ — Mister Download Manager ヘルプ"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "トレント設定で、<g1>受信接続を許可する</g1>と<g2>ルーターでポートをマップする (UPnP)</g2>、またはDHTをオフにすることができます。ダウンロードは引き続き機能しますが、速度が遅くなる場合があります。固定された<g3>ポート</g3>は、ファイアウォールとルーターのルールを機能させ続けます。これらの変更は、エンジンが次に起動するとき、つまりトレントが実行されていないときに適用されます。"
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "ドロップダウンリストを開く"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>アドレスが入力されていない場合:</g1> クリップボードにウェブアドレスがありませんでした。<g2>アドレス</g2>に自分で貼り付けてください。"
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>ローカルネットワークでダウンロードするもの。</g1>MDMは、ネットワーク上の他のコンピューターに、どのトレントを持っているかを伝え、より速く共有できるようにします。公共のWi-Fiでは、<g2>ローカル ネットワークでピアを検索する</g2>をオフにしてください。"
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>問題の捕捉。</g1> MDM がクラッシュ（Windows の例外、Linux のシグナル、macOS の Mach 例外）、パニック、またはフリーズした場合、モニターにダンプを要求します。フリーズとは、スリープ時間を無視するウォッチドッグスレッドによって検出される、8 秒以上実行されているウィンドウのフレームです。モニターは、<x3/> と <x4/> を介して、外部からすべてのスレッドの <g2>ミニダンプ</g2> を書き込みます。クラッシュしたプロセスは、自身のダンプを書き込むことはありません。これは Firefox、Crashpad、Sentry も同様です。"
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "トレントからのファイルは、ブラウザのダウンロードと同様に、<g1>インターネットからダウンロードされた</g1>ものとしてマークされます。Windows SmartScreenは、プログラムが最初に実行される前にチェックし、Officeはドキュメントを保護されたビューで開きます。Macでは、Gatekeeperがアプリをチェックします。"
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "セキュリティ — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>Mister Download Manager を開く</g1>と<g2>オプション...</g2>。"
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "トレントからのファイル"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "ブラウザは1つの接続でファイルをダウンロードします。MDMはサーバーにファイルの複数の部分を同時に要求し、最大32接続（許可すれば128接続）を使用します。そして、接続がその部分を完了すると、まだ残っている最大の半分を引き継ぐため、遅い接続が完了を妨げることはありません。また、追加接続を拒否するサーバーを記憶し、それらに要求するのをやめます。<g1>接続と速度</g1>をご覧ください。"
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>あなたのIPアドレス。</g1>同じトレントを共有している全員がそれを見ることができ、そのトラッカーとDHT（ピアが互いを見つけるために使用するネットワーク）も同様です。これがBitTorrentの仕組みであり、MDMの設定でこれを変更することはできません。アドレスを隠すには、コンピューター全体でVPNを使用してください。"
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "使用する各ブラウザーに、以下のように拡張機能を読み込みます。拡張機能のファイルは、MDMがインストールされている<x1/>フォルダーにあります。自分用にインストールした場合は<x2/>、全員用にインストールした場合は<x3/>です。各リリースには、それら自体がダウンロードとして含まれています。<x4/>（Chrome、Edge、Brave、Opera、Vivaldi; 最初に解凍してください）および<x5/>。"
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "トラッカー"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "インストーラーをダウンロード"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "MDMは自分の言語で利用できますか？"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "MDMは、既存のファイルに尋ねることなく書き込むことはありません。"
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "配達"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "オプション →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "プロキシ"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",

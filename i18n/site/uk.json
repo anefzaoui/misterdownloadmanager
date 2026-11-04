@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "Наведіть курсор на відео на веб-сторінці, і на його краю з'явиться невелика кнопка <g1>Завантажити відео</g1>. Натисніть її, і відкриється вікно <g2>Завантажити відео зі сторінки</g2> MDM, яке шукає доступні якості для завантаження. Воно перехоплює відео, на яке ви натиснули: його власний файл, якщо воно відтворює його, або потік, завантажений плеєром (HLS або DASH), інакше сторінку. Вбудовані плеєри також працюють, і ваші дані для входу на сайт, сторінка, яка вбудовує плеєр, і User-Agent вашого браузера передаються разом з ним, тому відео для учасників або ті, що відтворюються лише на сайті, який їх вбудовує, можуть бути завантажені. Кнопка також з'являється на аудіоплеєрах."
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "Що надходить на ваш комп'ютер"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>Довідка → Повідомити про проблему</g1> заповнювала поля «Система» та «Встановлено» форми лише на мить; тепер вони залишаються заповненими."
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "запускає локальний тестовий сервер, який надає згенеровані файли з будь-якими проблемами, які ви запитуєте (повільні з'єднання, розриви, зайняті відповіді, відсутність діапазонів; <x1/> перераховує їх), тому завантаження можна тестувати без інтернету."
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "Знайшли проблему безпеки? Будь ласка, повідомте про неї приватно на GitHub (<g1>Безпека → Повідомити про вразливість</g1>, див. <g2>SECURITY.md</g2>), а не в публічному випуску."
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "Головне вікно Mister Download Manager у нічному режимі."
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "Завантажити відео зі сторінки: доступні якості, від 2160p 60fps і нижче, з їхніми розмірами."
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "Торрент-рушій написаний на Rust, що виключає багато помилок пам'яті, і MDM перевіряє кожну частину за відбитком торрента, тому пір не може підсунути змінені дані. MDM підтримує рушій в актуальному стані з виправленнями, які публікують його автори."
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>Більше не показувати це діалогове вікно</g1> — MDM припиняє запитувати і робить те, що ви відповіли цього разу. Щоб запитати знову, поставте позначку <g2>Параметри → Загальні → Підтверджувати перед видаленням завантажень</g2>."
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDM запускає свій торрент-рушій, коли торрент вперше його потребує. Якщо ввімкнено <g1>Зупинити торрент-рушій, коли не запущено жодного торрента</g1> (за замовчуванням), він знову зупиняється через хвилину після того, як жоден торрент не працює або не ділиться. Поки він працює, інші піри можуть підключатися до MDM, і MDM просить ваш маршрутизатор перенаправити його порт (UPnP). Windows може запитати, чи дозволити MDM через брандмауер: дозволяйте його лише в приватних мережах."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>Кожне з’єднання, наживо</g1> Кожне з’єднання відображається під час заповнення, зі швидкістю та часом, що залишився. Безпечне відновлення після збою продовжує з того місця, де зупинилося."
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+клацання</g1> додає або видаляє одне завантаження."
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>Торренти та ваша безпека</g2></g1> — що можуть бачити інші, мережеві перемикачі, чорні списки, проксі."
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "Програма встановлення або MDM не запускається"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "Список завантажень →"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "Торрент називає трекери, у яких MDM запитує пірів. MDM не контактує з трекером на вашому власному комп'ютері або у вашій локальній мережі (<x1/>, <x2/>, <x3/> тощо), тому торрент не може змусити MDM надсилати запити в мережу, в якій він знаходиться."
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1 ГіБ, швидке з’єднання"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "Торренти MDM не використовують <g1>шифрування</g1> (іноді його називають \"шифруванням протоколу\"). Таке шифрування лише приховує трафік від простих фільтрів. Воно ніколи не приховує, хто ви є, тому MDM не заявляє, що пропонує його. Деякі піри, які вимагають його, не підключатимуться."
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "Планувальник"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "Портативна копія запускається безпосередньо з USB-флешки та зберігає там свій список і налаштування. З кількома налаштуваннями вона також зберігає ваші завантаження на флешку."
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDM відхиляє торрент з іменами файлів, які ваша система не може безпечно записати, вказує, яке саме ім'я, і нічого не записує. Що можуть бачити інші, мережеві перемикачі в <g1>Налаштування торрентів</g1>, чорні списки та проксі: <g2>Торренти та ваша безпека</g2>."
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "Торренти — Довідка Mister Download Manager"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "Торрент може містити що завгодно, і будь-хто може його створити. Відкривайте програми лише від людей, яким ви довіряєте, і скануйте їх, якщо сумніваєтеся."
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "Текст, який ще не перекладено, відображається англійською мовою. Більшість перекладів були зроблені машиною і чекають на перевірку носієм мови, тому деякі формулювання можуть звучати неправильно."
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "Адреса для завантаження."
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "Торрент надходить з комп'ютерів інших людей, а не з одного вебсайту. Це змінює те, чому ви можете довіряти і що можуть бачити інші. Ця сторінка чітко пояснює, що MDM робить, а що ні. Згадані перемикачі знаходяться в <g1>Завдання → Налаштування торрентів...</g1>."
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM можна керувати без його вікна трьома способами:"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Налаштування Проксі / Socks MDM призначені для завантажень з вебу та FTP. Торренти також можуть використовувати SOCKS5: встановіть <x1/> проксі в <g2>Параметри → Проксі / Socks</g2> та увімкніть <g3>Використовувати проксі</g3> в Налаштуваннях торрентів. Проксі охоплює лише підключення до пірів та веб-трекерів, тому з ним MDM вимикає DHT, локальне виявлення пірів, вхідні підключення та UDP-трекери. Якщо проксі зник з Проксі / Socks, коли цей перемикач увімкнено, торренти не запускаються, а не обходять його."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "Виділена (за замовчуванням) кнопка; сфокусована кнопка натискає цю кнопку"
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>Що ви використовуєте MDM.</g1> Піри бачать назву \"MisterDownloadManager\" та його основну версію, а не точну збірку."
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "Виберіть завантаження у списку."
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "Помічник каже"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>Блокувати адреси з цього списку</g1> приймає адресу публічного списку блокування IP-адрес у форматі P2P (PeerGuardian) або eMule <x2/>, звичайному або стиснутому gzip. MDM завантажує його за допомогою власного завантажувача (застосовуються ваші налаштування Проксі / Socks), перевіряє його та знову отримує кожні 7 днів. Піри з цього списку відхиляються. Список, який MDM не може прочитати, ігнорується, і залишається останній дійсний. Рушій читає список під час запуску."
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "У встановлений час черга запускається сама. Вранці завершені файли знаходяться в розділі <g1>Завершено</g1> в категоріях."
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "Щоб маршрутизувати <g1>все</g1> через іншу мережу, використовуйте VPN для всього комп'ютера. MDM не може прив'язати торренти до одного мережевого адаптера в Windows."
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "Торренти та ваша безпека"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Це копія чи кряк Internet Download Manager? — Mister Download Manager"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "Торрент надходить з комп'ютерів інших людей, а не з одного вебсайту. Це змінює те, чому ви можете довіряти і що можуть бачити інші. Ця сторінка чітко пояснює, що..."
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>Повідомити про проблему</g2></g1> — або скористайтеся <g3>Довідка → Повідомити про проблему</g3> в MDM, яка заповнить вашу версію, систему та спосіб встановлення MDM."
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "Вибрати завантаження в полі"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "Що можуть бачити інші люди"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Сім завантажень, кожне виконано щонайменше сім разів обома програмами. Стовпчик — це середня половина запусків, лінія — медіана."
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "Блокування адрес"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "Чи є тип файлу в <g1>Параметри → Типи файлів</g1>? Автоматично приймаються лише перелічені типи. <g2>Завантажити за допомогою Mister Download Manager</g2> у контекстному меню приймає будь-яке посилання."
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp та ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "Торренти та ваша безпека — Довідка Mister Download Manager"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "У Налаштуваннях торрентів ви можете вимкнути <g1>Приймати вхідні підключення</g1> та <g2>Перенаправити порт на маршрутизаторі (UPnP)</g2>, або DHT. Завантаження все ще працюють, іноді повільніше. Фіксований <g3>Порт</g3> забезпечує роботу правил брандмауера та маршрутизатора. Ці зміни застосовуються наступного разу, коли рушій запускається, тобто коли не запущено жодного торрента."
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "Відкрити спадний список"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>Адреса не заповнена:</g1> буфер обміну не містив веб-адреси. Вставте її в <g2>Адреса</g2> самостійно."
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>Що ви завантажуєте, у вашій локальній мережі.</g1> MDM повідомляє іншим комп'ютерам у вашій мережі, які торренти він має, щоб вони могли ділитися швидше. У загальнодоступній мережі Wi-Fi вимкніть <g2>Знайти пірів у локальній мережі</g2>."
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>Виявлення проблем.</g1> Коли MDM аварійно завершує роботу (виняток Windows, сигнал у Linux, виняток Mach у macOS), панікує або зависає, він запитує у монітора дамп. Зависання — це кадр вікна, що працює більше 8 секунд, який відстежується потоком-сторожем, що ігнорує час, проведений у режимі сну. Потім монітор записує <g2>мінідамп</g2> кожного потоку ззовні, через <x3/> та <x4/>. Аварійно завершений процес ніколи не записує власний дамп, так само роблять Firefox, Crashpad та Sentry."
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "Файли з торрентів позначаються як <g1>завантажені з інтернету</g1>, як і завантаження браузера. Windows SmartScreen перевіряє програму перед першим запуском, а Office відкриває документи в Захищеному режимі. На Mac Gatekeeper перевіряє програми."
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "Безпека — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>Відкрити Mister Download Manager</g1> та <g2>Параметри...</g2>."
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "Файли з торрента"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "Браузер завантажує файл через одне з’єднання. MDM запитує у сервера кілька частин файлу одночасно, до 32 з’єднань (128, якщо ви дозволите), і продовжує розділяти: коли з’єднання завершує свою частину, воно бере на себе половину найбільшої частини, що залишилася, тому повільне з’єднання не затримує завершення. Він також запам’ятовує сервери, які відмовляються від додаткових з’єднань, і припиняє їх запитувати. Дивіться <g1>З’єднання та швидкість</g1>."
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>Ваша IP-адреса.</g1> Її бачать усі, хто ділиться тим самим торрентом, а також його трекери та DHT (мережа, яку піри використовують для пошуку один одного). Так працює BitTorrent, і жодні налаштування в MDM цього не змінюють. Щоб приховати свою адресу, використовуйте VPN на всьому комп'ютері."
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "Завантажте розширення в кожному браузері, який ви використовуєте, як описано нижче. Файли розширення знаходяться в папці <x1/>, де встановлено MDM: <x2/>, якщо ви встановили його для себе, або <x3/>, якщо ви встановили його для всіх. Кожен випуск також має їх як окремі завантаження: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; спочатку розпакуйте його) та <x5/>."
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "Трекери"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "Завантажити інсталятор"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "Чи доступний MDM моєю мовою?"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "MDM ніколи не записує в файл, який вже існує, без запиту."
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "Доставка"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "Параметри →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "Проксі"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",

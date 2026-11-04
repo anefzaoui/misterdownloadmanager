@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "Bir web sayfasındaki bir videonun üzerine gelin ve kenarında küçük bir <g1>Videoyu indir</g1> düğmesi belirir. Tıklayın ve MDM'nin <g2>Bir sayfadan video indir</g2> penceresi açılır ve indirebileceği kaliteleri arar. Tıkladığınız videoyu alır: kendi dosyası oynattığında veya oynatıcının yüklediği akışı (HLS veya DASH), aksi takdirde sayfayı. Gömülü oynatıcılar da çalışır ve siteye giriş bilgileriniz, oynatıcıyı gömen sayfa ve tarayıcınızın Kullanıcı Aracısı da onunla birlikte gider, böylece üyeler için olan veya yalnızca onları gömen sitede oynayan videolar indirilebilir. Ses oynatıcıları da düğmeyi alır."
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "Bilgisayarınıza ulaşanlar"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>Yardım → Bir sorun bildir</g1> formun Sistem ve Yüklü alanlarını sadece bir anlığına dolduruyordu; artık dolu kalıyorlar."
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "istediğiniz her türlü sorunla (yavaş bağlantılar, kesintiler, meşgul yanıtlar, aralık yok; <x1/> bunları listeler) oluşturulan dosyaları sunan yerel bir test sunucusu başlatır, böylece indirmeler internet olmadan test edilebilir."
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "Bir güvenlik sorunu mu buldunuz? Lütfen bunu herkese açık bir sorun yerine GitHub'da özel olarak bildirin (<g1>Güvenlik → Bir güvenlik açığı bildir</g1>, <g2>SECURITY.md</g2> bölümüne bakın)."
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "Mister Download Manager'ın ana penceresi gece modunda."
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "Bir sayfadan video indir: 2160p 60fps'den başlayarak sunulan kaliteler ve boyutları."
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "Torrent motoru Rust ile yazılmıştır, bu da birçok bellek hatasını ortadan kaldırır ve MDM her parçayı torrentin parmak iziyle kontrol eder, böylece bir eş değiştirilmiş veri sızdıramaz. MDM, motoru yazarlarının yayınladığı düzeltmelerle güncel tutar."
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>Bu iletişim kutusunu bir daha gösterme</g1> — MDM sormayı bırakır ve bu sefer verdiğiniz cevabı uygular. Tekrar sorulmasını sağlamak için <g2>Seçenekler → Genel → İndirmeleri silmeden önce onayla</g2> seçeneğini işaretleyin."
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDM, bir torrentin ihtiyaç duymasıyla torrent motorunu ilk kez başlatır. <g1>Hiçbir torrent çalışmadığında torrent motorunu durdur</g1> açıkken (varsayılan), hiçbir torrent çalışmadığında veya paylaşım yapmadığında bir dakika sonra tekrar durur. Çalışırken, diğer eşler MDM'ye bağlanabilir ve MDM, yönlendiricinizden bağlantı noktasını iletmesini ister (UPnP). Windows, MDM'ye güvenlik duvarından izin verilip verilmeyeceğini sorabilir: yalnızca özel ağlarda izin verin."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>Her bağlantı, canlı</g1> Her bağlantı, dolarken hızı ve kalan süresiyle çizilir. Çökme durumunda güvenli devam etme, kaldığı yerden devam eder."
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+tıklama</g1> bir indirmeyi ekler veya kaldırır."
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>Torrentler ve güvenliğiniz</g2></g1> — başkalarının neler görebileceği, ağ anahtarları, engelleme listeleri, proxy'ler."
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "Kurulum veya MDM başlamıyor"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "İndirme listesi →"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "Bir torrent, MDM'nin eşler için sorduğu izleyicilerin adlarını içerir. MDM, kendi bilgisayarınızdaki veya yerel ağınızdaki bir izleyiciyle (<x1/>, <x2/>, <x3/> ve benzerleri) iletişim kurmaz, bu nedenle bir torrent MDM'nin bulunduğu ağa istek göndermesini sağlayamaz."
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1 GiB, hızlı bağlantı"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "MDM'nin torrentleri <g1>şifreleme</g1> (bazen \"protokol şifrelemesi\" olarak adlandırılır) kullanmaz. Bu tür bir şifreleme, trafiği yalnızca basit filtrelerden gizler. Kim olduğunuzu asla gizlemez, bu yüzden MDM bunu sunduğunu iddia etmez. Bunu gerektiren bazı eşler bağlanmayacaktır."
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "Zamanlayıcı"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "Taşınabilir kopya, doğrudan USB bellekten çalışır ve liste ile ayarlarını orada tutar. Birkaç ayarla, indirdiklerinizi de belleğe kaydeder."
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDM, sisteminizin güvenli bir şekilde yazamayacağı dosya adlarına sahip bir torrenti reddeder, hangi adın sorunlu olduğunu belirtir ve hiçbir şey yazmaz. Başkalarının görebilecekleri, <g1>Torrent ayarları</g1> içindeki ağ anahtarları, kara listeler ve proxy'ler: <g2>Torrentler ve güvenliğiniz</g2>."
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "Torrentler — Mister Download Manager yardım"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "Bir torrent her şeyi içerebilir ve herkes bir tane yapabilir. Yalnızca güvendiğiniz kişilerden gelen programları açın ve şüpheniz varsa tarayın."
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "Henüz çevrilmemiş bir metin İngilizce olarak gösterilir. Çevirilerin çoğu makine tarafından yapılmıştır ve ana dili konuşan birinin kontrol etmesini beklemektedir, bu nedenle bazı ifadeler yanlış gelebilir."
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "İndirilecek adres."
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "Torrentler tek bir web sitesinden değil, diğer insanların bilgisayarlarından gelir. Bu durum, neye güvenebileceğinizi ve başkalarının ne görebileceğini değiştirir. Bu sayfa, MDM'nin ne yaptığını ve ne yapmadığını açıkça belirtir. Bahsedilen ayarlar <g1>Görevler → Torrent ayarları...</g1> bölümündedir."
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM, penceresi olmadan üç şekilde çalıştırılabilir:"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM'nin Ara Sunucu / Socks ayarları web ve FTP indirmeleri içindir. Torrentler de bir SOCKS5 kullanabilir: <g2>Seçenekler → Ara Sunucu / Socks</g2> bölümünde bir <x1/> ara sunucu ayarlayın ve Torrent ayarlarında <g3>Ara sunucuyu kullan</g3> seçeneğini açın. Ara sunucu yalnızca eşlere ve web izleyicilerine olan bağlantıları kapsar, bu nedenle MDM bununla DHT'yi, yerel eş keşfini, gelen bağlantıları ve UDP izleyicilerini kapatır. Bu anahtar açıkken ara sunucu Ara Sunucu / Socks bölümünden kaybolursa, torrentler onu atlamak yerine başlamaz."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "Vurgulanan (varsayılan) düğme; odaklanmış bir düğme o düğmeye basar"
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>MDM kullandığınız.</g1> Eşler \"MisterDownloadManager\" adını ve ana sürümünü görür, tam yapım numarasını değil."
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "İndirmeyi listede seçin."
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "Asistan şunu diyor"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>Bu listedeki adresleri engelle</g1>, P2P (PeerGuardian) veya eMule <x2/> biçiminde, düz veya sıkıştırılmış genel bir IP engelleme listesinin adresini alır. MDM bunu kendi indiricisiyle indirir (Ara Sunucu / Socks ayarlarınız uygulanır), kontrol eder ve her 7 günde bir tekrar getirir. Listedeki eşler reddedilir. MDM'nin okuyamadığı bir liste dışarıda bırakılır ve son iyi liste kalır. Motor, listeyi başladığında okur."
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Başlangıç saatinde sıra kendiliğinden başlar. Sabah, tamamlanan dosyalar kategorilerdeki <g1>Tamamlandı</g1> altında yer alır."
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "<g1>Her şeyi</g1> başka bir ağ üzerinden yönlendirmek için tüm bilgisayar için bir VPN kullanın. MDM, Windows'ta torrentleri tek bir ağ bağdaştırıcısına bağlayamaz."
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "Torrentler ve güvenliğiniz"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Internet Download Manager'ın kopyası veya crack'i mi? — Mister Download Manager"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "Torrentler tek bir web sitesinden değil, diğer insanların bilgisayarlarından gelir. Bu durum, neye güvenebileceğinizi ve başkalarının ne görebileceğini değiştirir. Bu sayfa, MDM'nin ne yaptığını açıkça belirtir..."
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>Bir sorun bildir</g2></g1> — veya MDM'de <g3>Yardım → Bir sorun bildir</g3> seçeneğini kullanın; bu, sürümünüzü, sisteminizi ve MDM'nin nasıl yüklendiğini sizin için doldurur."
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "Kutudaki indirmeleri seç"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "Başkalarının görebilecekleri"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Her iki uygulama da her biri en az yedi kez çalıştırılan yedi indirme. Çubuk, çalıştırmaların orta yarısını, çizgi ise medyanı gösterir."
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "Adresleri engelleme"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "Dosya türü <g1>Seçenekler → Dosya türleri</g1> içinde mi? Yalnızca listelenen türler otomatik olarak alınır. Sağ tıklama menüsündeki <g2>Mister Download Manager ile İndir</g2> herhangi bir bağlantıyı alır."
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp ve ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "Torrentler ve güvenliğiniz — Mister Download Manager yardım"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "Torrent ayarlarında <g1>Gelen bağlantıları kabul et</g1> ve <g2>Yönlendiricideki bağlantı noktasını eşle (UPnP)</g2> veya DHT'yi kapatabilirsiniz. İndirmeler hala çalışır, bazen daha yavaş. Sabit bir <g3>Bağlantı noktası</g3> güvenlik duvarı ve yönlendirici kurallarının çalışmasını sağlar. Bu değişiklikler, motor bir sonraki başladığında, yani hiçbir torrent çalışmadığında uygulanır."
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "Bir açılır listeyi aç"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>Adres doldurulmadı:</g1> panoda bir web adresi yoktu. Adresi <g2>Adres</g2> alanına kendiniz yapıştırın."
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>Yerel ağınızda indirdiğiniz içerik.</g1> MDM, ağınızdaki diğer bilgisayarlara hangi torrentlere sahip olduğunu bildirir, böylece daha hızlı paylaşım yapabilirler. Halka açık Wi-Fi'de, <g2>Yerel ağdaki eşleri bul</g2> seçeneğini kapatın."
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>Sorunları yakalama.</g1> MDM çöktüğünde (bir Windows istisnası, Linux'ta bir sinyal, macOS'ta bir Mach istisnası), paniklediğinde veya donduğunda, izleyiciden bir döküm ister. Donma, uykuya harcanan zamanı göz ardı eden bir izleyici iş parçacığı tarafından görülen, 8 saniyeden fazla çalışan pencerenin bir çerçevesidir. İzleyici daha sonra <x3/> ve <x4/> aracılığıyla dışarıdan her iş parçacığının bir <g2>minidump</g2>'ını yazar. Çöken bir işlem asla kendi dökümünü yazmaz, Firefox, Crashpad ve Sentry de bunu böyle yapar."
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "Torrentlerden gelen dosyalar, bir tarayıcının indirmeleri gibi <g1>internetten indirildi</g1> olarak işaretlenir. Windows SmartScreen, bir programı ilk kez çalıştırmadan önce kontrol eder ve Office, belgeleri Korumalı Görünüm'de açar. Bir Mac'te Gatekeeper uygulamaları kontrol eder."
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "Güvenlik — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>Mister Download Manager'ı Aç</g1> ve <g2>Seçenekler...</g2>."
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "Bir torrentten gelen dosyalar"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "Bir tarayıcı, bir dosyayı tek bir bağlantı üzerinden indirir. MDM ise sunucudan dosyanın birden çok parçasını aynı anda, 32 bağlantıya kadar (izin verirseniz 128) ister ve sürekli yeniden böler: bir bağlantı kendi parçasını bitirdiğinde, kalan en büyük parçanın yarısını devralır, böylece hiçbir yavaş bağlantı indirme işlemini geciktirmez. Ayrıca ek bağlantıları reddeden sunucuları hatırlar ve onlardan istemeyi bırakır. Bkz. <g1>Bağlantılar ve hız</g1>."
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>IP adresiniz.</g1> Aynı torrenti paylaşan herkes, izleyicileri ve DHT (eşlerin birbirini bulmak için kullandığı ağ) de dahil olmak üzere IP adresinizi görür. BitTorrent bu şekilde çalışır ve MDM'deki hiçbir ayar bunu değiştirmez. Adresinizi gizlemek için tüm bilgisayarınızda bir VPN kullanın."
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "Aşağıdaki gibi, kullandığınız her tarayıcıya eklentiyi yükleyin. Eklentinin dosyaları, MDM'nin yüklü olduğu <x1/> klasöründedir: kendiniz için yüklediyseniz <x2/> veya herkes için yüklediyseniz <x3/>. Her sürümde ayrıca kendi indirmeleri olarak da bulunur: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; önce sıkıştırmayı açın) ve <x5/>."
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "İzleyiciler"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "Kurucuyu indir"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "MDM benim dilimde mevcut mu?"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "MDM, sormadan zaten var olan bir dosyaya asla yazmaz."
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "Teslimat"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "Seçenekler →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "Ara Sunucular"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",

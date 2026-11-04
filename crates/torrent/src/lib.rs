@@ -780,6 +780,40 @@ mod tests {
 
     /// #40: a kept torrent keeps only the trackers MDM may contact, in session.json and in its
     /// .torrent (whose info, so its hash, stays the same); with a proxy, UDP ones go too.
+    /// #40: a fixed port is the one listened on; with a proxy nothing listens (incoming
+    /// connections would go around it). Nothing else of the network is on (no DHT, UPnP, LSD).
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn the_port_and_the_proxy_are_honoured() {
+        let tmp = tempfile::tempdir().unwrap();
+        let free = std::net::TcpListener::bind(("127.0.0.1", 0))
+            .unwrap()
+            .local_addr()
+            .unwrap()
+            .port();
+        let quiet = |dir: &str| Config {
+            upnp: false,
+            dht: false,
+            lsd: false,
+            ..Config::new(tmp.path().join(dir))
+        };
+        let t = Torrents::start(Config {
+            port: Some(free),
+            ..quiet("fixed")
+        })
+        .await
+        .unwrap();
+        assert_eq!(t.listen_addr().map(|a| a.port()), Some(free));
+        t.stop().await;
+        let t = Torrents::start(Config {
+            proxy: Some("socks5://127.0.0.1:9".into()),
+            ..quiet("proxied")
+        })
+        .await
+        .unwrap();
+        assert_eq!(t.listen_addr(), None, "nothing listens behind a proxy");
+        t.stop().await;
+    }
+
     #[test]
     fn torrent_files_are_read_up_to_their_cap() {
         let dir = tempfile::tempdir().unwrap();

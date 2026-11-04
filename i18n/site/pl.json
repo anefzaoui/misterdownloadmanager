@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "Wskaż wideo na stronie internetowej, a mały przycisk <g1>Pobierz wideo</g1> pojawi się na jego krawędzi. Kliknij go, a otworzy się okno <g2>Pobierz wideo ze strony</g2> MDM i wyszuka dostępne jakości do pobrania. Pobiera wideo, które kliknąłeś: jego własny plik, jeśli odtwarza jeden, lub strumień załadowany przez odtwarzacz (HLS lub DASH), w przeciwnym razie stronę. Wbudowane odtwarzacze również działają, a Twoje logowanie do witryny, strona, która osadza odtwarzacz, i User-Agent Twojej przeglądarki są przesyłane razem z nim, dzięki czemu można pobierać filmy dla członków lub te, które odtwarzają się tylko na witrynie, która je osadza. Przyciski pojawiają się również dla odtwarzaczy dźwięku."
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "Co dociera do Twojego komputera"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>Pomoc → Zgłoś problem</g1> wypełniało pola System i Zainstalowano tylko na chwilę; teraz pozostają wypełnione."
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "uruchamia lokalny serwer testowy, który udostępnia wygenerowane pliki z dowolnymi problemami, o które poprosisz (wolne połączenia, przerwy, zajęte odpowiedzi, brak zakresów; <x1/> je wymienia), dzięki czemu pobieranie można testować bez internetu."
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "Znalazłeś problem z bezpieczeństwem? Zgłoś go prywatnie na GitHub (<g1>Security → Report a vulnerability</g1>, zobacz <g2>SECURITY.md</g2>), a nie w publicznym zgłoszeniu."
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "Główne okno Mister Download Manager w trybie nocnym."
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "Pobierz wideo ze strony: dostępne jakości, od 2160p 60fps w dół, z ich rozmiarami."
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "Silnik torrenta jest napisany w Rust, co eliminuje wiele błędów pamięci, a MDM sprawdza każdy fragment pod kątem odcisku palca torrenta, więc uczestnik nie może wsunąć zmienionych danych. MDM aktualizuje silnik o poprawki publikowane przez jego autorów."
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>Nie pokazuj tego okna dialogowego ponownie</g1> — MDM przestaje pytać i wykonuje to, co odpowiedziałeś tym razem. Aby ponownie otrzymać pytanie, zaznacz <g2>Opcje → Ogólne → Potwierdź przed usunięciem pobranych plików</g2>."
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDM uruchamia swój silnik torrenta za pierwszym razem, gdy torrent tego potrzebuje. Gdy <g1>Zatrzymaj silnik torrenta, gdy nie działa żaden torrent</g1> jest włączone (domyślnie), zatrzymuje się ponownie minutę po tym, jak żaden torrent nie działa ani nie jest udostępniany. Podczas jego działania inni uczestnicy mogą łączyć się z MDM, a MDM prosi router o przekierowanie swojego portu (UPnP). System Windows może zapytać, czy zezwolić MDM na dostęp przez zaporę: zezwól tylko w sieciach prywatnych."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>Każde połączenie, na żywo</g1> Każde połączenie rysowane w miarę wypełniania, z prędkością i pozostałym czasem. Bezpieczne wznawianie po awarii kontynuuje od miejsca, w którym się zatrzymało."
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+kliknięcie</g1> dodaje lub usuwa jedno pobieranie."
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>Torrenty i Twoje bezpieczeństwo</g2></g1> — co widzą inni, przełączniki sieciowe, listy blokad, serwery proxy."
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "Instalator lub MDM nie uruchamia się"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "Lista pobierania →"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "Torrent podaje nazwy trackerów, o które MDM prosi o uczestników. MDM nie kontaktuje się z trackerem na Twoim komputerze ani w Twojej sieci lokalnej (<x1/>, <x2/>, <x3/> i tym podobne), więc torrent nie może zmusić MDM do wysyłania żądań do sieci, w której się znajduje."
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1 GiB, szybkie łącze"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "Torrenty MDM nie używają <g1>szyfrowania</g1> (czasami nazywanego „szyfrowaniem protokołu”). Ten rodzaj szyfrowania ukrywa ruch tylko przed prostymi filtrami. Nigdy nie ukrywa, kim jesteś, więc MDM nie twierdzi, że je oferuje. Niektórzy uczestnicy, którzy tego wymagają, nie połączą się."
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "Harmonogram"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "Przenośna kopia działa bezpośrednio z pendrive'a i tam przechowuje swoją listę i ustawienia. Dzięki kilku ustawieniom zapisuje również pobrane pliki na pendrive."
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDM odrzuca torrenta z nazwami plików, których system nie może bezpiecznie zapisać, wskazuje, która nazwa jest problemem, i niczego nie zapisuje. Co inni mogą zobaczyć, przełączniki sieciowe w <g1>Ustawienia torrenta</g1>, listy blokad i serwery proxy: <g2>Torrenty a Twoje bezpieczeństwo</g2>."
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "Torrenty — pomoc Mister Download Manager"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "Torrent może zawierać wszystko, a każdy może go stworzyć. Otwieraj programy tylko od osób, którym ufasz, i skanuj je w razie wątpliwości."
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "Tekst, który nie został jeszcze przetłumaczony, wyświetla się w języku angielskim. Większość tłumaczeń została wykonana maszynowo i czeka na sprawdzenie przez native speakera, więc niektóre sformułowania mogą brzmieć niepoprawnie."
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "Adres do pobrania."
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "Torrent pochodzi z komputerów innych ludzi, a nie z jednej strony internetowej. To zmienia to, czemu możesz ufać i co inni mogą zobaczyć. Ta strona jasno określa, co MDM robi, a czego nie. Wspomniane przełączniki znajdują się w <g1>Zadania → Ustawienia torrenta...</g1>."
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM można obsługiwać bez okna na trzy sposoby:"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Ustawienia Serwer proxy / Socks w MDM dotyczą pobierania z sieci i FTP. Torrenty mogą również używać SOCKS5: ustaw proxy <x1/> w <g2>Opcje → Serwer proxy / Socks</g2> i włącz <g3>Użyj proxy</g3> w Ustawieniach torrenta. Proxy obejmuje tylko połączenia z uczestnikami i trackerami internetowymi, więc MDM wyłącza DHT, lokalne wykrywanie uczestników, połączenia przychodzące i trackery UDP. Jeśli proxy zniknie z Serwer proxy / Socks, gdy ten przełącznik jest włączony, torrenty nie uruchomią się, zamiast go omijać."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "Podświetlony (domyślny) przycisk; przycisk z fokusem naciska ten przycisk"
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>Że używasz MDM.</g1> Uczestnicy widzą nazwę „MisterDownloadManager” i jego główną wersję, a nie dokładną kompilację."
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "Wybierz pobieranie na liście."
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "Asystent mówi"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>Zablokuj adresy z tej listy</g1> przyjmuje adres publicznej listy blokad IP, w formacie P2P (PeerGuardian) lub eMule <x2/>, zwykłym lub skompresowanym gzipem. MDM pobiera ją za pomocą własnego narzędzia do pobierania (obowiązują Twoje ustawienia Serwer proxy / Socks), sprawdza ją i pobiera ponownie co 7 dni. Uczestnicy z tej listy są odrzucani. Lista, której MDM nie może odczytać, jest pomijana, a ostatnia dobra pozostaje. Silnik odczytuje listę po uruchomieniu."
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "O ustalonej godzinie kolejka uruchomi się automatycznie. Rano ukończone pliki znajdziesz w kategoriach pod <g1>Ukończone</g1>."
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "Aby przekierować <g1>wszystko</g1> przez inną sieć, użyj VPN dla całego komputera. MDM nie może powiązać torrentów z jednym adapterem sieciowym w systemie Windows."
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "Torrenty a Twoje bezpieczeństwo"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Czy to kopia lub crack Internet Download Manager? — Mister Download Manager"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "Torrent pochodzi z komputerów innych ludzi, a nie z jednej strony internetowej. To zmienia to, czemu możesz ufać i co inni mogą zobaczyć. Ta strona jasno określa, co..."
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>Zgłoś problem</g2></g1> — lub użyj opcji <g3>Pomoc → Zgłoś problem</g3> w MDM, która automatycznie uzupełni informacje o Twojej wersji, systemie i sposobie instalacji MDM."
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "Zaznacz pobierania w polu"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "Co inni mogą zobaczyć"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Siedem pobrań, każde uruchomione co najmniej siedem razy przez obie aplikacje. Słupek to środkowa połowa uruchomień, linia to mediana."
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "Blokowanie adresów"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "Czy typ pliku znajduje się w <g1>Opcje → Typy plików</g1>? Tylko wymienione typy są pobierane automatycznie. Opcja <g2>Pobierz za pomocą Mister Download Manager</g2> w menu kontekstowym pobiera dowolny link."
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp i ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "Torrenty i Twoje bezpieczeństwo — pomoc Mister Download Manager"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "W Ustawieniach torrenta możesz wyłączyć <g1>Akceptuj połączenia przychodzące</g1> i <g2>Mapuj port na routerze (UPnP)</g2> lub DHT. Pobieranie nadal działa, czasami wolniej. Stały <g3>Port</g3> utrzymuje działanie reguł zapory i routera. Te zmiany obowiązują przy następnym uruchomieniu silnika, czyli gdy żaden torrent nie działa."
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "Otwórz listę rozwijaną"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>Adres nie jest wypełniony:</g1> schowek nie zawierał adresu internetowego. Wklej go samodzielnie do <g2>Adres</g2>."
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>Co pobierasz w swojej sieci lokalnej.</g1> MDM informuje inne komputery w Twojej sieci, które torrenty posiada, aby mogły udostępniać je szybciej. W publicznej sieci Wi-Fi wyłącz <g2>Znajdź partnerów w sieci lokalnej</g2>."
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>Wykrywanie problemów.</g1> Gdy MDM ulegnie awarii (wyjątek Windows, sygnał w systemie Linux, wyjątek Mach w systemie macOS), panice lub zawiesi się, prosi monitor o zrzut. Zawieszenie to klatka okna działająca dłużej niż 8 s, widziana przez wątek nadzorujący, który ignoruje czas spędzony w stanie uśpienia. Monitor następnie zapisuje <g2>minizrzut</g2> każdego wątku z zewnątrz, za pośrednictwem <x3/> i <x4/>. Proces, który uległ awarii, nigdy nie zapisuje własnego zrzutu, co jest również sposobem działania Firefox, Crashpad i Sentry."
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "Pliki z torrentów są oznaczane jako <g1>pobrane z internetu</g1>, podobnie jak pliki pobrane przez przeglądarkę. Windows SmartScreen sprawdza program przed pierwszym uruchomieniem, a Office otwiera dokumenty w Widoku chronionym. Na Macu Gatekeeper sprawdza aplikacje."
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "Bezpieczeństwo — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>Otwórz Mister Download Manager</g1> i <g2>Opcje...</g2>."
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "Pliki z torrenta"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "Przeglądarka pobiera plik za pomocą jednego połączenia. MDM prosi serwer o kilka części pliku jednocześnie, używając do 32 połączeń (128, jeśli na to zezwolisz), i ciągle dzieli plik na nowo: gdy jedno połączenie zakończy swoją część, przejmuje połowę największej pozostałej części, dzięki czemu żadne wolne połączenie nie opóźnia zakończenia pobierania. Zapamiętuje również serwery, które odmawiają dodatkowych połączeń i przestaje je o to prosić. Zobacz <g1>Połączenia i szybkość</g1>."
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>Twój adres IP.</g1> Widzi go każdy, kto udostępnia ten sam torrent, a także jego trackery i DHT (sieć, której uczestnicy używają do wzajemnego odnajdywania się). Tak działa BitTorrent i żadne ustawienie w MDM tego nie zmienia. Aby ukryć swój adres, użyj VPN na całym komputerze."
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "Załaduj rozszerzenie w każdej używanej przeglądarce, jak poniżej. Pliki rozszerzenia znajdują się w folderze <x1/>, w którym zainstalowano MDM: <x2/>, jeśli zainstalowałeś go dla siebie, lub <x3/>, jeśli zainstalowałeś go dla wszystkich. Każde wydanie ma je również jako osobne pliki do pobrania: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; najpierw rozpakuj) i <x5/>."
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "Trackery"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "Pobierz instalator"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "Czy MDM jest dostępny w moim języku?"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "MDM nigdy nie zapisuje do istniejącego pliku bez pytania."
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "Dostawa"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "Opcje →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "Serwery proxy"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",

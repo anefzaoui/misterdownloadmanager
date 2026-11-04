@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "روی یک ویدئو در یک صفحه وب اشاره کنید و یک دکمه کوچک <g1>دانلود ویدیو</g1> در لبه آن ظاهر می‌شود. روی آن کلیک کنید و پنجره <g2>بارگیری ویدئو از یک صفحه</g2> MDM باز می‌شود و کیفیت‌هایی را که می‌تواند دانلود کند جستجو می‌کند. ویدئویی را که روی آن کلیک کردید می‌گیرد: فایل خودش را وقتی یکی را پخش می‌کند، یا استریمی که پخش‌کننده بارگذاری کرده است (HLS یا DASH)، در غیر این صورت صفحه را. پخش‌کننده‌های جاسازی شده نیز کار می‌کنند، و ورود شما به سایت، صفحه‌ای که پخش‌کننده را جاسازی می‌کند و User-Agent مرورگر شما با آن می‌رود، بنابراین ویدئوهای اعضا، یا آن‌هایی که فقط در سایتی که آن‌ها را جاسازی می‌کند پخش می‌شوند، قابل دانلود هستند. پخش‌کننده‌های صدا نیز دکمه را دریافت می‌کنند."
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "آنچه به رایانه شما می‌رسد"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>راهنما → گزارش یک مشکل</g1> فرم سیستم و نصب شده را فقط برای لحظه‌ای پر می‌کرد؛ اکنون پر می‌مانند."
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "یک سرور آزمایشی محلی راه‌اندازی می‌کند که فایل‌های تولید شده را با هر مشکلی که شما درخواست کنید (اتصالات کند، قطعی‌ها، پاسخ‌های شلوغ، عدم پشتیبانی از محدوده‌ها؛ <x1/> آنها را لیست می‌کند) ارائه می‌دهد، بنابراین دانلودها را می‌توان بدون اینترنت آزمایش کرد."
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "یک مشکل امنیتی پیدا کردید؟ لطفا آن را به صورت خصوصی در GitHub (<g1>امنیت → گزارش یک آسیب‌پذیری</g1>، به <g2>SECURITY.md</g2> مراجعه کنید) گزارش دهید، نه در یک مسئله عمومی."
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "پنجره اصلی Mister Download Manager در حالت شب."
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "بارگیری ویدئو از یک صفحه: کیفیت‌های ارائه شده، از 2160p 60fps به پایین، با اندازه‌هایشان."
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "موتور تورنت به زبان Rust نوشته شده است که بسیاری از اشکالات حافظه را از بین می‌برد و MDM هر قطعه را با اثر انگشت تورنت بررسی می‌کند، بنابراین یک همتا نمی‌تواند داده‌های تغییر یافته را وارد کند. MDM موتور را با اصلاحاتی که نویسندگان آن منتشر می‌کنند، به‌روز نگه می‌دارد."
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>این گفتگو را دوباره نشان نده</g1> — MDM دیگر سؤال نمی‌کند و کاری را انجام می‌دهد که این بار پاسخ دادید. برای اینکه دوباره سؤال شود، <g2>گزینه‌ها → عمومی → تأیید قبل از حذف دانلودها</g2> را علامت بزنید."
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDM موتور تورنت خود را اولین بار که یک تورنت به آن نیاز دارد، راه‌اندازی می‌کند. با روشن بودن <g1>توقف موتور تورنت زمانی که هیچ تورنتی در حال اجرا نیست</g1> (پیش‌فرض)، یک دقیقه پس از اینکه هیچ تورنتی در حال اجرا یا اشتراک‌گذاری نباشد، دوباره متوقف می‌شود. در حالی که در حال اجرا است، همتایان دیگر می‌توانند به MDM متصل شوند و MDM از روتر شما می‌خواهد که پورت آن را (UPnP) فوروارد کند. Windows ممکن است بپرسد که آیا MDM را از طریق فایروال مجاز می‌دانید: فقط در شبکه‌های خصوصی آن را مجاز کنید."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>هر اتصال، زنده</g1> هر اتصال با سرعت و زمان باقی‌مانده، در حین پر شدن نمایش داده می‌شود. ازسرگیری ایمن در برابر خرابی از جایی که متوقف شده بود ادامه می‌دهد."
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+کلیک</g1> یک دانلود را اضافه یا حذف می‌کند."
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>تورنت‌ها و امنیت شما</g2></g1> — آنچه دیگران می‌توانند ببینند، سوئیچ‌های شبکه، لیست‌های سیاه، پراکسی‌ها."
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "نصب یا MDM شروع نمی‌شود"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "لیست دانلود ←"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "یک تورنت نام ردیاب‌هایی را که MDM برای همتایان درخواست می‌کند، مشخص می‌کند. MDM با ردیابی در رایانه خود یا شبکه محلی شما (<x1/>، <x2/>، <x3/> و موارد مشابه) تماس نمی‌گیرد، بنابراین یک تورنت نمی‌تواند MDM را وادار کند که درخواست‌هایی را به شبکه‌ای که در آن قرار دارد ارسال کند."
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1 گیبی‌بایت، لینک سریع"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "تورنت‌های MDM از <g1>رمزگذاری</g1> (که گاهی اوقات «رمزگذاری پروتکل» نامیده می‌شود) استفاده نمی‌کنند. این نوع رمزگذاری فقط ترافیک را از فیلترهای ساده پنهان می‌کند. هرگز هویت شما را پنهان نمی‌کند، بنابراین MDM ادعا نمی‌کند که آن را ارائه می‌دهد. برخی از همتایانی که به آن نیاز دارند، متصل نخواهند شد."
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "زمان‌بند"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "نسخه قابل حمل مستقیما از روی فلش مموری اجرا می‌شود و فهرست و تنظیمات خود را در همانجا نگه می‌دارد. با چند تنظیم، دانلودهای شما را نیز روی فلش مموری ذخیره می‌کند."
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDM تورنت‌هایی را که نام فایل‌هایشان برای سیستم شما قابل نوشتن امن نیست، رد می‌کند، نام فایل را اعلام می‌کند و چیزی نمی‌نویسد. آنچه دیگران می‌توانند ببینند، سوئیچ‌های شبکه در <g1>تنظیمات تورنت</g1>، لیست‌های سیاه و پراکسی‌ها: <g2>تورنت‌ها و امنیت شما</g2>."
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "تورنت‌ها — راهنمای Mister Download Manager"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "یک تورنت می‌تواند شامل هر چیزی باشد و هر کسی می‌تواند آن را بسازد. فقط برنامه‌ها را از افرادی که به آنها اعتماد دارید باز کنید و در صورت شک آنها را اسکن کنید."
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "متنی که هنوز ترجمه نشده است به انگلیسی نمایش داده می‌شود. بیشتر ترجمه‌ها توسط ماشین نوشته شده‌اند و منتظر بررسی توسط یک بومی زبان هستند، بنابراین برخی از کلمات ممکن است اشتباه به نظر برسند."
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "آدرس برای بارگیری."
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "یک تورنت از رایانه‌های دیگران می‌آید، نه از یک وب‌سایت. این موضوع، آنچه را که می‌توانید به آن اعتماد کنید و آنچه را که دیگران می‌توانند ببینند، تغییر می‌دهد. این صفحه به وضوح بیان می‌کند که MDM چه کاری انجام می‌دهد و چه کاری انجام نمی‌دهد. سوئیچ‌هایی که به آنها اشاره می‌کند در <g1>وظایف → تنظیمات تورنت...</g1> قرار دارند."
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM را می‌توان بدون پنجره‌اش به سه روش کنترل کرد:"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "تنظیمات پروکسی / SOCKS MDM برای بارگیری‌های وب و FTP است. تورنت‌ها نیز می‌توانند از یک SOCKS5 استفاده کنند: یک پروکسی <x1/> را در <g2>گزینه‌ها → پروکسی / SOCKS</g2> تنظیم کنید و <g3>استفاده از پروکسی</g3> را در تنظیمات تورنت روشن کنید. پروکسی فقط اتصالات به همتایان و ردیاب‌های وب را پوشش می‌دهد، بنابراین با آن MDM DHT، کشف همتایان محلی، اتصالات ورودی و ردیاب‌های UDP را خاموش می‌کند. اگر پروکسی از پروکسی / SOCKS در حالی که آن سوئیچ روشن است، حذف شود، تورنت‌ها به جای اینکه از آن عبور کنند، شروع نمی‌شوند."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "دکمه برجسته‌شده (پیش‌فرض)؛ یک دکمه متمرکز، آن دکمه را فشار می‌دهد"
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>اینکه از MDM استفاده می‌کنید.</g1> همتایان نام «MisterDownloadManager» و نسخه اصلی آن را می‌بینند، نه نسخه دقیق ساخت را."
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "بارگیری را در فهرست انتخاب کنید."
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "دستیار می‌گوید"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>مسدود کردن آدرس‌ها در این لیست</g1> آدرس یک لیست سیاه IP عمومی را در قالب P2P (PeerGuardian) یا eMule <x2/>، ساده یا فشرده شده با gzip می‌گیرد. MDM آن را با بارگیر خود (تنظیمات پروکسی / SOCKS شما اعمال می‌شود) بارگیری می‌کند، آن را بررسی می‌کند و هر 7 روز یک بار دوباره آن را دریافت می‌کند. همتایان موجود در آن رد می‌شوند. لیستی که MDM نمی‌تواند بخواند، حذف می‌شود و آخرین لیست خوب باقی می‌ماند. موتور لیست را هنگام شروع می‌خواند."
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "در زمان شروع، صف به خودی خود آغاز می‌شود. در صبح، فایل‌های تکمیل‌شده در بخش <g1>تکمیل‌شده</g1> در دسته‌بندی‌ها قرار دارند."
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "برای مسیریابی <g1>همه چیز</g1> از طریق یک شبکه دیگر، از یک VPN برای کل رایانه استفاده کنید. MDM نمی‌تواند تورنت‌ها را به یک آداپتور شبکه در Windows متصل کند."
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "تورنت‌ها و امنیت شما"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "آیا این کپی یا کرک Internet Download Manager است؟ — Mister Download Manager"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "یک تورنت از رایانه‌های دیگران می‌آید، نه از یک وب‌سایت. این موضوع، آنچه را که می‌توانید به آن اعتماد کنید و آنچه را که دیگران می‌توانند ببینند، تغییر می‌دهد. این صفحه به وضوح بیان می‌کند که..."
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>گزارش یک مشکل</g2></g1> — یا از <g3>راهنما → گزارش یک مشکل</g3> در MDM استفاده کنید، که نسخه، سیستم و نحوه نصب MDM را برای شما پر می‌کند."
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "انتخاب دانلودها در کادر"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "آنچه دیگران می‌توانند ببینند"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "هفت دانلود، هر کدام حداقل هفت بار توسط هر دو برنامه اجرا شده‌اند. نوار، نیمه میانی اجراها و خط، میانه را نشان می‌دهد."
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "مسدود کردن آدرس‌ها"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "آیا نوع فایل در <g1>گزینه‌ها → انواع فایل</g1> است؟ فقط انواع لیست شده به صورت خودکار گرفته می‌شوند. <g2>دانلود با Mister Download Manager</g2> در منوی راست کلیک هر پیوندی را می‌گیرد."
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp و ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "تورنت‌ها و امنیت شما — راهنمای Mister Download Manager"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "در تنظیمات تورنت می‌توانید <g1>پذیرش اتصالات ورودی</g1> و <g2>نگاشت پورت در روتر (UPnP)</g2> یا DHT را خاموش کنید. بارگیری‌ها همچنان کار می‌کنند، گاهی اوقات کندتر. یک <g3>درگاه</g3> ثابت، قوانین فایروال و روتر را فعال نگه می‌دارد. این تغییرات دفعه بعد که موتور شروع به کار می‌کند، یعنی زمانی که هیچ تورنتی در حال اجرا نیست، اعمال می‌شوند."
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "باز کردن یک لیست کشویی"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>آدرس پر نشده است:</g1> کلیپ‌بورد حاوی آدرس وب نبود. آن را خودتان در <g2>آدرس</g2> بچسبانید."
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>آنچه را که بارگیری می‌کنید، در شبکه محلی خود.</g1> MDM به رایانه‌های دیگر در شبکه شما می‌گوید که چه تورنت‌هایی دارد تا بتوانند سریع‌تر به اشتراک بگذارند. در Wi-Fi عمومی، <g2>یافتن همتایان در شبکه محلی</g2> را خاموش کنید."
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>گرفتن مشکلات.</g1> وقتی MDM از کار می‌افتد (یک استثنای Windows، یک سیگنال در Linux، یک استثنای Mach در macOS)، دچار وحشت می‌شود یا فریز می‌کند، از مانیتور یک دامپ می‌خواهد. فریز شدن به معنای این است که یک فریم از پنجره بیش از 8 ثانیه اجرا شود، که توسط یک رشته نگهبان که زمان خواب را نادیده می‌گیرد، مشاهده می‌شود. سپس مانیتور یک <g2>مینی‌دامپ</g2> از هر رشته را از بیرون، از طریق <x3/> و <x4/> می‌نویسد. یک فرآیند از کار افتاده هرگز دامپ خود را نمی‌نویسد، که این همان روشی است که Firefox، Crashpad و Sentry نیز از آن استفاده می‌کنند."
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "فایل‌های تورنت مانند بارگیری‌های مرورگر، به عنوان <g1>بارگیری شده از اینترنت</g1> علامت‌گذاری می‌شوند. Windows SmartScreen یک برنامه را قبل از اولین اجرا بررسی می‌کند و Office اسناد را در Protected View باز می‌کند. در مک، Gatekeeper برنامه‌ها را بررسی می‌کند."
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "امنیت — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>باز کردن Mister Download Manager</g1> و <g2>گزینه‌ها...</g2>."
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "فایل‌ها از یک تورنت"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "مرورگر فایل را با یک اتصال دریافت می‌کند. MDM همزمان از سرور چندین قسمت از فایل را درخواست می‌کند، تا 32 اتصال (128 اگر شما اجازه دهید)، و به تقسیم مجدد ادامه می‌دهد: وقتی یک اتصال کار خود را تمام می‌کند، نیمی از بزرگترین قسمت باقی‌مانده را بر عهده می‌گیرد، بنابراین هیچ اتصال کندی پایان کار را به تأخیر نمی‌اندازد. همچنین سرورهایی را که اتصالات اضافی را رد می‌کنند به خاطر می‌سپارد و دیگر از آنها درخواست نمی‌کند. به <g1>اتصالات و سرعت</g1> مراجعه کنید."
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>آدرس IP شما.</g1> هر کسی که همان تورنت را به اشتراک می‌گذارد، آن را می‌بیند، همچنین ردیاب‌ها و DHT (شبکه‌ای که همتایان برای یافتن یکدیگر از آن استفاده می‌کنند). اینگونه است که BitTorrent کار می‌کند و هیچ تنظیماتی در MDM آن را تغییر نمی‌دهد. برای پنهان کردن آدرس خود، از یک VPN روی کل رایانه خود استفاده کنید."
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "افزونه را در هر مرورگری که استفاده می‌کنید، طبق توضیحات زیر بارگذاری کنید. فایل‌های افزونه در پوشه <x1/> که MDM در آن نصب شده است قرار دارند: <x2/> اگر آن را برای خودتان نصب کرده‌اید، یا <x3/> اگر آن را برای همه نصب کرده‌اید. هر نسخه همچنین آنها را به عنوان دانلودهای جداگانه دارد: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi؛ ابتدا آن را از حالت فشرده خارج کنید) و <x5/>."
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "ردیاب‌ها"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "نصب‌کننده را بارگیری کنید"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "آیا MDM به زبان من موجود است؟"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "MDM هرگز بدون اجازه در فایلی که از قبل وجود دارد، نمی‌نویسد."
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "تحویل"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "گزینه‌ها →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "پروکسی‌ها"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",

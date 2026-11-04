@@ -186,6 +186,10 @@
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "ชี้ไปที่วิดีโอบนหน้าเว็บ แล้วปุ่ม <g1>ดาวน์โหลดวิดีโอ</g1> ขนาดเล็กจะปรากฏขึ้นที่ขอบ คลิกปุ่มนั้นแล้วหน้าต่าง <g2>ดาวน์โหลดวิดีโอจากหน้า</g2> ของ MDM จะเปิดขึ้นและค้นหาคุณภาพที่สามารถดาวน์โหลดได้ จะรับวิดีโอที่คุณคลิก: ไฟล์ของวิดีโอเองเมื่อเล่น หรือสตรีมที่ผู้เล่นโหลด (HLS หรือ DASH) มิฉะนั้นจะเป็นหน้าเว็บ ผู้เล่นที่ฝังไว้ก็ทำงานได้เช่นกัน และข้อมูลการลงชื่อเข้าใช้ของคุณสำหรับเว็บไซต์ หน้าที่ฝังผู้เล่น และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย ดังนั้นวิดีโอสำหรับสมาชิก หรือที่เล่นได้เฉพาะบนเว็บไซต์ที่ฝังไว้ ก็สามารถดาวน์โหลดได้ ผู้เล่นเสียงก็มีปุ่มนี้ด้วย"
   },
+  "053263e0b7c48cfa": {
+   "source": "What reaches your computer",
+   "text": "สิ่งที่มาถึงคอมพิวเตอร์ของคุณ"
+  },
   "0533acda9da6cbfb": {
    "source": "<g1>Help → Report a problem</g1> filled the form's System and Installed with only for a moment; they stay filled now.",
    "text": "<g1>วิธีใช้ → รายงานปัญหา</g1> กรอกข้อมูลในช่องระบบและติดตั้งเพียงชั่วครู่; ตอนนี้ข้อมูลจะยังคงอยู่"
@@ -670,6 +674,10 @@
    "source": "starts a local test server that serves generated files with whatever trouble you ask for (slow connections, cuts, busy answers, no ranges; <x1/> lists them), so downloads can be tested without the internet.",
    "text": "จะเริ่มเซิร์ฟเวอร์ทดสอบในเครื่องที่ให้บริการไฟล์ที่สร้างขึ้นพร้อมกับปัญหาที่คุณร้องขอ (การเชื่อมต่อช้า, การตัดการเชื่อมต่อ, การตอบกลับไม่ว่าง, ไม่มีช่วง; <x1/> แสดงรายการ) เพื่อให้สามารถทดสอบการดาวน์โหลดได้โดยไม่ต้องใช้อินเทอร์เน็ต"
   },
+  "13adc4b3cd91cb4d": {
+   "source": "Found a security issue? Please report it privately on GitHub (<g1>Security → Report a vulnerability</g1>, see <g2>SECURITY.md</g2>) rather than in a public issue.",
+   "text": "พบปัญหาด้านความปลอดภัยหรือไม่? โปรดรายงานเป็นการส่วนตัวบน GitHub (<g1>ความปลอดภัย → รายงานช่องโหว่</g1> ดู <g2>SECURITY.md</g2>) แทนที่จะเป็นปัญหาสาธารณะ"
+  },
   "13b7a00fc9c64cc2": {
    "source": "Mister Download Manager's main window in night mode.",
    "text": "หน้าต่างหลักของ Mister Download Manager ในโหมดกลางคืน"
@@ -777,6 +785,10 @@
   "167e0568310b7eb2": {
    "source": "Download video from a page: the qualities on offer, from 2160p 60fps down, with their sizes.",
    "text": "ดาวน์โหลดวิดีโอจากหน้า: คุณภาพที่มีให้เลือก ตั้งแต่ 2160p 60fps ลงมา พร้อมขนาดของไฟล์"
+  },
+  "169f679e7202c9c5": {
+   "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
+   "text": "เอ็นจิ้นทอร์เรนต์เขียนด้วย Rust ซึ่งช่วยลดข้อผิดพลาดเกี่ยวกับหน่วยความจำจำนวนมาก และ MDM จะตรวจสอบทุกส่วนเทียบกับลายนิ้วมือของทอร์เรนต์ ดังนั้นเพียร์จึงไม่สามารถแทรกข้อมูลที่เปลี่ยนแปลงได้ MDM จะอัปเดตเอ็นจิ้นให้ทันสมัยด้วยการแก้ไขที่ผู้เขียนเผยแพร่"
   },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
@@ -1762,6 +1774,10 @@
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking and does what you answered this time. To be asked again, tick <g2>Options → General → Confirm before deleting downloads</g2>.",
    "text": "<g1>ไม่ต้องแสดงกล่องโต้ตอบนี้อีก</g1> — MDM จะหยุดถามและทำตามที่คุณตอบในครั้งนี้ หากต้องการให้ถามอีกครั้ง ให้ทำเครื่องหมาย <g2>ตัวเลือก → ทั่วไป → ยืนยันก่อนลบรายการดาวน์โหลด</g2>"
   },
+  "314870831b11d2bd": {
+   "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
+   "text": "MDM จะเริ่มเอ็นจิ้นทอร์เรนต์ในครั้งแรกที่ทอร์เรนต์ต้องการ หากเปิด <g1>หยุดเอ็นจิ้นทอร์เรนต์เมื่อไม่มีทอร์เรนต์ทำงานอยู่</g1> (ค่าเริ่มต้น) เอ็นจิ้นจะหยุดอีกครั้งหนึ่งนาทีหลังจากไม่มีทอร์เรนต์ทำงานหรือแชร์ ในขณะที่ทำงาน เพียร์อื่นสามารถเชื่อมต่อกับ MDM ได้ และ MDM จะขอให้เราเตอร์ของคุณส่งต่อพอร์ต (UPnP) Windows อาจถามว่าจะอนุญาต MDM ผ่านไฟร์วอลล์หรือไม่: อนุญาตเฉพาะบนเครือข่ายส่วนตัวเท่านั้น"
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>ทุกการเชื่อมต่อ, สด</g1> แต่ละการเชื่อมต่อจะแสดงขณะที่กำลังดาวน์โหลด พร้อมความเร็วและเวลาที่เหลือ การกู้คืนที่ปลอดภัยจากการขัดข้องจะดำเนินการต่อจากจุดที่หยุด"
@@ -2086,6 +2102,10 @@
    "source": "<g1>Ctrl+click</g1> adds or removes one download.",
    "text": "<g1>Ctrl+คลิก</g1> เพิ่มหรือลบรายการดาวน์โหลดหนึ่งรายการ"
   },
+  "3c333ba83ce0943b": {
+   "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
+   "text": "<g1><g2>ทอร์เรนต์และความปลอดภัยของคุณ</g2></g1> — สิ่งที่คนอื่นเห็น, สวิตช์เครือข่าย, บัญชีดำ, พร็อกซี"
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "โปรแกรมติดตั้งหรือ MDM ไม่เริ่มทำงาน"
@@ -2285,6 +2305,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "รายการดาวน์โหลด →"
+  },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "ทอร์เรนต์จะระบุชื่อตัวติดตามที่ MDM ขอเพียร์ MDM จะไม่ติดต่อตัวติดตามบนคอมพิวเตอร์ของคุณเองหรือเครือข่ายภายในของคุณ (<x1/>, <x2/>, <x3/> และอื่นๆ) ดังนั้นทอร์เรนต์จึงไม่สามารถทำให้ MDM ส่งคำขอไปยังเครือข่ายที่อยู่ได้"
   },
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
@@ -3274,6 +3298,10 @@
    "source": "1 GiB, fast link",
    "text": "1 GiB, ลิงก์เร็ว"
   },
+  "63a9ff90215698fd": {
+   "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
+   "text": "ทอร์เรนต์ของ MDM ไม่ใช้ <g1>การเข้ารหัส</g1> (บางครั้งเรียกว่า \"การเข้ารหัสโปรโตคอล\") การเข้ารหัสประเภทนั้นซ่อนการรับส่งข้อมูลจากการกรองแบบง่ายเท่านั้น ไม่เคยซ่อนว่าคุณเป็นใคร ดังนั้น MDM จึงไม่กล่าวอ้างว่าจะเสนอการเข้ารหัสนี้ เพียร์บางรายที่ต้องการการเข้ารหัสนี้จะไม่สามารถเชื่อมต่อได้"
+  },
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "ตัวจัดกำหนดการ"
@@ -3341,6 +3369,10 @@
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "MDM แบบพกพาจะทำงานได้โดยตรงจาก USB สติ๊ก และเก็บรายการดาวน์โหลดและการตั้งค่าไว้ที่นั่น ด้วยการตั้งค่าเพียงไม่กี่อย่าง ก็จะบันทึกไฟล์ที่ดาวน์โหลดลงในสติ๊กด้วยเช่นกัน"
+  },
+  "6565dec7ab42cb96": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in <g1>Torrent settings</g1>, blocklists and proxies: <g2>Torrents and your security</g2>.",
+   "text": "MDM จะปฏิเสธทอร์เรนต์ที่มีชื่อไฟล์ที่ระบบของคุณไม่สามารถเขียนได้อย่างปลอดภัย โดยจะระบุชื่อไฟล์นั้นและไม่เขียนอะไรเลย สิ่งที่ผู้อื่นสามารถเห็นได้ สวิตช์เครือข่ายในการ<g1>ตั้งค่าทอร์เรนต์</g1> บล็อกลิสต์ และพร็อกซี: <g2>ทอร์เรนต์และความปลอดภัยของคุณ</g2>"
   },
   "662e8cdda4078826": {
    "source": "32 MiB, one connection in three crawls at 128 KB/s",
@@ -3550,6 +3582,10 @@
    "source": "Torrents — Mister Download Manager help",
    "text": "ทอร์เรนต์ — วิธีใช้ Mister Download Manager"
   },
+  "6cfaa56a34e8372a": {
+   "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
+   "text": "ทอร์เรนต์สามารถมีอะไรก็ได้ และใครๆ ก็สามารถสร้างได้ เปิดโปรแกรมจากคนที่คุณเชื่อถือเท่านั้น และสแกนหากมีข้อสงสัย"
+  },
   "6d03cfd4d56383f1": {
    "source": "A text that hasn't been translated yet shows in English. Most translations were written by machine and are waiting for a native speaker to check them, so some wording may sound wrong.",
    "text": "ข้อความที่ยังไม่ได้แปลจะแสดงเป็นภาษาอังกฤษ การแปลส่วนใหญ่เขียนโดยเครื่องจักรและกำลังรอผู้ใช้ภาษาแม่ตรวจสอบ ดังนั้นบางคำอาจฟังดูไม่ถูกต้อง"
@@ -3609,6 +3645,10 @@
   "6ea80dc94a9d8576": {
    "source": "The address to download.",
    "text": "ที่อยู่สำหรับดาวน์โหลด"
+  },
+  "6ed1f7b8dcba3260": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what MDM does and what it doesn't. The switches it mentions are in <g1>Tasks → Torrent settings...</g1>.",
+   "text": "ทอร์เรนต์มาจากคอมพิวเตอร์ของคนอื่น ไม่ใช่จากเว็บไซต์เดียว ซึ่งเปลี่ยนสิ่งที่คุณเชื่อถือได้และสิ่งที่คนอื่นเห็นได้ หน้านี้บอกอย่างชัดเจนว่า MDM ทำอะไรและไม่ทำอะไร สวิตช์ที่กล่าวถึงอยู่ใน <g1>งาน → การตั้งค่าทอร์เรนต์...</g1>"
   },
   "6f15d2fb946db9c5": {
    "source": "<g1>Mister Download Manager closed unexpectedly</g1>: MDM crashed, or hit an internal error and closed.",
@@ -3697,6 +3737,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM สามารถทำงานได้โดยไม่ต้องเปิดหน้าต่างด้วยสามวิธีดังนี้:"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "การตั้งค่าพร็อกซี / SOCKS ของ MDM ใช้สำหรับการดาวน์โหลดเว็บและ FTP ทอร์เรนต์สามารถใช้ SOCKS5 ได้เช่นกัน: ตั้งค่าพร็อกซี <x1/> ใน <g2>ตัวเลือก → พร็อกซี / SOCKS</g2> และเปิด <g3>ใช้พร็อกซี</g3> ในการตั้งค่าทอร์เรนต์ พร็อกซีจะครอบคลุมการเชื่อมต่อไปยังเพียร์และตัวติดตามเว็บเท่านั้น ดังนั้น MDM จะปิด DHT, การค้นหาเพียร์ในเครื่อง, การเชื่อมต่อขาเข้า และตัวติดตาม UDP หากพร็อกซีหายไปจากพร็อกซี / SOCKS ในขณะที่สวิตช์นั้นเปิดอยู่ ทอร์เรนต์จะไม่เริ่มทำงานแทนที่จะข้ามไป"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4070,6 +4114,10 @@
    "source": "The highlighted (default) button; a focused button presses that button",
    "text": "ปุ่มที่ไฮไลต์ (ค่าเริ่มต้น); ปุ่มที่โฟกัสจะกดปุ่มนั้น"
   },
+  "7cf59d4d39884c03": {
+   "source": "<g1>That you use MDM.</g1> Peers see the name \"MisterDownloadManager\" and its major version, not the exact build.",
+   "text": "<g1>คุณใช้ MDM</g1> เพียร์จะเห็นชื่อ \"MisterDownloadManager\" และเวอร์ชันหลัก ไม่ใช่บิลด์ที่แน่นอน"
+  },
   "7d125b4137f847e0": {
    "source": "Select the download in the list.",
    "text": "เลือกรายการดาวน์โหลดในรายการ"
@@ -4201,6 +4249,10 @@
   "8030c04fa4a92f30": {
    "source": "The assistant says",
    "text": "ผู้ช่วยแจ้งว่า"
+  },
+  "803aca98647fa373": {
+   "source": "<g1>Block the addresses in this list</g1> takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule <x2/> format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.",
+   "text": "<g1>บล็อกที่อยู่ในรายการนี้</g1> จะใช้ที่อยู่ของรายการบล็อก IP สาธารณะ ในรูปแบบ P2P (PeerGuardian) หรือ eMule <x2/> แบบธรรมดาหรือ gzipped MDM จะดาวน์โหลดด้วยตัวดาวน์โหลดของตัวเอง (การตั้งค่าพร็อกซี / SOCKS ของคุณจะมีผล) ตรวจสอบ และดึงข้อมูลอีกครั้งทุก 7 วัน เพียร์ที่อยู่ในรายการจะถูกปฏิเสธ รายการที่ MDM ไม่สามารถอ่านได้จะถูกละเว้น และรายการที่ดีล่าสุดจะยังคงอยู่ เอ็นจิ้นจะอ่านรายการเมื่อเริ่มทำงาน"
   },
   "804cb7dcc4ab8f45": {
    "source": "<g1><x2/></g1> for <x3/>: every command prints JSON for scripts and AI agents, downloads as one <x4/> line per half second and then <x5/> or <x6/> (<g7>the formats</g7>).",
@@ -4349,6 +4401,14 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "เมื่อถึงเวลาเริ่มต้น คิวจะเริ่มทำงานเอง ในตอนเช้า ไฟล์ที่ดาวน์โหลดเสร็จสิ้นจะอยู่ใน <g1>เสร็จสิ้น</g1> ในหมวดหมู่ต่างๆ"
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "หากต้องการส่ง <g1>ทุกอย่าง</g1> ผ่านเครือข่ายอื่น ให้ใช้ VPN สำหรับคอมพิวเตอร์ทั้งเครื่อง MDM ไม่สามารถผูกทอร์เรนต์กับอะแดปเตอร์เครือข่ายเดียวบน Windows ได้"
+  },
+  "847835563c342573": {
+   "source": "Torrents and your security",
+   "text": "ทอร์เรนต์และความปลอดภัยของคุณ"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -4866,6 +4926,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Mister Download Manager เป็นโปรแกรมเลียนแบบหรือโปรแกรมแคร็ก Internet Download Manager หรือไม่"
   },
+  "958664bb01cc22af": {
+   "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
+   "text": "ทอร์เรนต์มาจากคอมพิวเตอร์ของคนอื่น ไม่ใช่จากเว็บไซต์เดียว ซึ่งเปลี่ยนสิ่งที่คุณเชื่อถือได้และสิ่งที่คนอื่นเห็นได้ หน้านี้บอกอย่างชัดเจนว่า..."
+  },
   "95a10a749a84a09d": {
    "source": "<g1><g2>Report a problem</g2></g1> — or use <g3>Help → Report a problem</g3> in MDM, which fills in your version, system and how MDM was installed for you.",
    "text": "<g1><g2>รายงานปัญหา</g2></g1> — หรือใช้ <g3>วิธีใช้ → รายงานปัญหา</g3> ใน MDM ซึ่งจะกรอกเวอร์ชัน ระบบ และวิธีการติดตั้ง MDM ให้คุณโดยอัตโนมัติ"
@@ -4973,6 +5037,10 @@
   "97df160b348bfb2f": {
    "source": "Select the downloads in the box",
    "text": "เลือกการดาวน์โหลดในกล่อง"
+  },
+  "97ec4888f860947d": {
+   "source": "What other people can see",
+   "text": "สิ่งที่คนอื่นเห็นได้"
   },
   "9806786dcda7c9ff": {
    "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
@@ -5186,6 +5254,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "การดาวน์โหลดเจ็ดครั้ง แต่ละครั้งทำงานอย่างน้อยเจ็ดรอบโดยทั้งสองแอป แถบคือครึ่งกลางของการทำงาน ส่วนเส้นคือค่ามัธยฐาน"
   },
+  "9e5f6ea1de61f755": {
+   "source": "Blocking addresses",
+   "text": "การบล็อกที่อยู่"
+  },
   "9eace8e71a572e6e": {
    "source": "Is the file's type in <g1>Options → File types</g1>? Only listed types are taken automatically. <g2>Download with Mister Download Manager</g2> on the right-click menu takes any link.",
    "text": "ชนิดไฟล์อยู่ใน <g1>ตัวเลือก → ชนิดไฟล์</g1> หรือไม่? เฉพาะชนิดที่ระบุไว้เท่านั้นที่จะถูกดาวน์โหลดโดยอัตโนมัติ <g2>ดาวน์โหลดด้วย Mister Download Manager</g2> ในเมนูคลิกขวาจะใช้ได้กับลิงก์ทุกชนิด"
@@ -5345,6 +5417,10 @@
   "a3cb616e9a128f67": {
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp และ ffmpeg"
+  },
+  "a3fad5053e035413": {
+   "source": "Torrents and your security — Mister Download Manager help",
+   "text": "ทอร์เรนต์และความปลอดภัยของคุณ — วิธีใช้ Mister Download Manager"
   },
   "a411ca96569c91a2": {
    "source": "<g1>Chrome</g1><g2>Google</g2>",
@@ -6334,6 +6410,10 @@
    "source": "Brave",
    "text": "Brave"
   },
+  "c2b8a1e1935d623a": {
+   "source": "In Torrent settings you can turn off <g1>Accept incoming connections</g1> and <g2>Map the port on the router (UPnP)</g2>, or the DHT. Downloads still work, sometimes more slowly. A fixed <g3>Port</g3> keeps firewall and router rules working. These changes apply the next time the engine starts, so when no torrent is running.",
+   "text": "ในการตั้งค่าทอร์เรนต์ คุณสามารถปิด <g1>ยอมรับการเชื่อมต่อขาเข้า</g1> และ <g2>แมปพอร์ตบนเราเตอร์ (UPnP)</g2> หรือ DHT ได้ การดาวน์โหลดจะยังคงทำงาน แต่บางครั้งอาจช้าลง <g3>พอร์ต</g3> ที่กำหนดไว้จะทำให้กฎไฟร์วอลล์และเราเตอร์ทำงานได้ การเปลี่ยนแปลงเหล่านี้จะมีผลในครั้งถัดไปที่เอ็นจิ้นเริ่มทำงาน ดังนั้นเมื่อไม่มีทอร์เรนต์ทำงานอยู่"
+  },
   "c2de271b4bf47c85": {
    "source": "Open a drop-down list",
    "text": "เปิดรายการดรอปดาวน์"
@@ -6409,6 +6489,10 @@
   "c5178e948d40336d": {
    "source": "<g1>The address isn't filled in:</g1> the clipboard didn't hold a web address. Paste it into <g2>Address</g2> yourself.",
    "text": "<g1>ที่อยู่ไม่ถูกกรอก:</g1> คลิปบอร์ดไม่มีที่อยู่เว็บ วางลงใน <g2>ที่อยู่</g2> ด้วยตัวคุณเอง"
+  },
+  "c51a80cf9beffee4": {
+   "source": "<g1>What you download, on your local network.</g1> MDM tells other computers on your network which torrents it has, so they can share faster. On public Wi-Fi, turn off <g2>Find peers on the local network</g2>.",
+   "text": "<g1>สิ่งที่คุณดาวน์โหลดบนเครือข่ายภายในของคุณ</g1> MDM จะบอกคอมพิวเตอร์เครื่องอื่นในเครือข่ายของคุณว่ามีทอร์เรนต์ใดบ้าง เพื่อให้สามารถแชร์ได้เร็วขึ้น ใน Wi-Fi สาธารณะ ให้ปิด <g2>ค้นหาเพียร์บนเครือข่ายภายใน</g2>"
   },
   "c52c646bc1a63830": {
    "source": "Download overnight — Mister Download Manager help",
@@ -6762,6 +6846,10 @@
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>การตรวจจับปัญหา</g1> เมื่อ MDM ขัดข้อง (ข้อยกเว้นของ Windows, สัญญาณบน Linux, ข้อยกเว้นของ Mach บน macOS), เกิดข้อผิดพลาดร้ายแรง หรือค้าง จะขอการดัมพ์จากมอนิเตอร์ การค้างคือเฟรมของหน้าต่างที่ทำงานเกิน 8 วินาที ซึ่งถูกตรวจจับโดยเธรดเฝ้าระวังที่ไม่สนใจเวลาที่ใช้ในการพัก มอนิเตอร์จะเขียน <g2>มินิดัมพ์</g2> ของทุกเธรดจากภายนอก ผ่าน <x3/> และ <x4/> กระบวนการที่ขัดข้องจะไม่เขียนดัมพ์ของตัวเอง ซึ่งเป็นวิธีที่ Firefox, Crashpad และ Sentry ทำเช่นกัน"
   },
+  "d1595b21d176c816": {
+   "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
+   "text": "ไฟล์จากทอร์เรนต์จะถูกทำเครื่องหมายว่า <g1>ดาวน์โหลดจากอินเทอร์เน็ต</g1> เช่นเดียวกับการดาวน์โหลดของเบราว์เซอร์ Windows SmartScreen จะตรวจสอบโปรแกรมก่อนที่จะรันครั้งแรก และ Office จะเปิดเอกสารใน Protected View บน Mac, Gatekeeper จะตรวจสอบแอป"
+  },
   "d1806a4b13ab6638": {
    "source": "Security — Mister Download Manager",
    "text": "ความปลอดภัย — Mister Download Manager"
@@ -6937,6 +7025,10 @@
   "d6823fa724cc65ec": {
    "source": "<g1>Open Mister Download Manager</g1> and <g2>Options...</g2>.",
    "text": "<g1>เปิด Mister Download Manager</g1> และ <g2>ตัวเลือก...</g2>"
+  },
+  "d6889e10a3df39a5": {
+   "source": "Files from a torrent",
+   "text": "ไฟล์จากทอร์เรนต์"
   },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
@@ -7285,6 +7377,10 @@
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "เบราว์เซอร์จะดาวน์โหลดไฟล์โดยใช้การเชื่อมต่อเดียว แต่ MDM จะขอไฟล์หลายส่วนจากเซิร์ฟเวอร์พร้อมกัน สูงสุด 32 การเชื่อมต่อ (128 หากคุณอนุญาต) และจะแบ่งส่วนใหม่เรื่อยๆ: เมื่อการเชื่อมต่อหนึ่งดาวน์โหลดส่วนของมันเสร็จสิ้น ก็จะรับช่วงต่อครึ่งหนึ่งของส่วนที่ใหญ่ที่สุดที่เหลืออยู่ เพื่อไม่ให้การเชื่อมต่อที่ช้าทำให้การดาวน์โหลดล่าช้า นอกจากนี้ยังจดจำเซิร์ฟเวอร์ที่ปฏิเสธการเชื่อมต่อเพิ่มเติมและหยุดการร้องขอจากเซิร์ฟเวอร์เหล่านั้น ดูที่ <g1>การเชื่อมต่อและความเร็ว</g1>"
+  },
+  "e3862f2f1e024923": {
+   "source": "<g1>Your IP address.</g1> Everyone sharing the same torrent sees it, as do its trackers and the DHT (the network peers use to find each other). That's how BitTorrent works, and no setting in MDM changes it. To hide your address, use a VPN on your whole computer.",
+   "text": "<g1>ที่อยู่ IP ของคุณ</g1> ทุกคนที่แชร์ทอร์เรนต์เดียวกันจะเห็นที่อยู่ IP ของคุณ เช่นเดียวกับตัวติดตามและ DHT (เครือข่ายที่เพียร์ใช้เพื่อค้นหากัน) นี่คือวิธีการทำงานของ BitTorrent และไม่มีการตั้งค่าใดใน MDM ที่จะเปลี่ยนแปลงได้ หากต้องการซ่อนที่อยู่ของคุณ ให้ใช้ VPN บนคอมพิวเตอร์ทั้งเครื่องของคุณ"
   },
   "e387cb9f9090710c": {
    "source": "Speed and connections",
@@ -7850,6 +7946,10 @@
    "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
    "text": "โหลดส่วนขยายในแต่ละเบราว์เซอร์ที่คุณใช้ ตามด้านล่างนี้ ไฟล์ของส่วนขยายอยู่ในโฟลเดอร์ <x1/> ที่ติดตั้ง MDM: <x2/> หากคุณติดตั้งสำหรับตัวเอง หรือ <x3/> หากคุณติดตั้งสำหรับทุกคน ทุกรุ่นยังมีให้ดาวน์โหลดแยกต่างหาก: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; ต้องแตกไฟล์ก่อน) และ <x5/>"
   },
+  "f6ab5be4ad52a472": {
+   "source": "Trackers",
+   "text": "ตัวติดตาม"
+  },
   "f71ffc1805d4aa7b": {
    "source": "Download the installer",
    "text": "ดาวน์โหลดตัวติดตั้ง"
@@ -7990,6 +8090,10 @@
    "source": "Is MDM available in my language?",
    "text": "MDM มีให้บริการในภาษาของฉันหรือไม่?"
   },
+  "fb9449981aa5fe8f": {
+   "source": "MDM never writes into a file that's already there without asking.",
+   "text": "MDM จะไม่เขียนทับไฟล์ที่มีอยู่แล้วโดยไม่ได้รับอนุญาต"
+  },
   "fb9a90a68f3b2b05": {
    "source": "Delivery",
    "text": "ความเร็ว"
@@ -8013,6 +8117,10 @@
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "ตัวเลือก →"
+  },
+  "fcc5ef8ee172d45e": {
+   "source": "Proxies",
+   "text": "พร็อกซี"
   },
   "fcd61594c5cd50af": {
    "source": "Transfer rate",
