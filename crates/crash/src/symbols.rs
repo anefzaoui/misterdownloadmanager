@@ -12,7 +12,12 @@ pub fn platform() -> &'static str {
     if cfg!(windows) {
         "windows-x64"
     } else if cfg!(target_os = "macos") {
-        "macos-universal"
+        // One zip per processor, as the .dmg (tools/installer/build-macos.sh).
+        if cfg!(target_arch = "aarch64") {
+            "macos-arm64"
+        } else {
+            "macos-x86_64"
+        }
     } else {
         "linux-x86_64"
     }

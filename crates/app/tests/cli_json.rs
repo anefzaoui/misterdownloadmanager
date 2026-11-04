@@ -1,4 +1,4 @@
-//! `--json`, end to end: a download's progress and result as JSON lines, and failures as
+//! misterdownloadmanager-cli's `--json`, end to end: a download's progress and result as JSON lines, and failures as
 //! `{"error"}` with a failing exit code.
 
 use std::process::Command;
@@ -6,7 +6,9 @@ use std::process::Command;
 use mdm_labserver::{Config, Faults, LabServer};
 use serde_json::Value;
 
-const CLI: &str = env!("CARGO_BIN_EXE_misterdownloadmanager-cli");
+/// The app's program, which runs misterdownloadmanager-cli's commands when its launcher
+/// (crates/cli) starts it with `--cli`.
+const APP: &str = env!("CARGO_BIN_EXE_misterdownloadmanager");
 
 fn lines(out: &[u8]) -> Vec<Value> {
     String::from_utf8_lossy(out)
@@ -26,7 +28,8 @@ async fn a_download_reports_progress_then_done() {
     let dir = tempfile::tempdir().unwrap();
     let dest = dir.path().join("json.bin");
     let out = tokio::task::spawn_blocking(move || {
-        Command::new(CLI)
+        Command::new(APP)
+            .arg(mdm_cli::FLAG)
             .args(["--json", "get", &s.url("/gen/3M?seed=5"), "-o"])
             .arg(&dest)
             .output()
@@ -52,7 +55,8 @@ async fn a_download_reports_progress_then_done() {
 fn failures_are_json_with_a_failing_exit_code() {
     // No app runs on this data folder.
     let dir = tempfile::tempdir().unwrap();
-    let out = Command::new(CLI)
+    let out = Command::new(APP)
+        .arg(mdm_cli::FLAG)
         .args(["--json", "status"])
         .env("MDM_DATA_DIR", dir.path())
         .output()
@@ -64,7 +68,8 @@ fn failures_are_json_with_a_failing_exit_code() {
         "{e}"
     );
 
-    let out = Command::new(CLI)
+    let out = Command::new(APP)
+        .arg(mdm_cli::FLAG)
         .args(["--json", "resume"])
         .arg(dir.path().join("missing.mdm.json"))
         .output()

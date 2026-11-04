@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Builds the Linux release into target/dist/ (experimental: built by CI, not yet tested by us):
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.AppImage  runs on most distros
+#   MisterDownloadManager-<version>-linux-x86_64-experimental.AppImage.zsync  its updates (AppImage tools)
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.tar.gz    the plain programs
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.deb       Debian, Ubuntu, Mint
 #   MisterDownloadManager-<version>-linux-x86_64-experimental.rpm       Fedora, RHEL, openSUSE
-# Needs: cargo, pwsh (the extension), python3 with Pillow (the icon), dpkg-deb, rpmbuild, curl (appimagetool is fetched).
+# Needs: cargo, pwsh (the extension), python3 with Pillow (the icon), dpkg-deb, rpmbuild, curl (appimagetool is fetched),
+# and zsyncmake if the appimagetool fetched doesn't write the .zsync itself.
 # Build on the oldest Ubuntu you want to support: the programs need its glibc or newer.
 #   tools/installer/build-linux.sh [--no-build]
 set -euo pipefail
@@ -17,7 +19,11 @@ name="MisterDownloadManager-$version-linux-x86_64-experimental"
 programs=(misterdownloadmanager misterdownloadmanager-nmhost misterdownloadmanager-cli misterdownloadmanager-mcp)
 
 if [ "${1:-}" != "--no-build" ]; then
-  cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
+  # The build machine's paths out of the programs (#25): panic locations and debug info say
+  # "cargo/..." for cargo's folder and "mdm/..." for this checkout. Encoded flags (unit separators),
+  # as those paths may hold spaces.
+  CARGO_ENCODED_RUSTFLAGS="--remap-path-prefix=${CARGO_HOME:-$HOME/.cargo}=cargo"$'\x1f'"--remap-path-prefix=$root=mdm" \
+    cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
 fi
 pwsh -NoProfile -File "$root/tools/extension/pack.ps1"
 
@@ -33,9 +39,10 @@ mkdir -p "$tree/usr/bin" "$tree/usr/share/applications" \
   "$tree/usr/share/doc/misterdownloadmanager"
 for p in "${programs[@]}"; do install -m 755 "$bin/$p" "$tree/usr/bin/$p"; done
 # Crash reports: the release's symbols from the programs' debug info (the -symbols zip), then the
-# programs without it (the build id that matches them to the symbols stays).
+# programs without it or their symbol table (#25; the build id that matches them to the symbols,
+# and the unwind tables, stay).
 python3 "$root/tools/installer/symbols.py" linux-x86_64 "$version" "$dist" "${programs[@]/#/$bin/}"
-for p in "${programs[@]}"; do strip --strip-debug "$tree/usr/bin/$p"; done
+for p in "${programs[@]}"; do strip --strip-all "$tree/usr/bin/$p"; done
 cp -r "$root/target/extension/chromium" "$tree/usr/share/misterdownloadmanager/extension-chromium"
 cp "$root/target/extension/mdm-firefox.xpi" "$tree/usr/share/misterdownloadmanager/"
 cp "$root/LICENSE" "$root/ATTRIBUTION.md" "$tree/usr/share/doc/misterdownloadmanager/"
@@ -128,8 +135,21 @@ tool="$stage/appimagetool"
 curl -fsSL -o "$tool" \
   https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 chmod +x "$tool"
+# Update information (#24): AppImageLauncher, Gear Lever and AppImageUpdate read it from the
+# AppImage, find the latest release's .zsync and download only the parts that changed. MDM's own
+# Update now doesn't need it. The pattern also matches a later name without "-experimental".
+update="gh-releases-zsync|anefzaoui|misterdownloadmanager|latest|MisterDownloadManager-*-linux-x86_64*.AppImage.zsync"
 # No FUSE on CI runners: the tool runs from its own extracted copy.
-APPIMAGE_EXTRACT_AND_RUN=1 ARCH=x86_64 "$tool" "$appdir" "$dist/$name.AppImage"
+# zstd at its strongest level (#25; unpacking is as fast): the tool's 128K blocks stay, as 1M
+# blocks make the AppImage start slower (AppImage/appimagetool#64).
+APPIMAGE_EXTRACT_AND_RUN=1 ARCH=x86_64 "$tool" -u "$update" \
+  --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 "$appdir" "$dist/$name.AppImage"
+# appimagetool writes the .zsync itself (beside the AppImage, or in the current folder); with
+# one that doesn't, zsyncmake makes it.
+[ -f "$name.AppImage.zsync" ] && mv "$name.AppImage.zsync" "$dist/"
+if [ ! -f "$dist/$name.AppImage.zsync" ]; then
+  (cd "$dist" && zsyncmake -u "$name.AppImage" -o "$name.AppImage.zsync" "$name.AppImage")
+fi
 
 rm -rf "$stage"
 (cd "$dist" && sha256sum "$name".* > SHA256SUMS-linux.txt)

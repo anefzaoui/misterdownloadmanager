@@ -42,7 +42,9 @@ UninstallDisplayIcon={app}\{#AppExe}
 UninstallDisplayName={#AppName}
 OutputDir={#Root}\target\dist
 OutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup
-Compression=lzma2/max
+; A 64 MB dictionary (#25): an 8 MB one (lzma2/max) only finds what repeats close by in the
+; solid archive. A few MB smaller; building needs about 750 MB of memory, installing 64 MB.
+Compression=lzma2/ultra64
 SolidCompression=yes
 ChangesAssociations=yes
 ; A running MDM is asked to quit by [Code] (it holds the mutex MisterDownloadManager.Running);

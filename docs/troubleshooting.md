@@ -82,6 +82,8 @@ When there is one, **Update now** downloads it, checks it, puts it in place and 
 
 MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and **Download** opens the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.
 
+The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its `.AppImage.zsync` file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.
+
 **Help → About Mister Download Manager** shows the version you have.
 
 ![About Mister Download Manager](images/about.png)

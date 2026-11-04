@@ -1,4 +1,4 @@
-//! Crash safety, end to end: kill the CLI process mid-download (no clean shutdown, like a
+//! Crash safety, end to end: kill the command line's process mid-download (no clean shutdown, like a
 //! crash or power cut for the process), resume from the state file, verify every byte.
 
 use std::process::{Command, Stdio};
@@ -7,7 +7,9 @@ use std::time::{Duration, Instant};
 use mdm_engine::state::{ResumeState, state_path};
 use mdm_labserver::{Config, Faults, LabServer, content};
 
-const CLI: &str = env!("CARGO_BIN_EXE_misterdownloadmanager-cli");
+/// The app's program, which runs misterdownloadmanager-cli's commands when its launcher
+/// (crates/cli) starts it with `--cli`.
+const APP: &str = env!("CARGO_BIN_EXE_misterdownloadmanager");
 
 #[tokio::test(flavor = "multi_thread")]
 async fn killed_download_resumes_correctly() {
@@ -21,7 +23,8 @@ async fn killed_download_resumes_correctly() {
     let dest = dir.path().join("crash.bin");
     let size: u64 = 24 << 20;
 
-    let mut child = Command::new(CLI)
+    let mut child = Command::new(APP)
+        .arg(mdm_cli::FLAG)
         .args(["get", &s.url("/gen/24M?seed=11"), "-o"])
         .arg(&dest)
         .stdout(Stdio::null())
@@ -44,7 +47,8 @@ async fn killed_download_resumes_correctly() {
     child.wait().unwrap();
     assert!(!dest.exists(), "not complete yet");
 
-    let status = Command::new(CLI)
+    let status = Command::new(APP)
+        .arg(mdm_cli::FLAG)
         .arg("resume")
         .arg(&state)
         .stdout(Stdio::null())

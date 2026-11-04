@@ -23,6 +23,8 @@ egui.workspace = true
 egui_extras.workspace = true
 image.workspace = true
 craft-i18n.workspace = true
+# misterdownloadmanager-cli's commands: its launcher runs this program for them (main.rs).
+mdm-cli.workspace = true
 mdm-engine.workspace = true
 mdm-ipc.workspace = true
 mdm-tools.workspace = true
@@ -40,6 +42,9 @@ unicode-segmentation = "1.13.3"
 # Crash and freeze reports: the monitor, minidumps, symbolicated stacks, release logs.
 mdm-crash.workspace = true
 tracing.workspace = true
+# Unpacks the translation catalogs (i18n.rs, packed by build.rs); already in the tree through
+# reqwest's brotli support.
+brotli-decompressor = "6.2.0"
 
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
@@ -64,12 +69,18 @@ zbus = { version = "5.19.0", default-features = false, features = ["async-io", "
 [target.'cfg(unix)'.dependencies]
 libc = "0.2.191"
 
+[build-dependencies]
+# Packs the translation catalogs (build.rs).
+brotli = "9.1.1"
+
 [target.'cfg(windows)'.build-dependencies]
 # Embeds the exe icon and version info (build.rs).
 winresource = "0.1"
 
 [dev-dependencies]
 tempfile.workspace = true
+# The command line's tests (tests/cli_*.rs) download from it.
+mdm-labserver.workspace = true
 
 [lints]
 workspace = true

@@ -24,7 +24,8 @@ craft-libs), laid out the way Internet Download Manager users expect. Start by r
 - `tools/dev/check-cross.ps1` — clippy for Linux and macOS from Windows (needs Zig, see the
   script); `node tools/extension/e2e.mjs` — the extension in real headless browsers.
 - `cargo run -p mdm-labserver -- --faults "rate=2M"` — test server (GET / lists the faults).
-- `cargo run -p mdm-cli -- get <url> -o <dir>` — headless download with progress.
+- `cargo run -p mdm-app -- --cli get <url> -o <dir>` — headless download with progress (the
+  app's program runs the command line; `misterdownloadmanager-cli` is only its launcher).
 - `tools/extension/pack.ps1` — build the extension for Chromium and Firefox into
   `target/extension/`; `node tools/extension/test.mjs` — its logic against fake browser APIs.
 - `tools/installer/build.ps1` — the Windows installer and portable zip into `target/dist/`.

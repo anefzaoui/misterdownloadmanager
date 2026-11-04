@@ -103,7 +103,10 @@ impl Install {
             Install::Installer => "setup.exe",
             Install::PortableZip => "portable.zip",
             Install::PlainZip => "x64.zip",
-            Install::Dmg => "macos-universal-experimental.dmg",
+            // One app per processor (tools/installer/build-macos.sh, #25). 0.2.4 and older look
+            // for the universal one, find it missing and offer the release's page instead.
+            Install::Dmg if cfg!(target_arch = "aarch64") => "macos-arm64-experimental.dmg",
+            Install::Dmg => "macos-x86_64-experimental.dmg",
             Install::AppImage => "linux-x86_64-experimental.AppImage",
             Install::Deb => "linux-x86_64-experimental.deb",
             Install::Rpm => "linux-x86_64-experimental.rpm",
@@ -376,6 +379,18 @@ Connection: close
         assert_eq!(
             Install::TarGz.asset("1.0.0").as_deref(),
             Some("MisterDownloadManager-1.0.0-linux-x86_64-experimental.tar.gz")
+        );
+        // The .dmg for the Mac's own processor.
+        let arch = if cfg!(target_arch = "aarch64") {
+            "arm64"
+        } else {
+            "x86_64"
+        };
+        assert_eq!(
+            Install::Dmg.asset("1.0.0"),
+            Some(format!(
+                "MisterDownloadManager-1.0.0-macos-{arch}-experimental.dmg"
+            ))
         );
         assert_eq!(Install::Source.asset("1.0.0"), None);
         let labels: std::collections::HashSet<_> = Install::ALL.iter().map(|i| i.label()).collect();

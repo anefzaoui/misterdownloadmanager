@@ -191,15 +191,15 @@
             </dl>
             <a class="btn btn-go" href="{{FILE_SETUP}}"><svg class="os-ico" aria-hidden="true"><use href="#os-windows"/></svg> Download the installer</a>
           </li>
-          <li class="service os-card" data-os="macos" data-href="{{FILE_DMG}}" data-label="Download for macOS">
+          <li class="service os-card" data-os="macos" data-href="/download.html#macos" data-label="Download for macOS">
             <h3><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> macOS <small>11 and later</small></h3>
             <p class="service-tags"><span class="tag try">Experimental</span></p>
             <dl class="fields">
-              <div><dt>Disk image</dt><dd>.dmg — one download for every Mac</dd></div>
-              <div><dt>Runs on</dt><dd>Apple Silicon and Intel</dd></div>
+              <div><dt>Apple Silicon</dt><dd><a href="{{FILE_DMG_ARM64}}">.dmg</a> for M1 and later</dd></div>
+              <div><dt>Intel</dt><dd><a href="{{FILE_DMG_INTEL}}">.dmg</a> for Intel Macs</dd></div>
               <div><dt>First start</dt><dd>right-click the app → Open (not notarized yet)</dd></div>
             </dl>
-            <a class="btn btn-line" href="{{FILE_DMG}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Mac</a>
+            <a class="btn btn-line" href="{{FILE_DMG_ARM64}}"><svg class="os-ico" aria-hidden="true"><use href="#os-macos"/></svg> Download for Apple Silicon</a>
           </li>
           <li class="service os-card" data-os="linux" data-href="{{FILE_APPIMAGE}}" data-label="Download for Linux">
             <h3><svg class="os-ico" aria-hidden="true"><use href="#os-linux"/></svg> Linux <small>x86-64</small></h3>
