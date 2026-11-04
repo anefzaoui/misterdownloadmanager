@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager 정보
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	들어오는 연결 수락
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	다운로드 추가(URL 추가)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	일괄 다운로드
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	이 목록의 주소 차단(P2P 또는 eMule 형식):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	둘 다 오픈 소스입니다. MDM은 자체 다운로더로 공식 릴리스에서 가져오며 실행하기 전에 각 파일의 서명을 확인합니다. 약 100MB, 한 번.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	2월
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	7일마다 다시 가져옵니다. 토렌트가 실행되고 있지 않을 때 변경 사항이 적용됩니다.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	파일 찾기
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	로컬 네트워크에서 피어 찾기
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT를 통해 피어 찾기
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	다음 일치 항목 찾기
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	잘못된 주소
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	네트워크의 컴퓨터에 어떤 토렌트를 가지고 있는지 알려줍니다.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	수동 프록시/SOCKS 구성
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	라우터에서 포트 매핑(UPnP)
 #. text in the Scheduler window
 #, machine
 	March	3월
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	포트
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	포트:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	서버:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	먼저 옵션 → 프록시/Socks에서 socks5:// 프록시를 설정하세요.
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	서버에서 제공하는 파일 생성 날짜 설정
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	기본 다운로드 큐 중지
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	토렌트 엔진이 필요 없을 때 토렌트 엔진 중지
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	토렌트 설정
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	토렌트 설정에서 프록시를 사용하라고 하지만, 프록시/Socks에 SOCKS5 프록시가 없습니다.
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	시스템 설정 사용
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	프록시 사용(옵션 → 프록시/Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	이 토렌트에 사용하시겠습니까? 일치하는 항목은 유지되고 나머지는 바뀝니다.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL 추가 사용
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	이것을 사용하면 들어오는 연결, DHT 및 로컬 피어가 꺼집니다.
 #. group box title in the Options window
 #, machine
 	Write dates and times	날짜 및 시간 쓰기

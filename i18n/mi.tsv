@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mō Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Whakaae hononga taumai
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Tāpiri i tētahi tikiake (Tāpiri URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Tikiake puranga
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Āraia ngā wāhitau kei tēnei rārangi (hōputu P2P, eMule rānei):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	E rua ngā mea e wātea ana. Ka tikiakehia e MDM mai i ō rātou tukunga mana mā tana ake kaiwhakatikiake, ā, ka tirohia te waitohu o ia kōnae i mua i te whakahaere. Tata ki te 100 MB, kotahi anake.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Pēpuere
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Ka tiki anō ia 7 rā. Ka whai mana ngā panoni ina kāore he awa e rere ana.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Kimihia te kōnae
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Kimihia ngā hoa i te whatunga ā-rohe
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Kimihia ngā hoa mā te DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Kimihia te taurite e whai ake nei
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Wāhitau hē
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Ka kōrero ki ngā rorohiko i tō whatunga he aha ngā awa kei a koe.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Whirihoranga takawaenga/socks ā-ringa
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Maherehia te tauranga i te pouara (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Poutū-te-rangi
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Tauranga
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Tauranga:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Tūmau:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Whakaritea he takawaenga socks5:// i ngā Kōwhiringa → Takawaenga / Socks i te tuatahi
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Tautuhia te rā waihanga kōnae kia rite ki tā te tūmau i whakarato ai
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Kati te rārangi tikiake matua
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Kati te pūkaha awa ina kāore he awa e rere ana
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Ngā tautuhinga awa
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	E kī ana ngā tautuhinga awa kia whakamahia te takawaenga, engari kāore he takawaenga SOCKS5 i te Takawaenga / Socks
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Whakamahi tautuhinga pūnaha
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Whakamahia te takawaenga (Kōwhiringa → Takawaenga / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Whakamahia ēnei mō tēnei awa? Ka puritia ngā mea e ōrite ana, ka whakakapia te toenga.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	me te Tāpiri URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Mā tēnei, ka weto ngā hononga taumai, te DHT me ngā hoa ā-rohe.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Tuhia ngā rā me ngā wā

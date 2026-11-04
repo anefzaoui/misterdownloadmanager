@@ -71,6 +71,9 @@
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	About Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+	Accept incoming connections	Accept incoming connections
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Add a download (Add URL)	Add a download (Add URL)
 #. text in the tray icon's menu
@@ -170,6 +173,9 @@
 	Automatically start downloading the following file types:	Automatically start downloading the following file types:
 #. window title in the Batch download window
 	Batch download	Batch download
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+	Block the addresses in this list (P2P or eMule format):	Block the addresses in this list (P2P or eMule format):
 #. text in helpers.rs
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.
 #. button in the Options window
@@ -522,6 +528,9 @@
 	Extensions separated by spaces, for example MP4 MKV R0*	Extensions separated by spaces, for example MP4 MKV R0*
 #. text in the Scheduler window
 	February	February
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+	Fetched again every 7 days. Changes apply when no torrent is running.	Fetched again every 7 days. Changes apply when no torrent is running.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: joins picture and sound
@@ -560,6 +569,12 @@
 	Find a download	Find a download
 #. message or event log entry in the main window; window title in the Find window
 	Find file	Find file
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+	Find peers on the local network	Find peers on the local network
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+	Find peers through the DHT	Find peers through the DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Find the next match	Find the next match
 #. text in the Find window
@@ -686,6 +701,9 @@
 	Install yt-dlp	Install yt-dlp
 #. text in a dialog box
 	Invalid address	Invalid address
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+	It tells the computers on your network which torrents you have.	It tells the computers on your network which torrents you have.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.
@@ -760,6 +778,9 @@
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	Making the report readable: fetching the symbols ({done} of {total} MB)…
 #. text in the Options window
 	Manual proxy/socks configuration	Manual proxy/socks configuration
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+	Map the port on the router (UPnP)	Map the port on the router (UPnP)
 #. text in the Scheduler window
 	March	March
 #. checkbox in the Find window
@@ -1029,6 +1050,9 @@
 	PM	PM
 #. label in the Options window
 	Port	Port
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+	Port:	Port:
 #. button in a dialog box
 #. verb: open the part already downloaded
 	Preview	Preview
@@ -1201,6 +1225,9 @@
 	Server	Server
 #. text in the Options window
 	Server:	Server:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+	Set a socks5:// proxy in Options → Proxy / Socks first	Set a socks5:// proxy in Options → Proxy / Socks first
 #. checkbox in the Options window
 	Set file creation date as provided by the server	Set file creation date as provided by the server
 #. button in extension.rs; button in the Options window
@@ -1334,6 +1361,9 @@
 	Stop download at	Stop download at
 #. text in the tray icon's menu
 	Stop main download queue	Stop main download queue
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+	Stop the torrent engine when no torrent is running	Stop the torrent engine when no torrent is running
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Stop {queue}	Stop {queue}
@@ -1572,6 +1602,9 @@
 	Torrent files	Torrent files
 #. window title in the Add torrent window
 	Torrent settings	Torrent settings
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 	Torrents	Torrents
@@ -1663,6 +1696,9 @@
 	Use Speed Limiter	Use Speed Limiter
 #. text in the Options window
 	Use system settings	Use system settings
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Use the proxy (Options → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	Use them for this torrent? What matches it is kept, the rest replaced.
 #. label in the Options window
@@ -1733,6 +1769,9 @@
 	Windows' language ({language})	Windows' language ({language})
 #. message or event log entry in the main window
 	with Add URL	with Add URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+	With it, incoming connections, the DHT and local peers are off.	With it, incoming connections, the DHT and local peers are off.
 #. group box title in the Options window
 	Write dates and times	Write dates and times
 #. text in the main window (menus, toolbar, Categories pane)

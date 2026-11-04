@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Tietoja Mister Download Managerista
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Hyväksy saapuvat yhteydet
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Lisää lataus (Lisää URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Erälataus
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Estä osoitteet tässä luettelossa (P2P- tai eMule-muoto):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Molemmat ovat avointa lähdekoodia. MDM hakee ne virallisista julkaisuista omalla latausohjelmallaan ja tarkistaa kunkin tiedoston allekirjoituksen ennen suorittamista. Noin 100 Mt, kerran.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Helmikuu
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Haetaan uudelleen 7 päivän välein. Muutokset tulevat voimaan, kun torrentteja ei ole käynnissä.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Etsi tiedosto
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Etsi vertaisia paikallisverkosta
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Etsi vertaisia DHT:n kautta
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Etsi seuraava vastaavuus
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Virheellinen osoite
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Se kertoo verkon tietokoneille, mitä torrentteja sinulla on.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Manuaalinen välityspalvelimen/SOCKS-määritys
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Kartoita portti reitittimessä (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Maaliskuu
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Portti
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Portti:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Palvelin:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Määritä ensin socks5://-välityspalvelin kohdassa Asetukset → Välityspalvelin / Socks
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Aseta tiedoston luontipäivämäärä palvelimen antaman mukaisesti
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Pysäytä pääasiallinen latausjono
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Pysäytä torrent-moottori, kun torrentteja ei ole käynnissä
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Torrent-asetukset
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrent-asetukset edellyttävät välityspalvelimen käyttöä, mutta Välityspalvelin / Socks -kohdassa ei ole SOCKS5-välityspalvelinta
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Käytä järjestelmäasetuksia
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Käytä välityspalvelinta (Asetukset → Välityspalvelin / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Käytetäänkö niitä tähän torrentiin? Yhteensopivat säilytetään, loput korvataan.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	Lisää URL -toiminnolla
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Sen kanssa saapuvat yhteydet, DHT ja paikalliset vertaiset ovat pois käytöstä.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Päivämäärien ja aikojen kirjoitusasu

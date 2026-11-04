@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager について
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	受信接続を許可する
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ダウンロードを追加する (URL を追加する)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	バッチ ダウンロード
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	このリストのアドレスをブロックする (P2P または eMule 形式):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	どちらもオープンソースです。MDM は公式リリースから独自のダウンローダーで取得し、実行前に各ファイルの署名をチェックします。約 100 MB、1 回限りです。
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	2 月
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	7 日ごとに再取得されます。変更は、トレントが実行されていないときに適用されます。
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ファイルの検索
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	ローカル ネットワークでピアを検索する
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT を介してピアを検索する
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	次の検索結果を検索
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	無効なアドレス
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	ネットワーク上のコンピューターに、どのトレントを所有しているかを伝えます。
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	手動プロキシ/SOCKS 構成
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	ルーターでポートをマップする (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	3 月
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	ポート
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	ポート:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	サーバー:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	最初に [オプション] → [プロキシ / SOCKS] で socks5:// プロキシを設定してください
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	サーバーから提供されたファイル作成日を設定
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	メインダウンロードキューを停止
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	トレントが実行されていないときにトレント エンジンを停止する
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	トレント設定
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	トレント設定でプロキシを使用するように指定されていますが、[プロキシ / SOCKS] に SOCKS5 プロキシがありません
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	システム設定を使用する
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	プロキシを使用する ([オプション] → [プロキシ / SOCKS]、SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	このトレントにこれらを使用しますか? 一致するものは保持され、残りは置き換えられます。
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL の追加を使用
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	これにより、受信接続、DHT、ローカル ピアはオフになります。
 #. group box title in the Options window
 #, machine
 	Write dates and times	日付と時刻の書き方

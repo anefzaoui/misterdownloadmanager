@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Om Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Acceptera inkommande anslutningar
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Lägg till en nedladdning (Lägg till URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Batchnedladdning
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Blockera adresserna i den här listan (P2P- eller eMule-format):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Båda är öppen källkod. MDM hämtar dem från deras officiella utgåvor med sin egen nedladdare och kontrollerar varje fils signatur innan den körs. Cirka 100 MB, en gång.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Februari
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Hämtas igen var 7:e dag. Ändringar tillämpas när ingen torrent körs.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Hitta fil
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Hitta peer-datorer i det lokala nätverket
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Hitta peer-datorer via DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Hitta nästa matchning
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Ogiltig adress
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Den talar om för datorerna i nätverket vilka torrenter du har.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Manuell proxy-/SOCKS-konfiguration
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Mappa porten på routern (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Mars
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Port
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Port:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Server:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Ange en socks5://-proxy i Alternativ → Proxy/Socks först
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Ange filens skapandedatum som tillhandahålls av servern
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stoppa huvudnedladdningskön
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Stoppa torrentmotorn när ingen torrent körs
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Torrentinställningar
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrentinställningarna säger att proxyn ska användas, men Proxy/Socks har ingen SOCKS5-proxy
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Använd systeminställningar
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Använd proxyn (Alternativ → Proxy/Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Använda dem för denna torrent? Det som matchar behålls, resten ersätts.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	med Lägg till URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Med den är inkommande anslutningar, DHT och lokala peer-datorer avstängda.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Skriv datum och tider

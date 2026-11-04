@@ -1255,6 +1255,7 @@ impl App {
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
+            "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
             "existing-files" => {
                 let dir = self.downloads.join("Big Buck Bunny");
                 self.shown_existing = Some(crate::dialogs::ExistingFiles::new(&[
@@ -5134,8 +5135,10 @@ impl App {
             match t.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed => self.torrent_settings = None,
-                Outcome::Done((share, assoc)) => {
+                Outcome::Done(crate::torrentdlg::TorrentChoice { share, assoc, net }) => {
                     self.torrent_settings = None;
+                    // The network: the next torrent session takes it (torrent_tick).
+                    net.apply(&mut self.settings);
                     if share != self.settings.torrent_keep_sharing {
                         self.settings.torrent_keep_sharing = share;
                         self.torrent_host.set_sharing(

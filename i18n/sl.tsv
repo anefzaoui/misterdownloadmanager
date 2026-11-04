@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	O programu Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Sprejmi dohodne povezave
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Dodaj prenos (Dodaj URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Paketni prenos
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Blokiraj naslove na tem seznamu (oblika P2P ali eMule):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Oba sta odprtokodna. MDM ju pridobi iz uradnih izdaj s svojim prenosnikom in preveri podpis vsake datoteke, preden jo zažene. Približno 100 MB, enkrat.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Februar
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Znova pridobljeno vsakih 7 dni. Spremembe se uveljavijo, ko ne teče noben torrent.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Poišči datoteko
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Poišči sovrstnike v lokalnem omrežju
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Poišči sovrstnike prek DHT-ja
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Poišči naslednje ujemanje
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Neveljaven naslov
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Računalnikom v vašem omrežju sporoči, katere torrente imate.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Ročna konfiguracija proxyja/SOCKS
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Preslikaj vrata na usmerjevalniku (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Marec
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Vrata
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Vrata:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Strežnik:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Najprej nastavite proxy socks5:// v Možnosti → Proxy / Socks
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Nastavi datum ustvarjanja datoteke, kot ga je določil strežnik
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Ustavi glavno čakalno vrsto za prenos
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Ustavi pogon torrenta, ko ne teče noben torrent
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Nastavitve torrenta
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Nastavitve torrenta določajo uporabo proxyja, vendar Proxy / Socks nima proxyja SOCKS5
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Uporabi sistemske nastavitve
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Uporabi proxy (Možnosti → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Jih uporabiti za ta torrent? Kar se ujema, se ohrani, ostalo se zamenja.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	z Dodaj URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Z njim so dohodne povezave, DHT in lokalni sovrstniki izklopljeni.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Zapis datumov in časov

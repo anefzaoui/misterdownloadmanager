@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	حول Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	قبول الاتصالات الواردة
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	إضافة تنزيل (إضافة URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	تنزيل دفعي
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	حظر العناوين في هذه القائمة (تنسيق P2P أو eMule):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	كلاهما مفتوح المصدر. يحصل MDM عليهما من إصداراتهما الرسمية باستخدام أداة التنزيل الخاصة به ويتحقق من توقيع كل ملف قبل تشغيله. حوالي 100 ميغابايت، مرة واحدة.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	فبراير
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	يتم جلبها مرة أخرى كل 7 أيام. تسري التغييرات عندما لا يكون هناك أي تورنت قيد التشغيل.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	البحث عن ملف
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	البحث عن النظراء على الشبكة المحلية
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	البحث عن النظراء عبر DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	البحث عن المطابقة التالية
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	عنوان غير صالح
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	يخبر أجهزة الكمبيوتر على شبكتك بالتورنتات التي لديك.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	تكوين وكيل/SOCKS يدوي
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	تعيين المنفذ على الموجه (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	مارس
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	المنفذ
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	المنفذ:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	الخادم:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	عين وكيل socks5:// في الخيارات ← الوكيل / Socks أولا
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	تعيين تاريخ إنشاء الملف كما هو مقدم من الخادم
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	إيقاف قائمة انتظار التنزيل الرئيسية
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	إيقاف محرك التورنت عندما لا يكون هناك تورنت قيد التشغيل
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	إعدادات التورنت
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	تقول إعدادات التورنت استخدام الوكيل، ولكن الوكيل/Socks لا يحتوي على وكيل SOCKS5
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	استخدام إعدادات النظام
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	استخدام الوكيل (الخيارات ← الوكيل / Socks، SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	هل تريد استخدامها لهذا التورنت؟ يتم الاحتفاظ بما يتطابق معه، ويتم استبدال الباقي.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	مع إضافة عنوان URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	معه، يتم إيقاف الاتصالات الواردة وDHT والنظراء المحليين.
 #. group box title in the Options window
 #, machine
 	Write dates and times	كتابة التواريخ والأوقات

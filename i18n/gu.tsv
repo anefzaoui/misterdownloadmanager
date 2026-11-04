@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager વિશે
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	આવનારી કનેક્શન્સ સ્વીકારો
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ડાઉનલોડ ઉમેરો (URL ઉમેરો)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	બૅચ ડાઉનલોડ
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	આ સૂચિમાંના સરનામાંઓને અવરોધિત કરો (P2P અથવા eMule ફોર્મેટ):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	બંને ઓપન સોર્સ છે. MDM તેમને તેના પોતાના ડાઉનલોડર સાથે તેમની સત્તાવાર રિલીઝમાંથી મેળવે છે અને ચલાવતા પહેલા દરેક ફાઇલની સહી તપાસે છે. લગભગ 100 MB, એકવાર.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	ફેબ્રુઆરી
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	દર 7 દિવસે ફરીથી મેળવવામાં આવે છે. જ્યારે કોઈ ટૉરેન્ટ ચાલતું ન હોય ત્યારે ફેરફારો લાગુ પડે છે.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ફાઇલ શોધો
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	સ્થાનિક નેટવર્ક પર પીઅર્સ શોધો
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT દ્વારા પીઅર્સ શોધો
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	આગળનો મેળ શોધો
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	અમાન્ય સરનામું
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	તે તમારા નેટવર્ક પરના કમ્પ્યુટર્સને જણાવે છે કે તમારી પાસે કયા ટૉરેન્ટ્સ છે.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	મેન્યુઅલ પ્રોક્સી/SOCKS ગોઠવણી
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	રાઉટર પર પોર્ટ મેપ કરો (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	માર્ચ
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	પોર્ટ
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	પોર્ટ:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	સર્વર:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	પહેલા વિકલ્પો → પ્રોક્સી / સોક્સમાં socks5:// પ્રોક્સી સેટ કરો
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	સર્વર દ્વારા પ્રદાન કરાયેલ ફાઇલ બનાવટની તારીખ સેટ કરો
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	મુખ્ય ડાઉનલોડ કતાર રોકો
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	જ્યારે કોઈ ટૉરેન્ટ ચાલતું ન હોય ત્યારે ટૉરેન્ટ એન્જિન બંધ કરો
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	ટૉરેન્ટ સેટિંગ્સ
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	ટૉરેન્ટ સેટિંગ્સ પ્રોક્સીનો ઉપયોગ કરવાનું કહે છે, પરંતુ પ્રોક્સી / સોક્સમાં કોઈ SOCKS5 પ્રોક્સી નથી
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	સિસ્ટમ સેટિંગ્સનો ઉપયોગ કરો
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	પ્રોક્સીનો ઉપયોગ કરો (વિકલ્પો → પ્રોક્સી / સોક્સ, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	આ ટોરેન્ટ માટે તેનો ઉપયોગ કરવો? જે મેળ ખાય છે તે રાખવામાં આવે છે, બાકીનું બદલવામાં આવે છે.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL ઉમેરો સાથે
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	તેની સાથે, આવનારી કનેક્શન્સ, DHT અને સ્થાનિક પીઅર્સ બંધ હોય છે.
 #. group box title in the Options window
 #, machine
 	Write dates and times	તારીખો અને સમય લખો

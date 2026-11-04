@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager பற்றி
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	உள்வரும் இணைப்புகளை ஏற்கவும்
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	பதிவிறக்கத்தைச் சேர் (URL சேர்)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	மொத்தப் பதிவிறக்கம்
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	இந்த பட்டியலில் உள்ள முகவரிகளைத் தடுக்கவும் (P2P அல்லது eMule வடிவம்):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	இரண்டும் திறந்த மூலமாகும். MDM அவற்றை அதன் சொந்த டவுன்லோடருடன் அதிகாரப்பூர்வ வெளியீடுகளிலிருந்து பெறுகிறது மற்றும் இயக்கும் முன் ஒவ்வொரு கோப்பின் கையொப்பத்தையும் சரிபார்க்கிறது. சுமார் 100 MB, ஒருமுறை.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	பிப்ரவரி
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	ஒவ்வொரு 7 நாட்களுக்கும் மீண்டும் பெறப்படும். எந்த டோரண்ட்டும் இயங்காதபோது மாற்றங்கள் பொருந்தும்.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	கோப்பைக் கண்டறி
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	உள்ளூர் பிணையத்தில் பியர்களைக் கண்டறியவும்
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT வழியாக பியர்களைக் கண்டறியவும்
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	அடுத்த பொருத்தத்தைக் கண்டறி
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	தவறான முகவரி
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	உங்களிடம் உள்ள டோரண்ட்கள் எவை என்பதை உங்கள் நெட்வொர்க்கில் உள்ள கணினிகளுக்கு இது தெரிவிக்கிறது.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	கையேடு ப்ராக்ஸி/SOCKS உள்ளமைவு
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	ரூட்டரில் போர்ட்டை மேப் செய்யவும் (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	மார்ச்
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	போர்ட்
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	போர்ட்:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	சேவையகம்:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	முதலில் விருப்பத்தேர்வுகள் → ப்ராக்ஸி / சாக்ஸ் என்பதில் socks5:// ப்ராக்ஸியை அமைக்கவும்
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	சேவையகத்தால் வழங்கப்பட்ட கோப்பு உருவாக்கப்பட்ட தேதியை அமை
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	முக்கிய பதிவிறக்க வரிசையை நிறுத்து
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	டோரண்ட் எதுவும் இயங்காதபோது டோரண்ட் இன்ஜினை நிறுத்தவும்
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	டோரண்ட் அமைப்புகள்
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	டோரண்ட் அமைப்புகள் ப்ராக்ஸியைப் பயன்படுத்தச் சொல்கின்றன, ஆனால் ப்ராக்ஸி / சாக்ஸ் என்பதில் SOCKS5 ப்ராக்ஸி இல்லை
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	கணினி அமைப்புகளைப் பயன்படுத்து
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	ப்ராக்ஸியைப் பயன்படுத்தவும் (விருப்பத்தேர்வுகள் → ப்ராக்ஸி / சாக்ஸ், SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	இந்த டொரண்டிற்கு அவற்றைப் பயன்படுத்தவா? பொருந்துவது வைக்கப்படும், மீதமுள்ளவை மாற்றப்படும்.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL சேர் உடன்
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	இதன் மூலம், உள்வரும் இணைப்புகள், DHT மற்றும் உள்ளூர் பியர்கள் முடக்கப்படும்.
 #. group box title in the Options window
 #, machine
 	Write dates and times	தேதிகளையும் நேரங்களையும் எழுது

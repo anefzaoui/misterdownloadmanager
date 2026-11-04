@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Iwwer Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Akzeptéiert erakommend Verbindungen
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	En Download derbäisetzen (URL derbäisetzen)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Batch-Download
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Blockéiert d'Adresse vun dëser Lëscht (P2P oder eMule Format):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Béid sinn Open Source. MDM kritt se vun hiren offiziellen Releases mat sengem eegenen Downloader an iwwerpréift d'Signatur vun all Datei ier se ausgefouert gëtt. Ongeféier 100 MB, eemol.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Februar
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	All 7 Deeg nei ofgeruff. Ännerunge gëllen wann keen Torrent leeft.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Fichier fannen
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Peers am lokalen Netzwierk fannen
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Peers iwwer den DHT fannen
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Nächst Resultat fannen
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Ongëlteg Adress
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Et seet de Computeren an Ärem Netzwierk, wéi Torrents Dir hutt.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Manuell Proxy/Socks Konfiguratioun
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	De Port um Router zouweisen (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Mäerz
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Port
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Port:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Server:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Als éischt e socks5:// Proxy an Optiounen → Proxy / Socks astellen
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Dateierstellungsdatum vum Server iwwerhuelen
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Haapt-Download-Schlaang stoppen
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Den Torrent-Engine stoppen wann keen Torrent leeft
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Torrent-Astellungen
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	D'Torrent-Astellunge soen, de Proxy ze benotzen, awer Proxy / Socks huet kee SOCKS5-Proxy
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Systemastellunge benotzen
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	De Proxy benotzen (Optiounen → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Dës fir dësen Torrent benotzen? Wat passt gëtt behalen, de Rescht ersat.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	mat URL derbäisetzen
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Domat sinn erakommend Verbindungen, den DHT a lokal Peers aus.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Datumer an Zäite schreiwen

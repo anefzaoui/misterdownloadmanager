@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-ის შესახებ
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	შემომავალი კავშირების მიღება
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ჩამოტვირთვის დამატება (URL-ის დამატება)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	პაკეტური ჩამოტვირთვა
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	ამ სიაში არსებული მისამართების დაბლოკვა (P2P ან eMule ფორმატი):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ორივე ღია წყაროა. MDM მათ ოფიციალური გამოშვებებიდან იღებს საკუთარი ჩამომტვირთველით და ამოწმებს თითოეული ფაილის ხელმოწერას გაშვებამდე. დაახლოებით 100 მბ, ერთხელ.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	თებერვალი
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	ხელახლა მოძიება ყოველ 7 დღეში. ცვლილებები გამოიყენება, როდესაც ტორენტი არ მუშაობს.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ფაილის პოვნა
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	თანატოლების პოვნა ლოკალურ ქსელში
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	თანატოლების პოვნა DHT-ის მეშვეობით
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	შემდეგი შესატყვისის პოვნა
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	არასწორი მისამართი
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	ის თქვენს ქსელში არსებულ კომპიუტერებს აცნობებს, თუ რომელი ტორენტები გაქვთ.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	მექანიკური პროქსი/SOCKS კონფიგურაცია
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	პორტის რუკის შექმნა როუტერზე (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	მარტი
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	პორტი
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	პორტი:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	სერვერი:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	ჯერ დააყენეთ socks5:// პროქსი პარამეტრებში → პროქსი / SOCKS
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ფაილის შექმნის თარიღის დაყენება სერვერის მიერ მოწოდებულის მიხედვით
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	მთავარი ჩამოტვირთვის რიგის შეჩერება
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	ტორენტის ძრავის გაჩერება, როდესაც ტორენტი არ მუშაობს
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	ტორენტის პარამეტრები
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	ტორენტის პარამეტრები ითხოვს პროქსის გამოყენებას, მაგრამ პროქსი / SOCKS-ს არ აქვს SOCKS5 პროქსი
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	სისტემის პარამეტრების გამოყენება
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	პროქსის გამოყენება (პარამეტრები → პროქსი / SOCKS, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	გამოვიყენოთ ისინი ამ ტორენტისთვის? რაც ემთხვევა, შენარჩუნდება, დანარჩენი შეიცვლება.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL-ის დამატებით
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	მასთან ერთად, შემომავალი კავშირები, DHT და ლოკალური თანატოლები გამორთულია.
 #. group box title in the Options window
 #, machine
 	Write dates and times	თარიღებისა და დროის ჩაწერა

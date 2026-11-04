@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mu Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Gabhaibh ri ceanglaichean a tha a’ tighinn a-steach
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Cuir luchdachadh a-nuas ris (Cuir URL ris)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Luchdachadh sìos baidse
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Cuir casg air na seòlaidhean san liosta seo (cruth P2P no eMule):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Tha an dà chuid stòr fosgailte. Gheibh MDM iad bho na fiosan oifigeil aca leis an luchd-luchdaich sìos aige fhèin agus nì e sgrùdadh air ainm-sgrìobhte gach faidhle mus ruith e. Mu 100 MB, aon uair.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	An Gearran
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Air a tharraing a-rithist gach 7 latha. Bidh atharraichean a’ buntainn nuair nach eil sruth a’ ruith.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Lorg faidhle
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Lorg co-aoisean air an lìonra ionadail
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Lorg co-aoisean tron DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Lorg an ath-mhaids
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Seòladh mì-dhligheach
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Innsidh e do na coimpiutairean air an lìonra agad dè na sruthan a th’ agad.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Rèiteachadh làimhe proxy/socks
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Map an port air an rothadair (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Am Màrt
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Port
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Port:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Frithealaiche:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Suidhich progsaidh socks5:// ann an Roghainnean → Progsaidh / Socks an toiseach
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Suidhich ceann-latha cruthachaidh faidhle mar a thug am frithealaiche seachad
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stad prìomh chiudha luchdachadh sìos
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Stad an t-einnsean srutha nuair nach eil sruth a’ ruith
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Roghainnean torrent
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Tha roghainnean srutha ag ràdh gun tèid am progsaidh a chleachdadh, ach chan eil progsaidh SOCKS5 aig Progsaidh / Socks
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Cleachd roghainnean an t-siostaim
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Cleachd am progsaidh (Roghainnean → Progsaidh / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	An cleachd thu iad airson an toirrent seo? Thèid na tha a’ freagairt a chumail, thèid an còrr a chur na àite.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	le Cuir URL ris
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Leis, tha ceanglaichean a tha a’ tighinn a-steach, an DHT agus co-aoisean ionadail dheth.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Sgrìobh cinn-latha is uairean

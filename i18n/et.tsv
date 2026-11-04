@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Teave Mister Download Manageri kohta
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Nõustu sissetulevate ühendustega
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Lisa allalaadimine (Lisa URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Pakettallalaadimine
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Blokeeri aadressid selles loendis (P2P või eMule vorming):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Mõlemad on avatud lähtekoodiga. MDM hangib need ametlikest väljalasetest oma allalaadijaga ja kontrollib iga faili signatuuri enne käivitamist. Umbes 100 MB, üks kord.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Veebruar
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Uuesti toodud iga 7 päeva tagant. Muudatused rakenduvad, kui ühtegi torrentit ei tööta.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Otsi faili
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Leia kohalikust võrgust kaaslasi
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Leia kaaslasi DHT kaudu
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Otsi järgmist vastet
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Sobivatu aadress
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	See annab teie võrgus olevatele arvutitele teada, millised torrendid teil on.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Käsitsi puhverserveri/SOCKS-i konfiguratsioon
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Kaardista port ruuteris (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Märts
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Port
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Port:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Server:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Määra esmalt socks5:// puhverserver valikutes Valikud → Puhverserver / Socks
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Määra faili loomise kuupäev serveri antud kuupäevaks
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Peata peamine allalaadimisjärjekord
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Peata torrenti mootor, kui ühtegi torrentit ei tööta
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Torrenti sätted
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrenti seaded käskivad kasutada puhverserverit, kuid Puhverserver / Socks ei sisalda SOCKS5 puhverserverit
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Kasuta süsteemi sätteid
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Kasuta puhverserverit (Valikud → Puhverserver / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Kasutada neid selle torrenti jaoks? Sobivad säilitatakse, ülejäänud asendatakse.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL-i lisamisega
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Sellega on sissetulevad ühendused, DHT ja kohalikud kaaslased välja lülitatud.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Kuupäevade ja kellaaegade kirjutamine

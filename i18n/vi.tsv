@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Giới thiệu về Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Chấp nhận kết nối đến
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Thêm bản tải xuống (Thêm URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Tải xuống hàng loạt
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Chặn các địa chỉ trong danh sách này (định dạng P2P hoặc eMule):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Cả hai đều là mã nguồn mở. MDM lấy chúng từ các bản phát hành chính thức của chúng bằng trình tải xuống riêng và kiểm tra chữ ký của từng tệp trước khi chạy. Khoảng 100 MB, một lần.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Tháng 2
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Được tìm nạp lại sau mỗi 7 ngày. Các thay đổi sẽ được áp dụng khi không có torrent nào đang chạy.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Tìm tệp
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Tìm đồng đẳng trên mạng cục bộ
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Tìm đồng đẳng qua DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Tìm kết quả khớp tiếp theo
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Địa chỉ không hợp lệ
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Nó cho các máy tính trên mạng của bạn biết bạn có những torrent nào.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Cấu hình proxy/socks thủ công
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Ánh xạ cổng trên bộ định tuyến (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Tháng 3
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Cổng
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Cổng:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Máy chủ:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Trước tiên, hãy đặt proxy socks5:// trong Tùy chọn → Proxy / Socks
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Đặt ngày tạo tệp theo máy chủ cung cấp
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Dừng hàng đợi tải xuống chính
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Dừng công cụ torrent khi không có torrent nào đang chạy
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Cài đặt torrent
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Cài đặt Torrent yêu cầu sử dụng proxy, nhưng Proxy / Socks không có proxy SOCKS5
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Sử dụng cài đặt hệ thống
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Sử dụng proxy (Tùy chọn → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Sử dụng chúng cho torrent này? Những gì khớp sẽ được giữ lại, phần còn lại được thay thế.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	với Thêm URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Với tùy chọn này, các kết nối đến, DHT và đồng đẳng cục bộ sẽ bị tắt.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Viết ngày và giờ

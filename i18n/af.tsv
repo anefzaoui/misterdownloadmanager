@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Oor Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Aanvaar inkomende verbindings
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Voeg 'n aflaai by (Voeg URL by)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Bondel aflaai
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Blokkeer die adresse in hierdie lys (P2P- of eMule-formaat):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Albei is oopbron. MDM kry dit van hul amptelike vrystellings met sy eie aflaaier en kontroleer elke lêer se handtekening voordat dit loop. Ongeveer 100 MB, een keer.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Februarie
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Elke 7 dae weer gehaal. Veranderinge is van toepassing wanneer geen torrent loop nie.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Vind lêer
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Vind eweknieë op die plaaslike netwerk
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Vind eweknieë deur die DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Vind die volgende ooreenstemming
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Ongeldige adres
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Dit vertel die rekenaars op jou netwerk watter torrente jy het.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Handmatige instelling van instaanbediener/SOCKS
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Koppel die poort op die roeteerder (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Maart
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	Poort
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Poort:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	Bediener:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Stel eers 'n socks5://-instaanbediener in Opsies → Instaanbediener / Socks
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Stel lêerskeppingsdatum soos deur die bediener verskaf
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stop hoofaflaaitou
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Stop die torrent-enjin wanneer geen torrent loop nie
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Torrent-instellings
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrent-instellings sê om die instaanbediener te gebruik, maar Instaanbediener / Socks het geen SOCKS5-instaanbediener nie
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Gebruik stelselinstellings
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Gebruik die instaanbediener (Opsies → Instaanbediener / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Gebruik dit vir hierdie torrent? Wat ooreenstem, word behou, die res word vervang.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	met Voeg URL by
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Daarmee is inkomende verbindings, die DHT en plaaslike eweknieë af.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Skryf datums en tye

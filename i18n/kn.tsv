@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ಬಗ್ಗೆ
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	ಒಳಬರುವ ಸಂಪರ್ಕಗಳನ್ನು ಸ್ವೀಕರಿಸಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ಡೌನ್‌ಲೋಡ್ ಸೇರಿಸಿ (URL ಸೇರಿಸಿ)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ಬ್ಯಾಚ್ ಡೌನ್‌ಲೋಡ್
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	ಈ ಪಟ್ಟಿಯಲ್ಲಿರುವ ವಿಳಾಸಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ (P2P ಅಥವಾ eMule ಸ್ವರೂಪ):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ಎರಡೂ ಓಪನ್ ಸೋರ್ಸ್ ಆಗಿವೆ. MDM ತನ್ನದೇ ಆದ ಡೌನ್‌ಲೋಡರ್‌ನೊಂದಿಗೆ ಅವುಗಳನ್ನು ತಮ್ಮ ಅಧಿಕೃತ ಬಿಡುಗಡೆಗಳಿಂದ ಪಡೆಯುತ್ತದೆ ಮತ್ತು ಪ್ರತಿ ಫೈಲ್‌ನ ಸಹಿಯನ್ನು ರನ್ ಮಾಡುವ ಮೊದಲು ಪರಿಶೀಲಿಸುತ್ತದೆ. ಸುಮಾರು 100 MB, ಒಮ್ಮೆ.
@@ -721,6 +729,10 @@
 #. text in the Scheduler window
 #, machine
 	February	ಫೆಬ್ರವರಿ
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	ಪ್ರತಿ 7 ದಿನಗಳಿಗೊಮ್ಮೆ ಮತ್ತೆ ಪಡೆಯಲಾಗುತ್ತದೆ. ಯಾವುದೇ ಟೊರೆಂಟ್ ಚಾಲನೆಯಲ್ಲಿಲ್ಲದಿದ್ದಾಗ ಬದಲಾವಣೆಗಳು ಅನ್ವಯಿಸುತ್ತವೆ.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +787,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ಫೈಲ್ ಹುಡುಕಿ
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	ಸ್ಥಳೀಯ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿ ಪೀರ್‌ಗಳನ್ನು ಹುಡುಕಿ
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT ಮೂಲಕ ಪೀರ್‌ಗಳನ್ನು ಹುಡುಕಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	ಮುಂದಿನ ಹೊಂದಾಣಿಕೆಯನ್ನು ಹುಡುಕಿ
@@ -952,6 +972,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	ಅಮಾನ್ಯ ವಿಳಾಸ
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿರುವ ಕಂಪ್ಯೂಟರ್‌ಗಳಿಗೆ ನೀವು ಯಾವ ಟೊರೆಂಟ್‌ಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ಇದು ಹೇಳುತ್ತದೆ.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1055,6 +1079,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	ಹಸ್ತಚಾಲಿತ ಪ್ರಾಕ್ಸಿ/SOCKS ಕಾನ್ಫಿಗರೇಶನ್
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	ರೂಟರ್‌ನಲ್ಲಿ ಪೋರ್ಟ್ ಅನ್ನು ಮ್ಯಾಪ್ ಮಾಡಿ (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	ಮಾರ್ಚ್
@@ -1437,6 +1465,10 @@
 #. label in the Options window
 #, machine
 	Port	ಪೋರ್ಟ್
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	ಪೋರ್ಟ್:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1706,10 @@
 #. text in the Options window
 #, machine
 	Server:	ಸರ್ವರ್:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	ಮೊದಲು ಆಯ್ಕೆಗಳು → ಪ್ರಾಕ್ಸಿ / ಸಾಕ್ಸ್‌ನಲ್ಲಿ socks5:// ಪ್ರಾಕ್ಸಿಯನ್ನು ಹೊಂದಿಸಿ
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ಸರ್ವರ್ ಒದಗಿಸಿದಂತೆ ಫೈಲ್ ರಚನೆ ದಿನಾಂಕವನ್ನು ಹೊಂದಿಸಿ
@@ -1861,6 +1897,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ಮುಖ್ಯ ಡೌನ್‌ಲೋಡ್ ಕ್ಯೂ ನಿಲ್ಲಿಸಿ
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	ಯಾವುದೇ ಟೊರೆಂಟ್ ಚಾಲನೆಯಲ್ಲಿಲ್ಲದಿದ್ದಾಗ ಟೊರೆಂಟ್ ಎಂಜಿನ್ ಅನ್ನು ನಿಲ್ಲಿಸಿ
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -2193,6 +2233,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	ಟೊರೆಂಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	ಟೊರೆಂಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಪ್ರಾಕ್ಸಿಯನ್ನು ಬಳಸಲು ಹೇಳುತ್ತವೆ, ಆದರೆ ಪ್ರಾಕ್ಸಿ / ಸಾಕ್ಸ್‌ನಲ್ಲಿ SOCKS5 ಪ್ರಾಕ್ಸಿ ಇಲ್ಲ
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2319,6 +2363,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	ಸಿಸ್ಟಮ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಬಳಸಿ
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	ಪ್ರಾಕ್ಸಿಯನ್ನು ಬಳಸಿ (ಆಯ್ಕೆಗಳು → ಪ್ರಾಕ್ಸಿ / ಸಾಕ್ಸ್, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ಈ ಟೊರೆಂಟ್‌ಗಾಗಿ ಅವುಗಳನ್ನು ಬಳಸುವುದೇ? ಹೊಂದಾಣಿಕೆಯಾಗುವದನ್ನು ಇರಿಸಲಾಗುತ್ತದೆ, ಉಳಿದವುಗಳನ್ನು ಬದಲಾಯಿಸಲಾಗುತ್ತದೆ.
@@ -2418,6 +2466,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL ಸೇರಿಸಿ ಜೊತೆಗೆ
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	ಇದರೊಂದಿಗೆ, ಒಳಬರುವ ಸಂಪರ್ಕಗಳು, DHT ಮತ್ತು ಸ್ಥಳೀಯ ಪೀರ್‌ಗಳು ಆಫ್ ಆಗಿರುತ್ತವೆ.
 #. group box title in the Options window
 #, machine
 	Write dates and times	ದಿನಾಂಕಗಳು ಮತ್ತು ಸಮಯಗಳನ್ನು ಬರೆಯಿರಿ
