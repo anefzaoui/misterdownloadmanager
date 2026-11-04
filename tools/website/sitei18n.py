@@ -29,11 +29,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CATALOGS = ROOT / "i18n" / "site"
 
-# The site's languages (user decision 2026-11-01: the 20 most used after English), in the order the
-# language menu lists them. code (URL folder), hreflang, og:locale, native name, English name.
+# The site's languages (user decision 2026-11-01: the 20 most used after English; 2026-11-04:
+# European Portuguese too, asked for by a reader in Portugal), in the order the language menu
+# lists them. code (URL folder), hreflang, og:locale, native name, English name.
 LANGS = [
     ("es", "es", "es_ES", "Español", "Spanish"),
     ("pt-br", "pt-BR", "pt_BR", "Português (Brasil)", "Portuguese (Brazil)"),
+    ("pt", "pt-PT", "pt_PT", "Português (Portugal)", "Portuguese (Portugal)"),
     ("fr", "fr", "fr_FR", "Français", "French"),
     ("de", "de", "de_DE", "Deutsch", "German"),
     ("ru", "ru", "ru_RU", "Русский", "Russian"),

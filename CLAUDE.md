@@ -29,7 +29,7 @@ craft-libs), laid out the way Internet Download Manager users expect. Start by r
 - `tools/extension/pack.ps1` — build the extension for Chromium and Firefox into
   `target/extension/`; `node tools/extension/test.mjs` — its logic against fake browser APIs.
 - `tools/installer/build.ps1` — the Windows installer and portable zip into `target/dist/`.
-- `python tools/website/build.py --serve` — the website (and its 20 languages) on 127.0.0.1:8765;
+- `python tools/website/build.py --serve` — the website (and its 21 languages) on 127.0.0.1:8765;
   after changing its English (website/, docs/, CHANGELOG.md), `python tools/website/translate_site.py
   --all` sends only the new or changed texts (`--status` shows what each language lacks).
   `MDM_SITE_PREVIEW=1` builds the English pages with their language picker only (fast).
