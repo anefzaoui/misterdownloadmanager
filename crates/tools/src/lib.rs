@@ -4,6 +4,7 @@
 //! list, install it next to earlier versions (`tools/yt-dlp/<version>/`), switch to it
 //! atomically, never downgrade, and keep the previous version for rollback.
 
+pub mod chosen;
 pub mod ffmpeg;
 mod openpgp;
 pub mod pages;
@@ -41,6 +42,9 @@ pub enum Error {
     Missing(String),
     #[error("unexpected release data: {0}")]
     BadRelease(String),
+    /// A program chosen as yt-dlp or ffmpeg (`chosen`) didn't answer as one.
+    #[error("this program isn't {0}")]
+    NotTheProgram(&'static str),
     /// MDM's engine could not download it (its own words).
     #[error("{0}")]
     Download(String),
@@ -198,8 +202,13 @@ pub fn sum_for(sums: &str, name: &str) -> Option<[u8; 32]> {
     })
 }
 
-/// The yt-dlp install in `dir` (`dir/yt-dlp/current.json`), if any and still there.
+/// The yt-dlp to use: the person's own (`chosen`), else MDM's install in `dir`
+/// (`dir/yt-dlp/current.json`), if any and still there.
 pub fn installed(dir: &Path) -> Option<Installed> {
+    chosen::chosen(dir, chosen::Helper::YtDlp).or_else(|| own_ytdlp(dir))
+}
+
+fn own_ytdlp(dir: &Path) -> Option<Installed> {
     let text = std::fs::read(dir.join("yt-dlp").join("current.json")).ok()?;
     let i: Installed = serde_json::from_slice(&text).ok()?;
     i.exe.is_file().then_some(i)
@@ -231,6 +240,10 @@ pub async fn install_latest(
     net: &mdm_engine::Options,
     progress: Option<&update::Progress>,
 ) -> Result<Installed, Error> {
+    // The person's own copy: theirs to update (#51).
+    if let Some(mine) = chosen::chosen(dir, chosen::Helper::YtDlp) {
+        return Ok(mine);
+    }
     let client = reqwest::Client::builder().user_agent(USER_AGENT).build()?;
     let body = client
         .get(RELEASES)
@@ -241,7 +254,7 @@ pub async fn install_latest(
         .await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
-    if let Some(current) = installed(dir)
+    if let Some(current) = own_ytdlp(dir)
         && !newer(&release.tag_name, &current.version)
     {
         return Ok(current); // never the same again, never older

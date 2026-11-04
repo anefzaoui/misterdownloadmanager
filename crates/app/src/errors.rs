@@ -143,6 +143,8 @@ pub fn tools(e: &mdm_tools::Error) -> String {
             &[("detail", detail)],
         ),
         E::Download(text) => text.clone(),
+        // i18n: error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+        E::NotTheProgram(name) => fmt(t("this program isn't {name}"), &[("name", name)]),
     }
 }
 

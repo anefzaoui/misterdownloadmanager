@@ -57,17 +57,23 @@ fn best_build(release: &Release) -> Option<&Asset> {
         .map(|(_, a)| a)
 }
 
-/// The installed ffmpeg in `dir` (`dir/ffmpeg/current.json`), if any and still there; on Linux
-/// and macOS, else the system's own. Its `exe` is `ffmpeg(.exe)`; yt-dlp is given its folder.
+/// The ffmpeg to use: the person's own (`chosen`, #51), else MDM's install in `dir`
+/// (`dir/ffmpeg/current.json`), if any and still there; on Linux and macOS, else the system's
+/// own. Its `exe` is `ffmpeg(.exe)`; yt-dlp is given its folder.
 pub fn installed(dir: &Path) -> Option<Installed> {
-    let own = std::fs::read(dir.join("ffmpeg").join("current.json"))
-        .ok()
-        .and_then(|text| serde_json::from_slice::<Installed>(&text).ok())
-        .filter(|i| i.exe.is_file());
+    let own = crate::chosen::chosen(dir, crate::chosen::Helper::Ffmpeg).or_else(|| own(dir));
     #[cfg(not(windows))]
     return own.or_else(system);
     #[cfg(windows)]
     own
+}
+
+/// MDM's own install in `dir`.
+fn own(dir: &Path) -> Option<Installed> {
+    std::fs::read(dir.join("ffmpeg").join("current.json"))
+        .ok()
+        .and_then(|text| serde_json::from_slice::<Installed>(&text).ok())
+        .filter(|i| i.exe.is_file())
 }
 
 /// Linux and macOS: the ffmpeg the package manager or Homebrew installed (BtbN builds only for
@@ -93,6 +99,10 @@ pub async fn install_latest(
     net: &mdm_engine::Options,
     progress: Option<&crate::update::Progress>,
 ) -> Result<Installed, Error> {
+    // The person's own copy: theirs to update (#51).
+    if let Some(mine) = crate::chosen::chosen(dir, crate::chosen::Helper::Ffmpeg) {
+        return Ok(mine);
+    }
     if !cfg!(windows) {
         return Err(Error::Missing(
             "ffmpeg build for this system (install ffmpeg)".into(),
@@ -128,7 +138,7 @@ pub async fn install_latest(
         .filter(char::is_ascii_digit)
         .collect();
     let version = format!("{line}.{date}");
-    if let Some(current) = installed(dir)
+    if let Some(current) = own(dir)
         && !newer(&version, &current.version)
     {
         return Ok(current);
