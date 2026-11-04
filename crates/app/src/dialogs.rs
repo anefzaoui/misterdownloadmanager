@@ -631,7 +631,8 @@ impl FileInfo {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        self.save_as = display_path(&folder.join(name));
+        // Fitted to the new folder too (#28): a deeper one leaves a long name less room.
+        self.save_as = display_path(&mdm_engine::naming::destination(folder, &name));
         self.edited = true;
     }
 
@@ -676,8 +677,8 @@ impl FileInfo {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        self.save_as =
-            display_path(&crate::model::category_folder(c, &self.downloads, &self.dirs).join(name));
+        let folder = crate::model::category_folder(c, &self.downloads, &self.dirs);
+        self.save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
     }
 
     /// The dialog; Start (or Download Later) waits for a missing folder to be created.

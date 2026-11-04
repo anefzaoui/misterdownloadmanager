@@ -670,12 +670,12 @@ fn redirect_path(target: &str) -> String {
 
 /// Every kind of redirect in one chain (#28): 301, 307, a page with a meta refresh (and a wait),
 /// 308, then a page with a `Refresh` header that sets a cookie, and the file; named by its own
-/// address, the cookie along.
+/// address, its wait kept, the cookie on every connection.
 #[tokio::test]
 async fn every_kind_of_redirect_is_followed() {
     let s = server("").await;
     let enc = |u: &str| url::form_urlencoded::byte_serialize(u.as_bytes()).collect::<String>();
-    let file = s.url("/gen/1M/the-real-name.bin?seed=31");
+    let file = s.url("/gen/8M/the-real-name.bin?seed=31");
     let header_page = s.url(&format!(
         "/hop?how=header&cookie={}&to={}",
         enc("step=2"),
@@ -692,9 +692,12 @@ async fn every_kind_of_redirect_is_followed() {
         headers: Default::default(),
         dest: Destination::Dir(dir.path().to_owned()),
     };
+    let started = std::time::Instant::now();
     let out = Download::start(req, fast_opts()).wait().await.unwrap();
+    // The meta page's 1-second wait was kept.
+    assert!(started.elapsed() >= std::time::Duration::from_secs(1));
     assert_eq!(out.path.file_name().unwrap(), "the-real-name.bin");
-    let mut want = vec![0; 1 << 20];
+    let mut want = vec![0; 8 << 20];
     content::fill(31, 0, &mut want);
     assert!(
         std::fs::read(&out.path).unwrap() == want,
@@ -702,7 +705,8 @@ async fn every_kind_of_redirect_is_followed() {
     );
     tokio::time::sleep(std::time::Duration::from_millis(300)).await;
     let log = s.log();
-    assert!(!log.is_empty());
+    // Several connections fetched the file, every one with the page's cookie.
+    assert!(log.len() > 1, "one connection only: {}", log.len());
     assert!(
         log.iter().all(|e| e.cookie.as_deref() == Some("step=2")),
         "the page's cookie went on to the file: {:?}",

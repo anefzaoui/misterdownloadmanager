@@ -478,13 +478,18 @@ impl Item {
         self.resumable = s.resumable.or(self.resumable);
         if let Some(f) = &s.file {
             // Named now: a later start from scratch keeps this name.
-            self.name_from_url = false;
+            let guessed = std::mem::take(&mut self.name_from_url);
             if *f != self.dest {
                 // The file as saved (a video's real extension, a numbered duplicate, the name
                 // the server gave).
                 self.dest = f.clone();
                 if let Some(name) = f.file_name() {
                     self.file_name = name.to_string_lossy().into_owned();
+                }
+                // The guess's category was the address's: the real name's now (the file stays
+                // in the folder it was started in).
+                if guessed {
+                    self.category = Category::of(&self.file_name);
                 }
             }
         }

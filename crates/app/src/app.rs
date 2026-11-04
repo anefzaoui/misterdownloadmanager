@@ -169,10 +169,15 @@ fn move_file(from: &std::path::Path, to: &std::path::Path) -> Result<(), String>
     })
 }
 
-/// A download's new place (its name from it).
+/// A download's new place (its name from it). A name the user gave is no longer the address's
+/// guess (`Item::name_from_url`); another folder alone keeps the server's say.
 fn take_place(item: &mut Item, target: PathBuf) {
     if let Some(name) = target.file_name() {
-        item.file_name = name.to_string_lossy().into_owned();
+        let name = name.to_string_lossy().into_owned();
+        if name != item.file_name {
+            item.name_from_url = false;
+        }
+        item.file_name = name;
     }
     item.dest = target;
 }

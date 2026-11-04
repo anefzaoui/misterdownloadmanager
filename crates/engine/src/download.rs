@@ -515,7 +515,7 @@ impl AsGet {
     }
 }
 
-/// Most HTTP redirects a request follows (any 3xx with a `Location`), as browsers do (20; reqwest
+/// Most HTTP redirects (301, 302, 303, 307, 308) a request follows, as browsers do (20; reqwest
 /// stops at 10): download links often go through a tracker, a mirror picker and a CDN.
 const MAX_REDIRECTS: usize = 20;
 
@@ -642,8 +642,9 @@ pub struct ProbeInfo {
     pub file_name: String,
 }
 
-/// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name; the body
-/// is not read.
+/// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name, through
+/// the redirects `get` follows (a waiting page's look reads up to `PAGE_PEEK` of it and keeps its
+/// wait); the file's own body is not read.
 pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<ProbeInfo, Error> {
     if crate::ftp::is_ftp(&url) {
         let site = crate::ftp::Site::new(&url, &headers, opts)?;
@@ -654,7 +655,7 @@ pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<Probe
             size: facts.size,
         });
     }
-    let (resp, _) = get(
+    let (resp, ..) = get(
         &client(opts, &url, &AsGet::default())?,
         url,
         headers,
@@ -1259,7 +1260,7 @@ async fn run_fresh(
             Err(Error::NoRanges) => {
                 *shared.planner.lock().unwrap() = None;
                 shared.view.lock().unwrap().resumable = Some(false);
-                let (resp, _) = get(&client0, final_url, headers, post.as_ref(), cancel).await?;
+                let (resp, ..) = get(&client0, final_url, headers, post.as_ref(), cancel).await?;
                 let body = Body::Http(resp);
                 single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
             }
@@ -1818,20 +1819,23 @@ async fn save_state(
 /// own host. A page that leads on only with a script isn't followed: it stays the answer.
 ///
 /// With the answer, `headers` as the download goes on with them at the address it ended at:
-/// credentials scoped to it (`scoped_headers`), the pages' cookies added.
+/// credentials scoped to it (`scoped_headers`), the pages' cookies added; and how long the last
+/// request took to answer (a page's wait and its own request not counted: the time to first byte).
 async fn get(
     client: &Client,
     url: Url,
     headers: HeaderMap,
     post: Option<&Bytes>,
     cancel: &CancellationToken,
-) -> Result<(Response, HeaderMap), Error> {
+) -> Result<(Response, HeaderMap, Duration), Error> {
     let (mut url, mut headers) = (url, headers);
     // After a page's redirect, a page read but leading nowhere is asked for again, as is.
     let mut hops = 0;
     loop {
         let req = build(client, url.clone(), post).headers(headers.clone());
+        let asked = std::time::Instant::now();
         let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
+        let took = asked.elapsed();
         match resp.status() {
             StatusCode::OK | StatusCode::PARTIAL_CONTENT => {}
             s if s == StatusCode::TOO_MANY_REQUESTS || s == StatusCode::SERVICE_UNAVAILABLE => {
@@ -1844,7 +1848,7 @@ async fn get(
         headers = scoped_headers(&headers, &url, &from);
         // A form is never posted again, and a page's own redirects end somewhere.
         if post.is_some() || resp.status() != StatusCode::OK || hops >= MAX_PAGE_REDIRECTS {
-            return Ok((resp, headers));
+            return Ok((resp, headers, took));
         }
         let cookies = set_cookies(resp.headers());
         let (wait, next) = match header_text(resp.headers(), header::REFRESH)
@@ -1867,7 +1871,7 @@ async fn get(
                     }
                 }
             }
-            None => return Ok((resp, headers)),
+            None => return Ok((resp, headers, took)),
         };
         if !wait.is_zero() {
             cancellable(cancel, async {
@@ -1877,7 +1881,10 @@ async fn get(
             .await?;
         }
         headers = scoped_headers(&headers, &from, &next);
-        if next.host_str() == from.host_str() {
+        // Its own host's, and never from https down to http (as the user's own cookies).
+        if next.host_str() == from.host_str()
+            && !(from.scheme() == "https" && next.scheme() != "https")
+        {
             add_cookies(&mut headers, &cookies);
         }
         url = next;
@@ -2024,8 +2031,8 @@ fn add_cookies(headers: &mut HeaderMap, cookies: &[String]) {
 
 /// The first request of a download, retried as a connection is (`retry_wait`) when it fails
 /// in a way a later try may not: a server busy at the moment the download starts no longer
-/// fails the whole download. With the answer (and the headers to go on with, `get`), how long the
-/// try that got it waited for it.
+/// fails the whole download. With the answer (and the headers to go on with, `get`), how long its
+/// last request waited for it: a waiting page's delay isn't the server's time to first byte.
 async fn first_get(
     client: &Client,
     url: &Url,
@@ -2034,7 +2041,7 @@ async fn first_get(
     shared: &Shared,
     cancel: &CancellationToken,
 ) -> Result<((Response, HeaderMap), Duration), Error> {
-    first_try(opts, shared, cancel, || {
+    let ((resp, headers, took), _) = first_try(opts, shared, cancel, || {
         get(
             client,
             url.clone(),
@@ -2043,7 +2050,8 @@ async fn first_get(
             cancel,
         )
     })
-    .await
+    .await?;
+    Ok(((resp, headers), took))
 }
 
 /// `attempt` retried as `first_get` does; with its result, how long the try that got it took.
