@@ -47,10 +47,9 @@ async fn main() {
     let mut sessions = Vec::new();
     for n in 0..seeders {
         let t = Torrents::start(Config {
-            state_dir: out.join(format!("seeder{n}")),
-            listen: true,
             dht: false,
             offline: true,
+            ..Config::new(out.join(format!("seeder{n}")))
         })
         .await
         .expect("seeder started");

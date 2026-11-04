@@ -61,9 +61,10 @@ pub fn convert(bytes: &[u8]) -> Option<Converted> {
 fn range(line: &str) -> Option<Option<(IpAddr, IpAddr)>> {
     // eMule: "start - end , level , description" (a level above 127 is allowed), told apart
     // from a P2P line whose name has a comma by the range before the first comma.
-    let emule = line
-        .split_once(',')
-        .filter(|(span, _)| span.split_once('-').is_some_and(|(a, b)| ip(a).is_some() && ip(b).is_some()));
+    let emule = line.split_once(',').filter(|(span, _)| {
+        span.split_once('-')
+            .is_some_and(|(a, b)| ip(a).is_some() && ip(b).is_some())
+    });
     let span = if let Some((span, rest)) = emule {
         let level: u32 = rest
             .split(',')
@@ -113,9 +114,13 @@ mod tests {
 
     #[test]
     fn p2p_lines_are_kept() {
-        let c = convert(b"# a comment\nSome ISP:1.2.3.0-1.2.3.255\nv6 net:2001:db8::-2001:db8::ffff\n")
-            .unwrap();
-        assert_eq!(c.text, "mdm:1.2.3.0-1.2.3.255\nmdm:2001:db8::-2001:db8::ffff\n");
+        let c =
+            convert(b"# a comment\nSome ISP:1.2.3.0-1.2.3.255\nv6 net:2001:db8::-2001:db8::ffff\n")
+                .unwrap();
+        assert_eq!(
+            c.text,
+            "mdm:1.2.3.0-1.2.3.255\nmdm:2001:db8::-2001:db8::ffff\n"
+        );
         assert_eq!((c.ranges, c.skipped), (2, 0));
         // A name with a comma is still P2P.
         let c = convert(b"Acme, Inc:4.4.4.0-4.4.4.255\n").unwrap();

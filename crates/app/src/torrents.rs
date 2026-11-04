@@ -71,14 +71,7 @@ impl Host {
             .get_or_try_init(|| async move {
                 // i18n: an error: the app has no folder for its torrent data
                 let dir = state_dir().ok_or(crate::i18n::t("no data folder for torrents"))?;
-                let t = Torrents::start(Config {
-                    state_dir: dir,
-                    listen: true,
-                    dht: true,
-                    offline: false,
-                })
-                .await
-                .map_err(|e| {
+                let t = Torrents::start(Config::new(dir)).await.map_err(|e| {
                     crate::i18n::fmt(
                         // i18n: an error, with the reason
                         crate::i18n::t("torrents could not start: {error}"),
@@ -440,7 +433,11 @@ mod tests {
         };
         mark_files(
             dir.path(),
-            &[entry("sub/a.exe", false), entry(".pad0", true), entry("gone.bin", false)],
+            &[
+                entry("sub/a.exe", false),
+                entry(".pad0", true),
+                entry("gone.bin", false),
+            ],
         );
         let zone = |p: &Path| {
             let mut s = p.as_os_str().to_owned();
@@ -451,7 +448,11 @@ mod tests {
             zone(&dir.path().join("sub/a.exe")).as_deref(),
             Some("[ZoneTransfer]\r\nZoneId=3\r\nHostUrl=about:internet\r\n")
         );
-        assert_eq!(zone(&dir.path().join(".pad0")), None, "padding isn't marked");
+        assert_eq!(
+            zone(&dir.path().join(".pad0")),
+            None,
+            "padding isn't marked"
+        );
         assert!(!dir.path().join("gone.bin").exists(), "nothing created");
     }
 }

@@ -231,7 +231,10 @@ mod tests {
         ] {
             assert!(!allowed(bad, false), "{bad}");
         }
-        assert!(!allowed("udp://tracker.example:1337/a", true), "UDP goes around the proxy");
+        assert!(
+            !allowed("udp://tracker.example:1337/a", true),
+            "UDP goes around the proxy"
+        );
         assert!(allowed("https://t.example/a", true));
     }
 
@@ -249,13 +252,19 @@ mod tests {
     #[test]
     fn torrents_keep_their_info_byte_for_byte() {
         let info = b"d6:lengthi5e4:name1:a12:piece lengthi16384e6:pieces20:aaaaaaaaaaaaaaaaaaaae";
-        let mut t = b"d8:announce22:http://127.0.0.1/announce13:announce-listll22:http://127.0.0.1/announcee"
-            .to_vec();
-        t.extend(b"l24:udp://t.example:1337/aee4:info");
+        let s = |v: &str| format!("{}:{v}", v.len());
+        let (local, udp) = ("http://127.0.0.1/announce", "udp://t.example:1337/a");
+        let mut t = format!(
+            "d8:announce{}13:announce-listll{}el{}ee4:info",
+            s(local),
+            s(local),
+            s(udp)
+        )
+        .into_bytes();
         t.extend(info);
         t.push(b'e');
         let out = filter_torrent(&t, false).unwrap();
-        let mut want = b"d13:announce-listll24:udp://t.example:1337/aee4:info".to_vec();
+        let mut want = format!("d13:announce-listll{}ee4:info", s(udp)).into_bytes();
         want.extend(info);
         want.push(b'e');
         assert_eq!(out, want);
