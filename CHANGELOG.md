@@ -156,6 +156,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   side gets at least half of it, and the rest when the other side needs less. A limit under
   16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
   torrent started again while its files were still being checked no longer stays paused.
+- **Download complete's Open with... stayed in English** in every other language
+  ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80)). The tool that collects
+  MDM's texts for translation now also finds labels given through a window's own helpers, and
+  checks in CI that it keeps finding them.
 - **Download complete shows above other programs' windows**, as IDM's does, so the end of a
   download isn't missed ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)):
   it doesn't take the keyboard from the program being typed in, and once clicked it is a window

@@ -271,9 +271,10 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
+#. verb: closes this window
 #. verb: closes the filter box
 	Close	Close
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -321,7 +322,7 @@
 	Customize MDM Download panels in browsers	Customize MDM Download panels in browsers
 #. text in the Options window
 	Customize MDM menu items in context menu of browsers	Customize MDM menu items in context menu of browsers
-#. option (radio button) in the Scheduler window
+#. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 	Daily	Daily
 #. text in the Options window
@@ -410,7 +411,7 @@
 	Download Later	Download Later
 #. window title in a dialog box
 	Download later	Download later
-#. window title in a dialog box; checkbox in the Options window; text in the Scheduler window
+#. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 	Download limits	Download limits
 #. text in the Scheduler's download limits
@@ -1001,7 +1002,7 @@
 	OK	OK
 #. text in a download's progress window
 	on download stop/resume	on download stop/resume
-#. option (radio button) in the Scheduler window
+#. text in the Scheduler window; option (radio button) in the Scheduler window
 	Once at	Once at
 #. text in extension.rs
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Once it is added, this window says so. Chrome may also ask by itself at its next start.
@@ -1016,11 +1017,12 @@
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
-#. text in a dialog box; button in a download's Properties window
+#. button in a dialog box; text in a dialog box; button in a download's Properties window
+#. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 	Open	Open
-#. button in crashui.rs
+#. button in crashui.rs; button in a dialog box
 #. crash report window button: show the report's file in its folder
 	Open folder	Open folder
 #. checkbox in the Add torrent window
@@ -1040,6 +1042,9 @@
 	Open the selected download's menu	Open the selected download's menu
 #. message or event log entry in the main window; text in the Add torrent window
 	Open torrent file	Open torrent file
+#. button in a dialog box
+#. the trailing ... means it opens a window: keep it
+	Open with...	Open with...
 #. text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 	Options	Options
@@ -1356,7 +1361,7 @@
 	Speed Limiter settings	Speed Limiter settings
 #. button in a dialog box
 	Start Download	Start Download
-#. checkbox in the Scheduler window
+#. text in the Scheduler window; checkbox in the Scheduler window
 	Start download at	Start download at
 #. checkbox in the Scheduler window
 	Start download on Mister Download Manager startup	Start download on Mister Download Manager startup
@@ -1389,7 +1394,7 @@
 	Status:	Status:
 #. text in the Add torrent window
 	Stop	Stop
-#. checkbox in the Scheduler window
+#. text in the Scheduler window; checkbox in the Scheduler window
 	Stop download at	Stop download at
 #. text in the tray icon's menu
 	Stop main download queue	Stop main download queue
@@ -1733,7 +1738,7 @@
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 	Use another program...	Use another program...
-#. checkbox in the Batch download window; checkbox in a dialog box
+#. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 	Use authorization	Use authorization
 #. text in the Options window
 	Use automatic configuration script	Use automatic configuration script
