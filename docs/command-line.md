@@ -47,7 +47,7 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `video-get URL [-f selector] [-o folder]` | Download a video; `-f` takes a quality's selector from `video-info` (`b` = the best single file). |
 | `install-ytdlp`, `install-ffmpeg` | Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (Windows; on macOS and Linux MDM uses the system's). |
 | `torrent-info SOURCE` | A torrent's name, files (numbered) and size; `SOURCE` is a magnet link or a `.torrent` file. |
-| `torrent-get SOURCE [-o folder] [--files 0,2]` | Download a torrent, or only some of its files. |
+| `torrent-get SOURCE [-o folder] [--files 0,2] [--use-existing]` | Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; `--use-existing` uses them instead (what matches is kept, the rest downloaded). |
 | `torrent-create PATH -o file.torrent` | Make a `.torrent` of a file or folder (peers find it through the DHT). |
 | `status` | The running app's downloads, as JSON, with their ids (the automation API must be on). |
 | `pause ID...`, `start ID...` | Pause running downloads, or start (resume) stopped, queued or failed ones, in the running app. |

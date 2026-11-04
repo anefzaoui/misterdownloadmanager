@@ -111,8 +111,7 @@ pub fn torrent(e: &mdm_torrent::TorrentError) -> String {
         E::NotATorrent => t("this is not a magnet link or a .torrent file").to_owned(),
         E::MetadataTimeout => t("no peer sent the torrent's file list in time").to_owned(),
         E::Unknown => t("this torrent is not in the list").to_owned(),
-        // i18n: an error: a torrent names a file the system can't write safely; {name} is that
-        // file's path inside the torrent
+        // i18n: error when adding a torrent; {name} = a file's path inside the torrent
         E::UnsafeName(u) => fmt(
             t("this torrent has a file name that isn't safe to write, so it wasn't added: {name}"),
             &[("name", &ltr(&u.path))],

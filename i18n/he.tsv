@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	האם למחוק הורדה {n} מרשימת ההורדות של Mister Download Manager?|האם למחוק {n} הורדות אלה מרשימת ההורדות של Mister Download Manager?|האם למחוק {n} הורדות אלה מרשימת ההורדות של Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	ו-{n} קובץ אחר|ו-{n} קבצים אחרים|ו-{n} קבצים אחרים
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -179,6 +184,10 @@
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
 	Already reported as issue #{number}: {title}	כבר דווח כבעיה #{number}: {title}
+#. checkbox in crashui.rs
+#. crash report window: checkbox; the .dmp file holds what MDM had in memory
+#, machine
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	צרף גם את נתוני הקריסה (.dmp): הם עשויים להכיל כתובות, קבצי Cookie וסיסמאות
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	מחק גם את הקובץ מהדיסק
@@ -2126,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	תיקייה זו אינה קיימת:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	זהו אינו קישור Magnet או קובץ .torrent
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine

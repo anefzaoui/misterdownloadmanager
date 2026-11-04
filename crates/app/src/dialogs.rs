@@ -2222,8 +2222,7 @@ impl ExistingFiles {
         let first = crate::i18n::ltr(&self.first);
         // On its own line under the path, so a long path never cuts it off.
         let more = (self.count > 1).then(|| {
-            // i18n: in the "files already there" question, under the first file's path: {n} is
-            // how many more files are there
+            // i18n: "files already there" question, under the first path: {n} = how many more
             crate::i18n::tn(
                 (self.count - 1) as u64,
                 "and {n} other file",

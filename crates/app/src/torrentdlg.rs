@@ -4,7 +4,7 @@
 //! window's mode, so a light dialog in dark mode would get heavy text.
 
 use std::collections::HashSet;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
@@ -74,19 +74,6 @@ pub struct TorrentDialog {
     asking: Option<(crate::dialogs::CreateFolder, ())>,
     /// Asking whether to use files of the torrent's names already in the folder (#40).
     asking_files: Option<(crate::dialogs::ExistingFiles, ())>,
-}
-
-/// The chosen files of `meta` (padding never counts) that already exist where it would write
-/// them in `dir` (`Meta::folder_in`).
-fn already_there(meta: &mdm_torrent::Meta, chosen: &[bool], dir: &Path) -> Vec<PathBuf> {
-    let base = meta.folder_in(dir);
-    meta.files
-        .iter()
-        .zip(chosen)
-        .filter(|(f, c)| **c && !f.padding)
-        .map(|(f, _)| base.join(&f.path))
-        .filter(|p| p.exists())
-        .collect()
 }
 
 /// The category of a torrent: its largest file's.
@@ -250,11 +237,11 @@ impl TorrentDialog {
         );
         let folder = PathBuf::from(self.folder.trim());
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
-        // Then: files of the chosen names already there would be written into (#40).
-        let (meta, chosen) = (&self.meta, &self.chosen);
+        // Then: files of the torrent's names already there would be written into (#40).
+        let meta = &self.meta;
         let out = crate::dialogs::ensure_files_free(ctx, &mut self.asking_files, out, || {
             meta.as_ref()
-                .map_or_else(Vec::new, |m| already_there(m, chosen, &folder))
+                .map_or_else(Vec::new, |m| m.existing_in(&folder))
         });
         match out {
             Outcome::Open => Outcome::Open,
@@ -1001,25 +988,25 @@ mod tests {
         }
     }
 
-    /// #40: only the chosen files that exist where the torrent would write them are asked
-    /// about (padding never counts); a several-file torrent writes into its own folder.
+    /// #40: the files that exist where the torrent would write them are asked about, ticked or
+    /// not (padding never counts); a several-file torrent writes into its own folder.
     #[test]
-    fn files_already_there_are_the_chosen_ones_that_exist() {
+    fn files_already_there_are_the_ones_that_exist() {
         let dir = tempfile::tempdir().unwrap();
         let m = meta(&[("a.bin", 1), ("sub/b.bin", 1), ("c.bin", 1)]);
         let base = m.folder_in(dir.path());
         std::fs::create_dir_all(base.join("sub")).unwrap();
         std::fs::write(base.join("a.bin"), b"user's").unwrap();
         std::fs::write(base.join("sub/b.bin"), b"user's").unwrap();
-        // b.bin not chosen; c.bin chosen but not there.
+        // c.bin isn't there.
         assert_eq!(
-            already_there(&m, &[true, false, true], dir.path()),
-            vec![base.join("a.bin")]
+            m.existing_in(dir.path()),
+            vec![base.join("a.bin"), base.join("sub/b.bin")]
         );
-        assert!(already_there(&m, &[false, false, true], dir.path()).is_empty());
         let mut padded = m.clone();
         padded.files[0].padding = true;
-        assert!(already_there(&padded, &[true, false, false], dir.path()).is_empty());
+        assert_eq!(padded.existing_in(dir.path()), vec![base.join("sub/b.bin")]);
+        assert!(m.existing_in(&dir.path().join("elsewhere")).is_empty());
     }
 
     #[test]

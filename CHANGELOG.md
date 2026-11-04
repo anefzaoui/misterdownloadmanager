@@ -8,10 +8,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Security
 
 - **Torrents: file names are checked more strictly** ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40)):
-  a torrent with names the system can't write safely is refused, saying which name.
+  a torrent with names the system can't write safely is refused, saying which name, and so are
+  torrents kept from an earlier run.
 - The torrent library is updated (librqbit 9.1.0).
 - **No silent overwrite**: when some of a torrent's files are already in the folder, MDM asks
-  before writing into them (**No** is the default).
+  before writing into them (**No** is the default). The command line's `torrent-get` stops and
+  names them, unless given `--use-existing`.
 
 ### Added
 

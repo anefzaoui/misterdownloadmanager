@@ -3,9 +3,8 @@
 //! the torrent's own names, so MDM can't rename them: an unsafe name refuses the torrent, saying
 //! which.
 //!
-//! Everywhere: no empty part, `.`, `..`, separator or control character. On Windows also no `:`
-//! (a drive, or an alternate data stream such as `x.exe:Zone.Identifier`), none of `<>"|?*`, no
-//! trailing dot or space (Windows drops them, so two names become one), and no device name
+//! Everywhere: no empty part, `.`, `..`, separator or control character. On Windows also none of
+//! `:<>"|?*`, no trailing dot or space (Windows drops them, so two names become one), and no device name
 //! (`CON`, `NUL.txt`, `COM1`…). Where names ignore letter case (Windows, macOS), no two files
 //! whose paths differ only by case.
 
@@ -82,10 +81,7 @@ fn unsafe_part(part: &str, windows: bool) -> Option<&'static str> {
     if !windows {
         return None;
     }
-    if part.contains(':') {
-        return Some("a `:` (a drive or a hidden stream) in a name");
-    }
-    if part.chars().any(|c| r#"<>"|?*"#.contains(c)) {
+    if part.chars().any(|c| r#":<>"|?*"#.contains(c)) {
         return Some("a character Windows doesn't allow in a name");
     }
     if part.ends_with(['.', ' ']) {
@@ -141,13 +137,13 @@ mod tests {
         assert_eq!(linux(ok), Ok(()));
     }
 
-    /// #40: names Windows reads as a drive or a stream are refused there.
+    /// #40: a `:` anywhere in a name is refused on Windows.
     #[test]
-    fn drive_names_are_refused_on_windows() {
-        for bad in ["D:x.exe", "C:", "c:evil.dll", "x.exe:Zone.Identifier"] {
+    fn colons_are_refused_on_windows() {
+        for bad in ["a:b.bin", "Q:", "q:x.txt", "x.bin:hidden"] {
             let err = windows(&[&["folder", bad]]).unwrap_err();
             assert_eq!(err.path, format!("folder/{bad}"));
-            assert!(err.why.contains(':'), "{bad}: {}", err.why);
+            assert!(err.why.contains("Windows"), "{bad}: {}", err.why);
         }
         // Elsewhere a `:` is an ordinary character (Linux).
         assert_eq!(linux(&[&["Movie: Part 2", "a.mkv"]]), Ok(()));
