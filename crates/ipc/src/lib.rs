@@ -317,6 +317,7 @@ fn handle(conn: &TcpStream, token: &str, tx: &Sender<Incoming>, wake: &dyn Fn())
         // Said so, so the browser's host doesn't take silence for an app that isn't there.
         Err(Some(TooLarge)) => {
             let _ = (&*conn).write_all(b"too-large\n");
+            linger_close(conn);
             return;
         }
         Err(None) => return,
@@ -360,6 +361,31 @@ fn handle(conn: &TcpStream, token: &str, tx: &Sender<Incoming>, wake: &dyn Fn())
     let _ = (&*conn).write_all(reply.as_bytes());
 }
 
+/// Close after an answer given before the request was read to its end: no more writing, then
+/// what the client still sends is read and dropped (up to a limit, for a second at most).
+/// Closing with it unread makes the system reset the connection (macOS at once), and a reset can
+/// lose the answer before the client reads it.
+fn linger_close(conn: &TcpStream) {
+    use std::io::Read;
+    let _ = conn.shutdown(std::net::Shutdown::Write);
+    let _ = conn.set_read_timeout(Some(Duration::from_millis(250)));
+    let start = std::time::Instant::now();
+    let mut drained = 0;
+    let mut chunk = vec![0u8; 64 << 10];
+    while drained < 4 * MAX_REQUEST && start.elapsed() < Duration::from_secs(1) {
+        match (&*conn).read(&mut chunk) {
+            Ok(0) => break,
+            Ok(n) => drained += n,
+            Err(e)
+                if matches!(
+                    e.kind(),
+                    std::io::ErrorKind::WouldBlock | std::io::ErrorKind::TimedOut
+                ) => {}
+            Err(_) => break,
+        }
+    }
+}
+
 /// An HTTP request line (`POST / HTTP/1.1`) instead of our JSON.
 fn looks_like_http(line: &str) -> bool {
     let line = line.trim_end_matches('\r');
@@ -396,7 +422,9 @@ fn read_request(conn: &std::net::TcpStream) -> Result<String, Option<TooLarge>> 
     conn.set_read_timeout(Some(Duration::from_millis(250)))
         .map_err(|_| None)?;
     let mut buf = Vec::new();
-    let mut chunk = [0u8; 4096];
+    // Large reads: a request up to the limit (2 MB) comes in well within the deadline even on a
+    // busy machine (4 KB reads ran past it on a CI Mac).
+    let mut chunk = vec![0u8; 64 << 10];
     loop {
         if buf.len() > MAX_REQUEST {
             return Err(Some(TooLarge));
