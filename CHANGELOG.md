@@ -128,6 +128,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: the window couldn't be closed** on desktops without a tray, such as MangoWC
+  ([#59](https://github.com/anefzaoui/misterdownloadmanager/issues/59)): closing hid it to a tray
+  that wasn't there. Closing now hides to the tray only when a tray shows MDM's icon, and quits
+  otherwise. (The menus and dark mode there: see #50 and #60.)
 - **Linux: menus opened in the middle of the screen** in a Wayland session
   ([#50](https://github.com/anefzaoui/misterdownloadmanager/issues/50)): Wayland lets no program
   place its windows, and MDM's menus and drop-down lists are windows it places. MDM now runs

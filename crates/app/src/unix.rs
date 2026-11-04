@@ -359,6 +359,20 @@ pub fn on_wayland() -> bool {
     *ON_WAYLAND.get_or_init(|| std::env::var_os("WAYLAND_DISPLAY").is_some_and(|v| !v.is_empty()))
 }
 
+/// Linux: a tray host is there to show MDM's icon (a StatusNotifierWatcher on the session bus:
+/// KDE, waybar's tray, GNOME's AppIndicator extension), #59. Without one (MangoWC, plain
+/// window managers), closing the window would hide it where nothing can bring it back.
+#[cfg(target_os = "linux")]
+pub fn tray_host() -> bool {
+    let has = || -> zbus::Result<bool> {
+        let bus = zbus::blocking::Connection::session()?;
+        let dbus = zbus::blocking::fdo::DBusProxy::new(&bus)?;
+        let name = zbus::names::BusName::try_from("org.kde.StatusNotifierWatcher")?;
+        Ok(dbus.name_has_owner(name)?)
+    };
+    has().unwrap_or(false)
+}
+
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {
