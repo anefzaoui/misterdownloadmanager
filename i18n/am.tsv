@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	{n} ማውረድን ከMister Download Manager የማውረዶች ዝርዝር ውስጥ መሰረዝ ይፈልጋሉ?|እነዚህን {n} ማውረዶች ከMister Download Manager የማውረዶች ዝርዝር ውስጥ መሰረዝ ይፈልጋሉ?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	እና {n} ሌላ ፋይል|እና {n} ሌሎች ፋይሎች
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	ፋይሎች
+#. window title in a dialog box
+#, machine
+	Files already there	ቀደም ሲል ያሉ ፋይሎች
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	እስካሁን ምንም አቃፊዎች የሉም
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	አይ ወደ ኋላ ይመለሳል፣ ሌላ ፎልደር ለመምረጥ።
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	ምንም የመልዕክት መተግበሪያ የለም፡ መልዕክቱ ተቀድቷል፣ በመልዕክትዎ ውስጥ ይለጥፉት።
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	ምንም ፒር የቶረንቱን የፋይል ዝርዝር በጊዜ አልላከም።
 #. text in the Options window
 #, machine
 	No proxy/socks	ምንም ፕሮክሲ/SOCKS የለም
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	አንዳንድ
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	አንዳንድ የቶረንት ፋይሎች በዚህ ፎልደር ውስጥ ይገኛሉ፦
 #. text in the Options window
 #, machine
 	Sound file	የድምጽ ፋይል
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ይህ አቃፊ የለም:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ይህ ማግኔት ሊንክ ወይም .torrent ፋይል አይደለም።
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ይህ ስርዓት ለማቋረጥ ምንም የመደወያ ግንኙነቶች የሉትም
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	ይህ ቶረንት ለመጻፍ ደህንነቱ ያልተጠበቀ የፋይል ስም ስላለው አልተጨመረም፦ {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ይህ ቶረንት አስቀድሞ በማውረድ ዝርዝር ውስጥ አለ
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	ይህ ቶረንት በዝርዝሩ ውስጥ የለም።
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	የስርዓት ቅንብሮችን ተጠቀም
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	ለዚህ ቶረንት ልትጠቀምባቸው ትፈልጋለህ? የሚዛመደው ይቀመጣል፣ የተቀረው ይተካል።
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	ይህን ፕሮክሲ ለሚከተሉት ፕሮቶኮሎች ይጠቀሙ:

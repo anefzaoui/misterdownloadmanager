@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து {n} பதிவிறக்கத்தை நீக்க விரும்புகிறீர்களா?|Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து இந்த {n} பதிவிறக்கங்களை நீக்க விரும்புகிறீர்களா?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	மற்றும் {n} பிற கோப்பு|மற்றும் {n} பிற கோப்புகள்
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	கோப்புகள்
+#. window title in a dialog box
+#, machine
+	Files already there	கோப்புகள் ஏற்கனவே உள்ளன
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	இதுவரை கோப்புறைகள் இல்லை
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	வேறொரு கோப்புறையைத் தேர்ந்தெடுக்க, வேண்டாம் என்பதைத் தட்டவும்.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	மின்னஞ்சல் பயன்பாடு இல்லை: செய்தி நகலெடுக்கப்பட்டது, அதை உங்கள் மின்னஞ்சலில் ஒட்டவும்.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	சரியான நேரத்தில் எந்தப் பியரும் டொரண்டின் கோப்புப் பட்டியலை அனுப்பவில்லை
 #. text in the Options window
 #, machine
 	No proxy/socks	ப்ராக்ஸி/SOCKS இல்லை
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	சில
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	டொரண்டின் சில கோப்புகள் ஏற்கனவே இந்தக் கோப்புறையில் உள்ளன:
 #. text in the Options window
 #, machine
 	Sound file	ஒலி கோப்பு
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	இந்த அடைவு இல்லை:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	இது ஒரு மேக்னட் இணைப்பு அல்லது .torrent கோப்பு அல்ல
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	இந்த கணினியில் டயல்-அப் இணைப்புகள் எதுவும் இல்லை
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	இந்த டொரண்டில் எழுத பாதுகாப்பற்ற கோப்புப் பெயர் உள்ளது, எனவே அது சேர்க்கப்படவில்லை: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	இந்த டோரண்ட் ஏற்கனவே பதிவிறக்கப் பட்டியலில் உள்ளது
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	இந்த டொரண்ட் பட்டியலில் இல்லை
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	கணினி அமைப்புகளைப் பயன்படுத்து
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	இந்த டொரண்டிற்கு அவற்றைப் பயன்படுத்தவா? பொருந்துவது வைக்கப்படும், மீதமுள்ளவை மாற்றப்படும்.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	பின்வரும் நெறிமுறைகளுக்கு இந்த ப்ராக்ஸியைப் பயன்படுத்து:

@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Համոզվա՞ծ եք, որ ցանկանում եք ջնջել {n} ներբեռնումը Mister Download Manager-ի ներբեռնումների ցանկից:|Համոզվա՞ծ եք, որ ցանկանում եք ջնջել այս {n} ներբեռնումները Mister Download Manager-ի ներբեռնումների ցանկից:
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	և ևս {n} ֆայլ|և ևս {n} ֆայլ
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -341,6 +346,9 @@
 #. column title: the peer's torrent program
 #, machine
 	Client	Հաճախորդ
+#. text in the Options window
+#, machine
+	Clock:	Ժամացույց:
 #. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
@@ -415,6 +423,9 @@
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	Ամենօրյա
+#. text in the Options window
+#, machine
+	Date order:	Ամսաթվի կարգը:
 #. page title in the Options window
 #, machine
 	Dates and times	Ամսաթվեր և ժամեր
@@ -507,6 +518,9 @@
 #. text in the Options window
 #, machine
 	Don't start downloading automatically from the following sites:	Մի սկսեք ավտոմատ ներբեռնումը հետևյալ կայքերից:
+#. text in the Options window
+#, machine
+	Don't take files smaller than (KB, 0 = any size):	Չբեռնել ֆայլեր, որոնք փոքր են (ԿԲ, 0 = ցանկացած չափ):
 #. text in a download's progress window
 #, machine
 	Done	Կատարված է
@@ -674,6 +688,10 @@
 #, machine
 	Event	Իրադարձություն
 #. text in the Options window
+#. label before an example date and time written the chosen way
+#, machine
+	Example:	Օրինակ:
+#. text in the Options window
 #, machine
 	Exceptions:	Բացառություններ:
 #. text in the tray icon's menu
@@ -737,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Ֆայլեր
+#. window title in a dialog box
+#, machine
+	Files already there	Արդեն առկա ֆայլեր
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -764,6 +785,9 @@
 #. adjective: the downloads that are complete
 #, machine
 	Finished	Ավարտված
+#. text in the Options window
+#, machine
+	First day of the week:	Շաբաթվա առաջին օրը:
 #. text in the Batch download window
 #, machine
 	First file:	Առաջին ֆայլը:
@@ -1140,6 +1164,9 @@
 #. category name: audio files
 #, machine
 	Music	Երաժշտություն
+#. option (radio button) in the Options window
+#, machine
+	My own way:	Իմ տարբերակը:
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
@@ -1204,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Դեռևս թղթապանակներ չկան
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	«Ոչ»-ը հետ է գնում՝ այլ թղթապանակ ընտրելու համար։
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1218,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Փոստային հավելված չկա. հաղորդագրությունը պատճենված է, տեղադրեք այն ձեր փոստում։
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	ոչ մի փիր չի ուղարկել տորենտի ֆայլերի ցանկը ժամանակին
 #. text in the Options window
 #, machine
 	No proxy/socks	Առանց պրոքսիի/SOCKS-ի
@@ -1749,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Մի քանիսը
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Տորենտի որոշ ֆայլեր արդեն այս թղթապանակում են:
 #. text in the Options window
 #, machine
 	Sound file	Ձայնային ֆայլ
@@ -2099,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Այս թղթապանակը գոյություն չունի:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	սա մագնիսական հղում կամ .torrent ֆայլ չէ
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2106,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Այս համակարգը չունի հեռախոսային կապեր՝ անջատելու համար
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	այս տորենտը ունի ֆայլի անուն, որը անվտանգ չէ գրել, ուստի այն չի ավելացվել՝ {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Այս տորենտը արդեն կա ներբեռնումների ցուցակում
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	այս տորենտը ցուցակում չկա
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2273,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Օգտագործել համակարգի կարգավորումները
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Օգտագործե՞լ դրանք այս տորենտի համար։ Այն, ինչ համընկնում է, պահպանվում է, մնացածը փոխարինվում է։
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Օգտագործել այս պրոքսին հետևյալ արձանագրությունների համար:

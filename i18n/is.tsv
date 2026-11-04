@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Ertu viss um að þú viljir eyða {n} niðurhali af niðurhalslista Mister Download Manager?|Ertu viss um að þú viljir eyða þessum {n} niðurhölum af niðurhalslista Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	og {n} önnur skrá|og {n} aðrar skrár
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Skrár
+#. window title in a dialog box
+#, machine
+	Files already there	Skrár eru þegar til staðar
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Engar möppur ennþá
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Nei fer til baka til að velja aðra möppu.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Ekkert póstforrit: skilaboðin eru afrituð, límdu þau inn í póstinn þinn.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	enginn jafningi sendi skráarlista straumsins í tæka tíð
 #. text in the Options window
 #, machine
 	No proxy/socks	Enginn proxy/socks
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Sumt
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Sumar skrár straumsins eru þegar í þessari möppu:
 #. text in the Options window
 #, machine
 	Sound file	Hljóðskrá
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Þessi mappa er ekki til:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	þetta er ekki segultengill eða .torrent skrá
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Þetta kerfi hefur engar innhringitengingar til að leggja á
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	þessi straumur er með skráarnafn sem er ekki öruggt að skrifa, svo honum var ekki bætt við: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Þetta torrent er nú þegar á niðurhalslistanum
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	þessi straumur er ekki á listanum
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Nota kerfisstillingar
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Nota þær fyrir þennan straum? Það sem passar er haldið, restinni skipt út.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Nota þennan proxy fyrir eftirfarandi samskiptareglur:

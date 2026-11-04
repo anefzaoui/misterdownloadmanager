@@ -162,6 +162,14 @@
    "source": "Starts the main download queue; <x1/>.",
    "text": "启动主下载队列；<x1/>。"
   },
+  "043086b485508c73": {
+   "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
+   "text": "如果 torrent 的某些文件已在文件夹中，MDM 会在使用前询问。选择<g1>是</g1>会将它们用于 torrent：MDM 会检查它们，保留与 torrent 匹配的部分并下载其余部分，这样您就可以继续在其他地方开始的下载或共享您已有的文件。选择<g2>否</g2>（默认）会返回，以便您可以选择另一个文件夹，并且您的任何内容都不会被覆盖。"
+  },
+  "04767f8b4224f77b": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
+   "text": "MDM 会拒绝包含您的系统无法安全写入的文件名的 torrent，并会说明是哪个文件名，且不会写入任何内容。"
+  },
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "免费开源。您已熟悉的界面，更快的底层引擎，内置种子下载和视频下载功能。"
@@ -5346,6 +5354,10 @@
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "从旁边的 <x1/> 文件继续暂停或中断的下载。"
   },
+  "a45f25e5b3e6d530": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
+   "text": "下载一个种子文件，或仅下载其中部分文件。如果部分文件已存在于文件夹中，它会停止并列出这些文件；<x1/> 会使用这些文件（匹配的部分保留，其余部分下载）。"
+  },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
    "text": "Mister Download Manager 支持哪些浏览器？"
@@ -6065,10 +6077,6 @@
   "b97c8337ca7df15d": {
    "source": "Mister Download Manager in 86 languages",
    "text": "Mister Download Manager 支持 86 种语言"
-  },
-  "b9fcc6b45167f69f": {
-   "source": "Download a torrent, or only some of its files.",
-   "text": "下载种子，或仅下载其部分文件。"
   },
   "ba0da96d77379606": {
    "source": "All the ways to add a download →",

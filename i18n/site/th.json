@@ -162,6 +162,14 @@
    "source": "Starts the main download queue; <x1/>.",
    "text": "เริ่มคิวการดาวน์โหลดหลัก; <x1/>"
   },
+  "043086b485508c73": {
+   "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
+   "text": "หากไฟล์บางส่วนของทอร์เรนต์อยู่ในโฟลเดอร์อยู่แล้ว MDM จะถามก่อนใช้งาน <g1>ใช่</g1> เพื่อเก็บไฟล์เหล่านั้นไว้สำหรับทอร์เรนต์: MDM จะตรวจสอบไฟล์ เก็บไฟล์ที่ตรงกับทอร์เรนต์ และดาวน์โหลดส่วนที่เหลือ ซึ่งเป็นวิธีที่คุณสามารถดาวน์โหลดต่อจากที่อื่น หรือแชร์ไฟล์ที่คุณมีอยู่แล้ว <g2>ไม่</g2> (ค่าเริ่มต้น) จะย้อนกลับไป เพื่อให้คุณสามารถเลือกโฟลเดอร์อื่นได้ และไม่มีไฟล์ของคุณถูกเขียนทับ"
+  },
+  "04767f8b4224f77b": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
+   "text": "MDM จะปฏิเสธทอร์เรนต์ที่มีชื่อไฟล์ที่ระบบของคุณไม่สามารถเขียนได้อย่างปลอดภัย โดยจะระบุชื่อไฟล์นั้น และจะไม่เขียนอะไรเลย"
+  },
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "ฟรีและโอเพนซอร์ส อินเทอร์เฟซที่คุณคุ้นเคย แต่มีเอนจินที่เร็วกว่าอยู่เบื้องหลัง พร้อมรองรับทอร์เรนต์และวิดีโอในตัว"
@@ -5346,6 +5354,10 @@
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "ดำเนินการดาวน์โหลดที่หยุดชั่วคราวหรือเสียหายต่อจากไฟล์ <x1/> ที่อยู่ข้างๆ"
   },
+  "a45f25e5b3e6d530": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
+   "text": "ดาวน์โหลดไฟล์ torrent หรือดาวน์โหลดเพียงบางไฟล์ หากมีบางไฟล์อยู่ในโฟลเดอร์อยู่แล้ว โปรแกรมจะหยุดและแสดงชื่อไฟล์เหล่านั้น <x1/> จะใช้ไฟล์เหล่านั้นแทน (ไฟล์ที่ตรงกันจะถูกเก็บไว้ ส่วนที่เหลือจะถูกดาวน์โหลด)"
+  },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
    "text": "Mister Download Manager ใช้งานได้กับเบราว์เซอร์ใดบ้าง"
@@ -6065,10 +6077,6 @@
   "b97c8337ca7df15d": {
    "source": "Mister Download Manager in 86 languages",
    "text": "Mister Download Manager ใน 86 ภาษา"
-  },
-  "b9fcc6b45167f69f": {
-   "source": "Download a torrent, or only some of its files.",
-   "text": "ดาวน์โหลดทอร์เรนต์ หรือเฉพาะบางไฟล์"
   },
   "ba0da96d77379606": {
    "source": "All the ways to add a download →",

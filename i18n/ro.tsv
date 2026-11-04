@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Sigur doriți să ștergeți {n} descărcare din lista de descărcări Mister Download Manager?|Sigur doriți să ștergeți aceste {n} descărcări din lista de descărcări Mister Download Manager?|Sigur doriți să ștergeți aceste {n} descărcări din lista de descărcări Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	și {n} alt fișier|și {n} alte fișiere|și {n} alte fișiere
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Fișiere
+#. window title in a dialog box
+#, machine
+	Files already there	Fișiere deja existente
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Niciun folder încă
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Nu înseamnă înapoi, pentru a alege alt folder.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Nicio aplicație de e-mail: mesajul este copiat, lipiți-l în e-mailul dvs.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	niciun peer nu a trimis lista de fișiere a torrentului la timp
 #. text in the Options window
 #, machine
 	No proxy/socks	Fără proxy/socks
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Parțial
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Unele dintre fișierele torrentului se află deja în acest folder:
 #. text in the Options window
 #, machine
 	Sound file	Fișier sunet
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Acest director nu există:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	acesta nu este un link magnet sau un fișier .torrent
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Acest sistem nu are conexiuni dial-up de închis
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	acest torrent are un nume de fișier care nu este sigur de scris, așa că nu a fost adăugat: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Acest torrent este deja în lista de descărcări
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	acest torrent nu este în listă
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Utilizați setările de sistem
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Le utilizați pentru acest torrent? Ceea ce se potrivește este păstrat, restul este înlocuit.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Utilizați acest proxy pentru următoarele protocoale:

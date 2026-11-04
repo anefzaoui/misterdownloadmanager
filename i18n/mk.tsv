@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Дали сте сигурни дека сакате да го избришете {n} преземање од листата за преземања на Mister Download Manager?|Дали сте сигурни дека сакате да ги избришете овие {n} преземања од листата за преземања на Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	и {n} друга датотека|и {n} други датотеки
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Датотеки
+#. window title in a dialog box
+#, machine
+	Files already there	Датотеки што веќе постојат
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Сè уште нема папки
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	„Не“ се враќа назад, за да изберете друга папка.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Нема апликација за пошта: пораката е копирана, залепете ја во вашата пошта.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	ниту еден врсник не ја испрати листата на датотеки на торентот навреме
 #. text in the Options window
 #, machine
 	No proxy/socks	Без прокси/SOCKS
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Некои
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Некои од датотеките на торентот веќе се наоѓаат во оваа папка:
 #. text in the Options window
 #, machine
 	Sound file	Звучна датотека
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Оваа папка не постои:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ова не е магнетна врска или .torrent датотека
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Овој систем нема dial-up врски за прекинување
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	овој торент има име на датотека што не е безбедно за запишување, па не беше додаден: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Овој торент е веќе во списокот за преземања
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	овој торент не е на листата
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Користи системски поставки
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Да ги користите за овој торент? Она што се совпаѓа се задржува, остатокот се заменува.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Користи го овој прокси за следниве протоколи:

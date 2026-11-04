@@ -103,6 +103,23 @@ pub fn describe(e: &Error) -> String {
     }
 }
 
+/// Why a torrent couldn't be listed or added, in the interface language. librqbit's own errors
+/// (`Engine`) come in its English.
+pub fn torrent(e: &mdm_torrent::TorrentError) -> String {
+    use mdm_torrent::TorrentError as E;
+    match e {
+        E::NotATorrent => t("this is not a magnet link or a .torrent file").to_owned(),
+        E::MetadataTimeout => t("no peer sent the torrent's file list in time").to_owned(),
+        E::Unknown => t("this torrent is not in the list").to_owned(),
+        // i18n: error when adding a torrent; {name} = a file's path inside the torrent
+        E::UnsafeName(u) => fmt(
+            t("this torrent has a file name that isn't safe to write, so it wasn't added: {name}"),
+            &[("name", &ltr(&u.path))],
+        ),
+        E::Engine(text) => text.clone(),
+    }
+}
+
 /// A network error in words a user can act on, with Windows' own description of the cause
 /// (Windows words it in its display language) but not the address, which the window shows.
 fn http(e: &reqwest::Error) -> String {

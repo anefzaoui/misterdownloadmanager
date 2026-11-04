@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	तुम्हाला Mister Download Manager च्या डाउनलोड सूचीमधून {n} डाउनलोड हटवायचे आहे याची खात्री आहे का?|तुम्हाला Mister Download Manager च्या डाउनलोड सूचीमधून हे {n} डाउनलोड हटवायचे आहेत याची खात्री आहे का?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	आणि {n} इतर फाइल|आणि {n} इतर फाइल्स
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	फाइल्स
+#. window title in a dialog box
+#, machine
+	Files already there	फाइल्स आधीच अस्तित्वात आहेत
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	अद्याप फोल्डर्स नाहीत
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	नाही दाबल्यास, दुसरा फोल्डर निवडण्यासाठी परत जा.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	मेल ॲप नाही: संदेश कॉपी केला आहे, तो तुमच्या मेलमध्ये पेस्ट करा.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	कोणत्याही पीअरने वेळेत टॉरंटची फाइल सूची पाठवली नाही
 #. text in the Options window
 #, machine
 	No proxy/socks	प्रॉक्सी/SOCKS नाही
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	काही
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	टॉरंटमधील काही फाइल्स या फोल्डरमध्ये आधीच आहेत:
 #. text in the Options window
 #, machine
 	Sound file	ध्वनी फाइल
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	हे फोल्डर अस्तित्वात नाही:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ही मॅग्नेट लिंक किंवा .torrent फाइल नाही
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	या सिस्टममध्ये हँग अप करण्यासाठी कोणतेही डायल-अप कनेक्शन नाहीत
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	या टॉरंटमध्ये एक फाइल नाव आहे जे लिहिण्यासाठी सुरक्षित नाही, त्यामुळे ते जोडले गेले नाही: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	हे टॉरेंट आधीच डाउनलोड सूचीमध्ये आहे
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	हा टॉरंट सूचीमध्ये नाही
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	सिस्टम सेटिंग्ज वापरा
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	या टॉरंटसाठी त्यांचा वापर करायचा? जे जुळते ते ठेवले जाईल, बाकीचे बदलले जाईल.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	खालील प्रोटोकॉलसाठी हा प्रॉक्सी वापरा:

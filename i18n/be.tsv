@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Вы ўпэўнены, што хочаце выдаліць {n} спампоўку са спісу спамповак Mister Download Manager?|Вы ўпэўнены, што хочаце выдаліць гэтыя {n} спампоўкі са спісу спамповак Mister Download Manager?|Вы ўпэўнены, што хочаце выдаліць гэтыя {n} спамповак са спісу спамповак Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	і {n} іншы файл|і {n} іншыя файлы|і {n} іншых файлаў
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Файлы
+#. window title in a dialog box
+#, machine
+	Files already there	Файлы ўжо існуюць
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Пакуль няма тэчак
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	«Не» вяртае назад, каб выбраць іншую папку.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Няма праграмы пошты: паведамленне скапіявана, устаўце яго ў сваю пошту.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	ніводны пір не адправіў спіс файлаў торэнта своечасова
 #. text in the Options window
 #, machine
 	No proxy/socks	Без проксі/SOCKS
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Некаторыя
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Некаторыя файлы торэнта ўжо знаходзяцца ў гэтай папцы:
 #. text in the Options window
 #, machine
 	Sound file	Гукавы файл
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Гэтай папкі не існуе:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	гэта не магнітная спасылка і не файл .torrent
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	У гэтай сістэме няма камутаваных злучэнняў для разрыву
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	гэты торэнт мае імя файла, якое небяспечна запісваць, таму ён не быў дададзены: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Гэты торэнт ужо ёсць у спісе загрузак
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	гэтага торэнта няма ў спісе
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Выкарыстоўваць сістэмныя налады
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Выкарыстоўваць іх для гэтага торэнта? Тое, што супадае, застаецца, астатняе замяняецца.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Выкарыстоўваць гэты проксі для наступных пратаколаў:

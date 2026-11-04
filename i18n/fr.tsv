@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Voulez-vous vraiment supprimer {n} téléchargement de la liste des téléchargements de Mister Download Manager ?|Voulez-vous vraiment supprimer ces {n} téléchargements de la liste des téléchargements de Mister Download Manager ?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	et {n} autre fichier|et {n} autres fichiers
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Fichiers
+#. window title in a dialog box
+#, machine
+	Files already there	Fichiers déjà présents
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Aucun dossier pour l’instant
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Non permet de revenir en arrière pour choisir un autre dossier.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Aucune application de messagerie : le message est copié, collez-le dans votre messagerie.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	aucun pair n’a envoyé la liste de fichiers du torrent à temps
 #. text in the Options window
 #, machine
 	No proxy/socks	Aucun proxy/SOCKS
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Partiel
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Certains fichiers du torrent sont déjà dans ce dossier :
 #. text in the Options window
 #, machine
 	Sound file	Fichier son
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Ce dossier n’existe pas :
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ceci n’est pas un lien magnet ni un fichier .torrent
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Ce système n’a pas de connexions d’accès à distance à raccrocher
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	ce torrent a un nom de fichier qui n’est pas sûr à écrire, il n’a donc pas été ajouté : {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Ce torrent est déjà dans la liste des téléchargements
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	ce torrent n’est pas dans la liste
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Utiliser les paramètres système
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Les utiliser pour ce torrent ? Ce qui correspond est conservé, le reste est remplacé.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Utiliser ce proxy pour les protocoles suivants :

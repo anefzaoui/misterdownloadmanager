@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Opravdu chcete odstranit {n} stahování ze seznamu stahování Mister Download Manager?|Opravdu chcete odstranit tato {n} stahování ze seznamu stahování Mister Download Manager?|Opravdu chcete odstranit těchto {n} stahování ze seznamu stahování Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	a {n} další soubor|a {n} další soubory|a {n} dalších souborů
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Soubory
+#. window title in a dialog box
+#, machine
+	Files already there	Soubory již existují
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Zatím žádné složky
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Ne se vrátí k výběru jiné složky.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Žádná poštovní aplikace: zpráva je zkopírována, vložte ji do své pošty.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	žádný peer neposlal seznam souborů torrentu včas
 #. text in the Options window
 #, machine
 	No proxy/socks	Bez proxy/SOCKS
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Některé
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Některé soubory torrentu jsou již v této složce:
 #. text in the Options window
 #, machine
 	Sound file	Zvukový soubor
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Tato složka neexistuje:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	toto není magnetický odkaz ani soubor .torrent
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Tento systém nemá žádná vytáčená připojení k zavěšení
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	tento torrent má název souboru, který není bezpečné zapsat, takže nebyl přidán: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Tento torrent je již v seznamu stahování
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	tento torrent není v seznamu
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Použít systémová nastavení
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Použít je pro tento torrent? Co se shoduje, zůstane, zbytek se nahradí.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Použít tento proxy pro následující protokoly:

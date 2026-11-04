@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Kei te hiahia muku koe i ēnei {n} tikiake mai i te rārangi tikiake a Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	me etahi atu kōnae {n}
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Ngā Kōnae
+#. window title in a dialog box
+#, machine
+	Files already there	Kōnae kei reira kē
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Kāore anō he kōpaki
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Ka hoki a Kāore, ki te kōwhiri i tētahi atu kōpaki.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Kāore he taupānga mēra: kua tāruatia te karere, whakapiri ki tō mēra.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	kāore he hoa i tuku i te rārangi kōnae o te awa i te wā
 #. text in the Options window
 #, machine
 	No proxy/socks	Kāore he takawaenga/socks
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Ētahi
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Ko ētahi o ngā kōnae o te awa kei roto kē i tēnei kōpaki:
 #. text in the Options window
 #, machine
 	Sound file	Kōnae oro
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Kāore tēnei kōpaki i te noho:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ehara tēnei i te hononga autō, i te kōnae .torrent rānei
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Kāore he hononga waea-ake hei whakairi i tēnei pūnaha
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	he ingoa kōnae tō tēnei awa kāore i te haumaru ki te tuhi, nō reira kāore i tāpirihia: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Kua reri tēnei awa i te rārangi tikiake
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	kāore tēnei awa i te rārangi
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Whakamahi tautuhinga pūnaha
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Whakamahia ēnei mō tēnei awa? Ka puritia ngā mea e ōrite ana, ka whakakapia te toenga.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Whakamahia tēnei takawaenga mō ngā kawa e whai ake nei:

@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	هل أنت متأكد من أنك تريد حذف التنزيل {n} من قائمة تنزيلات Mister Download Manager؟|هل أنت متأكد من أنك تريد حذف هذه التنزيلات {n} من قائمة تنزيلات Mister Download Manager؟|هل أنت متأكد من أنك تريد حذف هذه التنزيلات {n} من قائمة تنزيلات Mister Download Manager؟|هل أنت متأكد من أنك تريد حذف هذه التنزيلات {n} من قائمة تنزيلات Mister Download Manager؟|هل أنت متأكد من أنك تريد حذف هذه التنزيلات {n} من قائمة تنزيلات Mister Download Manager؟|هل أنت متأكد من أنك تريد حذف هذه التنزيلات {n} من قائمة تنزيلات Mister Download Manager؟
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	و{n} ملف آخر|و{n} ملف آخر|و{n} ملفات أخرى|و{n} ملفات أخرى|و{n} ملفات أخرى|و{n} ملفا آخر
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	الملفات
+#. window title in a dialog box
+#, machine
+	Files already there	الملفات موجودة بالفعل
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	لا توجد مجلدات بعد
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	لا يعود، لاختيار مجلد آخر.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	لا يوجد تطبيق بريد: تم نسخ الرسالة، الصقها في بريدك.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	لم يرسل أي نظير قائمة ملفات التورنت في الوقت المحدد
 #. text in the Options window
 #, machine
 	No proxy/socks	لا يوجد وكيل/SOCKS
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	بعض
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	بعض ملفات التورنت موجودة بالفعل في هذا المجلد:
 #. text in the Options window
 #, machine
 	Sound file	ملف الصوت
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	هذا المجلد غير موجود:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	هذا ليس رابط مغناطيسي أو ملف .torrent
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	لا يحتوي هذا النظام على اتصالات طلب هاتفي لإنهاء المكالمة
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	يحتوي هذا التورنت على اسم ملف غير آمن للكتابة، لذلك لم تتم إضافته: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	هذا التورنت موجود بالفعل في قائمة التنزيلات
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	هذا التورنت ليس في القائمة
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	استخدام إعدادات النظام
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	هل تريد استخدامها لهذا التورنت؟ يتم الاحتفاظ بما يتطابق معه، ويتم استبدال الباقي.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	استخدام هذا الوكيل للبروتوكولات التالية:

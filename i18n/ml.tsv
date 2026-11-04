@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് {n} ഡൗൺലോഡ് ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?|Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് ഈ {n} ഡൗൺലോഡുകൾ ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	കൂടാതെ {n} മറ്റ് ഫയലും|കൂടാതെ {n} മറ്റ് ഫയലുകളും
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	ഫയലുകൾ
+#. window title in a dialog box
+#, machine
+	Files already there	ഫയലുകൾ ഇതിനകം അവിടെയുണ്ട്
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	ഫോൾഡറുകളൊന്നും ഇതുവരെയില്ല
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	മറ്റൊരു ഫോൾഡർ തിരഞ്ഞെടുക്കാൻ 'വേണ്ട' എന്നതിൽ ക്ലിക്ക് ചെയ്യുക.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	മെയിൽ ആപ്പ് ഇല്ല: സന്ദേശം പകർത്തി, നിങ്ങളുടെ മെയിലിൽ ഒട്ടിക്കുക.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	പിയർ സമയബന്ധിതമായി ടോറൻ്റിൻ്റെ ഫയൽ ലിസ്റ്റ് അയച്ചില്ല
 #. text in the Options window
 #, machine
 	No proxy/socks	പ്രോക്സി/SOCKS ഇല്ല
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	ചിലത്
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	ഈ ടോറൻ്റിൻ്റെ ചില ഫയലുകൾ ഇതിനകം ഈ ഫോൾഡറിലുണ്ട്:
 #. text in the Options window
 #, machine
 	Sound file	ശബ്ദ ഫയൽ
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ഈ ഫോൾഡർ നിലവിലില്ല:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ഇതൊരു മാഗ്നറ്റ് ലിങ്കോ .torrent ഫയലോ അല്ല
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ഈ സിസ്റ്റത്തിന് ഡയൽ-അപ്പ് കണക്ഷനുകൾ ഇല്ല
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	ഈ ടോറൻ്റിന് സുരക്ഷിതമല്ലാത്ത ഒരു ഫയൽ നാമമുണ്ട്, അതിനാൽ ഇത് ചേർത്തിട്ടില്ല: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ഈ ടോറന്റ് ഇതിനകം ഡൗൺലോഡ് ലിസ്റ്റിലുണ്ട്
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	ഈ ടോറൻ്റ് ലിസ്റ്റിൽ ഇല്ല
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	സിസ്റ്റം ക്രമീകരണങ്ങൾ ഉപയോഗിക്കുക
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	ഈ ടോറൻ്റിനായി അവ ഉപയോഗിക്കണോ? പൊരുത്തപ്പെടുന്നവ നിലനിർത്തും, ബാക്കിയുള്ളവ മാറ്റിസ്ഥാപിക്കും.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	ഇനിപ്പറയുന്ന പ്രോട്ടോക്കോളുകൾക്കായി ഈ പ്രോക്സി ഉപയോഗിക്കുക:

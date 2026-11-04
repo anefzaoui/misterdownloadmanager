@@ -10,6 +10,10 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+@plural	and {n} other file|and {n} other files	and {n} other file|and {n} other files
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -542,6 +546,8 @@
 #. text in a download's progress window
 #. tab title: the torrent's files
 	Files	Files
+#. window title in a dialog box
+	Files already there	Files already there
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 	Files go to: {folder}	Files go to: {folder}
@@ -879,6 +885,8 @@
 	No downloads yet	No downloads yet
 #. text in a dialog box
 	No folders yet	No folders yet
+#. text in a dialog box
+	No goes back, to choose another folder.	No goes back, to choose another folder.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 	No language matches the search	No language matches the search
@@ -889,6 +897,8 @@
 	No mail app opened.	No mail app opened.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	No mail app: the message is copied, paste it in your mail.	No mail app: the message is copied, paste it in your mail.
+#. text in errors.rs
+	no peer sent the torrent's file list in time	no peer sent the torrent's file list in time
 #. text in the Options window
 	No proxy/socks	No proxy/socks
 #. text in the Download video window
@@ -1268,6 +1278,8 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 	Some	Some
+#. text in a dialog box
+	Some of the torrent's files are already in this folder:	Some of the torrent's files are already in this folder:
 #. text in the Options window
 	Sound file	Sound file
 #. page title in the Options window
@@ -1519,13 +1531,20 @@
 	This date has passed: the queue will not start	This date has passed: the queue will not start
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
+#. text in errors.rs
+	this is not a magnet link or a .torrent file	this is not a magnet link or a .torrent file
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
 #. text in a download's progress window
 	This system has no dial-up connections to hang up	This system has no dial-up connections to hang up
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	this torrent has a file name that isn't safe to write, so it wasn't added: {name}
 #. text in the Add torrent window
 	This torrent is already in the download list	This torrent is already in the download list
+#. text in errors.rs
+	this torrent is not in the list	this torrent is not in the list
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 	This video is protected (DRM): no tool can save it.	This video is protected (DRM): no tool can save it.
@@ -1644,6 +1663,8 @@
 	Use Speed Limiter	Use Speed Limiter
 #. text in the Options window
 	Use system settings	Use system settings
+#. text in a dialog box
+	Use them for this torrent? What matches it is kept, the rest replaced.	Use them for this torrent? What matches it is kept, the rest replaced.
 #. label in the Options window
 	Use this proxy for the following protocols:	Use this proxy for the following protocols:
 #. text in the Options window

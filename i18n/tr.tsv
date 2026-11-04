@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager indirme listesinden {n} indirmeyi silmek istediğinizden emin misiniz?|Mister Download Manager indirme listesinden bu {n} indirmeyi silmek istediğinizden emin misiniz?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	ve {n} diğer dosya|ve {n} diğer dosya
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Dosyalar
+#. window title in a dialog box
+#, machine
+	Files already there	Dosyalar zaten mevcut
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Henüz klasör yok
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Hayır, başka bir klasör seçmek için geri döner.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	E-posta uygulaması yok: mesaj kopyalandı, e-postanıza yapıştırın.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	hiçbir eş, torrent'in dosya listesini zamanında göndermedi
 #. text in the Options window
 #, machine
 	No proxy/socks	Proxy/SOCKS yok
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Bazı
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Torrent'in bazı dosyaları zaten bu klasörde:
 #. text in the Options window
 #, machine
 	Sound file	Ses dosyası
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Bu klasör mevcut değil:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	bu bir magnet bağlantısı veya .torrent dosyası değil
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Bu sistemde kapatılacak çevirmeli bağlantı yok
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	bu torrent'in yazılması güvenli olmayan bir dosya adı var, bu yüzden eklenmedi: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Bu torrent zaten indirme listesinde
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	bu torrent listede yok
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Sistem ayarlarını kullan
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Bu torrent için bunları kullanılsın mı? Eşleşenler tutulur, geri kalanı değiştirilir.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Aşağıdaki protokoller için bu proxy'yi kullan:

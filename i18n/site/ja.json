@@ -162,6 +162,14 @@
    "source": "Starts the main download queue; <x1/>.",
    "text": "メインのダウンロードキューを開始します。<x1/>。"
   },
+  "043086b485508c73": {
+   "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
+   "text": "トレントのファイルの一部がすでにフォルダーにある場合、MDMはそれらを使用する前に確認します。<g1>はい</g1>を選択すると、それらはトレントのために保持されます。MDMはそれらをチェックし、トレントと一致するものを保持し、残りをダウンロードします。これは、他の場所で開始したダウンロードを続行したり、すでに持っているファイルを共有したりする方法です。<g2>いいえ</g2>（デフォルト）を選択すると、元に戻り、別のフォルダーを選択できるため、既存のファイルが上書きされることはありません。"
+  },
+  "04767f8b4224f77b": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
+   "text": "MDMは、システムが安全に書き込めないファイル名を持つトレントを拒否し、どのファイル名であるかを伝え、何も書き込みません。"
+  },
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
@@ -5346,6 +5354,10 @@
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "一時停止または中断されたダウンロードを、隣にある<x1/>ファイルから再開します。"
   },
+  "a45f25e5b3e6d530": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
+   "text": "トレント、またはその一部のファイルをダウンロードします。一部のファイルがすでにフォルダーにある場合、ダウンロードを停止してそれらの名前を表示します。<x1/> 代わりにそれらを使用します（一致するものは保持され、残りはダウンロードされます）。"
+  },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
    "text": "対応ブラウザ — Mister Download Manager"
@@ -6065,10 +6077,6 @@
   "b97c8337ca7df15d": {
    "source": "Mister Download Manager in 86 languages",
    "text": "Mister Download Manager 86言語対応"
-  },
-  "b9fcc6b45167f69f": {
-   "source": "Download a torrent, or only some of its files.",
-   "text": "トレント、またはその一部のファイルのみをダウンロードします。"
   },
   "ba0da96d77379606": {
    "source": "All the ways to add a download →",

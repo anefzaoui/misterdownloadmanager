@@ -268,6 +268,9 @@ pub struct App {
     lang_picker: Option<crate::langpick::Picker>,
     /// The video helpers' offer (the first start's, after the language).
     helpers: Option<crate::helpers::Helpers>,
+    /// "Files already there", opened on its own by `/show existing-files` (screenshots and the
+    /// translations' fit check); Add torrent asks it itself.
+    shown_existing: Option<crate::dialogs::ExistingFiles>,
     /// The browser extension's offer (extension.rs), and whether this run has weighed it.
     extension: Option<crate::extension::Extension>,
     extension_weighed: bool,
@@ -646,6 +649,7 @@ impl App {
             tell_friend: None,
             lang_picker: ask_language.then(|| crate::langpick::Picker::new(true, None)),
             helpers: None,
+            shown_existing: None,
             extension: None,
             extension_weighed: false,
             auto_update: None,
@@ -1199,6 +1203,14 @@ impl App {
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
+            "existing-files" => {
+                let dir = self.downloads.join("Big Buck Bunny");
+                self.shown_existing = Some(crate::dialogs::ExistingFiles::new(&[
+                    dir.join("big_buck_bunny_1080p.mkv"),
+                    dir.join("subtitles.srt"),
+                    dir.join("poster.jpg"),
+                ]));
+            }
             "extension" => self.extension = Some(crate::extension::Extension::new()),
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
@@ -4743,6 +4755,11 @@ impl App {
             && !matches!(d.show(ctx, &self.rt), Outcome::Open)
         {
             self.helpers = None;
+        }
+        if let Some(q) = &mut self.shown_existing
+            && !matches!(q.show(ctx), Outcome::Open)
+        {
+            self.shown_existing = None;
         }
         // Then the browser extension, once per start until a browser has it (extension.rs).
         if self.lang_picker.is_none()

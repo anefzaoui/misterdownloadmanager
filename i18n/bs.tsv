@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Jeste li sigurni da želite izbrisati {n} preuzimanje s popisa preuzimanja programa Mister Download Manager?|Jeste li sigurni da želite izbrisati ova {n} preuzimanja s popisa preuzimanja programa Mister Download Manager?|Jeste li sigurni da želite izbrisati ovih {n} preuzimanja s popisa preuzimanja programa Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	i {n} druga datoteka|i {n} druge datoteke|i {n} drugih datoteka
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Datoteke
+#. window title in a dialog box
+#, machine
+	Files already there	Datoteke su već tu
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Još nema fascikli
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Ne vraća se nazad, da odaberete drugu fasciklu.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Nema aplikacije za poštu: poruka je kopirana, zalijepite je u svoju poštu.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	nijedan peer nije poslao listu torrent datoteka na vrijeme
 #. text in the Options window
 #, machine
 	No proxy/socks	Bez proxyja/socksa
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Neki
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Neke od torrent datoteka su već u ovoj fascikli:
 #. text in the Options window
 #, machine
 	Sound file	Zvučna datoteka
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Ova mapa ne postoji:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ovo nije magnet link ili .torrent datoteka
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Ovaj sistem nema dial-up veze za prekid
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	ovaj torrent ima naziv datoteke koji nije siguran za pisanje, pa nije dodan: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Ovaj torrent je već na listi preuzimanja
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	ovaj torrent nije na listi
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Koristi sistemske postavke
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Koristiti ih za ovaj torrent? Ono što se podudara se zadržava, ostalo se zamjenjuje.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Koristi ovaj proxy za sljedeće protokole:

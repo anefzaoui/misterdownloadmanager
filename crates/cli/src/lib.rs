@@ -104,6 +104,10 @@ enum Cmd {
         /// Stop after this many seconds (a test run).
         #[arg(long)]
         seconds: Option<u64>,
+        /// Use the torrent's files already in the folder: what matches the torrent is kept, the
+        /// rest downloaded into them. Without it, such files stop the download.
+        #[arg(long)]
+        use_existing: bool,
     },
     /// Pause downloads in the running app, by their ids from `status` (automation API).
     Pause {
@@ -388,11 +392,23 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             output,
             files,
             seconds,
+            use_existing,
         } => {
             let (t, _dir) = torrents().await?;
             let m = t
                 .metadata(&torrent_source(&source)?, Duration::from_secs(180))
                 .await?;
+            // The app asks first; here, the flag says yes (#40).
+            let there = m.existing_in(&output);
+            if let (false, Some(first)) = (use_existing, there.first()) {
+                t.stop().await;
+                anyhow::bail!(
+                    "files of the torrent are already there ({}, first: {}); add --use-existing \
+                     to use them, or choose another folder with -o",
+                    there.len(),
+                    first.display()
+                );
+            }
             let folder = m.folder_in(&output);
             let hash = t
                 .add(&m.torrent, &folder, files, m.peers.clone(), false)

@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	શું તમે Mister Download Manager ની ડાઉનલોડ્સની સૂચિમાંથી {n} ડાઉનલોડ કાઢી નાખવા માંગો છો?|શું તમે Mister Download Manager ની ડાઉનલોડ્સની સૂચિમાંથી આ {n} ડાઉનલોડ્સ કાઢી નાખવા માંગો છો?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	અને {n} અન્ય ફાઇલ|અને {n} અન્ય ફાઇલો
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	ફાઇલો
+#. window title in a dialog box
+#, machine
+	Files already there	ફાઇલો પહેલેથી જ ત્યાં છે
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	હજી સુધી કોઈ ફોલ્ડર નથી
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	ના પાછા જાય છે, અન્ય ફોલ્ડર પસંદ કરવા માટે.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	કોઈ મેઇલ એપ્લિકેશન નથી: સંદેશ કૉપિ કરવામાં આવ્યો છે, તેને તમારા મેઇલમાં પેસ્ટ કરો.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	કોઈ પીઅરે સમયસર ટોરેન્ટની ફાઇલ સૂચિ મોકલી નથી
 #. text in the Options window
 #, machine
 	No proxy/socks	કોઈ પ્રોક્સી/SOCKS નહીં
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	કેટલાક
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	આ ફોલ્ડરમાં ટોરેન્ટની કેટલીક ફાઇલો પહેલેથી જ છે:
 #. text in the Options window
 #, machine
 	Sound file	સાઉન્ડ ફાઇલ
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	આ ફોલ્ડર અસ્તિત્વમાં નથી:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	આ મેગ્નેટ લિંક અથવા .torrent ફાઇલ નથી
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	આ સિસ્ટમમાં હેંગ અપ કરવા માટે કોઈ ડાયલ-અપ કનેક્શન્સ નથી
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	આ ટોરેન્ટમાં એક ફાઇલ નામ છે જે લખવા માટે સુરક્ષિત નથી, તેથી તેને ઉમેરવામાં આવ્યું નથી: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	આ ટૉરેન્ટ પહેલેથી જ ડાઉનલોડ સૂચિમાં છે
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	આ ટોરેન્ટ સૂચિમાં નથી
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	સિસ્ટમ સેટિંગ્સનો ઉપયોગ કરો
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	આ ટોરેન્ટ માટે તેનો ઉપયોગ કરવો? જે મેળ ખાય છે તે રાખવામાં આવે છે, બાકીનું બદલવામાં આવે છે.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	નીચેના પ્રોટોકોલ્સ માટે આ પ્રોક્સીનો ઉપયોગ કરો:

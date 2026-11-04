@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Is jy seker jy wil {n} aflaai van Mister Download Manager se lys van aflaaie uitvee?|Is jy seker jy wil hierdie {n} aflaaie van Mister Download Manager se lys van aflaaie uitvee?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	en {n} ander lêer|en {n} ander lêers
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Lêers
+#. window title in a dialog box
+#, machine
+	Files already there	Lêers is reeds daar
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Nog geen vouers nie
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Nee gaan terug om 'n ander vouer te kies.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Geen posprogram: die boodskap is gekopieer, plak dit in jou pos.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	geen eweknie het die torrent se lêerlys betyds gestuur nie
 #. text in the Options window
 #, machine
 	No proxy/socks	Geen instaanbediener/SOCKS nie
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Sommige
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Sommige van die torrent se lêers is reeds in hierdie vouer:
 #. text in the Options window
 #, machine
 	Sound file	Klanklêer
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Hierdie vouer bestaan nie:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	dit is nie 'n magneetskakel of 'n .torrent-lêer nie
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Hierdie stelsel het geen inbelverbindings om te beëindig nie
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	hierdie torrent het 'n lêernaam wat nie veilig is om te skryf nie, so dit is nie bygevoeg nie: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Hierdie torrent is reeds in die aflaailys
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	hierdie torrent is nie in die lys nie
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Gebruik stelselinstellings
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Gebruik dit vir hierdie torrent? Wat ooreenstem, word behou, die res word vervang.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Gebruik hierdie instaanbediener vir die volgende protokolle:

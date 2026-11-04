@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	A bheil thu cinnteach gu bheil thu airson an luchdachadh a-nuas {n} a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?|A bheil thu cinnteach gu bheil thu airson na luchdachaidhean a-nuas {n} seo a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?|A bheil thu cinnteach gu bheil thu airson na luchdachaidhean a-nuas {n} seo a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?|A bheil thu cinnteach gu bheil thu airson na luchdachaidhean a-nuas {n} seo a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	agus {n} faidhle eile|agus {n} fhaidhle eile|agus {n} faidhle eile|agus {n} faidhle eile
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Faidhlichean
+#. window title in a dialog box
+#, machine
+	Files already there	Faidhlichean ann mu thràth
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Chan eil pasganan ann fhathast
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Ma thaghas tu Chan eil, thèid thu air ais gus pasgan eile a thaghadh.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Chan eil aplacaid puist ann: chaidh an teachdaireachd a chopaigeadh, cuir ann am post-d i.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	cha do chuir co-aoisean liosta fhaidhlichean an toirrent ann an àm
 #. text in the Options window
 #, machine
 	No proxy/socks	Gun proxy/socks
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Cuid
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Tha cuid de fhaidhlichean an toirrent sa phasgan seo mu thràth:
 #. text in the Options window
 #, machine
 	Sound file	Faidhle fuaime
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Chan eil am pasgan seo ann:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	chan e ceangal magnet no faidhle .torrent a tha seo
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Chan eil ceanglaichean dial-up aig an t-siostam seo ri chrochadh
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	tha ainm faidhle aig an toirrent seo nach eil sàbhailte a sgrìobhadh, is mar sin cha deach a chur ris: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Tha an torrent seo air an liosta luchdaich sìos mu thràth
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	chan eil an toirrent seo air an liosta
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Cleachd roghainnean an t-siostaim
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	An cleachd thu iad airson an toirrent seo? Thèid na tha a’ freagairt a chumail, thèid an còrr a chur na àite.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Cleachd am progsaidh seo airson na protocolaidhean a leanas:

@@ -2203,6 +2203,159 @@ impl CreateFolder {
     }
 }
 
+/// "Some of the torrent's files are already in this folder … Use them?" — asked before a torrent
+/// is added where files of its names exist (#40: librqbit writes into a file that is there, so
+/// an unrelated file of the same name would be overwritten). Yes keeps them for the torrent:
+/// what matches it is kept, the rest replaced (how data from elsewhere is resumed or shared).
+pub struct ExistingFiles {
+    /// The first file found (its full path), and how many in all.
+    first: String,
+    count: usize,
+}
+
+impl ExistingFiles {
+    pub fn new(found: &[PathBuf]) -> Self {
+        ExistingFiles {
+            first: found
+                .first()
+                .map(|p| p.display().to_string())
+                .unwrap_or_default(),
+            count: found.len(),
+        }
+    }
+
+    /// `Done` on Yes; `Closed` on No, Escape or the close box.
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
+        let first = crate::i18n::ltr(&self.first);
+        // On its own line under the path, so a long path never cuts it off.
+        let more = (self.count > 1).then(|| {
+            // i18n: "files already there" question, under the first path: {n} = how many more
+            crate::i18n::tn(
+                (self.count - 1) as u64,
+                "and {n} other file",
+                "and {n} other files",
+            )
+        });
+        question(
+            ctx,
+            "existing-files",
+            "Files already there",
+            [460.0, 206.0],
+            false,
+            winui::BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                let ink = winui::TEXT();
+                let (left, right) = (o.x + 11.0, o.x + 449.0);
+                let lines = winui::paragraph(
+                    &p,
+                    left,
+                    o.y + 21.0,
+                    crate::i18n::t("Some of the torrent's files are already in this folder:"),
+                    ink,
+                    right,
+                    18.0,
+                );
+                let path_y = o.y + 21.0 + lines as f32 * 18.0;
+                let (rect, cut) = winui::text_fit(&p, left, path_y, &first, ink, right);
+                if cut {
+                    winui::full_on_hover(ui, rect, "existing-files-path", &first);
+                }
+                let mut ask_y = path_y + 24.0;
+                if let Some(more) = &more {
+                    winui::text(&p, left, path_y + 18.0, more, winui::MUTED());
+                    ask_y += 18.0;
+                }
+                // The two sentences wrap (translations run longer), above the buttons.
+                let asked = winui::paragraph(
+                    &p,
+                    left,
+                    ask_y,
+                    crate::i18n::t(
+                        "Use them for this torrent? What matches it is kept, the rest replaced.",
+                    ),
+                    ink,
+                    right,
+                    18.0,
+                );
+                winui::paragraph(
+                    &p,
+                    left,
+                    ask_y + asked as f32 * 18.0,
+                    crate::i18n::t("No goes back, to choose another folder."),
+                    winui::MUTED(),
+                    right,
+                    18.0,
+                );
+                let yes = winui::button(
+                    ui,
+                    r(o, 294.0, 172.0, 73.0, 21.0),
+                    "Yes",
+                    ButtonKind::Normal,
+                    false,
+                    None,
+                )
+                .clicked();
+                // No is the default: a file the user didn't mean to give up stays as it is.
+                let no = winui::button(
+                    ui,
+                    r(o, 376.0, 172.0, 73.0, 21.0),
+                    "No",
+                    ButtonKind::Default,
+                    false,
+                    None,
+                )
+                .clicked();
+                if yes {
+                    Outcome::Done(())
+                } else if no || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
+                    Outcome::Closed
+                } else {
+                    Outcome::Open
+                }
+            },
+        )
+    }
+}
+
+/// Holds a dialog's "start" (`out`) while files the torrent would write into already exist
+/// (`found`, looked for once, when the dialog says start): asks [`ExistingFiles`] and keeps the
+/// result meanwhile; No goes back to the dialog. `asking` lives in the dialog, across frames.
+pub fn ensure_files_free<T>(
+    ctx: &egui::Context,
+    asking: &mut Option<(ExistingFiles, T)>,
+    out: Outcome<T>,
+    found: impl FnOnce() -> Vec<PathBuf>,
+) -> Outcome<T> {
+    match out {
+        Outcome::Closed => {
+            *asking = None;
+            return Outcome::Closed;
+        }
+        Outcome::Done(v) if asking.is_none() => {
+            let found = found();
+            if found.is_empty() {
+                return Outcome::Done(v);
+            }
+            *asking = Some((ExistingFiles::new(&found), v));
+        }
+        _ => {}
+    }
+    let Some((ask, _)) = asking.as_mut() else {
+        return Outcome::Open;
+    };
+    match ask.show(ctx) {
+        Outcome::Open => Outcome::Open,
+        Outcome::Closed => {
+            *asking = None;
+            Outcome::Open
+        }
+        Outcome::Done(()) => asking
+            .take()
+            .map_or(Outcome::Open, |(_, v)| Outcome::Done(v)),
+    }
+}
+
 /// Holds a dialog's "start" (`out`) until `folder` exists: when it is missing, asks to create
 /// it ([`CreateFolder`]) and keeps the dialog's result meanwhile; No goes back to the dialog.
 /// `asking` lives in the dialog, across frames.

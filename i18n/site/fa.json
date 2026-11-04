@@ -162,6 +162,14 @@
    "source": "Starts the main download queue; <x1/>.",
    "text": "صف اصلی دانلود را شروع می‌کند؛ <x1/>."
   },
+  "043086b485508c73": {
+   "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
+   "text": "اگر بعضی از فایل‌های تورنت از قبل در پوشه باشند، MDM قبل از استفاده از آن‌ها سؤال می‌کند. <g1>بله</g1> آن‌ها را برای تورنت نگه می‌دارد: MDM آن‌ها را بررسی می‌کند، آنچه را که با تورنت مطابقت دارد نگه می‌دارد و بقیه را دانلود می‌کند، که به این ترتیب می‌توانید دانلود شروع شده در جای دیگر را ادامه دهید یا فایل‌هایی را که از قبل دارید به اشتراک بگذارید. <g2>خیر</g2> (پیش‌فرض) به عقب برمی‌گردد، بنابراین می‌توانید پوشه دیگری را انتخاب کنید و هیچ یک از فایل‌های شما بازنویسی نمی‌شود."
+  },
+  "04767f8b4224f77b": {
+   "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
+   "text": "MDM تورنتی را که نام فایل‌های آن را سیستم شما نمی‌تواند با اطمینان بنویسد، رد می‌کند، نام آن را می‌گوید و چیزی نمی‌نویسد."
+  },
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "رایگان و متن‌باز. رابط کاربری که از قبل می‌شناسید، یک موتور سریع‌تر در زیر، تورنت‌ها و ویدئو به صورت داخلی."
@@ -4090,6 +4098,10 @@
    "source": "Yes. Mister Download Manager is a free, open-source download manager laid out the way IDM users expect, with a faster engine, torrents and video downloads built in.",
    "text": "بله. Mister Download Manager یک مدیر بارگیری رایگان و متن‌باز است که به شکلی که کاربران IDM انتظار دارند طراحی شده، با موتوری سریع‌تر، تورنت و بارگیری ویدئو به صورت داخلی."
   },
+  "7d9082fb6f1abec9": {
+   "source": "Firefox 140 or later is needed.",
+   "text": "Firefox 140 یا جدیدتر لازم است."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> در رجیستری می‌نویسد، فقط برای حساب Windows شما. آن را خاموش بگذارید تا نسخه قابل حمل بدون رجیستری بماند."
@@ -5274,6 +5286,10 @@
    "source": "Some buttons are greyed. They belong to features that aren't built yet.",
    "text": "برخی از دکمه‌ها خاکستری هستند. آنها به ویژگی‌هایی تعلق دارند که هنوز ساخته نشده‌اند."
   },
+  "a1a366218784daae": {
+   "source": "Hold <g1>Alt</g1> while clicking a link to let the browser download it instead of MDM. In Firefox, Alt+click saves a link only when its <x2/> setting is on (in <x3/>); otherwise right-click the link and choose <g4>Save Link As...</g4>, which the browser keeps. <g5>Options → General → Keys...</g5> says so, and holds <g6>Also take files the browser would open</g6>.",
+   "text": "هنگام کلیک روی یک پیوند، <g1>Alt</g1> را نگه دارید تا مرورگر آن را به جای MDM دانلود کند. در Firefox، Alt+کلیک یک پیوند را فقط زمانی ذخیره می‌کند که تنظیم <x2/> آن روشن باشد (در <x3/>)؛ در غیر این صورت روی پیوند راست‌کلیک کرده و <g4>ذخیره پیوند به عنوان...</g4> را انتخاب کنید که مرورگر آن را نگه می‌دارد. <g5>گزینه‌ها ← عمومی ← کلیدها...</g5> این را می‌گوید و <g6>فایل‌هایی که مرورگر باز می‌کند را نیز بگیر</g6> را نگه می‌دارد."
+  },
   "a2907e04d7c8512f": {
    "source": "Why doesn't MDM take over my download? — Mister Download Manager",
    "text": "چرا MDM دانلود من را به عهده نمی‌گیرد؟ — Mister Download Manager"
@@ -5337,6 +5353,10 @@
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "یک بارگیری متوقف یا خراب شده را از فایل <x1/> کنار آن ادامه دهید."
+  },
+  "a45f25e5b3e6d530": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
+   "text": "یک تورنت یا فقط برخی از فایل‌های آن را بارگیری کنید. اگر برخی از فایل‌های آن از قبل در پوشه موجود باشند، متوقف شده و نام آن‌ها را ذکر می‌کند؛ <x1/> به جای آن از آن‌ها استفاده می‌کند (آنچه مطابقت دارد حفظ می‌شود، بقیه بارگیری می‌شوند)."
   },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
@@ -6057,10 +6077,6 @@
   "b97c8337ca7df15d": {
    "source": "Mister Download Manager in 86 languages",
    "text": "Mister Download Manager به 86 زبان"
-  },
-  "b9fcc6b45167f69f": {
-   "source": "Download a torrent, or only some of its files.",
-   "text": "یک تورنت را بارگیری کنید، یا فقط برخی از فایل‌های آن را."
   },
   "ba0da96d77379606": {
    "source": "All the ways to add a download →",

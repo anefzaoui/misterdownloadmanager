@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager डावनलोड लिस्टींतल्यान {n} डावनलोड काडून उडोवंक तुमकां खात्री आसा?|Mister Download Manager डावनलोड लिस्टींतल्यान हे {n} डावनलोड काडून उडोवंक तुमकां खात्री आसा?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	आनी {n} हेर फायल|आनी {n} हेर फायली
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	फायलो
+#. window title in a dialog box
+#, machine
+	Files already there	पयलींच आशिल्ल्यो फायली
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	अजून फोल्डरां नात
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	ना म्हणल्यार फाटीं वचून दुसरी फोल्डर निवडची.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	मेल ऍप ना: संदेश कॉपी केल्लो आसा, तो तुमच्या मेलान पेस्ट करात.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	खंयच्याच पियरान वेळार टॉरेंटाची फाइल वळेरी धाडली ना
 #. text in the Options window
 #, machine
 	No proxy/socks	प्रॉक्सी/SOCKS ना
@@ -1312,6 +1326,9 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Once at	एक फावट
+#. text in extension.rs
+#, machine
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	एकदां तें जोडले उपरांत, हें विंडो तशें म्हणटा. Chrome फुडल्या वेळार सुरू जातना स्वताय विचारूं येता.
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	दरेक वळीक एक पत्तो; * खंयच्याय मजकुरा खातीर उबो रावता: example.com/private/*
@@ -1765,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	कांय
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	ह्या टॉरेंटाच्यो कांय फायली पयलींच ह्या फोल्डरांत आसात:
 #. text in the Options window
 #, machine
 	Sound file	आवाज फाईल
@@ -2115,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	हो फोल्डर अस्तित्वांत ना:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ही मॅग्नेट लिंक वा .टॉरेंट फाइल न्हय
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2122,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ह्या सिस्टमाक हँग अप करपाक डायल-अप जोडणी ना
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	ह्या टॉरेंटाक एक फाइल नांव आसा जें बरोवपाक सुरक्षित न्हय, देखून तें जोडले ना: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	हो टॉरेंट पयलींच डावनलोड यादींत आसा
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	हो टॉरेंट वळेरींत ना
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2289,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	प्रणाली सेटींग वापर
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	ह्या टॉरेंटा खातीर तांचो वापर करचो? जें जुळटा तें दवरलें वतलें, बाकीचें बदललें वतलें.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	फुडल्या प्रोटोकॉल खातीर हो प्रॉक्सी वापर:

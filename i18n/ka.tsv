@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	დარწმუნებული ხართ, რომ გსურთ {n} ჩამოტვირთვის წაშლა Mister Download Manager-ის ჩამოტვირთვების სიიდან?|დარწმუნებული ხართ, რომ გსურთ ამ {n} ჩამოტვირთვის წაშლა Mister Download Manager-ის ჩამოტვირთვების სიიდან?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	და {n} სხვა ფაილი|და {n} სხვა ფაილი
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	ფაილები
+#. window title in a dialog box
+#, machine
+	Files already there	ფაილები უკვე არსებობს
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	ჯერ არ არის საქაღალდეები
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	„არა“ უკან დაგაბრუნებთ, რათა სხვა საქაღალდე აირჩიოთ.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	ფოსტის აპლიკაცია არ არის: შეტყობინება კოპირებულია, ჩასვით თქვენს ფოსტაში.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	არცერთმა პირმა არ გამოაგზავნა ტორენტის ფაილების სია დროულად
 #. text in the Options window
 #, machine
 	No proxy/socks	პროქსი/SOCKS არ არის
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	ნაწილი
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	ტორენტის ზოგიერთი ფაილი უკვე ამ საქაღალდეშია:
 #. text in the Options window
 #, machine
 	Sound file	ხმოვანი ფაილი
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ეს საქაღალდე არ არსებობს:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	ეს არ არის მაგნიტური ბმული ან .torrent ფაილი
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ამ სისტემას არ აქვს აკრეფითი კავშირები გასათიშად
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	ამ ტორენტს აქვს ფაილის სახელი, რომლის ჩაწერა არ არის უსაფრთხო, ამიტომ ის არ დაემატა: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ეს ტორენტი უკვე არის ჩამოტვირთვის სიაში
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	ეს ტორენტი სიაში არ არის
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	სისტემის პარამეტრების გამოყენება
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	გამოვიყენოთ ისინი ამ ტორენტისთვის? რაც ემთხვევა, შენარჩუნდება, დანარჩენი შეიცვლება.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	გამოიყენეთ ეს პროქსი შემდეგი პროტოკოლებისთვის:

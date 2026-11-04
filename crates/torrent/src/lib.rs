@@ -18,10 +18,17 @@ use librqbit::{
     SessionPersistenceConfig, TorrentStatsState,
 };
 
+mod names;
+pub use names::UnsafeName;
+
 #[derive(Debug, thiserror::Error)]
 pub enum TorrentError {
     #[error("this is not a magnet link or a .torrent file")]
     NotATorrent,
+    /// A file name this system can't write safely (`names`, #40): the torrent is refused, nothing
+    /// is written.
+    #[error("this torrent has a file name that isn't safe to write here: {} ({})", .0.path, .0.why)]
+    UnsafeName(UnsafeName),
     #[error("no peer sent the torrent's file list in time")]
     MetadataTimeout,
     #[error("this torrent is not in the list")]
@@ -32,6 +39,77 @@ pub enum TorrentError {
 
 fn engine(e: impl std::fmt::Display) -> TorrentError {
     TorrentError::Engine(e.to_string())
+}
+
+/// A .torrent file's bytes: a torrent, whose names are safe for this system (`names`).
+fn check_bytes(torrent: &[u8]) -> Result<(), TorrentError> {
+    let meta = librqbit::torrent_from_bytes(torrent).map_err(|_| TorrentError::NotATorrent)?;
+    safe_names(
+        meta.info
+            .data
+            .validate()
+            .map_err(engine)?
+            .iter_file_details(),
+    )
+}
+
+/// Before librqbit restores its saved torrents (`session.json` and a `<hash>.torrent` for each,
+/// in `dir`), take out the ones the name check refuses, and those saved without their .torrent
+/// (whose names it can't check): the app adds those again itself, through `add` and its own
+/// copy. Rewritten through a temporary file; a list that can't be read is left to librqbit.
+fn drop_unsafe_saved(dir: &Path) {
+    let db = dir.join("session.json");
+    let Ok(text) = std::fs::read_to_string(&db) else {
+        return;
+    };
+    let Ok(mut doc) = serde_json::from_str::<serde_json::Value>(&text) else {
+        return;
+    };
+    let Some(saved) = doc.get_mut("torrents").and_then(|t| t.as_object_mut()) else {
+        return;
+    };
+    let before = saved.len();
+    saved.retain(|_, entry| {
+        let Some(hash) = entry.get("info_hash").and_then(|h| h.as_str()) else {
+            return false;
+        };
+        let hash = hash.to_ascii_lowercase();
+        let keep = std::fs::read(dir.join(format!("{hash}.torrent")))
+            .is_ok_and(|bytes| check_bytes(&bytes).is_ok());
+        if !keep {
+            for ext in ["torrent", "bitv"] {
+                let _ = std::fs::remove_file(dir.join(format!("{hash}.{ext}")));
+            }
+        }
+        keep
+    });
+    if saved.len() == before {
+        return;
+    }
+    let Ok(out) = serde_json::to_string(&doc) else {
+        return;
+    };
+    let tmp = dir.join("session.json.mdm-tmp");
+    if std::fs::write(&tmp, &out).is_ok()
+        && std::fs::read_to_string(&tmp).is_ok_and(|back| back == out)
+    {
+        let _ = std::fs::rename(&tmp, &db);
+    } else {
+        let _ = std::fs::remove_file(&tmp);
+    }
+}
+
+/// The torrent's file names checked for this system (`names`); padding files are never written.
+fn safe_names<'a, B: AsRef<[u8]> + 'a>(
+    files: impl Iterator<Item = librqbit::FileDetails<'a, B>>,
+) -> Result<(), TorrentError> {
+    names::check(files.filter(|f| !f.attrs().padding).map(|f| {
+        f.filename
+            .iter_components()
+            .map(|part| part.into_owned())
+            .collect::<Vec<String>>()
+    }))
+    .map_err(TorrentError::UnsafeName)
 }
 
 /// Where a torrent comes from.
@@ -109,6 +187,19 @@ impl Meta {
         } else {
             dir.to_owned()
         }
+    }
+
+    /// Its files (padding never counts) that already exist where it would write them in `dir`
+    /// (`folder_in`). Unticked ones count too: librqbit opens every file of the torrent, and
+    /// writes into an unticked one the parts of a piece it shares with a ticked one.
+    pub fn existing_in(&self, dir: &Path) -> Vec<PathBuf> {
+        let base = self.folder_in(dir);
+        self.files
+            .iter()
+            .filter(|f| !f.padding)
+            .map(|f| base.join(&f.path))
+            .filter(|p| p.exists())
+            .collect()
     }
 }
 
@@ -209,6 +300,7 @@ impl Torrents {
             )),
             ..Default::default()
         };
+        drop_unsafe_saved(&cfg.state_dir.join("session"));
         let session = Session::new_with_opts(cfg.state_dir.join("unsorted"), opts)
             .await
             .map_err(engine)?;
@@ -240,6 +332,8 @@ impl Torrents {
         let AddTorrentResponse::ListOnly(r) = res else {
             return Err(engine("the torrent was started instead of listed"));
         };
+        // Refused before anyone picks files from it (#40).
+        safe_names(r.info.iter_file_details())?;
         let files = r
             .info
             .iter_file_details()
@@ -273,6 +367,8 @@ impl Torrents {
         peers: Vec<SocketAddr>,
         paused: bool,
     ) -> Result<String, TorrentError> {
+        // Checked here too, whatever the caller (the app, the command line, a saved torrent).
+        check_bytes(torrent)?;
         let opts = AddTorrentOptions {
             paused,
             only_files: files,
@@ -482,6 +578,112 @@ mod tests {
             dht: false,
             offline: true,
         }
+    }
+
+    /// A .torrent with one 5-byte file at `folder/<name>`, written by hand (librqbit makes only
+    /// valid ones).
+    fn torrent_naming(name: &str) -> Vec<u8> {
+        let mut t = b"d4:infod5:filesld6:lengthi5e4:pathl6:folder".to_vec();
+        t.extend(format!("{}:{name}", name.len()).bytes());
+        t.extend(b"eee4:name4:test12:piece lengthi16384e6:pieces20:");
+        t.extend([0u8; 20]);
+        t.extend(b"ee");
+        t
+    }
+
+    /// #40: a name the system can't write safely refuses the torrent, listed or added, and
+    /// nothing is written.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn unsafe_names_refuse_the_torrent() {
+        let tmp = tempfile::tempdir().unwrap();
+        let t = Torrents::start(offline(&tmp.path().join("state")))
+            .await
+            .unwrap();
+        let out = tmp.path().join("out");
+        let bad = if cfg!(windows) {
+            ["Q:mdm-test.bin", "x.bin:hidden", "NUL.txt"].as_slice()
+        } else {
+            ["tab\there.bin"].as_slice()
+        };
+        for name in bad {
+            let bytes = torrent_naming(name);
+            let listed = t
+                .metadata(&Source::File(bytes.clone()), Duration::from_secs(5))
+                .await;
+            assert!(
+                matches!(listed, Err(TorrentError::UnsafeName(ref u)) if u.path == format!("folder/{name}")),
+                "{name}: {listed:?}"
+            );
+            let added = t.add(&bytes, &out, None, Vec::new(), false).await;
+            assert!(
+                matches!(added, Err(TorrentError::UnsafeName(_))),
+                "{name}: {added:?}"
+            );
+        }
+        assert!(!out.exists(), "nothing was written");
+        // A plain name still lists.
+        let fine = t
+            .metadata(
+                &Source::File(torrent_naming("fine.bin")),
+                Duration::from_secs(5),
+            )
+            .await
+            .unwrap();
+        assert_eq!(fine.files.len(), 1);
+        t.stop().await;
+    }
+
+    /// #40: the torrents librqbit saved go through the name check when the session starts again;
+    /// one saved without its .torrent is taken out too (the app adds it again from its own copy).
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn saved_torrents_are_checked_at_start() {
+        let tmp = tempfile::tempdir().unwrap();
+        let state = tmp.path().join("state");
+        let out = tmp.path().join("out");
+        let t = Torrents::start(offline(&state)).await.unwrap();
+        let good = t
+            .add(&torrent_naming("fine.bin"), &out, None, Vec::new(), true)
+            .await
+            .unwrap();
+        t.stop().await;
+
+        // Beside it, as librqbit saves them: an unsafe torrent, and one without its .torrent.
+        let dir = state.join("session");
+        let db = dir.join("session.json");
+        let mut doc: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&db).unwrap()).unwrap();
+        let saved = doc["torrents"].as_object_mut().unwrap();
+        let entry = saved.values().next().unwrap().clone();
+        assert_eq!(entry["info_hash"], good.as_str(), "librqbit's format");
+        // Names librqbit itself would write (inside `out`), so the check is what refuses them.
+        let bad = torrent_naming(if cfg!(windows) {
+            "x.bin:hidden"
+        } else {
+            "tab\there.bin"
+        });
+        let bad_hash = librqbit::torrent_from_bytes(&bad)
+            .unwrap()
+            .info_hash
+            .as_string();
+        std::fs::write(dir.join(format!("{bad_hash}.torrent")), &bad).unwrap();
+        let lost = "ab".repeat(20);
+        for (n, hash) in [(1000, &bad_hash), (1001, &lost)] {
+            let mut e = entry.clone();
+            e["info_hash"] = hash.as_str().into();
+            saved.insert(n.to_string(), e);
+        }
+        std::fs::write(&db, serde_json::to_string(&doc).unwrap()).unwrap();
+
+        // A magnet can't resolve offline: without the check this start would wait for ever.
+        let t = tokio::time::timeout(Duration::from_secs(30), Torrents::start(offline(&state)))
+            .await
+            .expect("the session started")
+            .unwrap();
+        assert!(t.has(&good), "the safe one is kept");
+        assert!(!t.has(&bad_hash), "the unsafe one is taken out");
+        assert!(!t.has(&lost), "the one without its .torrent is taken out");
+        assert!(!dir.join(format!("{bad_hash}.torrent")).exists());
+        t.stop().await;
     }
 
     #[tokio::test(flavor = "multi_thread", worker_threads = 4)]

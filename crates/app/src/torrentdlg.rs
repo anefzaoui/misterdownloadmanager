@@ -72,6 +72,8 @@ pub struct TorrentDialog {
     start_now: Option<bool>,
     /// Asking to create a missing folder.
     asking: Option<(crate::dialogs::CreateFolder, ())>,
+    /// Asking whether to use files of the torrent's names already in the folder (#40).
+    asking_files: Option<(crate::dialogs::ExistingFiles, ())>,
 }
 
 /// The category of a torrent: its largest file's.
@@ -139,6 +141,7 @@ impl TorrentDialog {
             focused: false,
             start_now: None,
             asking: None,
+            asking_files: None,
         };
         if !d.source.is_empty() {
             d.look_up(rt, ctx);
@@ -177,7 +180,7 @@ impl TorrentDialog {
                 Ok(t) => t
                     .metadata(&src, METADATA_WAIT)
                     .await
-                    .map_err(|e| e.to_string()),
+                    .map_err(|e| crate::errors::torrent(&e)),
                 Err(e) => Err(e),
             };
             *out.lock().unwrap() = Some(res);
@@ -234,6 +237,12 @@ impl TorrentDialog {
         );
         let folder = PathBuf::from(self.folder.trim());
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
+        // Then: files of the torrent's names already there would be written into (#40).
+        let meta = &self.meta;
+        let out = crate::dialogs::ensure_files_free(ctx, &mut self.asking_files, out, || {
+            meta.as_ref()
+                .map_or_else(Vec::new, |m| m.existing_in(&folder))
+        });
         match out {
             Outcome::Open => Outcome::Open,
             Outcome::Closed => Outcome::Closed,
@@ -977,6 +986,27 @@ mod tests {
             torrent: Vec::new(),
             peers: Vec::new(),
         }
+    }
+
+    /// #40: the files that exist where the torrent would write them are asked about, ticked or
+    /// not (padding never counts); a several-file torrent writes into its own folder.
+    #[test]
+    fn files_already_there_are_the_ones_that_exist() {
+        let dir = tempfile::tempdir().unwrap();
+        let m = meta(&[("a.bin", 1), ("sub/b.bin", 1), ("c.bin", 1)]);
+        let base = m.folder_in(dir.path());
+        std::fs::create_dir_all(base.join("sub")).unwrap();
+        std::fs::write(base.join("a.bin"), b"user's").unwrap();
+        std::fs::write(base.join("sub/b.bin"), b"user's").unwrap();
+        // c.bin isn't there.
+        assert_eq!(
+            m.existing_in(dir.path()),
+            vec![base.join("a.bin"), base.join("sub/b.bin")]
+        );
+        let mut padded = m.clone();
+        padded.files[0].padding = true;
+        assert_eq!(padded.existing_in(dir.path()), vec![base.join("sub/b.bin")]);
+        assert!(m.existing_in(&dir.path().join("elsewhere")).is_empty());
     }
 
     #[test]

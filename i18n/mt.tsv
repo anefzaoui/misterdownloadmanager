@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Żgur li trid tħassar {n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?|Żgur li trid tħassar dawn it-{n} tniżżil mil-lista ta' tniżżil ta' Mister Download Manager?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	u {n} fajl ieħor|u {n} fajls oħra|u {n} fajls oħra|u {n} fajls oħra|u {n} fajls oħra
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Fajls
+#. window title in a dialog box
+#, machine
+	Files already there	Fajls diġà jeżistu
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Għad m'hemmx fowlders
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	Le tmur lura, biex tagħżel folder ieħor.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	L-ebda app tal-posta: il-messaġġ huwa kkupjat, pejstjah fil-posta tiegħek.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	l-ebda peer ma bagħat il-lista tal-fajls tat-torrent fil-ħin
 #. text in the Options window
 #, machine
 	No proxy/socks	Ebda proxy/socks
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Xi wħud
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	Xi wħud mill-fajls tat-torrent diġà jinsabu f'dan il-folder:
 #. text in the Options window
 #, machine
 	Sound file	Fajl tal-ħoss
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Dan il-folder ma jeżistix:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	din mhix link manjetika jew fajl .torrent
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Din is-sistema m'għandha l-ebda konnessjoni dial-up biex tiskonnettja
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	dan it-torrent għandu isem ta' fajl li mhuwiex sigur biex jinkiteb, għalhekk ma ġiex miżjud: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Dan it-torrent diġà jinsab fil-lista tat-tniżżil
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	dan it-torrent mhuwiex fil-lista
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Uża s-settings tas-sistema
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Tużahom għal dan it-torrent? Dak li jaqbel miegħu jinżamm, il-bqija jinbidel.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Uża dan il-proxy għall-protokolli li ġejjin:

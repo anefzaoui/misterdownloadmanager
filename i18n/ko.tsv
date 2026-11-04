@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager 다운로드 목록에서 {n}개 다운로드를 삭제하시겠습니까?
+#. count in a dialog box
+#. "files already there" question, under the first path: {n} = how many more
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	및 다른 파일 {n}개
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -750,6 +755,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	파일
+#. window title in a dialog box
+#, machine
+	Files already there	이미 있는 파일
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1223,6 +1231,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	아직 폴더가 없습니다.
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	아니요를 선택하면 이전으로 돌아가 다른 폴더를 선택합니다.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1237,6 +1248,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	메일 앱이 없습니다. 메시지가 복사되었습니다. 메일에 붙여넣으세요.
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	피어가 토렌트의 파일 목록을 제때 보내지 않았습니다.
 #. text in the Options window
 #, machine
 	No proxy/socks	프록시/SOCKS 없음
@@ -1768,6 +1782,9 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	일부
+#. text in a dialog box
+#, machine
+	Some of the torrent's files are already in this folder:	일부 토렌트 파일이 이미 이 폴더에 있습니다:
 #. text in the Options window
 #, machine
 	Sound file	사운드 파일
@@ -2118,6 +2135,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	이 폴더가 없습니다:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	마그넷 링크 또는 .torrent 파일이 아닙니다.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2125,9 +2145,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	이 시스템에는 끊을 전화 접속 연결이 없습니다.
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	이 토렌트에는 안전하게 쓸 수 없는 파일 이름이 있으므로 추가되지 않았습니다. {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	이 토렌트는 이미 다운로드 목록에 있습니다.
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	이 토렌트가 목록에 없습니다.
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2292,6 +2319,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	시스템 설정 사용
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	이 토렌트에 사용하시겠습니까? 일치하는 항목은 유지되고 나머지는 바뀝니다.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	다음 프로토콜에 이 프록시 사용:
