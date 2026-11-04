@@ -439,6 +439,31 @@ pub fn thread_id() -> u32 {
     0
 }
 
+/// Thread `tid`'s processor time and its page faults from disk so far, from /proc (crash.rs's
+/// freeze notes).
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn thread_usage(tid: u32) -> Option<crate::crash::Usage> {
+    let stat = std::fs::read_to_string(format!("/proc/self/task/{tid}/stat")).ok()?;
+    // The fields after the name (in parentheses, and it may hold spaces), field 3 on.
+    let fields: Vec<&str> = stat[stat.rfind(')')? + 1..].split_whitespace().collect();
+    let num = |field: usize| fields.get(field - 3)?.parse::<u64>().ok();
+    let (majflt, utime, stime) = (num(12)?, num(14)?, num(15)?);
+    // SAFETY: a plain query.
+    let hz = unsafe { libc::sysconf(libc::_SC_CLK_TCK) };
+    let hz = if hz > 0 { hz as u64 } else { 100 };
+    Some(crate::crash::Usage {
+        cpu_ms: (utime + stime) * 1000 / hz,
+        faults: Some(majflt),
+    })
+}
+
+/// macOS: not measured, since the window thread has no id there (`thread_id` is 0).
+#[cfg(not(target_os = "linux"))]
+pub fn thread_usage(_tid: u32) -> Option<crate::crash::Usage> {
+    None
+}
+
 /// Is process `pid` still running?
 #[allow(unsafe_code)]
 pub fn process_alive(pid: u32) -> bool {
