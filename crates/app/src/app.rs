@@ -1786,6 +1786,15 @@ impl App {
         }
     }
 
+    /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
+    /// window is closed, the host may come and go).
+    fn tray_shown(&self) -> bool {
+        #[cfg(target_os = "linux")]
+        return crate::unix::tray_host();
+        #[cfg(not(target_os = "linux"))]
+        true
+    }
+
     /// The tray icon: created once, its commands run, and closing the window hides it there.
     fn tray(&mut self, ctx: &egui::Context) {
         if self.tray.is_none() && self.tray_limiter.is_none() && !crate::offscreen() {
@@ -1834,8 +1843,14 @@ impl App {
             };
             self.run(cmd, None, ctx);
         }
-        // Closing hides the window in the tray; downloads and queues go on.
-        if self.tray.is_some() && !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
+        // Closing hides the window in the tray; downloads and queues go on. On Linux only when a
+        // tray host shows the icon (#59: without one the window couldn't come back, nor close):
+        // otherwise closing closes, as any window's does.
+        if self.tray.is_some()
+            && !self.exiting
+            && ctx.input(|i| i.viewport().close_requested())
+            && self.tray_shown()
+        {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
             // Wayland can't hide a window: it goes to the dock / task list instead.
             #[cfg(target_os = "linux")]
