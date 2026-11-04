@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Acerca de Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Aceptar conexións entrantes
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Engadir unha descarga (Engadir URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Descarga por lotes
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Bloquear os enderezos desta lista (formato P2P ou eMule):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Ambos son de código aberto. MDM obténos das súas versións oficiais co seu propio descargador e comproba a sinatura de cada ficheiro antes de executalo. Unha vez, uns 100 MB.
@@ -323,6 +331,11 @@
 #, machine
 	Checking the file...	Comprobando o ficheiro...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	Comprobando o programa...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +351,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Escolla o idioma no que Mister Download Manager mostra as súas ventás:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	Escoller {name}
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -721,6 +738,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Febreiro
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Obtido de novo cada 7 días. Os cambios aplícanse cando non se está executando ningún torrent.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +796,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Buscar ficheiro
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Buscar pares na rede local
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Buscar pares a través da DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Buscar a seguinte coincidencia
@@ -877,6 +906,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Axuda
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	Axudantes...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -952,10 +986,21 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Enderezo non válido
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Indícalles aos equipos da túa rede que torrents tes.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	É posible engadir un grupo de nomes de ficheiro secuenciais como img001.jpg, img002.jpg, etc.,\nimg100.jpg á cola de descargas de MDM. Use o comodín de asterisco para o patrón de nome de ficheiro.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	non se puideron escribir os seus ficheiros: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	a súa información de lanzamento non é a esperada: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Xaneiro
@@ -1055,6 +1100,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Configuración manual de proxy/socks
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Asignar o porto no enrutador (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Marzo
@@ -1114,6 +1163,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} está dispoñible (publicado o {date}).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Copia propia de Mister Download Manager, versión {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1276,6 +1330,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Non está nunha cola
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	Aínda sen instalar
 #. button in helpers.rs
 #, machine
 	Not now	Agora non
@@ -1437,6 +1495,10 @@
 #. label in the Options window
 #, machine
 	Port	Porto
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Porto:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1736,10 @@
 #. text in the Options window
 #, machine
 	Server:	Servidor:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Primeiro, define un proxy socks5:// en Opcións → Proxy / Socks
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Establecer a data de creación do ficheiro segundo o servidor
@@ -1861,6 +1927,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Deter cola de descarga principal
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Deter o motor de torrents cando non se estea executando ningún torrent
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -1977,6 +2047,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	A cola de descargas rematou.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	o programa descargado non coincide coa súa suma de comprobación asinada
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2119,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	a versión non ten número
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	o lanzamento non ten {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	a lista de suma de comprobación do lanzamento non está asinada pola clave do seu editor
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -2142,6 +2222,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Esta é a copia instalada, non unha portátil
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	este programa non é {name}
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Este sistema non ten conexións de acceso telefónico para colgar
@@ -2193,6 +2278,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Configuración de torrent
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	A configuración de torrents indica que se use o proxy, pero Proxy / Socks non ten ningún proxy SOCKS5
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2296,6 +2385,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Usar integración avanzada do navegador
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	Usar outro programa...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	Usar autorización
@@ -2305,6 +2399,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Usar FTP en modo PASV
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	Usar a copia propia de MDM
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2319,6 +2417,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Usar configuración do sistema
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Usar o proxy (Opcións → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Usalos para este torrent? O que coincide mantense, o resto substitúese.
@@ -2366,6 +2468,10 @@
 #. category name: video files
 #, machine
 	Video	Vídeo
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	Axudantes de vídeo
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	As buscas de vídeo usan yt-dlp (uns 23 MB, comprobado coa súa sinatura).
@@ -2418,6 +2524,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	con Engadir URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Con el, as conexións entrantes, a DHT e os pares locais están desactivados.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Escribir datas e horas
@@ -2447,6 +2557,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	O seu navegador
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	O seu propio programa: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	O do seu sistema: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp non está instalado (Tarefas → Descargar vídeo dunha páxina instálao)

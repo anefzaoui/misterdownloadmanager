@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Despre Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Acceptați conexiunile de intrare
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Adăugare descărcare (Adăugare URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Descărcare în serie
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Blocați adresele din această listă (format P2P sau eMule):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Ambele sunt open source. MDM le obține din versiunile lor oficiale cu propriul program de descărcare și verifică semnătura fiecărui fișier înainte de a-l rula. Aproximativ 100 MB, o singură dată.
@@ -323,6 +331,11 @@
 #, machine
 	Checking the file...	Se verifică fișierul...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	Se verifică programul...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +351,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Alegeți limba în care Mister Download Manager își afișează ferestrele:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	Alegeți {name}
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -721,6 +738,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Februarie
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Preluat din nou la fiecare 7 zile. Modificările se aplică atunci când nu rulează niciun torrent.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +796,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Găsiți fișierul
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Găsiți parteneri în rețeaua locală
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	Găsiți parteneri prin DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Găsiți următoarea potrivire
@@ -877,6 +906,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Ajutor
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	Programe auxiliare...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -952,10 +986,21 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Adresă nevalidă
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Spune computerelor din rețeaua dvs. ce torrente aveți.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Este posibil să adăugați un grup de nume de fișiere secvențiale, cum ar fi img001.jpg, img002.jpg etc.,\nimg100.jpg, în coada de descărcare MDM. Utilizați caracterul generic asterisc pentru modelul numelui de fișier.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	fișierele sale nu au putut fi scrise: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	informațiile sale de lansare nu sunt cele așteptate: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Ianuarie
@@ -1055,6 +1100,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Configurare manuală proxy/socks
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Mapează portul pe ruter (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Martie
@@ -1114,6 +1163,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} este disponibil (lansat la {date}).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Propria copie a Mister Download Manager, versiunea {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1276,6 +1330,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Nu este într-o coadă
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	Nu este instalat încă
 #. button in helpers.rs
 #, machine
 	Not now	Nu acum
@@ -1437,6 +1495,10 @@
 #. label in the Options window
 #, machine
 	Port	Port
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Port:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1736,10 @@
 #. text in the Options window
 #, machine
 	Server:	Server:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Setați mai întâi un proxy socks5:// în Opțiuni → Proxy / Socks
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Setează data creării fișierului conform serverului
@@ -1861,6 +1927,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Opriți coada principală de descărcare
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Opriți motorul de torrent când nu rulează niciun torrent
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -1977,6 +2047,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Coadă de descărcare finalizată.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	programul descărcat nu corespunde sumei de control semnate
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2119,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	versiunea nu are număr
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	versiunea nu are {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	lista de sume de control a versiunii nu este semnată de cheia editorului
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -2142,6 +2222,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Aceasta este copia instalată, nu una portabilă
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	acest program nu este {name}
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Acest sistem nu are conexiuni dial-up de închis
@@ -2193,6 +2278,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Setări torrent
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Setările torrent spun să folosească proxy-ul, dar Proxy / Socks nu are un proxy SOCKS5
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2296,6 +2385,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Utilizați integrarea avansată a browserului
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	Utilizați alt program...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	Utilizați autorizarea
@@ -2305,6 +2399,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Utilizați FTP în modul PASV
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	Utilizați propria copie a MDM
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2319,6 +2417,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Utilizați setările de sistem
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Utilizați proxy-ul (Opțiuni → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Le utilizați pentru acest torrent? Ceea ce se potrivește este păstrat, restul este înlocuit.
@@ -2366,6 +2468,10 @@
 #. category name: video files
 #, machine
 	Video	Video
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	Programe auxiliare video
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Căutările video utilizează yt-dlp (aproximativ 23 MB, verificat în raport cu semnătura sa).
@@ -2418,6 +2524,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	cu Adăugare URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Cu acesta, conexiunile de intrare, DHT și partenerii locali sunt dezactivați.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Scrieți datele și orele
@@ -2447,6 +2557,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Browserul dvs.
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	Propriul program: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	Al sistemului dvs.: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp nu este instalat (Activități → Descărcați videoclip de pe o pagină îl instalează)

@@ -14,11 +14,13 @@ use std::time::Duration;
 pub use librqbit;
 use librqbit::api::{Api, TorrentIdOrHash};
 use librqbit::{
-    AddTorrent, AddTorrentOptions, AddTorrentResponse, ListenerOptions, Session, SessionOptions,
-    SessionPersistenceConfig, TorrentStatsState,
+    AddTorrent, AddTorrentOptions, AddTorrentResponse, ConnectionOptions, ListenerOptions, Session,
+    SessionOptions, SessionPersistenceConfig, TorrentStatsState,
 };
 
+pub mod blocklist;
 mod names;
+pub mod trackers;
 pub use names::UnsafeName;
 
 #[derive(Debug, thiserror::Error)]
@@ -41,6 +43,26 @@ fn engine(e: impl std::fmt::Display) -> TorrentError {
     TorrentError::Engine(e.to_string())
 }
 
+/// The most a .torrent file may be (#40): the largest real ones (a great many files) are a few
+/// MB; anything bigger isn't one, and would be read whole into memory.
+pub const MAX_TORRENT_FILE: u64 = 10 << 20;
+
+/// A .torrent file from disk, at most `MAX_TORRENT_FILE` (a bigger one: `InvalidData`).
+pub fn read_file(path: &Path) -> std::io::Result<Vec<u8>> {
+    use std::io::Read;
+    let mut bytes = Vec::new();
+    std::fs::File::open(path)?
+        .take(MAX_TORRENT_FILE + 1)
+        .read_to_end(&mut bytes)?;
+    if bytes.len() as u64 > MAX_TORRENT_FILE {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidData,
+            "larger than a .torrent file can be",
+        ));
+    }
+    Ok(bytes)
+}
+
 /// A .torrent file's bytes: a torrent, whose names are safe for this system (`names`).
 fn check_bytes(torrent: &[u8]) -> Result<(), TorrentError> {
     let meta = librqbit::torrent_from_bytes(torrent).map_err(|_| TorrentError::NotATorrent)?;
@@ -56,8 +78,10 @@ fn check_bytes(torrent: &[u8]) -> Result<(), TorrentError> {
 /// Before librqbit restores its saved torrents (`session.json` and a `<hash>.torrent` for each,
 /// in `dir`), take out the ones the name check refuses, and those saved without their .torrent
 /// (whose names it can't check): the app adds those again itself, through `add` and its own
-/// copy. Rewritten through a temporary file; a list that can't be read is left to librqbit.
-fn drop_unsafe_saved(dir: &Path) {
+/// copy. The rest keep only the trackers MDM may contact (`trackers`, `proxied`), in the list and
+/// in their .torrent. Rewritten through a temporary file; a list that can't be read is left to
+/// librqbit.
+fn prepare_saved(dir: &Path, proxied: bool) {
     let db = dir.join("session.json");
     let Ok(text) = std::fs::read_to_string(&db) else {
         return;
@@ -68,22 +92,33 @@ fn drop_unsafe_saved(dir: &Path) {
     let Some(saved) = doc.get_mut("torrents").and_then(|t| t.as_object_mut()) else {
         return;
     };
-    let before = saved.len();
+    let mut changed = false;
     saved.retain(|_, entry| {
         let Some(hash) = entry.get("info_hash").and_then(|h| h.as_str()) else {
+            changed = true;
             return false;
         };
         let hash = hash.to_ascii_lowercase();
-        let keep = std::fs::read(dir.join(format!("{hash}.torrent")))
-            .is_ok_and(|bytes| check_bytes(&bytes).is_ok());
-        if !keep {
+        let file = dir.join(format!("{hash}.torrent"));
+        let bytes = std::fs::read(&file).ok().filter(|b| check_bytes(b).is_ok());
+        let Some(bytes) = bytes else {
             for ext in ["torrent", "bitv"] {
                 let _ = std::fs::remove_file(dir.join(format!("{hash}.{ext}")));
             }
+            changed = true;
+            return false;
+        };
+        if let Some(filtered) = trackers::filter_torrent(&bytes, proxied).filter(|f| *f != bytes) {
+            let _ = std::fs::write(&file, filtered);
         }
-        keep
+        if let Some(list) = entry.get_mut("trackers").and_then(|t| t.as_array_mut()) {
+            let before = list.len();
+            list.retain(|t| t.as_str().is_some_and(|t| trackers::allowed(t, proxied)));
+            changed |= list.len() != before;
+        }
+        true
     });
-    if saved.len() == before {
+    if !changed {
         return;
     }
     let Ok(out) = serde_json::to_string(&doc) else {
@@ -243,21 +278,53 @@ pub struct Peer {
     pub kind: Option<String>,
 }
 
-/// How the session runs.
-#[derive(Clone, Debug)]
+/// How the session runs (#40: each of these is the person's to choose, Torrent settings).
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Config {
     /// Where librqbit keeps its resume data and DHT nodes (in our data folder, portable-aware).
     pub state_dir: PathBuf,
     /// Accept connections from peers (better speed; Windows may ask about the firewall once).
     pub listen: bool,
+    /// Ask the router (UPnP) to forward the listening port.
+    pub upnp: bool,
+    /// The port to listen on; None: one picked at each start.
+    pub port: Option<u16>,
+    /// The DHT: finding peers without trackers.
     pub dht: bool,
+    /// Local peer discovery (LSD): it tells the local network which torrents this computer has.
+    pub lsd: bool,
+    /// A `socks5://` (or `socks5h://`) proxy for peers and HTTP trackers. librqbit sends DHT,
+    /// LSD, UDP trackers, UPnP and incoming connections around it, so with a proxy those are off
+    /// and UDP trackers dropped (`trackers`).
+    pub proxy: Option<String>,
+    /// A blocklist MDM converted (`blocklist::convert`, P2P lines): peers in it are refused.
+    pub blocklist: Option<PathBuf>,
     /// Tests: no trackers, no DHT, local peers only.
     pub offline: bool,
+}
+
+impl Config {
+    /// Everything on, as BitTorrent clients usually are; no proxy, no blocklist.
+    pub fn new(state_dir: PathBuf) -> Config {
+        Config {
+            state_dir,
+            listen: true,
+            upnp: true,
+            port: None,
+            dht: true,
+            lsd: true,
+            proxy: None,
+            blocklist: None,
+            offline: false,
+        }
+    }
 }
 
 pub struct Torrents {
     session: Arc<Session>,
     api: Api,
+    /// Through a proxy: UDP trackers are dropped (`trackers::allowed`).
+    proxied: bool,
 }
 
 fn id(hash: &str) -> Result<TorrentIdOrHash, TorrentError> {
@@ -267,52 +334,76 @@ fn id(hash: &str) -> Result<TorrentIdOrHash, TorrentError> {
 impl Torrents {
     pub async fn start(cfg: Config) -> Result<Torrents, TorrentError> {
         std::fs::create_dir_all(&cfg.state_dir).map_err(engine)?;
-        let dht = (cfg.dht && !cfg.offline).then(|| librqbit::DhtSessionConfig {
+        let proxied = cfg.proxy.is_some();
+        let dht = (cfg.dht && !cfg.offline && !proxied).then(|| librqbit::DhtSessionConfig {
             persistence: Some(librqbit::dht::DhtPersistenceConfig {
                 dump_interval: None,
                 config_filename: Some(cfg.state_dir.join("dht.json")),
             }),
             ..Default::default()
         });
-        let listen = cfg.listen.then(|| ListenerOptions {
+        let listen = (cfg.listen && !proxied).then(|| ListenerOptions {
             listen_addr: if cfg.offline {
                 (Ipv4Addr::LOCALHOST, 0).into()
             } else {
-                ListenerOptions::default().listen_addr
+                let mut any = ListenerOptions::default().listen_addr;
+                any.set_port(cfg.port.unwrap_or(0));
+                any
             },
-            enable_upnp_port_forwarding: !cfg.offline,
+            enable_upnp_port_forwarding: cfg.upnp && !cfg.offline,
             ipv4_only: cfg.offline,
             ..Default::default()
         });
+        // A list librqbit can't read would stop the session from starting: only a file there.
+        let blocklist_url = cfg
+            .blocklist
+            .as_deref()
+            .filter(|p| p.is_file())
+            .and_then(|p| url::Url::from_file_path(p).ok())
+            .map(|u| u.to_string());
         let opts = SessionOptions {
             dht,
             listen,
+            connect: cfg.proxy.clone().map(|proxy| ConnectionOptions {
+                proxy_url: Some(proxy),
+                ..Default::default()
+            }),
+            blocklist_url,
             disable_trackers: cfg.offline,
-            disable_local_service_discovery: cfg.offline,
+            disable_local_service_discovery: cfg.offline || !cfg.lsd || proxied,
             ipv4_only: cfg.offline,
             fastresume: true,
             persistence: Some(SessionPersistenceConfig::Json {
                 folder: Some(cfg.state_dir.join("session")),
             }),
+            // Major and minor only: the exact build would help someone aiming at one (#40).
             client_name_and_version: Some(format!(
-                "MisterDownloadManager/{}",
-                env!("CARGO_PKG_VERSION")
+                "MisterDownloadManager/{}.{}",
+                env!("CARGO_PKG_VERSION_MAJOR"),
+                env!("CARGO_PKG_VERSION_MINOR")
             )),
             ..Default::default()
         };
-        drop_unsafe_saved(&cfg.state_dir.join("session"));
+        prepare_saved(&cfg.state_dir.join("session"), proxied);
         let session = Session::new_with_opts(cfg.state_dir.join("unsorted"), opts)
             .await
             .map_err(engine)?;
         let api = Api::new(session.clone(), None);
-        Ok(Torrents { session, api })
+        Ok(Torrents {
+            session,
+            api,
+            proxied,
+        })
     }
 
     /// The file list, without downloading. A magnet asks the swarm, for at most `wait`.
     pub async fn metadata(&self, src: &Source, wait: Duration) -> Result<Meta, TorrentError> {
         let add = match src {
-            Source::Magnet(m) => AddTorrent::from_url(m.clone()),
-            Source::File(b) => AddTorrent::from_bytes(b.clone()),
+            // Only the trackers MDM may contact (#40, `trackers`).
+            Source::Magnet(m) => AddTorrent::from_url(trackers::filter_magnet(m, self.proxied)),
+            Source::File(b) => AddTorrent::from_bytes(
+                trackers::filter_torrent(b, self.proxied).unwrap_or_else(|| b.clone()),
+            ),
         };
         let opts = AddTorrentOptions {
             list_only: true,
@@ -369,6 +460,8 @@ impl Torrents {
     ) -> Result<String, TorrentError> {
         // Checked here too, whatever the caller (the app, the command line, a saved torrent).
         check_bytes(torrent)?;
+        let torrent =
+            trackers::filter_torrent(torrent, self.proxied).unwrap_or_else(|| torrent.to_vec());
         let opts = AddTorrentOptions {
             paused,
             only_files: files,
@@ -380,7 +473,7 @@ impl Torrents {
         };
         let res = self
             .session
-            .add_torrent(AddTorrent::from_bytes(torrent.to_vec()), Some(opts))
+            .add_torrent(AddTorrent::from_bytes(torrent), Some(opts))
             .await
             .map_err(engine)?;
         let handle = res
@@ -573,10 +666,9 @@ mod tests {
 
     fn offline(state: &Path) -> Config {
         Config {
-            state_dir: state.to_owned(),
-            listen: true,
             dht: false,
             offline: true,
+            ..Config::new(state.to_owned())
         }
     }
 
@@ -684,6 +776,99 @@ mod tests {
         assert!(!t.has(&lost), "the one without its .torrent is taken out");
         assert!(!dir.join(format!("{bad_hash}.torrent")).exists());
         t.stop().await;
+    }
+
+    /// #40: a kept torrent keeps only the trackers MDM may contact, in session.json and in its
+    /// .torrent (whose info, so its hash, stays the same); with a proxy, UDP ones go too.
+    /// #40: a fixed port is the one listened on; with a proxy nothing listens (incoming
+    /// connections would go around it). Nothing else of the network is on (no DHT, UPnP, LSD).
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn the_port_and_the_proxy_are_honoured() {
+        let tmp = tempfile::tempdir().unwrap();
+        let free = std::net::TcpListener::bind(("127.0.0.1", 0))
+            .unwrap()
+            .local_addr()
+            .unwrap()
+            .port();
+        let quiet = |dir: &str| Config {
+            upnp: false,
+            dht: false,
+            lsd: false,
+            ..Config::new(tmp.path().join(dir))
+        };
+        let t = Torrents::start(Config {
+            port: Some(free),
+            ..quiet("fixed")
+        })
+        .await
+        .unwrap();
+        assert_eq!(t.listen_addr().map(|a| a.port()), Some(free));
+        t.stop().await;
+        let t = Torrents::start(Config {
+            proxy: Some("socks5://127.0.0.1:9".into()),
+            ..quiet("proxied")
+        })
+        .await
+        .unwrap();
+        assert_eq!(t.listen_addr(), None, "nothing listens behind a proxy");
+        t.stop().await;
+    }
+
+    #[test]
+    fn torrent_files_are_read_up_to_their_cap() {
+        let dir = tempfile::tempdir().unwrap();
+        let small = dir.path().join("small.torrent");
+        std::fs::write(&small, torrent_naming("a.bin")).unwrap();
+        assert_eq!(read_file(&small).unwrap(), torrent_naming("a.bin"));
+        let big = dir.path().join("big.torrent");
+        std::fs::write(&big, vec![b'x'; MAX_TORRENT_FILE as usize + 1]).unwrap();
+        assert_eq!(
+            read_file(&big).unwrap_err().kind(),
+            std::io::ErrorKind::InvalidData
+        );
+        assert!(read_file(&dir.path().join("none.torrent")).is_err());
+    }
+
+    #[test]
+    fn kept_torrents_lose_the_trackers_dropped() {
+        let dir = tempfile::tempdir().unwrap();
+        let plain = torrent_naming("fine.bin");
+        let hash = librqbit::torrent_from_bytes(&plain)
+            .unwrap()
+            .info_hash
+            .as_string();
+        let local = "http://127.0.0.1:9/announce";
+        let mut with_tracker = format!("d8:announce{}:{local}", local.len()).into_bytes();
+        with_tracker.extend(&plain[1..]);
+        assert_eq!(
+            librqbit::torrent_from_bytes(&with_tracker)
+                .unwrap()
+                .info_hash
+                .as_string(),
+            hash
+        );
+        std::fs::write(dir.path().join(format!("{hash}.torrent")), &with_tracker).unwrap();
+        let doc = serde_json::json!({ "torrents": { "0": {
+            "info_hash": hash,
+            "trackers": ["udp://t.example:1337/a", local, "https://t.example/a"],
+            "output_folder": "x", "only_files": null, "is_paused": true,
+        }}});
+        std::fs::write(dir.path().join("session.json"), doc.to_string()).unwrap();
+        prepare_saved(dir.path(), true);
+        let back: serde_json::Value = serde_json::from_str(
+            &std::fs::read_to_string(dir.path().join("session.json")).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            back["torrents"]["0"]["trackers"],
+            serde_json::json!(["https://t.example/a"])
+        );
+        let rewritten = std::fs::read(dir.path().join(format!("{hash}.torrent"))).unwrap();
+        assert_eq!(
+            rewritten, plain,
+            "the announce key is gone, the rest byte for byte"
+        );
+        assert!(check_bytes(&rewritten).is_ok());
     }
 
     #[tokio::test(flavor = "multi_thread", worker_threads = 4)]

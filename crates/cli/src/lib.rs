@@ -686,20 +686,16 @@ fn mb(b: u64) -> String {
 /// A throwaway torrent session for the command line (its own state folder, nothing kept).
 async fn torrents() -> anyhow::Result<(mdm_torrent::Torrents, tempfile::TempDir)> {
     let dir = tempfile::tempdir()?;
-    let t = mdm_torrent::Torrents::start(mdm_torrent::Config {
-        state_dir: dir.path().to_owned(),
-        listen: true,
-        dht: true,
-        offline: false,
-    })
-    .await?;
+    let t = mdm_torrent::Torrents::start(mdm_torrent::Config::new(dir.path().to_owned())).await?;
     Ok((t, dir))
 }
 
 fn torrent_source(s: &str) -> anyhow::Result<mdm_torrent::Source> {
     match mdm_torrent::Source::magnet(s) {
         Some(m) => Ok(m),
-        None => Ok(mdm_torrent::Source::File(std::fs::read(s)?)),
+        None => Ok(mdm_torrent::Source::File(mdm_torrent::read_file(
+            std::path::Path::new(s),
+        )?)),
     }
 }
 

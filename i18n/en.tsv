@@ -71,6 +71,9 @@
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	About Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+	Accept incoming connections	Accept incoming connections
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Add a download (Add URL)	Add a download (Add URL)
 #. text in the tray icon's menu
@@ -170,6 +173,9 @@
 	Automatically start downloading the following file types:	Automatically start downloading the following file types:
 #. window title in the Batch download window
 	Batch download	Batch download
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+	Block the addresses in this list (P2P or eMule format):	Block the addresses in this list (P2P or eMule format):
 #. text in helpers.rs
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.
 #. button in the Options window
@@ -236,6 +242,10 @@
 #. the trailing ... means it is still going on: keep it
 	Checking the file...	Checking the file...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+	Checking the program...	Checking the program...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -247,6 +257,9 @@
 	Choose a language	Choose a language
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Choose the language Mister Download Manager shows its windows in:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+	Choose {name}	Choose {name}
 #. button in the download list
 #. verb: clears this filter
 	Clear	Clear
@@ -522,6 +535,9 @@
 	Extensions separated by spaces, for example MP4 MKV R0*	Extensions separated by spaces, for example MP4 MKV R0*
 #. text in the Scheduler window
 	February	February
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+	Fetched again every 7 days. Changes apply when no torrent is running.	Fetched again every 7 days. Changes apply when no torrent is running.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: joins picture and sound
@@ -560,6 +576,12 @@
 	Find a download	Find a download
 #. message or event log entry in the main window; window title in the Find window
 	Find file	Find file
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+	Find peers on the local network	Find peers on the local network
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+	Find peers through the DHT	Find peers through the DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Find the next match	Find the next match
 #. text in the Find window
@@ -633,6 +655,10 @@
 #. button in the Options window
 #. noun: button that opens the help
 	Help	Help
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+	Helpers...	Helpers...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 	Hibernate	Hibernate
@@ -686,9 +712,17 @@
 	Install yt-dlp	Install yt-dlp
 #. text in a dialog box
 	Invalid address	Invalid address
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+	It tells the computers on your network which torrents you have.	It tells the computers on your network which torrents you have.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+	its files could not be written: {error}	its files could not be written: {error}
+#. text in errors.rs
+	its release information is not as expected: {detail}	its release information is not as expected: {detail}
 #. text in the Scheduler window
 	January	January
 #. text in the Scheduler window
@@ -760,6 +794,9 @@
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	Making the report readable: fetching the symbols ({done} of {total} MB)…
 #. text in the Options window
 	Manual proxy/socks configuration	Manual proxy/socks configuration
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+	Map the port on the router (UPnP)	Map the port on the router (UPnP)
 #. text in the Scheduler window
 	March	March
 #. checkbox in the Find window
@@ -802,6 +839,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} is available (released {date}).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+	Mister Download Manager's own copy, version {version}	Mister Download Manager's own copy, version {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Mo
@@ -916,6 +957,9 @@
 	not enough disk space: {needed} needed, {free} free	not enough disk space: {needed} needed, {free} free
 #. value in a column's filter list in the download list
 	Not in a queue	Not in a queue
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+	Not installed yet	Not installed yet
 #. button in helpers.rs
 	Not now	Not now
 #. text in helpers.rs
@@ -1029,6 +1073,9 @@
 	PM	PM
 #. label in the Options window
 	Port	Port
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+	Port:	Port:
 #. button in a dialog box
 #. verb: open the part already downloaded
 	Preview	Preview
@@ -1201,6 +1248,9 @@
 	Server	Server
 #. text in the Options window
 	Server:	Server:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+	Set a socks5:// proxy in Options → Proxy / Socks first	Set a socks5:// proxy in Options → Proxy / Socks first
 #. checkbox in the Options window
 	Set file creation date as provided by the server	Set file creation date as provided by the server
 #. button in extension.rs; button in the Options window
@@ -1334,6 +1384,9 @@
 	Stop download at	Stop download at
 #. text in the tray icon's menu
 	Stop main download queue	Stop main download queue
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+	Stop the torrent engine when no torrent is running	Stop the torrent engine when no torrent is running
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Stop {queue}	Stop {queue}
@@ -1418,6 +1471,8 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.
 #. text in a dialog box
 	The download queue is done.	The download queue is done.
+#. text in errors.rs
+	the downloaded program doesn't match its signed checksum	the downloaded program doesn't match its signed checksum
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	The downloads you add, or drop on this window, show here.	The downloads you add, or drop on this window, show here.
@@ -1468,6 +1523,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 	the release has no version	the release has no version
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+	the release has no {what}	the release has no {what}
+#. text in errors.rs
+	the release's checksum list is not signed by its publisher's key	the release's checksum list is not signed by its publisher's key
 #. text in crashui.rs
 #. crash report window: label above the report's text
 	The report	The report
@@ -1536,6 +1596,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+	this program isn't {name}	this program isn't {name}
 #. text in a download's progress window
 	This system has no dial-up connections to hang up	This system has no dial-up connections to hang up
 #. text in errors.rs
@@ -1572,6 +1636,9 @@
 	Torrent files	Torrent files
 #. window title in the Add torrent window
 	Torrent settings	Torrent settings
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 	Torrents	Torrents
@@ -1647,12 +1714,19 @@
 	URL	URL
 #. text in the Options window
 	Use advanced browser integration	Use advanced browser integration
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+	Use another program...	Use another program...
 #. checkbox in the Batch download window; checkbox in a dialog box
 	Use authorization	Use authorization
 #. text in the Options window
 	Use automatic configuration script	Use automatic configuration script
 #. checkbox in the Options window
 	Use FTP in PASV mode	Use FTP in PASV mode
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+	Use MDM's own copy	Use MDM's own copy
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Use one * only	Use one * only
@@ -1663,6 +1737,9 @@
 	Use Speed Limiter	Use Speed Limiter
 #. text in the Options window
 	Use system settings	Use system settings
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Use the proxy (Options → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	Use them for this torrent? What matches it is kept, the rest replaced.
 #. label in the Options window
@@ -1696,6 +1773,9 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+	Video helpers	Video helpers
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
@@ -1733,6 +1813,9 @@
 	Windows' language ({language})	Windows' language ({language})
 #. message or event log entry in the main window
 	with Add URL	with Add URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+	With it, incoming connections, the DHT and local peers are off.	With it, incoming connections, the DHT and local peers are off.
 #. group box title in the Options window
 	Write dates and times	Write dates and times
 #. text in the main window (menus, toolbar, Categories pane)
@@ -1754,6 +1837,13 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	Your browser
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+	Your own program: {path} ({version})	Your own program: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+	Your system's: {path}	Your system's: {path}
 #. message or event log entry in the main window
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp is not installed (Tasks → Download video from a page installs it)
 #. text in helpers.rs

@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager பற்றி
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	உள்வரும் இணைப்புகளை ஏற்கவும்
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	பதிவிறக்கத்தைச் சேர் (URL சேர்)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	மொத்தப் பதிவிறக்கம்
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	இந்த பட்டியலில் உள்ள முகவரிகளைத் தடுக்கவும் (P2P அல்லது eMule வடிவம்):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	இரண்டும் திறந்த மூலமாகும். MDM அவற்றை அதன் சொந்த டவுன்லோடருடன் அதிகாரப்பூர்வ வெளியீடுகளிலிருந்து பெறுகிறது மற்றும் இயக்கும் முன் ஒவ்வொரு கோப்பின் கையொப்பத்தையும் சரிபார்க்கிறது. சுமார் 100 MB, ஒருமுறை.
@@ -323,6 +331,11 @@
 #, machine
 	Checking the file...	கோப்பைச் சரிபார்க்கிறது...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	நிரலைச் சரிபார்க்கிறது...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +351,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager அதன் சாளரங்களைக் காட்டும் மொழியைத் தேர்வுசெய்யவும்:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	{name} என்பதைத் தேர்வுசெய்யவும்
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -721,6 +738,10 @@
 #. text in the Scheduler window
 #, machine
 	February	பிப்ரவரி
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	ஒவ்வொரு 7 நாட்களுக்கும் மீண்டும் பெறப்படும். எந்த டோரண்ட்டும் இயங்காதபோது மாற்றங்கள் பொருந்தும்.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +796,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	கோப்பைக் கண்டறி
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	உள்ளூர் பிணையத்தில் பியர்களைக் கண்டறியவும்
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT வழியாக பியர்களைக் கண்டறியவும்
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	அடுத்த பொருத்தத்தைக் கண்டறி
@@ -877,6 +906,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	உதவி
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	உதவிகள்...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -952,10 +986,21 @@
 #. text in a dialog box
 #, machine
 	Invalid address	தவறான முகவரி
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	உங்களிடம் உள்ள டோரண்ட்கள் எவை என்பதை உங்கள் நெட்வொர்க்கில் உள்ள கணினிகளுக்கு இது தெரிவிக்கிறது.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg போன்ற தொடர்ச்சியான கோப்புப் பெயர்களின் குழுவை,\nimg100.jpg ஐ MDM பதிவிறக்க வரிசையில் சேர்க்க முடியும். கோப்புப் பெயர் வடிவத்திற்கு நட்சத்திர வைல்ட்கார்டைப் பயன்படுத்தவும்.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	அதன் கோப்புகளை எழுத முடியவில்லை: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	அதன் வெளியீட்டுத் தகவல் எதிர்பார்த்தபடி இல்லை: {detail}
 #. text in the Scheduler window
 #, machine
 	January	ஜனவரி
@@ -1055,6 +1100,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	கையேடு ப்ராக்ஸி/SOCKS உள்ளமைவு
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	ரூட்டரில் போர்ட்டை மேப் செய்யவும் (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	மார்ச்
@@ -1114,6 +1163,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} கிடைக்கிறது ({date} அன்று வெளியிடப்பட்டது).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Mister Download Manager இன் சொந்த நகல், பதிப்பு {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1276,6 +1330,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	வரிசையில் இல்லை
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	இதுவரை நிறுவப்படவில்லை
 #. button in helpers.rs
 #, machine
 	Not now	இப்போது வேண்டாம்
@@ -1437,6 +1495,10 @@
 #. label in the Options window
 #, machine
 	Port	போர்ட்
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	போர்ட்:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1736,10 @@
 #. text in the Options window
 #, machine
 	Server:	சேவையகம்:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	முதலில் விருப்பத்தேர்வுகள் → ப்ராக்ஸி / சாக்ஸ் என்பதில் socks5:// ப்ராக்ஸியை அமைக்கவும்
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	சேவையகத்தால் வழங்கப்பட்ட கோப்பு உருவாக்கப்பட்ட தேதியை அமை
@@ -1861,6 +1927,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	முக்கிய பதிவிறக்க வரிசையை நிறுத்து
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	டோரண்ட் எதுவும் இயங்காதபோது டோரண்ட் இன்ஜினை நிறுத்தவும்
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -1977,6 +2047,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	பதிவிறக்க வரிசை முடிந்தது.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	பதிவிறக்கிய நிரல் அதன் கையொப்பமிடப்பட்ட சரிபார்ப்புத் தொகையுடன் பொருந்தவில்லை
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2119,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	வெளியீட்டில் பதிப்பு இல்லை
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	வெளியீட்டில் {what} இல்லை
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	வெளியீட்டின் சரிபார்ப்புத் தொகை பட்டியல் அதன் வெளியீட்டாளரின் விசையால் கையொப்பமிடப்படவில்லை
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -2142,6 +2222,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	இது நிறுவப்பட்ட நகல், போர்ட்டபிள் நகல் அல்ல
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	இந்த நிரல் {name} அல்ல
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	இந்த கணினியில் டயல்-அப் இணைப்புகள் எதுவும் இல்லை
@@ -2193,6 +2278,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	டோரண்ட் அமைப்புகள்
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	டோரண்ட் அமைப்புகள் ப்ராக்ஸியைப் பயன்படுத்தச் சொல்கின்றன, ஆனால் ப்ராக்ஸி / சாக்ஸ் என்பதில் SOCKS5 ப்ராக்ஸி இல்லை
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2296,6 +2385,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	மேம்பட்ட உலாவி ஒருங்கிணைப்பைப் பயன்படுத்து
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	மற்றொரு நிரலைப் பயன்படுத்தவும்...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	அங்கீகாரத்தைப் பயன்படுத்து
@@ -2305,6 +2399,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV பயன்முறையில் FTP ஐப் பயன்படுத்து
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	MDM இன் சொந்த நகலைப் பயன்படுத்தவும்
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2319,6 +2417,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	கணினி அமைப்புகளைப் பயன்படுத்து
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	ப்ராக்ஸியைப் பயன்படுத்தவும் (விருப்பத்தேர்வுகள் → ப்ராக்ஸி / சாக்ஸ், SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	இந்த டொரண்டிற்கு அவற்றைப் பயன்படுத்தவா? பொருந்துவது வைக்கப்படும், மீதமுள்ளவை மாற்றப்படும்.
@@ -2366,6 +2468,10 @@
 #. category name: video files
 #, machine
 	Video	வீடியோ
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	வீடியோ உதவிகள்
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	வீடியோ தேடல்கள் yt-dlp ஐப் பயன்படுத்துகின்றன (சுமார் 23 MB, அதன் கையொப்பத்திற்கு எதிராகச் சரிபார்க்கப்பட்டது).
@@ -2418,6 +2524,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL சேர் உடன்
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	இதன் மூலம், உள்வரும் இணைப்புகள், DHT மற்றும் உள்ளூர் பியர்கள் முடக்கப்படும்.
 #. group box title in the Options window
 #, machine
 	Write dates and times	தேதிகளையும் நேரங்களையும் எழுது
@@ -2447,6 +2557,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	உங்கள் உலாவி
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	உங்கள் சொந்த நிரல்: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	உங்கள் சிஸ்டத்தின்: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp நிறுவப்படவில்லை (பணிகள் → ஒரு பக்கத்திலிருந்து வீடியோவைப் பதிவிறக்கு என்பதை நிறுவவும்)

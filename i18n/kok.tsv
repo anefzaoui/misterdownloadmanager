@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager विशीं
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	येवपी जोडणी मान्य करा
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	एक डाउनलोड जोडचें (URL जोडचें)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	बॅच डाउनलोड
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	ह्या वळेरींतलीं पत्तीं ब्लॉक करा (P2P वा eMule स्वरूप):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	दोनूय मुक्त स्रोत आसात. MDM तांकां तांच्या अधिकृत प्रकाशनांतल्यान स्वताच्या डाउनलोडरान घेता आनी चलोवचे पयलीं दर एका फायलीची सही तपासता. सुमार 100 MB, एक फावट.
@@ -323,6 +331,11 @@
 #, machine
 	Checking the file...	फायल तपासता...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	प्रोग्रॅम तपासता...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +351,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager जें भाशेंत आपलीं जनेलां दाखयता ती भास विंचून काडात:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	{name} निवडात
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -721,6 +738,10 @@
 #. text in the Scheduler window
 #, machine
 	February	फेब्रुवारी
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	दर 7 दिसांनी परतून हाडलां. खंयचोच टॉरेंट चालू नासताना बदल लागू जातात.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +796,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	फायल सोद
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	स्थानिक नेटवर्कार पियर सोदचे
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT वरवीं पियर सोदचे
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	फुडली जुळणी सोद
@@ -877,6 +906,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	मदत
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	मदतगार...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -952,10 +986,21 @@
 #. text in a dialog box
 #, machine
 	Invalid address	अवैध पत्तो
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	तुमच्या नेटवर्कारच्या संगणकांक तुमकां खंयचे टॉरेंट आसात तें सांगता.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, आदी, img100.jpg सारक्या क्रमवार फायल नांवांचो गट MDM डाउनलोड रांकेत जोडप शक्य आसा. फायल नांवाच्या नमुन्या खातीर तारांकित वाईल्डकार्ड वापरचो.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	ताचीं फायली बरोवंक शक्य नात: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	ताची रिलीज म्हायती अपेक्षे प्रमाण ना: {detail}
 #. text in the Scheduler window
 #, machine
 	January	जानेवारी
@@ -1055,6 +1100,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	मॅन्युअल प्रॉक्सी/SOCKS कॉन्फिगुरेशन
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	राऊटरार पोर्ट मॅप करा (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	मार्च
@@ -1114,6 +1163,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} उपलब्ध आसा ({date} रिलीज जालां).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Mister Download Manager ची स्वताची प्रत, आवृत्ती {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1276,6 +1330,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	रांकेंत ना
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	अजून स्थापित करूंक ना
 #. button in helpers.rs
 #, machine
 	Not now	आतां न्हय
@@ -1437,6 +1495,10 @@
 #. label in the Options window
 #, machine
 	Port	पोर्ट
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	पोर्ट:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1736,10 @@
 #. text in the Options window
 #, machine
 	Server:	सर्व्हर:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	पयलीं पर्याय → प्रॉक्सी / सॉक्स हातूंत socks5:// प्रॉक्सी सेट करा
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	सर्व्हरान दिल्ल्या प्रमाण फाइल तयार करपाची तारीख सेट करात
@@ -1861,6 +1927,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	मुखेल डाउनलोड रांग थांबोव
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	खंयचोच टॉरेंट चालू नासताना टॉरेंट इंजिन थांबोवचें
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -1977,6 +2047,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	डावनलोड रांग पुराय जाल्या.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	डावनलोड केल्लो प्रोग्राम ताच्या सायन केल्ल्या चेकसम कडेन जुळना
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2119,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	रिलीजाक आवृत्ती ना
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	रिलीजाक {what} ना
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	रिलीजाची चेकसम वळेरी ताच्या प्रकाशकाच्या किलीन सायन केल्ली ना
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -2142,6 +2222,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ही स्थापीत प्रत आसा, पोर्टेबल न्हय
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	हो प्रोग्रॅम {name} न्हय
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ह्या सिस्टमाक हँग अप करपाक डायल-अप जोडणी ना
@@ -2193,6 +2278,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	टॉरेंट सेटींग
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	टॉरेंट सेटींग्ज प्रॉक्सी वापरपाक सांगतात, पूण प्रॉक्सी / सॉक्स हातूंत SOCKS5 प्रॉक्सी ना
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2296,6 +2385,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	प्रगत ब्राउझर एकीकरण वापर
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	दुसरो प्रोग्रॅम वापरात...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	अधिकृतता वापर
@@ -2305,6 +2399,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV मोडात FTP वापर
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	MDM ची स्वताची प्रत वापरात
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2319,6 +2417,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	प्रणाली सेटींग वापर
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	प्रॉक्सी वापरचें (पर्याय → प्रॉक्सी / सॉक्स, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ह्या टॉरेंटा खातीर तांचो वापर करचो? जें जुळटा तें दवरलें वतलें, बाकीचें बदललें वतलें.
@@ -2366,6 +2468,10 @@
 #. category name: video files
 #, machine
 	Video	व्हिडिओ
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	व्हिडिओ मदतगार
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	व्हिडिओ सोद yt-dlp वापरता (सुमार 23 MB, ताच्या स्वाक्षरीक तपासला).
@@ -2418,6 +2524,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL जोडात
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	हाचे वांगडा, येवपी जोडणी, DHT आनी स्थानिक पियर बंद आसतात.
 #. group box title in the Options window
 #, machine
 	Write dates and times	तारखा आनी वेळा बरयात
@@ -2447,6 +2557,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	तुमचो ब्राउजर
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	तुमचो स्वताचो प्रोग्रॅम: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	तुमच्या सिस्टमाचो: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp इन्स्टॉल केल्लें ना (कार्यां → पाना वयल्यान व्हिडिओ डाउनलोड करात तें इन्स्टॉल करता)

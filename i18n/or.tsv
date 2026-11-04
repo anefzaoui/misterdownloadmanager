@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ବିଷୟରେ
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	ଆସୁଥିବା ସଂଯୋଗଗୁଡ଼ିକୁ ଗ୍ରହଣ କରନ୍ତୁ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ଏକ ଡାଉନଲୋଡ୍ ଯୋଡ଼ନ୍ତୁ (URL ଯୋଡ଼ନ୍ତୁ)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ବ୍ୟାଚ୍ ଡାଉନଲୋଡ୍
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	ଏହି ତାଲିକାରେ ଥିବା ଠିକଣାଗୁଡ଼ିକୁ ଅବରୋଧ କରନ୍ତୁ (P2P କିମ୍ବା eMule ଫର୍ମାଟ୍):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ଉଭୟ ଖୋଲା ଉତ୍ସ ଅଟନ୍ତି। MDM ସେମାନଙ୍କୁ ନିଜର ଡାଉନଲୋଡର୍ ସହିତ ସେମାନଙ୍କର ଅଫିସିଆଲ୍ ରିଲିଜ୍‌ରୁ ପାଏ ଏବଂ ଚାଲୁ କରିବା ପୂର୍ବରୁ ପ୍ରତ୍ୟେକ ଫାଇଲର ସ୍ୱାକ୍ଷର ଯାଞ୍ଚ କରେ। ପ୍ରାୟ 100 MB, ଥରେ।
@@ -323,6 +331,11 @@
 #, machine
 	Checking the file...	ଫାଇଲ୍ ଯାଞ୍ଚ କରାଯାଉଛି...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	ପ୍ରୋଗ୍ରାମ ଯାଞ୍ଚ କରାଯାଉଛି...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +351,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager ଏହାର ୱିଣ୍ଡୋଗୁଡ଼ିକୁ ଯେଉଁ ଭାଷାରେ ଦେଖାଏ ତାହା ବାଛନ୍ତୁ:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	{name} ବାଛନ୍ତୁ
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -721,6 +738,10 @@
 #. text in the Scheduler window
 #, machine
 	February	ଫେବୃଆରୀ
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	ପ୍ରତି 7 ଦିନରେ ପୁନଃ ପ୍ରାପ୍ତ ହୁଏ। କୌଣସି ଟୋରେଣ୍ଟ ଚାଲୁ ନଥିବାବେଳେ ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ପ୍ରଯୁଜ୍ୟ ହୁଏ।
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +796,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ଫାଇଲ୍ ଖୋଜନ୍ତୁ
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	ସ୍ଥାନୀୟ ନେଟୱର୍କରେ ପିଅରଗୁଡ଼ିକୁ ଖୋଜନ୍ତୁ
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT ମାଧ୍ୟମରେ ପିଅରଗୁଡ଼ିକୁ ଖୋଜନ୍ତୁ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	ପରବର୍ତ୍ତୀ ମେଳ ଖୋଜନ୍ତୁ
@@ -877,6 +906,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	ସାହାଯ୍ୟ
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	ସହାୟକ...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -952,10 +986,21 @@
 #. text in a dialog box
 #, machine
 	Invalid address	ଅବୈଧ ଠିକଣା
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	ଏହା ଆପଣଙ୍କ ନେଟୱର୍କରେ ଥିବା କମ୍ପ୍ୟୁଟରଗୁଡ଼ିକୁ ଆପଣଙ୍କ ପାଖରେ ଥିବା ଟୋରେଣ୍ଟଗୁଡ଼ିକ ବିଷୟରେ ଜଣାଏ।
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, ଇତ୍ୟାଦି, img100.jpg ପରି କ୍ରମିକ ଫାଇଲ୍ ନାମର ଏକ ଗୋଷ୍ଠୀକୁ MDM ଡାଉନଲୋଡ୍ କ୍ୟୁରେ ଯୋଡିବା ସମ୍ଭବ। ଫାଇଲ୍ ନାମ ପ୍ୟାଟର୍ନ ପାଇଁ ତାରକା ୱାଇଲ୍ଡକାର୍ଡ ବ୍ୟବହାର କରନ୍ତୁ।
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	ଏହାର ଫାଇଲଗୁଡ଼ିକୁ ଲେଖାଯାଇପାରିଲା ନାହିଁ: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	ଏହାର ରିଲିଜ୍ ସୂଚନା ଆଶା କରାଯାଉଥିବା ଭଳି ନୁହେଁ: {detail}
 #. text in the Scheduler window
 #, machine
 	January	ଜାନୁଆରୀ
@@ -1055,6 +1100,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	ମାନୁଆଲ୍ ପ୍ରକ୍ସି/SOCKS ବିନ୍ୟାସ
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	ରାଉଟରରେ ପୋର୍ଟ ମ୍ୟାପ୍ କରନ୍ତୁ (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	ମାର୍ଚ୍ଚ
@@ -1114,6 +1163,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} ଉପଲବ୍ଧ ଅଛି ({date} ରେ ରିଲିଜ୍ ହୋଇଛି)।
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Mister Download Managerର ନିଜସ୍ୱ କପି, ସଂସ୍କରଣ {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1276,6 +1330,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	ଧାଡ଼ିରେ ନାହିଁ
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	ଏପର୍ଯ୍ୟନ୍ତ ସ୍ଥାପିତ ହୋଇନାହିଁ
 #. button in helpers.rs
 #, machine
 	Not now	ବର୍ତ୍ତମାନ ନୁହେଁ
@@ -1437,6 +1495,10 @@
 #. label in the Options window
 #, machine
 	Port	ପୋର୍ଟ
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	ପୋର୍ଟ:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1736,10 @@
 #. text in the Options window
 #, machine
 	Server:	ସର୍ଭର:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	ପ୍ରଥମେ Options → Proxy / Socks ରେ ଏକ socks5:// ପ୍ରକ୍ସି ସେଟ୍ କରନ୍ତୁ
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ସର୍ଭର ଦ୍ୱାରା ପ୍ରଦତ୍ତ ଫାଇଲ୍ ସୃଷ୍ଟି ତାରିଖ ସେଟ୍ କରନ୍ତୁ
@@ -1861,6 +1927,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ମୁଖ୍ୟ ଡାଉନଲୋଡ୍ କ୍ୟୁ ବନ୍ଦ କରନ୍ତୁ
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	କୌଣସି ଟୋରେଣ୍ଟ ଚାଲୁ ନଥିବାବେଳେ ଟୋରେଣ୍ଟ ଇଞ୍ଜିନ୍ ବନ୍ଦ କରନ୍ତୁ
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -1977,6 +2047,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ଡାଉନଲୋଡ୍‌ କ୍ୟୁ ସରିଛି।
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	ଡାଉନଲୋଡ୍ ହୋଇଥିବା ପ୍ରୋଗ୍ରାମ୍ ଏହାର ସାଇନ୍ ହୋଇଥିବା ଚେକସମ୍ ସହିତ ମେଳ ଖାଉ ନାହିଁ
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2119,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	ରିଲିଜ୍‌ରେ କୌଣସି ସଂସ୍କରଣ ନାହିଁ
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	ରିଲିଜ୍‌ରେ {what} ନାହିଁ
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	ରିଲିଜ୍‌ର ଚେକସମ୍ ତାଲିକା ଏହାର ପ୍ରକାଶକଙ୍କ କି’ ଦ୍ୱାରା ସାଇନ୍ ହୋଇନାହିଁ
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -2142,6 +2222,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ଏହା ସ୍ଥାପିତ କପି, ପୋର୍ଟେବଲ୍ ନୁହେଁ
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	ଏହି ପ୍ରୋଗ୍ରାମ {name} ନୁହେଁ
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	ଏହି ସିଷ୍ଟମରେ ହ୍ୟାଙ୍ଗ୍ ଅପ୍ କରିବାକୁ କୌଣସି ଡାଏଲ୍-ଅପ୍ କନେକ୍ସନ୍ ନାହିଁ
@@ -2193,6 +2278,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	ଟରେଣ୍ଟ ସେଟିଙ୍ଗ୍‌ଗୁଡ଼ିକ
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	ଟୋରେଣ୍ଟ ସେଟିଂସ ପ୍ରକ୍ସି ବ୍ୟବହାର କରିବାକୁ କହୁଛି, କିନ୍ତୁ Proxy / Socks ରେ କୌଣସି SOCKS5 ପ୍ରକ୍ସି ନାହିଁ
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2296,6 +2385,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	ଉନ୍ନତ ବ୍ରାଉଜର୍ ଏକୀକରଣ ବ୍ୟବହାର କରନ୍ତୁ
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	ଅନ୍ୟ ଏକ ପ୍ରୋଗ୍ରାମ ବ୍ୟବହାର କରନ୍ତୁ...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	ପ୍ରାଧିକରଣ ବ୍ୟବହାର କରନ୍ତୁ
@@ -2305,6 +2399,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV ମୋଡ୍‌ରେ FTP ବ୍ୟବହାର କରନ୍ତୁ
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	MDMର ନିଜସ୍ୱ କପି ବ୍ୟବହାର କରନ୍ତୁ
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2319,6 +2417,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	ସିଷ୍ଟମ୍ ସେଟିଙ୍ଗ୍‌ଗୁଡ଼ିକ ବ୍ୟବହାର କରନ୍ତୁ
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	ପ୍ରକ୍ସି ବ୍ୟବହାର କରନ୍ତୁ (Options → Proxy / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ଏହି ଟୋରେଣ୍ଟ ପାଇଁ ସେଗୁଡ଼ିକୁ ବ୍ୟବହାର କରିବେ କି? ଯାହା ମିଳୁଛି ତାହା ରଖାଯିବ, ବାକି ବଦଳାଯିବ।
@@ -2366,6 +2468,10 @@
 #. category name: video files
 #, machine
 	Video	ଭିଡିଓ
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	ଭିଡିଓ ସହାୟକ
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ଭିଡିଓ ଲୁକଅପ୍‌ଗୁଡ଼ିକ yt-dlp ବ୍ୟବହାର କରନ୍ତି (ପ୍ରାୟ 23 MB, ଏହାର ସ୍ୱାକ୍ଷର ବିରୁଦ୍ଧରେ ଯାଞ୍ଚ କରାଯାଇଛି)।
@@ -2418,6 +2524,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL ଯୋଗ କରନ୍ତୁ ସହିତ
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	ଏହା ସହିତ, ଆସୁଥିବା ସଂଯୋଗ, DHT ଏବଂ ସ୍ଥାନୀୟ ପିଅରଗୁଡ଼ିକ ବନ୍ଦ ହୋଇଯାଆନ୍ତି।
 #. group box title in the Options window
 #, machine
 	Write dates and times	ତାରିଖ ଏବଂ ସମୟ ଲେଖନ୍ତୁ
@@ -2447,6 +2557,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	ଆପଣଙ୍କ ବ୍ରାଉଜର
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	ଆପଣଙ୍କ ନିଜସ୍ୱ ପ୍ରୋଗ୍ରାମ: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	ଆପଣଙ୍କ ସିଷ୍ଟମର: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ସ୍ଥାପିତ ହୋଇନାହିଁ (କାର୍ଯ୍ୟଗୁଡ଼ିକ → ଏକ ପୃଷ୍ଠାରୁ ଭିଡିଓ ଡାଉନଲୋଡ୍ କରନ୍ତୁ ଏହାକୁ ସ୍ଥାପନ କରେ)

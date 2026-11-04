@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	درباره Mister Download Manager
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	پذیرش اتصالات ورودی
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	افزودن دانلود (افزودن URL)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	دانلود دسته‌ای
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	مسدود کردن آدرس‌ها در این فهرست (قالب P2P یا eMule):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	هر دو متن‌باز هستند. MDM آن‌ها را از نسخه‌های رسمی‌شان با دانلودکننده خود دریافت می‌کند و امضای هر فایل را قبل از اجرا بررسی می‌کند. حدود 100 مگابایت، یک بار.
@@ -323,6 +331,11 @@
 #, machine
 	Checking the file...	در حال بررسی فایل...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	در حال بررسی برنامه...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +351,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	زبانی را انتخاب کنید که Mister Download Manager پنجره‌های خود را در آن نمایش دهد:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	{name} را انتخاب کنید
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -721,6 +738,10 @@
 #. text in the Scheduler window
 #, machine
 	February	فوریه
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	هر 7 روز یکبار دوباره واکشی می‌شود. تغییرات زمانی اعمال می‌شوند که هیچ تورنتی در حال اجرا نباشد.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +796,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	یافتن فایل
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	یافتن همتایان در شبکه محلی
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	یافتن همتایان از طریق DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	یافتن مورد بعدی
@@ -877,6 +906,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	راهنما
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	کمک‌کننده‌ها...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -952,10 +986,21 @@
 #. text in a dialog box
 #, machine
 	Invalid address	آدرس نامعتبر است
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	این به رایانه‌های شبکه شما می‌گوید که چه تورنت‌هایی را دارید.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	امکان افزودن گروهی از نام فایل‌های متوالی مانند img001.jpg، img002.jpg و غیره،\nimg100.jpg به صف دانلود MDM وجود دارد. از کاراکتر ستاره برای الگوی نام فایل استفاده کنید.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	فایل‌های آن قابل نوشتن نیست: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	اطلاعات انتشار آن مطابق انتظار نیست: {detail}
 #. text in the Scheduler window
 #, machine
 	January	ژانویه
@@ -1055,6 +1100,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	پیکربندی دستی پراکسی/SOCKS
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	نگاشت پورت در روتر (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	مارس
@@ -1114,6 +1163,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} در دسترس است (منتشر شده در {date}).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	نسخه خود Mister Download Manager، نسخه {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1276,6 +1330,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	در صف نیست
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	هنوز نصب نشده است
 #. button in helpers.rs
 #, machine
 	Not now	فعلا نه
@@ -1437,6 +1495,10 @@
 #. label in the Options window
 #, machine
 	Port	درگاه
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	پورت:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1736,10 @@
 #. text in the Options window
 #, machine
 	Server:	سرور:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	ابتدا یک پراکسی socks5:// در گزینه‌ها ← پراکسی / ساکس تنظیم کنید
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	تنظیم تاریخ ایجاد فایل مطابق با سرور
@@ -1861,6 +1927,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	توقف صف دانلود اصلی
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	توقف موتور تورنت زمانی که هیچ تورنتی در حال اجرا نیست
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -1977,6 +2047,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	صف دانلود به پایان رسید.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	برنامه دانلود شده با جمع کنترلی امضا شده آن مطابقت ندارد
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2119,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	نسخه، شماره‌ای ندارد
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	این نسخه فاقد {what} است
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	لیست جمع کنترلی این نسخه توسط کلید ناشر آن امضا نشده است
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -2142,6 +2222,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	این نسخه نصب شده است، نه نسخه قابل حمل
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	این برنامه {name} نیست
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	این سیستم هیچ اتصال شماره‌گیری برای قطع کردن ندارد
@@ -2193,6 +2278,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	تنظیمات تورنت
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	تنظیمات تورنت می‌گوید از پراکسی استفاده شود، اما پراکسی / ساکس پراکسی SOCKS5 ندارد
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2296,6 +2385,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	استفاده از یکپارچه‌سازی پیشرفته مرورگر
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	استفاده از برنامه دیگر...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	استفاده از مجوز
@@ -2305,6 +2399,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	استفاده از FTP در حالت PASV
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	استفاده از نسخه خود MDM
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2319,6 +2417,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	استفاده از تنظیمات سیستم
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	استفاده از پراکسی (گزینه‌ها ← پراکسی / ساکس، SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	از آن‌ها برای این تورنت استفاده شود؟ آنچه مطابقت دارد حفظ می‌شود، بقیه جایگزین می‌شوند.
@@ -2366,6 +2468,10 @@
 #. category name: video files
 #, machine
 	Video	ویدئو
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	کمک‌کننده‌های ویدیو
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	جستجوهای ویدئو از yt-dlp استفاده می‌کنند (حدود 23 مگابایت، با امضای آن بررسی شده است).
@@ -2418,6 +2524,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	با افزودن URL
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	با این کار، اتصالات ورودی، DHT و همتایان محلی خاموش می‌شوند.
 #. group box title in the Options window
 #, machine
 	Write dates and times	نوشتن تاریخ و زمان
@@ -2447,6 +2557,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	مرورگر شما
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	برنامه شما: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	سیستم شما: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp نصب نشده است (وظایف ← دانلود ویدیو از یک صفحه آن را نصب می‌کند)

@@ -14,7 +14,6 @@ use mdm_engine::Snapshot;
 use mdm_engine::download::State;
 use mdm_torrent::{Config, Phase, Torrents};
 use serde::{Deserialize, Serialize};
-use tokio::sync::OnceCell;
 
 /// What a torrent download keeps in the list (downloads.json).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -46,56 +45,165 @@ pub fn save_torrent(hash: &str, bytes: &[u8]) -> std::io::Result<()> {
     std::fs::write(path, bytes)
 }
 
-/// The app's one session, started on first use.
+/// The blocklist as MDM converted it (mdm_torrent::blocklist), in the torrent data folder.
+pub const BLOCKLIST_FILE: &str = "blocklist.p2p";
+/// The address it was fetched from (another address: fetched again).
+const BLOCKLIST_SOURCE: &str = "blocklist.source";
+/// How often a blocklist is fetched again.
+pub const BLOCKLIST_DAYS: u64 = 7;
+
+/// When the blocklist at `url` was last converted (None: never, or from another address).
+pub fn blocklist_updated(url: &str) -> Option<std::time::SystemTime> {
+    let dir = state_dir()?;
+    let source = std::fs::read_to_string(dir.join(BLOCKLIST_SOURCE)).ok()?;
+    (source.trim() == url.trim())
+        .then(|| {
+            std::fs::metadata(dir.join(BLOCKLIST_FILE))
+                .ok()?
+                .modified()
+                .ok()
+        })
+        .flatten()
+}
+
+/// Fetch and convert the blocklist at `url` (#40) when it was never converted, comes from
+/// another address now, or is older than `BLOCKLIST_DAYS`; in the background, one at a time
+/// (`busy`), with MDM's own downloader (Proxy / Socks applies). A list that isn't one keeps the
+/// last good one. The torrent session reads it when it starts.
+pub fn refresh_blocklist(
+    rt: &tokio::runtime::Handle,
+    url: &str,
+    busy: &Arc<std::sync::atomic::AtomicBool>,
+) {
+    use std::sync::atomic::Ordering;
+    let url = url.trim().to_owned();
+    let Some(dir) = state_dir() else { return };
+    let Ok(parsed) = url::Url::parse(&url) else {
+        return;
+    };
+    let fresh = blocklist_updated(&url)
+        .and_then(|t| t.elapsed().ok())
+        .is_some_and(|age| age < std::time::Duration::from_secs(BLOCKLIST_DAYS * 86_400));
+    if url.is_empty() || fresh || busy.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    let busy = busy.clone();
+    rt.spawn(async move {
+        let _ = std::fs::create_dir_all(&dir);
+        let download = dir.join("blocklist.download");
+        let fetched =
+            mdm_engine::fetch(parsed, &download, crate::settings::own_net(), |_, _| {}).await;
+        match fetched {
+            Ok(_) => match std::fs::read(&download)
+                .ok()
+                .as_deref()
+                .and_then(mdm_torrent::blocklist::convert)
+            {
+                Some(list) => {
+                    let tmp = dir.join(format!("{BLOCKLIST_FILE}.tmp"));
+                    if std::fs::write(&tmp, &list.text).is_ok()
+                        && std::fs::rename(&tmp, dir.join(BLOCKLIST_FILE)).is_ok()
+                    {
+                        let _ = std::fs::write(dir.join(BLOCKLIST_SOURCE), &url);
+                        tracing::info!(
+                            "blocklist: {} ranges ({} lines skipped)",
+                            list.ranges,
+                            list.skipped
+                        );
+                    }
+                }
+                None => tracing::warn!("blocklist: {url} is not a list MDM can read"),
+            },
+            Err(e) => tracing::warn!("blocklist: {e}"),
+        }
+        let _ = std::fs::remove_file(&download);
+        let _ = std::fs::remove_file(mdm_engine::state::state_path(&download));
+        busy.store(false, Ordering::SeqCst);
+    });
+}
+
+/// The app's one session, started on first use, as Torrent settings say (`set_config`); it
+/// stops when no torrent needs it (`stop_if_idle`), and a new one takes the settings of then.
 #[derive(Clone)]
 pub struct Host {
-    cell: Arc<OnceCell<Arc<Torrents>>>,
+    cell: Arc<tokio::sync::Mutex<Option<Arc<Torrents>>>>,
+    /// The settings the next session starts with (None: they can't be met, see
+    /// Settings::torrent_config) and those of the one running.
+    wanted: Arc<Mutex<Option<Config>>>,
+    running: Arc<Mutex<Option<Config>>>,
 }
 
 impl Host {
     pub fn new() -> Self {
         Host {
-            cell: Arc::new(OnceCell::new()),
+            cell: Arc::new(tokio::sync::Mutex::new(None)),
+            wanted: Arc::new(Mutex::new(state_dir().map(Config::new))),
+            running: Arc::new(Mutex::new(None)),
         }
+    }
+
+    /// The settings for the next session (Torrent settings changed, or at start).
+    pub fn set_config(&self, cfg: Option<Config>) {
+        *self.wanted.lock().unwrap() = cfg;
     }
 
     /// The session if it already runs.
     pub fn get(&self) -> Option<Arc<Torrents>> {
-        self.cell.get().cloned()
+        self.cell.try_lock().ok().and_then(|s| s.clone())
+    }
+
+    /// Whether the running session was started with other settings than those wanted now.
+    pub fn settings_changed(&self) -> bool {
+        self.get().is_some() && *self.running.lock().unwrap() != *self.wanted.lock().unwrap()
     }
 
     /// The session, started if needed. `known`: the torrents the list has (the rest of what
     /// the session restores is forgotten).
     pub async fn session(&self, known: HashSet<String>) -> Result<Arc<Torrents>, String> {
-        self.cell
-            .get_or_try_init(|| async move {
-                // i18n: an error: the app has no folder for its torrent data
-                let dir = state_dir().ok_or(crate::i18n::t("no data folder for torrents"))?;
-                let t = Torrents::start(Config {
-                    state_dir: dir,
-                    listen: true,
-                    dht: true,
-                    offline: false,
-                })
-                .await
-                .map_err(|e| {
-                    crate::i18n::fmt(
-                        // i18n: an error, with the reason
-                        crate::i18n::t("torrents could not start: {error}"),
-                        &[("error", &e.to_string())],
-                    )
-                })?;
-                for hash in t.hashes() {
-                    if known.contains(&hash) {
-                        let _ = t.pause(&hash).await;
-                    } else {
-                        let _ = t.remove(&hash, false).await;
-                    }
-                }
-                Ok(Arc::new(t))
-            })
-            .await
-            .cloned()
+        let mut cell = self.cell.lock().await;
+        if let Some(t) = cell.as_ref() {
+            return Ok(t.clone());
+        }
+        // i18n: an error: the app has no folder for its torrent data
+        state_dir().ok_or(crate::i18n::t("no data folder for torrents"))?;
+        let cfg = self.wanted.lock().unwrap().clone().ok_or_else(|| {
+            // i18n: an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+            crate::i18n::t(
+                "Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy",
+            )
+            .to_owned()
+        })?;
+        let t = Torrents::start(cfg.clone()).await.map_err(|e| {
+            crate::i18n::fmt(
+                // i18n: an error, with the reason
+                crate::i18n::t("torrents could not start: {error}"),
+                &[("error", &e.to_string())],
+            )
+        })?;
+        for hash in t.hashes() {
+            if known.contains(&hash) {
+                let _ = t.pause(&hash).await;
+            } else {
+                let _ = t.remove(&hash, false).await;
+            }
+        }
+        let t = Arc::new(t);
+        *cell = Some(t.clone());
+        *self.running.lock().unwrap() = Some(cfg);
+        Ok(t)
+    }
+
+    /// Stop the session when no torrent needs it (`idle`) and Torrent settings say so, or its
+    /// settings changed: it stops listening, and the next one starts with the new ones.
+    pub fn stop_if_idle(&self, rt: &tokio::runtime::Handle, idle: bool, stop_idle: bool) {
+        if !idle || !(stop_idle || self.settings_changed()) {
+            return;
+        }
+        let Some(t) = self.cell.try_lock().ok().and_then(|mut s| s.take()) else {
+            return;
+        };
+        *self.running.lock().unwrap() = None;
+        rt.spawn(async move { t.stop().await });
     }
 
     /// Keep sharing (true) or stop sharing (false) finished torrents: `hashes` are the list's
@@ -155,6 +263,31 @@ pub struct Run {
     stopped: Arc<Mutex<bool>>,
     /// Keep sharing once finished (D-018; off by default).
     keep_sharing: bool,
+    /// Where its files are (`TorrentSpec::folder`).
+    folder: PathBuf,
+    /// Its files' Mark-of-the-Web (#40): 0 not yet, 1 once librqbit created them, 2 finished.
+    marked: Arc<std::sync::atomic::AtomicU8>,
+}
+
+/// The origin a torrent's files are marked with: not one website, and never the magnet link
+/// (its trackers), as Windows' guidance for an unknown source says (and qBittorrent does).
+const TORRENT_ORIGIN: &str = "about:internet";
+
+/// Mark `files` (padding left out) under `folder` as downloaded from the internet, as web
+/// downloads are (Windows' zone, so SmartScreen and Office's Protected View check them; macOS'
+/// quarantine; Linux's origin attribute, which nothing enforces). Every file of the torrent,
+/// ticked or not: librqbit creates them all.
+fn mark_files(folder: &Path, files: &[mdm_torrent::FileEntry]) {
+    for f in files.iter().filter(|f| !f.padding) {
+        let path = folder.join(&f.path);
+        if !path.is_file() {
+            continue;
+        }
+        #[cfg(windows)]
+        crate::win32::mark_downloaded(&path, TORRENT_ORIGIN, None);
+        #[cfg(unix)]
+        crate::unix::mark_downloaded(&path, TORRENT_ORIGIN, None);
+    }
 }
 
 /// What the progress window's torrent tabs show.
@@ -220,7 +353,29 @@ impl Run {
             url,
             stopped: Arc::new(Mutex::new(false)),
             keep_sharing,
+            folder: spec.folder.clone(),
+            marked: Arc::new(std::sync::atomic::AtomicU8::new(0)),
         }
+    }
+
+    /// Mark its files once librqbit has created them (it leaves Checking) and again once it
+    /// finishes, off the window's thread.
+    fn mark_when(&self, t: &Arc<Torrents>, phase: Phase) {
+        use std::sync::atomic::Ordering;
+        // Paused: perhaps never started, its files not created yet.
+        let step = match phase {
+            Phase::Downloading => 1,
+            Phase::Finished => 2,
+            Phase::Checking | Phase::Paused | Phase::Error => return,
+        };
+        if self.marked.fetch_max(step, Ordering::SeqCst) >= step {
+            return;
+        }
+        let Some((files, _, _)) = t.files(&self.hash) else {
+            return;
+        };
+        let folder = self.folder.clone();
+        self.rt.spawn_blocking(move || mark_files(&folder, &files));
     }
 
     fn session(&self) -> Option<Arc<Torrents>> {
@@ -277,6 +432,7 @@ impl Run {
             Phase::Error => State::Failed,
         };
         s.error = st.error;
+        self.mark_when(&t, st.phase);
         // Done: it stops sharing (a download manager finishes downloads; D-018), unless the
         // person chose to keep sharing.
         if s.state == State::Done && !self.keep_sharing {
@@ -374,5 +530,44 @@ mod tests {
         let u = magnet_url("0123456789abcdef0123456789abcdef01234567", "A & B");
         assert_eq!(u.scheme(), "magnet");
         assert!(u.as_str().contains("dn=A+%26+B"), "{u}");
+    }
+
+    /// #40: a torrent's files get the internet zone, with no address but `about:internet`
+    /// (never the magnet link); padding files and files not there are left alone.
+    #[cfg(windows)]
+    #[test]
+    fn torrent_files_are_marked_from_the_internet() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(dir.path().join("sub")).unwrap();
+        std::fs::write(dir.path().join("sub/a.exe"), b"x").unwrap();
+        std::fs::write(dir.path().join(".pad0"), b"").unwrap();
+        let entry = |p: &str, padding| mdm_torrent::FileEntry {
+            path: PathBuf::from(p),
+            size: 1,
+            padding,
+        };
+        mark_files(
+            dir.path(),
+            &[
+                entry("sub/a.exe", false),
+                entry(".pad0", true),
+                entry("gone.bin", false),
+            ],
+        );
+        let zone = |p: &Path| {
+            let mut s = p.as_os_str().to_owned();
+            s.push(":Zone.Identifier");
+            std::fs::read_to_string(s).ok()
+        };
+        assert_eq!(
+            zone(&dir.path().join("sub/a.exe")).as_deref(),
+            Some("[ZoneTransfer]\r\nZoneId=3\r\nHostUrl=about:internet\r\n")
+        );
+        assert_eq!(
+            zone(&dir.path().join(".pad0")),
+            None,
+            "padding isn't marked"
+        );
+        assert!(!dir.path().join("gone.bin").exists(), "nothing created");
     }
 }

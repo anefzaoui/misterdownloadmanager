@@ -259,6 +259,9 @@ pub struct App {
     file_info: Option<FileInfo>,
     /// Addresses (and their browser context) waiting for Download File Info to close.
     file_info_waiting: std::collections::VecDeque<(dialogs::NewUrl, ipc::Command)>,
+    /// Download File Info's open answers, for the download each was given to (by id) to start
+    /// from (#28: a one-time link refuses a second request).
+    kept_answers: std::collections::HashMap<u64, mdm_engine::KeptAnswer>,
     /// Help menu windows.
     about: Option<crate::help::About>,
     updates: Option<crate::help::Updates>,
@@ -314,6 +317,10 @@ pub struct App {
     video_dlg: Option<crate::videodlg::VideoDialog>,
     torrent_dlg: Option<crate::torrentdlg::TorrentDialog>,
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
+    /// Since when no torrent has needed the torrent engine (`torrent_tick`).
+    torrent_idle_since: Option<Instant>,
+    /// A blocklist is being fetched (torrents::refresh_blocklist).
+    blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
@@ -658,6 +665,7 @@ impl App {
             update_checked_this_run: None,
             file_info: None,
             file_info_waiting: Default::default(),
+            kept_answers: Default::default(),
             progress: Vec::new(),
             complete: Vec::new(),
             settings,
@@ -678,6 +686,8 @@ impl App {
             video_dlg: None,
             torrent_dlg: None,
             torrent_settings: None,
+            torrent_idle_since: None,
+            blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             find: None,
@@ -975,7 +985,7 @@ impl App {
 
     // ---- actions ---------------------------------------------------------------------------
 
-    fn add(&mut self, fi: &FileInfo, start: Start) {
+    fn add(&mut self, fi: &mut FileInfo, start: Start) {
         // Only a folder other than the category's becomes its new one (an unchanged folder
         // stays "the default", following Downloads).
         if let Some((cat, dir)) = fi.remembered()
@@ -1000,6 +1010,10 @@ impl App {
         self.name_guessed(id, fi.name_guessed());
         self.selection.set(id);
         if matches!(start, Start::Now) {
+            // Later: the answer is closed (its download starts some other time).
+            if let Some(k) = fi.take_kept() {
+                self.kept_answers.insert(id, k);
+            }
             self.start(id, true);
         } else {
             // "Download Later": the main download queue (IDM's default), or the one picked.
@@ -1034,6 +1048,9 @@ impl App {
             },
         );
         fi.early = Some(id);
+        if let Some(k) = fi.take_kept() {
+            self.kept_answers.insert(id, k);
+        }
         self.start(id, false);
     }
 
@@ -1187,6 +1204,41 @@ impl App {
         }
     }
 
+    /// Every 2 s (#40): Torrent settings for the next torrent session, and the running one stopped
+    /// once no torrent has needed it for a minute (none running or sharing, no Add torrent open),
+    /// when Torrent settings say so or their network settings changed.
+    fn torrent_tick(&mut self) {
+        let cfg = crate::torrents::state_dir().and_then(|d| self.settings.torrent_config(d));
+        self.torrent_host.set_config(cfg);
+        if !self.settings.torrent_blocklist.trim().is_empty() {
+            crate::torrents::refresh_blocklist(
+                &self.rt,
+                &self.settings.torrent_blocklist,
+                &self.blocklist_busy,
+            );
+        }
+        let sharing = self.settings.torrent_keep_sharing
+            && self
+                .items
+                .iter()
+                .any(|i| i.torrent.is_some() && i.status == Status::Complete);
+        let busy = sharing
+            || self.torrent_dlg.is_some()
+            || self
+                .items
+                .iter()
+                .any(|i| i.torrent.is_some() && i.live.is_some());
+        if busy {
+            self.torrent_idle_since = None;
+            return;
+        }
+        let since = *self.torrent_idle_since.get_or_insert_with(Instant::now);
+        if since.elapsed() >= Duration::from_secs(60) {
+            self.torrent_host
+                .stop_if_idle(&self.rt, true, self.settings.torrent_stop_idle);
+        }
+    }
+
     /// `/show <window>` (mdm_ipc::Command::show): open one of the windows by name, as its menu
     /// command does. Unknown names do nothing.
     fn show_named(&mut self, name: &str, ctx: &egui::Context) {
@@ -1203,6 +1255,15 @@ impl App {
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
+            "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
+            "video-page" => self.run(Cmd::VideoPage, None, ctx),
+            // Download video from a page → Helpers... (#51).
+            "video-helpers" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.open_helpers();
+                }
+            }
             "existing-files" => {
                 let dir = self.downloads.join("Big Buck Bunny");
                 self.shown_existing = Some(crate::dialogs::ExistingFiles::new(&[
@@ -1465,6 +1526,8 @@ impl App {
             return;
         };
         let RequestParts { headers, mut opts } = self.request_parts(&url, login.as_ref(), &context);
+        // Download File Info's open answer for it, if it has one (#28); used once.
+        let kept = self.kept_answers.remove(&id);
         // The file's own remembered limit, else the Speed Limiter's.
         opts.speed_limit = own_limit.or(self.settings.speed_limit());
         opts.checksum = checksum;
@@ -1496,13 +1559,14 @@ impl App {
                 Some(dir) if item.name_from_url => Destination::Dir(dir.to_owned()),
                 _ => Destination::File(item.dest.clone()),
             };
-            Download::start(
+            Download::start_with(
                 Request {
                     url: item.url.clone(),
                     headers,
                     dest,
                 },
                 opts,
+                kept,
             )
         };
         item.note(if item.downloaded > 0 {
@@ -5083,8 +5147,10 @@ impl App {
             match t.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed => self.torrent_settings = None,
-                Outcome::Done((share, assoc)) => {
+                Outcome::Done(crate::torrentdlg::TorrentChoice { share, assoc, net }) => {
                     self.torrent_settings = None;
+                    // The network: the next torrent session takes it (torrent_tick).
+                    net.apply(&mut self.settings);
                     if share != self.settings.torrent_keep_sharing {
                         self.settings.torrent_keep_sharing = share;
                         self.torrent_host.set_sharing(
@@ -5218,7 +5284,7 @@ impl App {
                 }
                 Outcome::Done(start) => match fi.early {
                     Some(id) => self.adopt_early(&fi, id, start),
-                    None => self.add(&fi, start),
+                    None => self.add(&mut fi, start),
                 },
             }
         }
@@ -5340,6 +5406,7 @@ impl eframe::App for App {
                 self.queues.len(),
                 ctx.pixels_per_point(),
             );
+            self.torrent_tick();
         }
         ctx.request_repaint_after(Duration::from_secs(2));
         egui::CentralPanel::no_frame()

@@ -14,9 +14,26 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **No silent overwrite**: when some of a torrent's files are already in the folder, MDM asks
   before writing into them (**No** is the default). The command line's `torrent-get` stops and
   names them, unless given `--use-existing`.
+- **Files from torrents are marked as downloaded from the internet**, as web downloads are:
+  SmartScreen checks a program before it first runs, Office opens documents in Protected View,
+  and Gatekeeper checks apps on a Mac.
+- Torrents' trackers on this computer or the local network aren't contacted, and a `.torrent`
+  file over 10 MB isn't read (it isn't one). Peers see MDM's major version only.
 
 ### Added
 
+- **Torrent settings: the network is yours to choose**
+  ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40)): accept incoming connections
+  or not, map the port with UPnP or not, a fixed port, the DHT, finding peers on the local network,
+  a SOCKS5 proxy from Proxy / Socks (which turns off what would go around it), an IP blocklist
+  (P2P or eMule format, fetched again every 7 days), and stopping the torrent engine when no
+  torrent runs. A new help page, [Torrents and your security](docs/torrent-security.md), says what
+  others can see and what each switch does.
+- **Your own yt-dlp and ffmpeg** ([#51](https://github.com/anefzaoui/misterdownloadmanager/issues/51)):
+  **Download video from a page → Helpers...** shows where each comes from, and **Use another
+  program...** takes a copy you already have instead of MDM's own (checked once, then used by
+  the window and the command line alike; MDM leaves its updates to you). **Use MDM's own copy**
+  goes back.
 - **Zen, Helium and other browsers built on Firefox or Chromium** ([#41](https://github.com/anefzaoui/misterdownloadmanager/issues/41)):
   the extension reaches MDM in them, also when one is the only browser on Linux or macOS (Zen
   reads Firefox's folder, which MDM now creates; Helium its own). **Add Mister Download Manager
@@ -115,6 +132,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   ([#50](https://github.com/anefzaoui/misterdownloadmanager/issues/50)): Wayland lets no program
   place its windows, and MDM's menus and drop-down lists are windows it places. MDM now runs
   through XWayland when it is there (`MDM_WAYLAND=1` keeps Wayland).
+- **ffmpeg could fail to install** with "the release has no an LGPL Windows build": BtbN, whose
+  builds MDM installs, publishes a dated build each day and then remakes its `latest` release,
+  and meanwhile GitHub's "latest" is the dated one, whose files are named differently. MDM now
+  reads BtbN's newest releases, either naming, and takes the newest complete build. Errors while
+  installing yt-dlp or ffmpeg are also worded in the interface language now.
+- **Links that work only once** (or hosts that allow one download at a time) failed with "403
+  Forbidden" after Download File Info had looked them up
+  ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)): the window's look and the
+  download each asked the server. The download now continues from the answer the window got,
+  and asks again only if that connection has closed meanwhile.
 - A download whose address ends in a long token (file hosts such as AnkerGames' mirrors) failed
   with "the path is too long for Windows" before it started
   ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)). Every new download's name

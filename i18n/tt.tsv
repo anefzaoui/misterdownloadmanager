@@ -92,6 +92,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager турында
+#. checkbox in the Add torrent window
+#. Torrent settings: other peers may connect to this computer
+#, machine
+	Accept incoming connections	Керүче тоташуларны кабул итү
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Йөкләнеш өстәргә (URL өстәргә)
@@ -231,6 +235,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Төркемләп йөкләү
+#. text in the Add torrent window
+#. Torrent settings: the address of an IP blocklist (empty: none)
+#, machine
+	Block the addresses in this list (P2P or eMule format):	Бу исемлектәге адресларны блоклау (P2P яки eMule форматы):
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Икесе дә ачык чыганаклы. MDM аларны үзенең йөкләгече белән рәсми чыгарылышларыннан ала һәм эшләтеп җибәрү алдыннан һәр файлның имзасын тикшерә. Бер тапкыр якынча 100 МБ.
@@ -323,6 +331,11 @@
 #, machine
 	Checking the file...	Файл тикшерелә...
 #. text in helpers.rs
+#. Video helpers: a program just chosen is being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the program...	Программа тикшерелә...
+#. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
@@ -338,6 +351,10 @@
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager тәрәзәләре күрсәтеләчәк телне сайлагыз:
+#. text in helpers.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Choose {name}	{name} сайлагыз
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -721,6 +738,10 @@
 #. text in the Scheduler window
 #, machine
 	February	Февраль
+#. text in the Add torrent window
+#. Torrent settings, at the bottom
+#, machine
+	Fetched again every 7 days. Changes apply when no torrent is running.	Һәр 7 көн саен яңадан алына. Торрент эшләмәгәндә үзгәрешләр кулланыла.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -775,6 +796,14 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Файл табу
+#. checkbox in the Add torrent window
+#. Torrent settings: local peer discovery
+#, machine
+	Find peers on the local network	Җирле челтәрдә пирларны табу
+#. text in the Add torrent window
+#. Torrent settings: the DHT, the network peers use to find each other
+#, machine
+	Find peers through the DHT	DHT аша пирларны табу
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Киләсе туры килүне табу
@@ -877,6 +906,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Ярдәм
+#. button in the Download video window
+#. button in Download video: where MDM takes yt-dlp and ffmpeg from
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Helpers...	Ярдәмчеләр...
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -952,10 +986,21 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Яраксыз адрес
+#. text in the Add torrent window
+#. Torrent settings, under "Find peers on the local network"
+#, machine
+	It tells the computers on your network which torrents you have.	Ул сезнең челтәрдәге компьютерларга сездә нинди торрентлар булуын әйтә.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	MDM йөкләү чиратына img001.jpg, img002.jpg һ.б., img100.jpg кебек эзлекле файл исемнәре төркемен өстәргә мөмкин.\nФайл исеме үрнәге өчен йолдызча тамгасын кулланыгыз.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	аның файллары язылмады: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	аның чыгарылыш мәгълүматы көтелгәнчә түгел: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Гыйнвар
@@ -1055,6 +1100,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Прокси/SOCKS кул белән конфигурацияләү
+#. checkbox in the Add torrent window
+#. Torrent settings: ask the router (UPnP) to forward the port
+#, machine
+	Map the port on the router (UPnP)	Роутерда портны картага төшерү (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Март
@@ -1114,6 +1163,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager {version} is available (released {date}).	Mister Download Manager {version} версиясе бар (чыгарылган {date}).
+#. text in helpers.rs
+#. Video helpers: {version} = the version of MDM's own copy
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Mister Download Manager's own copy, version {version}	Mister Download Managerның үз күчермәсе, {version} версиясе
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1276,6 +1330,10 @@
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Чиратта түгел
+#. text in helpers.rs
+#. Video helpers: no copy of this helper yet
+#, machine
+	Not installed yet	Әле урнаштырылмаган
 #. button in helpers.rs
 #, machine
 	Not now	Хәзер түгел
@@ -1437,6 +1495,10 @@
 #. label in the Options window
 #, machine
 	Port	Порт
+#. text in the Add torrent window
+#. Torrent settings: the port to listen on (empty: any)
+#, machine
+	Port:	Порт:
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1674,6 +1736,10 @@
 #. text in the Options window
 #, machine
 	Server:	Сервер:
+#. text in the Add torrent window
+#. why "Use the proxy" is greyed in Torrent settings
+#, machine
+	Set a socks5:// proxy in Options → Proxy / Socks first	Башта Күрсәткечләр → Прокси / Socks бүлегендә socks5:// прокси урнаштырыгыз
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Файл ясау датасын сервер биргәнчә кую
@@ -1861,6 +1927,10 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Төп йөкләү чиратын туктату
+#. checkbox in the Add torrent window
+#. Torrent settings: stop listening when nothing needs the torrent engine
+#, machine
+	Stop the torrent engine when no torrent is running	Торрент эшләмәгәндә торрент двигателен туктату
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -1977,6 +2047,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Йөкләү чираты тәмамланды.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	йөкләнгән программа аның имзаланган контроль суммасына туры килми
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2119,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	чыгарылышның версиясе юк
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	чыгарылышта {what} юк
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	чыгарылышның контроль суммасы исемлеге аның нәшер итүчесенең ачкычы белән имзаланмаган
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -2142,6 +2222,11 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Бу урнаштырылган күчермә, портатив түгел
+#. text in errors.rs
+#. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this program isn't {name}	бу программа {name} түгел
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Бу системада элемтәне өзәр өчен шалтырату тоташулары юк
@@ -2193,6 +2278,10 @@
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Торрент көйләүләре
+#. text in torrent downloads
+#. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
+#, machine
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Торрент көйләүләре прокси кулланырга куша, ләкин Прокси / Socks бүлегендә SOCKS5 прокси юк
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -2296,6 +2385,11 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Киңәйтелгән браузер интеграциясен куллану
+#. button in helpers.rs
+#. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Use another program...	Башка программа кулланыгыз...
 #. checkbox in the Batch download window; checkbox in a dialog box
 #, machine
 	Use authorization	Авторизация куллану
@@ -2305,6 +2399,10 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	FTP-ны PASV режимында куллану
+#. button in helpers.rs
+#. Video helpers: button: go back to the copy MDM downloads and checks itself
+#, machine
+	Use MDM's own copy	MDMның үз күчермәсен кулланыгыз
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2319,6 +2417,10 @@
 #. text in the Options window
 #, machine
 	Use system settings	Система көйләүләрен куллану
+#. checkbox in the Add torrent window
+#. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
+#, machine
+	Use the proxy (Options → Proxy / Socks, SOCKS5)	Прокси куллану (Күрсәткечләр → Прокси / Socks, SOCKS5)
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Аларны бу торрент өчен кулланыргамы? Туры килгәннәре саклана, калганнары алыштырыла.
@@ -2366,6 +2468,10 @@
 #. category name: video files
 #, machine
 	Video	Видео
+#. window title in helpers.rs
+#. window title: where MDM takes yt-dlp and ffmpeg from
+#, machine
+	Video helpers	Видео ярдәмчеләре
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Видео эзләүләр yt-dlp куллана (якынча 23 МБ, имзасына каршы тикшерелгән).
@@ -2418,6 +2524,10 @@
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL өстәү белән
+#. text in the Add torrent window
+#. Torrent settings, under "Use the proxy"
+#, machine
+	With it, incoming connections, the DHT and local peers are off.	Аның белән керүче тоташулар, DHT һәм җирле пирлар сүндерелә.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Даталарны һәм вакытларны язу
@@ -2447,6 +2557,15 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Сезнең браузер
+#. text in helpers.rs
+#. Video helpers: {path} = the program the person chose, {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program: {path} ({version})	Үз программагыз: {path} ({version})
+#. text in helpers.rs
+#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#, machine
+	Your system's: {path}	Системагызныкы: {path}
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp урнаштырылмаган (Бурычлар → Биттән видео йөкләү аны урнаштыра)
