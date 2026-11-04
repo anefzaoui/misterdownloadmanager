@@ -323,7 +323,7 @@ def footer() -> str:
             <li><a href="/download.html#extension">Browser extension</a></li>
             <li><a href="/#features">Features</a></li>
             <li><a href="/benchmark.html">Benchmark</a></li>
-            <li><a href="/idm-alternative.html">MDM vs IDM</a></li>
+            <li><a href="/idm-alternative.html">Free IDM alternative</a></li>
           </ul>
         </div>
         <div>

@@ -51,7 +51,12 @@ BATCH_WORDS = 1400
 # Names that stay as they are (the app's list, and the site's own).
 KEEP = sorted(set(tr.KEEP + ["macOS", "Linux", "Rust", "YouTube", "Vimeo", "Tonec", "Ahmed Nefzaoui",
                              "Statcounter", "OpenRouter", "Gemini", "Homebrew", "AppImage", "Flatpak",
-                             "Chromium", "Vivaldi", "Safari", "MCP", "GPL"]), key=len, reverse=True)
+                             "Chromium", "Vivaldi", "Safari", "MCP", "GPL",
+                             # The other download managers idm-alternative.html compares.
+                             "Free Download Manager", "AB Download Manager", "Motrix",
+                             "Neat Download Manager", "Prism", "JDownloader 2", "JDownloader",
+                             "Xtreme Download Manager", "Gopeed", "DOWNitUP", "PyIDM", "aria2",
+                             "Hugging Face"]), key=len, reverse=True)
 # Kept names a language writes in its own script instead (the maintainer's spelling of his name).
 OWN_SPELLING = {
     "ar": {"Ahmed Nefzaoui": "أحمد نفزاوي"},
