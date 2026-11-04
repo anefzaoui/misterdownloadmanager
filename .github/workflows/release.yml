@@ -1,7 +1,7 @@
 # Builds the downloads: Windows (tools/installer/build.ps1: installer, portable zip, plain zip),
 # the browser extensions (tools/extension/pack.ps1: Chromium zip, Firefox .xpi),
 # and, experimental and not yet tested by us, Linux (build-linux.sh: AppImage, tar.gz, .deb,
-# .rpm) and macOS (build-macos.sh: a universal .dmg).
+# .rpm) and macOS (build-macos.sh: a .dmg for Apple Silicon, one for Intel).
 # - A pushed tag vX.Y.Z (matching Cargo.toml's version) publishes a GitHub release with them and
 #   SHA256SUMS.txt, its notes from CHANGELOG.md (Help -> Check for updates sees it at once). The
 #   release waits for Windows and the extensions: a failed Linux or macOS build leaves those out.
@@ -206,7 +206,7 @@ jobs:
           key: release-${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
           restore-keys: release-${{ runner.os }}-cargo-
 
-      - name: Universal .dmg
+      - name: Apple Silicon and Intel .dmg
         run: bash tools/installer/build-macos.sh
 
       - uses: actions/upload-artifact@v4
