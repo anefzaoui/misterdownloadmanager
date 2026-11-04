@@ -646,35 +646,91 @@ pub struct ProbeInfo {
 /// the redirects `get` follows (a waiting page's look reads up to `PAGE_PEEK` of it and keeps its
 /// wait); the file's own body is not read.
 pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<ProbeInfo, Error> {
+    probe_kept(url, headers, opts).await.map(|(info, _)| info)
+}
+
+/// The open answer of a look (`probe_kept`), for the download that follows it to read (#28): a
+/// one-time link, or a host that allows one download at a time, refuses the download asking
+/// again. Dropping it closes the connection.
+pub struct KeptAnswer {
+    /// The address asked: only a download of the same address takes it.
+    url: Url,
+    client: Client,
+    as_get: AsGet,
+    resp: Response,
+    headers: HeaderMap,
+    took: Duration,
+    at: std::time::Instant,
+}
+
+impl std::fmt::Debug for KeptAnswer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("KeptAnswer")
+            .field("url", &self.url.as_str())
+            .field("status", &self.resp.status())
+            .finish_non_exhaustive()
+    }
+}
+
+/// How long a kept answer is worth taking: a server ends an idle connection after a while,
+/// and the download then asks again (as when it isn't kept).
+const KEEP_ANSWER_FOR: Duration = Duration::from_secs(15 * 60);
+
+/// `probe`, keeping its answer open when its body is the file from byte 0 (200, or 206 from
+/// 0), for `Download::start_with`. Not for FTP, whose look is a separate command.
+pub async fn probe_kept(
+    url: Url,
+    headers: HeaderMap,
+    opts: &Options,
+) -> Result<(ProbeInfo, Option<KeptAnswer>), Error> {
     if crate::ftp::is_ftp(&url) {
         let site = crate::ftp::Site::new(&url, &headers, opts)?;
         let facts = site.check().await?;
-        return Ok(ProbeInfo {
-            file_name: naming::file_name(None, &url),
-            final_url: url,
-            size: facts.size,
-        });
+        return Ok((
+            ProbeInfo {
+                file_name: naming::file_name(None, &url),
+                final_url: url,
+                size: facts.size,
+            },
+            None,
+        ));
     }
-    let (resp, ..) = get(
-        &client(opts, &url, &AsGet::default())?,
-        url,
+    let as_get = AsGet::default();
+    let client = client(opts, &url, &as_get)?;
+    let (resp, headers, took) = get(
+        &client,
+        url.clone(),
         headers,
         opts.post.as_ref(),
         &CancellationToken::new(),
     )
     .await?;
     let final_url = resp.url().clone();
-    let size = match resp.status() {
-        StatusCode::PARTIAL_CONTENT => parse_content_range(resp.headers())?.2,
-        _ => resp.content_length(),
+    let (size, from_zero) = match resp.status() {
+        StatusCode::PARTIAL_CONTENT => {
+            let (start, _, total) = parse_content_range(resp.headers())?;
+            (total, start == 0)
+        }
+        StatusCode::OK => (resp.content_length(), true),
+        _ => (resp.content_length(), false),
     };
     let cd = header_text(resp.headers(), header::CONTENT_DISPOSITION);
     let file_name = naming::file_name(cd.as_deref(), &final_url);
-    Ok(ProbeInfo {
+    let info = ProbeInfo {
         final_url,
         size,
         file_name,
-    })
+    };
+    let kept = from_zero.then(|| KeptAnswer {
+        url,
+        client,
+        as_get,
+        resp,
+        headers,
+        took,
+        at: std::time::Instant::now(),
+    });
+    Ok((info, kept))
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -693,13 +749,19 @@ pub struct Download {
 impl Download {
     /// Start downloading in the background. Must be called inside a Tokio runtime.
     pub fn start(req: Request, opts: Options) -> Download {
+        Download::start_with(req, opts, None)
+    }
+
+    /// `start`, connection 1 reading `kept` (a look's open answer, `probe_kept`) instead of
+    /// asking again, when it is the same address's and recent (`KEEP_ANSWER_FOR`).
+    pub fn start_with(req: Request, opts: Options, kept: Option<KeptAnswer>) -> Download {
         Download::spawn(req.url.clone(), move |shared, cancel| {
             let sh = shared.clone();
             let body = async move {
                 if crate::ftp::is_ftp(&req.url) {
                     run_fresh_ftp(req, opts, sh, cancel).await
                 } else {
-                    run_fresh(req, opts, sh, cancel).await
+                    run_fresh(req, opts, sh, cancel, kept).await
                 }
             };
             run(body, shared)
@@ -1135,16 +1197,29 @@ async fn run_fresh(
     opts: Options,
     shared: Arc<Shared>,
     cancel: CancellationToken,
+    kept: Option<KeptAnswer>,
 ) -> Result<Outcome, Error> {
     shared.limiter.set(opts.speed_limit);
     let (shared, cancel) = (&shared, &cancel);
-    // Probe on connection 0: a plain GET (or the form's POST) whose body becomes the segment
-    // starting at 0.
-    let as_get = AsGet::default();
-    let client0 = client(&opts, &req.url, &as_get)?;
     shared.conn(0, |_| {});
-    let ((resp, headers), ttfb) =
-        first_get(&client0, &req.url, &req.headers, &opts, shared, cancel).await?;
+    // Probe on connection 0: a plain GET (or the form's POST) whose body becomes the segment
+    // starting at 0; or the look's answer kept for it (#28), not asked for again.
+    let kept = kept.filter(|k| k.url == req.url && k.at.elapsed() < KEEP_ANSWER_FOR);
+    let (as_get, client0, (resp, headers), ttfb) = match kept {
+        Some(k) => {
+            shared.event(
+                "Connection 1: continuing from the answer the file's information window got",
+            );
+            (k.as_get, k.client, (k.resp, k.headers), k.took)
+        }
+        None => {
+            let as_get = AsGet::default();
+            let client0 = client(&opts, &req.url, &as_get)?;
+            let (answer, ttfb) =
+                first_get(&client0, &req.url, &req.headers, &opts, shared, cancel).await?;
+            (as_get, client0, answer, ttfb)
+        }
+    };
     let preempt_after = (ttfb * PREEMPT_TTFB).max(PREEMPT_MIN);
     let size = match resp.status() {
         StatusCode::OK => resp.content_length(),

@@ -259,6 +259,9 @@ pub struct App {
     file_info: Option<FileInfo>,
     /// Addresses (and their browser context) waiting for Download File Info to close.
     file_info_waiting: std::collections::VecDeque<(dialogs::NewUrl, ipc::Command)>,
+    /// Download File Info's open answers, for the download each was given to (by id) to start
+    /// from (#28: a one-time link refuses a second request).
+    kept_answers: std::collections::HashMap<u64, mdm_engine::KeptAnswer>,
     /// Help menu windows.
     about: Option<crate::help::About>,
     updates: Option<crate::help::Updates>,
@@ -658,6 +661,7 @@ impl App {
             update_checked_this_run: None,
             file_info: None,
             file_info_waiting: Default::default(),
+            kept_answers: Default::default(),
             progress: Vec::new(),
             complete: Vec::new(),
             settings,
@@ -975,7 +979,7 @@ impl App {
 
     // ---- actions ---------------------------------------------------------------------------
 
-    fn add(&mut self, fi: &FileInfo, start: Start) {
+    fn add(&mut self, fi: &mut FileInfo, start: Start) {
         // Only a folder other than the category's becomes its new one (an unchanged folder
         // stays "the default", following Downloads).
         if let Some((cat, dir)) = fi.remembered()
@@ -1000,6 +1004,10 @@ impl App {
         self.name_guessed(id, fi.name_guessed());
         self.selection.set(id);
         if matches!(start, Start::Now) {
+            // Later: the answer is closed (its download starts some other time).
+            if let Some(k) = fi.take_kept() {
+                self.kept_answers.insert(id, k);
+            }
             self.start(id, true);
         } else {
             // "Download Later": the main download queue (IDM's default), or the one picked.
@@ -1034,6 +1042,9 @@ impl App {
             },
         );
         fi.early = Some(id);
+        if let Some(k) = fi.take_kept() {
+            self.kept_answers.insert(id, k);
+        }
         self.start(id, false);
     }
 
@@ -1465,6 +1476,8 @@ impl App {
             return;
         };
         let RequestParts { headers, mut opts } = self.request_parts(&url, login.as_ref(), &context);
+        // Download File Info's open answer for it, if it has one (#28); used once.
+        let kept = self.kept_answers.remove(&id);
         // The file's own remembered limit, else the Speed Limiter's.
         opts.speed_limit = own_limit.or(self.settings.speed_limit());
         opts.checksum = checksum;
@@ -1496,13 +1509,14 @@ impl App {
                 Some(dir) if item.name_from_url => Destination::Dir(dir.to_owned()),
                 _ => Destination::File(item.dest.clone()),
             };
-            Download::start(
+            Download::start_with(
                 Request {
                     url: item.url.clone(),
                     headers,
                     dest,
                 },
                 opts,
+                kept,
             )
         };
         item.note(if item.downloaded > 0 {
@@ -5214,7 +5228,7 @@ impl App {
                 }
                 Outcome::Done(start) => match fi.early {
                     Some(id) => self.adopt_early(&fi, id, start),
-                    None => self.add(&fi, start),
+                    None => self.add(&mut fi, start),
                 },
             }
         }

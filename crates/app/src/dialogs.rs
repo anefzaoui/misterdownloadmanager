@@ -492,8 +492,10 @@ pub struct FileInfo {
     /// requests carry (app::RequestParts).
     rt: tokio::runtime::Handle,
     request: crate::app::RequestParts,
-    probe: Arc<Mutex<Option<Result<ProbeInfo, String>>>>,
+    probe: Arc<Mutex<Option<Probed>>>,
     info: Option<Result<ProbeInfo, String>>,
+    /// The look's open answer, for the download to read instead of asking again (#28).
+    kept: Option<mdm_engine::KeptAnswer>,
     edited: bool,
     downloads: PathBuf,
     /// Options → Save to folders per category (label, folder).
@@ -572,6 +574,7 @@ impl FileInfo {
             remember: false,
             probe,
             info,
+            kept: None,
             edited: false,
             downloads,
             dirs,
@@ -619,6 +622,8 @@ impl FileInfo {
                 self.request.headers.remove(reqwest::header::CONTENT_TYPE);
                 self.probe = start_probe(&self.rt, ctx, &url, &self.request);
                 self.info = None;
+                // The old address's answer is closed.
+                self.kept = None;
                 self.url = url;
             }
             _ => self.url_bad = true,
@@ -645,6 +650,12 @@ impl FileInfo {
                 .unwrap_or_default();
             (self.category, dir)
         })
+    }
+
+    /// The look's open answer, for the download of this address to start from (#28); taken
+    /// once.
+    pub fn take_kept(&mut self) -> Option<mdm_engine::KeptAnswer> {
+        self.kept.take()
     }
 
     /// The address was looked up and answered (name and size known): the moment IDM starts an
@@ -704,6 +715,10 @@ impl FileInfo {
         if self.info.is_none()
             && let Some(res) = self.probe.lock().unwrap().take()
         {
+            let res = res.map(|(pi, kept)| {
+                self.kept = kept;
+                pi
+            });
             if let (Ok(pi), false) = (&res, self.edited) {
                 self.category = Category::of(&pi.file_name);
                 let dir = crate::model::category_folder(self.category, &self.downloads, &self.dirs);
@@ -1015,17 +1030,20 @@ impl FileInfo {
 
 /// Look `url` up in the background (name, size) as the download will ask it (`request`), the
 /// answer landing in the slot returned.
+/// A look's result: what it learned, and its open answer when the download can read it.
+type Probed = Result<(ProbeInfo, Option<mdm_engine::KeptAnswer>), String>;
+
 fn start_probe(
     rt: &tokio::runtime::Handle,
     ctx: &egui::Context,
     url: &Url,
     request: &crate::app::RequestParts,
-) -> Arc<Mutex<Option<Result<ProbeInfo, String>>>> {
+) -> Arc<Mutex<Option<Probed>>> {
     let probe = Arc::new(Mutex::new(None));
     let (slot, url, ctx) = (probe.clone(), url.clone(), ctx.clone());
     let (headers, opts) = (request.headers.clone(), request.opts.clone());
     rt.spawn(async move {
-        let res = mdm_engine::probe(url, headers, &opts)
+        let res = mdm_engine::probe_kept(url, headers, &opts)
             .await
             .map_err(|e| e.to_string());
         *slot.lock().unwrap() = Some(res);
