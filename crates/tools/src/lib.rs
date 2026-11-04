@@ -5,6 +5,7 @@
 //! atomically, never downgrade, and keep the previous version for rollback.
 
 pub mod ffmpeg;
+mod openpgp;
 pub mod pages;
 pub mod proc;
 pub mod resolve;
@@ -12,10 +13,8 @@ pub mod servers;
 pub mod update;
 pub mod video;
 
-use std::io::Cursor;
 use std::path::{Path, PathBuf};
 
-use pgp::composed::{Deserializable, DetachedSignature, SignedPublicKey};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
@@ -85,17 +84,7 @@ pub fn signed_by_mdm(sums: &[u8], sig: &[u8]) -> bool {
 /// Whether `data` carries a valid detached signature `sig` (binary OpenPGP) by the armored
 /// public `key` or one of its subkeys.
 pub fn signed_by(key: &str, data: &[u8], sig: &[u8]) -> bool {
-    let Ok((key, _)) = SignedPublicKey::from_armor_single(Cursor::new(key)) else {
-        return false;
-    };
-    let Ok(sig) = DetachedSignature::from_bytes(Cursor::new(sig)) else {
-        return false;
-    };
-    sig.verify(&key, data).is_ok()
-        || key
-            .public_subkeys
-            .iter()
-            .any(|sub| sig.verify(&sub.key, data).is_ok())
+    openpgp::verify(key.as_bytes(), data, sig)
 }
 
 /// `url`'s body.
