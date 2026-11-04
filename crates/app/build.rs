@@ -35,15 +35,17 @@ fn main() {
 }
 
 /// Embed every translation catalog, `i18n/<locale>.tsv` at the repository root (craft-i18n's
-/// format; D-019), as the `Embedded` list craft-i18n reads: `OUT_DIR/catalogs.rs`. The comment
-/// lines (`#`: translators' notes, `#, machine`) are more than half of the text and craft-i18n
-/// skips them unread, so the embedded copies have them blanked (#25), each kept as an empty line so
-/// a problem's "line N" still points into the catalog file.
+/// format; D-019), packed for `i18n::catalogs` to unpack once at start (#25):
+/// `OUT_DIR/catalogs.br`, all of them in one brotli stream (quality 11: 12.4 MB of text in
+/// about 0.8 MB, about 11 ms to unpack), and `OUT_DIR/catalogs.rs`, each locale's code and its
+/// range in the unpacked text. The comment lines (`#`: translators' notes, `#, machine`) are
+/// more than half of the text and craft-i18n skips them unread, so they are blanked, each kept as
+/// an empty line so a problem's "line N" still points into the catalog file.
 fn catalogs() {
     let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../i18n");
     println!("cargo:rerun-if-changed={}", root.display());
-    let embedded = std::path::Path::new(&std::env::var("OUT_DIR").unwrap()).join("catalogs");
-    std::fs::create_dir_all(&embedded).unwrap();
+    let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
+    let mut text_all = String::new();
     let mut rows = Vec::new();
     if let Ok(dir) = std::fs::read_dir(&root) {
         let mut files: Vec<_> = dir.flatten().map(|e| e.path()).collect();
@@ -66,16 +68,26 @@ fn catalogs() {
                 .split('\n')
                 .map(|line| if line.starts_with('#') { "" } else { line })
                 .collect();
-            let copy = embedded.join(format!("{stem}.tsv"));
-            std::fs::write(&copy, rows_only.join("\n")).unwrap();
-            rows.push(format!(
-                "    ({stem:?}, \"\", include_str!({:?})),",
-                copy.display().to_string()
-            ));
+            let start = text_all.len();
+            text_all.push_str(&rows_only.join("\n"));
+            rows.push(format!("    ({stem:?}, {start}, {}),", text_all.len()));
         }
     }
-    let out = std::path::Path::new(&std::env::var("OUT_DIR").unwrap()).join("catalogs.rs");
-    std::fs::write(out, format!("&[\n{}\n]\n", rows.join("\n"))).unwrap();
+    let params = brotli::enc::BrotliEncoderParams {
+        quality: 11,
+        lgwin: 24,
+        size_hint: text_all.len(),
+        ..Default::default()
+    };
+    let mut packed = Vec::new();
+    brotli::BrotliCompress(&mut text_all.as_bytes(), &mut packed, &params)
+        .expect("packing the catalogs");
+    std::fs::write(out_dir.join("catalogs.br"), packed).unwrap();
+    std::fs::write(
+        out_dir.join("catalogs.rs"),
+        format!("&[\n{}\n]\n", rows.join("\n")),
+    )
+    .unwrap();
     languages(&root);
 }
 

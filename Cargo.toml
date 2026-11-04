@@ -126,6 +126,16 @@ opt-level = 3
 opt-level = 3
 [profile.dev.package.crc32fast]
 opt-level = 3
+# The app's build script packs the translation catalogs with brotli at its best (crates/app/
+# build.rs): unoptimised, that takes minutes instead of seconds. Build scripts are unoptimised
+# in release builds too.
+[profile.dev.package.brotli]
+opt-level = 3
+[profile.release.package.brotli]
+opt-level = 3
+# Unpacking them at each start (crates/app/src/i18n.rs), in debug builds too.
+[profile.dev.package.brotli-decompressor]
+opt-level = 3
 
 # storytold's egui fork (as storytold/craft-libs, D-003) plus two MDM commits on anefzaoui/egui
 # (branch mdm-accesskit-windows): every window created hidden gets an AccessKit adapter, so

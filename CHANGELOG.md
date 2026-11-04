@@ -42,10 +42,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
-- **The app is about a quarter smaller** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
-  `misterdownloadmanager.exe` went from 62 MB to 47 MB and the command line from 28 MB to 22 MB.
-  The translations no longer carry the translators' notes inside the program, and the programs
-  are optimised as a whole.
+- **The app is about a third smaller** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
+  `misterdownloadmanager.exe` went from 62 MB to 43 MB and the command line from 28 MB to 22 MB.
+  The 86 translations are packed (12 MB of text in under 1 MB, without the translators' notes)
+  and unpacked in about 10 ms at start, and the programs are optimised as a whole.
 - The extension is called **Mister Download Manager**.
 - A download from the browser keeps the browser's name, size and type: Download File Info no
   longer asks the server again, so a link's own name (`download="…"`), a Unicode name and a

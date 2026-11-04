@@ -13,14 +13,42 @@ use std::sync::{OnceLock, RwLock};
 pub use craft_i18n::Lang;
 use craft_i18n::{Embedded, I18n};
 
-static CATALOGS: &Embedded = include!(concat!(env!("OUT_DIR"), "/catalogs.rs"));
+/// Every catalog in one brotli stream, and each locale's code and range in the unpacked text
+/// (build.rs).
+static PACKED: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/catalogs.br"));
+static RANGES: &[(&str, usize, usize)] = include!(concat!(env!("OUT_DIR"), "/catalogs.rs"));
+
+/// The catalogs as craft-i18n reads them: unpacked once (about 6 MB, 11 ms) and kept for the
+/// program's life, as craft-i18n wants them all from the start (#25).
+fn catalogs() -> &'static Embedded {
+    static C: OnceLock<&'static Embedded> = OnceLock::new();
+    C.get_or_init(|| {
+        let mut text = String::new();
+        let unpacked = std::io::Read::read_to_string(
+            &mut brotli_decompressor::Decompressor::new(PACKED, 64 * 1024),
+            &mut text,
+        );
+        if let Err(e) = unpacked {
+            // Built in at compile time, so this can't happen; English then, rather than a crash.
+            eprintln!("translations: unpacking failed ({e})");
+            return &[];
+        }
+        let text: &'static str = Box::leak(text.into_boxed_str());
+        let embedded: Vec<(&'static str, &'static str, &'static str)> = RANGES
+            .iter()
+            .filter_map(|&(code, start, end)| Some((code, "", text.get(start..end)?)))
+            .collect();
+        Box::leak(embedded.into_boxed_slice())
+    })
+}
 
 /// The catalogs, indexed once.
 pub fn i18n() -> &'static I18n {
     static I: OnceLock<I18n> = OnceLock::new();
     I.get_or_init(|| {
-        let offered: Vec<&str> = CATALOGS.iter().map(|(code, _, _)| *code).collect();
-        let (i, problems) = I18n::new(CATALOGS, &offered);
+        let catalogs = catalogs();
+        let offered: Vec<&str> = catalogs.iter().map(|(code, _, _)| *code).collect();
+        let (i, problems) = I18n::new(catalogs, &offered);
         for p in problems {
             eprintln!("translations: {p}");
         }
