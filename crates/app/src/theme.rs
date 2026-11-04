@@ -70,23 +70,6 @@ fn wanted(dark_mode_support: bool, always_dark: bool, system_dark: bool) -> bool
     always_dark || (dark_mode_support && system_dark)
 }
 
-#[cfg(test)]
-mod mode_tests {
-    use super::wanted;
-
-    /// #60: Always dark wins whatever the system says; otherwise Dark Mode support follows it.
-    #[test]
-    fn always_dark_wins_else_the_system_decides() {
-        for system in [false, true] {
-            for support in [false, true] {
-                assert!(wanted(support, true, system), "always dark");
-            }
-            assert_eq!(wanted(true, false, system), system, "following the system");
-            assert!(!wanted(false, false, system), "support off: light");
-        }
-    }
-}
-
 /// Colours that differ between IDM's dark and light modes: each becomes a function of the
 /// current mode, `dark()` (main-window.md, menus.md; light-main.md, light-dialogs.md).
 macro_rules! themed {
@@ -438,4 +421,21 @@ pub fn apply(ctx: &egui::Context) {
             bottom: 7,
         };
     });
+}
+
+#[cfg(test)]
+mod mode_tests {
+    use super::wanted;
+
+    /// #60: Always dark wins whatever the system says; otherwise Dark Mode support follows it.
+    #[test]
+    fn always_dark_wins_else_the_system_decides() {
+        for system in [false, true] {
+            for support in [false, true] {
+                assert!(wanted(support, true, system), "always dark");
+            }
+            assert_eq!(wanted(true, false, system), system, "following the system");
+            assert!(!wanted(false, false, system), "support off: light");
+        }
+    }
 }
