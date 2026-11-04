@@ -658,6 +658,10 @@
    "source": "Click <g1>Load unpacked</g1>.",
    "text": "Klik <g1>Muat yang belum dikemas</g1>."
   },
+  "13382c1e6ceae711": {
+   "source": "<g1>The video button over a Drive video</g1> downloads the original file, not one of the player's smaller copies.",
+   "text": "<g1>Tombol video di atas video Drive</g1> mengunduh file asli, bukan salah satu salinan pemutar yang lebih kecil."
+  },
   "135e1b787896d837": {
    "source": "<g1>GitHub, to check for updates.</g1> Once a week MDM asks GitHub's public API for the latest release of MDM (<x2/>). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in <g3>Help → Check for updates</g3>. If you choose <g4>Update now</g4>, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.",
    "text": "<g1>GitHub, untuk memeriksa pembaruan.</g1> Seminggu sekali MDM meminta API publik GitHub untuk rilis terbaru MDM (<x2/>). Permintaan tersebut membawa versi MDM di User-Agent-nya dan tidak ada yang lain. Matikan pemeriksaan mingguan di <g3>Bantuan → Periksa pembaruan</g3>. Jika Anda memilih <g4>Perbarui sekarang</g4>, MDM mengunduh file versi baru dan daftar checksum yang ditandatangani dari rilis GitHub yang sama. Pernyataan privasi GitHub sendiri berlaku untuk permintaan ini."
@@ -861,6 +865,10 @@
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
    "text": "<g1>Integrasi browser</g1> untuk Chrome, Edge, Brave, Opera dan Vivaldi (Firefox dalam pengujian): unduhan diserahkan ke MDM dengan cookie dan perujuknya, klik kanan <g2>Unduh dengan Mister Download Manager</g2>, dan tombol <g3>Unduh video</g3> di atas video di halaman mana pun, yang dapat diseret di sepanjang tepi video, disembunyikan di video atau situs, atau dimatikan di Opsi."
+  },
+  "18c426ee5855af75": {
+   "source": "Google Drive links",
+   "text": "Tautan Google Drive"
   },
   "18da802709723cf6": {
    "source": "Ctrl+Space",
@@ -1177,6 +1185,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "tidak menggunakannya untuk membebani, menyerang, atau melewati batas server yang bukan milik Anda."
+  },
+  "21aa032bde745310": {
+   "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
+   "text": "Permintaan pertama unduhan (<x1/>) mengikuti pengalihan dan halaman yang mengarah ke berkas itu sendiri (penyegaran halaman tunggu). Situs yang tautannya bukan alamat berkas memiliki modul di <x2/> (Google Drive: <x3/>): modul ini mengubah tautan menjadi alamat berkas, membaca halaman situs itu sendiri (formulir konfirmasi, halaman kesalahan) dan menamai penolakannya (<x4/>), dengan fungsi murni yang diuji tanpa jaringan. Server lab memainkan situs tersebut pada nama host aslinya untuk pengujian ujung-ke-ujung (<x5/>)."
   },
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
@@ -1989,6 +2001,10 @@
   "393ffca55ed6d7ac": {
    "source": "Each connection writes straight into the file's place on disk, in a part file named <x1/> next to the final file. When every part is done, MDM checks the size and renames it. There is no temporary folder and no joining step at the end.",
    "text": "Setiap koneksi menulis langsung ke lokasi file di disk, dalam file bagian bernama <x1/> di samping file akhir. Ketika setiap bagian selesai, MDM memeriksa ukuran dan mengganti namanya. Tidak ada folder sementara dan tidak ada langkah penggabungan di akhir."
+  },
+  "3942e893b1f34435": {
+   "source": "and <x1/>;",
+   "text": "dan <x1/>;"
   },
   "39463e0cfd1ff5aa": {
    "source": "Options — Mister Download Manager help",
@@ -2922,6 +2938,10 @@
    "source": "Command",
    "text": "Perintah"
   },
+  "57f708f18604d10d": {
+   "source": "(and Sheets, Slides, Drawings).",
+   "text": "(dan Sheets, Slides, Drawings)."
+  },
   "582557ff93b946f6": {
    "source": "MDM is <g1>not affiliated</g1> with Tonec Inc. or Internet Download Manager.",
    "text": "MDM <g1>tidak berafiliasi</g1> dengan Tonec Inc. atau Internet Download Manager."
@@ -3045,6 +3065,10 @@
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Pilih <g1>Bantuan → Laporkan masalah</g1>. Ini membuka formulir laporan bug di GitHub dengan versi MDM Anda, sistem Anda dan versinya, bagaimana MDM diinstal dan bahasa antarmukanya sudah terisi. Jelaskan apa yang terjadi, apa yang Anda harapkan, dan langkah-langkah yang menyebabkannya terjadi. Untuk unduhan, sertakan alamatnya jika Anda bisa membagikannya, dan alasan yang ditampilkan di bawah <g2>Status</g2>."
+  },
+  "5d4164eff181587e": {
+   "source": "<g1>Files that aren't shared with everyone.</g1> Right-click the link in the browser and choose <g2>Download with Mister Download Manager</g2>, or use Drive's own <g3>Download</g3> button: the extension passes your browser's Google sign-in with the download. MDM never asks for or keeps your password. Without a sign-in, MDM says the file <g4>needs you to sign in</g4>.",
+   "text": "<g1>File yang tidak dibagikan kepada semua orang.</g1> Klik kanan tautan di browser dan pilih <g2>Unduh dengan Mister Download Manager</g2>, atau gunakan tombol <g3>Unduh</g3> milik Drive: ekstensi meneruskan login Google browser Anda dengan unduhan. MDM tidak pernah meminta atau menyimpan kata sandi Anda. Tanpa login, MDM mengatakan file <g4>membutuhkan Anda untuk masuk</g4>."
   },
   "5d56098513a9a8da": {
    "source": "To quit, choose <g1>Tasks → Exit</g1> or <g2>Exit</g2> in the tray menu.",
@@ -3297,6 +3321,10 @@
   "6387358ae9160f15": {
    "source": "1 GiB, fast link",
    "text": "1 GiB, tautan cepat"
+  },
+  "639e97e78af63aae": {
+   "source": "<g1>Google Docs, Sheets and Slides</g1> come as Word (<x2/>), Excel (<x3/>) and PowerPoint (<x4/>) files, and Drawings as <x5/>. These files are made when they are asked for, so their size is unknown until they arrive and they can't be resumed: a cut-off download starts again.",
+   "text": "<g1>Google Docs, Sheets, dan Slides</g1> datang sebagai file Word (<x2/>), Excel (<x3/>), dan PowerPoint (<x4/>), dan Drawings sebagai <x5/>. File-file ini dibuat saat diminta, sehingga ukurannya tidak diketahui sampai tiba dan tidak dapat dilanjutkan: unduhan yang terputus akan dimulai lagi."
   },
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
@@ -3785,6 +3813,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "Seluruh sumber bersifat publik, dan setiap rilis dibangun darinya di server GitHub. Tanpa adware, tanpa spyware, tanpa penawaran yang dibundel. Pembantu yang diunduh untuk video diverifikasi sebelum dijalankan. <g1>Selengkapnya</g1>"
+  },
+  "72769bded1d786a9": {
+   "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
+   "text": "Tempel tautan Google Drive apa adanya, yang diberikan oleh <g1>Bagikan → Salin tautan</g1>:"
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -4505,6 +4537,10 @@
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "Apa bedanya"
+  },
+  "880767a468b15c29": {
+   "source": "<g1>When Drive won't give a file.</g1> Drive limits how often a file can be downloaded: after many downloads in a day it answers \"too many users have viewed or downloaded this file recently\". MDM shows Drive's own words and writes nothing. Try again later (it can take up to a day), or sign in to Google in your browser and download from there, which often gets past the limit. MDM doesn't try to get around it. A file whose owner turned off downloading, or that your account can't open, gets <g2>no access</g2>.",
+   "text": "<g1>Ketika Drive tidak memberikan file.</g1> Drive membatasi seberapa sering sebuah file dapat diunduh: setelah banyak unduhan dalam sehari, ia menjawab \"terlalu banyak pengguna telah melihat atau mengunduh file ini baru-baru ini\". MDM menampilkan kata-kata Drive sendiri dan tidak menulis apa pun. Coba lagi nanti (bisa memakan waktu hingga sehari), atau masuk ke Google di browser Anda dan unduh dari sana, yang sering kali melewati batas. MDM tidak mencoba untuk mengakalinya. File yang pemiliknya mematikan pengunduhan, atau yang akun Anda tidak dapat membukanya, akan mendapatkan <g2>tidak ada akses</g2>."
   },
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
@@ -5238,6 +5274,10 @@
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
    "text": "Periksa empat hal: ekstensi terinstal dan aktif; Opsi → Umum → Gunakan integrasi browser tingkat lanjut aktif dan browser Anda dicentang; jenis file ada di Opsi → Jenis file; dan situs tidak ada dalam daftar situs yang MDM biarkan. Klik kanan tautan dan pilih Unduh dengan Mister Download Manager untuk mengirim file apa pun jenisnya. Selengkapnya di Pemecahan Masalah."
   },
+  "9db0cdca6146f4f8": {
+   "source": "MDM downloads the file itself, as it was uploaded (a video comes in its own format, not the player's copy), with its real name and size, over several connections, and it can resume. For a large file, Drive shows a page that says it <g1>can't scan this file for viruses</g1>; MDM goes past it as <g2>Download anyway</g2> does.",
+   "text": "MDM mengunduh file itu sendiri, seperti saat diunggah (video datang dalam format aslinya, bukan salinan pemutar), dengan nama dan ukuran aslinya, melalui beberapa koneksi, dan dapat melanjutkan unduhan. Untuk file besar, Drive menampilkan halaman yang mengatakan <g1>tidak dapat memindai file ini untuk virus</g1>; MDM melewatinya seperti yang dilakukan <g2>Tetap unduh</g2>."
+  },
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "Unduhan tanpa antarmuka dengan progres (<x1/>, <x2/>), video, torrent, dan perintah API otomatisasi: pustaka yang dijalankan oleh program aplikasi (<x3/>), dan <x4/>, peluncur kecil yang memulainya dengan argumen, terminal, dan kode keluar yang sama"
@@ -5441,6 +5481,10 @@
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
    "text": "Mengunduh torrent, atau hanya beberapa berkasnya. Jika beberapa berkasnya sudah ada di folder, ia berhenti dan menamainya; <x1/> menggunakannya (yang cocok dipertahankan, sisanya diunduh)."
+  },
+  "a462139057cb83c0": {
+   "source": "If it says <g1>Google Drive won't give this file now</g1>, Drive's download limit for that file was reached. See <g2>Google Drive links</g2>.",
+   "text": "Jika muncul tulisan <g1>Google Drive tidak akan memberikan file ini sekarang</g1>, berarti batas unduhan Drive untuk file tersebut sudah tercapai. Lihat <g2>Tautan Google Drive</g2>."
   },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
@@ -5933,6 +5977,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>Torrent</g2></g1> — tautan magnet dan file .torrent, memilih file, dan berbagi."
+  },
+  "b298f93960114202": {
+   "source": ", with or without <x1/>;",
+   "text": ", dengan atau tanpa <x1/>;"
   },
   "b2a627befcf928d4": {
    "source": "<g1>Torrents, built in</g1> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.",
@@ -7625,6 +7673,10 @@
   "ebe2a18d31052b9b": {
    "source": "Browsers",
    "text": "Peramban"
+  },
+  "ec30751899ba93ca": {
+   "source": "<g1>Folders</g1> aren't downloaded yet: a folder's link gets <g2>this is a Google Drive folder, not a file</g2>. Open the folder in the browser and download its files from there.",
+   "text": "<g1>Folder</g1> belum diunduh: tautan folder mendapatkan <g2>ini adalah folder Google Drive, bukan file</g2>. Buka folder di browser dan unduh file-nya dari sana."
   },
   "ec76a04b2f141c3a": {
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",

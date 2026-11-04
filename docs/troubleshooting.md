@@ -16,6 +16,7 @@ Every download keeps a log of its recent events: retries, redirects, the server'
 2. Select the download and click **Resume**. Many errors are a server or connection having a bad moment.
 3. If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → **Refresh download address**. See [Resume a broken download](guide-resume-broken-download.md).
 4. If it says **the file changed on the server**, the file isn't the one MDM started with. Right-click → **Redownload** to start again from the beginning.
+5. If it says **Google Drive won't give this file now**, Drive's download limit for that file was reached. See [Google Drive links](adding-downloads.md#google-drive-links).
 
 ## A download starts over instead of resuming
 

@@ -43,6 +43,13 @@ Download
 When every segment is done, the part file is checked against the expected size and renamed into
 place; the file's date can follow the server's.
 
+A download's first request (`get`) follows redirects and the pages that lead on to a file by
+themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module
+in `sites/` (Google Drive: `sites/gdrive.rs`): it turns the link into the file's address, reads
+the site's own pages (a confirmation form, an error page) and names its refusals
+(`Error::Refused`), with pure functions tested without a network. The lab server plays such a
+site on its real host names for the end-to-end tests (`labserver/src/drive.rs`).
+
 FTP and FTPS (`ftp.rs`) go through the same planner, workers and state: a segment is `REST` +
 `RETR` on a control session instead of a ranged `GET`, `SIZE` and `MDTM` stand in for the
 headers, and sessions are pooled per download and reused between segments.

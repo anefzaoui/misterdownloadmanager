@@ -658,6 +658,10 @@
    "source": "Click <g1>Load unpacked</g1>.",
    "text": "<g1>압축 해제된 확장 프로그램 로드</g1>를 클릭합니다."
   },
+  "13382c1e6ceae711": {
+   "source": "<g1>The video button over a Drive video</g1> downloads the original file, not one of the player's smaller copies.",
+   "text": "<g1>Drive 비디오 위에 있는 비디오 버튼</g1>은 플레이어의 작은 사본이 아닌 원본 파일을 다운로드합니다."
+  },
   "135e1b787896d837": {
    "source": "<g1>GitHub, to check for updates.</g1> Once a week MDM asks GitHub's public API for the latest release of MDM (<x2/>). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in <g3>Help → Check for updates</g3>. If you choose <g4>Update now</g4>, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.",
    "text": "<g1>업데이트 확인을 위한 GitHub.</g1> MDM은 주 1회 GitHub의 공개 API에 MDM의 최신 릴리스(<x2/>)를 요청합니다. 요청에는 User-Agent에 MDM 버전만 포함되며 다른 정보는 없습니다. <g3>도움말 → 업데이트 확인</g3>에서 주간 확인을 끌 수 있습니다. <g4>지금 업데이트</g4>를 선택하면 MDM은 동일한 GitHub 릴리스에서 새 버전 파일과 서명된 체크섬 목록을 다운로드합니다. GitHub 자체 개인정보처리방침이 이러한 요청에 적용됩니다."
@@ -861,6 +865,10 @@
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
    "text": "Chrome, Edge, Brave, Opera 및 Vivaldi(Firefox 테스트 중)용 <g1>브라우저 통합</g1>: 다운로드가 쿠키 및 리퍼러와 함께 MDM으로 전달되고, 마우스 오른쪽 버튼 클릭 <g2>Mister Download Manager으로 다운로드</g2>, 그리고 모든 페이지의 비디오 위에 <g3>비디오 다운로드</g3> 버튼이 있어 비디오 가장자리를 따라 드래그하거나, 비디오 또는 사이트에서 숨기거나, 옵션에서 끌 수 있습니다."
+  },
+  "18c426ee5855af75": {
+   "source": "Google Drive links",
+   "text": "Google Drive 링크"
   },
   "18da802709723cf6": {
    "source": "Ctrl+Space",
@@ -1177,6 +1185,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "소유하지 않은 서버를 과부하하거나 공격하거나 제한을 우회하는 데 사용하지 않아야 합니다."
+  },
+  "21aa032bde745310": {
+   "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
+   "text": "다운로드의 첫 번째 요청(<x1/>)은 리디렉션과 파일로 연결되는 페이지(대기 페이지 새로 고침)를 따릅니다. 링크가 파일 주소가 아닌 사이트에는 <x2/>에 모듈이 있습니다(Google Drive: <x3/>). 이 모듈은 링크를 파일 주소로 변환하고, 사이트 자체 페이지(확인 양식, 오류 페이지)를 읽고, 거부 사유(<x4/>)를 명명하며, 네트워크 없이 테스트된 순수 함수를 사용합니다. 랩 서버는 종단 간 테스트(<x5/>)를 위해 실제 호스트 이름으로 이러한 사이트를 재생합니다."
   },
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
@@ -1989,6 +2001,10 @@
   "393ffca55ed6d7ac": {
    "source": "Each connection writes straight into the file's place on disk, in a part file named <x1/> next to the final file. When every part is done, MDM checks the size and renames it. There is no temporary folder and no joining step at the end.",
    "text": "각 연결은 최종 파일 옆에 있는 <x1/>이라는 부분 파일로 디스크의 파일 위치에 직접 기록합니다. 모든 부분이 완료되면 MDM은 크기를 확인하고 이름을 변경합니다. 임시 폴더나 마지막에 결합하는 단계는 없습니다."
+  },
+  "3942e893b1f34435": {
+   "source": "and <x1/>;",
+   "text": "및 <x1/>;"
   },
   "39463e0cfd1ff5aa": {
    "source": "Options — Mister Download Manager help",
@@ -2922,6 +2938,10 @@
    "source": "Command",
    "text": "명령"
   },
+  "57f708f18604d10d": {
+   "source": "(and Sheets, Slides, Drawings).",
+   "text": "(및 Sheets, Slides, Drawings)."
+  },
   "582557ff93b946f6": {
    "source": "MDM is <g1>not affiliated</g1> with Tonec Inc. or Internet Download Manager.",
    "text": "MDM은 Tonec Inc. 또는 Internet Download Manager와 <g1>제휴하지 않습니다</g1>."
@@ -3045,6 +3065,10 @@
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>도움말 → 문제 보고</g1>를 선택하세요. GitHub에 버그 보고서 양식이 열리며, MDM 버전, 시스템 및 해당 버전, MDM 설치 방법 및 인터페이스 언어가 이미 채워져 있습니다. 발생한 일, 예상했던 일, 그리고 발생하게 된 단계를 설명하세요. 다운로드의 경우, 공유할 수 있다면 주소를 포함하고, <g2>상태</g2> 아래에 표시된 이유를 포함하세요."
+  },
+  "5d4164eff181587e": {
+   "source": "<g1>Files that aren't shared with everyone.</g1> Right-click the link in the browser and choose <g2>Download with Mister Download Manager</g2>, or use Drive's own <g3>Download</g3> button: the extension passes your browser's Google sign-in with the download. MDM never asks for or keeps your password. Without a sign-in, MDM says the file <g4>needs you to sign in</g4>.",
+   "text": "<g1>모든 사람과 공유되지 않은 파일.</g1> 브라우저에서 링크를 마우스 오른쪽 버튼으로 클릭하고 <g2>Mister Download Manager으로 다운로드</g2>를 선택하거나, Drive 자체의 <g3>다운로드</g3> 버튼을 사용하세요. 확장 프로그램은 브라우저의 Google 로그인 정보를 다운로드와 함께 전달합니다. MDM은 절대로 비밀번호를 요청하거나 보관하지 않습니다. 로그인 없이 MDM은 파일에 <g4>로그인이 필요합니다</g4>라고 표시합니다."
   },
   "5d56098513a9a8da": {
    "source": "To quit, choose <g1>Tasks → Exit</g1> or <g2>Exit</g2> in the tray menu.",
@@ -3297,6 +3321,10 @@
   "6387358ae9160f15": {
    "source": "1 GiB, fast link",
    "text": "1GiB, 빠른 링크"
+  },
+  "639e97e78af63aae": {
+   "source": "<g1>Google Docs, Sheets and Slides</g1> come as Word (<x2/>), Excel (<x3/>) and PowerPoint (<x4/>) files, and Drawings as <x5/>. These files are made when they are asked for, so their size is unknown until they arrive and they can't be resumed: a cut-off download starts again.",
+   "text": "<g1>Google Docs, Sheets 및 Slides</g1>는 Word (<x2/>), Excel (<x3/>) 및 PowerPoint (<x4/>) 파일로 제공되며, Drawings는 <x5/>로 제공됩니다. 이 파일들은 요청 시 생성되므로 도착하기 전까지는 크기를 알 수 없으며 다시 시작할 수 없습니다. 중단된 다운로드는 다시 시작됩니다."
   },
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
@@ -3785,6 +3813,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "전체 소스가 공개되어 있으며, 모든 릴리스는 GitHub 서버에서 빌드됩니다. 애드웨어, 스파이웨어, 번들 제공이 없습니다. 비디오를 위해 다운로드하는 도우미는 실행 전에 확인됩니다. <g1>더 보기</g1>"
+  },
+  "72769bded1d786a9": {
+   "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
+   "text": "Google Drive 링크를 <g1>공유 → 링크 복사</g1>에서 제공하는 그대로 붙여넣으세요."
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -4505,6 +4537,10 @@
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "다른 점"
+  },
+  "880767a468b15c29": {
+   "source": "<g1>When Drive won't give a file.</g1> Drive limits how often a file can be downloaded: after many downloads in a day it answers \"too many users have viewed or downloaded this file recently\". MDM shows Drive's own words and writes nothing. Try again later (it can take up to a day), or sign in to Google in your browser and download from there, which often gets past the limit. MDM doesn't try to get around it. A file whose owner turned off downloading, or that your account can't open, gets <g2>no access</g2>.",
+   "text": "<g1>Drive가 파일을 제공하지 않을 때.</g1> Drive는 파일 다운로드 횟수를 제한합니다. 하루에 여러 번 다운로드하면 \"최근에 너무 많은 사용자가 이 파일을 보거나 다운로드했습니다\"라고 응답합니다. MDM은 Drive의 자체 메시지를 표시하고 아무것도 작성하지 않습니다. 나중에 다시 시도하거나 (최대 하루가 걸릴 수 있음), 브라우저에서 Google에 로그인하여 거기서 다운로드하면 종종 제한을 우회할 수 있습니다. MDM은 이를 우회하려고 시도하지 않습니다. 소유자가 다운로드를 비활성화했거나 계정에서 열 수 없는 파일은 <g2>액세스 불가</g2>로 표시됩니다."
   },
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
@@ -5238,6 +5274,10 @@
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
    "text": "다음 네 가지를 확인하세요: 확장 프로그램이 설치되어 있고 켜져 있는지; 옵션 → 일반 → 고급 브라우저 통합 사용이 켜져 있고 브라우저가 선택되어 있는지; 파일 형식이 옵션 → 파일 형식에 있는지; 그리고 해당 사이트가 MDM이 무시하는 사이트 목록에 없는지. 링크를 마우스 오른쪽 버튼으로 클릭하고 Mister Download Manager으로 다운로드를 선택하면 어떤 파일이든 다운로드할 수 있습니다. 자세한 내용은 문제 해결을 참조하세요."
   },
+  "9db0cdca6146f4f8": {
+   "source": "MDM downloads the file itself, as it was uploaded (a video comes in its own format, not the player's copy), with its real name and size, over several connections, and it can resume. For a large file, Drive shows a page that says it <g1>can't scan this file for viruses</g1>; MDM goes past it as <g2>Download anyway</g2> does.",
+   "text": "MDM은 파일을 업로드된 그대로 (비디오는 플레이어의 사본이 아닌 자체 형식으로), 실제 이름과 크기로, 여러 연결을 통해 다운로드하며, 다시 시작할 수 있습니다. 큰 파일의 경우 Drive는 <g1>이 파일을 바이러스 검사할 수 없습니다</g1>라는 페이지를 표시하지만, MDM은 <g2>그래도 다운로드</g2>와 같이 이를 통과합니다."
+  },
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "진행 상황(<x1/>, <x2/>)이 표시되는 헤드리스 다운로드, 동영상, 토렌트 및 자동화 API 명령: 앱 프로그램이 실행하는 라이브러리(<x3/>)와 동일한 인수, 터미널 및 종료 코드로 시작하는 작은 런처인 <x4/>"
@@ -5441,6 +5481,10 @@
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
    "text": "토렌트 또는 일부 파일만 다운로드합니다. 일부 파일이 이미 폴더에 있는 경우 중지하고 해당 파일 이름을 지정합니다. <x1/> 대신 해당 파일을 사용합니다(일치하는 파일은 유지되고 나머지는 다운로드됩니다)."
+  },
+  "a462139057cb83c0": {
+   "source": "If it says <g1>Google Drive won't give this file now</g1>, Drive's download limit for that file was reached. See <g2>Google Drive links</g2>.",
+   "text": "<g1>Google Drive에서 지금 이 파일을 제공하지 않습니다</g1>라고 표시되면 해당 파일의 Drive 다운로드 제한에 도달한 것입니다. <g2>Google Drive 링크</g2>를 참조하세요."
   },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
@@ -5933,6 +5977,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>토렌트</g2></g1> — 마그넷 링크 및 .torrent 파일, 파일 선택 및 공유."
+  },
+  "b298f93960114202": {
+   "source": ", with or without <x1/>;",
+   "text": ", <x1/> 포함 또는 미포함;"
   },
   "b2a627befcf928d4": {
    "source": "<g1>Torrents, built in</g1> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.",
@@ -7625,6 +7673,10 @@
   "ebe2a18d31052b9b": {
    "source": "Browsers",
    "text": "브라우저"
+  },
+  "ec30751899ba93ca": {
+   "source": "<g1>Folders</g1> aren't downloaded yet: a folder's link gets <g2>this is a Google Drive folder, not a file</g2>. Open the folder in the browser and download its files from there.",
+   "text": "<g1>폴더</g1>는 아직 다운로드되지 않습니다. 폴더 링크는 <g2>이것은 Google Drive 폴더이며 파일이 아닙니다</g2>라고 표시됩니다. 브라우저에서 폴더를 열고 거기서 파일을 다운로드하세요."
   },
   "ec76a04b2f141c3a": {
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",

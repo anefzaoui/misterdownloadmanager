@@ -658,6 +658,10 @@
    "source": "Click <g1>Load unpacked</g1>.",
    "text": "Clique em <g1>Carregar sem compactar</g1>."
   },
+  "13382c1e6ceae711": {
+   "source": "<g1>The video button over a Drive video</g1> downloads the original file, not one of the player's smaller copies.",
+   "text": "<g1>O botão de vídeo sobre um vídeo do Drive</g1> baixa o arquivo original, não uma das cópias menores do player."
+  },
   "135e1b787896d837": {
    "source": "<g1>GitHub, to check for updates.</g1> Once a week MDM asks GitHub's public API for the latest release of MDM (<x2/>). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in <g3>Help → Check for updates</g3>. If you choose <g4>Update now</g4>, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.",
    "text": "<g1>GitHub, para verificar atualizações.</g1> Uma vez por semana, o MDM consulta a API pública do GitHub para a versão mais recente do MDM (<x2/>). A solicitação leva a versão do MDM em seu User-Agent e nada mais. Desative a verificação semanal em <g3>Ajuda → Verificar atualizações</g3>. Se você escolher <g4>Atualizar agora</g4>, o MDM baixa o arquivo da nova versão e sua lista de checksums assinados da mesma versão do GitHub. A declaração de privacidade do GitHub se aplica a essas solicitações."
@@ -861,6 +865,10 @@
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
    "text": "<g1>Integração com o navegador</g1> para Chrome, Edge, Brave, Opera e Vivaldi (Firefox em teste): os downloads são transferidos para o MDM com seus cookies e referenciador, clique com o botão direito em <g2>Baixar com Mister Download Manager</g2>, e um botão <g3>Baixar vídeo</g3> sobre vídeos em qualquer página, que pode ser arrastado pela borda do vídeo, oculto em um vídeo ou site, ou desativado em Opções."
+  },
+  "18c426ee5855af75": {
+   "source": "Google Drive links",
+   "text": "Links do Google Drive"
   },
   "18da802709723cf6": {
    "source": "Ctrl+Space",
@@ -1177,6 +1185,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "para não usá-lo para sobrecarregar, atacar ou contornar os limites de servidores que você não possui."
+  },
+  "21aa032bde745310": {
+   "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
+   "text": "A primeira solicitação de um download (<x1/>) segue redirecionamentos e as páginas que levam a um arquivo por si mesmas (atualização de uma página de espera). Sites cujos links não são o endereço do arquivo têm um módulo em <x2/> (Google Drive: <x3/>): ele transforma o link no endereço do arquivo, lê as próprias páginas do site (um formulário de confirmação, uma página de erro) e nomeia suas recusas (<x4/>), com funções puras testadas sem rede. O servidor de laboratório simula tal site em seus nomes de host reais para os testes de ponta a ponta (<x5/>)."
   },
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
@@ -1989,6 +2001,10 @@
   "393ffca55ed6d7ac": {
    "source": "Each connection writes straight into the file's place on disk, in a part file named <x1/> next to the final file. When every part is done, MDM checks the size and renames it. There is no temporary folder and no joining step at the end.",
    "text": "Cada conexão escreve diretamente no local do arquivo no disco, em um arquivo de parte chamado <x1/> ao lado do arquivo final. Quando todas as partes são concluídas, o MDM verifica o tamanho e o renomeia. Não há pasta temporária e nenhuma etapa de junção no final."
+  },
+  "3942e893b1f34435": {
+   "source": "and <x1/>;",
+   "text": "e <x1/>;"
   },
   "39463e0cfd1ff5aa": {
    "source": "Options — Mister Download Manager help",
@@ -2922,6 +2938,10 @@
    "source": "Command",
    "text": "Comando"
   },
+  "57f708f18604d10d": {
+   "source": "(and Sheets, Slides, Drawings).",
+   "text": "(e Planilhas, Apresentações, Desenhos)."
+  },
   "582557ff93b946f6": {
    "source": "MDM is <g1>not affiliated</g1> with Tonec Inc. or Internet Download Manager.",
    "text": "O MDM <g1>não é afiliado</g1> à Tonec Inc. ou ao Internet Download Manager."
@@ -3045,6 +3065,10 @@
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Escolha <g1>Ajuda → Relatar um problema</g1>. Ele abre o formulário de relatório de bug no GitHub com sua versão do MDM, seu sistema e sua versão, como o MDM foi instalado e seu idioma de interface já preenchidos. Descreva o que aconteceu, o que você esperava e os passos que o fazem acontecer. Para um download, inclua o endereço se puder compartilhá-lo, e o motivo mostrado em <g2>Status</g2>."
+  },
+  "5d4164eff181587e": {
+   "source": "<g1>Files that aren't shared with everyone.</g1> Right-click the link in the browser and choose <g2>Download with Mister Download Manager</g2>, or use Drive's own <g3>Download</g3> button: the extension passes your browser's Google sign-in with the download. MDM never asks for or keeps your password. Without a sign-in, MDM says the file <g4>needs you to sign in</g4>.",
+   "text": "<g1>Arquivos que não são compartilhados com todos.</g1> Clique com o botão direito no link no navegador e escolha <g2>Baixar com Mister Download Manager</g2>, ou use o botão <g3>Baixar</g3> do próprio Drive: a extensão passa o login do Google do seu navegador com o download. O MDM nunca pede ou guarda sua senha. Sem um login, o MDM diz que o arquivo <g4>precisa que você faça login</g4>."
   },
   "5d56098513a9a8da": {
    "source": "To quit, choose <g1>Tasks → Exit</g1> or <g2>Exit</g2> in the tray menu.",
@@ -3297,6 +3321,10 @@
   "6387358ae9160f15": {
    "source": "1 GiB, fast link",
    "text": "1 GiB, link rápido"
+  },
+  "639e97e78af63aae": {
+   "source": "<g1>Google Docs, Sheets and Slides</g1> come as Word (<x2/>), Excel (<x3/>) and PowerPoint (<x4/>) files, and Drawings as <x5/>. These files are made when they are asked for, so their size is unknown until they arrive and they can't be resumed: a cut-off download starts again.",
+   "text": "<g1>Documentos, Planilhas e Apresentações Google</g1> vêm como arquivos do Word (<x2/>), Excel (<x3/>) e PowerPoint (<x4/>), e Desenhos como <x5/>. Esses arquivos são criados quando solicitados, então seu tamanho é desconhecido até que cheguem e não podem ser retomados: um download interrompido recomeça."
   },
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
@@ -3785,6 +3813,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "Todo o código-fonte é público, e cada versão é construída a partir dele nos servidores do GitHub. Sem adware, sem spyware, sem ofertas empacotadas. Os auxiliares que ele baixa para vídeo são verificados antes de serem executados. <g1>Mais</g1>"
+  },
+  "72769bded1d786a9": {
+   "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
+   "text": "Cole um link do Google Drive como ele é, aquele que <g1>Compartilhar → Copiar link</g1> fornece:"
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -4505,6 +4537,10 @@
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "O que é diferente"
+  },
+  "880767a468b15c29": {
+   "source": "<g1>When Drive won't give a file.</g1> Drive limits how often a file can be downloaded: after many downloads in a day it answers \"too many users have viewed or downloaded this file recently\". MDM shows Drive's own words and writes nothing. Try again later (it can take up to a day), or sign in to Google in your browser and download from there, which often gets past the limit. MDM doesn't try to get around it. A file whose owner turned off downloading, or that your account can't open, gets <g2>no access</g2>.",
+   "text": "<g1>Quando o Drive não permite o download de um arquivo.</g1> O Drive limita a frequência com que um arquivo pode ser baixado: depois de muitos downloads em um dia, ele responde \"muitos usuários visualizaram ou baixaram este arquivo recentemente\". O MDM mostra as próprias palavras do Drive e não escreve nada. Tente novamente mais tarde (pode levar até um dia), ou faça login no Google em seu navegador e baixe de lá, o que muitas vezes contorna o limite. O MDM não tenta contorná-lo. Um arquivo cujo proprietário desativou o download, ou que sua conta não pode abrir, recebe <g2>sem acesso</g2>."
   },
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
@@ -5238,6 +5274,10 @@
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
    "text": "Verifique quatro coisas: a extensão está instalada e ativada; Opções → Geral → Usar integração avançada do navegador está ativada e seu navegador está marcado; o tipo de arquivo está em Opções → Tipos de arquivo; e o site não está na lista de sites que o MDM ignora. Clique com o botão direito em um link e escolha Baixar com Mister Download Manager para enviar qualquer arquivo, seja qual for o seu tipo. Mais em Solução de problemas."
   },
+  "9db0cdca6146f4f8": {
+   "source": "MDM downloads the file itself, as it was uploaded (a video comes in its own format, not the player's copy), with its real name and size, over several connections, and it can resume. For a large file, Drive shows a page that says it <g1>can't scan this file for viruses</g1>; MDM goes past it as <g2>Download anyway</g2> does.",
+   "text": "O MDM baixa o arquivo em si, como foi carregado (um vídeo vem no seu formato original, não na cópia do player), com seu nome e tamanho reais, por várias conexões, e pode ser retomado. Para um arquivo grande, o Drive mostra uma página que diz que <g1>não é possível verificar este arquivo em busca de vírus</g1>; o MDM ignora isso como o botão <g2>Fazer download mesmo assim</g2> faz."
+  },
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "Downloads sem interface com progresso (<x1/>, <x2/>), vídeos, torrents e os comandos da API de automação: uma biblioteca que o programa do aplicativo executa (<x3/>), e <x4/>, um pequeno iniciador que a executa com os mesmos argumentos, terminal e código de saída"
@@ -5441,6 +5481,10 @@
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
    "text": "Baixa um torrent, ou apenas alguns de seus arquivos. Se alguns dos arquivos já estiverem na pasta, ele para e os nomeia; <x1/> os usa em vez disso (o que corresponde é mantido, o restante é baixado)."
+  },
+  "a462139057cb83c0": {
+   "source": "If it says <g1>Google Drive won't give this file now</g1>, Drive's download limit for that file was reached. See <g2>Google Drive links</g2>.",
+   "text": "Se aparecer <g1>O Google Drive não vai entregar este arquivo agora</g1>, o limite de download do Drive para esse arquivo foi atingido. Consulte <g2>Links do Google Drive</g2>."
   },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
@@ -5933,6 +5977,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>Torrents</g2></g1> — links magnéticos e arquivos .torrent, escolha de arquivos e compartilhamento."
+  },
+  "b298f93960114202": {
+   "source": ", with or without <x1/>;",
+   "text": ", com ou sem <x1/>;"
   },
   "b2a627befcf928d4": {
    "source": "<g1>Torrents, built in</g1> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.",
@@ -7625,6 +7673,10 @@
   "ebe2a18d31052b9b": {
    "source": "Browsers",
    "text": "Navegadores"
+  },
+  "ec30751899ba93ca": {
+   "source": "<g1>Folders</g1> aren't downloaded yet: a folder's link gets <g2>this is a Google Drive folder, not a file</g2>. Open the folder in the browser and download its files from there.",
+   "text": "<g1>Pastas</g1> ainda não são baixadas: o link de uma pasta recebe <g2>esta é uma pasta do Google Drive, não um arquivo</g2>. Abra a pasta no navegador e baixe seus arquivos de lá."
   },
   "ec76a04b2f141c3a": {
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",

@@ -12,6 +12,8 @@
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
 //! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`)
+//! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
+//!   pages, Docs exports, the sign-in page
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
 //!
 //! Every request is logged except `/`, `/_log` and `/redirect` (the engine's tests read the log
@@ -40,7 +42,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{Faults, every, has_cookie, parse_flag};
-use crate::{pages, streams};
+use crate::{drive, pages, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -109,7 +111,7 @@ impl Default for Config {
     }
 }
 
-struct Shared {
+pub(crate) struct Shared {
     faults: Faults,
     started: Instant,
     /// File requests, for the faults' "every Nth".
@@ -122,6 +124,8 @@ struct Shared {
     active: Mutex<HashMap<IpAddr, u32>>,
     log: Mutex<Vec<LogEntry>>,
     on_log: Option<LogSink>,
+    /// The fake Drive's virus-scan pages' `uuid`s handed out (`drive`).
+    pub(crate) drive_uuids: Mutex<HashSet<String>>,
 }
 
 impl Shared {
@@ -130,7 +134,7 @@ impl Shared {
     }
 
     /// The log entry of a request that starts now; `body` is the request's body.
-    fn begin(
+    pub(crate) fn begin(
         &self,
         peer: SocketAddr,
         method: &Method,
@@ -175,7 +179,7 @@ impl Shared {
         }
     }
 
-    fn record(&self, mut entry: LogEntry, status: u16, outcome: &str) {
+    pub(crate) fn record(&self, mut entry: LogEntry, status: u16, outcome: &str) {
         entry.status = status;
         entry.outcome = outcome.to_owned();
         entry.t_end_ms = self.ms();
@@ -207,6 +211,7 @@ impl LabServer {
             active: Mutex::default(),
             log: Mutex::default(),
             on_log: cfg.on_log,
+            drive_uuids: Mutex::default(),
         });
         // Routes answered from memory, logged by `log_simple`.
         let simple = Router::new()
@@ -232,6 +237,8 @@ impl LabServer {
             .route("/hop", get(hop))
             .route("/_log", get(get_log).delete(clear_log))
             .merge(simple)
+            // Every other address: the fake Google Drive's, by the Host header (`drive`).
+            .fallback(drive::handle)
             .with_state(shared.clone());
         let task = tokio::spawn(async move {
             let svc = app.into_make_service_with_connect_info::<SocketAddr>();
@@ -333,6 +340,24 @@ GET /hls/master.m3u8   two variants (720p: 1280x720, 1280000 b/s; 360p: 640x360,
 GET /dash/manifest.mpd  (application/dash+xml) the same tracks as Representations with a
     SegmentTemplate: /dash/{720p,360p,audio}/init.mp4 and seg1..3.m4s (video/mp4, audio/mp4)
 
+GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
+    drive.google.com, drive.usercontent.google.com, docs.google.com, accounts.google.com and
+    doc-0.docs.googleusercontent.com to this server); hand-made pages shaped like Drive's (src/drive.rs)
+  IDs: KIND-SIZE[-FLAG...] padded with -000 to 25+ characters, e.g. big-8M-uuid-0000000000000
+    small, uni   the file at once (uni: a non-ASCII name in filename*=)
+    big          the virus-scan page unless the query has confirm= (flag uuid: and the page's uuid;
+                 flag ttlN: its link expires after N ms); a Cookie SID=lab adds an at= input
+    private      302 to accounts.google.com/ServiceLogin unless the Cookie has SID=lab, then as big
+    quota, doc   the "Quota exceeded" page (doc: a Google Doc, as Drive's file host answers it)
+    noaccess 403   rk 404 unless resourcekey=0-lab   gone 404
+  drive.google.com          /file/d/ID/view (a 150 KB viewer page), /uc?id= (303 to the file
+                            host), /open?id= (307 to the viewer, or a doc's editor)
+  drive.usercontent.google.com  /download?id=&export=download[&confirm=&uuid=]   /uc (303)
+  docs.google.com           /document|spreadsheets|presentation/d/ID/edit, .../export?format=
+                            (307 to doc-0.docs.googleusercontent.com/export/tok/ID: chunked, no
+                            length, ranges ignored)
+  accounts.google.com       /ServiceLogin   the sign-in page
+
 LOG
 GET /_log   the request log as JSON: method, path, query, range, if_range, user_agent, cookie,
             referer, req_content_type, req_body_len, req_body_sha256, req_body_head, status,
@@ -426,7 +451,7 @@ async fn hop(RawQuery(q): RawQuery) -> Response {
     resp
 }
 
-fn unix_ms() -> u64 {
+pub(crate) fn unix_ms() -> u64 {
     std::time::SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map_or(0, |d| d.as_millis() as u64)
@@ -620,7 +645,7 @@ struct FileQuery {
 }
 
 /// Serves the generated file `size`/`name` for a request whose log entry is `entry`.
-async fn serve(
+pub(crate) async fn serve(
     shared: Arc<Shared>,
     mut entry: LogEntry,
     method: &Method,

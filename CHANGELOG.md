@@ -79,6 +79,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **Downloads from forms** (a button that posts and gets a file back) are posted again by MDM,
   with the form's data, instead of being lost. A form that sends a file (multipart) stays with
   the browser.
+- **Google Drive links** ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)):
+  paste a Drive file's link (`drive.google.com/file/d/…/view`, `…/uc?id=…`, `…/open?id=…`) and
+  MDM downloads the file itself, as it was uploaded, over several connections and resumable,
+  with its real name and size in Download File Info. Large files get past Drive's "can't scan
+  this file for viruses" page as **Download anyway** does. Google Docs, Sheets and Slides come
+  as Word, Excel and PowerPoint files. A private file downloads with the sign-in the extension
+  passes from the browser. When Drive won't give a file (too many downloads lately, sign-in
+  needed, no access), MDM says so in your language instead of saving Drive's page. The video
+  button over a Drive video downloads the original file. Folders aren't downloaded yet: MDM
+  says the link is a folder. See [Google Drive links](docs/adding-downloads.md#google-drive-links).
 
 ### Changed
 
@@ -128,6 +138,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
+  the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).
+- **Download File Info's errors are worded in the interface language**, as the list's are.
+- **Resuming after a waiting page**: when a download's address had to be asked again (an expired
+  link), MDM now goes through the same waiting pages and redirects as the first time, instead
+  of giving up on them.
 - **ffmpeg could fail to install** with "the release has no an LGPL Windows build": BtbN, whose
   builds MDM installs, publishes a dated build each day and then remakes its `latest` release,
   and meanwhile GitHub's "latest" is the dated one, whose files are named differently. MDM now
