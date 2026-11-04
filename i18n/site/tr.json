@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Ücretsiz ve açık kaynak. Bildiğiniz arayüz, altında daha hızlı bir motor, yerleşik torrentler ve video indirme."
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Aynı pencerede, <g1>Tüm indirmeleri birlikte şuna sınırla</g1> seçeneğini işaretleyin ve hızı ayarlayın. Bu, kaç dosya indiriliyor olursa olsun, torrentler dahil olmak üzere MDM'yi bir bütün olarak sınırlar: torrentler birlikte bu limitin altında kalır ve diğer indirmeler kalan kısmı paylaşır. Dosya başına sınırlayıcı açık veya kapalı olsa da, işaretlendiği sürece uygulanır."
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (yaklaşık 80 MB), bir site videoyu ve sesi ayrı tuttuğunda (çoğu site daha yüksek kaliteler için bunu yapar) bunları birleştirir ve sesi MP3'e dönüştürür. MDM size <g2>ffmpeg'i yükle</g2> seçeneğini sunduğunda tıklayın. MDM, yayınlanan sağlama toplamlarıyla kontrol eder."
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "Taşınabilir bir kopya. İndirme listesi ve ayarlar programın yanındaki bir <x1/> klasöründe kalır ve kayıt defterine hiçbir şey yazılmaz. Tarayıcı entegrasyonu yükleyiciyi gerektirir. <g2>Taşınabilir mod</g2> bölümüne bakın."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "Aynı pencerede, <g1>Tüm indirmeleri birlikte şuna sınırla</g1> seçeneğini işaretleyin ve hızı ayarlayın. Bu, kaç dosya indirilirse indirilsin, torrentler dahil, MDM'nin genel hızını sınırlar. Torrentler ve diğer indirmeler aynı anda çalıştığında, her taraf hızın en az yarısını alır ve diğer taraf daha az ihtiyaç duyduğunda daha fazlasını alır: yavaş giden bir torrent, kalan hızı diğer indirmelere bırakır ve tersi de geçerlidir. Bu seçenek işaretlendiği sürece, dosya başına sınırlayıcı açık veya kapalı olsa bile uygulanır."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "Deneysel"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "Torrentler ve magnet bağlantıları"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "Son güncelleme 5 Kasım 2026"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "Herhangi bir yere açmak için <g1>.tar.gz</g1>"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Son güncelleme 4 Kasım 2026 · uygulama, tarayıcı eklentisi ve misterdownloadmanager.com için geçerlidir"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "IDM kullanıcıları neden geçiş yapıyor?"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "Son güncelleme: 4 Kasım 2026"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>Bir sorun seçin</g1><g2>Açık olanları görün ve yardım edin.</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "Tüm kaynak kodu herkese açıktır ve her sürüm GitHub sunucularında derlenir. Reklam yazılımı yok, casus yazılımı yok, paketlenmiş teklifler yok. Video için indirdiği yardımcılar çalıştırılmadan önce doğrulanır. <g1>Daha fazla</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Son güncelleme 05.11.2026 · uygulama, tarayıcı eklentisi ve misterdownloadmanager.com için geçerlidir"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

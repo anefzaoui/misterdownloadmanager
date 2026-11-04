@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "무료 오픈 소스입니다. 이미 익숙한 인터페이스와 더 빠른 엔진, 토렌트 및 비디오 기능이 내장되어 있습니다."
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "같은 창에서 <g1>모든 다운로드 제한</g1>을 선택하고 속도를 설정하세요. 이렇게 하면 다운로드 중인 파일 수에 관계없이 MDM 전체의 속도가 제한됩니다. 토렌트도 포함되며, 토렌트들은 이 제한 내에서 유지되고 나머지 다운로드들은 남은 대역폭을 공유합니다. 파일별 제한기가 켜져 있든 꺼져 있든, 이 옵션이 선택되어 있으면 항상 적용됩니다."
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "사이트에서 영상과 소리를 분리하여 제공하는 경우(대부분의 고화질 영상이 그렇습니다), <g1>ffmpeg</g1>(약 80MB)은 이를 합치고 소리를 MP3로 변환합니다. MDM에서 <g2>ffmpeg 설치</g2>를 제안하면 클릭하세요. MDM은 릴리스에 게시된 체크섬과 비교하여 확인합니다."
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "휴대용 버전입니다. 다운로드 목록과 설정은 프로그램 옆의 <x1/> 폴더에 유지되며, 레지스트리에는 아무것도 기록되지 않습니다. 브라우저 통합에는 설치 프로그램이 필요합니다. <g2>휴대용 모드</g2>를 참조하세요."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "같은 창에서 <g1>모든 다운로드 제한</g1>을 선택하고 속도를 설정하세요. 이렇게 하면 다운로드 중인 파일 수와 토렌트 여부에 관계없이 MDM 전체의 속도가 제한됩니다. 토렌트와 다른 다운로드가 동시에 실행될 때, 각 측은 최소 절반의 속도를 얻고, 다른 측이 덜 필요할 때는 더 많은 속도를 얻습니다. 예를 들어, 토렌트가 느리게 진행되면 나머지 대역폭은 다른 다운로드에 할당되고 그 반대도 마찬가지입니다. 이 설정은 파일별 제한기가 켜져 있든 꺼져 있든 상관없이 선택되어 있는 동안 항상 적용됩니다."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "실험적"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "토렌트 및 마그넷 링크"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "최종 업데이트: 2026년 11월 5일"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "어디든 압축 해제할 수 있는 <g1>.tar.gz</g1>"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "최종 업데이트: 2026년 11월 4일 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "IDM 사용자들이 전환하는 이유"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "최종 업데이트: 2026년 11월 4일"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>이슈 선택</g1><g2>열려 있는 이슈를 확인하고 도움을 주세요.</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "전체 소스가 공개되어 있으며, 모든 릴리스는 GitHub 서버에서 빌드됩니다. 애드웨어, 스파이웨어, 번들 제공이 없습니다. 비디오를 위해 다운로드하는 도우미는 실행 전에 확인됩니다. <g1>더 보기</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "최종 업데이트: 2026년 11월 5일 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

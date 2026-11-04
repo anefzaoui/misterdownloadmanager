@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Miễn phí và mã nguồn mở. Giao diện bạn đã quen thuộc, một công cụ nhanh hơn bên dưới, tích hợp torrent và video."
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Trong cùng cửa sổ, đánh dấu vào <g1>Giới hạn tất cả các lượt tải xuống cùng nhau thành</g1> và đặt tốc độ. Điều này giới hạn MDM nói chung, bất kể có bao nhiêu tệp đang tải xuống, bao gồm cả torrent: các torrent cùng nhau sẽ nằm dưới giới hạn này, và các lượt tải xuống khác sẽ chia sẻ phần còn lại. Nó được áp dụng bất cứ khi nào được đánh dấu, dù bộ giới hạn từng tệp đang bật hay tắt."
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (khoảng 80 MB) dùng để ghép video và âm thanh khi một trang web tách chúng ra (hầu hết các trang web đều làm vậy đối với chất lượng cao hơn), và chuyển âm thanh thành MP3. Hãy nhấp vào <g2>Cài đặt ffmpeg</g2> khi MDM đề xuất. MDM sẽ kiểm tra nó dựa trên các tổng kiểm mà bản phát hành của nó công bố."
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "Bản sao di động. Danh sách tải xuống và cài đặt nằm trong thư mục <x1/> bên cạnh chương trình, và không có gì được ghi vào registry. Tích hợp trình duyệt cần trình cài đặt. Xem <g2>Chế độ di động</g2>."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "Trong cùng một cửa sổ, đánh dấu vào <g1>Giới hạn tất cả các lượt tải xuống cùng nhau thành</g1> và đặt tốc độ. Điều này giới hạn toàn bộ MDM, bất kể có bao nhiêu tệp đang tải xuống, bao gồm cả torrent. Khi torrent và các lượt tải xuống khác chạy cùng lúc, mỗi bên sẽ nhận được ít nhất một nửa tốc độ, và nhiều hơn khi bên kia cần ít hơn: một torrent chạy chậm sẽ nhường phần còn lại cho các lượt tải xuống khác, và ngược lại. Nó được áp dụng bất cứ khi nào được đánh dấu, cho dù bộ giới hạn theo từng tệp có bật hay tắt."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "Thử nghiệm"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "Torrent và liên kết magnet"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "Cập nhật lần cuối 2026-11-05"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "<g1>.tar.gz</g1> để giải nén ở bất cứ đâu"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Cập nhật lần cuối 2026-11-04 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "Tại sao người dùng IDM chuyển đổi"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "Cập nhật lần cuối 2026-11-04"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>Chọn một vấn đề</g1><g2>Xem những gì đang mở và giúp một tay.</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "Toàn bộ mã nguồn là công khai và mỗi bản phát hành đều được xây dựng từ đó trên máy chủ của GitHub. Không có phần mềm quảng cáo, không có phần mềm gián điệp, không có ưu đãi đi kèm. Các công cụ hỗ trợ mà nó tải xuống cho video được xác minh trước khi chúng chạy. <g1>Xem thêm</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Cập nhật lần cuối 05-11-2026 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

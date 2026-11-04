@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "मुफ़्त और ओपन सोर्स। वह इंटरफ़ेस जिसे आप पहले से जानते हैं, अंदर एक तेज़ इंजन, टोरेंट और वीडियो अंतर्निहित।"
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "उसी विंडो में, <g1>सभी डाउनलोड को एक साथ सीमित करें</g1> पर टिक करें और गति निर्धारित करें। यह MDM को समग्र रूप से सीमित करता है, चाहे कितनी भी फ़ाइलें डाउनलोड हो रही हों, टोरेंट सहित: टोरेंट एक साथ इसके नीचे रहते हैं, और अन्य डाउनलोड बचे हुए को साझा करते हैं। यह तब लागू होता है जब इसे टिक किया जाता है, चाहे प्रति-फ़ाइल लिमिटर चालू हो या बंद।"
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (लगभग 80 MB) एक वीडियो और उसकी आवाज़ को जोड़ता है जब कोई साइट उन्हें अलग रखती है, जो अधिकांश साइटें उच्च गुणवत्ता के लिए करती हैं, और आवाज़ को MP3 में बदलता है। जब MDM इसे प्रदान करे तो <g2>ffmpeg इंस्टॉल करें</g2> पर क्लिक करें। MDM इसे अपनी रिलीज़ द्वारा प्रकाशित चेकसम के विरुद्ध जाँचता है।"
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "एक पोर्टेबल कॉपी। डाउनलोड सूची और सेटिंग्स प्रोग्राम के बगल में एक <x1/> फ़ोल्डर में रहती हैं, और रजिस्ट्री में कुछ भी नहीं लिखा जाता है। ब्राउज़र एकीकरण के लिए इंस्टॉलर की आवश्यकता होती है। <g2>पोर्टेबल मोड</g2> देखें।"
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "उसी विंडो में, <g1>सभी डाउनलोड को एक साथ सीमित करें</g1> पर टिक करें और गति सेट करें। यह MDM को पूरी तरह से सीमित करता है, चाहे कितनी भी फ़ाइलें डाउनलोड हो रही हों, जिसमें टोरेंट भी शामिल हैं। जब टोरेंट और अन्य डाउनलोड एक ही समय में चलते हैं, तो प्रत्येक पक्ष को कम से कम आधी गति मिलती है, और जब दूसरे पक्ष को कम की आवश्यकता होती है तो अधिक मिलती है: एक टोरेंट धीरे चलने पर बाकी को अन्य डाउनलोड के लिए छोड़ देता है, और इसका उल्टा भी। यह तब लागू होता है जब इस पर टिक किया जाता है, चाहे प्रति-फ़ाइल लिमिटर चालू हो या बंद।"
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "प्रायोगिक"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "टॉरेंट और मैग्नेट लिंक"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "पिछला अपडेट 2026-11-05"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "कहीं भी अनपैक करने के लिए <g1>.tar.gz</g1>"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "पिछला अपडेट 2026-11-04 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "IDM उपयोगकर्ता क्यों स्विच करते हैं"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "पिछली बार अपडेट किया गया: 2026-11-04"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>एक समस्या चुनें</g1><g2>देखें कि क्या खुला है और मदद करें।</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "पूरा स्रोत सार्वजनिक है, और हर रिलीज़ GitHub के सर्वर पर इससे बनाई जाती है। कोई एडवेयर नहीं, कोई स्पाईवेयर नहीं, कोई बंडल ऑफ़र नहीं। वीडियो के लिए यह जो सहायक डाउनलोड करता है, उन्हें चलाने से पहले सत्यापित किया जाता है। <g1>और जानें</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "पिछला अपडेट 2026-11-05 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

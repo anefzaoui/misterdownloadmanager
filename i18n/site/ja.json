@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "同じウィンドウで、「<g1>すべてのダウンロードを合計で制限する</g1>」にチェックを入れ、速度を設定します。これにより、ダウンロード中のファイル数に関わらず、トレントを含めMDM全体に上限が設定されます。トレントは合計でその上限を下回り、残りのダウンロードは残りの帯域幅を共有します。ファイルごとの制限がオンかオフかに関わらず、チェックが入っている限り適用されます。"
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1>（約80 MB）は、多くのサイトが高品質のために動画と音声を別々に保存している場合、それらを結合し、音声をMP3に変換します。MDMが提供する際に<g2>ffmpeg をインストール</g2>をクリックしてください。MDMは、公開されているチェックサムと照合して確認します。"
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "ポータブル版です。ダウンロードリストと設定はプログラムの隣の<x1/>フォルダに保存され、レジストリには何も書き込まれません。ブラウザ統合にはインストーラーが必要です。<g2>ポータブルモード</g2>をご覧ください。"
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "同じウィンドウで、<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、速度を設定します。これにより、ダウンロード中のファイル数に関わらず、トレントを含めMDM全体の速度が制限されます。トレントと他のダウンロードが同時に実行される場合、それぞれが少なくとも半分の速度を得て、もう一方がより少ない速度を必要とする場合はそれ以上になります。例えば、トレントの進行が遅い場合、残りの速度は他のダウンロードに割り当てられ、その逆も同様です。この設定は、ファイルごとの制限がオンかオフかに関わらず、チェックが入っている間は常に適用されます。"
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "実験版"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "トレントとマグネットリンク"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "最終更新日 2026-11-05"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "どこにでも展開できる<g1>.tar.gz</g1>"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最終更新日 2026-11-04 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "IDMユーザーが乗り換える理由"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "最終更新日：2026年11月4日"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>課題を選ぶ</g1><g2>公開されているものを見て、手伝ってください。</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "すべてのソースは公開されており、すべてのリリースはGitHubのサーバーでそこからビルドされています。アドウェア、スパイウェア、バンドルされたオファーはありません。ビデオ用にダウンロードされるヘルパーは、実行前に検証されます。<g1>詳細</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最終更新日 2026-11-05 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

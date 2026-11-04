@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Gratuito e open source. L'interfaccia che già conosci, un motore più veloce sotto, torrent e video integrati."
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Nella stessa finestra, spunta <g1>Limita tutti i download insieme a</g1> e imposta la velocità. Questo limita MDM nel suo complesso, indipendentemente da quanti file sono in download, torrent inclusi: i torrent insieme rimangono sotto questo limite, e gli altri download si dividono ciò che resta. Si applica ogni volta che è spuntato, sia che il limitatore per file sia attivo o disattivo."
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (circa 80 MB) unisce un video e il suo audio quando un sito li tiene separati, cosa che la maggior parte dei siti fa per le qualità superiori, e trasforma l'audio in un MP3. Clicca su <g2>Installa ffmpeg</g2> quando MDM lo propone. MDM lo verifica confrontandolo con i checksum pubblicati nella sua release."
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "Una copia portatile. L'elenco dei download e le impostazioni rimangono in una cartella <x1/> accanto al programma, e nulla viene scritto nel registro. L'integrazione con il browser richiede il programma di installazione. Vedi <g2>Modalità portatile</g2>."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "Nella stessa finestra, spunta <g1>Limita tutti i download insieme a</g1> e imposta la velocità. Questo limita MDM nel suo complesso, indipendentemente dal numero di file in download, inclusi i torrent. Quando torrent e altri download sono in esecuzione contemporaneamente, ogni parte riceve almeno la metà della velocità, e di più quando l'altra parte ne ha meno: un torrent che va lentamente lascia il resto agli altri download, e viceversa. Si applica ogni volta che è spuntato, sia che il limitatore per file sia attivo o disattivo."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "Sperimentale"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "Torrent e link magnetici"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "Ultimo aggiornamento 2026-11-05"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "<g1>.tar.gz</g1> da estrarre ovunque"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Ultimo aggiornamento 04/11/2026 · si applica all'app, all'estensione del browser e a misterdownloadmanager.com"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "Perché gli utenti IDM passano a MDM"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "Ultimo aggiornamento 04/11/2026"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>Scegli un problema</g1><g2>Vedi cosa è aperto e dai una mano.</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "L'intero codice sorgente è pubblico e ogni versione viene compilata sui server di GitHub. Nessun adware, nessun spyware, nessuna offerta in bundle. Gli helper che scarica per i video vengono verificati prima di essere eseguiti. <g1>Altro</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Ultimo aggiornamento 2026-11-05 · si applica all'app, all'estensione del browser e a misterdownloadmanager.com"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

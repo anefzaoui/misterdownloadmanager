@@ -152,8 +152,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   torrent's progress window changed every torrent's limit, a remembered limit was ignored, the
   Speed Limiter's "for one file" was shared by all torrents together, and "Limit all downloads
   together" left torrents out. Each torrent now has a limit of its own, a remembered one applies
-  again when it resumes, and torrents stay under the global cap with the other downloads. A
-  limit under 16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
+  again when it resumes, and torrents and other downloads share the global cap evenly: each
+  side gets at least half of it, and the rest when the other side needs less. A limit under
+  16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
   torrent started again while its files were still being checked no longer stays paused.
 - **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
   the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).

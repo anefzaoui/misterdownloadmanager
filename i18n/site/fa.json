@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "رایگان و متن‌باز. رابط کاربری که از قبل می‌شناسید، یک موتور سریع‌تر در زیر، تورنت‌ها و ویدئو به صورت داخلی."
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "در همان پنجره، تیک <g1>محدود کردن همه دانلودها با هم به</g1> را بزنید و سرعت را تنظیم کنید. این کار سرعت کلی MDM را محدود می‌کند، صرف نظر از اینکه چند فایل در حال دانلود هستند، از جمله تورنت‌ها: تورنت‌ها با هم زیر این محدودیت می‌مانند و دانلودهای دیگر باقی‌مانده را به اشتراک می‌گذارند. این محدودیت هر زمان که تیک خورده باشد اعمال می‌شود، چه محدودکننده سرعت برای هر فایل روشن باشد یا خاموش."
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (حدود 80 مگابایت) وقتی یک سایت ویدئو و صدای آن را جدا نگه می‌دارد (که بیشتر سایت‌ها برای کیفیت‌های بالاتر این کار را می‌کنند)، آن‌ها را به هم می‌چسباند و صدا را به MP3 تبدیل می‌کند. وقتی MDM آن را پیشنهاد داد، روی <g2>نصب ffmpeg</g2> کلیک کنید. MDM آن را با چک‌سام‌هایی که انتشارش منتشر می‌کند، بررسی می‌کند."
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "یک نسخه قابل حمل. لیست بارگیری و تنظیمات در یک پوشه <x1/> کنار برنامه باقی می‌مانند و چیزی در رجیستری نوشته نمی‌شود. یکپارچه‌سازی مرورگر به نصب‌کننده نیاز دارد. به <g2>حالت قابل حمل</g2> مراجعه کنید."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "در همین پنجره، <g1>محدود کردن همه دانلودها با هم به</g1> را علامت بزنید و سرعت را تنظیم کنید. این کار MDM را به طور کلی محدود می‌کند، صرف نظر از اینکه چند فایل در حال دانلود هستند، از جمله تورنت‌ها. وقتی تورنت‌ها و سایر دانلودها همزمان اجرا می‌شوند، هر طرف حداقل نیمی از سرعت را دریافت می‌کند و اگر طرف دیگر کمتر نیاز داشته باشد، بیشتر دریافت می‌کند: یک تورنت که به آرامی پیش می‌رود، بقیه را به دانلودهای دیگر واگذار می‌کند و برعکس. این محدودیت هر زمان که علامت زده شود اعمال می‌شود، چه محدودکننده هر فایل روشن باشد یا خاموش."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "آزمایشی"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "تورنت‌ها و لینک‌های مگنت"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "آخرین به‌روزرسانی در 2026-11-05"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "<g1>.tar.gz</g1> برای باز کردن در هر جایی"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "آخرین به‌روزرسانی: 14 آبان 1405 · شامل برنامه، افزونه مرورگر و وب‌سایت misterdownloadmanager.com می‌شود"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "چرا کاربران IDM تغییر می‌کنند"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "آخرین به‌روزرسانی در تاریخ 2026-11-04"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>انتخاب یک مسئله</g1><g2>ببینید چه چیزهایی باز است و کمک کنید.</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "تمام کد منبع عمومی است و هر نسخه از آن در سرورهای GitHub ساخته می‌شود. بدون ابزارهای تبلیغاتی، بدون جاسوس‌افزار، بدون پیشنهادهای بسته‌بندی شده. کمک‌کننده‌هایی که برای ویدئو دانلود می‌کند قبل از اجرا تأیید می‌شوند. <g1>بیشتر</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخرین به‌روزرسانی در 2026-11-05 · شامل برنامه، افزونه مرورگر و misterdownloadmanager.com می‌شود"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

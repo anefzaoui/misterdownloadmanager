@@ -145,9 +145,9 @@ impl Host {
         }
     }
 
-    /// The global cap's rate now (None: off), for the session's download limit: torrents
-    /// together stay under it, and file downloads get what they leave (`App::apply_global_limit`).
-    /// Cheap: called each frame; the session's limit changes only when it
+    /// The torrents' share of the global cap now (None: off), for the session's download limit:
+    /// torrents together stay under it (`App::apply_global_limit` splits the cap with file
+    /// downloads). Cheap: called each frame; the session's limit changes only when it
     /// differs (`Torrents::set_download_limit`), and a session that starts takes it at once.
     pub fn set_cap(&self, rate: Option<u64>) {
         *self.cap.lock().unwrap() = rate;

@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Безкоштовний та з відкритим кодом. Інтерфейс, який ви вже знаєте, швидший рушій, вбудовані торренти та відео."
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "У тому ж вікні поставте позначку <g1>Обмежити всі завантаження разом до</g1> та встановіть швидкість. Це обмежує MDM в цілому, незалежно від кількості файлів, що завантажуються, включаючи торренти: торренти разом залишаються під цим обмеженням, а інші завантаження ділять те, що залишилося. Це застосовується, коли позначка встановлена, незалежно від того, увімкнений чи вимкнений обмежувач для кожного файлу."
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (близько 80 МБ) об'єднує відео та його звук, коли сайт зберігає їх окремо, що більшість сайтів робить для вищої якості, і перетворює звук на MP3. Натисніть <g2>Інсталювати ffmpeg</g2>, коли MDM запропонує це. MDM перевіряє його за контрольними сумами, опублікованими в його випуску."
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "Портативна копія. Список завантажень та налаштування зберігаються в папці <x1/> поруч із програмою, і нічого не записується до реєстру. Для інтеграції з браузером потрібен інсталятор. Дивіться <g2>Портативний режим</g2>."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "У тому ж вікні встановіть прапорець <g1>Обмежити всі завантаження разом до</g1> та встановіть швидкість. Це обмежує MDM загалом, незалежно від кількості файлів, що завантажуються, включно з торрентами. Коли торренти та інші завантаження працюють одночасно, кожна сторона отримує щонайменше половину швидкості, і більше, коли іншій стороні потрібно менше: торрент, що завантажується повільно, залишає решту іншим завантаженням, і навпаки. Це застосовується, коли прапорець встановлено, незалежно від того, чи увімкнено обмежувач для кожного файлу."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "Експериментальна"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "Торренти та магнітні посилання"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "Останнє оновлення 2026-11-05"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "<g1>.tar.gz</g1> для розпакування будь-де"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Останнє оновлення 2026-11-04 · стосується програми, розширення для браузера та сайту misterdownloadmanager.com"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "Чому користувачі IDM переходять"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "Останнє оновлення 2026-11-04"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>Вибрати завдання</g1><g2>Подивіться, що відкрито, і допоможіть.</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "Весь вихідний код є публічним, і кожен випуск збирається з нього на серверах GitHub. Без рекламного ПЗ, без шпигунського ПЗ, без комплектних пропозицій. Допоміжні програми, які він завантажує для відео, перевіряються перед запуском. <g1>Детальніше</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Останнє оновлення 2026-11-05 · стосується програми, розширення для браузера та misterdownloadmanager.com"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",

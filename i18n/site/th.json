@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "ฟรีและโอเพนซอร์ส อินเทอร์เฟซที่คุณคุ้นเคย แต่มีเอนจินที่เร็วกว่าอยู่เบื้องหลัง พร้อมรองรับทอร์เรนต์และวิดีโอในตัว"
   },
-  "04859e9c5f338db0": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "ในหน้าต่างเดียวกัน ให้เลือก <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และตั้งค่าความเร็ว ซึ่งจะจำกัด MDM โดยรวม ไม่ว่าจะดาวน์โหลดกี่ไฟล์ รวมถึงทอร์เรนต์ด้วย: ทอร์เรนต์ทั้งหมดจะอยู่ภายใต้ขีดจำกัดนี้ และการดาวน์โหลดอื่นๆ จะใช้ส่วนที่เหลือ ขีดจำกัดนี้จะใช้เมื่อมีการเลือกไว้ ไม่ว่าตัวจำกัดต่อไฟล์จะเปิดหรือปิดอยู่ก็ตาม"
-  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (ประมาณ 80 MB) จะรวมวิดีโอและเสียงเข้าด้วยกันเมื่อเว็บไซต์แยกไฟล์ทั้งสองออกจากกัน ซึ่งเว็บไซต์ส่วนใหญ่จะทำเพื่อคุณภาพที่สูงขึ้น และจะแปลงเสียงเป็น MP3 คลิก <g2>ติดตั้ง ffmpeg</g2> เมื่อ MDM เสนอให้ MDM จะตรวจสอบไฟล์กับค่าตรวจสอบที่เผยแพร่"
@@ -470,6 +466,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "สำเนาแบบพกพา รายการดาวน์โหลดและการตั้งค่าจะอยู่ในโฟลเดอร์ <x1/> ถัดจากโปรแกรม และไม่มีการเขียนข้อมูลลงในรีจิสทรี การรวมเข้ากับเบราว์เซอร์ต้องใช้ตัวติดตั้ง ดูที่ <g2>โหมดพกพา</g2>"
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "ในหน้าต่างเดียวกัน ให้เลือก <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และตั้งค่าความเร็ว ซึ่งจะจำกัดความเร็วของ MDM โดยรวม ไม่ว่าจะดาวน์โหลดไฟล์กี่ไฟล์ก็ตาม รวมถึงไฟล์ BitTorrent ด้วย เมื่อไฟล์ BitTorrent และการดาวน์โหลดอื่นๆ ทำงานพร้อมกัน แต่ละฝ่ายจะได้รับความเร็วอย่างน้อยครึ่งหนึ่ง และจะได้รับมากขึ้นเมื่ออีกฝ่ายต้องการน้อยลง: ไฟล์ BitTorrent ที่ดาวน์โหลดช้าจะเหลือความเร็วส่วนที่เหลือให้กับการดาวน์โหลดอื่นๆ และในทางกลับกัน การตั้งค่านี้จะมีผลเมื่อเลือกไว้ ไม่ว่าตัวจำกัดความเร็วต่อไฟล์จะเปิดหรือปิดอยู่ก็ตาม"
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "ทดลอง"
@@ -649,6 +649,10 @@
   "118eef5ce1eacd13": {
    "source": "Torrents and magnet links",
    "text": "ทอร์เรนต์และลิงก์แม่เหล็ก"
+  },
+  "1192c6aacd81c9e9": {
+   "source": "Last updated 2026-11-05",
+   "text": "อัปเดตล่าสุด 2026-11-05"
   },
   "11c2e6a758e059a3": {
    "source": "Space",
@@ -853,10 +857,6 @@
   "17ef8654a7ee71e5": {
    "source": "<g1>.tar.gz</g1> to unpack anywhere",
    "text": "<g1>.tar.gz</g1> แตกไฟล์ที่ไหนก็ได้"
-  },
-  "18225a2cb5bc45e2": {
-   "source": "Last updated 2026-11-04 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "อัปเดตล่าสุด 4 พฤศจิกายน 2569 · ใช้กับแอปพลิเคชัน ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
   },
   "182407bd73119322": {
    "source": "The <g1>browser extension</g1> talks only to Mister Download Manager on your own computer.",
@@ -3182,10 +3182,6 @@
    "source": "Why IDM users switch",
    "text": "ทำไมผู้ใช้ IDM ถึงเปลี่ยนมาใช้ MDM"
   },
-  "5c9c6674d96a3dea": {
-   "source": "Last updated 2026-11-04",
-   "text": "อัปเดตล่าสุด 2026-11-04"
-  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>เลือกประเด็น</g1><g2>ดูว่ามีอะไรเปิดอยู่บ้างและช่วยกัน</g2>"
@@ -3977,6 +3973,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "ซอร์สโค้ดทั้งหมดเป็นสาธารณะ และทุกรุ่นถูกสร้างขึ้นจากซอร์สโค้ดนั้นบนเซิร์ฟเวอร์ของ GitHub ไม่มีแอดแวร์, สปายแวร์, หรือข้อเสนอที่มาพร้อมกับโปรแกรม ตัวช่วยที่ดาวน์โหลดมาสำหรับวิดีโอจะได้รับการตรวจสอบก่อนที่จะทำงาน <g1>เพิ่มเติม</g1>"
+  },
+  "725638a5e448140e": {
+   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "อัปเดตล่าสุด 2026-11-05 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
