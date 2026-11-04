@@ -1151,31 +1151,43 @@ impl Complete {
                 );
 
                 // Drag handle: white box with a 1 px #828790 border; drag it to drop the file into
-                // Explorer, a mail or a chat (IDM 5.05).
-                let handle = r(o, 414.0, 187.0, 27.0, 20.0);
-                let grip = ui.interact(
-                    handle,
-                    egui::Id::unique(("drag-out", self.id)),
-                    winui::pointer_drag(),
-                );
-                if grip.hovered() {
-                    ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
-                }
+                // Explorer, a mail or a chat (IDM 5.05). Windows only: dragging a file out to
+                // another app goes through OLE there; Linux and macOS have no such drag built
+                // yet, so the handle isn't shown (Open folder is the way there).
                 #[cfg(windows)]
-                if grip.drag_started() && self.path.exists() {
-                    let _ = crate::win32::drag_file_out("Download complete", &self.path);
+                {
+                    let handle = r(o, 414.0, 187.0, 27.0, 20.0);
+                    let grip = ui
+                        .interact(
+                            handle,
+                            egui::Id::unique(("drag-out", self.id)),
+                            winui::pointer_drag(),
+                        )
+                        // i18n: tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
+                        .on_hover_text(crate::i18n::t("Drag the file into a folder or an app"));
+                    if grip.hovered() {
+                        ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
+                    }
+                    if grip.drag_started() && self.path.exists() {
+                        if let Err(e) = crate::win32::drag_file_out(
+                            crate::i18n::t("Download complete"),
+                            &self.path,
+                        ) {
+                            tracing::warn!("drag out: {e}");
+                        }
+                    }
+                    p.rect_filled(handle, 0.0, winui::FIELD());
+                    p.rect_stroke(
+                        handle,
+                        0.0,
+                        egui::Stroke::new(1.0, winui::FIELD_EDGE()),
+                        egui::StrokeKind::Inside,
+                    );
+                    crate::icons::Icon::DragOut.image(true).paint_at(
+                        ui,
+                        egui::Rect::from_center_size(handle.center(), vec2(16.0, 16.0)),
+                    );
                 }
-                p.rect_filled(handle, 0.0, winui::FIELD());
-                p.rect_stroke(
-                    handle,
-                    0.0,
-                    egui::Stroke::new(1.0, winui::FIELD_EDGE()),
-                    egui::StrokeKind::Inside,
-                );
-                crate::icons::Icon::DragOut.image(true).paint_at(
-                    ui,
-                    egui::Rect::from_center_size(handle.center(), vec2(16.0, 16.0)),
-                );
 
                 // Enter: Open, the default button (as in the other dialogs).
                 // A file that can't open says why (the box stays for Open folder).

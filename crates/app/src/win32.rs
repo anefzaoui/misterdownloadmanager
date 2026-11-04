@@ -46,6 +46,14 @@ unsafe extern "system" fn enum_cb(hwnd: HWND, lparam: LPARAM) -> windows_sys::co
     1
 }
 
+/// The window of this thread that holds the mouse capture (a button is down in it), if any.
+fn own_capture() -> Option<HWND> {
+    use windows_sys::Win32::UI::Input::KeyboardAndMouse::GetCapture;
+    // SAFETY: a plain query; GetCapture only sees this thread's windows.
+    let h = unsafe { GetCapture() };
+    (!h.is_null()).then_some(h)
+}
+
 /// This process's top-level window with exactly `title`.
 pub(crate) fn find_own_window(title: &str) -> Option<HWND> {
     let mut f = Find {
@@ -314,10 +322,15 @@ impl raw_window_handle::HasWindowHandle for OwnWindow {
     }
 }
 
-/// Start dragging `file` out of our window titled `title` (to Explorer, a mail, a chat…), like
-/// IDM's Download complete grip. The drag preview is the file's shell icon.
+/// Start dragging `file` out of our window (to Explorer, a mail, a chat…), like IDM's Download
+/// complete grip. The drag preview is the file's shell icon. The window is the one holding the
+/// mouse (the button is down on its grip: winit captured the mouse for it), so it is the right
+/// one when several show the same title; else our window titled `title`, given in the interface
+/// language, as it shows.
 pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> {
-    let hwnd = find_own_window(title).ok_or("window not found")?;
+    let hwnd = own_capture()
+        .or_else(|| find_own_window(title))
+        .ok_or("window not found")?;
     let ext = file.extension().and_then(|e| e.to_str()).unwrap_or("");
     let preview = shell_icon_large(ext)
         .and_then(|rgba| {
