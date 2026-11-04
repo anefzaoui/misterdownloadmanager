@@ -330,6 +330,7 @@ A Lift sheet, 12px corners, with an ink title band; a grid of flag, native name 
 - **Do** show only the real, unretouched app in screenshots, in its day and night versions, left to right even on RTL pages.
 - **Do** use logical properties for every direction, mirror tilts in RTL, and drop tracking, uppercase and condensing for Arabic, Persian, Indic, Thai and CJK scripts.
 - **Do** keep the barcode a real, scannable Code 128 of what it says.
+- **Do** show the other download managers on the comparison page with their own logos, 24px beside their names, unretouched, with the trademark notice and `website/assets/alts/SOURCES.txt`; never IDM's.
 - **Do** honour reduced motion: the race shows its finish, the label does not feed, bars and grids sit at rest.
 
 ### Don't:

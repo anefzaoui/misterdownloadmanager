@@ -10,6 +10,9 @@ craft-libs), laid out the way Internet Download Manager users expect. Start by r
    Internet Download Manager or any other download manager. Never disassemble, decompile,
    debug-attach or patch any IDM file, and never bypass its licensing or trial. Behaviour is
    learned only from public documentation, screenshots and black-box use of a licensed copy.
+   One exception, the maintainer's: the website's comparison page may show the other download
+   managers' own logos (never IDM's), small, to identify them, with a notice that they belong to
+   their owners and their sources in `website/assets/alts/SOURCES.txt`.
 2. Every user-visible text goes through `crate::i18n`; run `python tools/i18n/extract.py`
    after adding one.
 3. Windows-only calls live in `crates/app/src/win32.rs`, their Linux and macOS counterparts in
