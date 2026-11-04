@@ -45,6 +45,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **MDM's programs are a third of their size, its download about half** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
   on Windows, the programs went from 93 MB to 33 MB (`misterdownloadmanager.exe` from 61 MB to
   29 MB, the command line from 28 MB to a 0.2 MB launcher), and setup.exe from 23 MB to 12 MB.
+  On Linux the AppImage went from 36 MB to 16 MB, the .deb from 27 MB to 13 MB.
   - The command line runs in the app's own program, so the download engine ships once. Every
     command, `--json`, Ctrl+C and exit code work as before.
   - The translations (85 languages besides English) are packed, 12 MB of text in under 1 MB
@@ -58,8 +59,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   - The installer packs tighter, and MDM's own code no longer carries the build machine's
     folder paths (a bundled C library still keeps a few of its own).
 - **Two smaller macOS downloads** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
-  a .dmg for Apple Silicon (`-macos-arm64`) and one for Intel (`-macos-x86_64`) instead of one
-  universal .dmg, each about half the size. From 0.2.4 or older, update once by hand:
+  a .dmg for Apple Silicon (`-macos-arm64`, about 10 MB) and one for Intel (`-macos-x86_64`,
+  about 13 MB) instead of one universal .dmg of 80 MB. From 0.2.4 or older, update once by hand:
   **Download** in Check for updates opens the release; pick your Mac's .dmg. **Update now**
   works again after that.
 - **Proxy auto-config scripts (PAC) run in QuickJS**, a much smaller JavaScript engine, with
