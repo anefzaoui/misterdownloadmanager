@@ -1795,7 +1795,11 @@ impl App {
         if self.tray.is_some() && !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
             // Wayland can't hide a window: it goes to the dock / task list instead.
-            if cfg!(target_os = "linux") && std::env::var_os("WAYLAND_DISPLAY").is_some() {
+            #[cfg(target_os = "linux")]
+            let wayland = crate::unix::on_wayland();
+            #[cfg(not(target_os = "linux"))]
+            let wayland = false;
+            if wayland {
                 ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
             } else {
                 ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
