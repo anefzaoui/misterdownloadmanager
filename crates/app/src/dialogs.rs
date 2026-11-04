@@ -542,7 +542,7 @@ impl FileInfo {
             .unwrap_or_else(|| mdm_engine::naming::file_name(None, &new.url));
         let category = Category::of(&name);
         let folder = crate::model::category_folder(category, &downloads, &dirs);
-        let save_as = display_path(&mdm_engine::naming::unique_path(&folder, &name));
+        let save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
         let (probe, info) = match from_browser {
             Some(file_name) => (
                 Arc::new(Mutex::new(None)),
@@ -600,7 +600,7 @@ impl FileInfo {
                     self.category = Category::of(&name);
                     let dir =
                         crate::model::category_folder(self.category, &self.downloads, &self.dirs);
-                    self.save_as = display_path(&dir.join(&name));
+                    self.save_as = display_path(&mdm_engine::naming::destination(&dir, &name));
                 }
                 // Another address: the browser's name, size and form are not its own, and on
                 // another site neither are its cookies and page (never sent there).
@@ -631,7 +631,8 @@ impl FileInfo {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        self.save_as = display_path(&folder.join(name));
+        // Fitted to the new folder too (#28): a deeper one leaves a long name less room.
+        self.save_as = display_path(&mdm_engine::naming::destination(folder, &name));
         self.edited = true;
     }
 
@@ -652,6 +653,12 @@ impl FileInfo {
         matches!(self.info, Some(Ok(_)))
     }
 
+    /// The name in Save As is only the address's guess: not edited, and no answer (the
+    /// browser's, the look-up's) gave one. The server names the file when it starts (#28).
+    pub fn name_guessed(&self) -> bool {
+        !self.edited && !self.probed()
+    }
+
     pub fn size(&self) -> Option<u64> {
         self.info
             .as_ref()
@@ -670,8 +677,8 @@ impl FileInfo {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        self.save_as =
-            display_path(&crate::model::category_folder(c, &self.downloads, &self.dirs).join(name));
+        let folder = crate::model::category_folder(c, &self.downloads, &self.dirs);
+        self.save_as = display_path(&mdm_engine::naming::destination(&folder, &name));
     }
 
     /// The dialog; Start (or Download Later) waits for a missing folder to be created.
@@ -700,7 +707,7 @@ impl FileInfo {
             if let (Ok(pi), false) = (&res, self.edited) {
                 self.category = Category::of(&pi.file_name);
                 let dir = crate::model::category_folder(self.category, &self.downloads, &self.dirs);
-                self.save_as = display_path(&mdm_engine::naming::unique_path(&dir, &pi.file_name));
+                self.save_as = display_path(&mdm_engine::naming::destination(&dir, &pi.file_name));
             }
             self.info = Some(res);
         }

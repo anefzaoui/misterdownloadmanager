@@ -264,6 +264,11 @@ pub struct Item {
     /// The event log: (unix seconds, what happened), oldest first, the last `LOG` entries.
     #[serde(default)]
     pub log: Vec<(i64, String)>,
+    /// `file_name` is only the address's guess (nobody named it: no browser, no answer, no
+    /// user): the download starts into its folder, under the name the server gives (its
+    /// Content-Disposition), as a browser does (#28). Cleared once the file is made.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub name_from_url: bool,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The engine's last view of this download (segments, connections).
@@ -455,6 +460,7 @@ impl Item {
             video: None,
             torrent: None,
             log: Vec::new(),
+            name_from_url: false,
             live: None,
             snap: None,
             login: None,
@@ -470,13 +476,21 @@ impl Item {
         self.downloaded = s.downloaded;
         self.size = s.size.or(self.size);
         self.resumable = s.resumable.or(self.resumable);
-        if let Some(f) = &s.file
-            && *f != self.dest
-        {
-            // The file as saved (a video's real extension, a numbered duplicate).
-            self.dest = f.clone();
-            if let Some(name) = f.file_name() {
-                self.file_name = name.to_string_lossy().into_owned();
+        if let Some(f) = &s.file {
+            // Named now: a later start from scratch keeps this name.
+            let guessed = std::mem::take(&mut self.name_from_url);
+            if *f != self.dest {
+                // The file as saved (a video's real extension, a numbered duplicate, the name
+                // the server gave).
+                self.dest = f.clone();
+                if let Some(name) = f.file_name() {
+                    self.file_name = name.to_string_lossy().into_owned();
+                }
+                // The guess's category was the address's: the real name's now (the file stays
+                // in the folder it was started in).
+                if guessed {
+                    self.category = Category::of(&self.file_name);
+                }
             }
         }
         let dt = live.sample.0.elapsed().as_secs_f64();

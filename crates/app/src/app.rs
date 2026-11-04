@@ -169,10 +169,15 @@ fn move_file(from: &std::path::Path, to: &std::path::Path) -> Result<(), String>
     })
 }
 
-/// A download's new place (its name from it).
+/// A download's new place (its name from it). A name the user gave is no longer the address's
+/// guess (`Item::name_from_url`); another folder alone keeps the server's say.
 fn take_place(item: &mut Item, target: PathBuf) {
     if let Some(name) = target.file_name() {
-        item.file_name = name.to_string_lossy().into_owned();
+        let name = name.to_string_lossy().into_owned();
+        if name != item.file_name {
+            item.name_from_url = false;
+        }
+        item.file_name = name;
     }
     item.dest = target;
 }
@@ -992,6 +997,7 @@ impl App {
                 crate::i18n::mark("with Add URL")
             },
         );
+        self.name_guessed(id, fi.name_guessed());
         self.selection.set(id);
         if matches!(start, Start::Now) {
             self.start(id, true);
@@ -1173,6 +1179,14 @@ impl App {
         id
     }
 
+    /// Download `id`'s name is only its address's guess (`guessed`): the server names it when
+    /// it starts (`Item::name_from_url`).
+    fn name_guessed(&mut self, id: u64, guessed: bool) {
+        if guessed && let Some(item) = self.item(id) {
+            item.name_from_url = true;
+        }
+    }
+
     /// `/show <window>` (mdm_ipc::Command::show): open one of the windows by name, as its menu
     /// command does. Unknown names do nothing.
     fn show_named(&mut self, name: &str, ctx: &egui::Context) {
@@ -1327,6 +1341,7 @@ impl App {
         // Options → Downloads → "Show start download dialog" off: start (or only queue) at once.
         let skip_dialog = !self.settings.show_start_dialog;
         if cmd.later || cmd.silent || skip_dialog {
+            let guessed = cmd.name.is_none();
             let name = cmd
                 .name
                 .clone()
@@ -1338,7 +1353,7 @@ impl App {
                 .clone()
                 .map(PathBuf::from)
                 .unwrap_or_else(|| self.settings.category_dir(category, &self.downloads));
-            let dest = mdm_engine::naming::unique_path(&dir, &name);
+            let dest = mdm_engine::naming::destination(&dir, &name);
             let later = cmd.later || (skip_dialog && self.settings.only_add_to_queue);
             let source = if cmd.referer.is_some() || cmd.cookies.is_some() {
                 crate::i18n::mark("from the browser")
@@ -1347,6 +1362,7 @@ impl App {
             };
             let size = cmd.size;
             let id = self.push_item(url, dest, category, String::new(), size, None, cmd, source);
+            self.name_guessed(id, guessed);
             if later {
                 self.queues[0].items.push(id);
             } else {
@@ -1474,11 +1490,17 @@ impl App {
             if item.dest.parent().is_none_or(std::path::Path::is_dir) {
                 item.downloaded = 0;
             }
+            // A name nobody gave (the address's guess) is the server's to give: into the folder,
+            // under its Content-Disposition name (#28); the row follows the file made.
+            let dest = match item.dest.parent() {
+                Some(dir) if item.name_from_url => Destination::Dir(dir.to_owned()),
+                _ => Destination::File(item.dest.clone()),
+            };
             Download::start(
                 Request {
                     url: item.url.clone(),
                     headers,
-                    dest: Destination::File(item.dest.clone()),
+                    dest,
                 },
                 opts,
             )
@@ -1808,7 +1830,7 @@ impl App {
         let move_to = c
             .move_to
             .filter(|dir| item.dest.parent() != Some(dir.as_path()))
-            .map(|dir| mdm_engine::naming::unique_path(&dir, &item.file_name));
+            .map(|dir| mdm_engine::naming::destination(&dir, &item.file_name));
         self.dirty = true;
         if let Some(target) = move_to {
             self.start_move(c.id, target);
@@ -1914,7 +1936,7 @@ impl App {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_else(|| "video".into());
-        let dest = mdm_engine::naming::unique_path(&folder, &name);
+        let dest = mdm_engine::naming::destination(&folder, &name);
         let id = self.push_item(
             add.page,
             dest,
@@ -2124,7 +2146,7 @@ impl App {
             let name = mdm_engine::naming::file_name(None, &url);
             let category = Category::of(&name);
             let dir = self.settings.category_dir(category, &self.downloads);
-            let dest = mdm_engine::naming::unique_path(&dir, &name);
+            let dest = mdm_engine::naming::destination(&dir, &name);
             let id = self.push_item(
                 url,
                 dest,
@@ -2135,6 +2157,7 @@ impl App {
                 Default::default(),
                 crate::i18n::mark("by batch download"),
             );
+            self.name_guessed(id, true);
             ids.push(id);
         }
         self.queue_later(ids, self.settings.queue_panel_batch);
@@ -4534,7 +4557,7 @@ impl App {
             let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
             let category = Category::of(&name);
             let dir = self.settings.category_dir(category, &self.downloads);
-            let dest = mdm_engine::naming::unique_path(&dir, &name);
+            let dest = mdm_engine::naming::destination(&dir, &name);
             let context = ipc::Command {
                 referer: d.referer,
                 cookies: d.cookies,
@@ -4552,6 +4575,7 @@ impl App {
                 context,
                 crate::i18n::mark("by import"),
             );
+            self.name_guessed(id, true);
             self.queues[0].items.push(id);
         }
         self.dirty = true;
@@ -5345,6 +5369,7 @@ impl App {
             }
         }
         for (url, login, context) in unseen {
+            let guessed = context.name.is_none();
             let name = context
                 .name
                 .clone()
@@ -5352,7 +5377,7 @@ impl App {
             let name = mdm_engine::naming::sanitize(&name);
             let category = Category::of(&name);
             let dir = self.settings.category_dir(category, &self.downloads);
-            let dest = mdm_engine::naming::unique_path(&dir, &name);
+            let dest = mdm_engine::naming::destination(&dir, &name);
             let size = context.size;
             let id = self.push_item(
                 url,
@@ -5364,6 +5389,7 @@ impl App {
                 context,
                 crate::i18n::mark("from the browser"),
             );
+            self.name_guessed(id, guessed);
             self.queues[0].items.push(id);
         }
         // The channel's receiver goes with it: later commands are answered "gone".

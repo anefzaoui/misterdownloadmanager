@@ -89,9 +89,22 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Files downloaded from the web are marked as downloaded from the internet, as the browser marks
   its own: Windows' Mark of the Web (SmartScreen, Office's Protected View), macOS' quarantine.
 - Downloads from a private window are kept out of the saved list.
+- **MDM follows every kind of redirect a browser does** ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)):
+  any HTTP redirect (301, 302, 303, 307, 308), up to 20 in a row instead of 10, and the pages
+  download sites put in between ("your download starts in a moment"), which lead on with a
+  `Refresh` header or a `<meta http-equiv="refresh">`: their wait is kept (up to 10 seconds), and
+  the cookies they set go along while the download runs (not into a resume later). A page that
+  leads on only through its own script still stops there.
 
 ### Fixed
 
+- A download whose address ends in a long token (file hosts such as AnkerGames' mirrors) failed
+  with "the path is too long for Windows" before it started
+  ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)). Every new download's name
+  is now shortened to fit its folder (keeping the extension), and when nobody named the file
+  (no name from the browser, no answer to the look-up, not edited), it gets the name the server
+  gives, as in a browser: `Call-of-Duty-Infinite-Warfare-AnkerGames.zip` rather than the
+  address's token.
 - Bangla shows Bangladesh's flag instead of India's, in the language picker, on the website and
   in the README ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27)).
 - MDM closed with an internal error when a window opened while the main window was minimized

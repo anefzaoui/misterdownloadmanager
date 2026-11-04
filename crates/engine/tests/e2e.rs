@@ -668,6 +668,66 @@ fn redirect_path(target: &str) -> String {
     format!("/redirect?to={enc}")
 }
 
+/// Every kind of redirect in one chain (#28): 301, 307, a page with a meta refresh (and a wait),
+/// 308, then a page with a `Refresh` header that sets a cookie, and the file; named by its own
+/// address, its wait kept, the cookie on every connection.
+#[tokio::test]
+async fn every_kind_of_redirect_is_followed() {
+    let s = server("").await;
+    let enc = |u: &str| url::form_urlencoded::byte_serialize(u.as_bytes()).collect::<String>();
+    let file = s.url("/gen/8M/the-real-name.bin?seed=31");
+    let header_page = s.url(&format!(
+        "/hop?how=header&cookie={}&to={}",
+        enc("step=2"),
+        enc(&file)
+    ));
+    let to_header_page = s.url(&format!("/redirect?code=308&to={}", enc(&header_page)));
+    let meta_page = s.url(&format!("/hop?how=meta&wait=1&to={}", enc(&to_header_page)));
+    let to_meta_page = s.url(&format!("/redirect?code=307&to={}", enc(&meta_page)));
+    let start = format!("/redirect?code=301&to={}", enc(&to_meta_page));
+
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url(&start).parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let started = std::time::Instant::now();
+    let out = Download::start(req, fast_opts()).wait().await.unwrap();
+    // The meta page's 1-second wait was kept.
+    assert!(started.elapsed() >= std::time::Duration::from_secs(1));
+    assert_eq!(out.path.file_name().unwrap(), "the-real-name.bin");
+    let mut want = vec![0; 8 << 20];
+    content::fill(31, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
+    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+    let log = s.log();
+    // Several connections fetched the file, every one with the page's cookie.
+    assert!(log.len() > 1, "one connection only: {}", log.len());
+    assert!(
+        log.iter().all(|e| e.cookie.as_deref() == Some("step=2")),
+        "the page's cookie went on to the file: {:?}",
+        log.iter().map(|e| &e.cookie).collect::<Vec<_>>()
+    );
+}
+
+/// A web page that leads nowhere is the download itself, asked for again after the look.
+#[tokio::test]
+async fn a_plain_web_page_is_still_downloaded() {
+    let s = server("").await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/8K/page.html?seed=32").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let out = Download::start(req, fast_opts()).wait().await.unwrap();
+    assert_eq!(out.size, 8 << 10);
+}
+
 #[tokio::test]
 async fn signed_links_that_expire_while_downloading_are_refreshed() {
     // Each redirect hands out a link valid for 400 ms; connections drop every 256 KB, so they

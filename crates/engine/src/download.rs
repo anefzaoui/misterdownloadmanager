@@ -496,7 +496,7 @@ impl AsGet {
         self.0.lock().unwrap().contains(url)
     }
 
-    /// reqwest's own policy (at most 10 redirects), noting the method each hop leaves with.
+    /// Following up to `MAX_REDIRECTS`, noting the method each hop leaves with.
     fn policy(&self) -> reqwest::redirect::Policy {
         let seen = self.0.clone();
         reqwest::redirect::Policy::custom(move |attempt| {
@@ -510,10 +510,14 @@ impl AsGet {
                 seen.remove(attempt.url());
             }
             drop(seen);
-            reqwest::redirect::Policy::default().redirect(attempt)
+            reqwest::redirect::Policy::limited(MAX_REDIRECTS).redirect(attempt)
         })
     }
 }
+
+/// Most HTTP redirects (301, 302, 303, 307, 308) a request follows, as browsers do (20; reqwest
+/// stops at 10): download links often go through a tracker, a mirror picker and a CDN.
+const MAX_REDIRECTS: usize = 20;
 
 /// The body a POST download sends to an address reached with or without a redirect to a GET
 /// (`as_get`); for a GET, the body's headers go too, as browsers drop them. None: a GET.
@@ -638,8 +642,9 @@ pub struct ProbeInfo {
     pub file_name: String,
 }
 
-/// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name; the body
-/// is not read.
+/// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name, through
+/// the redirects `get` follows (a waiting page's look reads up to `PAGE_PEEK` of it and keeps its
+/// wait); the file's own body is not read.
 pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<ProbeInfo, Error> {
     if crate::ftp::is_ftp(&url) {
         let site = crate::ftp::Site::new(&url, &headers, opts)?;
@@ -650,7 +655,7 @@ pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<Probe
             size: facts.size,
         });
     }
-    let resp = get(
+    let (resp, ..) = get(
         &client(opts, &url, &AsGet::default())?,
         url,
         headers,
@@ -1086,7 +1091,7 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
     };
     let builder = match opts.post {
         Some(_) => builder.redirect(as_get.policy()),
-        None => builder,
+        None => builder.redirect(reqwest::redirect::Policy::limited(MAX_REDIRECTS)),
     };
     Ok(builder
         .dns_resolver(Arc::new(dns::Resolver::new(&opts.hosts, port)))
@@ -1138,7 +1143,8 @@ async fn run_fresh(
     let as_get = AsGet::default();
     let client0 = client(&opts, &req.url, &as_get)?;
     shared.conn(0, |_| {});
-    let (resp, ttfb) = first_get(&client0, &req.url, &req.headers, &opts, shared, cancel).await?;
+    let ((resp, headers), ttfb) =
+        first_get(&client0, &req.url, &req.headers, &opts, shared, cancel).await?;
     let preempt_after = (ttfb * PREEMPT_TTFB).max(PREEMPT_MIN);
     let size = match resp.status() {
         StatusCode::OK => resp.content_length(),
@@ -1166,8 +1172,9 @@ async fn run_fresh(
         resp.status(),
         size.map_or("unknown".to_owned(), disk::human),
     ));
-    // Credentials stay with the host they were given for (see `scoped_headers`).
-    let mut headers = scoped_headers(&req.headers, &req.url, &final_url);
+    // Credentials stay with the host they were given for, with the cookies pages set on the way
+    // (`get`).
+    let mut headers = headers;
     // A POST stays one if its redirects kept it (307, 308); it is sent again only once the
     // server has answered a range (206): `Accept-Ranges` alone isn't proof, and a form may do
     // something each time it is posted (an export, an order).
@@ -1253,7 +1260,7 @@ async fn run_fresh(
             Err(Error::NoRanges) => {
                 *shared.planner.lock().unwrap() = None;
                 shared.view.lock().unwrap().resumable = Some(false);
-                let resp = get(&client0, final_url, headers, post.as_ref(), cancel).await?;
+                let (resp, ..) = get(&client0, final_url, headers, post.as_ref(), cancel).await?;
                 let body = Body::Http(resp);
                 single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
             }
@@ -1804,28 +1811,228 @@ async fn save_state(
     Ok(())
 }
 
-/// A plain `GET` (no Range), or a POST of `post`, that must answer 200 or 206.
+/// A plain `GET` (no Range), or a POST of `post`, that must answer 200 or 206. A GET follows
+/// the HTTP redirects (the client's policy) and then the redirects a page makes itself (#28):
+/// a download site's "your download starts in a moment" page, sent with a `Refresh` header or a
+/// `<meta http-equiv="refresh">`, leads on to the file as it does in a browser (`refresh_target`,
+/// `meta_refresh`). Its wait, up to `PAGE_WAIT`, is kept, and the cookies it sets go on to its
+/// own host. A page that leads on only with a script isn't followed: it stays the answer.
+///
+/// With the answer, `headers` as the download goes on with them at the address it ended at:
+/// credentials scoped to it (`scoped_headers`), the pages' cookies added; and how long the last
+/// request took to answer (a page's wait and its own request not counted: the time to first byte).
 async fn get(
     client: &Client,
     url: Url,
     headers: HeaderMap,
     post: Option<&Bytes>,
     cancel: &CancellationToken,
-) -> Result<Response, Error> {
-    let req = build(client, url, post).headers(headers);
-    let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
-    match resp.status() {
-        StatusCode::OK | StatusCode::PARTIAL_CONTENT => Ok(resp),
-        s if s == StatusCode::TOO_MANY_REQUESTS || s == StatusCode::SERVICE_UNAVAILABLE => {
-            Err(Error::Throttled(s, retry_after(resp.headers())))
+) -> Result<(Response, HeaderMap, Duration), Error> {
+    let (mut url, mut headers) = (url, headers);
+    // After a page's redirect, a page read but leading nowhere is asked for again, as is.
+    let mut hops = 0;
+    loop {
+        let req = build(client, url.clone(), post).headers(headers.clone());
+        let asked = std::time::Instant::now();
+        let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
+        let took = asked.elapsed();
+        match resp.status() {
+            StatusCode::OK | StatusCode::PARTIAL_CONTENT => {}
+            s if s == StatusCode::TOO_MANY_REQUESTS || s == StatusCode::SERVICE_UNAVAILABLE => {
+                return Err(Error::Throttled(s, retry_after(resp.headers())));
+            }
+            s => return Err(Error::Status(s)),
         }
-        s => Err(Error::Status(s)),
+        // Where the HTTP redirects ended: the headers' credentials follow as reqwest's did.
+        let from = resp.url().clone();
+        headers = scoped_headers(&headers, &url, &from);
+        // A form is never posted again, and a page's own redirects end somewhere.
+        if post.is_some() || resp.status() != StatusCode::OK || hops >= MAX_PAGE_REDIRECTS {
+            return Ok((resp, headers, took));
+        }
+        let cookies = set_cookies(resp.headers());
+        let (wait, next) = match header_text(resp.headers(), header::REFRESH)
+            .and_then(|v| refresh_target(&v, &from))
+        {
+            Some(next) => next,
+            // A web page small enough to look into (larger ones aren't waiting pages).
+            None if is_web_page(resp.headers())
+                && resp.content_length().is_none_or(|n| n <= PAGE_PEEK as u64) =>
+            {
+                let page = read_up_to(resp, PAGE_PEEK, cancel).await?;
+                match meta_refresh(&page, &from) {
+                    Some(next) => next,
+                    // Just a page: asked for again, as its body went into looking.
+                    None => {
+                        add_cookies(&mut headers, &cookies);
+                        url = from;
+                        hops = MAX_PAGE_REDIRECTS;
+                        continue;
+                    }
+                }
+            }
+            None => return Ok((resp, headers, took)),
+        };
+        if !wait.is_zero() {
+            cancellable(cancel, async {
+                tokio::time::sleep(wait.min(PAGE_WAIT)).await;
+                Ok(())
+            })
+            .await?;
+        }
+        headers = scoped_headers(&headers, &from, &next);
+        // Its own host's, and never from https down to http (as the user's own cookies).
+        if next.host_str() == from.host_str()
+            && !(from.scheme() == "https" && next.scheme() != "https")
+        {
+            add_cookies(&mut headers, &cookies);
+        }
+        url = next;
+        hops += 1;
+    }
+}
+
+/// Most redirects in a row that pages make themselves (`get`).
+const MAX_PAGE_REDIRECTS: usize = 5;
+/// How much of a web page is read to find its redirect.
+const PAGE_PEEK: usize = 256 << 10;
+/// The longest wait a page asks for before it leads on that is kept.
+const PAGE_WAIT: Duration = Duration::from_secs(10);
+
+/// The first `max` bytes of `resp`'s body (all of it when shorter).
+async fn read_up_to(
+    mut resp: Response,
+    max: usize,
+    cancel: &CancellationToken,
+) -> Result<Vec<u8>, Error> {
+    let mut body = Vec::new();
+    while body.len() < max {
+        let chunk = cancellable(cancel, async { Ok(resp.chunk().await?) }).await?;
+        let Some(chunk) = chunk else { break };
+        body.extend_from_slice(&chunk);
+    }
+    body.truncate(max);
+    Ok(body)
+}
+
+/// Where a page leads on to and after how long, from its `Refresh` value or a meta refresh's
+/// `content` (`5; url=next.html`, `0;URL='https://…'`, `3, https://…`), relative to `base`.
+/// None unless it leads to another http(s) address: a page that only reloads itself is the
+/// answer.
+fn refresh_target(value: &str, base: &Url) -> Option<(Duration, Url)> {
+    let (delay, rest) = value.split_once([';', ','])?;
+    let delay = delay
+        .trim()
+        .parse::<f64>()
+        .ok()
+        .filter(|d| d.is_finite() && *d >= 0.0)?;
+    let rest = rest.trim();
+    // `url=` is optional; the address may be quoted.
+    let target = match rest.get(..3) {
+        Some(u) if u.eq_ignore_ascii_case("url") && rest[3..].trim_start().starts_with('=') => {
+            rest[3..].trim_start()[1..].trim()
+        }
+        _ => rest,
+    };
+    let target = target
+        .strip_prefix(['"', '\''])
+        .map_or(target, |t| t.trim_end_matches(['"', '\'']))
+        .replace("&amp;", "&");
+    let next = base.join(target.trim()).ok()?;
+    let mut same = next.clone();
+    same.set_fragment(base.fragment());
+    (matches!(next.scheme(), "http" | "https") && same != *base).then(|| {
+        (
+            Duration::from_secs_f64(delay.min(PAGE_WAIT.as_secs_f64())),
+            next,
+        )
+    })
+}
+
+/// The redirect a page's `<meta http-equiv="refresh" content="…">` makes (`refresh_target`).
+fn meta_refresh(page: &[u8], base: &Url) -> Option<(Duration, Url)> {
+    let page = String::from_utf8_lossy(page);
+    let lower = page.to_ascii_lowercase();
+    let mut at = 0;
+    while let Some(i) = lower[at..].find("<meta") {
+        let start = at + i;
+        let end = lower[start..].find('>').map_or(lower.len(), |e| start + e);
+        let tag = &page[start..end];
+        if attribute(tag, "http-equiv").is_some_and(|v| v.trim().eq_ignore_ascii_case("refresh"))
+            && let Some(next) = attribute(tag, "content").and_then(|c| refresh_target(&c, base))
+        {
+            return Some(next);
+        }
+        at = end;
+    }
+    None
+}
+
+/// The value of attribute `name` in the HTML tag `tag` (quoted or not), as written.
+fn attribute(tag: &str, name: &str) -> Option<String> {
+    let lower = tag.to_ascii_lowercase();
+    let mut from = 0;
+    while let Some(i) = lower[from..].find(name) {
+        let at = from + i;
+        from = at + name.len();
+        // A whole attribute name, followed by `=`.
+        let before = lower[..at].chars().next_back();
+        if before.is_some_and(|c| !c.is_whitespace() && c != '<') {
+            continue;
+        }
+        let rest = tag[from..].trim_start();
+        let Some(rest) = rest.strip_prefix('=') else {
+            continue;
+        };
+        let rest = rest.trim_start();
+        return Some(match rest.chars().next() {
+            Some(q @ ('"' | '\'')) => rest[1..].split(q).next().unwrap_or_default().to_owned(),
+            _ => rest
+                .split(|c: char| c.is_whitespace() || c == '>')
+                .next()
+                .unwrap_or_default()
+                .to_owned(),
+        });
+    }
+    None
+}
+
+/// The `name=value` pairs a response's `Set-Cookie` headers set.
+fn set_cookies(h: &HeaderMap) -> Vec<String> {
+    h.get_all(header::SET_COOKIE)
+        .iter()
+        .filter_map(|v| v.to_str().ok())
+        .filter_map(|v| v.split(';').next())
+        .map(str::trim)
+        .filter(|c| c.contains('='))
+        .map(str::to_owned)
+        .collect()
+}
+
+/// `cookies` added to the request's `Cookie` header, each replacing one of the same name.
+fn add_cookies(headers: &mut HeaderMap, cookies: &[String]) {
+    if cookies.is_empty() {
+        return;
+    }
+    let name = |c: &str| c.split('=').next().unwrap_or_default().trim().to_owned();
+    let new: HashSet<String> = cookies.iter().map(|c| name(c)).collect();
+    let mut all: Vec<String> = header_str(headers, header::COOKIE)
+        .unwrap_or_default()
+        .split(';')
+        .map(str::trim)
+        .filter(|c| !c.is_empty() && !new.contains(&name(c)))
+        .map(str::to_owned)
+        .collect();
+    all.extend(cookies.iter().cloned());
+    if let Ok(v) = HeaderValue::from_str(&all.join("; ")) {
+        headers.insert(header::COOKIE, v);
     }
 }
 
 /// The first request of a download, retried as a connection is (`retry_wait`) when it fails
 /// in a way a later try may not: a server busy at the moment the download starts no longer
-/// fails the whole download. With the answer, how long the try that got it waited for it.
+/// fails the whole download. With the answer (and the headers to go on with, `get`), how long its
+/// last request waited for it: a waiting page's delay isn't the server's time to first byte.
 async fn first_get(
     client: &Client,
     url: &Url,
@@ -1833,8 +2040,8 @@ async fn first_get(
     opts: &Options,
     shared: &Shared,
     cancel: &CancellationToken,
-) -> Result<(Response, Duration), Error> {
-    first_try(opts, shared, cancel, || {
+) -> Result<((Response, HeaderMap), Duration), Error> {
+    let ((resp, headers, took), _) = first_try(opts, shared, cancel, || {
         get(
             client,
             url.clone(),
@@ -1843,7 +2050,8 @@ async fn first_get(
             cancel,
         )
     })
-    .await
+    .await?;
+    Ok(((resp, headers), took))
 }
 
 /// `attempt` retried as `first_get` does; with its result, how long the try that got it took.
@@ -2541,6 +2749,68 @@ async fn cancellable<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn pages_lead_on_as_browsers_read_them() {
+        let base = Url::parse("https://site.test/download/abc").unwrap();
+        let at = |v: &str| refresh_target(v, &base).map(|(d, u)| (d.as_secs(), u.to_string()));
+        assert_eq!(
+            at("0; url=https://cdn.test/f.zip"),
+            Some((0, "https://cdn.test/f.zip".into()))
+        );
+        assert_eq!(
+            at("5;URL='/get/f.zip'"),
+            Some((5, "https://site.test/get/f.zip".into()))
+        );
+        assert_eq!(
+            at("3, next?a=1&amp;b=2"),
+            Some((3, "https://site.test/download/next?a=1&b=2".into()))
+        );
+        // The wait is capped; a page that reloads itself, or leads off the web, is the answer.
+        assert_eq!(at("600; url=/x").map(|a| a.0), Some(PAGE_WAIT.as_secs()));
+        assert_eq!(at("30"), None);
+        assert_eq!(at("0; url=abc#top"), None);
+        assert_eq!(at("0; url=javascript:alert(1)"), None);
+        assert_eq!(at("soon; url=/x"), None);
+
+        let page = |html: &str| meta_refresh(html.as_bytes(), &base).map(|(_, u)| u.to_string());
+        assert_eq!(
+            page(r#"<html><META HTTP-EQUIV="Refresh" CONTENT="0;URL=/file.zip"></html>"#),
+            Some("https://site.test/file.zip".into())
+        );
+        assert_eq!(
+            page("<meta content='2; url=https://cdn.test/a.bin' http-equiv=refresh>"),
+            Some("https://cdn.test/a.bin".into())
+        );
+        // Other meta tags, and attribute names inside others, don't count.
+        assert_eq!(
+            page(
+                r#"<meta name="description" content="0; url=/x"><meta data-http-equiv="refresh" content="0; url=/y">"#
+            ),
+            None
+        );
+        assert_eq!(page("<p>window.location = '/x'</p>"), None);
+    }
+
+    #[test]
+    fn a_pages_cookies_go_on_with_it() {
+        let mut h = HeaderMap::new();
+        h.insert(header::COOKIE, HeaderValue::from_static("a=1; session=old"));
+        let mut set = HeaderMap::new();
+        set.append(
+            header::SET_COOKIE,
+            HeaderValue::from_static("session=new; Path=/; HttpOnly"),
+        );
+        set.append(
+            header::SET_COOKIE,
+            HeaderValue::from_static("xsrf=t; Secure"),
+        );
+        add_cookies(&mut h, &set_cookies(&set));
+        assert_eq!(
+            header_str(&h, header::COOKIE),
+            Some("a=1; session=new; xsrf=t")
+        );
+    }
 
     #[test]
     fn flush_step_scales_with_the_file() {
