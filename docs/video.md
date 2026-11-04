@@ -48,6 +48,8 @@ When the video has subtitles, the **Subtitles** list offers them: the uploader's
 
 MDM offers the same choice again for the next video when it has that language.
 
+A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the **Download complete** window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.
+
 ## Playlists and mixes
 
 A page address that points at one video inside a playlist or a mix (for example `watch?v=…&list=…`) downloads that one video, never the whole list.

@@ -5362,10 +5362,6 @@
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>비디오 다운로드</g2></g1> — yt-dlp를 사용하여 비디오 페이지(YouTube, Vimeo 등)에서 비디오 다운로드."
   },
-  "9a04fafd60d38722": {
-   "source": "lines, then <x1/> (the subtitle files saved beside it).",
-   "text": "줄, 그 다음 <x1/> (옆에 저장된 자막 파일)."
-  },
   "9a26fd6f740cf884": {
    "source": "<g1>Show details &gt;&gt;</g1> (open by default) adds the connection view:",
    "text": "<g1>세부 정보 표시 &gt;&gt;</g1> (기본적으로 열림)는 연결 보기를 추가합니다."
@@ -5878,6 +5874,10 @@
    "source": "Select the previous / next download",
    "text": "이전/다음 다운로드 선택"
   },
+  "a969892ffa2cf159": {
+   "source": "lines, then <x1/>: the subtitle files saved beside it, and the languages the site refused (<x2/>; <x3/>: they came on a second try, beside the video instead of in it).",
+   "text": "줄, 다음 <x1/>: 동영상 옆에 저장된 자막 파일과 사이트에서 거부한 언어(<x2/>; <x3/>: 두 번째 시도에서 동영상 안에 있지 않고 동영상 옆에 나타남)."
+  },
   "a96cc3844e37e469": {
    "source": "You'll get an answer as soon as possible. A fix is released before the details are made public, and you're credited in the advisory and the release notes unless you'd rather not be. During the 0.x versions, only the latest release gets security fixes.",
    "text": "가능한 한 빨리 답변을 받으실 수 있습니다. 세부 정보가 공개되기 전에 수정 사항이 릴리스되며, 원하지 않는 경우를 제외하고 권고 및 릴리스 노트에 귀하의 공로가 인정됩니다. 0.x 버전에서는 최신 릴리스에만 보안 수정 사항이 적용됩니다."
@@ -6137,6 +6137,10 @@
   "af3e9dbec431793c": {
    "source": "Linux, the .tar.gz",
    "text": "Linux, .tar.gz"
+  },
+  "af517cc60e2f1001": {
+   "source": "A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the <g1>Download complete</g1> window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.",
+   "text": "사이트에서 너무 자주 요청하면 자막을 거부할 수 있습니다. YouTube가 특히 번역된 캡션에 대해 그렇습니다. 동영상은 그대로 저장됩니다. MDM은 20초 후에 자막을 다시 요청하며, 그래도 오지 않으면 <g1>다운로드 완료</g1> 창과 다운로드 로그에 어떤 자막이 누락되었는지, 그 이유는 무엇인지 표시됩니다. 나중에 다시 시도해 보세요. 동영상 안에 포함되어야 할 자막이 두 번째 시도에서만 오는 경우, 동영상 옆에 대신 저장됩니다."
   },
   "af94b963f6f4b003": {
    "source": "Why doesn't MDM take over my download?",

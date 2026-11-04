@@ -1979,6 +1979,19 @@
 #. label before the list of a video's subtitle languages
 #, machine
 	Subtitles	வசனங்கள்
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} மொழியில் உள்ள வசனங்கள் இரண்டாவது முயற்சியில் வந்தன: அவை வீடியோவில் இல்லை, வீடியோவுக்கு அருகில் உள்ளன.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} மொழியில் உள்ள வசனங்களைப் பதிவிறக்க முடியவில்லை: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} மொழியில் உள்ள வசனங்களைப் பதிவிறக்க முடியவில்லை: {site} மறுத்துவிட்டது (அதிக கோரிக்கைகள்).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	ஞாயிறு

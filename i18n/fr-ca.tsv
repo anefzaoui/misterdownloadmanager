@@ -1979,6 +1979,19 @@
 #. label before the list of a video's subtitle languages
 #, machine
 	Subtitles	Sous-titres
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Les sous-titres en {language} ont été téléchargés à la deuxième tentative : ils sont à côté de la vidéo, pas dedans.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	Les sous-titres en {language} n’ont pas pu être téléchargés : {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Les sous-titres en {language} n’ont pas pu être téléchargés : {site} a refusé (trop de requêtes).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	Dimanche

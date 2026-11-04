@@ -280,6 +280,10 @@ pub struct Item {
     /// Request context from the browser (Referer, Cookie, User-Agent); memory only.
     #[serde(skip)]
     pub context: mdm_ipc::Command,
+    /// What the Download complete window says besides (a video's subtitles the site refused,
+    /// #68), in the interface language; memory only.
+    #[serde(skip)]
+    pub notices: Vec<String>,
 }
 
 /// What runs a download: the engine (a file), yt-dlp (a video from a page), or librqbit (a
@@ -366,6 +370,35 @@ impl Job {
             Job::File(d) => d.speed_limit(),
             Job::Video { .. } | Job::Torrent(_) => None,
         }
+    }
+}
+
+/// A subtitle language a video came without, in the interface language (#68).
+pub fn sub_notice(p: &mdm_tools::video::SubProblem, site: &str) -> String {
+    use mdm_tools::video::SubReason;
+    let language = p.name.as_str();
+    if p.beside {
+        return crate::i18n::fmt(
+            // i18n: after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+            crate::i18n::t(
+                "Subtitles in {language} came on a second try: they're beside the video, not in it.",
+            ),
+            &[("language", language)],
+        );
+    }
+    match &p.reason {
+        SubReason::TooManyRequests => crate::i18n::fmt(
+            // i18n: after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+            crate::i18n::t(
+                "Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).",
+            ),
+            &[("language", language), ("site", site)],
+        ),
+        SubReason::Other(why) => crate::i18n::fmt(
+            // i18n: after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+            crate::i18n::t("Subtitles in {language} couldn't be downloaded: {reason}"),
+            &[("language", language), ("reason", why)],
+        ),
     }
 }
 
@@ -468,6 +501,7 @@ impl Item {
             snap: None,
             login: None,
             context: Default::default(),
+            notices: Vec::new(),
         }
     }
     /// Pull the engine's snapshot into the row. Returns true when the download just ended.
@@ -531,6 +565,7 @@ impl Item {
                 }
                 // A video and its subtitles (#68), marked as downloaded from the web once
                 // yt-dlp has saved them, as the engine's files are as they are created.
+                let mut notices = Vec::new();
                 if status == Status::Complete
                     && let Some(Live {
                         dl: Job::Video { job, url },
@@ -538,7 +573,16 @@ impl Item {
                     }) = &self.live
                     && matches!(url.scheme(), "http" | "https")
                 {
-                    let side = job.progress().side_files;
+                    let done = job.progress();
+                    // The subtitles the site wouldn't give: said in the log and the Download
+                    // complete window (the video is saved all the same).
+                    let site = url.host_str().unwrap_or("").trim_start_matches("www.");
+                    notices = done
+                        .sub_problems
+                        .iter()
+                        .map(|p| sub_notice(p, site))
+                        .collect();
+                    let side = done.side_files;
                     for f in s.file.iter().chain(side.iter()) {
                         #[cfg(windows)]
                         crate::win32::mark_downloaded(
@@ -554,6 +598,10 @@ impl Item {
                         );
                     }
                 }
+                for n in &notices {
+                    self.note(n.clone());
+                }
+                self.notices = notices;
                 self.live = None;
                 true
             }

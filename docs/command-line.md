@@ -69,7 +69,7 @@ With `--json` (before or after the command), every command prints JSON instead o
 | Command | Prints |
 |---|---|
 | `get`, `resume` | A `{"event": "progress", "downloaded", "size", "speed", "connections", "segments"}` line every half second, then `{"event": "done", "path", "size", "seconds"}`, or `{"event": "paused", "state"}` after `Ctrl+C` (`state` is the file `resume` takes). |
-| `video-get` | `{"event": "progress", "downloaded", "size", "speed"}` lines, then `{"event": "done", "path", "subtitles"}` (the subtitle files saved beside it). |
+| `video-get` | `{"event": "progress", "downloaded", "size", "speed"}` lines, then `{"event": "done", "path", "subtitles", "subtitle_problems"}`: the subtitle files saved beside it, and the languages the site refused (`{"code", "name", "reason", "beside"}`; `beside`: they came on a second try, beside the video instead of in it). |
 | `torrent-get` | `{"event": "progress", "phase", "downloaded", "size", "speed", "peers", "peers_seen"}` lines, then `{"event": "done", "path", "size"}`, or `{"event": "stopped", "downloaded", "seconds"}` with `--seconds`. |
 | `video-info` | `{"title", "choices": [{"label", "format", "size"}], "subtitles": [{"code", "name", "automatic"}]}`; a choice's `format` is what `video-get -f` takes, a subtitle's `code` what `--subs` takes. |
 | `torrent-info` | `{"name", "info_hash", "size", "files": [{"index", "size", "path"}]}`. |

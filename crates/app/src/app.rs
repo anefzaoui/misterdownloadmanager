@@ -1128,6 +1128,7 @@ impl App {
                         path: i.dest.clone(),
                         size: i.size.unwrap_or(i.downloaded),
                         dont_show: false,
+                        notices: i.notices.clone(),
                     });
                 }
             } else if !live {
@@ -3102,6 +3103,7 @@ impl App {
                     path: i.dest.clone(),
                     size: i.size.unwrap_or(i.downloaded),
                     dont_show: false,
+                    notices: i.notices.clone(),
                 });
             }
         }
@@ -4392,6 +4394,7 @@ impl App {
                 path: i.dest.clone(),
                 size: i.size.unwrap_or(i.downloaded),
                 dont_show: false,
+                notices: i.notices.clone(),
             });
         } else if i.live.is_none() {
             self.start(id, true);

@@ -1979,6 +1979,19 @@
 #. label before the list of a video's subtitle languages
 #, machine
 	Subtitles	सबटायटल्स
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} मधील उपशीर्षके दुसऱ्या प्रयत्नात आली: ती व्हिडिओमध्ये नसून व्हिडिओच्या बाजूला आहेत.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} मधील उपशीर्षके डाउनलोड करता आली नाहीत: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} मधील उपशीर्षके डाउनलोड करता आली नाहीत: {site} ने नकार दिला (खूप जास्त विनंत्या).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	रविवार

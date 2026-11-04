@@ -1979,6 +1979,19 @@
 #. label before the list of a video's subtitle languages
 #, machine
 	Subtitles	자막
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} 자막을 두 번째 시도에서 가져왔습니다. 동영상에 포함되지 않고 동영상 옆에 있습니다.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} 자막을 다운로드할 수 없습니다. {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} 자막을 다운로드할 수 없습니다. {site}에서 거부했습니다(요청이 너무 많음).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	일요일

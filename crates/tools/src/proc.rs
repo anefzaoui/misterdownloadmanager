@@ -12,6 +12,8 @@ use std::time::{Duration, Instant};
 
 /// Lines of stderr kept for error messages.
 const TAIL: usize = 20;
+/// How many `WARNING:` lines a run keeps (`Spawned::warnings`).
+const WARNINGS_KEPT: usize = 50;
 
 #[derive(Debug, thiserror::Error)]
 pub enum ProcError {
@@ -177,6 +179,9 @@ fn new_job() -> Option<win32job::Job> {
 pub struct Spawned {
     pub child: Child,
     tail: Arc<Mutex<VecDeque<String>>>,
+    /// Every `WARNING:` line (a few dozen at most): a subtitle yt-dlp couldn't get is said early,
+    /// and the tail has moved past it by the end (#68).
+    warnings: Arc<Mutex<Vec<String>>>,
     name: String,
     #[cfg(windows)]
     job: Option<win32job::Job>,
@@ -200,6 +205,11 @@ impl Spawned {
             .cloned()
             .collect::<Vec<_>>()
             .join("\n")
+    }
+
+    /// The tool's `WARNING:` lines so far, oldest first, without the word.
+    pub fn warnings(&self) -> Vec<String> {
+        self.warnings.lock().unwrap().clone()
     }
 
     /// A failure with what the tool said (its last `ERROR:` line, else its last line).
@@ -240,10 +250,17 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         job.assign_process(child.as_raw_handle() as isize).is_ok()
     });
     let tail = Arc::new(Mutex::new(VecDeque::new()));
+    let warnings = Arc::new(Mutex::new(Vec::new()));
     if let Some(err) = child.stderr.take() {
-        let tail = tail.clone();
+        let (tail, warnings) = (tail.clone(), warnings.clone());
         std::thread::spawn(move || {
             for line in BufReader::new(err).lines().map_while(Result::ok) {
+                if let Some(w) = line.strip_prefix("WARNING:") {
+                    let mut ws = warnings.lock().unwrap();
+                    if ws.len() < WARNINGS_KEPT {
+                        ws.push(w.trim().to_owned());
+                    }
+                }
                 let mut t = tail.lock().unwrap();
                 if t.len() >= TAIL {
                     t.pop_front();
@@ -255,6 +272,7 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
     Ok(Spawned {
         child,
         tail,
+        warnings,
         name: name.to_owned(),
         #[cfg(windows)]
         job,

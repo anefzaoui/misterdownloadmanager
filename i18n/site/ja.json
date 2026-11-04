@@ -5362,10 +5362,6 @@
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>ビデオのダウンロード</g2></g1> — yt-dlpを使って、動画ページ（YouTube、Vimeoなど）から動画をダウンロードします。"
   },
-  "9a04fafd60d38722": {
-   "source": "lines, then <x1/> (the subtitle files saved beside it).",
-   "text": "行、次に<x1/>（その横に保存された字幕ファイル）。"
-  },
   "9a26fd6f740cf884": {
    "source": "<g1>Show details &gt;&gt;</g1> (open by default) adds the connection view:",
    "text": "<g1>詳細を表示 &gt;&gt;</g1>（既定で開く）で接続ビューが追加されます。"
@@ -5878,6 +5874,10 @@
    "source": "Select the previous / next download",
    "text": "前/次のダウンロードを選択"
   },
+  "a969892ffa2cf159": {
+   "source": "lines, then <x1/>: the subtitle files saved beside it, and the languages the site refused (<x2/>; <x3/>: they came on a second try, beside the video instead of in it).",
+   "text": "行、次に<x1/>: その横に保存された字幕ファイル、およびサイトが拒否した言語（<x2/>; <x3/>: 2回目の試行で、動画内ではなく動画の横に表示されました）。"
+  },
   "a96cc3844e37e469": {
    "source": "You'll get an answer as soon as possible. A fix is released before the details are made public, and you're credited in the advisory and the release notes unless you'd rather not be. During the 0.x versions, only the latest release gets security fixes.",
    "text": "できるだけ早く返信いたします。詳細は公開される前に修正版がリリースされ、ご希望でない限り、アドバイザリとリリースノートに貢献者として記載されます。0.xバージョンでは、最新リリースのみがセキュリティ修正を受けます。"
@@ -6137,6 +6137,10 @@
   "af3e9dbec431793c": {
    "source": "Linux, the .tar.gz",
    "text": "Linux、.tar.gz"
+  },
+  "af517cc60e2f1001": {
+   "source": "A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the <g1>Download complete</g1> window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.",
+   "text": "サイトによっては、字幕の要求が多すぎると拒否されることがあります。特にYouTubeでは、翻訳されたキャプションでよく起こります。動画は問題なく保存されます。MDMは20秒後に字幕を再度要求し、それでも取得できない場合は、<g1>ダウンロード完了</g1>ウィンドウとダウンロードログに、どの字幕が不足しているか、その理由が表示されます。後でもう一度試してください。動画内に埋め込まれるはずの字幕が2回目の試行でしか取得できない場合、それらは動画の横に保存されます。"
   },
   "af94b963f6f4b003": {
    "source": "Why doesn't MDM take over my download?",

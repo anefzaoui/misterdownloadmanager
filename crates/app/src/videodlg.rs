@@ -569,16 +569,36 @@ impl VideoDialog {
             self.name_from_choice();
         }
 
-        text(
-            &p,
-            o.x + 11.0,
-            o.y + 266.0,
+        // The labels before the boxes: a column as wide as the longest of them in this
+        // language (German's "Speichern unter" is past the English 59 px), up to 150 px, the
+        // boxes after it; longer still, a label is cut and shown whole on hover.
+        let labels = [
             crate::i18n::t("Save to"),
-            winui::TEXT(),
-        );
+            crate::i18n::t("File name"),
+            // i18n: label before the list of a video's subtitle languages
+            crate::i18n::t("Subtitles"),
+        ];
+        let widest = labels
+            .iter()
+            .map(|l| winui::text_width(&p, l))
+            .fold(0.0, f32::max);
+        let bx = (11.0 + widest + 6.0).clamp(70.0, 150.0);
+        let label = |ui: &Ui, y: f32, s: &str, color| {
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                o.y + y,
+                s,
+                color,
+                o.x + bx - 5.0,
+                ("video-label", y as i32),
+            );
+        };
+        label(ui, 266.0, labels[0], winui::TEXT());
         winui::edit(
             ui,
-            r(o, 70.0, 253.0, 389.0, 21.0),
+            r(o, bx, 253.0, 459.0 - bx, 21.0),
             &mut self.folder,
             true,
             false,
@@ -601,21 +621,21 @@ impl VideoDialog {
         if let Some(d) = winui::picked(ui.ctx(), "video-folder") {
             self.folder = d.display().to_string();
         }
-        text(
-            &p,
-            o.x + 11.0,
-            o.y + 297.0,
-            crate::i18n::t("File name"),
-            winui::TEXT(),
-        );
+        label(ui, 297.0, labels[1], winui::TEXT());
         winui::edit(
             ui,
-            r(o, 70.0, 284.0, 419.0, 21.0),
+            r(o, bx, 284.0, 489.0 - bx, 21.0),
             &mut self.name,
             true,
             false,
         );
-        self.subtitles_row(ui, &p, o, ffmpeg.is_some());
+        let on = self.subtitles_row(ui, o, bx, ffmpeg.is_some());
+        let shade = if on {
+            winui::TEXT()
+        } else {
+            winui::TEXT_DISABLED()
+        };
+        label(ui, 328.0, labels[2], shade);
 
         // The choices belong to the address looked up: an edited address is looked up first
         // (it downloaded the new page with the old one's format and name).
@@ -687,7 +707,9 @@ impl VideoDialog {
 impl VideoDialog {
     /// Subtitles (#68): a language the video has, from the uploader or the site's automatic
     /// captions, saved beside the video (`<name>.<language>.srt`) or put into it (ffmpeg).
-    fn subtitles_row(&mut self, ui: &mut Ui, p: &egui::Painter, o: Pos2, ffmpeg: bool) {
+    /// The list starts at `bx`, after the labels' column; true when it can be chosen from (its
+    /// label is greyed otherwise).
+    fn subtitles_row(&mut self, ui: &mut Ui, o: Pos2, bx: f32, ffmpeg: bool) -> bool {
         let choice = self
             .video
             .as_ref()
@@ -695,20 +717,12 @@ impl VideoDialog {
             .cloned();
         let audio = choice.as_ref().is_some_and(mdm_tools::resolve::is_audio);
         let on = !self.subs.is_empty() && !audio;
-        winui::label(
-            p,
-            o.x + 11.0,
-            o.y + 328.0,
-            // i18n: label before the list of a video's subtitle languages
-            crate::i18n::t("Subtitles"),
-            on,
-        );
         let items = sub_items(&self.subs, self.video.is_some());
         let shown: Vec<&str> = items.iter().map(String::as_str).collect();
         let pick = if on { self.sub_pick } else { 0 };
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 70.0, 315.0, 200.0, 21.0),
+            r(o, bx, 315.0, 200.0, 21.0),
             &shown,
             pick.min(shown.len().saturating_sub(1)),
             on,
@@ -723,7 +737,7 @@ impl VideoDialog {
         let mut embed = self.embed && chosen && ffmpeg && holds;
         let resp = winui::checkbox_until(
             ui,
-            pos2(o.x + 282.0, o.y + 319.0),
+            pos2(o.x + bx + 212.0, o.y + 319.0),
             &mut embed,
             // i18n: checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
             "Put them into the video",
@@ -745,6 +759,7 @@ impl VideoDialog {
         if chosen && ffmpeg && holds {
             self.embed = embed;
         }
+        on
     }
 }
 

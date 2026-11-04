@@ -30,6 +30,103 @@ pub struct Progress {
     pub events: Vec<(std::time::SystemTime, String)>,
     /// Saved beside the video once it is done: its subtitle files (#68).
     pub side_files: Vec<PathBuf>,
+    /// Subtitles that didn't come with the video, once it is done (#68): the video is saved all
+    /// the same.
+    pub sub_problems: Vec<SubProblem>,
+}
+
+/// A subtitle language the site wouldn't give (#68).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SubProblem {
+    /// yt-dlp's code (`en`) and the site's name for it (`English`; the code when none).
+    pub code: String,
+    pub name: String,
+    pub reason: SubReason,
+    /// They came on the second try, but beside the video, not in it (they were to be embedded).
+    pub beside: bool,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum SubReason {
+    /// HTTP 429: the site limits how often subtitles may be fetched (YouTube does, most of all
+    /// for its machine-translated captions).
+    TooManyRequests,
+    /// yt-dlp's own words.
+    Other(String),
+}
+
+/// How long to wait before asking once more for the subtitles a site refused. A site that
+/// answers "too many requests" wants a pause, not a quick retry. `MDM_SUBS_RETRY_SECS`
+/// shortens it for the tests (tests/fake_ytdlp.rs).
+fn subs_retry_delay() -> std::time::Duration {
+    let secs = std::env::var("MDM_SUBS_RETRY_SECS")
+        .ok()
+        .and_then(|v| v.parse().ok())
+        .unwrap_or(20);
+    std::time::Duration::from_secs(secs)
+}
+
+/// The subtitle languages yt-dlp said it couldn't download (with `--ignore-errors` it goes on
+/// with the video and only warns: `Unable to download video subtitles for 'en': HTTP Error 429:
+/// Too Many Requests`), and why.
+fn subtitle_failures(warnings: &[String]) -> Vec<(String, SubReason)> {
+    const SAID: &str = "Unable to download video subtitles for '";
+    let mut out: Vec<(String, SubReason)> = Vec::new();
+    for w in warnings {
+        let Some(rest) = w.split_once(SAID).map(|(_, r)| r) else {
+            continue;
+        };
+        let Some((code, why)) = rest.split_once('\'') else {
+            continue;
+        };
+        let why = why.trim_start_matches(':').trim();
+        let reason =
+            if why.contains("429") || why.to_ascii_lowercase().contains("too many requests") {
+                SubReason::TooManyRequests
+            } else {
+                SubReason::Other(why.to_owned())
+            };
+        if !out.iter().any(|(c, _)| c == code) {
+            out.push((code.to_owned(), reason));
+        }
+    }
+    out
+}
+
+/// The site's name for a subtitle language, from the looked-up page (`code` when none).
+fn sub_name(info: &serde_json::Value, code: &str) -> String {
+    ["subtitles", "automatic_captions"]
+        .iter()
+        .find_map(|k| info[k][code][0]["name"].as_str())
+        .map(|n| n.trim().to_owned())
+        .filter(|n| !n.is_empty())
+        .unwrap_or_else(|| code.to_owned())
+}
+
+/// What a second, subtitles-only run needs (#68): what the first asked for, and its own
+/// arguments (the output name, the browser's context, where ffmpeg is).
+#[derive(Clone, Debug)]
+struct SubsRetry {
+    automatic: bool,
+    embed: bool,
+    ffmpeg: bool,
+    base: Vec<String>,
+}
+
+impl SubsRetry {
+    /// yt-dlp's arguments to fetch `codes` again, beside the video (a second run can't put them
+    /// into a video already saved).
+    fn args(&self, codes: &[String]) -> Vec<String> {
+        let again = Subs {
+            langs: codes.to_vec(),
+            automatic: self.automatic,
+            embed: false,
+        };
+        let mut out = self.base.clone();
+        out.push("--skip-download".into());
+        out.extend(subtitle_args(&again, self.ffmpeg));
+        out
+    }
 }
 
 /// Which subtitles to save with a video (#68). `langs` empty: none.
@@ -87,6 +184,10 @@ fn subtitle_args(subs: &Subs, ffmpeg: bool) -> Vec<String> {
     if embed {
         out.push("--embed-subs".into());
     }
+    // A subtitle the site refuses must not cost the video: yt-dlp stops on it unless told to
+    // go on, and then only warns (`subtitle_failures`). Whether the video was saved is checked
+    // on its own (`attempt`).
+    out.push("--ignore-errors".into());
     out
 }
 
@@ -147,7 +248,8 @@ type Child = Arc<Mutex<Option<proc::Spawned>>>;
 
 /// How one run of yt-dlp ended.
 enum Attempt {
-    Done(PathBuf),
+    /// The video saved, and the subtitles that didn't come with it.
+    Done(PathBuf, Vec<SubProblem>),
     Stopped,
     /// `rerouted`: links were moved to other servers for this run.
     Failed {
@@ -166,11 +268,12 @@ fn supervise(
     progress: &Mutex<Progress>,
     child: &Child,
     expected: Option<u64>,
+    retry: Option<&SubsRetry>,
 ) {
     for n in 0..2 {
-        match attempt(exe, url, ours, progress, child, expected) {
+        match attempt(exe, url, ours, progress, child, expected, retry) {
             Attempt::Stopped => return,
-            Attempt::Done(f) => {
+            Attempt::Done(f, problems) => {
                 // The saved file's own size: a merged video or a converted MP3 isn't the size
                 // of what came down.
                 let saved = std::fs::metadata(&f).ok().map(|m| m.len());
@@ -179,6 +282,7 @@ fn supervise(
                 if p.state != State::Stopped {
                     p.speed = 0.0;
                     p.side_files = side;
+                    p.sub_problems = problems;
                     if let Some(len) = saved {
                         p.total = Some(len);
                         p.downloaded = len;
@@ -275,59 +379,52 @@ impl Meter {
     }
 }
 
-/// One run: look the page up, move links off unreachable servers, download from that list.
-fn attempt(
+/// How one yt-dlp run on the looked-up page ended.
+struct Ran {
+    status: std::io::Result<std::process::ExitStatus>,
+    /// Where it said it saved the file (`MDMF`).
+    saved: Option<PathBuf>,
+    warnings: Vec<String>,
+    /// What it said when it failed.
+    failure: String,
+}
+
+/// Run yt-dlp with `ours` on the page looked up into `file`, following its progress with
+/// `meter`. None: stopped before or while it ran.
+fn run(
     exe: &Path,
-    url: &str,
     ours: &[String],
+    file: &Path,
     progress: &Mutex<Progress>,
     child: &Child,
-    expected: Option<u64>,
-) -> Attempt {
-    let failed = |error: String, rerouted: bool| Attempt::Failed { error, rerouted };
-    let mut info = match look_up(exe, url) {
-        Ok(v) => v,
-        Err(e) => return failed(e, false),
-    };
-    let prober = servers::Prober::new();
-    let swaps = servers::reroute(&mut info, servers::reachable, |l, h| prober.serves(l, h));
-    for (dead, alt) in &swaps {
-        progress.lock().unwrap().events.push((
-            std::time::SystemTime::now(),
-            format!("The server {dead} can't be reached; downloading from {alt}"),
-        ));
-    }
-    let rerouted = !swaps.is_empty();
-    let file = info_file();
-    if let Err(e) = std::fs::write(&file, info.to_string()) {
-        return failed(format!("Cannot write the video information: {e}"), rerouted);
-    }
-    let _cleanup = Remove(file.clone());
+    mut meter: Option<&mut Meter>,
+) -> Result<Option<Ran>, String> {
     let stdout = {
         // Under the child's lock: stop() either came first (nothing starts) or finds the child
         // to kill.
         let mut slot = child.lock().unwrap();
         if progress.lock().unwrap().state == State::Stopped {
-            return Attempt::Stopped;
+            return Ok(None);
         }
         let spawned =
-            proc::ytdlp_info(exe, &[], ours, &file).and_then(|cmd| proc::spawn(cmd, "yt-dlp"));
+            proc::ytdlp_info(exe, &[], ours, file).and_then(|cmd| proc::spawn(cmd, "yt-dlp"));
         match spawned {
             Ok(mut s) => {
                 let out = s.child.stdout.take().expect("piped");
                 *slot = Some(s);
                 out
             }
-            Err(e) => return failed(e.to_string(), rerouted),
+            Err(e) => return Err(e.to_string()),
         }
     };
     let mut saved = None;
-    let mut meter = Meter::new(expected);
     for line in BufReader::new(stdout).lines().map_while(Result::ok) {
         if let Some(rest) = line.strip_prefix("MDMF ") {
             saved = Some(PathBuf::from(rest.trim()));
-        } else if let Some(rest) = line.strip_prefix("MDMP ") {
-            meter.line(rest, &mut progress.lock().unwrap());
+        } else if let Some(rest) = line.strip_prefix("MDMP ")
+            && let Some(m) = meter.as_deref_mut()
+        {
+            m.line(rest, &mut progress.lock().unwrap());
         }
     }
     // Poll (the lock is free in between, so stop() can still kill it).
@@ -346,21 +443,163 @@ fn attempt(
     };
     std::thread::sleep(std::time::Duration::from_millis(50));
     if progress.lock().unwrap().state == State::Stopped {
-        return Attempt::Stopped;
+        return Ok(None);
     }
-    match (status, saved) {
-        (Ok(s), Some(f)) if s.success() => Attempt::Done(f),
-        (Ok(s), None) if s.success() => {
-            failed("yt-dlp didn't say where it saved the file".into(), rerouted)
+    let slot = child.lock().unwrap();
+    let (warnings, failure) = slot.as_ref().map_or_else(
+        || (Vec::new(), "yt-dlp stopped".to_owned()),
+        |s| (s.warnings(), s.failure().to_string()),
+    );
+    Ok(Some(Ran {
+        status,
+        saved,
+        warnings,
+        failure,
+    }))
+}
+
+/// Wait `d`, or less if the download is stopped meanwhile (false then).
+fn pause(d: std::time::Duration, progress: &Mutex<Progress>) -> bool {
+    let end = std::time::Instant::now() + d;
+    while std::time::Instant::now() < end {
+        if progress.lock().unwrap().state == State::Stopped {
+            return false;
         }
-        _ => failed(
-            child
-                .lock()
-                .unwrap()
-                .as_ref()
-                .map_or_else(|| "yt-dlp stopped".to_owned(), |s| s.failure().to_string()),
-            rerouted,
-        ),
+        std::thread::sleep(std::time::Duration::from_millis(100));
+    }
+    progress.lock().unwrap().state != State::Stopped
+}
+
+/// One run: look the page up, move links off unreachable servers, download from that list.
+/// Subtitles the site refused are asked for once more after a pause (`retry`), beside the video;
+/// the ones still refused are reported with it, never failing it.
+fn attempt(
+    exe: &Path,
+    url: &str,
+    ours: &[String],
+    progress: &Mutex<Progress>,
+    child: &Child,
+    expected: Option<u64>,
+    retry: Option<&SubsRetry>,
+) -> Attempt {
+    let failed = |error: String, rerouted: bool| Attempt::Failed { error, rerouted };
+    let mut info = match look_up(exe, url) {
+        Ok(v) => v,
+        Err(e) => return failed(e, false),
+    };
+    let prober = servers::Prober::new();
+    let swaps = servers::reroute(&mut info, servers::reachable, |l, h| prober.serves(l, h));
+    for (dead, alt) in &swaps {
+        note(
+            progress,
+            format!("The server {dead} can't be reached; downloading from {alt}"),
+        );
+    }
+    let rerouted = !swaps.is_empty();
+    let file = info_file();
+    if let Err(e) = std::fs::write(&file, info.to_string()) {
+        return failed(format!("Cannot write the video information: {e}"), rerouted);
+    }
+    let _cleanup = Remove(file.clone());
+    let mut meter = Meter::new(expected);
+    let ran = match run(exe, ours, &file, progress, child, Some(&mut meter)) {
+        Ok(Some(r)) => r,
+        Ok(None) => return Attempt::Stopped,
+        Err(e) => return failed(e, rerouted),
+    };
+    let video = match (&ran.status, ran.saved) {
+        // `--ignore-errors` (subtitles asked) lets yt-dlp end well with no file: the file
+        // itself is the proof.
+        (Ok(s), Some(f)) if s.success() && f.is_file() => f,
+        (Ok(s), Some(_)) if s.success() => {
+            return failed(
+                "yt-dlp said it saved the file, but it isn't there".into(),
+                rerouted,
+            );
+        }
+        (Ok(s), None) if s.success() => {
+            return failed("yt-dlp didn't say where it saved the file".into(), rerouted);
+        }
+        _ => return failed(ran.failure, rerouted),
+    };
+    let refused = subtitle_failures(&ran.warnings);
+    if refused.is_empty() {
+        return Attempt::Done(video, Vec::new());
+    }
+    for (code, why) in &refused {
+        note(
+            progress,
+            format!(
+                "Subtitles in {code} couldn't be downloaded: {}",
+                english(why)
+            ),
+        );
+    }
+    // Once more after a pause, for the ones refused (a site limiting requests often gives them
+    // a little later).
+    let mut still = refused.clone();
+    if let Some(r) = retry {
+        let delay = subs_retry_delay();
+        note(
+            progress,
+            format!("Asking for the subtitles again in {} s", delay.as_secs()),
+        );
+        if !pause(delay, progress) {
+            return Attempt::Done(video, Vec::new());
+        }
+        let codes: Vec<String> = refused.iter().map(|(c, _)| c.clone()).collect();
+        match run(exe, &r.args(&codes), &file, progress, child, None) {
+            Ok(Some(again)) if again.status.as_ref().is_ok_and(|s| s.success()) => {
+                still = subtitle_failures(&again.warnings);
+            }
+            Ok(None) => return Attempt::Done(video, Vec::new()),
+            _ => {}
+        }
+    }
+    let mut problems = Vec::new();
+    for (code, why) in &refused {
+        let gone = still.iter().find(|(c, _)| c == code);
+        match gone {
+            Some((_, why)) => problems.push(SubProblem {
+                code: code.clone(),
+                name: sub_name(&info, code),
+                reason: why.clone(),
+                beside: false,
+            }),
+            None => {
+                note(
+                    progress,
+                    format!("Subtitles in {code} came on the second try"),
+                );
+                // Asked into the video, they're beside it now.
+                if retry.is_some_and(|r| r.embed) {
+                    problems.push(SubProblem {
+                        code: code.clone(),
+                        name: sub_name(&info, code),
+                        reason: why.clone(),
+                        beside: true,
+                    });
+                }
+            }
+        }
+    }
+    Attempt::Done(video, problems)
+}
+
+/// A line for the download's log (English, as yt-dlp's own).
+fn note(progress: &Mutex<Progress>, text: String) {
+    progress
+        .lock()
+        .unwrap()
+        .events
+        .push((std::time::SystemTime::now(), text));
+}
+
+/// A subtitle refusal in the log's words.
+fn english(r: &SubReason) -> String {
+    match r {
+        SubReason::TooManyRequests => "the site refused (too many requests)".into(),
+        SubReason::Other(why) => why.clone(),
     }
 }
 
@@ -410,6 +649,8 @@ impl VideoJob {
         // What comes down is the sound as the site has it, not the MP3 the choice's size
         // estimated: the progress follows yt-dlp's own total.
         let expected = if mp3.is_some() { None } else { expected };
+        // Subtitles go with a picture only (none for an MP3).
+        let with_subs = mp3.is_none() && !subs.langs.is_empty();
         let mut ours: Vec<String> = vec![
             "-f".into(),
             format.into(),
@@ -429,6 +670,12 @@ impl VideoJob {
         if let Some(r) = rate {
             ours.extend(["--limit-rate".into(), r.to_string()]);
         }
+        // A subtitles-only second run, for the ones a site refuses (#68): the same output name.
+        let mut retry_base: Vec<String> = vec![
+            "-o".into(),
+            output.to_string_lossy().into_owned(),
+            "--no-playlist".into(),
+        ];
         match mp3 {
             Some(q) => ours.extend([
                 "-x".into(),
@@ -440,6 +687,7 @@ impl VideoJob {
             None => ours.extend(subtitle_args(subs, ffmpeg.is_some())),
         }
         let (theirs, cookies) = browser.args(url)?;
+        retry_base.extend(theirs.iter().cloned());
         ours.extend(theirs);
         if let Some(dir) = ffmpeg.and_then(Path::parent) {
             ours.extend([
@@ -448,6 +696,19 @@ impl VideoJob {
                 "--merge-output-format".into(),
                 "mp4".into(),
             ]);
+            retry_base.extend([
+                "--ffmpeg-location".into(),
+                dir.to_string_lossy().into_owned(),
+            ]);
+        }
+        let retry = with_subs.then(|| SubsRetry {
+            automatic: subs.automatic,
+            embed: subs.embed && ffmpeg.is_some(),
+            ffmpeg: ffmpeg.is_some(),
+            base: retry_base,
+        });
+        for a in retry.iter().flat_map(|r| r.base.iter()) {
+            proc::safe(a)?;
         }
         for a in &ours {
             proc::safe(a)?;
@@ -459,6 +720,7 @@ impl VideoJob {
             speed: 0.0,
             events: Vec::new(),
             side_files: Vec::new(),
+            sub_problems: Vec::new(),
         }));
         let child: Child = Arc::new(Mutex::new(None));
         {
@@ -469,7 +731,15 @@ impl VideoJob {
                 let _cookies = cookies;
                 // A panic in here must not leave the download "running" forever.
                 let run = std::panic::AssertUnwindSafe(|| {
-                    supervise(&exe, &url, &ours, &progress, &child, expected)
+                    supervise(
+                        &exe,
+                        &url,
+                        &ours,
+                        &progress,
+                        &child,
+                        expected,
+                        retry.as_ref(),
+                    )
                 });
                 if std::panic::catch_unwind(run).is_err() {
                     let mut p = progress.lock().unwrap_or_else(|e| e.into_inner());
@@ -618,6 +888,7 @@ mod tests {
             speed: 0.0,
             events: Vec::new(),
             side_files: Vec::new(),
+            sub_problems: Vec::new(),
         };
         lines
             .iter()
@@ -683,25 +954,64 @@ mod tests {
         assert!(subtitle_args(&Subs::default(), true).is_empty());
         assert_eq!(
             s(subtitle_args(&subs(&["fr"], false, false), true)),
-            "--write-subs --sub-langs fr --sub-format srt/best --convert-subs srt"
+            "--write-subs --sub-langs fr --sub-format srt/best --convert-subs srt --ignore-errors"
         );
         assert_eq!(
             s(subtitle_args(&subs(&["fr"], false, false), false)),
-            "--write-subs --sub-langs fr --sub-format srt/vtt/best"
+            "--write-subs --sub-langs fr --sub-format srt/vtt/best --ignore-errors"
         );
         assert_eq!(
             s(subtitle_args(&subs(&["en-orig"], true, true), true)),
-            "--write-auto-subs --sub-langs en-orig --sub-format srt/best --convert-subs srt --embed-subs"
+            "--write-auto-subs --sub-langs en-orig --sub-format srt/best --convert-subs srt --embed-subs --ignore-errors"
         );
         assert_eq!(
             s(subtitle_args(&subs(&[ALL_UPLOADERS], false, true), true)),
-            "--sub-langs all,-live_chat --sub-format srt/best --convert-subs srt --embed-subs"
+            "--sub-langs all,-live_chat --sub-format srt/best --convert-subs srt --embed-subs --ignore-errors"
         );
         // Embedding needs ffmpeg: without it they're saved beside the video.
         assert_eq!(
             s(subtitle_args(&subs(&["de", "fr"], false, true), false)),
-            "--write-subs --sub-langs de,fr --sub-format srt/vtt/best"
+            "--write-subs --sub-langs de,fr --sub-format srt/vtt/best --ignore-errors"
         );
+    }
+
+    /// yt-dlp's warnings for subtitles it couldn't get (#68): each language once, a site's
+    /// "too many requests" told apart from other reasons, other warnings ignored.
+    #[test]
+    fn refused_subtitles_from_the_warnings() {
+        let w: Vec<String> = [
+            "Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests",
+            "[youtube] abc: Some formats are missing",
+            "Unable to download video subtitles for 'de': HTTP Error 404: Not Found",
+            "Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests",
+        ]
+        .map(String::from)
+        .to_vec();
+        assert_eq!(
+            subtitle_failures(&w),
+            [
+                ("en".to_string(), SubReason::TooManyRequests),
+                (
+                    "de".to_string(),
+                    SubReason::Other("HTTP Error 404: Not Found".into())
+                ),
+            ]
+        );
+        assert!(subtitle_failures(&[]).is_empty());
+        // The retry fetches only those, beside the video, never into it.
+        let r = SubsRetry {
+            automatic: true,
+            embed: true,
+            ffmpeg: true,
+            base: vec!["-o".into(), "x.%(ext)s".into()],
+        };
+        assert_eq!(
+            r.args(&["en".into()]).join(" "),
+            "-o x.%(ext)s --skip-download --write-auto-subs --sub-langs en --sub-format srt/best --convert-subs srt --ignore-errors"
+        );
+        let info = serde_json::json!({"automatic_captions": {"en": [{"name": "English"}]}});
+        assert_eq!(sub_name(&info, "en"), "English");
+        assert_eq!(sub_name(&info, "ru"), "ru");
     }
 
     /// The files found beside a finished video are its own subtitles only.

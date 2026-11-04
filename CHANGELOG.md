@@ -26,8 +26,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the
   video as `<name>.<language>.srt`, or put into the video with ffmpeg (MP4, MKV), and the choice is
-  offered again for the next video. On the command line: `video-get --subs`, `--auto-subs`,
-  `--embed-subs`; `video-info` lists them. A finished video and its subtitles are now marked as
+  offered again for the next video. Subtitles a site refuses (YouTube limits how often they may
+  be fetched) never cost the video: MDM asks once more after a pause, then says which are missing.
+  On the command line: `video-get --subs`, `--auto-subs`, `--embed-subs`; `video-info` lists them. A finished video and its subtitles are now marked as
   downloaded from the internet, as other downloads are.
 - **View → Always dark** ([#60](https://github.com/anefzaoui/misterdownloadmanager/issues/60)):
   MDM stays dark whatever the system says, for a desktop that reports no light or dark

@@ -1423,6 +1423,16 @@
 #. text in the Download video window
 #. label before the list of a video's subtitle languages
 	Subtitles	Subtitles
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Subtitles in {language} came on a second try: they're beside the video, not in it.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+	Subtitles in {language} couldn't be downloaded: {reason}	Subtitles in {language} couldn't be downloaded: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).
 #. text in the Options window; text in the Scheduler window
 	Sunday	Sunday
 #. message or event log entry in the main window

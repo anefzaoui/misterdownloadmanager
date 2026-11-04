@@ -551,13 +551,49 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                 match p.state {
                     mdm_tools::video::State::Running => {}
                     mdm_tools::video::State::Done(f) => {
+                        // Subtitles the site refused: the video is saved all the same (#68).
+                        let problems: Vec<(String, String, String, bool)> = p
+                            .sub_problems
+                            .iter()
+                            .map(|s| {
+                                let why = match &s.reason {
+                                    mdm_tools::video::SubReason::TooManyRequests => {
+                                        "the site refused (too many requests)".to_owned()
+                                    }
+                                    mdm_tools::video::SubReason::Other(w) => w.clone(),
+                                };
+                                (s.code.clone(), s.name.clone(), why, s.beside)
+                            })
+                            .collect();
                         if json {
-                            emit(json!({ "event": "done", "path": f, "subtitles": p.side_files }));
+                            let problems: Vec<_> = problems
+                                .iter()
+                                .map(|(code, name, why, beside)| {
+                                    json!({ "code": code, "name": name, "reason": why, "beside": beside })
+                                })
+                                .collect();
+                            emit(json!({
+                                "event": "done",
+                                "path": f,
+                                "subtitles": p.side_files,
+                                "subtitle_problems": problems,
+                            }));
                         } else {
                             eprintln!();
                             println!("saved {}", f.display());
                             for s in &p.side_files {
                                 println!("saved {}", s.display());
+                            }
+                            for (code, name, why, beside) in problems {
+                                if beside {
+                                    println!(
+                                        "subtitles in {name} ({code}) came on a second try: beside the video, not in it"
+                                    );
+                                } else {
+                                    println!(
+                                        "subtitles in {name} ({code}) couldn't be downloaded: {why}"
+                                    );
+                                }
                             }
                         }
                         return Ok(());
