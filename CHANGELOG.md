@@ -5,6 +5,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
+### Security
+
+- **Torrents: file names are checked more strictly** ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40)):
+  a torrent with names the system can't write safely is refused, saying which name.
+- The torrent library is updated (librqbit 9.1.0).
+- **No silent overwrite**: when some of a torrent's files are already in the folder, MDM asks
+  before writing into them (**No** is the default).
+
 ### Added
 
 - **The Linux AppImage updates through AppImage tools too** ([#24](https://github.com/anefzaoui/misterdownloadmanager/issues/24)):

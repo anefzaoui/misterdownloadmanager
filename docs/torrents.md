@@ -17,6 +17,10 @@ MDM downloads BitTorrent files from magnet links and `.torrent` files. Torrents 
 
 You can also paste a magnet link into **Add URL**, or drop a magnet link or a `.torrent` file on the drop target (**Tasks → Show drop target**). If a torrent is already in the list, MDM says so instead of adding it twice.
 
+If some of the torrent's files are already in the folder, MDM asks before using them. **Yes** keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. **No** (the default) goes back, so you can choose another folder and nothing of yours is overwritten.
+
+MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.
+
 ## While it downloads
 
 Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:

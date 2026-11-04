@@ -186,7 +186,9 @@ impl Run {
                 let t = host.session(known).await?;
                 t.set_download_limit(limit);
                 if t.has(&spec2.hash) {
-                    t.resume(&spec2.hash).await.map_err(|e| e.to_string())?;
+                    t.resume(&spec2.hash)
+                        .await
+                        .map_err(|e| crate::errors::torrent(&e))?;
                 } else {
                     let file = torrent_file(&spec2.hash).ok_or(crate::i18n::t("no data folder"))?;
                     let bytes = std::fs::read(&file).map_err(|_| {
@@ -201,7 +203,7 @@ impl Run {
                         false,
                     )
                     .await
-                    .map_err(|e| e.to_string())?;
+                    .map_err(|e| crate::errors::torrent(&e))?;
                 }
                 Ok::<_, String>(t)
             }

@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Համոզվա՞ծ եք, որ ցանկանում եք ջնջել {n} ներբեռնումը Mister Download Manager-ի ներբեռնումների ցանկից:|Համոզվա՞ծ եք, որ ցանկանում եք ջնջել այս {n} ներբեռնումները Mister Download Manager-ի ներբեռնումների ցանկից:
+#. count in a dialog box
+#. in the "files already there" question, under the first file's path: {n} is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	and {n} other file|and {n} other files	և ևս {n} ֆայլ|և ևս {n} ֆայլ
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -737,6 +742,9 @@
 #. tab title: the torrent's files
 #, machine
 	Files	Ֆայլեր
+#. window title in a dialog box
+#, machine
+	Files already there	Արդեն առկա ֆայլեր
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1204,6 +1212,9 @@
 #. text in a dialog box
 #, machine
 	No folders yet	Դեռևս թղթապանակներ չկան
+#. text in a dialog box
+#, machine
+	No goes back, to choose another folder.	«Ոչ»-ը հետ է գնում՝ այլ թղթապանակ ընտրելու համար։
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -1218,6 +1229,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Փոստային հավելված չկա. հաղորդագրությունը պատճենված է, տեղադրեք այն ձեր փոստում։
+#. text in errors.rs
+#, machine
+	no peer sent the torrent's file list in time	ոչ մի փիր չի ուղարկել տորենտի ֆայլերի ցանկը ժամանակին
 #. text in the Options window
 #, machine
 	No proxy/socks	Առանց պրոքսիի/SOCKS-ի
@@ -2099,6 +2113,9 @@
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Այս թղթապանակը գոյություն չունի:
+#. text in errors.rs
+#, machine
+	this is not a magnet link or a .torrent file	սա մագնիսական հղում կամ .torrent ֆայլ չէ
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -2106,9 +2123,16 @@
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Այս համակարգը չունի հեռախոսային կապեր՝ անջատելու համար
+#. text in errors.rs
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	այս տորենտը ունի ֆայլի անուն, որը անվտանգ չէ գրել, ուստի այն չի ավելացվել՝ {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Այս տորենտը արդեն կա ներբեռնումների ցուցակում
+#. text in errors.rs
+#, machine
+	this torrent is not in the list	այս տորենտը ցուցակում չկա
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -2273,6 +2297,9 @@
 #. text in the Options window
 #, machine
 	Use system settings	Օգտագործել համակարգի կարգավորումները
+#. text in a dialog box
+#, machine
+	Use them for this torrent? What matches it is kept, the rest replaced.	Օգտագործե՞լ դրանք այս տորենտի համար։ Այն, ինչ համընկնում է, պահպանվում է, մնացածը փոխարինվում է։
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Օգտագործել այս պրոքսին հետևյալ արձանագրությունների համար:
