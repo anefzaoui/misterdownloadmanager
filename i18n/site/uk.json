@@ -174,6 +174,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Безкоштовний та з відкритим кодом. Інтерфейс, який ви вже знаєте, швидший рушій, вбудовані торренти та відео."
   },
+  "04859e9c5f338db0": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "У тому ж вікні поставте позначку <g1>Обмежити всі завантаження разом до</g1> та встановіть швидкість. Це обмежує MDM в цілому, незалежно від кількості файлів, що завантажуються, включаючи торренти: торренти разом залишаються під цим обмеженням, а інші завантаження ділять те, що залишилося. Це застосовується, коли позначка встановлена, незалежно від того, увімкнений чи вимкнений обмежувач для кожного файлу."
+  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (близько 80 МБ) об'єднує відео та його звук, коли сайт зберігає їх окремо, що більшість сайтів робить для вищої якості, і перетворює звук на MP3. Натисніть <g2>Інсталювати ffmpeg</g2>, коли MDM запропонує це. MDM перевіряє його за контрольними сумами, опублікованими в його випуску."
@@ -1038,6 +1042,10 @@
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>Інформація про файл завантаження</g1> показує назву файлу, його розмір і місце збереження. Папка залежить від типу файлу: ZIP-архів потрапляє до <x2/>, відео — до <x3/> тощо. Змініть папку або категорію, якщо бажаєте."
   },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "Для торрента обмеження стосується лише цього торрента; інші зберігають свої. Торрент не може бути обмежений нижче 16 КБ/с: нижче обмеження дає йому 16."
+  },
   "1cc76bd241b12c50": {
    "source": "Privacy",
    "text": "Конфіденційність"
@@ -1897,10 +1905,6 @@
   "3640bc6fe07d3428": {
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> або новіша версія на Apple Silicon або Intel (експериментально)."
-  },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "У тому ж вікні встановіть прапорець <g1>Обмежити всі завантаження разом до</g1> та встановіть швидкість. Це обмежує MDM в цілому, незалежно від кількості завантажуваних файлів. Це застосовується щоразу, коли прапорець встановлено, незалежно від того, увімкнено чи вимкнено обмежувач для кожного файлу."
   },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
@@ -8261,6 +8265,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "Тут торрент рахується як один файл: кожен торрент отримує власне обмеження. Завантаження з власним обмеженням (див. <g1>Для одного завантаження</g1>) зберігає його."
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

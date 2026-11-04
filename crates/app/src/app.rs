@@ -321,6 +321,9 @@ pub struct App {
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Since when no torrent has needed the torrent engine (`torrent_tick`).
     torrent_idle_since: Option<Instant>,
+    /// Each running torrent's bytes from peers as last seen (by item id), so the global cap
+    /// is charged only what is new (`charge_torrents`).
+    torrent_fetched: HashMap<u64, u64>,
     /// A blocklist is being fetched (torrents::refresh_blocklist).
     blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
@@ -689,6 +692,7 @@ impl App {
             torrent_dlg: None,
             torrent_settings: None,
             torrent_idle_since: None,
+            torrent_fetched: HashMap::new(),
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
@@ -1589,12 +1593,13 @@ impl App {
         }
     }
 
-    /// Apply the global speed limiter setting to every running download.
+    /// Apply the Speed Limiter's "for one file" setting to every running download, file or
+    /// torrent; one with a remembered limit of its own keeps it, as when it starts.
     fn apply_speed_limit(&self) {
         let limit = self.settings.speed_limit();
         for i in &self.items {
             if let Some(l) = &i.live {
-                l.dl.set_speed_limit(limit);
+                l.dl.set_speed_limit(i.own_limit.or(limit));
             }
         }
     }
@@ -1719,6 +1724,28 @@ impl App {
         if self.global.get() != rate {
             self.global.set(rate);
         }
+        // Torrents share it (D-012, "one limit for all downloads together"): together they
+        // stay under it, and file downloads give way by what they took (charge_torrents).
+        self.torrent_host.set_cap(rate);
+    }
+
+    /// Charge the global cap with the bytes torrents received since the last frame, so file
+    /// downloads (which wait on it) leave the torrents their share. librqbit counts from 0
+    /// again each time a torrent resumes: a smaller count is all new.
+    fn charge_torrents(&mut self) {
+        let on = self.global.get().is_some();
+        let mut seen = HashMap::new();
+        for i in &self.items {
+            let Some(model::Job::Torrent(run)) = i.live.as_ref().map(|l| &l.dl) else {
+                continue;
+            };
+            let Some(now) = run.fetched() else { continue };
+            if on && let Some(&before) = self.torrent_fetched.get(&i.id) {
+                self.global.charge(now.checked_sub(before).unwrap_or(now));
+            }
+            seen.insert(i.id, now);
+        }
+        self.torrent_fetched = seen;
     }
 
     /// Progress of all running downloads together (bytes done / bytes in all), None when
@@ -2195,6 +2222,8 @@ impl App {
         let limit = self.settings.speed_limit();
         let (host, rt) = (self.torrent_host.clone(), self.rt.clone());
         let Some(item) = self.item(id) else { return };
+        // Its own remembered limit first, as a file download's (#39).
+        let limit = item.own_limit.or(limit);
         let Some(spec) = item.torrent.clone() else {
             return;
         };
@@ -5382,6 +5411,7 @@ impl eframe::App for App {
         self.remember_layout(&ctx);
         self.auto_update_check(&ctx);
         self.apply_global_limit();
+        self.charge_torrents();
         self.watch_clipboard(&ctx);
         self.tray(&ctx);
         // The taskbar button's green bar: everything running, as one.

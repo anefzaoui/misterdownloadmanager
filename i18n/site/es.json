@@ -174,6 +174,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Gratis y de código abierto. La interfaz que ya conoces, un motor más rápido debajo, torrents y vídeo integrados."
   },
+  "04859e9c5f338db0": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "En la misma ventana, marque <g1>Limitar todas las descargas juntas a</g1> y establezca la velocidad. Esto limita MDM en su conjunto, sin importar cuántos archivos se estén descargando, incluidos los torrents: los torrents juntos se mantienen por debajo de este límite, y las otras descargas comparten lo que queda. Se aplica siempre que esté marcado, ya sea que el limitador por archivo esté activado o desactivado."
+  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (unos 80 MB) une un vídeo y su sonido cuando un sitio los mantiene separados, lo que la mayoría de los sitios hacen para las calidades más altas, y convierte el sonido a MP3. Haz clic en <g2>Instalar ffmpeg</g2> cuando MDM te lo ofrezca. MDM lo comprueba con las sumas de verificación que publica su versión."
@@ -1038,6 +1042,10 @@
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>Información del archivo de descarga</g1> muestra el nombre del archivo, su tamaño y dónde se guardará. La carpeta depende del tipo de archivo: un ZIP va a <x2/>, un vídeo a <x3/>, y así sucesivamente. Cambie la carpeta o la categoría si lo desea."
   },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "Para un torrent, el límite es solo para ese torrent; los demás mantienen el suyo. Un torrent no puede mantenerse por debajo de 16 KB/s: un límite inferior le asigna 16."
+  },
   "1cc76bd241b12c50": {
    "source": "Privacy",
    "text": "Privacidad"
@@ -1897,10 +1905,6 @@
   "3640bc6fe07d3428": {
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> o posterior en Apple Silicon o Intel (experimental)."
-  },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "En la misma ventana, marca <g1>Limitar todas las descargas juntas a</g1> y establece la velocidad. Esto limita MDM en su conjunto, sin importar cuántos archivos se estén descargando. Se aplica siempre que esté marcado, ya sea que el limitador por archivo esté activado o desactivado."
   },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
@@ -8261,6 +8265,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "Aquí, un torrent cuenta como un archivo: cada torrent tiene su propio límite. Una descarga con un límite propio (véase <g1>Para una descarga</g1>) lo mantiene."
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

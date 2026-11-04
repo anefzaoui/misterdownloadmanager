@@ -131,6 +131,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Torrents: speed limits now work as they do for other downloads**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
+  torrent's progress window changed every torrent's limit, a remembered limit was ignored, the
+  Speed Limiter's "for one file" was shared by all torrents together, and "Limit all downloads
+  together" left torrents out. Each torrent now has a limit of its own, a remembered one applies
+  again when it resumes, and torrents stay under the global cap with the other downloads. A
+  limit under 16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s.
 - **Stopping a video download left yt-dlp downloading in the background** on Windows
   ([#61](https://github.com/anefzaoui/misterdownloadmanager/issues/61)): `yt-dlp.exe` starts a
   second process that does the work, and only the first was ended. Resuming then failed ("yt-dlp

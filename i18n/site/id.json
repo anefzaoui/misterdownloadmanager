@@ -174,6 +174,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Gratis dan sumber terbuka. Antarmuka yang sudah Anda kenal, mesin yang lebih cepat di baliknya, torrent dan video bawaan."
   },
+  "04859e9c5f338db0": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included: torrents together stay under it, and the other downloads share what is left. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "Di jendela yang sama, centang <g1>Batasi semua unduhan bersama-sama hingga</g1> dan atur kecepatannya. Ini membatasi MDM secara keseluruhan, berapa pun jumlah berkas yang sedang diunduh, termasuk torrent: torrent bersama-sama akan tetap di bawah batas ini, dan unduhan lainnya berbagi sisa kecepatan. Ini berlaku kapan pun dicentang, baik pembatas per berkas aktif atau tidak."
+  },
   "04917582aad4754c": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (sekitar 80 MB) menggabungkan video dan suaranya saat situs memisahkannya, yang dilakukan sebagian besar situs untuk kualitas yang lebih tinggi, dan mengubah suara menjadi MP3. Klik <g2>Instal ffmpeg</g2> saat MDM menawarkannya. MDM memeriksanya dengan checksum yang diterbitkan rilisnya."
@@ -1038,6 +1042,10 @@
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>Info File Unduhan</g1> menampilkan nama file, ukurannya, dan tempat penyimpanannya. Folder tergantung pada jenis file: ZIP masuk ke <x2/>, video ke <x3/>, dan seterusnya. Ubah folder atau kategori jika Anda mau."
   },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "Untuk torrent, batasnya hanya untuk torrent itu sendiri; yang lain tetap menggunakan batasnya. Torrent tidak dapat dibatasi di bawah 16 KB/dtk: batas yang lebih rendah akan memberikannya 16."
+  },
   "1cc76bd241b12c50": {
    "source": "Privacy",
    "text": "Privasi"
@@ -1897,10 +1905,6 @@
   "3640bc6fe07d3428": {
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> atau yang lebih baru di Apple Silicon atau Intel (eksperimental)."
-  },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Di jendela yang sama, centang <g1>Batasi semua unduhan bersama-sama hingga</g1> dan atur kecepatannya. Ini membatasi MDM secara keseluruhan, berapa pun jumlah file yang sedang diunduh. Ini berlaku setiap kali dicentang, baik pembatas per-file aktif atau tidak."
   },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
@@ -8261,6 +8265,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "Torrent dihitung sebagai satu berkas di sini: setiap torrent mendapat batasnya sendiri. Unduhan dengan batasnya sendiri (lihat <g1>Untuk satu unduhan</g1>) akan tetap menggunakan batas tersebut."
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

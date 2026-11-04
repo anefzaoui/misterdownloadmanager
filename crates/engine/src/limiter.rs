@@ -64,6 +64,23 @@ impl Limiter {
         }
     }
 
+    /// Count `n` bytes taken outside this limiter (the torrents', under the same global cap)
+    /// without waiting: the debt makes the next `acquire`s wait, so the others give way. The
+    /// debt is held to one second's budget, so a burst can't stall them for long.
+    pub fn charge(&self, n: u64) {
+        let rate = self.rate.load(Ordering::Relaxed);
+        if rate == 0 || n == 0 {
+            return;
+        }
+        let rate = rate as f64;
+        let mut b = self.bucket.lock().unwrap();
+        let now = Instant::now();
+        let elapsed = now.duration_since(b.last).as_secs_f64();
+        b.last = now;
+        b.tokens = (b.tokens + elapsed * rate).min(rate * BURST_SECS);
+        b.tokens = (b.tokens - n as f64).max(-rate * BURST_SECS);
+    }
+
     /// Give back budget for `n` bytes that were paid for but not kept.
     pub fn refund(&self, n: u64) {
         if self.rate.load(Ordering::Relaxed) > 0 {
@@ -93,6 +110,31 @@ mod tests {
         }
         let secs = t.elapsed().as_secs_f64();
         assert!((0.4..0.75).contains(&secs), "{secs:.2}s");
+    }
+
+    /// Bytes charged from elsewhere (torrents) make the next reads wait them off, about n/rate;
+    /// the debt is held to one second's budget; unlimited, charging does nothing.
+    #[tokio::test]
+    async fn charge_makes_the_others_wait() {
+        let l = Limiter::new(Some(200 * 1024));
+        l.charge(100 * 1024); // half a second's budget
+        let t = Instant::now();
+        l.acquire(1).await;
+        let secs = t.elapsed().as_secs_f64();
+        assert!((0.4..0.75).contains(&secs), "{secs:.2}s");
+
+        let l = Limiter::new(Some(200 * 1024));
+        l.charge(100 << 20); // 500 s worth: held to 1 s
+        let t = Instant::now();
+        l.acquire(1).await;
+        let secs = t.elapsed().as_secs_f64();
+        assert!((0.9..1.3).contains(&secs), "{secs:.2}s");
+
+        let l = Limiter::new(None);
+        l.charge(100 << 20);
+        let t = Instant::now();
+        l.acquire(1 << 20).await;
+        assert!(t.elapsed() < Duration::from_millis(20));
     }
 
     #[tokio::test]
