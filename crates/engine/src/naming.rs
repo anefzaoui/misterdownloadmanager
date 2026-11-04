@@ -229,6 +229,15 @@ pub fn fit_name(dir: &Path, name: &str) -> Option<String> {
     (room >= MIN_NAME).then(|| clamp_to(name, room.min(MAX_NAME)))
 }
 
+/// Where a new download named `name` goes in `dir`: the name shortened to fit the path limit
+/// (`fit_name`, keeping the extension), then numbered if taken (`unique_path`). A folder too
+/// deep for any name keeps it whole, and the download says the path is too long. A name from a
+/// long address (a token hundreds of characters long, #28) no longer fails the download.
+pub fn destination(dir: &Path, name: &str) -> PathBuf {
+    let name = fit_name(dir, name).unwrap_or_else(|| name.to_owned());
+    unique_path(dir, &name)
+}
+
 fn clamp(name: &str) -> String {
     clamp_to(name, MAX_NAME)
 }
@@ -323,6 +332,19 @@ mod tests {
             fit_name(Path::new(r"C:\dl"), "a.zip").as_deref(),
             Some("a.zip")
         );
+    }
+
+    /// #28: a file host's address ends in a token of hundreds of characters; the download's
+    /// path still fits Windows' limit, extension kept.
+    #[test]
+    fn a_token_named_download_fits_its_folder() {
+        let dir = PathBuf::from(r"C:\Users\someone\Downloads");
+        let token = format!("ag1.{}", "eyJhcyI6MTMzMTY5LCJjIjoiQU41WUMybVpz".repeat(12));
+        let dest = destination(&dir, &sanitize(&token));
+        assert!(path_fits(&dest), "{}", dest.display());
+        assert_eq!(dest.parent(), Some(dir.as_path()));
+        let named = destination(&dir, &format!("{}.zip", "x".repeat(300)));
+        assert!(path_fits(&named) && named.extension().is_some_and(|e| e == "zip"));
     }
 
     #[cfg(windows)]
