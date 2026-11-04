@@ -107,7 +107,7 @@ Point at the video in your browser and click the **Download video** button that 
 
 ### Can it download from Netflix or other paid streaming services? {#drm}
 
-No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected.
+No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also [what MDM is made for](/intended-use.html).
 
 ### Does it download torrents? {#torrents}
 
