@@ -42,20 +42,21 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
-- **MDM is a third of its size** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
-  on Windows, `misterdownloadmanager.exe` went from 62 MB to 31 MB, and the command line from
-  28 MB to a 0.2 MB launcher.
+- **MDM's programs are a third of their size, its download about half** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
+  on Windows, the programs went from 93 MB to 33 MB (`misterdownloadmanager.exe` from 61 MB to
+  29 MB, the command line from 28 MB to a 0.2 MB launcher), and setup.exe from 23 MB to 12 MB.
   - The command line runs in the app's own program, so the download engine ships once. Every
     command, `--json`, Ctrl+C and exit code work as before.
-  - The 86 translations are packed (12 MB of text in under 1 MB, without the translators'
-    notes) and unpacked in about 10 ms at start.
+  - The translations (85 languages besides English) are packed, 12 MB of text in under 1 MB
+    without the translators' notes, and unpacked once at start.
   - Release signatures are checked by MDM's own small verifier instead of a full OpenPGP
     library.
   - The code that draws the windows is optimised for size (the engine stays optimised for
     speed), and the programs are optimised as a whole.
   - Crash reports name functions from the release's symbol files only, without the debug-info
     reader a build from source can add.
-  - The installer packs tighter, and the programs no longer carry the build machine's paths.
+  - The installer packs tighter, and MDM's own code no longer carries the build machine's
+    folder paths (a bundled C library still keeps a few of its own).
 - **Two smaller macOS downloads** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
   a .dmg for Apple Silicon (`-macos-arm64`) and one for Intel (`-macos-x86_64`) instead of one
   universal .dmg, each about half the size. From 0.2.4 or older, update once by hand:
