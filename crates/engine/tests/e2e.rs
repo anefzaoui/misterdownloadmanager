@@ -1069,3 +1069,52 @@ async fn a_pac_script_routes_through_its_proxy() {
         "content mismatch"
     );
 }
+
+/// #28: a one-time link (the second request for it is refused). The look Download File Info
+/// makes is kept and the download reads it, with one connection or several (the others are
+/// refused and connection 1 goes on alone); without it the download is refused, as reported.
+#[tokio::test]
+async fn a_one_time_link_is_read_from_the_kept_answer() {
+    let s = server("").await;
+    for (n, connections) in [(1u64, 1u32), (2, 8)] {
+        let url: url::Url = s
+            .url(&format!("/gen/2M/once{n}.zip?once=1&seed={n}"))
+            .parse()
+            .unwrap();
+        let opts = Options {
+            max_connections: connections,
+            ..fast_opts()
+        };
+        let (info, kept) = mdm_engine::probe_kept(url.clone(), Default::default(), &opts)
+            .await
+            .unwrap();
+        assert_eq!(info.size, Some(2 << 20));
+        assert!(kept.is_some(), "a 200 from byte 0 is kept");
+        let dir = tempfile::tempdir().unwrap();
+        let req = Request {
+            url: url.clone(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        };
+        let out = Download::start_with(req, opts.clone(), kept)
+            .wait()
+            .await
+            .unwrap_or_else(|e| panic!("{connections} connection(s): {e}"));
+        let data = std::fs::read(&out.path).unwrap();
+        let mut want = vec![0; data.len()];
+        content::fill(n, 0, &mut want);
+        assert!(data == want && data.len() == 2 << 20, "content");
+    }
+    // Asked again (the look's answer not kept): refused.
+    let url: url::Url = s.url("/gen/1M/once9.zip?once=1&seed=9").parse().unwrap();
+    mdm_engine::probe(url.clone(), Default::default(), &fast_opts())
+        .await
+        .unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url,
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    assert!(Download::start(req, fast_opts()).wait().await.is_err());
+}

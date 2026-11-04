@@ -116,6 +116,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   and meanwhile GitHub's "latest" is the dated one, whose files are named differently. MDM now
   reads BtbN's newest releases, either naming, and takes the newest complete build. Errors while
   installing yt-dlp or ffmpeg are also worded in the interface language now.
+- **Links that work only once** (or hosts that allow one download at a time) failed with "403
+  Forbidden" after Download File Info had looked them up
+  ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)): the window's look and the
+  download each asked the server. The download now continues from the answer the window got,
+  and asks again only if that connection has closed meanwhile.
 - A download whose address ends in a long token (file hosts such as AnkerGames' mirrors) failed
   with "the path is too long for Windows" before it started
   ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)). Every new download's name
