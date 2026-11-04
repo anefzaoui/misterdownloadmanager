@@ -1424,6 +1424,45 @@ pub fn thread_id() -> u32 {
     unsafe { windows_sys::Win32::System::Threading::GetCurrentThreadId() }
 }
 
+/// Thread `tid`'s processor time so far, and this process's page faults so far (soft ones
+/// included: Windows counts no hard faults per process here): crash.rs's freeze notes.
+pub fn thread_usage(tid: u32) -> Option<crate::crash::Usage> {
+    use windows_sys::Win32::Foundation::{CloseHandle, FILETIME};
+    use windows_sys::Win32::System::ProcessStatus::{
+        GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS,
+    };
+    use windows_sys::Win32::System::Threading::{
+        GetCurrentProcess, GetThreadTimes, OpenThread, THREAD_QUERY_LIMITED_INFORMATION,
+    };
+    // 100 ns units to ms.
+    let ms = |t: FILETIME| (((t.dwHighDateTime as u64) << 32) | t.dwLowDateTime as u64) / 10_000;
+    // SAFETY: the handle is checked and closed; the out-parameters are locals of the right size.
+    unsafe {
+        let h = OpenThread(THREAD_QUERY_LIMITED_INFORMATION, 0, tid);
+        if h.is_null() {
+            return None;
+        }
+        let z = FILETIME {
+            dwLowDateTime: 0,
+            dwHighDateTime: 0,
+        };
+        let (mut created, mut exited, mut kernel, mut user) = (z, z, z, z);
+        let ok = GetThreadTimes(h, &mut created, &mut exited, &mut kernel, &mut user) != 0;
+        CloseHandle(h);
+        if !ok {
+            return None;
+        }
+        let mut m: PROCESS_MEMORY_COUNTERS = std::mem::zeroed();
+        m.cb = size_of::<PROCESS_MEMORY_COUNTERS>() as u32;
+        let faults = (GetProcessMemoryInfo(GetCurrentProcess(), &mut m, m.cb) != 0)
+            .then_some(m.PageFaultCount as u64);
+        Some(crate::crash::Usage {
+            cpu_ms: ms(kernel) + ms(user),
+            faults,
+        })
+    }
+}
+
 /// Is process `pid` still running?
 pub fn process_alive(pid: u32) -> bool {
     use windows_sys::Win32::Foundation::{CloseHandle, WAIT_TIMEOUT};
