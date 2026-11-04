@@ -141,6 +141,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Download complete's Open with... stayed in English** in every other language
+  ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80)). The tool that collects
+  MDM's texts for translation now also finds labels given through a window's own helpers, and
+  checks in CI that it keeps finding them.
 - **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
   the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).
 - **Download File Info's errors are worded in the interface language**, as the list's are.

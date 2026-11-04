@@ -35,6 +35,8 @@ Everything below ships together, in one release.
   ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28))
 - ✅ No crash when a window opens while MDM is minimized
   ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22))
+- ✅ Every button translated: Download complete's Open with... no longer stays in English
+  ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80))
 - ✅ A smaller download ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)),
   AppImage updates with zsync ([#24](https://github.com/anefzaoui/misterdownloadmanager/issues/24)),
   the Bangladesh flag for Bangla ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27))

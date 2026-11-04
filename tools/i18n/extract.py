@@ -9,6 +9,9 @@ the source itself. Found:
     `checkbox_light`, `radio_light`, dialog titles (`window(ctx, id, "Title", …)`, `question(…)`), light tabs
     (`label: "…"`), tree rows (context ""), Options' page titles, group boxes and labels
     (`header`, `group`, `disabled_label`);
+  * labels given to a helper that hands them on to one of those (a closure in the same file,
+    `let btn = |ui, x, label| winui::button(…, label, …)`; a function or method in any file),
+    found by themselves, wrappers of wrappers too (#80);
   * a literal alone on its line under a `// i18n:` note (or with one at its end): a text chosen
     first (an `if` arm, a tuple, `Some(…)`) and translated where it is shown;
   * menu entries `Item`/`I`/`Radio`/`Sub`/`off`/`by` (context "menu"), toolbar buttons
@@ -20,7 +23,8 @@ the text is (button, menu command, column title…), where it appears, what its 
 hold, and any note written in the code as a `// i18n: …` comment on the line above the text or
 at the end of its line (part of speech, what it refers to). The translation tool sends the
 notes with the text.
-`--check` fails when en.tsv is out of date (CI).
+`--check` fails when en.tsv is out of date (CI), or when the helper detection stops finding the
+labels of its self-test.
 """
 
 import json
@@ -191,23 +195,171 @@ def in_comment(s, pos):
     return "//" in before
 
 
+def balanced_end(s, i):
+    """Where the expression starting at `i` ends: its block's `}` when it starts with `{`,
+    else the first `,` `;` or closing bracket outside brackets and strings."""
+    depth, quote = 0, False
+    start_block = s[i:i + 1] == "{"
+    while i < len(s):
+        c = s[i]
+        if quote:
+            if c == "\\":
+                i += 2
+                continue
+            if c == '"':
+                quote = False
+        elif c == '"':
+            quote = True
+        elif c in "([{":
+            depth += 1
+        elif c in ")]}":
+            depth -= 1
+            if depth == 0 and start_block:
+                return i + 1
+            if depth < 0:
+                return i
+        elif c in ",;" and depth == 0:
+            return i
+        i += 1
+    return i
+
+
+def param_names(text):
+    """A parameter list's names, in order (`ui: &mut Ui, label: &str` → ["ui", "label"])."""
+    names, depth, cur = [], 0, ""
+    for c in text + ",":
+        if c in "<([":
+            depth += 1
+        elif c in ">)]":
+            depth -= 1
+        if c == "," and depth == 0:
+            cur = cur.strip()
+            if cur:
+                name = cur.split(":")[0].strip()
+                name = re.sub(r"^(?:&\s*)?(?:'\w+\s+)?(?:mut\s+)?", "", name)
+                names.append(name)
+            cur = ""
+        else:
+            cur += c
+    return names
+
+
+CLOSURE_DEF = re.compile(r"\blet\s+(\w+)\s*=\s*(?:move\s*)?\|([^|]*)\|")
+FN_DEF = re.compile(r"\bfn\s+(\w+)\s*(?:<[^>(]*>)?\s*\(")
+SELF = {"self", "&self", "&mut self", "mut self"}
+# What a wrapper's argument may be around the parameter itself: `&label`, `t(label)`.
+AROUND = re.compile(r"^&?\s*(?:(?:crate::)?(?:i18n::)?t\(\s*(\w+)\s*\)|(\w+))$")
+
+
+def call_pattern(names):
+    return re.compile(r"\b(?:winui::|MenuEntry::|crate::i18n::|i18n::|Self::|self\.|\w+::)?("
+                      + "|".join(sorted(names, key=len, reverse=True)) + r")\s*\(")
+
+
+def wrappers_in(s, sinks):
+    """The closures and functions in `s` that hand one of their parameters to a sink: name →
+    (parameter index, context, role, is a method). A method's index leaves `self` out."""
+    found = {}
+    defs = []
+    for m in CLOSURE_DEF.finditer(s):
+        body = m.end()
+        while s[body:body + 1].isspace():
+            body += 1
+        if s.startswith("->", body):  # `|x| -> T { … }`
+            body = s.find("{", body)
+        defs.append((m.group(1), param_names(m.group(2)), body, balanced_end(s, body), False))
+    for m in FN_DEF.finditer(s):
+        spans, close = split_args(s, m.end() - 1)
+        params = param_names(s[m.end():close])
+        method = bool(params) and params[0] in SELF | {"self"}
+        if method:
+            params = params[1:]
+        body = s.find("{", close)
+        semi = s.find(";", close)
+        if body < 0 or (0 <= semi < body):  # a declaration without a body
+            continue
+        defs.append((m.group(1), params, body, balanced_end(s, body), method))
+    rx = call_pattern(sinks)
+    for name, params, a, b, method in defs:
+        if name in found or not params:
+            continue
+        for c in rx.finditer(s, a, b):
+            if in_comment(s, c.start()):
+                continue
+            sink = c.group(1)
+            if sink == name:
+                continue
+            n, ctx, role = sinks[sink]
+            if ctx is None or ctx == "@plural":  # its context or plural is another argument
+                continue
+            spans, _ = split_args(s, c.end() - 1)
+            if len(spans) <= n:
+                continue
+            am = AROUND.match(s[spans[n][0]:spans[n][1]].strip())
+            p = am and (am.group(1) or am.group(2))
+            if p in params:
+                found[name] = (params.index(p), ctx, role, method)
+                break
+    return found
+
+
+def all_sinks(sources):
+    """SINKS, plus every function that hands a parameter to one (in any file), and per file the
+    closures that do (`let btn = |ui, x, label| winui::button(ui, …, label, …)`): a label given
+    to such a helper is translated where it is shown, so it belongs in the catalog (#80)."""
+    base = {k: (n, ctx, ROLES.get(k, "text")) for k, (n, ctx) in SINKS.items()}
+    global_ = dict(base)
+    local = {f: {} for f in sources}
+    for _ in range(4):  # a wrapper of a wrapper: until nothing new turns up
+        grew = False
+        fns = {}
+        for f, s in sources.items():
+            sinks = {**global_, **local[f]}
+            for name, w in wrappers_in(s, sinks).items():
+                defined_fn = re.search(r"\bfn\s+" + name + r"\b", s)
+                if defined_fn and name not in base:
+                    fns.setdefault(name, set()).add(w)
+                elif not defined_fn and local[f].get(name) != w[:3]:
+                    local[f][name] = w[:3]
+                    grew = True
+        for name, ws in fns.items():
+            # A function name defined twice with different labels: each file keeps its own.
+            if len(ws) == 1:
+                w = next(iter(ws))
+                if global_.get(name) != w[:3]:
+                    global_[name] = w[:3]
+                    grew = True
+            else:
+                for f, s in sources.items():
+                    own = wrappers_in(s, {**global_, **local[f]}).get(name)
+                    if own and local[f].get(name) != own[:3]:
+                        local[f][name] = own[:3]
+                        grew = True
+        if not grew:
+            break
+    return {f: {**global_, **local[f]} for f in sources}
+
+
 def collect():
     out = Rows()
-    for f in sorted(SRC.glob("*.rs")):
-        if f.name == "i18n.rs":
-            continue
-        s = f.read_text(encoding="utf-8")
+    files = [f for f in sorted(SRC.glob("*.rs")) if f.name != "i18n.rs"]
+    sources = {f.name: f.read_text(encoding="utf-8") for f in files}
+    sinks_of = all_sinks(sources)
+    for f in files:
+        s = sources[f.name]
         lines = s.split("\n")
+        sinks = sinks_of[f.name]
+        sink_call = call_pattern(sinks)
 
         def line_of(pos):
             return s.count("\n", 0, pos)
 
         taken = set()  # lines whose literal a call above already took
-        for m in SINK_CALL.finditer(s):
+        for m in sink_call.finditer(s):
             if s[max(0, m.start() - 3):m.start()] == "fn " or in_comment(s, m.start()):
                 continue
             name = m.group(1)
-            n, ctx = SINKS[name]
+            n, ctx, sink_role = sinks[name]
             spans, _ = split_args(s, m.end() - 1)
             if len(spans) <= n:
                 continue
@@ -227,7 +379,7 @@ def collect():
                 ctx = literal(s, spans[0])
                 if ctx is None:
                     continue
-            role = CONTEXT_ROLES.get(ctx) or ROLES.get(name, "text")
+            role = CONTEXT_ROLES.get(ctx) or sink_role
             out.add((ctx, text), role, f.name, notes)
         for rx, ctx, role in OTHER:
             for m in rx.finditer(s):
@@ -328,7 +480,55 @@ def plural_problems(plurals):
     return out
 
 
+SELF_TEST = {
+    "a.rs": '''
+fn dialog(ui: &mut Ui) {
+    let btn = |ui: &mut Ui, x: f32, label: &str, kind| {
+        winui::button(ui, r(x), label, kind, false, None)
+    };
+    let with = btn(ui, 115.0, "Open with...", ButtonKind::Normal);
+    let caption = |n: u32, label: &str| crate::i18n::t(label);
+    caption(3, "Saved as");
+    shared_head(ui, "Speed");
+    self.note(ui, "A method's label");
+}
+''',
+    "b.rs": '''
+pub fn shared_head(ui: &Ui, label: &str) {
+    let lift = |text: &str| winui::checkbox(ui, r(), &mut on, text);
+    lift(label);
+}
+impl W {
+    fn note(&self, ui: &Ui, text: &str) { winui::button_light(ui, r(), text, K, false); }
+}
+''',
+}
+
+
+def self_test():
+    """The extractor must keep finding labels given through local helpers (#80): a closure, a
+    closure through `t()`, a function in another file (a wrapper of a wrapper) and a method."""
+    sinks = all_sinks(SELF_TEST)
+    s = SELF_TEST["a.rs"]
+    found = set()
+    for m in call_pattern(sinks["a.rs"]).finditer(s):
+        if s[max(0, m.start() - 3):m.start()] == "fn ":
+            continue
+        n = sinks["a.rs"][m.group(1)][0]
+        spans, _ = split_args(s, m.end() - 1)
+        text = literal(s, spans[n]) if len(spans) > n else None
+        if text:
+            found.add(text)
+    want = {"Open with...", "Saved as", "Speed", "A method's label"}
+    missing = want - found
+    if missing:
+        print(f"extract.py self-test: labels given through helpers not found: {sorted(missing)}")
+    return not missing
+
+
 def main():
+    if not self_test():
+        return 1
     rows, plurals = collect()
     problems = plural_problems(plurals)
     for p in problems:
