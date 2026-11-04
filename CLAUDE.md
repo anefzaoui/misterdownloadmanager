@@ -17,6 +17,8 @@ craft-libs), laid out the way Internet Download Manager users expect. Start by r
    feature works on every system, or says why it can't (`cfg` with a comment).
 4. Fix root causes, keep data contracts aligned between producers and consumers, and verify the
    whole system end to end after each change.
+5. Every PR updates [ROADMAP.md](ROADMAP.md): move its item to done (or add it), keep the
+   statuses true. Public file: no security details beyond CHANGELOG's wording, no private notes.
 
 ## Commands
 
