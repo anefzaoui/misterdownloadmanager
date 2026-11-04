@@ -156,6 +156,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   side gets at least half of it, and the rest when the other side needs less. A limit under
   16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
   torrent started again while its files were still being checked no longer stays paused.
+- **Download complete shows above other programs' windows**, as IDM's does, so the end of a
+  download isn't missed ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)):
+  it doesn't take the keyboard from the program being typed in, and once clicked it is a window
+  like any other.
+- **Options opened from the extension's Button settings... comes to the front**
+  ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), instead of opening behind
+  the browser on Windows.
+- **Dragging the file out of Download complete works in every language**
+  ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78)): the handle looked for the
+  English window title, so outside English the drag did nothing. The handle now says what it does
+  on hover. It is Windows only, and no longer shown on Linux and macOS, where it did nothing.
 - **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
   the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).
 - **Download File Info's errors are worded in the interface language**, as the list's are.

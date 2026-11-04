@@ -23,6 +23,9 @@ use std::time::Duration;
 
 use serde::{Deserialize, Serialize};
 
+#[cfg(windows)]
+mod win32;
+
 const HOST_NAME: &str = "com.misterdownloadmanager.host";
 use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, STORE_UPDATE_URL, chromium_ids, store_id};
 /// Where each Chromium browser looks for native messaging hosts on Windows, under HKCU (one
@@ -386,6 +389,12 @@ const START_WAIT: Duration = Duration::from_secs(20);
 
 /// Hand `cmd` to Mister Download Manager, starting it only if none is running.
 fn deliver(cmd: &mdm_ipc::Command) -> Result<(), Undelivered> {
+    // Whatever it asks may open a window: the app may bring it to the front (Windows only: Linux
+    // and macOS have no foreground lock for a host to lift).
+    #[cfg(windows)]
+    if let Some(pid) = mdm_ipc::app_pid() {
+        win32::allow_foreground(pid);
+    }
     match mdm_ipc::send(cmd) {
         Ok(()) => return Ok(()),
         Err(mdm_ipc::SendError::Refused(e)) => return Err(Undelivered::Refused(e)),
@@ -404,6 +413,8 @@ fn deliver(cmd: &mdm_ipc::Command) -> Result<(), Undelivered> {
     };
     let mut child = start_detached(&app)
         .map_err(|e| Undelivered::NotRunning(format!("cannot start {}: {e}", app.display())))?;
+    #[cfg(windows)]
+    win32::allow_foreground(child.id());
     let started = std::time::Instant::now();
     while started.elapsed() < START_WAIT {
         std::thread::sleep(Duration::from_millis(100));

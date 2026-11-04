@@ -810,22 +810,172 @@ html.lb-on { overflow: hidden; }
 /* The roundup: what it's good at gets the room. */
 .alt-list .fields { grid-template-columns: minmax(0, 2fr) minmax(0, 1.15fr) minmax(0, .85fr); }
 .alt-list .service :is(h2, h3) { font-size: 23px; }
-.alt-ours { background: var(--paper-2); }
-/* Feature by feature: products are the rows. */
-.alt-table { min-width: 1040px; }
-.alt-table td:nth-child(2) { font-weight: inherit; }
-.alt-table tbody th { white-space: nowrap; }
-.alt-table .alt-ours :is(th, td) { font-weight: 650; }
+/* Ours, printed in reverse like a label's band, in the roundup as in the declaration. */
+/* Ours: not a row but a label stuck on the list, lifted, framed in delivered green and turned a
+   little, with its connections live at its foot. */
+.alt-list:has(.alt-ours) { padding-top: clamp(14px, 2vw, 22px); background: var(--paper-2); }
+.alt-list .alt-ours { margin: 0 clamp(10px, 1.6vw, 18px) clamp(14px, 2vw, 22px); border: 0; border-radius: 12px; background: color-mix(in srgb, var(--go) 6%, var(--paper)); color: var(--ink); box-shadow: 0 0 0 2px var(--go), var(--shadow-lift); rotate: -.35deg; }
+[dir="rtl"] .alt-list .alt-ours { rotate: .35deg; }
+.alt-list .alt-ours + .service { border-top: 1.5px solid var(--ink); }
+.alt-list .alt-ours ~ .service { background: var(--paper); }
+/* MDM's line is live (the maintainer's call: the one place green and motion go past their law).
+   Behind the row its eight connections fill as a download does, each at its own pace, green as it
+   delivers; the stamp lands; it starts again. Reduced motion shows it delivered, at rest. */
+.alt-list .alt-ours { position: relative; isolation: isolate; overflow: hidden; }
+@property --p { syntax: "<percentage>"; inherits: true; initial-value: 100%; }
+/* The row's foot: its connections, as MDM's progress window draws them. */
+.alt-list .alt-ours { padding-bottom: calc(22px + 38px); }
+.live { position: absolute; inset: auto clamp(18px, 3vw, 32px) 16px; z-index: -1; display: grid; grid-template-rows: repeat(8, 1fr); height: 30px; pointer-events: none; }
+/* One connection: a thin solid line drawn to --p, with its head where the bytes are arriving. */
+.live i { position: relative; display: block; --p: 100%; }
+.live i::before { content: ""; position: absolute; inset-inline-start: 0; top: 50%; width: var(--p); height: 2px; margin-top: -1px; border-radius: 1px; background: var(--stamp); }
+.live::before { content: ""; position: absolute; inset: 0; border-radius: 4px; background: color-mix(in srgb, var(--go) 12%, transparent); }
+.live i::after { content: ""; position: absolute; inset-inline-start: var(--p); top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--go); box-shadow: 0 0 0 2px color-mix(in srgb, var(--go) 30%, transparent); opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .live i { animation: live-fill 6s cubic-bezier(.35, .55, .25, 1) calc(var(--i) * 70ms) infinite both; }
+  .live i::before { animation: live-line 6s linear calc(var(--i) * 70ms) infinite both; }
+  .live i::after { animation: live-head 6s linear calc(var(--i) * 70ms) infinite both; }
+  .live i:nth-child(3n + 1) { animation-timing-function: cubic-bezier(.5, .2, .2, 1); }
+  .live i:nth-child(4n + 2) { animation-timing-function: cubic-bezier(.2, .7, .4, 1); }
+  .live i:nth-child(5n) { animation-timing-function: cubic-bezier(.6, .1, .3, 1); }
+  .live-stamp { animation: live-stamp 6s cubic-bezier(.16, 1, .3, 1) infinite both; }
+}
+@keyframes live-fill { 0% { --p: 0%; } 17%, 100% { --p: 100%; } }
+@keyframes live-line { 0%, 86% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes live-head { 0%, 15% { opacity: 1; } 21%, 100% { opacity: 0; } }
+@keyframes live-stamp {
+  0%, 17% { opacity: 0; scale: 1.6; }
+  22%, 86% { opacity: 1; scale: 1; }
+  100% { opacity: 0; scale: 1; }
+}
+.alt-ours .service-tags { align-items: center; gap: 10px; }
+.live-stamp { rotate: -4deg; padding: 3px 8px; font-size: 11px; }
+.live-stamp span { text-transform: none; letter-spacing: .01em; }
+[dir="rtl"] .live-stamp { rotate: 4deg; }
+/* In the declaration, MDM's ticks are delivered green. */
+.decl-ours .box.on { color: var(--go); }
+.decl-ours .box.on::after { background: var(--go-ink); }
+.alt-list .fields dd small { display: block; margin: 2px 0 0; white-space: nowrap; }
+/* Each product's own logo beside its name, at the name's size: identification, not decoration. */
+.alt-logo { flex: none; width: 24px; height: 24px; border-radius: 5px; box-shadow: none; }
+/* The roundup's name block: the logo on the start side, the name and its licence line beside it. */
+.alt-list .service :is(h2, h3) { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; row-gap: 2px; align-items: center; }
+.alt-list .service :is(h2, h3) .alt-logo { grid-row: 1 / span 2; width: 36px; height: 36px; border-radius: 8px; }
+.alt-list .service :is(h2, h3) > span { grid-column: 2; line-height: 1.05; }
+.alt-list .service :is(h2, h3) small { grid-column: 2; width: auto; }
+.alt-list .service-tags { padding-inline-start: 48px; }
+.decl :is(tbody) th .alt-logo { display: inline-block; margin-inline-end: 10px; vertical-align: -6px; }
 .alt-body { margin-bottom: 0; }
+
+/* The tick box: printed on the form, filled in ink where the feature is listed. A dashed box is
+   a claim taken from the product's own site; an empty one, not among what it lists. */
+.box { position: relative; display: inline-block; flex: none; width: 18px; height: 18px; border-radius: 3px; vertical-align: -4px; color: var(--ink); box-shadow: inset 0 0 0 1.5px currentColor; }
+.box.on { background: currentColor; }
+.box.on::after, .box.said::after { content: ""; position: absolute; inset: 2px; background: var(--paper); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 4.5' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 4.5' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain; }
+.box.said { box-shadow: none; outline: 1.5px dashed var(--ink-2); outline-offset: -1.5px; }
+.box.said::after { background: var(--ink-2); }
+.box.no { color: var(--ink-3); }
+
+/* Feature by feature: a declaration of contents, one line per download manager. */
+.decl-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.decl-scroll:focus-visible { outline: 3px solid var(--link); outline-offset: -3px; }
+.decl { min-width: 1000px; font-size: 15px; }
+.decl :is(th, td) { padding: 14px 16px; vertical-align: middle; border-top: 1px solid var(--line); }
+.decl thead th { padding-block: 18px 12px; border-top: 0; border-bottom: 1.5px solid var(--ink); text-align: center; font-size: 12px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; line-height: 1.25; text-transform: uppercase; color: var(--ink-3); }
+.decl thead th:first-child, .decl thead th:last-child { text-align: start; }
+.decl td { text-align: center; color: var(--ink); }
+.decl td small { display: block; margin-top: 5px; font-size: 12.5px; line-height: 1.3; color: var(--ink-3); }
+.decl :is(tbody, tfoot) th { position: sticky; inset-inline-start: 0; z-index: 1; background: var(--paper); box-shadow: inset -1px 0 0 var(--line); font-size: 17px; font-weight: 800; font-stretch: 82%; white-space: nowrap; color: var(--ink); }
+.decl td:last-child { text-align: start; }
+.decl tbody tr:hover > * { background: var(--paper-2); }
+[dir="rtl"] .decl :is(tbody, tfoot) th { box-shadow: inset 1px 0 0 var(--line); }
+/* Ours, printed in reverse like a label's band. */
+.decl tbody tr.decl-ours > * { background: color-mix(in srgb, var(--go) 10%, var(--paper)); color: var(--ink); border-top: 2px solid var(--go); border-bottom: 2px solid var(--go); }
+.decl tbody tr.decl-ours:hover > * { background: color-mix(in srgb, var(--go) 16%, var(--paper)); }
+.decl tbody tr.decl-ours th { font-size: 18px; }
+.decl tfoot :is(th, td) { border-top: 1.5px solid var(--ink); padding-block: 12px 16px; font-size: 13.5px; color: var(--ink-2); }
+.decl tfoot th { font-size: 12px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; text-transform: uppercase; color: var(--ink-3); }
+.decl tfoot b { margin-inline-end: 3px; font-size: 22px; font-weight: 800; font-stretch: 80%; color: var(--ink); }
+.sys-list { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.sys { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 12px; font-weight: 700; line-height: 1.4; background: var(--ink); color: var(--paper); }
+.sys.beta { background: none; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+
+.decl-key { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 14px clamp(18px, 3vw, 28px); border-top: 1.5px solid var(--ink); font-size: 13.5px; color: var(--ink-2); }
+.decl-key > span { display: inline-flex; align-items: center; gap: 8px; }
+.decl-sheet .sources { margin: 0; padding: 14px clamp(18px, 3vw, 28px) 18px; padding-inline-start: calc(clamp(18px, 3vw, 28px) + 18px); border-top: 1px solid var(--line); }
+
+/* MDM and IDM: a split label. The field names run down the spine; each side's value faces it. */
+.vs-sheet { margin-top: 1.1em; }
+.prose table.vs { font-size: 15.5px; line-height: 1.45; }
+.vs { table-layout: fixed; }
+.vs :is(th, td) { padding: 12px 16px; border-top: 1px solid var(--line); vertical-align: middle; }
+.vs thead th { padding: 0 16px 14px; border-top: 0; border-bottom: 1.5px solid var(--ink); vertical-align: bottom; font-size: 22px; font-weight: 850; font-stretch: 76%; letter-spacing: -.005em; line-height: 1.05; text-transform: none; color: var(--ink); }
+.vs thead th:first-child { text-align: end; }
+.vs thead th:first-child img { display: inline-block; width: 28px; height: 28px; margin-inline-end: 10px; vertical-align: -6px; box-shadow: none; border-radius: 6px; }
+.vs thead th:nth-child(2) { width: 24%; }
+.vs tbody th { text-align: center; background: var(--paper-2); font-size: 12px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; line-height: 1.3; text-transform: uppercase; color: var(--ink-3); }
+.vs td { color: var(--ink-2); }
+.vs td:first-child { text-align: end; }
+.vs td.better { color: var(--ink); font-weight: 700; }
+.vs-line { display: flex; align-items: center; gap: 10px; }
+.vs td:first-child .vs-line { justify-content: flex-end; }
+.vs td:last-child .vs-line { flex-direction: row-reverse; justify-content: flex-end; }
+.vs-v { display: inline-flex; align-items: center; gap: 8px; }
+.vs td:first-child .vs-v { flex-direction: row-reverse; }
+.vs .box { vertical-align: 0; }
+.vs .vs-gh th { padding: 24px 16px 10px; border-top: 1.5px solid var(--ink); background: none; text-align: center; font-size: 12.5px; color: var(--ink); }
+.vs tbody:first-of-type .vs-gh th { border-top: 0; padding-top: 18px; }
+/* The benchmark's times, to scale, in the race's inks: ours solid, IDM's ink-2. */
+.vs-time .vs-v { font-size: 22px; font-weight: 800; font-stretch: 80%; white-space: nowrap; }
+/* The bars say who is ahead on a time; no tick beside them. */
+.vs-time .box { display: none; }
+.vs-bar { flex: none; width: calc(var(--t) * 70%); min-width: 4px; height: 12px; border-radius: 2px; background: var(--ink); }
+/* Why IDM users switch: the reasons as label fields, the reason's name over its line. */
+.prose .alt-why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 1.1em 0 0; padding: 0; list-style: none; }
+.prose .alt-why li { max-width: none; margin: 0; padding: 14px 0 16px; border-top: 1.5px solid var(--ink); color: var(--ink-2); line-height: 1.55; }
+.prose .alt-why li::marker { content: none; }
+.prose .alt-why b { display: block; margin-bottom: 4px; font-size: 19px; font-weight: 800; font-stretch: 82%; color: var(--ink); }
+.prose .alt-why li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.vs td:last-child .vs-bar { background: var(--ink-2); }
+.vs-key { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; font-size: 13.5px; color: var(--ink-3); }
+
 @media (max-width: 980px) {
   .alt-list .fields { grid-template-columns: 1fr; }
+  .alt-list .service :is(h2, h3) { grid-column: 1 / -1; }
+  .alt-list .service-tags { grid-column: 1 / -1; grid-row: auto; justify-content: start; }
 }
 @media (max-width: 720px) {
-  .alt-table { min-width: 0; }
-  .alt-table tbody th { white-space: normal; }
-  .alt-wrap { padding-inline: 18px; }
-  /* Each cell names its column (translated with the page). */
-  .compare.alt-table td::before { content: attr(data-label); }
+  /* The form: each download manager a block, each feature naming itself (translated with the page). */
+  .decl, .decl :is(tbody, tfoot) { display: block; min-width: 0; }
+  .decl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .decl tr { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; padding: 16px 18px; border-top: 1px solid var(--line); }
+  .decl tbody tr.decl-ours { background: color-mix(in srgb, var(--go) 10%, var(--paper)); border-block: 2px solid var(--go); }
+  .decl tbody tr.decl-ours > * { background: none; }
+  .decl :is(th, td), .decl tfoot :is(th, td) { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 0; border: 0; text-align: start; position: static; box-shadow: none; background: none; }
+  .decl :is(tbody, tfoot) th { grid-column: 1 / -1; white-space: normal; font-size: 20px; }
+  .decl td::before { content: attr(data-label); order: 1; font-size: 14px; }
+  .decl td small { order: 2; flex-basis: 100%; margin: 0; padding-inline-start: 26px; }
+  .decl td:last-child { grid-column: 1 / -1; }
+  .decl td:last-child::before { flex-basis: 100%; font-size: 12px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; text-transform: uppercase; color: var(--ink-3); }
+  .decl tbody td:last-child::before { order: 0; }
+  .decl tfoot tr { border-top: 1.5px solid var(--ink); }
+  .decl tfoot td:last-child { display: none; }
+  .decl tfoot td::before { order: 2; }
+  /* The split label: the field over its two values. */
+  .vs, .vs tbody { display: block; table-layout: auto; }
+  .vs thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .vs tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .vs :is(th, td), .vs tbody th { display: block; width: auto; padding: 0; border: 0; text-align: start; background: none; }
+  .vs tbody th { order: -1; grid-column: 1 / -1; padding-bottom: 6px; color: var(--ink); }
+  .vs td::before { content: attr(data-label); display: block; margin-bottom: 2px; font-size: 11px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; color: var(--ink-3); }
+  .vs td:first-child .vs-line, .vs td:last-child .vs-line { flex-direction: row; justify-content: flex-start; }
+  .vs td:first-child { text-align: start; }
+  .vs td:first-child .vs-v { flex-direction: row; }
+  .vs .vs-gh { display: block; padding: 0; border-top: 1.5px solid var(--ink); }
+  .vs .vs-gh th, .vs tbody:first-of-type .vs-gh th { display: block; padding: 18px 0 2px; border: 0; text-align: start; }
+  .vs-time .vs-v { font-size: 19px; }
+  .prose .alt-why { grid-template-columns: 1fr; }
+  .vs-bar { width: calc(var(--t) * 60%); }
 }
 
 /* ---- Other languages (tools/website/sitei18n.py)------------------------------------------------ */
