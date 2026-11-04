@@ -228,6 +228,12 @@ opt-level = 3
 [profile.dev.package.brotli-decompressor]
 opt-level = 3
 
+# Dependencies' debug info: file:line only, so backtraces still name them, in debug symbols a
+# fraction of the size (every test program links them all). MDM's own crates keep full debug
+# info, for stepping through them in a debugger.
+[profile.dev.package."*"]
+debug = "line-tables-only"
+
 # storytold's egui fork (as storytold/craft-libs, D-003) plus two MDM commits on anefzaoui/egui
 # (branch mdm-accesskit-windows): every window created hidden gets an AccessKit adapter, so
 # screen readers read the dialogs and menus; and a dialog opened while the main window is
