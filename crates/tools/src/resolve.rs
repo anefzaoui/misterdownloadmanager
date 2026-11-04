@@ -115,14 +115,17 @@ pub const MP3: &str = "mp3:";
 const MP3_RATES: [u32; 4] = [320, 256, 192, 128];
 
 /// yt-dlp's `--audio-quality` for an MP3 choice's `<kbps>` (`MP3`): `0` (the best variable
-/// bitrate) or a bitrate MDM offers; none for anything else.
+/// bitrate) or a bitrate MDM offers, written exactly (`192`, not `+192` or `0192`); none for
+/// anything else.
 pub fn mp3_quality(selector: &str) -> Option<String> {
-    let kbps: u32 = selector.strip_prefix(MP3)?.parse().ok()?;
-    match kbps {
-        0 => Some("0".into()),
-        k if MP3_RATES.contains(&k) => Some(format!("{k}K")),
-        _ => None,
+    let kbps = selector.strip_prefix(MP3)?;
+    if kbps == "0" {
+        return Some("0".into());
     }
+    MP3_RATES
+        .iter()
+        .find(|k| k.to_string() == kbps)
+        .map(|k| format!("{k}K"))
 }
 
 /// Containers that only ever hold sound.
@@ -335,6 +338,11 @@ mod tests {
             "mp3:",
             "mp3:-1",
             "mp3:320; rm",
+            "mp3:+192",
+            "mp3:0320",
+            "mp3:000",
+            "mp3: 192",
+            "MP3:192",
             "ba",
             "b[height=360]",
         ] {

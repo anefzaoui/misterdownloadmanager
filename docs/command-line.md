@@ -44,7 +44,7 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `get URL [-o folder\|file] [-c connections] [-H "Header: value"]... [--checksum hash]` | Download a file with up to 8 connections (`-c`, 1 to 128), showing progress. `Ctrl+C` pauses it; `resume` continues. `--checksum` checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (`sha256:…`). |
 | `resume file.mdm.json [-c connections] [-H ...]` | Continue a paused or broken download from the `.mdm.json` file next to it. |
 | `video-info URL` | What video a page holds (YouTube, Vimeo, ...), and the qualities to choose from. |
-| `video-get URL [-f selector] [-o folder]` | Download a video; `-f` takes a quality's selector from `video-info` (`b` = the best single file). |
+| `video-get URL [-f selector] [-o folder]` | Download a video; `-f` takes a quality's selector from `video-info` (`b` = the best single file; `mp3:320`, `mp3:256`, `mp3:192` or `mp3:128` = the sound as an MP3 at that bitrate, `mp3:0` at its best variable one; MP3 needs ffmpeg). |
 | `install-ytdlp`, `install-ffmpeg` | Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (Windows; on macOS and Linux MDM uses the system's). |
 | `torrent-info SOURCE` | A torrent's name, files (numbered) and size; `SOURCE` is a magnet link or a `.torrent` file. |
 | `torrent-get SOURCE [-o folder] [--files 0,2]` | Download a torrent, or only some of its files. |

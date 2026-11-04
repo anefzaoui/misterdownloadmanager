@@ -9,8 +9,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 - **A video's sound as MP3, at the quality you pick** ([#32](https://github.com/anefzaoui/misterdownloadmanager/issues/32)):
   **Download video** lists **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256,
-  192 and 128 kbps, after the sound in the site's own format. ffmpeg converts it (MDM offers to
-  install it, as for the best video qualities), and the browser's **Download video** button offers
+  192 and 128 kbps, after the sound in the site's own format. ffmpeg converts it (on Windows MDM
+  offers to install it, as for the best video qualities; on Linux and macOS it uses the system's),
+  and the browser's **Download video** button offers
   the same. The command line takes `video-get --format mp3:192` (`mp3:0` for VBR).
 - **More than 32 connections per download, if you want them** ([#12](https://github.com/anefzaoui/misterdownloadmanager/issues/12)):
   **Options → Connection** now takes any number from 1 to 32, typed or set with the arrows,

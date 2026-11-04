@@ -86,9 +86,16 @@ fn supervise(
         match attempt(exe, url, ours, progress, child, expected) {
             Attempt::Stopped => return,
             Attempt::Done(f) => {
+                // The saved file's own size: a merged video or a converted MP3 isn't the size
+                // of what came down.
+                let saved = std::fs::metadata(&f).ok().map(|m| m.len());
                 let mut p = progress.lock().unwrap();
                 if p.state != State::Stopped {
                     p.speed = 0.0;
+                    if let Some(len) = saved {
+                        p.total = Some(len);
+                        p.downloaded = len;
+                    }
                     p.state = State::Done(f);
                 }
                 return;

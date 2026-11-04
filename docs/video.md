@@ -24,7 +24,7 @@ Both are kept in a `tools` folder in MDM's data folder.
 
 ## Choose the quality
 
-1. Wait for the list. It shows each resolution with its size, best first, then **Audio only** in the site's own format (M4A or WebM, as it was recorded), then **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.
+1. Wait for the list. It shows each resolution with its size, best first, then **Audio only** in the site's own format (M4A or WebM, as the site serves it), then **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.
 2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).
 3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title.
 4. Click **Download Now**, or **Later** to add it to the list without starting.
