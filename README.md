@@ -13,6 +13,16 @@
 </p>
 
 <p align="center">
+  🧩 <b>Browser extension:</b> submitted to the stores and awaiting approval<br>
+  <img src="docs/images/browsers/firefox.png" width="16" height="16" alt=""> Firefox ·
+  <img src="docs/images/browsers/chrome.png" width="16" height="16" alt=""> Chrome ·
+  <img src="docs/images/browsers/edge.png" width="16" height="16" alt=""> Edge ·
+  <img src="docs/images/browsers/brave.png" width="16" height="16" alt=""> Brave ·
+  <img src="docs/images/browsers/opera.png" width="16" height="16" alt=""> Opera<br>
+  <sub>Until then, load it from MDM's folder in a minute (<a href="docs/browser-integration.md">how</a>).</sub>
+</p>
+
+<p align="center">
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?style=social&label=Star%20MDM" alt="Star Mister Download Manager on GitHub" height="28"></a><br>
   <sub>⭐ <b>Like it? Give it a star.</b> MDM has no ads and no marketing budget: stars are how people find it.</sub>
 </p>
