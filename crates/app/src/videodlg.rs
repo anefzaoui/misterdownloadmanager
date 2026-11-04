@@ -350,16 +350,14 @@ impl VideoDialog {
                 Tool::Ffmpeg,
                 // i18n: button: download and install the ffmpeg program
                 crate::i18n::mark("Install ffmpeg"),
-                crate::i18n::t(
-                    "The best qualities need ffmpeg to merge video and audio (about 80 MB).",
-                ),
+                crate::i18n::t("The best qualities and MP3 need ffmpeg (about 80 MB)."),
             )),
             (Some(_), None) => Some((
                 Tool::Ffmpeg,
                 "",
                 // i18n: in Download video, on macOS and Linux (no button: the system installs it)
                 crate::i18n::t(
-                    "The best qualities need ffmpeg: install it with your system's package manager (or Homebrew).",
+                    "The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).",
                 ),
             )),
             _ => None,

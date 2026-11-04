@@ -9,8 +9,8 @@ Save a video from YouTube, Vimeo, TikTok and many other sites, in the quality yo
 1. Open the video in your browser and copy the page's address from the address bar.
 2. In MDM, click **Add URL** (or press **Ctrl+N**) and click **OK**. MDM sees that the address is a video's page and opens **Download video from a page**. (You can also open it with **Tasks → Download video from a page...**, paste the address and click **Look up**.)
 3. The first time, MDM needs its video helper. Click **Install yt-dlp** (about 23 MB). MDM downloads it from its official release and checks it before use.
-4. Wait while MDM looks the page up. The list of qualities appears, best first, with **Audio only** at the end.
-5. For the best qualities, MDM offers to install **ffmpeg** (about 80 MB), which joins the picture and the sound. Click **Install ffmpeg** if you want them. Without it, you get the qualities that come with their sound.
+4. Wait while MDM looks the page up. The list of qualities appears, best first, with **Audio only** at the end: the sound as the site has it, then as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.
+5. For the best qualities and MP3, MDM offers to install **ffmpeg** (about 80 MB), which joins the picture and the sound, and makes the MP3. Click **Install ffmpeg** if you want them. Without it, you get the qualities that come with their sound.
 6. Pick a quality.
 7. Check **Save to** and **File name**. The name comes from the video's title; change it if you like.
 8. Click **Download Now**, or **Later** to add it to the list without starting.

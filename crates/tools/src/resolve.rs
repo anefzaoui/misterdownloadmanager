@@ -107,6 +107,24 @@ pub fn resolve(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Vid
 /// The audio choice's label starts with this (the app translates it).
 pub const AUDIO_ONLY: &str = "Audio only";
 
+/// An MP3 choice's selector: `mp3:<kbps>`, the best sound converted to MP3 by ffmpeg at that
+/// constant bitrate, or `mp3:0` at its best variable one (`VideoJob::start`; #32).
+pub const MP3: &str = "mp3:";
+
+/// The MP3 bitrates offered, best first.
+const MP3_RATES: [u32; 4] = [320, 256, 192, 128];
+
+/// yt-dlp's `--audio-quality` for an MP3 choice's `<kbps>` (`MP3`): `0` (the best variable
+/// bitrate) or a bitrate MDM offers; none for anything else.
+pub fn mp3_quality(selector: &str) -> Option<String> {
+    let kbps: u32 = selector.strip_prefix(MP3)?.parse().ok()?;
+    match kbps {
+        0 => Some("0".into()),
+        k if MP3_RATES.contains(&k) => Some(format!("{k}K")),
+        _ => None,
+    }
+}
+
 /// Containers that only ever hold sound.
 fn audio_container(ext: &str) -> bool {
     matches!(
@@ -204,6 +222,26 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
             size: a.size,
         });
     }
+    // MP3, converted by ffmpeg from the best sound (#32): its best variable bitrate, then each
+    // constant one. Sizes from the duration (a variable one's is about 245 kbit/s).
+    let has_audio = v.formats.iter().any(|f| f.audio);
+    if can_merge && has_audio {
+        let size = |kbps: u32| v.duration.map(|s| (s * f64::from(kbps) * 125.0) as u64);
+        out.push(Choice {
+            label: format!("{AUDIO_ONLY} MP3 VBR"),
+            selector: format!("{MP3}0"),
+            ext: "mp3".into(),
+            size: size(245),
+        });
+        for kbps in MP3_RATES {
+            out.push(Choice {
+                label: format!("{AUDIO_ONLY} MP3 {kbps} kbps"),
+                selector: format!("{MP3}{kbps}"),
+                ext: "mp3".into(),
+                size: size(kbps),
+            });
+        }
+    }
     out
 }
 
@@ -232,7 +270,11 @@ mod tests {
                 fmt("hls-1280b", 1280.0),
             ],
         };
-        let labels: Vec<String> = choices(&v, true).into_iter().map(|c| c.label).collect();
+        let labels: Vec<String> = choices(&v, true)
+            .into_iter()
+            .map(|c| c.label)
+            .filter(|l| !l.contains("MP3"))
+            .collect();
         assert_eq!(
             labels,
             ["MP4 1280 kbps", "MP4 640 kbps"],
@@ -257,14 +299,47 @@ mod tests {
         let labels: Vec<&str> = merged.iter().map(|c| c.label.as_str()).collect();
         assert_eq!(
             labels,
-            ["1080p 60fps MP4", "720p MP4", "360p MP4", "Audio only M4A"]
+            [
+                "1080p 60fps MP4",
+                "720p MP4",
+                "360p MP4",
+                "Audio only M4A",
+                "Audio only MP3 VBR",
+                "Audio only MP3 320 kbps",
+                "Audio only MP3 256 kbps",
+                "Audio only MP3 192 kbps",
+                "Audio only MP3 128 kbps",
+            ]
         );
         assert_eq!(merged[0].size, Some(61_000_000), "video + best audio");
-        // Without ffmpeg only the format that has both survives.
+        // MP3 (#32): converted from the best sound, sized from the duration (61.5 s).
+        let mp3 = &merged[5];
+        assert_eq!(
+            (mp3.selector.as_str(), mp3.ext.as_str()),
+            ("mp3:320", "mp3")
+        );
+        assert_eq!(mp3.size, Some(2_460_000));
+        // Without ffmpeg only the format that has both survives, and no MP3 (it converts).
         let plain = choices(&v, false);
         let labels: Vec<&str> = plain.iter().map(|c| c.label.as_str()).collect();
         assert_eq!(labels, ["360p MP4", "Audio only M4A"]);
         assert_eq!(plain[0].selector, "b[height=360]");
+    }
+
+    #[test]
+    fn mp3_selectors_are_the_offered_ones_only() {
+        assert_eq!(mp3_quality("mp3:0").as_deref(), Some("0"));
+        assert_eq!(mp3_quality("mp3:192").as_deref(), Some("192K"));
+        for other in [
+            "mp3:64",
+            "mp3:",
+            "mp3:-1",
+            "mp3:320; rm",
+            "ba",
+            "b[height=360]",
+        ] {
+            assert_eq!(mp3_quality(other), None, "{other}");
+        }
     }
 
     #[test]

@@ -18,14 +18,14 @@ downloads them from their official releases with its own downloader, so a cut co
 resumes, and uses your proxy settings:
 
 - **yt-dlp** (about 23 MB) looks the page up and downloads the video. The first time, click **Install yt-dlp**. MDM checks the download against the signature yt-dlp's developers publish before it uses it.
-- **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
+- **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
 
 Both are kept in a `tools` folder in MDM's data folder.
 
 ## Choose the quality
 
-1. Wait for the list. It shows each resolution with its size, best first, and **Audio only** at the end.
-2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed.
+1. Wait for the list. It shows each resolution with its size, best first, then **Audio only** in the site's own format (M4A or WebM, as it was recorded), then **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.
+2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).
 3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title.
 4. Click **Download Now**, or **Later** to add it to the list without starting.
 

@@ -308,9 +308,15 @@ impl VideoJob {
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let output = dir.join(format!("{}.%(ext)s", template_text(stem)));
+        // An MP3 choice (`resolve::MP3`): the best sound, converted by ffmpeg (#32).
+        let mp3 = crate::resolve::mp3_quality(selector);
+        let format = if mp3.is_some() { "ba/b" } else { selector };
+        // What comes down is the sound as the site has it, not the MP3 the choice's size
+        // estimated: the progress follows yt-dlp's own total.
+        let expected = if mp3.is_some() { None } else { expected };
         let mut ours: Vec<String> = vec![
             "-f".into(),
-            selector.into(),
+            format.into(),
             "-o".into(),
             output.to_string_lossy().into_owned(),
             "--no-playlist".into(),
@@ -326,6 +332,15 @@ impl VideoJob {
         ];
         if let Some(r) = rate {
             ours.extend(["--limit-rate".into(), r.to_string()]);
+        }
+        if let Some(q) = mp3 {
+            ours.extend([
+                "-x".into(),
+                "--audio-format".into(),
+                "mp3".into(),
+                "--audio-quality".into(),
+                q,
+            ]);
         }
         let (theirs, cookies) = browser.args(url)?;
         ours.extend(theirs);
