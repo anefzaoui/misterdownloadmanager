@@ -811,12 +811,13 @@ html.lb-on { overflow: hidden; }
 .alt-list .fields { grid-template-columns: minmax(0, 2fr) minmax(0, 1.15fr) minmax(0, .85fr); }
 .alt-list .service :is(h2, h3) { font-size: 23px; }
 /* Ours, printed in reverse like a label's band, in the roundup as in the declaration. */
-.alt-list .alt-ours { background: var(--ink); color: var(--paper); border-top-color: var(--ink); }
-.alt-list .alt-ours :is(h3, dd) { color: var(--paper); }
-.alt-list .alt-ours :is(dt, h3 small, dd small) { color: color-mix(in srgb, var(--paper) 72%, transparent); }
-.alt-list .alt-ours .fields > div { border-color: color-mix(in srgb, var(--paper) 28%, transparent); }
-.alt-list .alt-ours .tag.stable { background: var(--paper); color: var(--ink); }
-.alt-list .alt-ours + .service { border-top-color: var(--ink); }
+/* Ours: not a row but a label stuck on the list, lifted, framed in delivered green and turned a
+   little, with its connections live at its foot. */
+.alt-list:has(.alt-ours) { padding-top: clamp(14px, 2vw, 22px); background: var(--paper-2); }
+.alt-list .alt-ours { margin: 0 clamp(10px, 1.6vw, 18px) clamp(14px, 2vw, 22px); border: 0; border-radius: 12px; background: color-mix(in srgb, var(--go) 6%, var(--paper)); color: var(--ink); box-shadow: 0 0 0 2px var(--go), var(--shadow-lift); rotate: -.35deg; }
+[dir="rtl"] .alt-list .alt-ours { rotate: .35deg; }
+.alt-list .alt-ours + .service { border-top: 1.5px solid var(--ink); }
+.alt-list .alt-ours ~ .service { background: var(--paper); }
 /* MDM's line is live (the maintainer's call: the one place green and motion go past their law).
    Behind the row its eight connections fill as a download does, each at its own pace, green as it
    delivers; the stamp lands; it starts again. Reduced motion shows it delivered, at rest. */
@@ -827,8 +828,8 @@ html.lb-on { overflow: hidden; }
 .live { position: absolute; inset: auto clamp(18px, 3vw, 32px) 16px; z-index: -1; display: grid; grid-template-rows: repeat(8, 1fr); height: 30px; pointer-events: none; }
 /* One connection: a thin solid line drawn to --p, with its head where the bytes are arriving. */
 .live i { position: relative; display: block; --p: 100%; }
-.live i::before { content: ""; position: absolute; inset-inline-start: 0; top: 50%; width: var(--p); height: 2px; margin-top: -1px; border-radius: 1px; background: var(--go); }
-.live::before { content: ""; position: absolute; inset: 0; border-radius: 3px; background: color-mix(in srgb, var(--paper) 7%, transparent); }
+.live i::before { content: ""; position: absolute; inset-inline-start: 0; top: 50%; width: var(--p); height: 2px; margin-top: -1px; border-radius: 1px; background: var(--stamp); }
+.live::before { content: ""; position: absolute; inset: 0; border-radius: 4px; background: color-mix(in srgb, var(--go) 12%, transparent); }
 .live i::after { content: ""; position: absolute; inset-inline-start: var(--p); top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--go); box-shadow: 0 0 0 2px color-mix(in srgb, var(--go) 30%, transparent); opacity: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .live i { animation: live-fill 6s cubic-bezier(.35, .55, .25, 1) calc(var(--i) * 70ms) infinite both; }
@@ -889,18 +890,16 @@ html.lb-on { overflow: hidden; }
 .decl tbody tr:hover > * { background: var(--paper-2); }
 [dir="rtl"] .decl :is(tbody, tfoot) th { box-shadow: inset 1px 0 0 var(--line); }
 /* Ours, printed in reverse like a label's band. */
-.decl tbody tr.decl-ours > * { background: var(--ink); color: var(--paper); border-top-color: var(--ink); }
-.decl-ours small { color: color-mix(in srgb, var(--paper) 74%, transparent); }
-.decl-ours .box { color: var(--paper); }
-.decl-ours .box.on::after { background: var(--ink); }
+.decl tbody tr.decl-ours > * { background: color-mix(in srgb, var(--go) 10%, var(--paper)); color: var(--ink); border-top: 2px solid var(--go); border-bottom: 2px solid var(--go); }
+.decl tbody tr.decl-ours:hover > * { background: color-mix(in srgb, var(--go) 16%, var(--paper)); }
+.decl tbody tr.decl-ours th { font-size: 18px; }
 .decl tfoot :is(th, td) { border-top: 1.5px solid var(--ink); padding-block: 12px 16px; font-size: 13.5px; color: var(--ink-2); }
 .decl tfoot th { font-size: 12px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; text-transform: uppercase; color: var(--ink-3); }
 .decl tfoot b { margin-inline-end: 3px; font-size: 22px; font-weight: 800; font-stretch: 80%; color: var(--ink); }
 .sys-list { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
 .sys { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 12px; font-weight: 700; line-height: 1.4; background: var(--ink); color: var(--paper); }
 .sys.beta { background: none; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
-.decl-ours .sys { background: var(--paper); color: var(--ink); }
-.decl-ours .sys.beta { background: none; color: var(--paper); box-shadow: inset 0 0 0 1.5px var(--paper); }
+
 .decl-key { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 14px clamp(18px, 3vw, 28px); border-top: 1.5px solid var(--ink); font-size: 13.5px; color: var(--ink-2); }
 .decl-key > span { display: inline-flex; align-items: center; gap: 8px; }
 .decl-sheet .sources { margin: 0; padding: 14px clamp(18px, 3vw, 28px) 18px; padding-inline-start: calc(clamp(18px, 3vw, 28px) + 18px); border-top: 1px solid var(--line); }
@@ -950,7 +949,7 @@ html.lb-on { overflow: hidden; }
   .decl, .decl :is(tbody, tfoot) { display: block; min-width: 0; }
   .decl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .decl tr { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; padding: 16px 18px; border-top: 1px solid var(--line); }
-  .decl tbody tr.decl-ours { background: var(--ink); }
+  .decl tbody tr.decl-ours { background: color-mix(in srgb, var(--go) 10%, var(--paper)); border-block: 2px solid var(--go); }
   .decl tbody tr.decl-ours > * { background: none; }
   .decl :is(th, td), .decl tfoot :is(th, td) { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 0; border: 0; text-align: start; position: static; box-shadow: none; background: none; }
   .decl :is(tbody, tfoot) th { grid-column: 1 / -1; white-space: normal; font-size: 20px; }
