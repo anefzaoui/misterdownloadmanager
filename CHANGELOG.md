@@ -111,6 +111,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: menus opened in the middle of the screen** in a Wayland session
+  ([#50](https://github.com/anefzaoui/misterdownloadmanager/issues/50)): Wayland lets no program
+  place its windows, and MDM's menus and drop-down lists are windows it places. MDM now runs
+  through XWayland when it is there (`MDM_WAYLAND=1` keeps Wayland).
 - A download whose address ends in a long token (file hosts such as AnkerGames' mirrors) failed
   with "the path is too long for Windows" before it started
   ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)). Every new download's name

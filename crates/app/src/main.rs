@@ -219,6 +219,9 @@ fn app() -> eframe::Result {
     }
     let opts = eframe::NativeOptions {
         viewport,
+        // Linux: X11 (XWayland) over Wayland when both are there, so menus open where clicked.
+        #[cfg(target_os = "linux")]
+        event_loop_builder: unix::prefer_x11(),
         ..Default::default()
     };
     let result = eframe::run_native(

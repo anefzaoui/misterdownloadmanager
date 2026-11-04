@@ -332,6 +332,33 @@ fn color_scheme(v: &zbus::zvariant::Value) -> Option<u32> {
     }
 }
 
+/// Linux: the windows run through X11 (XWayland, in a Wayland session) when there is one, unless
+/// `MDM_WAYLAND=1` (#50). Wayland lets no program place its own windows, and MDM's menus and drop
+/// lists are windows it places under what was clicked: Wayland put them in the middle of the
+/// screen. The hook for `NativeOptions::event_loop_builder`; None: winit's own choice.
+#[cfg(target_os = "linux")]
+pub fn prefer_x11() -> Option<eframe::EventLoopBuilderHook> {
+    let set = |name: &str| std::env::var_os(name).is_some_and(|v| !v.is_empty());
+    let keep = std::env::var_os("MDM_WAYLAND").is_some_and(|v| v == "1");
+    let x11 = set("WAYLAND_DISPLAY") && set("DISPLAY") && !keep;
+    let _ = ON_WAYLAND.set(set("WAYLAND_DISPLAY") && !x11);
+    x11.then(|| -> eframe::EventLoopBuilderHook {
+        Box::new(|b| {
+            use winit::platform::x11::EventLoopBuilderExtX11;
+            b.with_x11();
+        })
+    })
+}
+
+#[cfg(target_os = "linux")]
+static ON_WAYLAND: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+
+/// Linux: MDM's windows are Wayland's (not X11's or XWayland's), as `prefer_x11` decided.
+#[cfg(target_os = "linux")]
+pub fn on_wayland() -> bool {
+    *ON_WAYLAND.get_or_init(|| std::env::var_os("WAYLAND_DISPLAY").is_some_and(|v| !v.is_empty()))
+}
+
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {
