@@ -874,6 +874,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "1970ad20e03db6c3": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux 신호, macOS Mach 예외), 패닉 또는 멈춤 현상이 발생하면 모니터에 덤프를 요청합니다. 멈춤 현상은 창이 8초 이상 실행되는 프레임으로, 절전 시간을 무시하는 감시 스레드에 의해 감지됩니다. 감시 스레드는 또한 창 스레드가 그동안 얻은 프로세서 시간을 측정하며, 보고서는 그 의미를 알려줍니다. 즉, 계속 실행되었는지(루프), 잠금 또는 I/O에서 대기했는지(교착 상태), 아니면 일반 코드에서 거의 실행되지 않았는지(컴퓨터가 MDM을 실행하기에 너무 바쁘거나 디스크에서 로드하는 데 느린 경우, MDM 버그가 아닐 가능성이 높음 - 이들은 하나의 서명 <x2/>를 공유함)를 나타냅니다. macOS는 아직 이를 측정하지 않습니다. 그러면 모니터는 <x4/> 및 <x5/>를 통해 외부에서 모든 스레드의 <g3>미니덤프</g3>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 마찬가지입니다."
+  },
   "19810b030c072070": {
    "source": "Path",
    "text": "경로"
@@ -4886,6 +4890,10 @@
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>\"파일 정보 다운로드\" 대화 상자를 표시하는 동안 즉시 다운로드 시작</g1> — 기본적으로 켜져 있으므로 폴더를 선택하는 동안에도 다운로드가 이미 진행 중입니다."
   },
+  "92964c9bc3c4b26a": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
+   "text": "<g1>테스트하기.</g1> <x2/>는 실제 멈춤, 패닉 및 충돌(<x3/>)을 실행하고 각 보고서의 서명을 확인합니다. 앱에서 시도하려면 <x4/>로 MDM을 시작한 다음 <x5/>(교착 상태; 또는 <x6/>, 12초 동안 바쁜 창 스레드, <x7/>, <x8/>, <x9/>)를 실행합니다."
+  },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
    "text": "브라우저 확장 프로그램은 어떻게 설치하나요? — Mister Download Manager"
@@ -5241,10 +5249,6 @@
   "9c6bacc12d96f229": {
    "source": "Product",
    "text": "제품"
-  },
-  "9c82ae2e3182cb93": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (or <x6/>, <x7/>, <x8/>).",
-   "text": "<g1>테스트하기.</g1> <x2/>는 실제 멈춤, 패닉 및 충돌(<x3/>)을 실행하고 각 보고서의 서명을 확인합니다. 앱에서 시도하려면 <x4/>로 MDM을 시작한 다음 <x5/>(또는 <x6/>, <x7/>, <x8/>)를 실행하세요."
   },
   "9c9751edd8659026": {
    "source": "Close the dialog (an open drop-down list first)",
@@ -6921,10 +6925,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "실행 중인 각 다운로드에는 자체 진행 창이 있습니다. 다운로드가 시작될 때 열리며, 다시 열려면 목록에서 다운로드를 두 번 클릭하세요."
-  },
-  "d1432f447b205626": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux의 신호, macOS의 Mach 예외), 패닉 또는 멈추면 모니터에 덤프를 요청합니다. 멈춤은 창의 프레임이 8초 이상 실행되는 것으로, 잠든 시간을 무시하는 감시 스레드에 의해 감지됩니다. 그러면 모니터는 <x3/> 및 <x4/>를 통해 외부에서 모든 스레드의 <g2>미니덤프</g2>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 마찬가지입니다."
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",

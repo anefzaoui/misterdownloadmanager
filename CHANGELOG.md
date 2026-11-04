@@ -95,6 +95,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Freeze reports say what kind of freeze it was** ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
+  MDM measures how much processor time the window got while it didn't answer. The report then
+  says whether it ran all along (a loop), waited (a deadlock, or the disk or the network), or
+  hardly ran at all, which means a computer too busy to run MDM or slow to load it from disk,
+  most likely not a bug in MDM. Those last ones share one signature, so they find one issue
+  instead of many.
 - **MDM's programs are a third of their size, its download about half** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
   on Windows, the programs went from 93 MB to 33 MB (`misterdownloadmanager.exe` from 61 MB to
   29 MB, the command line from 28 MB to a 0.2 MB launcher), and setup.exe from 23 MB to 12 MB.

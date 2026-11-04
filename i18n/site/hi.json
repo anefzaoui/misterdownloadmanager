@@ -874,6 +874,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "1970ad20e03db6c3": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>समस्याओं को पकड़ना।</g1> जब MDM क्रैश होता है (Windows अपवाद, Linux पर सिग्नल, macOS पर Mach अपवाद), पैनिक करता है, या फ्रीज होता है, तो यह मॉनिटर से डंप मांगता है। फ्रीज का मतलब है कि विंडो का एक फ्रेम 8 सेकंड से अधिक समय तक चल रहा है, जिसे एक वॉचडॉग थ्रेड देखता है जो स्लीप में बिताए गए समय को अनदेखा करता है। वॉचडॉग यह भी मापता है कि इस बीच विंडो थ्रेड को कितना प्रोसेसर समय मिला, और रिपोर्ट बताती है कि इसका क्या मतलब है: यह लगातार चल रहा था (एक लूप), यह एक लॉक में या I/O पर इंतजार कर रहा था (एक डेडलॉक), या यह सामान्य कोड में मुश्किल से चला, जिसका मतलब है कि कंप्यूटर MDM चलाने के लिए बहुत व्यस्त है या इसे डिस्क से लोड करने में धीमा है, जो शायद MDM का बग नहीं है (वे एक ही सिग्नेचर साझा करते हैं, <x2/>)। macOS अभी इसे नहीं मापता है। मॉनिटर फिर बाहर से हर थ्रेड का एक <g3>मिनीडंप</g3> लिखता है, <x4/> और <x5/> के माध्यम से। एक क्रैश हुई प्रक्रिया कभी भी अपना डंप नहीं लिखती है, जैसा कि Firefox, Crashpad और Sentry भी करते हैं।"
+  },
   "19810b030c072070": {
    "source": "Path",
    "text": "पाथ"
@@ -4886,6 +4890,10 @@
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>\"फ़ाइल जानकारी डाउनलोड करें\" संवाद प्रदर्शित करते समय तुरंत डाउनलोड करना प्रारंभ करें</g1> — डिफ़ॉल्ट रूप से चालू, ताकि जब आप कोई फ़ोल्डर चुनें तो डाउनलोड पहले से ही चल रहा हो।"
   },
+  "92964c9bc3c4b26a": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
+   "text": "<g1>इसका परीक्षण करना।</g1> <x2/> एक वास्तविक फ्रीज, पैनिक और क्रैश (<x3/>) चलाता है और प्रत्येक रिपोर्ट के सिग्नेचर की जांच करता है। ऐप में इसे आज़माने के लिए, MDM को <x4/> के साथ शुरू करें, फिर <x5/> (एक डेडलॉक; या <x6/>, एक व्यस्त विंडो थ्रेड के 12 सेकंड, <x7/>, <x8/>, <x9/>) चलाएं।"
+  },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
    "text": "ब्राउज़र एक्सटेंशन कैसे इंस्टॉल करें? — Mister Download Manager"
@@ -5241,10 +5249,6 @@
   "9c6bacc12d96f229": {
    "source": "Product",
    "text": "उत्पाद"
-  },
-  "9c82ae2e3182cb93": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (or <x6/>, <x7/>, <x8/>).",
-   "text": "<g1>इसका परीक्षण करना।</g1> <x2/> एक वास्तविक फ्रीज, पैनिक और क्रैश (<x3/>) चलाता है और प्रत्येक रिपोर्ट के हस्ताक्षर की जाँच करता है। इसे ऐप में आज़माने के लिए, MDM को <x4/> के साथ शुरू करें, फिर <x5/> (या <x6/>, <x7/>, <x8/>) चलाएँ।"
   },
   "9c9751edd8659026": {
    "source": "Close the dialog (an open drop-down list first)",
@@ -6921,10 +6925,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "प्रत्येक चल रहे डाउनलोड की अपनी प्रगति विंडो होती है। यह डाउनलोड शुरू होने पर खुलती है; इसे फिर से खोलने के लिए, सूची में डाउनलोड पर डबल-क्लिक करें।"
-  },
-  "d1432f447b205626": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The monitor then writes a <g2>minidump</g2> of every thread from outside, through <x3/> and <x4/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>समस्याओं को पकड़ना।</g1> जब MDM क्रैश होता है (एक Windows अपवाद, Linux पर एक सिग्नल, macOS पर एक Mach अपवाद), पैनिक करता है, या जम जाता है, तो यह मॉनिटर से एक डंप मांगता है। एक फ़्रीज़ विंडो का एक फ़्रेम है जो 8 सेकंड से अधिक चलता है, जिसे एक वॉचडॉग थ्रेड द्वारा देखा जाता है जो सोए हुए समय को अनदेखा करता है। मॉनिटर फिर <x3/> और <x4/> के माध्यम से बाहर से हर थ्रेड का एक <g2>मिनीडंप</g2> लिखता है। एक क्रैश हुई प्रक्रिया कभी भी अपना डंप नहीं लिखती है, जो कि Firefox, Crashpad और Sentry भी इसी तरह करते हैं।"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
