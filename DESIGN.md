@@ -221,7 +221,7 @@ Two materials and one law: the board in the logo's blue, label stock in white an
 - **Hairline** (line): quiet dividers inside a sheet (table rows, list rows, the help nav's edge).
 
 ### Named Rules
-**The Green By Law Rule.** Green appears only on the Download action and on delivered states (the done lane, the stamp). Never on a secondary button, a badge, a link or a decorative accent.
+**The Green By Law Rule.** Green appears only on the Download action and on delivered states (the done lane, the stamp). Never on a secondary button, a badge, a link or a decorative accent. One exception, the owner's choice: on the comparison page, MDM's line is live. Its foot carries a strip of eight connections that fill in green, each at its own pace with a head where the bytes arrive; then a Delivered stamp lands ("1 GiB in 1.01 s", the benchmark's median), and it loops every 6 s. Its ticks in the declaration are green. Reduced motion shows it delivered, at rest.
 
 **The Two Text Systems Rule.** Text on the board is on-board or on-board-2; text on label stock is ink, ink-2 or ink-3. Never put ink on the board or board text on a sheet; every element printed on stock declares ink colour, whatever it inherits.
 
