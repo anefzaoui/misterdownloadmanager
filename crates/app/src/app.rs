@@ -1924,7 +1924,17 @@ impl App {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_else(|| "video".into());
-        let dest = mdm_engine::naming::destination(&folder, &name);
+        // yt-dlp takes any `<stem>.*` there as its own: a stem no file and no other download
+        // in the folder has, whatever the extension (#32).
+        let items = &self.items;
+        let dest = mdm_engine::naming::stem_destination(&folder, &name, |stem| {
+            items.iter().any(|i| {
+                i.dest.parent() == Some(folder.as_path())
+                    && i.dest
+                        .file_stem()
+                        .is_some_and(|s| s.to_string_lossy().to_lowercase() == stem.to_lowercase())
+            })
+        });
         let id = self.push_item(
             add.page,
             dest,

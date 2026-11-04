@@ -238,6 +238,40 @@ pub fn destination(dir: &Path, name: &str) -> PathBuf {
     unique_path(dir, &name)
 }
 
+/// `destination` for a download whose helper picks the extension and takes any `<stem>.*` it
+/// finds as its own (a video: yt-dlp reuses a file of the stem already there, and after an
+/// MP3's conversion deletes it, #32). The stem is numbered on until no file in `dir` starts
+/// with it and a dot, letter case aside, and `in_use` (the other downloads' stems in `dir`)
+/// says no.
+pub fn stem_destination(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -> PathBuf {
+    let name = fit_name(dir, name).unwrap_or_else(|| name.to_owned());
+    let (stem, ext) = match name.rfind('.') {
+        Some(i) if i > 0 => (&name[..i], &name[i..]),
+        _ => (name.as_str(), ""),
+    };
+    let there: Vec<String> = std::fs::read_dir(dir)
+        .map(|rd| {
+            rd.filter_map(Result::ok)
+                .map(|e| e.file_name().to_string_lossy().to_lowercase())
+                .collect()
+        })
+        .unwrap_or_default();
+    let free = |s: &str| {
+        let prefix = format!("{}.", s.to_lowercase());
+        let p = dir.join(format!("{s}{ext}"));
+        !there
+            .iter()
+            .any(|n| n.starts_with(&prefix) || *n == s.to_lowercase())
+            && !is_reserved(&p)
+            && !in_use(s)
+    };
+    std::iter::once(stem.to_owned())
+        .chain((1u32..).map(|n| format!("{stem} ({n})")))
+        .find(|s| free(s))
+        .map(|s| dir.join(format!("{s}{ext}")))
+        .expect("unbounded search finds a free name")
+}
+
 fn clamp(name: &str) -> String {
     clamp_to(name, MAX_NAME)
 }
@@ -318,6 +352,39 @@ pub fn reserve(dest: &Path) -> Option<Reservation> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #32: a video's stem is free for every extension, on disk (any letter case) and among
+    /// the other downloads.
+    #[test]
+    fn a_stem_is_free_for_every_extension() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let none = |_: &str| false;
+        assert_eq!(stem_destination(d, "Song.mp3", none), d.join("Song.mp3"));
+        std::fs::write(d.join("song.M4A"), b"the user's").unwrap();
+        assert_eq!(
+            stem_destination(d, "Song.mp3", none),
+            d.join("Song (1).mp3")
+        );
+        std::fs::write(d.join("Song (1).webm.part"), b"").unwrap();
+        assert_eq!(
+            stem_destination(d, "Song.mp3", none),
+            d.join("Song (2).mp3")
+        );
+        // Another download in the list already has "Song (2)".
+        assert_eq!(
+            stem_destination(d, "Song.mp3", |s| s == "Song (2)"),
+            d.join("Song (3).mp3")
+        );
+        // "Song extra.mp3" or "Songs.mp3" don't take "Song".
+        let other = tempfile::tempdir().unwrap();
+        std::fs::write(other.path().join("Song extra.mp3"), b"").unwrap();
+        std::fs::write(other.path().join("Songs.m4a"), b"").unwrap();
+        assert_eq!(
+            stem_destination(other.path(), "Song.mp3", none),
+            other.path().join("Song.mp3")
+        );
+    }
 
     #[test]
     fn names_shrink_to_fit_a_deep_folder() {
