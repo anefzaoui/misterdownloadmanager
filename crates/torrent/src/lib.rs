@@ -596,8 +596,14 @@ impl Torrents {
         self.session.pause(&h).await.map_err(engine)
     }
 
+    /// Start it again. One still checking its files (added paused, or restored at start) is
+    /// waited for: it is Paused only once checked, and unpausing it before did nothing, so it
+    /// stayed paused (seen on Linux, where the check took longer than the call).
     pub async fn resume(&self, hash: &str) -> Result<(), TorrentError> {
         let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
+        if matches!(h.stats().state, TorrentStatsState::Initializing { .. }) {
+            h.wait_until_initialized().await.map_err(engine)?;
+        }
         if !matches!(h.stats().state, TorrentStatsState::Paused) {
             return Ok(());
         }
@@ -1004,7 +1010,7 @@ mod tests {
     }
 
     /// #39: a torrent's own limit holds it back, the session's stays as it was, and the bytes
-    /// it fetched are counted (the app charges the global cap with them).
+    /// it fetched are counted (the app leaves file downloads the global cap's rest by them).
     #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
     async fn a_torrents_own_limit_holds_it_back() {
         let tmp = tempfile::tempdir().unwrap();

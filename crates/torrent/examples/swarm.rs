@@ -3,7 +3,11 @@
 //! generated multi-file torrent, and a tracker that hands them to whoever announces. Writes
 //! `<out>/Open Movie Night.torrent`, then seeds until stopped.
 //!
-//!   cargo run --release -p mdm-torrent --example swarm -- target/swarm [size MB] [seeders] [port]
+//!   cargo run --release -p mdm-torrent --example swarm -- target/swarm [size MB] [seeders] [port] [lsd]
+//!
+//! The app leaves out trackers on this computer (#40), so for the app add `lsd`: the seeders
+//! then answer Local Service Discovery, and the app finds them that way (Torrent settings'
+//! local peers on). Without it they talk to nothing but the tracker.
 
 use std::io::Write;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
@@ -22,6 +26,7 @@ async fn main() {
     let total: u64 = args.get(1).and_then(|a| a.parse().ok()).unwrap_or(600) << 20;
     let seeders: usize = args.get(2).and_then(|a| a.parse().ok()).unwrap_or(4);
     let port: u16 = args.get(3).and_then(|a| a.parse().ok()).unwrap_or(6969);
+    let lsd = args.get(4).is_some_and(|a| a == "lsd");
 
     let data = out.join("data").join(NAME);
     make_files(&data, total);
@@ -48,7 +53,9 @@ async fn main() {
     for n in 0..seeders {
         let t = Torrents::start(Config {
             dht: false,
-            offline: true,
+            upnp: false,
+            lsd,
+            offline: !lsd,
             ..Config::new(out.join(format!("seeder{n}")))
         })
         .await

@@ -321,9 +321,10 @@ pub struct App {
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Since when no torrent has needed the torrent engine (`torrent_tick`).
     torrent_idle_since: Option<Instant>,
-    /// Each running torrent's bytes from peers as last seen (by item id), so the global cap
-    /// is charged only what is new (`charge_torrents`).
+    /// Each running torrent's bytes from peers as last seen (by item id), and the torrents'
+    /// smoothed speed with when it was measured (`torrent_speed`, for the global cap).
     torrent_fetched: HashMap<u64, u64>,
+    torrent_speed: (f64, Instant),
     /// A blocklist is being fetched (torrents::refresh_blocklist).
     blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
@@ -727,6 +728,7 @@ impl App {
             torrent_settings: None,
             torrent_idle_since: None,
             torrent_fetched: HashMap::new(),
+            torrent_speed: (0.0, Instant::now()),
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
@@ -1754,7 +1756,11 @@ impl App {
 
     /// The global cap's rate now: on, and (if asked) only while the user is active (input in
     /// the last minute).
-    fn apply_global_limit(&self) {
+    ///
+    /// Torrents share it (D-012, "one limit for all downloads together"): together they stay
+    /// under it (the torrent session's download limit), and file downloads get what they leave
+    /// (`file_share`), measured each frame.
+    fn apply_global_limit(&mut self) {
         let s = &self.settings;
         #[cfg(windows)]
         let active = crate::win32::idle_seconds() < 60;
@@ -1762,31 +1768,44 @@ impl App {
         let active = true;
         let rate = (s.global_limit_on && (!s.global_only_active || active))
             .then(|| s.global_limit_kb.max(1) * 1024);
-        if self.global.get() != rate {
-            self.global.set(rate);
-        }
-        // Torrents share it (D-012, "one limit for all downloads together"): together they
-        // stay under it, and file downloads give way by what they took (charge_torrents).
         self.torrent_host.set_cap(rate);
+        let torrents = self.torrent_speed();
+        let files = rate.map(|cap| file_share(cap, torrents));
+        if self.global.get() != files {
+            self.global.set(files);
+        }
     }
 
-    /// Charge the global cap with the bytes torrents received since the last frame, so file
-    /// downloads (which wait on it) leave the torrents their share. librqbit counts from 0
-    /// again each time a torrent resumes: a smaller count is all new.
-    fn charge_torrents(&mut self) {
-        let on = self.global.get().is_some();
+    /// The torrents' download speed together, bytes/s, smoothed over about two seconds (from
+    /// the bytes librqbit says each fetched; it counts from 0 again each time a torrent
+    /// resumes, so a smaller count is all new).
+    fn torrent_speed(&mut self) -> f64 {
+        let now = Instant::now();
         let mut seen = HashMap::new();
+        let mut new = 0u64;
         for i in &self.items {
             let Some(model::Job::Torrent(run)) = i.live.as_ref().map(|l| &l.dl) else {
                 continue;
             };
-            let Some(now) = run.fetched() else { continue };
-            if on && let Some(&before) = self.torrent_fetched.get(&i.id) {
-                self.global.charge(now.checked_sub(before).unwrap_or(now));
+            let Some(fetched) = run.fetched() else {
+                continue;
+            };
+            if let Some(&before) = self.torrent_fetched.get(&i.id) {
+                new += fetched.checked_sub(before).unwrap_or(fetched);
             }
-            seen.insert(i.id, now);
+            seen.insert(i.id, fetched);
         }
         self.torrent_fetched = seen;
+        let dt = now.duration_since(self.torrent_speed.1).as_secs_f64();
+        self.torrent_speed.1 = now;
+        if dt > 0.0 {
+            let k = 1.0 - (-dt / 2.0).exp();
+            self.torrent_speed.0 += (new as f64 / dt - self.torrent_speed.0) * k;
+        }
+        if self.torrent_fetched.is_empty() {
+            self.torrent_speed.0 = 0.0;
+        }
+        self.torrent_speed.0
     }
 
     /// Progress of all running downloads together (bytes done / bytes in all), None when
@@ -5467,7 +5486,6 @@ impl eframe::App for App {
         self.remember_layout(&ctx);
         self.auto_update_check(&ctx);
         self.apply_global_limit();
-        self.charge_torrents();
         self.watch_clipboard(&ctx);
         self.tray(&ctx);
         // The taskbar button's green bar: everything running, as one.
@@ -5595,6 +5613,33 @@ impl Drop for App {
             &self.settings,
             &self.queues,
         );
+    }
+}
+
+/// What file downloads may take of the global cap (bytes/s) while torrents take `torrents`:
+/// the rest, but never less than a twentieth of it (and 1 KB/s), so they keep going slowly
+/// beside torrents at the cap.
+fn file_share(cap: u64, torrents: f64) -> u64 {
+    let rest = cap.saturating_sub(torrents.max(0.0) as u64);
+    rest.max(cap / 20).max(1024)
+}
+
+#[cfg(test)]
+mod global_cap_tests {
+    use super::file_share;
+
+    #[test]
+    fn files_get_what_torrents_leave() {
+        let cap = 800 * 1024;
+        assert_eq!(file_share(cap, 0.0), cap, "no torrents: all of it");
+        assert_eq!(file_share(cap, 300.0 * 1024.0), 500 * 1024);
+        assert_eq!(file_share(cap, 800.0 * 1024.0), 40 * 1024, "a twentieth");
+        assert_eq!(
+            file_share(cap, 5e9),
+            40 * 1024,
+            "torrents measured over the cap"
+        );
+        assert_eq!(file_share(4096, 4096.0), 1024, "at least 1 KB/s");
     }
 }
 
