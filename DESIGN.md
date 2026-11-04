@@ -221,7 +221,7 @@ Two materials and one law: the board in the logo's blue, label stock in white an
 - **Hairline** (line): quiet dividers inside a sheet (table rows, list rows, the help nav's edge).
 
 ### Named Rules
-**The Green By Law Rule.** Green appears only on the Download action and on delivered states (the done lane, the stamp). Never on a secondary button, a badge, a link or a decorative accent.
+**The Green By Law Rule.** Green appears only on the Download action and on delivered states (the done lane, the stamp). Never on a secondary button, a badge, a link or a decorative accent. One exception, the owner's choice: on the comparison page, MDM's line is live. Its foot carries a strip of eight connections that fill in green, each at its own pace with a head where the bytes arrive; then a Delivered stamp lands ("1 GiB in 1.01 s", the benchmark's median), and it loops every 6 s. Its ticks in the declaration are green. Reduced motion shows it delivered, at rest.
 
 **The Two Text Systems Rule.** Text on the board is on-board or on-board-2; text on label stock is ink, ink-2 or ink-3. Never put ink on the board or board text on a sheet; every element printed on stock declares ink colour, whatever it inherits.
 
@@ -330,6 +330,7 @@ A Lift sheet, 12px corners, with an ink title band; a grid of flag, native name 
 - **Do** show only the real, unretouched app in screenshots, in its day and night versions, left to right even on RTL pages.
 - **Do** use logical properties for every direction, mirror tilts in RTL, and drop tracking, uppercase and condensing for Arabic, Persian, Indic, Thai and CJK scripts.
 - **Do** keep the barcode a real, scannable Code 128 of what it says.
+- **Do** show the other download managers on the comparison page with their own logos, 24px beside their names, unretouched, with the trademark notice and `website/assets/alts/SOURCES.txt`; never IDM's.
 - **Do** honour reduced motion: the race shows its finish, the label does not feed, bars and grids sit at rest.
 
 ### Don't:

@@ -18,7 +18,9 @@ pub enum Icon {
     Scheduler,
     StartQueue,
     StopQueue,
-    /// Download complete's drag handle: drag the file out (IDM's hand-and-arrows grip).
+    /// Download complete's drag handle: drag the file out (IDM's hand-and-arrows grip). Windows
+    /// only, as the handle is (dialogs.rs).
+    #[cfg_attr(not(windows), allow(dead_code))]
     DragOut,
     /// Options page headers (IDM draws its own artwork there; ours are Lucide outlines).
     PageGeneral,
