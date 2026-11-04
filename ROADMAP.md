@@ -46,7 +46,8 @@ Everything below ships together, in one release.
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
-  MDM with IDM and with nine other free download managers, each checked on its own site
+  MDM with IDM and with nine other free download managers, each checked on its own site, with
+  their logos, a feature-by-feature form and an MDM-vs-IDM label with the benchmark's times to scale
 
 ### Being built
 
