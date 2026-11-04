@@ -48,6 +48,41 @@ server directly, not through the HTTP proxy.
 Browsers no longer download `ftp://` links themselves. Right-click one and choose **Download with
 Mister Download Manager**, or copy it and use **Add URL**.
 
+## Google Drive links
+
+Paste a Google Drive link as it is, the one **Share → Copy link** gives:
+
+- `https://drive.google.com/file/d/…/view?usp=sharing`, with or without `/view`;
+- `https://drive.google.com/uc?id=…&export=download` and `https://drive.google.com/open?id=…`;
+- `https://docs.google.com/document/d/…/edit` (and Sheets, Slides, Drawings).
+
+MDM downloads the file itself, as it was uploaded (a video comes in its own format, not the
+player's copy), with its real name and size, over several connections, and it can resume. For a
+large file, Drive shows a page that says it **can't scan this file for viruses**; MDM goes past
+it as **Download anyway** does.
+
+**Google Docs, Sheets and Slides** come as Word (`.docx`), Excel (`.xlsx`) and PowerPoint
+(`.pptx`) files, and Drawings as `.png`. These files are made when they are asked for, so their
+size is unknown until they arrive and they can't be resumed: a cut-off download starts again.
+
+**Files that aren't shared with everyone.** Right-click the link in the browser and choose
+**Download with Mister Download Manager**, or use Drive's own **Download** button: the extension
+passes your browser's Google sign-in with the download. MDM never asks for or keeps your
+password. Without a sign-in, MDM says the file **needs you to sign in**.
+
+**When Drive won't give a file.** Drive limits how often a file can be downloaded: after many
+downloads in a day it answers "too many users have viewed or downloaded this file recently".
+MDM shows Drive's own words and writes nothing. Try again later (it can take up to a day), or
+sign in to Google in your browser and download from there, which often gets past the limit. MDM
+doesn't try to get around it. A file whose owner turned off downloading, or that your account
+can't open, gets **no access**.
+
+**The video button over a Drive video** downloads the original file, not one of the player's
+smaller copies.
+
+**Folders** aren't downloaded yet: a folder's link gets **this is a Google Drive folder, not a
+file**. Open the folder in the browser and download its files from there.
+
 ## Download File Info
 
 MDM asks the server for the file's name and size, and shows them in **Download File Info**:

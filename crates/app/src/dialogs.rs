@@ -1043,9 +1043,10 @@ fn start_probe(
     let (slot, url, ctx) = (probe.clone(), url.clone(), ctx.clone());
     let (headers, opts) = (request.headers.clone(), request.opts.clone());
     rt.spawn(async move {
+        // In the interface language (the engine's own words are English).
         let res = mdm_engine::probe_kept(url, headers, &opts)
             .await
-            .map_err(|e| e.to_string());
+            .map_err(|e| crate::errors::describe(&e));
         *slot.lock().unwrap() = Some(res);
         ctx.request_repaint();
     });

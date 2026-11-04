@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Pokračuje po dokončení sťahovania
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Disk Google tento súbor teraz neposkytne: {message} (často pomôže prihlásenie do Google vo vašom prehliadači; inak to skúste znova neskôr)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Po dokončení odpojiť modem
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Tento priečinok neexistuje:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	tento súbor Disku Google vyžaduje prihlásenie: prihláste sa do Google vo svojom prehliadači a potom si ho stiahnite odtiaľ
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	toto je priečinok Disku Google, nie súbor
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	toto nie je magnet link ani súbor .torrent
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Váš prehliadač
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	váš účet Google nemá prístup k tomuto súboru alebo jeho vlastník zakázal sťahovanie
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

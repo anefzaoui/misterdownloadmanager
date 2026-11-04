@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	డౌన్‌లోడ్ పూర్తయిన తర్వాత కొనసాగుతుంది
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ఈ ఫైల్‌ను ఇప్పుడు ఇవ్వదు: {message} (మీ బ్రౌజర్‌లో Googleకు సైన్ ఇన్ చేయడం తరచుగా సహాయపడుతుంది; లేకపోతే, తర్వాత మళ్లీ ప్రయత్నించండి)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	పూర్తయినప్పుడు మోడెమ్‌ను నిలిపివేయండి
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	ఈ ఫోల్డర్ ఉనికిలో లేదు:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ఈ Google Drive ఫైల్‌కు మీరు సైన్ ఇన్ చేయాలి: మీ బ్రౌజర్‌లో Googleకు సైన్ ఇన్ చేయండి, ఆపై అక్కడి నుండి డౌన్‌లోడ్ చేయండి
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	ఇది Google Drive ఫోల్డర్, ఫైల్ కాదు
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	ఇది మాగ్నెట్ లింక్ లేదా .torrent ఫైల్ కాదు
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	మీ బ్రౌజర్
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	మీ Google ఖాతాకు ఈ ఫైల్‌కు యాక్సెస్ లేదు లేదా దాని యజమాని డౌన్‌లోడ్ చేయడాన్ని ఆఫ్ చేశారు
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

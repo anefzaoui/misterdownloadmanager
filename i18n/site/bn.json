@@ -662,6 +662,10 @@
    "source": "Click <g1>Load unpacked</g1>.",
    "text": "<g1>আনপ্যাকড লোড করুন</g1>-এ ক্লিক করুন।"
   },
+  "13382c1e6ceae711": {
+   "source": "<g1>The video button over a Drive video</g1> downloads the original file, not one of the player's smaller copies.",
+   "text": "<g1>একটি ড্রাইভ ভিডিওর উপর ভিডিও বাটন</g1> আসল ফাইলটি ডাউনলোড করে, প্লেয়ারের ছোট কপিগুলির মধ্যে একটি নয়।"
+  },
   "135e1b787896d837": {
    "source": "<g1>GitHub, to check for updates.</g1> Once a week MDM asks GitHub's public API for the latest release of MDM (<x2/>). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in <g3>Help → Check for updates</g3>. If you choose <g4>Update now</g4>, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.",
    "text": "<g1>আপডেটের জন্য GitHub।</g1> সপ্তাহে একবার MDM GitHub-এর পাবলিক API-কে MDM-এর সর্বশেষ রিলিজের জন্য জিজ্ঞাসা করে (<x2/>)। অনুরোধটি তার User-Agent-এ MDM-এর সংস্করণ বহন করে এবং অন্য কিছু নয়। <g3>সহায়তা → আপডেটের জন্য পরীক্ষা করুন</g3>-এ সাপ্তাহিক চেক বন্ধ করুন। যদি আপনি <g4>এখনই আপডেট করুন</g4> নির্বাচন করেন, MDM একই GitHub রিলিজ থেকে নতুন সংস্করণের ফাইল এবং এর স্বাক্ষরিত চেকমার্ক তালিকা ডাউনলোড করে। GitHub-এর নিজস্ব গোপনীয়তা বিবৃতি এই অনুরোধগুলির জন্য প্রযোজ্য।"
@@ -865,6 +869,10 @@
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
    "text": "Chrome, Edge, Brave, Opera এবং Vivaldi-এর জন্য <g1>ব্রাউজার ইন্টিগ্রেশন</g1> (Firefox পরীক্ষাধীন): ডাউনলোডগুলি তাদের কুকিজ এবং রেফারার সহ MDM-এ হস্তান্তর করে, রাইট-ক্লিক <g2>Mister Download Manager দিয়ে ডাউনলোড করুন</g2>, এবং যেকোনো পৃষ্ঠার ভিডিওগুলির উপর একটি <g3>ভিডিও ডাউনলোড করুন</g3> বোতাম, যা ভিডিওর কিনারা বরাবর টেনে নেওয়া যেতে পারে, একটি ভিডিও বা সাইটে লুকানো যেতে পারে, অথবা বিকল্পগুলিতে বন্ধ করা যেতে পারে।"
+  },
+  "18c426ee5855af75": {
+   "source": "Google Drive links",
+   "text": "গুগল ড্রাইভ লিঙ্ক"
   },
   "18da802709723cf6": {
    "source": "Ctrl+Space",
@@ -1185,6 +1193,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "আপনার মালিকানাধীন নয় এমন সার্ভারগুলির সীমা অতিক্রম করতে, আক্রমণ করতে বা এড়িয়ে যেতে এটি ব্যবহার না করতে।"
+  },
+  "21aa032bde745310": {
+   "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
+   "text": "একটি ডাউনলোডের প্রথম অনুরোধ (<x1/>) রিডাইরেক্ট এবং যে পেজগুলো নিজে থেকেই একটি ফাইলের দিকে নিয়ে যায় (একটি ওয়েটিং পেজের রিফ্রেশ) সেগুলোকে অনুসরণ করে। যেসব সাইটের লিঙ্ক ফাইলের ঠিকানা নয়, সেগুলোর জন্য <x2/>-এ একটি মডিউল আছে (গুগল ড্রাইভ: <x3/>): এটি লিঙ্কটিকে ফাইলের ঠিকানায় রূপান্তরিত করে, সাইটের নিজস্ব পেজগুলো (একটি কনফার্মেশন ফর্ম, একটি এরর পেজ) পড়ে এবং এর প্রত্যাখ্যানগুলোর নাম দেয় (<x4/>), নেটওয়ার্ক ছাড়াই পরীক্ষিত পিওর ফাংশন ব্যবহার করে। ল্যাব সার্ভার এন্ড-টু-এন্ড পরীক্ষার জন্য (<x5/>) এমন একটি সাইটকে তার আসল হোস্ট নামগুলোতে চালায়।"
   },
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
@@ -1997,6 +2009,10 @@
   "393ffca55ed6d7ac": {
    "source": "Each connection writes straight into the file's place on disk, in a part file named <x1/> next to the final file. When every part is done, MDM checks the size and renames it. There is no temporary folder and no joining step at the end.",
    "text": "প্রতিটি সংযোগ সরাসরি ডিস্কে ফাইলের স্থানে, চূড়ান্ত ফাইলের পাশে <x1/> নামের একটি অংশ ফাইলে লেখে। যখন প্রতিটি অংশ সম্পন্ন হয়, MDM আকার পরীক্ষা করে এবং এটির নাম পরিবর্তন করে। শেষে কোনো অস্থায়ী ফোল্ডার এবং কোনো যোগদানের ধাপ থাকে না।"
+  },
+  "3942e893b1f34435": {
+   "source": "and <x1/>;",
+   "text": "এবং <x1/>;"
   },
   "39463e0cfd1ff5aa": {
    "source": "Options — Mister Download Manager help",
@@ -2938,6 +2954,10 @@
    "source": "Command",
    "text": "কমান্ড"
   },
+  "57f708f18604d10d": {
+   "source": "(and Sheets, Slides, Drawings).",
+   "text": "(এবং শীট, স্লাইড, ড্রইং)।"
+  },
   "582557ff93b946f6": {
    "source": "MDM is <g1>not affiliated</g1> with Tonec Inc. or Internet Download Manager.",
    "text": "MDM, Tonec Inc. বা Internet Download Manager এর সাথে <g1>সম্পর্কিত নয়</g1>।"
@@ -3065,6 +3085,10 @@
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>সহায়তা → একটি সমস্যা রিপোর্ট করুন</g1> নির্বাচন করুন। এটি GitHub-এ বাগ রিপোর্ট ফর্ম খোলে যেখানে আপনার MDM সংস্করণ, আপনার সিস্টেম এবং এর সংস্করণ, MDM কীভাবে ইনস্টল করা হয়েছিল এবং এর ইন্টারফেস ভাষা ইতিমধ্যেই পূরণ করা থাকে। কী ঘটেছে, আপনি কী আশা করেছিলেন এবং এটি ঘটার ধাপগুলি বর্ণনা করুন। একটি ডাউনলোডের জন্য, আপনি যদি শেয়ার করতে পারেন তবে ঠিকানাটি এবং <g2>স্ট্যাটাস</g2>-এর অধীনে দেখানো কারণটি অন্তর্ভুক্ত করুন।"
+  },
+  "5d4164eff181587e": {
+   "source": "<g1>Files that aren't shared with everyone.</g1> Right-click the link in the browser and choose <g2>Download with Mister Download Manager</g2>, or use Drive's own <g3>Download</g3> button: the extension passes your browser's Google sign-in with the download. MDM never asks for or keeps your password. Without a sign-in, MDM says the file <g4>needs you to sign in</g4>.",
+   "text": "<g1>যে ফাইলগুলি সবার সাথে শেয়ার করা হয়নি।</g1> ব্রাউজারে লিঙ্কের উপর রাইট-ক্লিক করুন এবং <g2>Mister Download Manager দিয়ে ডাউনলোড করুন</g2> বেছে নিন, অথবা ড্রাইভের নিজস্ব <g3>ডাউনলোড করুন</g3> বাটন ব্যবহার করুন: এক্সটেনশনটি আপনার ব্রাউজারের গুগল সাইন-ইন ডাউনলোড সহ পাস করে দেয়। MDM আপনার পাসওয়ার্ড কখনো চায় না বা রাখে না। সাইন-ইন ছাড়া, MDM বলে যে ফাইলটির জন্য <g4>আপনার সাইন-ইন করা প্রয়োজন</g4>।"
   },
   "5d56098513a9a8da": {
    "source": "To quit, choose <g1>Tasks → Exit</g1> or <g2>Exit</g2> in the tray menu.",
@@ -3317,6 +3341,10 @@
   "6387358ae9160f15": {
    "source": "1 GiB, fast link",
    "text": "1 GiB, দ্রুত লিঙ্ক"
+  },
+  "639e97e78af63aae": {
+   "source": "<g1>Google Docs, Sheets and Slides</g1> come as Word (<x2/>), Excel (<x3/>) and PowerPoint (<x4/>) files, and Drawings as <x5/>. These files are made when they are asked for, so their size is unknown until they arrive and they can't be resumed: a cut-off download starts again.",
+   "text": "<g1>গুগল ডকস, শীট এবং স্লাইড</g1> আসে ওয়ার্ড (<x2/>), এক্সেল (<x3/>) এবং পাওয়ারপয়েন্ট (<x4/>) ফাইল হিসাবে, এবং ড্রইং আসে <x5/> হিসাবে। এই ফাইলগুলি যখন চাওয়া হয় তখনই তৈরি হয়, তাই এগুলি না আসা পর্যন্ত এদের আকার অজানা থাকে এবং এগুলি আবার শুরু করা যায় না: একটি মাঝপথে বন্ধ হয়ে যাওয়া ডাউনলোড আবার শুরু হয়।"
   },
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
@@ -3805,6 +3833,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "সম্পূর্ণ সোর্স পাবলিক, এবং প্রতিটি রিলিজ GitHub এর সার্ভারে তৈরি করা হয়। কোনো অ্যাডওয়্যার নেই, কোনো স্পাইওয়্যার নেই, কোনো বান্ডেল অফার নেই। ভিডিওর জন্য এটি যে সাহায্যকারী ফাইলগুলি ডাউনলোড করে, সেগুলি চালানোর আগে যাচাই করা হয়। <g1>আরও</g1>"
+  },
+  "72769bded1d786a9": {
+   "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
+   "text": "একটি গুগল ড্রাইভ লিঙ্ক যেমন আছে তেমনই পেস্ট করুন, যা <g1>শেয়ার → লিঙ্ক কপি করুন</g1> থেকে পাওয়া যায়:"
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -4525,6 +4557,10 @@
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "কী ভিন্ন"
+  },
+  "880767a468b15c29": {
+   "source": "<g1>When Drive won't give a file.</g1> Drive limits how often a file can be downloaded: after many downloads in a day it answers \"too many users have viewed or downloaded this file recently\". MDM shows Drive's own words and writes nothing. Try again later (it can take up to a day), or sign in to Google in your browser and download from there, which often gets past the limit. MDM doesn't try to get around it. A file whose owner turned off downloading, or that your account can't open, gets <g2>no access</g2>.",
+   "text": "<g1>যখন ড্রাইভ একটি ফাইল দিতে চায় না।</g1> ড্রাইভ একটি ফাইল কতবার ডাউনলোড করা যাবে তা সীমিত করে: একদিনে অনেক ডাউনলোডের পর এটি উত্তর দেয় \"অনেক ব্যবহারকারী সম্প্রতি এই ফাইলটি দেখেছেন বা ডাউনলোড করেছেন\"। MDM ড্রাইভের নিজস্ব কথাগুলি দেখায় এবং কিছু লেখে না। পরে আবার চেষ্টা করুন (এতে একদিন পর্যন্ত সময় লাগতে পারে), অথবা আপনার ব্রাউজারে গুগলে সাইন-ইন করুন এবং সেখান থেকে ডাউনলোড করুন, যা প্রায়শই সীমা অতিক্রম করে যায়। MDM এটি এড়ানোর চেষ্টা করে না। যে ফাইলের মালিক ডাউনলোড বন্ধ করে দিয়েছেন, অথবা আপনার অ্যাকাউন্ট খুলতে পারে না, সেটির জন্য <g2>কোনো অ্যাক্সেস নেই</g2> পাওয়া যায়।"
   },
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
@@ -5258,6 +5294,10 @@
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
    "text": "চারটি জিনিস পরীক্ষা করুন: এক্সটেনশনটি ইনস্টল করা আছে এবং চালু আছে; বিকল্প → সাধারণ → উন্নত ব্রাউজার ইন্টিগ্রেশন ব্যবহার করুন চালু আছে এবং আপনার ব্রাউজার টিক দেওয়া আছে; ফাইলের প্রকার বিকল্প → ফাইলের প্রকার-এ আছে; এবং সাইটটি MDM যে সাইটগুলি থেকে ডাউনলোড করে না তার তালিকায় নেই। যেকোনো ফাইল তার প্রকার নির্বিশেষে পাঠাতে একটি লিঙ্কে ডান-ক্লিক করুন এবং Mister Download Manager দিয়ে ডাউনলোড করুন নির্বাচন করুন। সমস্যা সমাধানে আরও দেখুন।"
   },
+  "9db0cdca6146f4f8": {
+   "source": "MDM downloads the file itself, as it was uploaded (a video comes in its own format, not the player's copy), with its real name and size, over several connections, and it can resume. For a large file, Drive shows a page that says it <g1>can't scan this file for viruses</g1>; MDM goes past it as <g2>Download anyway</g2> does.",
+   "text": "MDM ফাইলটি যেমন আপলোড করা হয়েছিল, তেমনই ডাউনলোড করে (একটি ভিডিও তার নিজস্ব ফরম্যাটে আসে, প্লেয়ারের কপি নয়), তার আসল নাম ও আকার সহ, একাধিক সংযোগের মাধ্যমে, এবং এটি আবার শুরু করা যায়। একটি বড় ফাইলের জন্য, ড্রাইভ একটি পৃষ্ঠা দেখায় যেখানে লেখা থাকে যে এটি <g1>এই ফাইলটি ভাইরাসের জন্য স্ক্যান করতে পারছে না</g1>; MDM এটিকে <g2>যাই হোক ডাউনলোড করুন</g2> এর মতো করে পাশ কাটিয়ে যায়।"
+  },
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "অগ্রগতিসহ হেডলেস ডাউনলোড (<x1/>, <x2/>), ভিডিও, টরেন্ট এবং অটোমেশন API-এর কমান্ড: একটি লাইব্রেরি যা অ্যাপের প্রোগ্রাম চালায় (<x3/>), এবং <x4/>, একটি ছোট লঞ্চার যা একই আর্গুমেন্ট, টার্মিনাল এবং এক্সিট কোড সহ এটি শুরু করে"
@@ -5465,6 +5505,10 @@
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
    "text": "একটি টরেন্ট ডাউনলোড করুন, অথবা এর কিছু ফাইল ডাউনলোড করুন। যদি এর কিছু ফাইল ইতিমধ্যেই ফোল্ডারে থাকে, তাহলে এটি থেমে যায় এবং সেগুলোর নাম দেখায়; <x1/> সেগুলোর পরিবর্তে ব্যবহার করে (যা মিলে যায় তা রাখা হয়, বাকিটা ডাউনলোড করা হয়)।"
+  },
+  "a462139057cb83c0": {
+   "source": "If it says <g1>Google Drive won't give this file now</g1>, Drive's download limit for that file was reached. See <g2>Google Drive links</g2>.",
+   "text": "যদি <g1>Google Drive এই ফাইলটি এখন দেবে না</g1> বলে, তাহলে সেই ফাইলের জন্য Drive-এর ডাউনলোড সীমা পূরণ হয়ে গেছে। <g2>Google Drive লিঙ্ক</g2> দেখুন।"
   },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
@@ -5961,6 +6005,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>টরেন্ট</g2></g1> — ম্যাগনেট লিঙ্ক এবং .torrent ফাইল, ফাইল নির্বাচন করা এবং শেয়ার করা।"
+  },
+  "b298f93960114202": {
+   "source": ", with or without <x1/>;",
+   "text": ", <x1/> সহ বা ছাড়া;"
   },
   "b2a627befcf928d4": {
    "source": "<g1>Torrents, built in</g1> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.",
@@ -7274,6 +7322,10 @@
    "source": "When MDM takes a download, it gets the browser's file name, size and type with it, so <g1>Download File Info</g1> shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data; a form that sends a file stays with the browser.",
    "text": "যখন MDM একটি ডাউনলোড নেয়, তখন এটি ব্রাউজারের ফাইলের নাম, আকার এবং প্রকারও পায়, তাই <g1>ফাইল তথ্য ডাউনলোড করুন</g1> সার্ভারকে আবার জিজ্ঞাসা না করেই সেগুলি অবিলম্বে দেখায়। একটি ফর্ম থেকে ডাউনলোড (একটি বাটন যা পোস্ট করে এবং একটি ফাইল ফেরত পায়) MDM দ্বারা ফর্মের ডেটা সহ আবার পোস্ট করা হয়; একটি ফর্ম যা একটি ফাইল পাঠায় তা ব্রাউজারের সাথে থাকে।"
   },
+  "de6c179de52d4a2a": {
+   "source": "On Linux this needs a tray, which most desktops have (KDE, GNOME with its AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.",
+   "text": "Linux-এ এর জন্য একটি ট্রে প্রয়োজন, যা বেশিরভাগ ডেস্কটপে থাকে (KDE, GNOME তার AppIndicator এক্সটেনশন সহ, waybar-এর ট্রে)। ট্রে ছাড়া কোনো ডেস্কটপে (কিছু টাইলিং উইন্ডো ম্যানেজার), উইন্ডো বন্ধ করলে MDM বন্ধ হয়ে যায়, কারণ এটি ফিরিয়ে আনার কোনো জায়গা থাকে না।"
+  },
   "de8c9f450c2f7eeb": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>. Only while the API is on.",
    "text": "প্রতিটি ডাউনলোড এবং মোট গতি: <x1/>। <x2/> হল <x3/>, <x4/>, <x5/>, <x6/> অথবা <x7/>; <x8/> হল <x9/> যখন অজানা; <x10/> (কেন এটি ব্যর্থ হয়েছে) শুধুমাত্র <x11/> এ একটি ডাউনলোডের জন্য থাকে। শুধুমাত্র যখন API চালু থাকে।"
@@ -7665,6 +7717,10 @@
   "ebe2a18d31052b9b": {
    "source": "Browsers",
    "text": "ব্রাউজার"
+  },
+  "ec30751899ba93ca": {
+   "source": "<g1>Folders</g1> aren't downloaded yet: a folder's link gets <g2>this is a Google Drive folder, not a file</g2>. Open the folder in the browser and download its files from there.",
+   "text": "<g1>ফোল্ডারগুলি</g1> এখনো ডাউনলোড করা যায় না: একটি ফোল্ডারের লিঙ্কের জন্য <g2>এটি একটি গুগল ড্রাইভ ফোল্ডার, ফাইল নয়</g2> পাওয়া যায়। ব্রাউজারে ফোল্ডারটি খুলুন এবং সেখান থেকে এর ফাইলগুলি ডাউনলোড করুন।"
   },
   "ec76a04b2f141c3a": {
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",

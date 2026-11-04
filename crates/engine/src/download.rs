@@ -25,9 +25,11 @@ use url::Url;
 
 use crate::disk;
 use crate::dns;
+use crate::html;
 use crate::limiter::Limiter;
 use crate::naming;
 use crate::planner::{Claim, Planner, WorkerId};
+use crate::sites::{self, PageSays, Refusal};
 use crate::sparse;
 use crate::state::{ResumeState, Validators, state_path};
 
@@ -292,6 +294,10 @@ pub enum Error {
     /// A network failure outside HTTP (FTP's sessions): `cause` as the system words it.
     #[error("{}", describe_net(*.kind, .cause))]
     Net { kind: NetKind, cause: String },
+    /// A site's own refusal (Google Drive's quota page, its sign-in wall, a folder link, #34):
+    /// retrying now won't help, the user has to do something else.
+    #[error("{0}")]
+    Refused(Refusal),
 }
 
 /// What failed on the network (`Error::Net`).
@@ -310,7 +316,7 @@ impl Error {
     /// The address no longer serves this file (or refuses us): retrying won't help.
     fn link_dead(&self) -> bool {
         matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 416))
-            || matches!(self, Error::GotWebPage | Error::LinkExpired)
+            || matches!(self, Error::GotWebPage | Error::LinkExpired | Error::Refused(_))
             // Login refused; no such file (or no permission); a name the server won't take.
             || matches!(self, Error::FtpReply { code: 530 | 532 | 550 | 553, .. })
     }
@@ -468,11 +474,13 @@ impl From<disk::Refusal> for Error {
 
 /// The request headers to send to `to` when they were given for `from`: credentials
 /// (cookies, authorization) never follow a redirect to another host or from https down to
-/// http — as reqwest does while it follows the redirect itself.
+/// http — as reqwest does while it follows the redirect itself — except between one site's own
+/// hosts (`sites::same_party`: a Drive link's cookies go to Drive's file host).
 fn scoped_headers(headers: &HeaderMap, from: &Url, to: &Url) -> HeaderMap {
     let mut h = headers.clone();
-    let same_host = from.host_str() == to.host_str()
-        && from.port_or_known_default() == to.port_or_known_default();
+    let same_host = (from.host_str() == to.host_str()
+        && from.port_or_known_default() == to.port_or_known_default())
+        || sites::same_party(from, to);
     let downgrade = from.scheme() == "https" && to.scheme() != "https";
     if !same_host || downgrade {
         for name in [
@@ -519,6 +527,22 @@ impl AsGet {
 /// stops at 10): download links often go through a tracker, a mirror picker and a CDN.
 const MAX_REDIRECTS: usize = 20;
 
+/// A GET's redirects, followed up to `MAX_REDIRECTS`, except one between two of a site's own
+/// hosts (`sites::same_party`: Drive's `open?id=` to Docs): reqwest would drop the user's cookies
+/// there, so it is left to `get`, which follows it with them.
+fn get_policy() -> reqwest::redirect::Policy {
+    reqwest::redirect::Policy::custom(|attempt| {
+        let party_hop = attempt.previous().last().is_some_and(|from| {
+            from.host_str() != attempt.url().host_str() && sites::same_party(from, attempt.url())
+        });
+        if party_hop {
+            attempt.stop()
+        } else {
+            reqwest::redirect::Policy::limited(MAX_REDIRECTS).redirect(attempt)
+        }
+    })
+}
+
 /// The body a POST download sends to an address reached with or without a redirect to a GET
 /// (`as_get`); for a GET, the body's headers go too, as browsers drop them. None: a GET.
 fn post_for(opts: &Options, as_get: bool, headers: &mut HeaderMap) -> Option<Bytes> {
@@ -536,12 +560,36 @@ fn post_for(opts: &Options, as_get: bool, headers: &mut HeaderMap) -> Option<Byt
     None
 }
 
-/// A request for `url`: a POST with `post` as its body, else a GET.
-fn build(client: &Client, url: Url, post: Option<&Bytes>) -> RequestBuilder {
-    match post {
+/// A request for `url` with `headers`: a POST with `post` as its body, else a GET. `agent` is the
+/// download's User-Agent (`Options::user_agent`, the client's default); a site that wants a
+/// browser's gets it instead when `agent` is MDM's default (`request_agent`).
+fn build(
+    client: &Client,
+    url: Url,
+    post: Option<&Bytes>,
+    headers: &HeaderMap,
+    agent: &str,
+) -> RequestBuilder {
+    let mut headers = headers.clone();
+    if let Some(site) = request_agent(agent, &url)
+        && !headers.contains_key(header::USER_AGENT)
+    {
+        headers.insert(header::USER_AGENT, HeaderValue::from_static(site));
+    }
+    let req = match post {
         Some(body) => client.post(url).body(body.clone()),
         None => client.get(url),
-    }
+    };
+    req.headers(headers)
+}
+
+/// The User-Agent a request to `url` carries instead of the download's own `agent`: a site's
+/// browser agent (`sites::user_agent`: Google Drive's hosts), only when `agent` is MDM's default
+/// (D-007). A browser's agent handed over with the download, or one the user set, always wins.
+fn request_agent(agent: &str, url: &Url) -> Option<&'static str> {
+    (agent == DEFAULT_USER_AGENT)
+        .then(|| sites::user_agent(url))
+        .flatten()
 }
 
 /// A header's text: UTF-8, else ISO-8859-1 (servers send file names either way, while
@@ -702,6 +750,7 @@ pub async fn probe_kept(
         url.clone(),
         headers,
         opts.post.as_ref(),
+        &opts.user_agent,
         &CancellationToken::new(),
     )
     .await?;
@@ -1064,16 +1113,17 @@ impl Ctx {
         if failed_at.is_some_and(|t| t.elapsed() < REFRESH_EVERY) {
             return false;
         }
-        let Some(url) = refresh_final_url(
+        let Some((url, mut headers)) = refresh_final_url(
             &self.client,
             origin,
             headers,
             self.opts.post.as_ref(),
+            &self.opts.user_agent,
             self.size,
             &self.cancel,
         )
         .await
-        .filter(|u| *u != self.target.lock().unwrap().url) else {
+        .filter(|(u, _)| *u != self.target.lock().unwrap().url) else {
             *failed_at = Some(std::time::Instant::now());
             return false;
         };
@@ -1082,7 +1132,6 @@ impl Ctx {
             "The address stopped working; the original address now leads to {}",
             url.host_str().unwrap_or("?")
         ));
-        let mut headers = scoped_headers(headers, origin, &url);
         let post = post_for(&self.opts, self.as_get.contains(&url), &mut headers);
         let mut t = self.target.lock().unwrap();
         t.headers = headers;
@@ -1153,7 +1202,7 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
     };
     let builder = match opts.post {
         Some(_) => builder.redirect(as_get.policy()),
-        None => builder.redirect(reqwest::redirect::Policy::limited(MAX_REDIRECTS)),
+        None => builder.redirect(get_policy()),
     };
     Ok(builder
         .dns_resolver(Arc::new(dns::Resolver::new(&opts.hosts, port)))
@@ -1335,7 +1384,9 @@ async fn run_fresh(
             Err(Error::NoRanges) => {
                 *shared.planner.lock().unwrap() = None;
                 shared.view.lock().unwrap().resumable = Some(false);
-                let (resp, ..) = get(&client0, final_url, headers, post.as_ref(), cancel).await?;
+                let agent = &opts.user_agent;
+                let (resp, ..) =
+                    get(&client0, final_url, headers, post.as_ref(), agent, cancel).await?;
                 let body = Body::Http(resp);
                 single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
             }
@@ -1567,18 +1618,23 @@ async fn run_resume(
     let client = client(&opts, &saved.url, &as_get)?;
     let refreshed = if saved.url != saved.final_url {
         let post = opts.post.as_ref();
-        refresh_final_url(&client, &saved.url, &headers, post, saved.size, &cancel).await
+        let agent = &opts.user_agent;
+        refresh_final_url(
+            &client, &saved.url, &headers, post, agent, saved.size, &cancel,
+        )
+        .await
     } else {
         None
     };
     // A POST download's target is asked with GET when its redirects turned it into one.
-    let (url, final_get) = match refreshed {
-        Some(url) => (url.clone(), as_get.contains(&url)),
-        None => (saved.final_url.clone(), saved.final_get),
+    let (url, final_get, refreshed_headers) = match refreshed {
+        Some((url, h)) => (url.clone(), as_get.contains(&url), Some(h)),
+        None => (saved.final_url.clone(), saved.final_get, None),
     };
     let origin = (saved.url != url).then(|| (saved.url.clone(), headers.clone()));
-    // Credentials stay with the host they were given for.
-    headers = scoped_headers(&headers, &saved.url, &url);
+    // Credentials stay with the host they were given for (the refresh's own way there scoped
+    // them as it went).
+    headers = refreshed_headers.unwrap_or_else(|| scoped_headers(&headers, &saved.url, &url));
     let post = post_for(&opts, final_get, &mut headers);
     let file = std::fs::OpenOptions::new()
         .read(true)
@@ -1674,29 +1730,31 @@ async fn run_resume(
     finish(&shared, file, &dest, size, stamp)
 }
 
-/// Follow the original address again (with its own headers, and a POST download's body) and
-/// return where it leads now, if that is still the same file: a ranged answer with the saved
-/// size. None keeps the stored address (no redirect any more, a different file, or the site is
-/// unreachable).
+/// Follow the original address again (with its own headers, and a POST download's body) as the
+/// first request did (`get`: redirects, waiting pages, a site's own steps) and return where it
+/// leads now, if that is still the same file: a ranged answer with the saved size; with the
+/// headers to go on with there. None keeps the stored address (no redirect any more, a different
+/// file, or the site is unreachable).
 async fn refresh_final_url(
     client: &Client,
     origin: &Url,
     headers: &HeaderMap,
     post: Option<&Bytes>,
+    agent: &str,
     size: u64,
     cancel: &CancellationToken,
-) -> Option<Url> {
-    let req = build(client, origin.clone(), post)
-        .headers(headers.clone())
-        .header(header::RANGE, "bytes=0-0");
-    let resp = cancellable(cancel, async { Ok(req.send().await?) })
+) -> Option<(Url, HeaderMap)> {
+    let mut asked = headers.clone();
+    asked.insert(header::RANGE, HeaderValue::from_static("bytes=0-0"));
+    let (resp, mut headers, _) = get(client, origin.clone(), asked, post, agent, cancel)
         .await
         .ok()?;
+    headers.remove(header::RANGE);
     if resp.status() != StatusCode::PARTIAL_CONTENT {
         return None;
     }
     let (_, _, total) = parse_content_range(resp.headers()).ok()?;
-    (total == Some(size)).then(|| resp.url().clone())
+    (total == Some(size)).then(|| (resp.url().clone(), headers))
 }
 
 /// Check the finished part file against `hash` (at most two files at once: it reads them
@@ -1893,6 +1951,11 @@ async fn save_state(
 /// `meta_refresh`). Its wait, up to `PAGE_WAIT`, is kept, and the cookies it sets go on to its
 /// own host. A page that leads on only with a script isn't followed: it stays the answer.
 ///
+/// A site whose links aren't the file's address (`sites`, #34: Google Drive) is asked its own
+/// way: its link goes to the file's address first, its pages say where to go next or why it
+/// refuses (`Error::Refused`), and a page of its where the file was expected is an error, never
+/// the file.
+///
 /// With the answer, `headers` as the download goes on with them at the address it ended at:
 /// credentials scoped to it (`scoped_headers`), the pages' cookies added; and how long the last
 /// request took to answer (a page's wait and its own request not counted: the time to first byte).
@@ -1901,16 +1964,65 @@ async fn get(
     url: Url,
     headers: HeaderMap,
     post: Option<&Bytes>,
+    agent: &str,
     cancel: &CancellationToken,
 ) -> Result<(Response, HeaderMap, Duration), Error> {
     let (mut url, mut headers) = (url, headers);
+    // A site's link is asked at its file's address (a Drive link: Drive's file host), the same
+    // party, so the user's cookies go too. A form's POST goes where it was given.
+    if post.is_none() {
+        if let Some(r) = sites::not_a_file(&url) {
+            return Err(Error::Refused(r));
+        }
+        if let Some(next) = sites::rewrite(&url) {
+            headers = scoped_headers(&headers, &url, &next);
+            url = next;
+        }
+    }
     // After a page's redirect, a page read but leading nowhere is asked for again, as is.
     let mut hops = 0;
+    // A site's refusal while it is looked at once more (`sites::second_look`), with the address
+    // that refused; and whether that look was taken.
+    let mut held: Option<(Refusal, Url)> = None;
+    let mut looked = false;
+    // Redirects between a site's own hosts followed here (`get_policy`).
+    let mut party_hops = 0;
     loop {
-        let req = build(client, url.clone(), post).headers(headers.clone());
+        let req = build(client, url.clone(), post, &headers, agent);
         let asked = std::time::Instant::now();
         let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
         let took = asked.elapsed();
+        let from = resp.url().clone();
+        // A redirect between a site's own hosts, which the client leaves (`get_policy`): followed
+        // here, the user's credentials and the cookies it sets going on.
+        if post.is_none()
+            && resp.status().is_redirection()
+            && party_hops < MAX_REDIRECTS
+            && let Some(next) = header_str(resp.headers(), header::LOCATION)
+                .and_then(|l| from.join(l).ok())
+                .filter(|next| sites::same_party(&from, next))
+        {
+            headers = scoped_headers(&scoped_headers(&headers, &url, &from), &from, &next);
+            if !(from.scheme() == "https" && next.scheme() != "https") {
+                add_cookies(&mut headers, &set_cookies(resp.headers()));
+            }
+            url = next;
+            party_hops += 1;
+            continue;
+        }
+        // The second look stands only if it leads to the file another way (a Google Doc's
+        // editor, whose export follows below); otherwise the refusal was the answer.
+        if let Some((refusal, refused_at)) = held.take() {
+            let other_way = resp.status() == StatusCode::OK
+                && is_web_page(resp.headers())
+                && sites::rewrite(&from).is_some_and(|n| n != refused_at);
+            if !other_way {
+                return Err(Error::Refused(refusal));
+            }
+        }
+        if let Some(r) = sites::refused(&url, &from, resp.status().as_u16()) {
+            return Err(Error::Refused(r));
+        }
         match resp.status() {
             StatusCode::OK | StatusCode::PARTIAL_CONTENT => {}
             s if s == StatusCode::TOO_MANY_REQUESTS || s == StatusCode::SERVICE_UNAVAILABLE => {
@@ -1919,24 +2031,51 @@ async fn get(
             s => return Err(Error::Status(s)),
         }
         // Where the HTTP redirects ended: the headers' credentials follow as reqwest's did.
-        let from = resp.url().clone();
         headers = scoped_headers(&headers, &url, &from);
+        // A site's page, without a file name, where its file was expected: the site talking
+        // (a page it changed, a wall), never the file.
+        let site_page = post.is_none()
+            && resp.status() == StatusCode::OK
+            && is_web_page(resp.headers())
+            && !resp.headers().contains_key(header::CONTENT_DISPOSITION)
+            && sites::expects_file(&from);
         // A form is never posted again, and a page's own redirects end somewhere.
         if post.is_some() || resp.status() != StatusCode::OK || hops >= MAX_PAGE_REDIRECTS {
+            if site_page {
+                return Err(Error::GotWebPage);
+            }
             return Ok((resp, headers, took));
         }
         let cookies = set_cookies(resp.headers());
-        let (wait, next) = match header_text(resp.headers(), header::REFRESH)
-            .and_then(|v| refresh_target(&v, &from))
-        {
-            Some(next) => next,
+        let refresh =
+            header_text(resp.headers(), header::REFRESH).and_then(|v| refresh_target(&v, &from));
+        // A site's link reached through redirects (a short link to a Drive file; a Google Doc's
+        // editor after Drive's `open?id=`): its file's address.
+        let site_link = is_web_page(resp.headers())
+            .then(|| sites::rewrite(&from))
+            .flatten();
+        let (wait, next) = if let Some(next) = refresh {
+            next
+        } else if let Some(next) = site_link {
+            (Duration::ZERO, next)
+        } else if is_web_page(resp.headers())
             // A web page small enough to look into (larger ones aren't waiting pages).
-            None if is_web_page(resp.headers())
-                && resp.content_length().is_none_or(|n| n <= PAGE_PEEK as u64) =>
-            {
-                let page = read_up_to(resp, PAGE_PEEK, cancel).await?;
-                match meta_refresh(&page, &from) {
+            && resp.content_length().is_none_or(|n| n <= PAGE_PEEK as u64)
+        {
+            let page = read_up_to(resp, PAGE_PEEK, cancel).await?;
+            match sites::read_page(&from, &page) {
+                PageSays::Next(next) => (Duration::ZERO, next),
+                PageSays::Refused(r) => match sites::second_look(&from).filter(|_| !looked) {
+                    Some(look) => {
+                        looked = true;
+                        held = Some((r, from.clone()));
+                        (Duration::ZERO, look)
+                    }
+                    None => return Err(Error::Refused(r)),
+                },
+                PageSays::Nothing => match meta_refresh(&page, &from) {
                     Some(next) => next,
+                    None if site_page => return Err(Error::GotWebPage),
                     // Just a page: asked for again, as its body went into looking.
                     None => {
                         add_cookies(&mut headers, &cookies);
@@ -1944,9 +2083,12 @@ async fn get(
                         hops = MAX_PAGE_REDIRECTS;
                         continue;
                     }
-                }
+                },
             }
-            None => return Ok((resp, headers, took)),
+        } else if site_page {
+            return Err(Error::GotWebPage);
+        } else {
+            return Ok((resp, headers, took));
         };
         if !wait.is_zero() {
             cancellable(cancel, async {
@@ -1956,8 +2098,9 @@ async fn get(
             .await?;
         }
         headers = scoped_headers(&headers, &from, &next);
-        // Its own host's, and never from https down to http (as the user's own cookies).
-        if next.host_str() == from.host_str()
+        // Its own host's (or its site's, `sites::same_party`), and never from https down to http
+        // (as the user's own cookies).
+        if (next.host_str() == from.host_str() || sites::same_party(&from, &next))
             && !(from.scheme() == "https" && next.scheme() != "https")
         {
             add_cookies(&mut headers, &cookies);
@@ -2011,8 +2154,9 @@ fn refresh_target(value: &str, base: &Url) -> Option<(Duration, Url)> {
     };
     let target = target
         .strip_prefix(['"', '\''])
-        .map_or(target, |t| t.trim_end_matches(['"', '\'']))
-        .replace("&amp;", "&");
+        .map_or(target, |t| t.trim_end_matches(['"', '\'']));
+    // A meta tag's value is HTML: `&amp;` and the like.
+    let target = html::decode(target);
     let next = base.join(target.trim()).ok()?;
     let mut same = next.clone();
     same.set_fragment(base.fragment());
@@ -2027,49 +2171,13 @@ fn refresh_target(value: &str, base: &Url) -> Option<(Duration, Url)> {
 /// The redirect a page's `<meta http-equiv="refresh" content="…">` makes (`refresh_target`).
 fn meta_refresh(page: &[u8], base: &Url) -> Option<(Duration, Url)> {
     let page = String::from_utf8_lossy(page);
-    let lower = page.to_ascii_lowercase();
-    let mut at = 0;
-    while let Some(i) = lower[at..].find("<meta") {
-        let start = at + i;
-        let end = lower[start..].find('>').map_or(lower.len(), |e| start + e);
-        let tag = &page[start..end];
-        if attribute(tag, "http-equiv").is_some_and(|v| v.trim().eq_ignore_ascii_case("refresh"))
-            && let Some(next) = attribute(tag, "content").and_then(|c| refresh_target(&c, base))
-        {
-            return Some(next);
-        }
-        at = end;
-    }
-    None
-}
-
-/// The value of attribute `name` in the HTML tag `tag` (quoted or not), as written.
-fn attribute(tag: &str, name: &str) -> Option<String> {
-    let lower = tag.to_ascii_lowercase();
-    let mut from = 0;
-    while let Some(i) = lower[from..].find(name) {
-        let at = from + i;
-        from = at + name.len();
-        // A whole attribute name, followed by `=`.
-        let before = lower[..at].chars().next_back();
-        if before.is_some_and(|c| !c.is_whitespace() && c != '<') {
-            continue;
-        }
-        let rest = tag[from..].trim_start();
-        let Some(rest) = rest.strip_prefix('=') else {
-            continue;
-        };
-        let rest = rest.trim_start();
-        return Some(match rest.chars().next() {
-            Some(q @ ('"' | '\'')) => rest[1..].split(q).next().unwrap_or_default().to_owned(),
-            _ => rest
-                .split(|c: char| c.is_whitespace() || c == '>')
-                .next()
-                .unwrap_or_default()
-                .to_owned(),
-        });
-    }
-    None
+    html::tags(&page, "meta").find_map(|(_, tag)| {
+        html::attribute(tag, "http-equiv")
+            .is_some_and(|v| v.trim().eq_ignore_ascii_case("refresh"))
+            .then(|| html::attribute(tag, "content"))
+            .flatten()
+            .and_then(|c| refresh_target(&c, base))
+    })
 }
 
 /// The `name=value` pairs a response's `Set-Cookie` headers set.
@@ -2122,6 +2230,7 @@ async fn first_get(
             url.clone(),
             headers.clone(),
             opts.post.as_ref(),
+            &opts.user_agent,
             cancel,
         )
     })
@@ -2417,9 +2526,14 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
         .unwrap()
         .if_range(target.url.host_str())
         .and_then(|v| HeaderValue::from_str(v).ok());
-    let mut req = build(&ctx.client, target.url.clone(), target.post.as_ref())
-        .headers(target.headers.clone())
-        .header(header::RANGE, format!("bytes={from}-{}", to - 1));
+    let mut req = build(
+        &ctx.client,
+        target.url.clone(),
+        target.post.as_ref(),
+        &target.headers,
+        &ctx.opts.user_agent,
+    )
+    .header(header::RANGE, format!("bytes={from}-{}", to - 1));
     if let Some(v) = &if_range {
         req = req.header(header::IF_RANGE, v);
     }
@@ -2977,6 +3091,70 @@ mod tests {
         assert!(
             !port.contains_key(header::COOKIE),
             "another port is another origin"
+        );
+    }
+
+    #[test]
+    fn a_drive_links_cookies_go_to_drives_own_hosts_only() {
+        let mut h = HeaderMap::new();
+        h.insert(header::COOKIE, HeaderValue::from_static("SID=1"));
+        let u = |s: &str| Url::parse(s).unwrap();
+        let link = u("https://drive.google.com/file/d/x/view");
+        for to in [
+            "https://drive.usercontent.google.com/download?id=x",
+            "https://docs.google.com/document/d/x/export",
+        ] {
+            assert!(
+                scoped_headers(&h, &link, &u(to)).contains_key(header::COOKIE),
+                "{to}"
+            );
+        }
+        for to in [
+            "https://accounts.google.com/ServiceLogin",
+            "https://doc-0.docs.googleusercontent.com/export/x",
+            "http://drive.usercontent.google.com/download?id=x",
+        ] {
+            assert!(
+                !scoped_headers(&h, &link, &u(to)).contains_key(header::COOKIE),
+                "{to}"
+            );
+        }
+    }
+
+    #[test]
+    fn drive_gets_a_browsers_agent_and_only_drive() {
+        let u = |s: &str| Url::parse(s).unwrap();
+        let browser = Some(sites::gdrive::USER_AGENT);
+        for drive in [
+            "https://drive.google.com/file/d/x/view",
+            "https://drive.usercontent.google.com/download?id=x",
+            "http://docs.google.com:8080/document/d/x/export",
+        ] {
+            assert_eq!(
+                request_agent(DEFAULT_USER_AGENT, &u(drive)),
+                browser,
+                "{drive}"
+            );
+        }
+        for other in [
+            "https://example.com/a.zip",
+            "https://accounts.google.com/ServiceLogin",
+            "https://doc-0.docs.googleusercontent.com/export/x",
+            "https://drive.google.com.evil.test/x",
+        ] {
+            assert_eq!(
+                request_agent(DEFAULT_USER_AGENT, &u(other)),
+                None,
+                "{other}"
+            );
+        }
+        // The browser's own agent (handed over with the download) or the user's wins.
+        assert_eq!(
+            request_agent(
+                "Mozilla/5.0 Firefox/140.0",
+                &u("https://drive.google.com/x")
+            ),
+            None
         );
     }
 

@@ -662,6 +662,10 @@
    "source": "Click <g1>Load unpacked</g1>.",
    "text": "<g1>Paketlenmemiş uzantıyı yükle</g1>’ye tıklayın."
   },
+  "13382c1e6ceae711": {
+   "source": "<g1>The video button over a Drive video</g1> downloads the original file, not one of the player's smaller copies.",
+   "text": "<g1>Bir Drive videosunun üzerindeki video düğmesi</g1>, oynatıcının daha küçük kopyalarından birini değil, orijinal dosyayı indirir."
+  },
   "135e1b787896d837": {
    "source": "<g1>GitHub, to check for updates.</g1> Once a week MDM asks GitHub's public API for the latest release of MDM (<x2/>). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in <g3>Help → Check for updates</g3>. If you choose <g4>Update now</g4>, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.",
    "text": "<g1>Güncellemeleri kontrol etmek için GitHub.</g1> Haftada bir MDM, GitHub'ın genel API'sinden MDM'nin en son sürümünü ister (<x2/>). İstek, User-Agent'ında MDM'nin sürümünü taşır ve başka hiçbir şey taşımaz. Haftalık kontrolü <g3>Yardım → Güncelleştirmeleri denetle</g3> bölümünden kapatın. <g4>Şimdi güncelle</g4> seçeneğini seçerseniz, MDM yeni sürümün dosyasını ve imzalı sağlama toplamı listesini aynı GitHub sürümünden indirir. GitHub'ın kendi gizlilik bildirimi bu istekler için geçerlidir."
@@ -865,6 +869,10 @@
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
    "text": "Chrome, Edge, Brave, Opera ve Vivaldi için <g1>Tarayıcı entegrasyonu</g1> (Firefox test aşamasında): indirmeler çerezleri ve yönlendiricileri ile MDM'ye aktarılır, sağ tıklama <g2>Mister Download Manager ile İndir</g2> ve herhangi bir sayfadaki videoların üzerinde bir <g3>Videoyu indir</g3> düğmesi, videonun kenarı boyunca sürüklenebilir, bir videoda veya sitede gizlenebilir veya Seçenekler'de kapatılabilir."
+  },
+  "18c426ee5855af75": {
+   "source": "Google Drive links",
+   "text": "Google Drive bağlantıları"
   },
   "18da802709723cf6": {
    "source": "Ctrl+Space",
@@ -1185,6 +1193,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "sahip olmadığınız sunucuları aşırı yüklemek, saldırmak veya sınırlarını aşmak için kullanmamak."
+  },
+  "21aa032bde745310": {
+   "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
+   "text": "Bir indirme işleminin ilk isteği (<x1/>), yönlendirmeleri ve bir dosyaya kendiliğinden götüren sayfaları (bekleme sayfasının yenilenmesi) takip eder. Bağlantıları dosyanın adresi olmayan siteler, <x2/> içinde bir modüle sahiptir (Google Drive: <x3/>): bu modül, bağlantıyı dosyanın adresine dönüştürür, sitenin kendi sayfalarını (bir onay formu, bir hata sayfası) okur ve ağ olmadan test edilen saf fonksiyonlarla reddetmelerini adlandırır (<x4/>). Laboratuvar sunucusu, uçtan uca testler için böyle bir siteyi gerçek ana bilgisayar adlarında oynatır (<x5/>)."
   },
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
@@ -1997,6 +2009,10 @@
   "393ffca55ed6d7ac": {
    "source": "Each connection writes straight into the file's place on disk, in a part file named <x1/> next to the final file. When every part is done, MDM checks the size and renames it. There is no temporary folder and no joining step at the end.",
    "text": "Her bağlantı doğrudan dosyanın diskteki yerine, nihai dosyanın yanında <x1/> adlı bir parça dosyasına yazar. Her parça tamamlandığında, MDM boyutu kontrol eder ve yeniden adlandırır. Geçici bir klasör ve sonunda bir birleştirme adımı yoktur."
+  },
+  "3942e893b1f34435": {
+   "source": "and <x1/>;",
+   "text": "ve <x1/>;"
   },
   "39463e0cfd1ff5aa": {
    "source": "Options — Mister Download Manager help",
@@ -2938,6 +2954,10 @@
    "source": "Command",
    "text": "Komut"
   },
+  "57f708f18604d10d": {
+   "source": "(and Sheets, Slides, Drawings).",
+   "text": "(ve E-Tablolar, Slaytlar, Çizimler)."
+  },
   "582557ff93b946f6": {
    "source": "MDM is <g1>not affiliated</g1> with Tonec Inc. or Internet Download Manager.",
    "text": "MDM, Tonec Inc. veya Internet Download Manager ile <g1>ilişkili değildir</g1>."
@@ -3065,6 +3085,10 @@
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>Yardım → Bir sorun bildir</g1> seçeneğini seçin. Bu, GitHub'da MDM sürümünüz, sisteminiz ve sürümü, MDM'nin nasıl yüklendiği ve arayüz dili önceden doldurulmuş olarak hata raporu formunu açar. Ne olduğunu, ne beklediğinizi ve olayı tetikleyen adımları açıklayın. Bir indirme için, paylaşabiliyorsanız adresi ve <g2>Durum</g2> altında gösterilen nedeni ekleyin."
+  },
+  "5d4164eff181587e": {
+   "source": "<g1>Files that aren't shared with everyone.</g1> Right-click the link in the browser and choose <g2>Download with Mister Download Manager</g2>, or use Drive's own <g3>Download</g3> button: the extension passes your browser's Google sign-in with the download. MDM never asks for or keeps your password. Without a sign-in, MDM says the file <g4>needs you to sign in</g4>.",
+   "text": "<g1>Herkesle paylaşılmayan dosyalar.</g1> Tarayıcıda bağlantıya sağ tıklayın ve <g2>Mister Download Manager ile İndir</g2> seçeneğini seçin veya Drive'ın kendi <g3>İndir</g3> düğmesini kullanın: uzantı, tarayıcınızın Google oturum açma bilgilerini indirme ile birlikte iletir. MDM asla şifrenizi istemez veya saklamaz. Oturum açmadan, MDM dosyanın <g4>oturum açmanızı gerektirdiğini</g4> söyler."
   },
   "5d56098513a9a8da": {
    "source": "To quit, choose <g1>Tasks → Exit</g1> or <g2>Exit</g2> in the tray menu.",
@@ -3317,6 +3341,10 @@
   "6387358ae9160f15": {
    "source": "1 GiB, fast link",
    "text": "1 GiB, hızlı bağlantı"
+  },
+  "639e97e78af63aae": {
+   "source": "<g1>Google Docs, Sheets and Slides</g1> come as Word (<x2/>), Excel (<x3/>) and PowerPoint (<x4/>) files, and Drawings as <x5/>. These files are made when they are asked for, so their size is unknown until they arrive and they can't be resumed: a cut-off download starts again.",
+   "text": "<g1>Google Dokümanlar, E-Tablolar ve Slaytlar</g1> Word (<x2/>), Excel (<x3/>) ve PowerPoint (<x4/>) dosyaları olarak, Çizimler ise <x5/> olarak gelir. Bu dosyalar istendiğinde oluşturulduğu için boyutları gelene kadar bilinmez ve indirmeye devam edilemez: kesilen bir indirme yeniden başlar."
   },
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
@@ -3805,6 +3833,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "Tüm kaynak kodu herkese açıktır ve her sürüm GitHub sunucularında derlenir. Reklam yazılımı yok, casus yazılımı yok, paketlenmiş teklifler yok. Video için indirdiği yardımcılar çalıştırılmadan önce doğrulanır. <g1>Daha fazla</g1>"
+  },
+  "72769bded1d786a9": {
+   "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
+   "text": "Google Drive bağlantısını olduğu gibi, <g1>Paylaş → Bağlantıyı kopyala</g1> seçeneğinin verdiği şekilde yapıştırın:"
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -4525,6 +4557,10 @@
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "Farklı olan nedir"
+  },
+  "880767a468b15c29": {
+   "source": "<g1>When Drive won't give a file.</g1> Drive limits how often a file can be downloaded: after many downloads in a day it answers \"too many users have viewed or downloaded this file recently\". MDM shows Drive's own words and writes nothing. Try again later (it can take up to a day), or sign in to Google in your browser and download from there, which often gets past the limit. MDM doesn't try to get around it. A file whose owner turned off downloading, or that your account can't open, gets <g2>no access</g2>.",
+   "text": "<g1>Drive bir dosya vermediğinde.</g1> Drive, bir dosyanın ne sıklıkta indirilebileceğini sınırlar: bir günde çok sayıda indirmeden sonra \"çok fazla kullanıcı bu dosyayı son zamanlarda görüntüledi veya indirdi\" yanıtını verir. MDM, Drive'ın kendi sözlerini gösterir ve hiçbir şey yazmaz. Daha sonra tekrar deneyin (bir güne kadar sürebilir) veya tarayıcınızda Google'da oturum açın ve oradan indirin, bu genellikle sınırı aşar. MDM bunu aşmaya çalışmaz. Sahibi indirmeyi kapatan veya hesabınızın açamadığı bir dosya <g2>erişim yok</g2> yanıtını alır."
   },
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
@@ -5258,6 +5294,10 @@
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
    "text": "Dört şeyi kontrol edin: uzantı yüklü ve açık; Seçenekler → Genel → Gelişmiş tarayıcı tümleştirmesini kullan açık ve tarayıcınız işaretli; dosyanın türü Seçenekler → Dosya türleri içinde; ve site, MDM'nin dokunmadığı siteler listesinde değil. Bir bağlantıya sağ tıklayın ve türü ne olursa olsun herhangi bir dosyayı göndermek için Mister Download Manager ile İndir'i seçin. Daha fazlası Sorun Giderme bölümünde."
   },
+  "9db0cdca6146f4f8": {
+   "source": "MDM downloads the file itself, as it was uploaded (a video comes in its own format, not the player's copy), with its real name and size, over several connections, and it can resume. For a large file, Drive shows a page that says it <g1>can't scan this file for viruses</g1>; MDM goes past it as <g2>Download anyway</g2> does.",
+   "text": "MDM, dosyayı yüklendiği gibi (bir video oynatıcının kopyası değil, kendi formatında gelir), gerçek adı ve boyutuyla, birden fazla bağlantı üzerinden indirir ve indirmeye devam edebilir. Büyük bir dosya için Drive, <g1>bu dosya virüs taraması yapılamıyor</g1> diyen bir sayfa gösterir; MDM, <g2>Yine de indir</g2> seçeneğinin yaptığı gibi bu sayfayı geçer."
+  },
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "İlerleme göstergeli (<x1/>, <x2/>) başsız indirmeler, videolar, torrentler ve otomasyon API komutları: uygulamanın programının çalıştırdığı bir kütüphane (<x3/>) ve aynı argümanlar, terminal ve çıkış koduyla başlatan küçük bir başlatıcı (<x4/>)"
@@ -5465,6 +5505,10 @@
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
    "text": "Bir torrenti veya sadece bazı dosyalarını indirin. Dosyalarından bazıları zaten klasördeyse, durur ve adlarını belirtir; <x1/> bunun yerine onları kullanır (eşleşenler tutulur, geri kalanı indirilir)."
+  },
+  "a462139057cb83c0": {
+   "source": "If it says <g1>Google Drive won't give this file now</g1>, Drive's download limit for that file was reached. See <g2>Google Drive links</g2>.",
+   "text": "<g1>Google Drive bu dosyayı şimdi vermeyecek</g1> diyorsa, Drive'ın o dosya için indirme sınırına ulaşılmıştır. Bkz. <g2>Google Drive bağlantıları</g2>."
   },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
@@ -5961,6 +6005,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>Torrentler</g2></g1> — magnet bağlantıları ve .torrent dosyaları, dosya seçimi ve paylaşım."
+  },
+  "b298f93960114202": {
+   "source": ", with or without <x1/>;",
+   "text": ", <x1/> ile veya onsuz;"
   },
   "b2a627befcf928d4": {
    "source": "<g1>Torrents, built in</g1> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.",
@@ -7274,6 +7322,10 @@
    "source": "When MDM takes a download, it gets the browser's file name, size and type with it, so <g1>Download File Info</g1> shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data; a form that sends a file stays with the browser.",
    "text": "MDM bir indirmeyi aldığında, tarayıcının dosya adını, boyutunu ve türünü de alır, böylece <g1>Dosya Bilgilerini İndir</g1> sunucuya tekrar sormadan bunları hemen gösterir. Bir formdan (bir düğmeye basıp dosya geri alan bir form) yapılan bir indirme, formun verileriyle birlikte MDM tarafından tekrar gönderilir; bir dosya gönderen bir form tarayıcıda kalır."
   },
+  "de6c179de52d4a2a": {
+   "source": "On Linux this needs a tray, which most desktops have (KDE, GNOME with its AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.",
+   "text": "Linux'ta bunun için bir tepsiye ihtiyaç vardır, çoğu masaüstünde bu bulunur (KDE, GNOME'un AppIndicator uzantısı ile, waybar'ın tepsisi). Tepsi olmayan bir masaüstünde (bazı döşemeli pencere yöneticileri), pencereyi kapatmak MDM'den çıkar, çünkü geri getirilecek bir yer olmaz."
+  },
   "de8c9f450c2f7eeb": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>. Only while the API is on.",
    "text": "Her indirme ve toplam hız: <x1/>. <x2/> şunlardan biridir: <x3/>, <x4/>, <x5/>, <x6/> veya <x7/>; <x8/> bilinmiyorken <x9/>'dur; <x10/> (neden başarısız olduğu) yalnızca <x11/> durumundaki bir indirme için mevcuttur. Yalnızca API açıkken."
@@ -7665,6 +7717,10 @@
   "ebe2a18d31052b9b": {
    "source": "Browsers",
    "text": "Tarayıcılar"
+  },
+  "ec30751899ba93ca": {
+   "source": "<g1>Folders</g1> aren't downloaded yet: a folder's link gets <g2>this is a Google Drive folder, not a file</g2>. Open the folder in the browser and download its files from there.",
+   "text": "<g1>Klasörler</g1> henüz indirilmiyor: bir klasörün bağlantısı <g2>bu bir Google Drive klasörü, dosya değil</g2> yanıtını alır. Klasörü tarayıcıda açın ve dosyalarını oradan indirin."
   },
   "ec76a04b2f141c3a": {
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",

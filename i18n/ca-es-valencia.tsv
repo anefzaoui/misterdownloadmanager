@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Continua després que la baixada acabe
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive no vol donar aquest fitxer ara: {message} (iniciar la sessió a Google en el navegador sol ajudar; en cas contrari, torneu a intentar-ho més tard)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Penja el mòdem quan acabe
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Esta carpeta no existeix:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	aquest fitxer de Google Drive requereix que inicieu la sessió: inicieu la sessió a Google en el navegador i, a continuació, descarregueu-lo des d'allí
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	aquesta és una carpeta de Google Drive, no un fitxer
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	no és un enllaç magnet ni un fitxer .torrent
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	El teu navegador
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	el vostre compte de Google no té accés a aquest fitxer, o el seu propietari ha desactivat la descàrrega
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

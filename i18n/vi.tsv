@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Tiếp tục sau khi tải xuống hoàn tất
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive sẽ không cung cấp tệp này ngay bây giờ: {message} (đăng nhập vào Google trong trình duyệt của bạn thường hữu ích; nếu không, hãy thử lại sau)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Ngắt kết nối modem khi hoàn tất
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Thư mục này không tồn tại:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	tệp Google Drive này yêu cầu bạn đăng nhập: hãy đăng nhập vào Google trong trình duyệt của bạn, sau đó tải xuống từ đó
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	đây là một thư mục Google Drive, không phải một tệp
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	đây không phải là liên kết magnet hoặc tệp .torrent
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Trình duyệt của bạn
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	tài khoản Google của bạn không có quyền truy cập vào tệp này hoặc chủ sở hữu của nó đã tắt tính năng tải xuống
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

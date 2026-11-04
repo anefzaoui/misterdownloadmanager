@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	İndirme bittikten sonra devam eder
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive bu dosyayı şimdi vermiyor: {message} (tarayıcınızda Google'da oturum açmak genellikle yardımcı olur; aksi takdirde daha sonra tekrar deneyin)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	İşlem bitince modemi kapat
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Bu klasör mevcut değil:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	bu Google Drive dosyası oturum açmanızı gerektiriyor: tarayıcınızda Google'da oturum açın, ardından oradan indirin
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	bu bir Google Drive klasörü, dosya değil
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	bu bir magnet bağlantısı veya .torrent dosyası değil
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Tarayıcınız
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	Google hesabınızın bu dosyaya erişimi yok veya sahibi indirmeyi kapattı
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

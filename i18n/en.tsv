@@ -650,6 +650,9 @@
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	Goes on after the download finishes
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	Hang up modem when done
 #. text in a download's progress window
@@ -1595,6 +1598,12 @@
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+	this is a Google Drive folder, not a file	this is a Google Drive folder, not a file
+#. text in errors.rs
 	this is not a magnet link or a .torrent file	this is not a magnet link or a .torrent file
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
@@ -1840,6 +1849,9 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	Your browser
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+	your Google account has no access to this file, or its owner turned off downloading	your Google account has no access to this file, or its owner turned off downloading
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

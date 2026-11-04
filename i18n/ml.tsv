@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	ഡൗൺലോഡ് പൂർത്തിയായ ശേഷം തുടരുന്നു
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ഇപ്പോൾ ഈ ഫയൽ നൽകില്ല: {message} (നിങ്ങളുടെ ബ്രൗസറിൽ Google-ലേക്ക് സൈൻ ഇൻ ചെയ്യുന്നത് പലപ്പോഴും സഹായകമാകും; അല്ലെങ്കിൽ, പിന്നീട് വീണ്ടും ശ്രമിക്കുക)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	പൂർത്തിയാകുമ്പോൾ മോഡം വിച്ഛേദിക്കുക
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	ഈ ഫോൾഡർ നിലവിലില്ല:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ഈ Google Drive ഫയലിന് നിങ്ങൾ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്: നിങ്ങളുടെ ബ്രൗസറിൽ Google-ലേക്ക് സൈൻ ഇൻ ചെയ്യുക, തുടർന്ന് അവിടെ നിന്ന് ഡൗൺലോഡ് ചെയ്യുക
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	ഇതൊരു Google Drive ഫോൾഡറാണ്, ഫയലല്ല
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	ഇതൊരു മാഗ്നറ്റ് ലിങ്കോ .torrent ഫയലോ അല്ല
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	നിങ്ങളുടെ ബ്രൗസർ
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	നിങ്ങളുടെ Google അക്കൗണ്ടിന് ഈ ഫയലിലേക്ക് ആക്‌സസ് ഇല്ല, അല്ലെങ്കിൽ അതിന്റെ ഉടമ ഡൗൺലോഡ് ചെയ്യുന്നത് ഓഫാക്കി
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

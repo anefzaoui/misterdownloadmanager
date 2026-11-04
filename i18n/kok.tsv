@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	डाउनलोड सोंपल्या उपरांत चालूच उरता
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive आता ही फाइल दिना: {message} (तुमच्या ब्राउझरांत गुगलान साइन इन केल्यार चड करून मदत जाता; ना जाल्यार, उपरांत परत प्रयत्न करात)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	काम जातकच मोडेम बंद कर
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	हो फोल्डर अस्तित्वांत ना:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ह्या Google Drive फायलाक तुमकां साइन इन करपाची गरज आसा: तुमच्या ब्राउझरांत गुगलान साइन इन करात, मागीर थंयच्यान डाउनलोड करात
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	हें Google Drive फोल्डर आसा, फाइल न्हय
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	ही मॅग्नेट लिंक वा .टॉरेंट फाइल न्हय
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	तुमचो ब्राउजर
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	तुमच्या गुगल खात्याक ह्या फायलाक प्रवेश ना, वा ताच्या मालकान डाउनलोड करप बंद केला
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

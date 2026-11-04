@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Jätkub pärast allalaadimise lõppemist
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ei anna seda faili praegu: {message} (sageli aitab brauseris Google'isse sisselogimine; vastasel juhul proovige hiljem uuesti)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Katkesta modemiühendus, kui valmis
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Seda kausta ei eksisteeri:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	see Google Drive'i fail nõuab sisselogimist: logige brauseris Google'isse sisse, seejärel laadige see sealt alla
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	see on Google Drive'i kaust, mitte fail
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	see ei ole magnetlink ega .torrent-fail
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Teie brauser
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	teie Google'i kontol pole sellele failile juurdepääsu või selle omanik keelas allalaadimise
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

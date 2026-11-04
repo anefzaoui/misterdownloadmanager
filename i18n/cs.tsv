@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Pokračuje po dokončení stahování
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Disk Google nyní tento soubor neposkytne: {message} (často pomůže přihlášení k účtu Google ve vašem prohlížeči; jinak to zkuste později)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Po dokončení zavěsit modem
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Tato složka neexistuje:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	tento soubor na Disku Google vyžaduje přihlášení: přihlaste se k účtu Google ve svém prohlížeči a poté si jej stáhněte
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	toto je složka Disku Google, nikoli soubor
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	toto není magnetický odkaz ani soubor .torrent
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Váš prohlížeč
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	váš účet Google nemá přístup k tomuto souboru, nebo jeho vlastník zakázal stahování
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

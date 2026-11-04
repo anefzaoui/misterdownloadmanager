@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Held fram etter at nedlastinga er ferdig
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Disk vil ikkje gje denne fila no: {message} (å logge på Google i nettlesaren din hjelper ofte; elles kan du prøve igjen seinare)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Legg på modem når ferdig
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Denne mappa finst ikkje:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	denne Google Disk-fila krev at du loggar på: logg på Google i nettlesaren din, og last ho ned derfrå
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	dette er ei Google Disk-mappe, ikkje ei fil
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	dette er ikkje ei magnetlenkje eller ei .torrent-fil
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Nettlesaren din
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	Google-kontoen din har ikkje tilgang til denne fila, eller eigaren har slått av nedlasting
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

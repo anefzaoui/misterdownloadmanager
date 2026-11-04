@@ -662,6 +662,10 @@
    "source": "Click <g1>Load unpacked</g1>.",
    "text": "<g1>パッケージ化されていない拡張機能を読み込む</g1>をクリックします。"
   },
+  "13382c1e6ceae711": {
+   "source": "<g1>The video button over a Drive video</g1> downloads the original file, not one of the player's smaller copies.",
+   "text": "<g1>ドライブ動画上の動画ボタン</g1>は、プレーヤーの小さなコピーではなく、元のファイルをダウンロードします。"
+  },
   "135e1b787896d837": {
    "source": "<g1>GitHub, to check for updates.</g1> Once a week MDM asks GitHub's public API for the latest release of MDM (<x2/>). The request carries MDM's version in its User-Agent and nothing else. Turn the weekly check off in <g3>Help → Check for updates</g3>. If you choose <g4>Update now</g4>, MDM downloads the new version's file and its signed checksum list from the same GitHub release. GitHub's own privacy statement applies to these requests.",
    "text": "<g1>GitHub、更新プログラムの確認のため。</g1> MDM は週に一度、GitHub のパブリック API に MDM の最新リリースを問い合わせます (<x2/>)。このリクエストには、MDM のバージョンが User-Agent に含まれるだけで、他には何も含まれません。<g3>ヘルプ → 更新プログラムの確認</g3> で週ごとの確認をオフにできます。<g4>今すぐ更新</g4> を選択すると、MDM は新しいバージョンのファイルとその署名付きチェックサムリストを同じ GitHub リリースからダウンロードします。これらのリクエストには、GitHub 自身のプライバシーに関する声明が適用されます。"
@@ -865,6 +869,10 @@
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
    "text": "Chrome、Edge、Brave、Opera、Vivaldi（Firefoxはテスト中）の<g1>ブラウザ統合</g1>: ダウンロードはクッキーとリファラーとともにMDMに引き渡され、右クリックで<g2>Mister Download Manager でダウンロード</g2>、そして任意のページの動画上に<g3>動画をダウンロード</g3>ボタンが表示されます。このボタンは動画の端に沿ってドラッグしたり、動画やサイト上で非表示にしたり、オプションでオフにしたりできます。"
+  },
+  "18c426ee5855af75": {
+   "source": "Google Drive links",
+   "text": "Google ドライブのリンク"
   },
   "18da802709723cf6": {
    "source": "Ctrl+Space",
@@ -1185,6 +1193,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "所有していないサーバーを過負荷にしたり、攻撃したり、制限を回避したりするために使用しないこと。"
+  },
+  "21aa032bde745310": {
+   "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
+   "text": "ダウンロードの最初のリクエスト (<x1/>) は、リダイレクトや、ファイルに直接つながるページ (待機ページの更新) に従います。リンクがファイルの直接のアドレスではないサイトには、<x2/> にモジュールがあります (Google Drive: <x3/>)。これはリンクをファイルのアドレスに変換し、サイト自身のページ (確認フォーム、エラーページ) を読み取り、拒否理由に名前を付けます (<x4/>)。これらはネットワークなしでテストされた純粋な関数です。ラボサーバーは、エンドツーエンドテスト (<x5/>) のために、実際のホスト名でそのようなサイトをシミュレートします。"
   },
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
@@ -1997,6 +2009,10 @@
   "393ffca55ed6d7ac": {
    "source": "Each connection writes straight into the file's place on disk, in a part file named <x1/> next to the final file. When every part is done, MDM checks the size and renames it. There is no temporary folder and no joining step at the end.",
    "text": "各接続は、最終ファイルの隣にある<x1/>という名前の部分ファイルとして、ディスク上のファイルの場所に直接書き込みます。すべての部分が完了すると、MDMはサイズを確認して名前を変更します。一時フォルダーや最後の結合ステップはありません。"
+  },
+  "3942e893b1f34435": {
+   "source": "and <x1/>;",
+   "text": "および<x1/>"
   },
   "39463e0cfd1ff5aa": {
    "source": "Options — Mister Download Manager help",
@@ -2938,6 +2954,10 @@
    "source": "Command",
    "text": "コマンド"
   },
+  "57f708f18604d10d": {
+   "source": "(and Sheets, Slides, Drawings).",
+   "text": "（スプレッドシート、スライド、図形描画も同様です）。"
+  },
   "582557ff93b946f6": {
    "source": "MDM is <g1>not affiliated</g1> with Tonec Inc. or Internet Download Manager.",
    "text": "MDMはTonec Inc.またはInternet Download Managerとは<g1>提携していません</g1>。"
@@ -3065,6 +3085,10 @@
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>ヘルプ → 問題の報告</g1>を選択してください。これにより、MDMのバージョン、システムとそのバージョン、MDMのインストール方法、インターフェース言語がすでに記入されたGitHubのバグレポートフォームが開きます。何が起こったのか、何を期待したのか、そしてそれが起こる手順を説明してください。ダウンロードの場合、共有できる場合はアドレスと、<g2>状態</g2>の下に表示される理由を含めてください。"
+  },
+  "5d4164eff181587e": {
+   "source": "<g1>Files that aren't shared with everyone.</g1> Right-click the link in the browser and choose <g2>Download with Mister Download Manager</g2>, or use Drive's own <g3>Download</g3> button: the extension passes your browser's Google sign-in with the download. MDM never asks for or keeps your password. Without a sign-in, MDM says the file <g4>needs you to sign in</g4>.",
+   "text": "<g1>全員と共有されていないファイル。</g1>ブラウザでリンクを右クリックし、<g2>Mister Download Manager でダウンロード</g2>を選択するか、ドライブの<g3>ダウンロード</g3>ボタンを使用してください。拡張機能がブラウザの Google サインイン情報をダウンロードに渡します。MDM はパスワードを要求したり保持したりすることはありません。サインインなしでは、MDM はファイルが<g4>サインインが必要です</g4>と表示します。"
   },
   "5d56098513a9a8da": {
    "source": "To quit, choose <g1>Tasks → Exit</g1> or <g2>Exit</g2> in the tray menu.",
@@ -3317,6 +3341,10 @@
   "6387358ae9160f15": {
    "source": "1 GiB, fast link",
    "text": "1 GiB、高速リンク"
+  },
+  "639e97e78af63aae": {
+   "source": "<g1>Google Docs, Sheets and Slides</g1> come as Word (<x2/>), Excel (<x3/>) and PowerPoint (<x4/>) files, and Drawings as <x5/>. These files are made when they are asked for, so their size is unknown until they arrive and they can't be resumed: a cut-off download starts again.",
+   "text": "<g1>Google ドキュメント、スプレッドシート、スライド</g1>は、Word（<x2/>）、Excel（<x3/>）、PowerPoint（<x4/>）ファイルとして、図形描画は<x5/>としてダウンロードされます。これらのファイルは要求されたときに作成されるため、到着するまでサイズが不明であり、再開できません。途中で中断されたダウンロードは最初からやり直されます。"
   },
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
@@ -3805,6 +3833,10 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "すべてのソースは公開されており、すべてのリリースはGitHubのサーバーでそこからビルドされています。アドウェア、スパイウェア、バンドルされたオファーはありません。ビデオ用にダウンロードされるヘルパーは、実行前に検証されます。<g1>詳細</g1>"
+  },
+  "72769bded1d786a9": {
+   "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
+   "text": "Google ドライブのリンクは、<g1>共有 → リンクをコピー</g1>で取得したものをそのまま貼り付けてください。"
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -4525,6 +4557,10 @@
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "異なる点"
+  },
+  "880767a468b15c29": {
+   "source": "<g1>When Drive won't give a file.</g1> Drive limits how often a file can be downloaded: after many downloads in a day it answers \"too many users have viewed or downloaded this file recently\". MDM shows Drive's own words and writes nothing. Try again later (it can take up to a day), or sign in to Google in your browser and download from there, which often gets past the limit. MDM doesn't try to get around it. A file whose owner turned off downloading, or that your account can't open, gets <g2>no access</g2>.",
+   "text": "<g1>ドライブがファイルを渡さない場合。</g1>ドライブはファイルのダウンロード頻度を制限しています。1日に何度もダウンロードすると、「このファイルは最近、多くのユーザーによって閲覧またはダウンロードされました」と応答します。MDM はドライブのメッセージをそのまま表示し、何も書き込みません。後で（最大1日かかる場合があります）再試行するか、ブラウザで Google にサインインしてそこからダウンロードすると、制限を回避できることがよくあります。MDM はこれを回避しようとはしません。所有者がダウンロードをオフにしたファイルや、アカウントで開けないファイルは、<g2>アクセスできません</g2>となります。"
   },
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
@@ -5258,6 +5294,10 @@
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
    "text": "4つのことを確認してください：拡張機能がインストールされ、有効になっていること。オプション → 一般 → 高度なブラウザー統合がオンになっていて、お使いのブラウザーにチェックが入っていること。ファイルのタイプがオプション → ファイルの種類にあること。そして、そのサイトがMDMが無視するサイトのリストに含まれていないこと。リンクを右クリックして「Mister Download Manager でダウンロード」を選択すると、どんなタイプのファイルでも送信できます。詳細についてはトラブルシューティングをご覧ください。"
   },
+  "9db0cdca6146f4f8": {
+   "source": "MDM downloads the file itself, as it was uploaded (a video comes in its own format, not the player's copy), with its real name and size, over several connections, and it can resume. For a large file, Drive shows a page that says it <g1>can't scan this file for viruses</g1>; MDM goes past it as <g2>Download anyway</g2> does.",
+   "text": "MDM は、アップロードされたファイルそのものを、実際の名前とサイズで、複数の接続を介してダウンロードし、再開も可能です（動画はプレーヤーのコピーではなく、元の形式でダウンロードされます）。大きなファイルの場合、ドライブは「<g1>このファイルはウイルススキャンできません</g1>」というページを表示しますが、MDM は<g2>とにかくダウンロード</g2>と同様にこれを通過します。"
+  },
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "進捗状況 (<x1/>、<x2/>) を表示しないダウンロード、動画、トレント、および自動化APIのコマンド: アプリのプログラムが実行するライブラリ (<x3/>) と、同じ引数、ターミナル、終了コードで起動する小さなランチャーである <x4/>"
@@ -5465,6 +5505,10 @@
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
    "text": "トレント、またはその一部のファイルをダウンロードします。一部のファイルがすでにフォルダーにある場合、ダウンロードを停止してそれらの名前を表示します。<x1/> 代わりにそれらを使用します（一致するものは保持され、残りはダウンロードされます）。"
+  },
+  "a462139057cb83c0": {
+   "source": "If it says <g1>Google Drive won't give this file now</g1>, Drive's download limit for that file was reached. See <g2>Google Drive links</g2>.",
+   "text": "「<g1>Google Drive won't give this file now</g1>」と表示される場合、そのファイルのGoogleドライブのダウンロード制限に達しています。<g2>Googleドライブのリンク</g2>をご覧ください。"
   },
   "a46f8686e56a7328": {
    "source": "Which browsers does it work with? — Mister Download Manager",
@@ -5961,6 +6005,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>トレント</g2></g1> — マグネットリンクと.torrentファイル、ファイルの選択、共有。"
+  },
+  "b298f93960114202": {
+   "source": ", with or without <x1/>;",
+   "text": "（<x1/>の有無にかかわらず）"
   },
   "b2a627befcf928d4": {
    "source": "<g1>Torrents, built in</g1> Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.",
@@ -7274,6 +7322,10 @@
    "source": "When MDM takes a download, it gets the browser's file name, size and type with it, so <g1>Download File Info</g1> shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data; a form that sends a file stays with the browser.",
    "text": "MDMがダウンロードを取得すると、ブラウザーのファイル名、サイズ、種類も取得するため、<g1>ダウンロード ファイル情報</g1>はサーバーに再度問い合わせることなくすぐにそれらを表示します。フォームからのダウンロード（投稿してファイルを取得するボタン）は、フォームのデータとともにMDMによって再度投稿されます。ファイルを送信するフォームはブラウザーに残されます。"
   },
+  "de6c179de52d4a2a": {
+   "source": "On Linux this needs a tray, which most desktops have (KDE, GNOME with its AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.",
+   "text": "Linuxでは、ほとんどのデスクトップ（KDE、AppIndicator拡張機能付きのGNOME、waybarのトレイ）にトレイが必要です。トレイがないデスクトップ（一部のタイル型ウィンドウマネージャー）では、ウィンドウを閉じるとMDMが終了します。これは、MDMを元に戻す場所がないためです。"
+  },
   "de8c9f450c2f7eeb": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>. Only while the API is on.",
    "text": "すべてのダウンロードと合計速度：<x1/>。<x2/>は<x3/>、<x4/>、<x5/>、<x6/>、または<x7/>です。<x8/>は不明な場合は<x9/>です。<x10/>（失敗理由）は<x11/>のダウンロードにのみ存在します。APIがオンの場合のみです。"
@@ -7665,6 +7717,10 @@
   "ebe2a18d31052b9b": {
    "source": "Browsers",
    "text": "ブラウザー"
+  },
+  "ec30751899ba93ca": {
+   "source": "<g1>Folders</g1> aren't downloaded yet: a folder's link gets <g2>this is a Google Drive folder, not a file</g2>. Open the folder in the browser and download its files from there.",
+   "text": "<g1>フォルダ</g1>はまだダウンロードできません。フォルダのリンクは<g2>これは Google ドライブのフォルダであり、ファイルではありません</g2>と表示されます。ブラウザでフォルダを開き、そこからファイルをダウンロードしてください。"
   },
   "ec76a04b2f141c3a": {
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",

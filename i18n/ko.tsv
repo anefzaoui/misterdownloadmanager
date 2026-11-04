@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	다운로드 완료 후 계속됩니다.
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive에서 이 파일을 지금 제공하지 않습니다. {message} (브라우저에서 Google에 로그인하면 도움이 되는 경우가 많습니다. 그렇지 않으면 나중에 다시 시도하세요.)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	완료되면 모뎀 끊기
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	이 폴더가 없습니다:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	이 Google Drive 파일에 로그인해야 합니다. 브라우저에서 Google에 로그인한 다음 거기에서 다운로드하세요.
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	이것은 Google Drive 폴더이며 파일이 아닙니다.
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	마그넷 링크 또는 .torrent 파일이 아닙니다.
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	사용 중인 브라우저
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	Google 계정에 이 파일에 대한 액세스 권한이 없거나 소유자가 다운로드를 해제했습니다.
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

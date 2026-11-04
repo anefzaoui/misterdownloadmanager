@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	डाउनलोड समाप्त होने के बाद जारी रहता है
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive यह फ़ाइल अभी नहीं देगा: {message} (अपने ब्राउज़र में Google में साइन इन करने से अक्सर मदद मिलती है; अन्यथा, बाद में फिर से प्रयास करें)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	पूरा होने पर मॉडेम हैंग अप करें
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	यह फ़ोल्डर मौजूद नहीं है:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	इस Google Drive फ़ाइल के लिए आपको साइन इन करना होगा: अपने ब्राउज़र में Google में साइन इन करें, फिर इसे वहां से डाउनलोड करें
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	यह एक Google Drive फ़ोल्डर है, फ़ाइल नहीं
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	यह कोई मैग्नेट लिंक या .torrent फ़ाइल नहीं है
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	आपका ब्राउज़र
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	आपके Google खाते के पास इस फ़ाइल तक पहुंच नहीं है, या इसके मालिक ने डाउनलोड करना बंद कर दिया है
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

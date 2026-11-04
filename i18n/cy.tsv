@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Yn parhau ar ôl i'r lawrlwythiad orffen
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Ni fydd Google Drive yn rhoi’r ffeil hon nawr: {message} (mae mewngofnodi i Google yn eich porwr yn aml yn helpu; fel arall, ceisiwch eto’n ddiweddarach)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Hongian modem pan fydd wedi gorffen
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Nid yw'r ffolder hon yn bodoli:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	mae angen i chi fewngofnodi i’r ffeil Google Drive hon: mewngofnodwch i Google yn eich porwr, yna lawrlwythwch hi oddi yno
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	ffolder Google Drive yw hwn, nid ffeil
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	nid yw hwn yn ddolen magnet nac yn ffeil .torrent
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Eich porwr
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	nid oes gan eich cyfrif Google fynediad i’r ffeil hon, neu mae ei pherchennog wedi diffodd lawrlwytho
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

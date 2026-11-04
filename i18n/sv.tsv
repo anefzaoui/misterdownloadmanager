@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Fortsätter efter att nedladdningen är klar
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ger inte den här filen nu: {message} (att logga in på Google i webbläsaren hjälper ofta; annars, försök igen senare)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Lägg på modem när klart
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Denna mapp finns inte:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	den här Google Drive-filen kräver att du loggar in: logga in på Google i webbläsaren och ladda sedan ned den därifrån
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	det här är en Google Drive-mapp, inte en fil
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	detta är inte en magnetlänk eller en .torrent-fil
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Din webbläsare
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	ditt Google-konto har ingen åtkomst till den här filen, eller så har ägaren inaktiverat nedladdning
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

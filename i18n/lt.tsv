@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Tęsiasi atsisiuntimui pasibaigus
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	„Google“ diskas dabar neduos šio failo: {message} (dažnai padeda prisijungimas prie „Google“ naršyklėje; kitu atveju, bandykite dar kartą vėliau)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Baigus atsijungti nuo modemo
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Šis aplankas neegzistuoja:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	šiam „Google“ disko failui reikia, kad prisijungtumėte: prisijunkite prie „Google“ naršyklėje, tada atsisiųskite jį iš ten
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	tai yra „Google“ disko aplankas, o ne failas
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	tai nėra magnetinė nuoroda arba .torrent failas
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Jūsų naršyklė
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	jūsų „Google“ paskyra neturi prieigos prie šio failo, arba jo savininkas išjungė atsisiuntimą
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Turpinās pēc lejupielādes pabeigšanas
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google disks šobrīd nedos šo failu: {message} (bieži palīdz pierakstīšanās Google savā pārlūkprogrammā; pretējā gadījumā mēģiniet vēlreiz vēlāk)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Pabeidzot nolikt modemu
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Šī mape neeksistē:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	šim Google diska failam ir nepieciešama jūsu pierakstīšanās: pierakstieties Google savā pārlūkprogrammā, pēc tam lejupielādējiet to no turienes
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	šī ir Google diska mape, nevis fails
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	šī nav magnētsaite vai .torrent fails
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Jūsu pārlūkprogramma
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	jūsu Google kontam nav piekļuves šim failam, vai tā īpašnieks ir atspējojis lejupielādi
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

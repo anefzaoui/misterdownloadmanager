@@ -463,6 +463,40 @@ fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
     })
 }
 
+/// The Google Drive file whose player the browser's video button was clicked over (#34): the
+/// page itself when it is a Drive file's (`video_page`), or, when the button sent the player's
+/// own stream (on Google's hosts), the page it came from (`referer`). None for any other video.
+fn drive_file_behind_player(cmd: &ipc::Command) -> Option<String> {
+    use mdm_engine::sites::gdrive;
+    let drive_file = |s: &str| {
+        url::Url::parse(s)
+            .ok()
+            .and_then(|u| gdrive::parse(&u))
+            .is_some_and(|l| l.kind == gdrive::Kind::File)
+    };
+    let page = cmd.video_page.as_deref()?;
+    if drive_file(page) {
+        return Some(page.to_owned());
+    }
+    let googles = url::Url::parse(page).ok().and_then(|u| {
+        u.host_str().map(|h| {
+            let h = h.to_ascii_lowercase();
+            [
+                ".google.com",
+                ".googleapis.com",
+                ".googlevideo.com",
+                ".googleusercontent.com",
+            ]
+            .iter()
+            .any(|d| h.ends_with(d))
+        })
+    });
+    cmd.referer
+        .as_deref()
+        .filter(|r| googles == Some(true) && drive_file(r))
+        .map(str::to_owned)
+}
+
 pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
     let mut h = HeaderMap::new();
     if let Some((user, pass)) = login {
@@ -1332,6 +1366,13 @@ impl App {
             self.show_named(name, ctx);
             return;
         }
+        // The download button over a Google Drive file's player: the file itself, as it was
+        // uploaded (segmented and resumable), not the player's re-encoded streams (#34).
+        let mut cmd = cmd;
+        if let Some(file) = drive_file_behind_player(&cmd) {
+            cmd.video_page = None;
+            cmd.url = Some(file);
+        }
         // The browser's download button over a video: the Download video window, looking the
         // page up at once.
         if let Some(page) = cmd.video_page.as_deref() {
@@ -1772,6 +1813,15 @@ impl App {
         }
     }
 
+    /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
+    /// window is closed, the host may come and go).
+    fn tray_shown(&self) -> bool {
+        #[cfg(target_os = "linux")]
+        return crate::unix::tray_host();
+        #[cfg(not(target_os = "linux"))]
+        true
+    }
+
     /// The tray icon: created once, its commands run, and closing the window hides it there.
     fn tray(&mut self, ctx: &egui::Context) {
         if self.tray.is_none() && self.tray_limiter.is_none() && !crate::offscreen() {
@@ -1820,8 +1870,14 @@ impl App {
             };
             self.run(cmd, None, ctx);
         }
-        // Closing hides the window in the tray; downloads and queues go on.
-        if self.tray.is_some() && !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
+        // Closing hides the window in the tray; downloads and queues go on. On Linux only when a
+        // tray host shows the icon (#59: without one the window couldn't come back, nor close):
+        // otherwise closing closes, as any window's does.
+        if self.tray.is_some()
+            && !self.exiting
+            && ctx.input(|i| i.viewport().close_requested())
+            && self.tray_shown()
+        {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
             // Wayland can't hide a window: it goes to the dock / task list instead.
             #[cfg(target_os = "linux")]
@@ -5569,5 +5625,32 @@ mod referrer_tests {
             sent_referrer(&url("https://x.test/a"), "javascript:void(0)"),
             None
         );
+    }
+
+    #[test]
+    fn a_drive_players_button_downloads_the_file() {
+        use super::{drive_file_behind_player, ipc};
+        let page = "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view";
+        let cmd = |video: &str, referer: Option<&str>| ipc::Command {
+            video_page: Some(video.to_owned()),
+            referer: referer.map(str::to_owned),
+            ..Default::default()
+        };
+        assert_eq!(
+            drive_file_behind_player(&cmd(page, None)).as_deref(),
+            Some(page)
+        );
+        let stream = "https://abc.c.drive.google.com/videoplayback?id=1";
+        assert_eq!(
+            drive_file_behind_player(&cmd(stream, Some(page))).as_deref(),
+            Some(page)
+        );
+        // Another site's video, even when reached from a Drive page, stays a video.
+        assert_eq!(
+            drive_file_behind_player(&cmd("https://www.youtube.com/watch?v=x", Some(page))),
+            None
+        );
+        let folder = "https://drive.google.com/drive/folders/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu";
+        assert_eq!(drive_file_behind_player(&cmd(folder, None)), None);
     }
 }

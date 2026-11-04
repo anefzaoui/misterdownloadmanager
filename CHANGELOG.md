@@ -82,6 +82,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **Downloads from forms** (a button that posts and gets a file back) are posted again by MDM,
   with the form's data, instead of being lost. A form that sends a file (multipart) stays with
   the browser.
+- **Google Drive links** ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)):
+  paste a Drive file's link (`drive.google.com/file/d/…/view`, `…/uc?id=…`, `…/open?id=…`) and
+  MDM downloads the file itself, as it was uploaded, over several connections and resumable,
+  with its real name and size in Download File Info. Large files get past Drive's "can't scan
+  this file for viruses" page as **Download anyway** does. Google Docs, Sheets and Slides come
+  as Word, Excel and PowerPoint files. A private file downloads with the sign-in the extension
+  passes from the browser. When Drive won't give a file (too many downloads lately, sign-in
+  needed, no access), MDM says so in your language instead of saving Drive's page. The video
+  button over a Drive video downloads the original file. Folders aren't downloaded yet: MDM
+  says the link is a folder. See [Google Drive links](docs/adding-downloads.md#google-drive-links).
 
 ### Changed
 
@@ -138,6 +148,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   together" left torrents out. Each torrent now has a limit of its own, a remembered one applies
   again when it resumes, and torrents stay under the global cap with the other downloads. A
   limit under 16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s.
+- **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
+  the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).
+- **Download File Info's errors are worded in the interface language**, as the list's are.
+- **Resuming after a waiting page**: when a download's address had to be asked again (an expired
+  link), MDM now goes through the same waiting pages and redirects as the first time, instead
+  of giving up on them.
+- **Linux: the window couldn't be closed** on desktops without a tray, such as MangoWC
+  ([#59](https://github.com/anefzaoui/misterdownloadmanager/issues/59)): closing hid it to a tray
+  that wasn't there. Closing now hides to the tray only when a tray shows MDM's icon, and quits
+  otherwise. (The menus and dark mode there: see #50 and #60.)
 - **Stopping a video download left yt-dlp downloading in the background** on Windows
   ([#61](https://github.com/anefzaoui/misterdownloadmanager/issues/61)): `yt-dlp.exe` starts a
   second process that does the work, and only the first was ended. Resuming then failed ("yt-dlp

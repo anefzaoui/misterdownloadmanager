@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Wird nach Abschluss des Downloads fortgesetzt
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive stellt diese Datei jetzt nicht bereit: {message} (die Anmeldung bei Google in Ihrem Browser hilft oft; andernfalls versuchen Sie es später erneut)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Modem nach Abschluss auflegen
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Dieser Ordner existiert nicht:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	Diese Google Drive-Datei erfordert eine Anmeldung: Melden Sie sich in Ihrem Browser bei Google an und laden Sie sie dann von dort herunter
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	Dies ist ein Google Drive-Ordner, keine Datei
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	Dies ist kein Magnet-Link oder keine .torrent-Datei
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Ihr Browser
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	Ihr Google-Konto hat keinen Zugriff auf diese Datei, oder der Eigentümer hat das Herunterladen deaktiviert
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

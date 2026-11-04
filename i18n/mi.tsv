@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Ka haere tonu i muri i te otinga o te tikiake
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Kāore a Google Drive e tuku i tēnei kōnae ināianei: {message} (he maha tonu te āwhina o te takiuru ki Google i tō pūtirotiro; ki te kore, ngana anō ā muri ake nei)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Whakairi i te pouwhanga ka oti
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Kāore tēnei kōpaki i te noho:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	me takiuru koe ki tēnei kōnae Google Drive: takiuru ki Google i tō pūtirotiro, kātahi ka tikiake mai i reira
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	he kōpaki Google Drive tēnei, ehara i te kōnae
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	ehara tēnei i te hononga autō, i te kōnae .torrent rānei
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Tō pūtirotiro
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	kāore tō pūkete Google e whai wāhi ki tēnei kōnae, kua whakaweto rānei e tōna rangatira te tikiake
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

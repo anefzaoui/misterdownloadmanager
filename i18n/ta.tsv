@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	பதிவிறக்கம் முடிந்த பிறகு தொடரும்
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive இக்கோப்பை இப்போது வழங்காது: {message} (உங்கள் உலாவியில் Google இல் உள்நுழைவது பெரும்பாலும் உதவும்; இல்லையெனில், பின்னர் மீண்டும் முயற்சிக்கவும்)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	முடிந்ததும் மோடமைத் துண்டி
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	இந்த அடைவு இல்லை:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	இந்த Google Drive கோப்பு உள்நுழைய வேண்டும்: உங்கள் உலாவியில் Google இல் உள்நுழைந்து, அங்கிருந்து பதிவிறக்கவும்
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	இது ஒரு Google Drive கோப்புறை, கோப்பு அல்ல
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	இது ஒரு மேக்னட் இணைப்பு அல்லது .torrent கோப்பு அல்ல
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	உங்கள் உலாவி
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	உங்கள் Google கணக்கிற்கு இந்தக் கோப்பை அணுக அனுமதி இல்லை, அல்லது அதன் உரிமையாளர் பதிவிறக்கத்தை முடக்கியுள்ளார்
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

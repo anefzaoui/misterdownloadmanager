@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Ikompli wara li jitlesta t-tniżżil
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive mhux se jagħti dan il-fajl issa: {message} (id-dħul fil-kont tal-Google fil-brawżer tiegħek spiss jgħin; inkella, erġa' pprova aktar tard)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Aqta' l-modem meta lest
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Dan il-folder ma jeżistix:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	dan il-fajl ta' Google Drive jeħtieġ li tidħol fil-kont: idħol fil-kont tal-Google fil-brawżer tiegħek, imbagħad niżżlu minn hemm
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	din hija folder ta' Google Drive, mhux fajl
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	din mhix link manjetika jew fajl .torrent
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Il-brawżer tiegħek
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	il-kont tal-Google tiegħek m'għandux aċċess għal dan il-fajl, jew is-sid tiegħu diżattiva t-tniżżil
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

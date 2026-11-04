@@ -3,7 +3,7 @@
 //! event log. Every engine error is named here, so a new one can't reach the list untranslated.
 //! Data inside a message (status codes, paths, sizes) goes in as isolates (crate::i18n::fmt).
 
-use mdm_engine::{Error, NetKind};
+use mdm_engine::{Error, NetKind, Refusal};
 
 use crate::i18n::{fmt, ltr, t};
 
@@ -82,6 +82,7 @@ pub fn describe(e: &Error) -> String {
             t("the FTP server answered {code} {reply}"),
             &[("code", &ltr(&code.to_string())), ("reply", &ltr(text))],
         ),
+        Error::Refused(r) => refusal(r),
         Error::Net { kind, cause } => {
             let what = match kind {
                 NetKind::Connect => t("cannot connect to the server"),
@@ -99,6 +100,33 @@ pub fn describe(e: &Error) -> String {
                     &[("problem", what), ("cause", &cause)],
                 )
             }
+        }
+    }
+}
+
+/// A site's refusal to give the file (Google Drive, #34), with what to do about it.
+fn refusal(r: &Refusal) -> String {
+    match r {
+        Refusal::Drive { message } => fmt(
+            // i18n: a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+            t(
+                "Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)",
+            ),
+            &[("message", &ltr(message))],
+        ),
+        Refusal::SignIn => {
+            // i18n: a download's error: a Google Drive file that isn't shared with everyone
+            t("this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there")
+                .to_owned()
+        }
+        Refusal::NoAccess => {
+            // i18n: a download's error: the signed-in Google account may not download this Drive file
+            t("your Google account has no access to this file, or its owner turned off downloading")
+                .to_owned()
+        }
+        Refusal::Folder => {
+            // i18n: a download's error: the address is a Google Drive folder, which isn't one file
+            t("this is a Google Drive folder, not a file").to_owned()
         }
     }
 }
@@ -194,6 +222,10 @@ mod tests {
     #[test]
     fn messages_carry_their_data() {
         assert!(describe(&Error::Status(reqwest::StatusCode::NOT_FOUND)).contains("404"));
+        let quota = Error::Refused(Refusal::Drive {
+            message: "Too many users".into(),
+        });
+        assert!(describe(&quota).contains("Too many users"));
         assert_eq!(
             os_text("Access is denied. (os error 5)"),
             "Access is denied"

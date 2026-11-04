@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	Continuă după finalizarea descărcării
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive nu va oferi acest fișier acum: {message} (conectarea la Google în browserul dvs. ajută adesea; altfel, încercați din nou mai târziu)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Închideți modemul la finalizare
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	Acest director nu există:
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	acest fișier Google Drive necesită să vă conectați: conectați-vă la Google în browserul dvs., apoi descărcați-l de acolo
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	acesta este un folder Google Drive, nu un fișier
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	acesta nu este un link magnet sau un fișier .torrent
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Browserul dvs.
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	contul dvs. Google nu are acces la acest fișier sau proprietarul său a dezactivat descărcarea
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)

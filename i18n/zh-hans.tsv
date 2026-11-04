@@ -899,6 +899,10 @@
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
 	Goes on after the download finishes	下载完成后继续
+#. text in errors.rs
+#. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
+#, machine
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google 云端硬盘现在无法提供此文件: {message} (在浏览器中登录 Google 通常会有帮助; 否则，请稍后重试)
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	完成后挂断调制解调器
@@ -2220,6 +2224,14 @@
 #, machine
 	This folder does not exist:	此文件夹不存在：
 #. text in errors.rs
+#. a download's error: a Google Drive file that isn't shared with everyone
+#, machine
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	此 Google 云端硬盘文件需要您登录: 在浏览器中登录 Google，然后从那里下载
+#. text in errors.rs
+#. a download's error: the address is a Google Drive folder, which isn't one file
+#, machine
+	this is a Google Drive folder, not a file	这是一个 Google 云端硬盘文件夹，而不是文件
+#. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	这不是磁力链接或 .torrent 文件
 #. text in extension.rs
@@ -2561,6 +2573,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	您的浏览器
+#. text in errors.rs
+#. a download's error: the signed-in Google account may not download this Drive file
+#, machine
+	your Google account has no access to this file, or its owner turned off downloading	您的 Google 帐户无权访问此文件，或者其所有者已关闭下载
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
