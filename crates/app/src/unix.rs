@@ -422,7 +422,7 @@ pub fn crash_now() {
 /// The browsers installed, by name, with their program: the app bundle on macOS (in
 /// /Applications or ~/Applications), the command on the PATH on Linux. The browser extension's
 /// offer (extension.rs) opens its page in each.
-pub fn browsers() -> Vec<(&'static str, PathBuf)> {
+pub fn browsers() -> Vec<(String, PathBuf)> {
     let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
     let found = |names: &[&str], dirs: &[PathBuf]| {
         names
@@ -444,7 +444,7 @@ pub fn browsers() -> Vec<(&'static str, PathBuf)> {
         .iter()
         .filter_map(|b| {
             let names = if mac { b.mac_apps } else { b.linux_cmds };
-            found(names, &dirs).map(|p| (b.name, p))
+            found(names, &dirs).map(|p| (b.name.to_owned(), p))
         })
         .collect()
 }

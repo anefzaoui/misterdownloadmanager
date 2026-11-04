@@ -26,10 +26,12 @@ use serde::{Deserialize, Serialize};
 const HOST_NAME: &str = "com.misterdownloadmanager.host";
 use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, STORE_UPDATE_URL, chromium_ids, store_id};
 /// Where each Chromium browser looks for native messaging hosts on Windows, under HKCU (one
-/// user) or HKLM (everyone).
+/// user) or HKLM (everyone). Chromium-branded builds (Chromium, Helium, Thorium) read
+/// Chromium's first, then Chrome's, as most other forks do (Chromium's launch_context_win.cc).
 #[cfg(windows)]
-const REGISTRY_KEYS: [&str; 3] = [
+const REGISTRY_KEYS: [&str; 4] = [
     r"Software\Google\Chrome\NativeMessagingHosts",
+    r"Software\Chromium\NativeMessagingHosts",
     r"Software\Microsoft\Edge\NativeMessagingHosts",
     r"Software\BraveSoftware\Brave-Browser\NativeMessagingHosts",
 ];
@@ -596,7 +598,8 @@ fn register(all_users: bool) -> Result<(), String> {
         ])?;
     }
     println!(
-        "registered {HOST_NAME} for Chrome, Edge, Brave ({}) and Firefox ({})",
+        "registered {HOST_NAME} for Chrome, Edge, Brave, Helium and the other Chromium browsers \
+         ({}), and for Firefox, Zen and its other forks ({})",
         path.display(),
         ff_path.display()
     );

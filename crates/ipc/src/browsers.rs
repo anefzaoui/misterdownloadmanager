@@ -200,6 +200,54 @@ pub fn named(name: &str) -> Option<&'static Browser> {
     BROWSERS.iter().find(|b| b.name == name)
 }
 
+/// Windows: the programs of the browsers in the table, with the folder that tells apart those
+/// that share a program's name (Chrome, Chromium and Helium all install a `chrome.exe`).
+pub const WINDOWS_PROGRAMS: &[(&str, Option<&str>, &str)] = &[
+    ("chrome.exe", Some(r"\google\chrome\"), "Google Chrome"),
+    ("chrome.exe", Some(r"\imput\helium\"), "Helium"),
+    ("chrome.exe", Some(r"\chromium\"), "Chromium"),
+    ("msedge.exe", None, "Microsoft Edge"),
+    ("brave.exe", None, "Brave"),
+    ("vivaldi.exe", None, "Vivaldi"),
+    ("opera.exe", None, "Opera"),
+    ("thorium.exe", None, "Thorium"),
+    ("firefox.exe", None, "Mozilla Firefox"),
+    ("zen.exe", None, "Zen Browser"),
+    ("librewolf.exe", None, "LibreWolf"),
+    ("floorp.exe", None, "Floorp"),
+    ("waterfox.exe", None, "Waterfox"),
+];
+
+/// Windows: the browser `program` (a full path) is, by its file name and folder; none for a
+/// program not in the table (or a `chrome.exe` in another folder).
+pub fn windows_named(program: &str) -> Option<&'static str> {
+    let lower = program.to_lowercase();
+    let file = lower.rsplit(['\\', '/']).next().unwrap_or(&lower);
+    WINDOWS_PROGRAMS
+        .iter()
+        .find(|(exe, folder, _)| *exe == file && folder.is_none_or(|f| lower.contains(f)))
+        .map(|(_, _, name)| *name)
+}
+
+/// Windows: the program a `shell\open\command` value starts (`"C:\…\zen.exe" -osint -url "%1"`
+/// or unquoted `C:\…\x.exe %1`).
+pub fn command_program(command: &str) -> Option<String> {
+    let c = command.trim();
+    let program = if let Some(rest) = c.strip_prefix('"') {
+        rest.split('"').next()?
+    } else {
+        let end = c.to_lowercase().find(".exe").map(|i| i + 4)?;
+        &c[..end]
+    };
+    let program = program.trim();
+    (!program.is_empty()).then(|| program.to_owned())
+}
+
+/// Windows lists Internet Explorer as a browser; it can't run the extension.
+pub fn windows_can_run_extension(program: &str) -> bool {
+    !program.to_lowercase().ends_with("iexplore.exe")
+}
+
 /// Linux and macOS (`mac`): the folders to write the host manifest into, each with the family
 /// whose manifest goes there, for this user (`home`, `config` = $XDG_CONFIG_HOME) or for
 /// everyone. A user's folder is given only for a browser that is there.
@@ -401,6 +449,56 @@ mod tests {
                 ),
             ]
         );
+    }
+
+    /// #41: Helium installs a chrome.exe; only Chrome's folder makes it Google Chrome.
+    #[test]
+    fn windows_programs_by_file_and_folder() {
+        let named = |p: &str| windows_named(p);
+        assert_eq!(
+            named(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
+            Some("Google Chrome")
+        );
+        assert_eq!(
+            named(r"C:\Users\a\AppData\Local\imput\Helium\Application\chrome.exe"),
+            Some("Helium")
+        );
+        assert_eq!(
+            named(r"C:\Users\a\AppData\Local\Chromium\Application\chrome.exe"),
+            Some("Chromium")
+        );
+        assert_eq!(
+            named(r"D:\Tools\chrome.exe"),
+            None,
+            "a chrome.exe elsewhere"
+        );
+        assert_eq!(
+            named(r"C:\Program Files\Zen Browser\ZEN.EXE"),
+            Some("Zen Browser")
+        );
+        assert_eq!(named(r"C:\x\unknown.exe"), None);
+        for (_, _, name) in WINDOWS_PROGRAMS {
+            assert!(super::named(name).is_some(), "{name} is in the table");
+        }
+    }
+
+    #[test]
+    fn programs_from_open_commands() {
+        assert_eq!(
+            command_program(r#""C:\Program Files\Zen Browser\zen.exe" -osint -url "%1""#)
+                .as_deref(),
+            Some(r"C:\Program Files\Zen Browser\zen.exe")
+        );
+        assert_eq!(
+            command_program(r"C:\Browsers\x.EXE %1").as_deref(),
+            Some(r"C:\Browsers\x.EXE")
+        );
+        assert_eq!(command_program(r#""""#), None);
+        assert_eq!(command_program("rundll32"), None);
+        assert!(!windows_can_run_extension(
+            r"C:\Program Files\Internet Explorer\iexplore.exe"
+        ));
+        assert!(windows_can_run_extension(r"C:\x\zen.exe"));
     }
 
     #[test]

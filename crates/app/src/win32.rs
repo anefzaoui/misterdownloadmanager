@@ -1529,29 +1529,95 @@ pub fn crash_now() {
     unsafe { std::ptr::write_volatile(std::ptr::null_mut::<u32>(), 1) };
 }
 
-/// The browsers installed, by name, with their program: each registers it under the shell's
-/// App Paths (for this user or for everyone). The browser extension's offer (extension.rs)
-/// opens its page in each.
-pub fn browsers() -> Vec<(&'static str, std::path::PathBuf)> {
+/// The names of the subkeys of `key` under `root`.
+fn reg_subkeys(root: windows_sys::Win32::System::Registry::HKEY, key: &str) -> Vec<String> {
+    use windows_sys::Win32::System::Registry::{
+        HKEY, KEY_READ, RegCloseKey, RegEnumKeyExW, RegOpenKeyExW,
+    };
+    let wide: Vec<u16> = key.encode_utf16().chain(Some(0)).collect();
+    let mut h: HKEY = std::ptr::null_mut();
+    // SAFETY: opens a key for reading into `h`, closed below.
+    if unsafe { RegOpenKeyExW(root, wide.as_ptr(), 0, KEY_READ, &mut h) } != 0 {
+        return Vec::new();
+    }
+    let mut out = Vec::new();
+    for i in 0.. {
+        let mut buf = [0u16; 256];
+        let mut len = buf.len() as u32;
+        // SAFETY: the subkey's name into `buf`, whose length in characters is in `len`.
+        let rc = unsafe {
+            RegEnumKeyExW(
+                h,
+                i,
+                buf.as_mut_ptr(),
+                &mut len,
+                std::ptr::null(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+            )
+        };
+        if rc != 0 {
+            break;
+        }
+        out.push(String::from_utf16_lossy(&buf[..len as usize]));
+    }
+    // SAFETY: `h` was opened above.
+    unsafe { RegCloseKey(h) };
+    out
+}
+
+/// The browsers installed, by name, with their program: those Windows lists for "default
+/// browser" (StartMenuInternet, this user's then everyone's), named by their program
+/// (mdm_ipc::browsers::windows_named: Helium's chrome.exe isn't Chrome) or else by their own
+/// display name; then the known programs registered only under the shell's App Paths (a zip or
+/// portable install). The browser extension's offer (extension.rs) opens its page in each.
+pub fn browsers() -> Vec<(String, std::path::PathBuf)> {
+    use mdm_ipc::browsers::{command_program, windows_can_run_extension, windows_named};
     use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+    const CLIENTS: &str = r"Software\Clients\StartMenuInternet";
     const APP_PATHS: &str = r"Software\Microsoft\Windows\CurrentVersion\App Paths";
-    [
-        ("Google Chrome", "chrome.exe"),
-        ("Microsoft Edge", "msedge.exe"),
-        ("Brave", "brave.exe"),
-        ("Vivaldi", "vivaldi.exe"),
-        ("Opera", "opera.exe"),
-        ("Mozilla Firefox", "firefox.exe"),
-    ]
-    .into_iter()
-    .filter_map(|(name, exe)| {
+    let mut out: Vec<(String, std::path::PathBuf)> = Vec::new();
+    let mut add = |name: String, path: std::path::PathBuf| {
+        let same = |p: &std::path::PathBuf| {
+            p.to_string_lossy()
+                .eq_ignore_ascii_case(&path.to_string_lossy())
+        };
+        if path.is_file() && !out.iter().any(|(n, p)| same(p) || *n == name) {
+            out.push((name, path));
+        }
+    };
+    for root in [HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE] {
+        for sub in reg_subkeys(root, CLIENTS) {
+            let key = format!(r"{CLIENTS}\{sub}");
+            let Some(program) = reg_string_in(root, &format!(r"{key}\shell\open\command"), "")
+                .as_deref()
+                .and_then(command_program)
+            else {
+                continue;
+            };
+            if !windows_can_run_extension(&program) {
+                continue;
+            }
+            let name = windows_named(&program)
+                .map(str::to_owned)
+                .or_else(|| reg_string_in(root, &key, "").filter(|n| !n.trim().is_empty()));
+            add(name.unwrap_or(sub), std::path::PathBuf::from(program));
+        }
+    }
+    for (exe, _, _) in mdm_ipc::browsers::WINDOWS_PROGRAMS {
         let key = format!(r"{APP_PATHS}\{exe}");
-        let path = reg_string_in(HKEY_CURRENT_USER, &key, "")
-            .or_else(|| reg_string_in(HKEY_LOCAL_MACHINE, &key, ""))?;
-        let path = std::path::PathBuf::from(path.trim().trim_matches('"'));
-        path.is_file().then_some((name, path))
-    })
-    .collect()
+        let Some(path) = reg_string_in(HKEY_CURRENT_USER, &key, "")
+            .or_else(|| reg_string_in(HKEY_LOCAL_MACHINE, &key, ""))
+        else {
+            continue;
+        };
+        let path = path.trim().trim_matches('"').to_owned();
+        if let Some(name) = windows_named(&path) {
+            add(name.to_owned(), std::path::PathBuf::from(path));
+        }
+    }
+    out
 }
 
 /// Open `url` in the browser whose program is `program` (from `browsers`).

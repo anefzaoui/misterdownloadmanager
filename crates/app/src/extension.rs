@@ -28,7 +28,7 @@ pub fn worth_asking(settings: &crate::settings::Settings) -> bool {
 
 pub struct Extension {
     /// The browsers installed: name and program. Empty: one row for the system's browser.
-    browsers: Vec<(&'static str, Option<PathBuf>)>,
+    browsers: Vec<(String, Option<PathBuf>)>,
     /// A browser's extension has reached the app since the window opened.
     connected: bool,
     /// The browsers whose extension has (Options' names, mdm_ipc::extension::seen_browsers).
@@ -65,8 +65,15 @@ impl Extension {
         #[cfg(unix)]
         let found = crate::unix::browsers();
         let mut browsers: Vec<_> = found.into_iter().map(|(n, p)| (n, Some(p))).collect();
+        // The table's order (Chrome first, its button the accent one), others after.
+        browsers.sort_by_key(|(n, _)| {
+            mdm_ipc::browsers::BROWSERS
+                .iter()
+                .position(|b| b.name == n.as_str())
+                .unwrap_or(usize::MAX)
+        });
         if browsers.is_empty() {
-            browsers.push(("", None));
+            browsers.push((String::new(), None));
         }
         Extension {
             browsers,
@@ -162,7 +169,7 @@ impl Extension {
                     // i18n: a row of the browser extension's window when no browser was found by name
                     crate::i18n::t("Your browser")
                 } else {
-                    name
+                    name.as_str()
                 },
                 ink,
             );
