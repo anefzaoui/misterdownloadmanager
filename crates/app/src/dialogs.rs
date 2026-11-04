@@ -1226,13 +1226,14 @@ impl Complete {
                     if grip.hovered() {
                         ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
                     }
-                    if grip.drag_started() && self.path.exists() {
-                        if let Err(e) = crate::win32::drag_file_out(
+                    if grip.drag_started()
+                        && self.path.exists()
+                        && let Err(e) = crate::win32::drag_file_out(
                             crate::i18n::t("Download complete"),
                             &self.path,
-                        ) {
-                            tracing::warn!("drag out: {e}");
-                        }
+                        )
+                    {
+                        tracing::warn!("drag out: {e}");
                     }
                     p.rect_filled(handle, 0.0, winui::FIELD());
                     p.rect_stroke(
