@@ -63,8 +63,14 @@ fn run(
     let mut stdin = child.stdin.take().unwrap();
     for m in messages {
         let body = m.to_string().into_bytes();
-        stdin.write_all(&(body.len() as u32).to_le_bytes()).unwrap();
-        stdin.write_all(&body).unwrap();
+        // A host that refuses its caller exits at once: what's left to send meets a closed
+        // pipe, which is its answer, not a failure of the test.
+        let sent = stdin
+            .write_all(&(body.len() as u32).to_le_bytes())
+            .and_then(|()| stdin.write_all(&body));
+        if sent.is_err() {
+            break;
+        }
     }
     drop(stdin);
     let mut out = Vec::new();
