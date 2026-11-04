@@ -162,17 +162,15 @@ pub fn ytdlp_info(
     Ok(cmd)
 }
 
-/// The one job every child joins; it lives as long as the process (dropping it would kill
-/// them).
+/// A job of its own for one helper and every process it starts (#61): on Windows `yt-dlp.exe`
+/// is a launcher whose child does the work, and ffmpeg runs under that child. Closing the job
+/// (`Spawned::kill`, or MDM ending in any way) ends them all; ending the launcher alone left the
+/// download running, holding its file and the bandwidth.
 #[cfg(windows)]
-fn job() -> Option<&'static win32job::Job> {
-    static JOB: std::sync::OnceLock<Option<win32job::Job>> = std::sync::OnceLock::new();
-    JOB.get_or_init(|| {
-        let mut info = win32job::ExtendedLimitInfo::new();
-        info.limit_kill_on_job_close();
-        win32job::Job::create_with_limit_info(&info).ok()
-    })
-    .as_ref()
+fn new_job() -> Option<win32job::Job> {
+    let mut info = win32job::ExtendedLimitInfo::new();
+    info.limit_kill_on_job_close();
+    win32job::Job::create_with_limit_info(&info).ok()
 }
 
 /// A running helper with its stderr tail.
@@ -180,9 +178,19 @@ pub struct Spawned {
     pub child: Child,
     tail: Arc<Mutex<VecDeque<String>>>,
     name: String,
+    #[cfg(windows)]
+    job: Option<win32job::Job>,
 }
 
 impl Spawned {
+    /// End the helper and everything it started (Windows: its job; elsewhere yt-dlp runs as one
+    /// process, its ffmpeg ending with it).
+    pub fn kill(&mut self) {
+        let _ = self.child.kill();
+        #[cfg(windows)]
+        drop(self.job.take());
+    }
+
     /// The last stderr lines, for an error message.
     pub fn tail(&self) -> String {
         self.tail
@@ -227,10 +235,10 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         .spawn()
         .map_err(|e| ProcError::Start(name.to_owned(), e))?;
     #[cfg(windows)]
-    if let Some(job) = job() {
+    let job = new_job().filter(|job| {
         use std::os::windows::io::AsRawHandle;
-        let _ = job.assign_process(child.as_raw_handle() as isize);
-    }
+        job.assign_process(child.as_raw_handle() as isize).is_ok()
+    });
     let tail = Arc::new(Mutex::new(VecDeque::new()));
     if let Some(err) = child.stderr.take() {
         let tail = tail.clone();
@@ -248,6 +256,8 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         child,
         tail,
         name: name.to_owned(),
+        #[cfg(windows)]
+        job,
     })
 }
 
@@ -274,7 +284,7 @@ pub fn output(cmd: Command, name: &str, timeout: Duration) -> Result<Vec<u8>, Pr
                 };
             }
             Ok(None) if Instant::now() >= deadline => {
-                let _ = s.child.kill();
+                s.kill();
                 let _ = s.child.wait();
                 return Err(ProcError::Timeout(name.to_owned()));
             }
@@ -370,5 +380,44 @@ mod tests {
         slow.args(["/C", "ping -n 30 127.0.0.1 >nul"]);
         let err = output(slow, "cmd", Duration::from_millis(500)).unwrap_err();
         assert!(matches!(err, ProcError::Timeout(_)), "{err}");
+    }
+
+    /// #61: killing a helper ends what it started too (yt-dlp.exe is a launcher whose child
+    /// downloads). Here a script starts a child that writes a line every second: once killed,
+    /// the file stops growing.
+    #[cfg(windows)]
+    #[test]
+    fn killing_a_helper_ends_its_children() {
+        let dir = tempfile::tempdir().unwrap();
+        let marker = dir.path().join("marker.txt");
+        let child = dir.path().join("child.cmd");
+        let parent = dir.path().join("parent.cmd");
+        std::fs::write(
+            &child,
+            format!(
+                "@for /l %%i in (1,1,60) do @(echo x>>\"{}\" & ping -n 2 127.0.0.1 >nul)\r\n",
+                marker.display()
+            ),
+        )
+        .unwrap();
+        std::fs::write(
+            &parent,
+            format!(
+                "@start \"\" /b cmd /c \"{}\"\r\n@ping -n 60 127.0.0.1 >nul\r\n",
+                child.display()
+            ),
+        )
+        .unwrap();
+        let mut cmd = Command::new("cmd");
+        cmd.arg("/C").arg(&parent);
+        let mut s = spawn(cmd, "cmd").unwrap();
+        let size = || std::fs::metadata(&marker).map_or(0, |m| m.len());
+        std::thread::sleep(Duration::from_secs(3));
+        assert!(size() > 0, "the child runs");
+        s.kill();
+        std::thread::sleep(Duration::from_millis(1500));
+        let after_kill = size();
+        std::thread::sleep(Duration::from_secs(3));
+        assert_eq!(size(), after_kill, "the child ended with the helper");
     }
 }
