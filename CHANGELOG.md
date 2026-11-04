@@ -46,6 +46,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   `misterdownloadmanager.exe` went from 62 MB to 43 MB and the command line from 28 MB to 22 MB.
   The 86 translations are packed (12 MB of text in under 1 MB, without the translators' notes)
   and unpacked in about 10 ms at start, and the programs are optimised as a whole.
+- **Two smaller macOS downloads** ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)):
+  a .dmg for Apple Silicon (`-macos-arm64`) and one for Intel (`-macos-x86_64`) instead of one
+  universal .dmg, each about half the size. From 0.2.4 or older, update once by hand:
+  **Download** in Check for updates opens the release; pick your Mac's .dmg. **Update now**
+  works again after that.
+- **Proxy auto-config scripts (PAC) run in QuickJS**, a much smaller JavaScript engine, with
+  limits on memory and running time: a script that loops or grows forever now fails, as a broken
+  script does (the download goes on with the default proxy settings), instead of holding it.
 - The extension is called **Mister Download Manager**.
 - A download from the browser keeps the browser's name, size and type: Download File Info no
   longer asks the server again, so a link's own name (`download="…"`), a Unicode name and a
@@ -62,6 +70,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Bangla shows Bangladesh's flag instead of India's, in the language picker, on the website and
+  in the README ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27)).
 - MDM closed with an internal error when a window opened while the main window was minimized
   or hidden, for example Download File Info for a browser download
   ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22)). The cause was in egui,
