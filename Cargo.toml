@@ -12,7 +12,7 @@ publish = false
 
 [workspace.dependencies]
 mdm-cli = { path = "crates/cli" }
-mdm-crash = { path = "crates/crash" }
+mdm-crash = { path = "crates/crash", default-features = false }
 mdm-engine = { path = "crates/engine" }
 mdm-ipc = { path = "crates/ipc" }
 mdm-labserver = { path = "crates/labserver" }
@@ -115,6 +115,93 @@ codegen-units = 1
 # release's symbols zip (tools/installer/symbols.py); Windows keeps it in the .pdb, which no
 # download includes, and Linux and macOS strip it from the programs they ship.
 debug = "line-tables-only"
+
+# Cold code optimised for size (#25): drawing the windows, fonts, images and icons, file dialogs,
+# the clipboard, the command line's parsing, crash reports. What moves the bytes (the engine,
+# torrents, TLS, hashing, tokio) and the app itself stay at full speed: with fat LTO the whole
+# program is optimised in the app's own unit, at its level.
+[profile.release.package.egui]
+opt-level = "s"
+[profile.release.package.epaint]
+opt-level = "s"
+[profile.release.package.emath]
+opt-level = "s"
+[profile.release.package.ecolor]
+opt-level = "s"
+[profile.release.package.egui_glow]
+opt-level = "s"
+[profile.release.package.glow]
+opt-level = "s"
+[profile.release.package.egui-winit]
+opt-level = "s"
+[profile.release.package.egui_extras]
+opt-level = "s"
+[profile.release.package.winit]
+opt-level = "s"
+[profile.release.package.accesskit]
+opt-level = "s"
+[profile.release.package.accesskit_windows]
+opt-level = "s"
+[profile.release.package.accesskit_winit]
+opt-level = "s"
+[profile.release.package.accesskit_consumer]
+opt-level = "s"
+[profile.release.package.accesskit_unix]
+opt-level = "s"
+[profile.release.package.accesskit_macos]
+opt-level = "s"
+[profile.release.package.resvg]
+opt-level = "s"
+[profile.release.package.usvg]
+opt-level = "s"
+[profile.release.package.tiny-skia]
+opt-level = "s"
+[profile.release.package.svgtypes]
+opt-level = "s"
+[profile.release.package.roxmltree]
+opt-level = "s"
+[profile.release.package.kurbo]
+opt-level = "s"
+[profile.release.package.image]
+opt-level = "s"
+[profile.release.package.png]
+opt-level = "s"
+[profile.release.package.skrifa]
+opt-level = "s"
+[profile.release.package.read-fonts]
+opt-level = "s"
+[profile.release.package.harfrust]
+opt-level = "s"
+[profile.release.package.vello_cpu]
+opt-level = "s"
+[profile.release.package.rfd]
+opt-level = "s"
+[profile.release.package.arboard]
+opt-level = "s"
+[profile.release.package.clap]
+opt-level = "s"
+[profile.release.package.clap_builder]
+opt-level = "s"
+[profile.release.package.minidump]
+opt-level = "s"
+[profile.release.package.minidump-processor]
+opt-level = "s"
+[profile.release.package.minidump-unwind]
+opt-level = "s"
+[profile.release.package.minidump-common]
+opt-level = "s"
+[profile.release.package.breakpad-symbols]
+opt-level = "s"
+[profile.release.package.framehop]
+opt-level = "s"
+[profile.release.package.minidumper]
+opt-level = "s"
+[profile.release.package.crash-handler]
+opt-level = "s"
+[profile.release.package.mdm-crash]
+opt-level = "s"
+[profile.release.package.zip]
+opt-level = "s"
 
 # Hashing is unusably slow unoptimised (a 3 MiB SHA-256 took seconds in debug tests): build
 # the checksum crates optimised in dev too.

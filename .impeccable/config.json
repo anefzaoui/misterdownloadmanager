@@ -26,6 +26,15 @@
         "value": "ui\",system-ui,sans-serif",
         "createdAt": "2026-11-02T00:26:55.245Z",
         "reason": "Claude: extension popup follows the app's native Windows controls (Segoe UI/system font, classic-look decision), not the website's DESIGN.md type system"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "website/download.html"
+        ],
+        "createdAt": "2026-11-04T07:09:38.198Z",
+        "reason": "Claude, rendered check: impeccable detect on the served page (http://127.0.0.1:8765/download.html) finds no cramped padding; the static scan misses the inset from .service rows (22px / 18-32px), .sender-sheet and .page-body (24-56px) padding"
       }
     ]
   }

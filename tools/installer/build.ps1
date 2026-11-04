@@ -20,8 +20,17 @@ $version = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Valu
 if (-not $version) { throw "no version in Cargo.toml" }
 
 if (-not $NoBuild) {
-  & cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
-  if ($LASTEXITCODE) { throw "cargo build failed" }
+  # The build machine's paths out of the programs (#25): panic locations and debug info say
+  # "cargo\..." for cargo's folder and "mdm\..." for this checkout (shorter, and no user name).
+  # Encoded flags, as those paths may hold spaces.
+  $cargoHome = if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path $env:USERPROFILE ".cargo" }
+  $env:CARGO_ENCODED_RUSTFLAGS = "--remap-path-prefix=$cargoHome=cargo" + [char]0x1f + "--remap-path-prefix=$root=mdm"
+  try {
+    & cargo build --release -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
+    if ($LASTEXITCODE) { throw "cargo build failed" }
+  } finally {
+    Remove-Item Env:CARGO_ENCODED_RUSTFLAGS
+  }
 }
 & (Join-Path $root "tools\extension\pack.ps1") | Out-Null
 
