@@ -147,6 +147,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **The browser extension's Download video menu: an item's highlight ran past the menu's
+  edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
 - **A Google Drive link saved Drive's web page** (a file named `view` or `download`) instead of
   the file ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)).
 - **Download File Info's errors are worded in the interface language**, as the list's are.
