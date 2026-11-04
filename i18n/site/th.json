@@ -294,10 +294,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13th Gen Intel(R) Core(TM) i5-13400F, RAM 63.8 GB, Windows-11-10.0.26200-SP0. labserver (ที่เก็บนี้), 127.0.0.1:8097, เนื้อหาที่สร้างขึ้น ทั้งสองค่าเริ่มต้น: 8 การเชื่อมต่อ"
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "บรรทัด, จากนั้น <x1/>"
-  },
   "079d154ef3b379ef": {
    "source": "When MDM isn't running, the browser starts it for each download and waits for it. It waited about 20 seconds this time and gave up.",
    "text": "เมื่อ MDM ไม่ได้ทำงาน เบราว์เซอร์จะเริ่มทำงานสำหรับแต่ละการดาวน์โหลดและรอ MDM ครั้งนี้รอประมาณ 20 วินาทีแล้วยอมแพ้"
@@ -605,6 +601,10 @@
   "110ed064f2b04424": {
    "source": "Time left",
    "text": "เวลาที่เหลือ"
+  },
+  "1118f34ca5d1ce1f": {
+   "source": "<g1>Put them into the video</g1> puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.",
+   "text": "<g1>ใส่ลงในวิดีโอ</g1> จะใส่คำบรรยายไว้ในไฟล์แทน เป็นแทร็กที่คุณสามารถเปิดได้ในโปรแกรมเล่น ซึ่งต้องใช้ ffmpeg และวิดีโอ MP4 หรือ MKV"
   },
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
@@ -1274,6 +1274,10 @@
    "source": "A download resumes where it stopped: after you stop it, after the connection drops, or after Windows or MDM crashes. MDM saves how far each part has got as it goes.",
    "text": "การดาวน์โหลดจะดำเนินการต่อจากจุดที่หยุดไว้ ไม่ว่าจะเป็นหลังจากที่คุณหยุดการดาวน์โหลด หลังจากที่การเชื่อมต่อหลุด หรือหลังจากที่ Windows หรือ MDM ขัดข้อง MDM จะบันทึกความคืบหน้าของแต่ละส่วนไว้เรื่อยๆ"
   },
+  "2461ee7efa8da964": {
+   "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're…",
+   "text": "ได้ เมื่อวิดีโอมีคำบรรยาย รายการ คำบรรยาย ในหน้าต่างวิดีโอจะแสดงตัวเลือกให้: ภาษาที่ผู้อัปโหลดใช้ และคำบรรยายอัตโนมัติของเว็บไซต์ คำบรรยายจะ…"
+  },
   "246896eedd2eb25a": {
    "source": "<g1>Mister Download Manager</g1> appears. Make sure it is turned on.",
    "text": "<g1>Mister Download Manager</g1> จะปรากฏขึ้น ตรวจสอบให้แน่ใจว่าเปิดใช้งานอยู่"
@@ -1445,6 +1449,10 @@
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
    "text": "เปิด <g1>มุมมอง → ภาษา...</g1> หน้าต่างเดียวกับที่เปิดเมื่อเริ่มต้นครั้งแรกจะปรากฏขึ้น: ทุกภาษาพร้อมธง ชื่อภาษาของตัวเอง และชื่อภาษาอังกฤษ พิมพ์ใน <g2>ค้นหา</g2> เพื่อจำกัดรายการให้แคบลง จากนั้นดับเบิลคลิกภาษา หรือเลือกแล้วคลิก <g3>ตกลง</g3> หน้าต่างจะเปลี่ยนทันที ไม่ต้องรีสตาร์ท"
+  },
+  "282f9b6ea43027ed": {
+   "source": "Saved beside the video, they get its name and the language: <x1/>. Players such as VLC and MPV pick them up on their own. With ffmpeg they're always SRT; without it, the site's own format (often WebVTT, <x2/>).",
+   "text": "เมื่อบันทึกไว้ข้างวิดีโอ ไฟล์คำบรรยายจะใช้ชื่อเดียวกับวิดีโอและภาษา: <x1/> โปรแกรมเล่นอย่าง VLC และ MPV จะเลือกใช้เอง หากใช้ ffmpeg จะเป็น SRT เสมอ หากไม่ใช้ จะเป็นรูปแบบของเว็บไซต์เอง (มักจะเป็น WebVTT, <x2/>)"
   },
   "2830286ac96f060a": {
    "source": "The race",
@@ -2193,6 +2201,10 @@
   "3e4175d77459c06a": {
    "source": "Click a column title to sort: <g1>Added</g1> for the newest, <g2>Size</g2> for the biggest, <g3>File Name</g3> for A to Z. Click again to reverse.",
    "text": "คลิกชื่อคอลัมน์เพื่อจัดเรียง: <g1>เพิ่มเมื่อ</g1> สำหรับรายการใหม่ล่าสุด, <g2>ขนาด</g2> สำหรับรายการที่ใหญ่ที่สุด, <g3>ชื่อไฟล์</g3> สำหรับ A ถึง Z คลิกอีกครั้งเพื่อย้อนกลับ"
+  },
+  "3e55e9b0929671e4": {
+   "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an .srt file, or put inside it with Put them into the video. See Subtitles.",
+   "text": "ได้ เมื่อวิดีโอมีคำบรรยาย รายการ คำบรรยาย ในหน้าต่างวิดีโอจะแสดงตัวเลือกให้: ภาษาที่ผู้อัปโหลดใช้ และคำบรรยายอัตโนมัติของเว็บไซต์ คำบรรยายจะถูกบันทึกไว้ข้างวิดีโอเป็นไฟล์ .srt หรือใส่ลงในวิดีโอด้วย ใส่ลงในวิดีโอ ดู คำบรรยาย"
   },
   "3e6e10c300b6b5ce": {
    "source": "For all downloads together",
@@ -4058,6 +4070,10 @@
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "เพิ่มการดาวน์โหลด (<g1>เพิ่ม URL</g1>)"
   },
+  "7a431c024b9ed18e": {
+   "source": "Choose <g1>Subtitles</g1> if you want them (see below).",
+   "text": "เลือก <g1>คำบรรยาย</g1> หากคุณต้องการ (ดูด้านล่าง)"
+  },
   "7a6583f7f0b33adf": {
    "source": "The browser and MDM aren't connected — Mister Download Manager help",
    "text": "เบราว์เซอร์และ MDM ไม่ได้เชื่อมต่อกัน — วิธีใช้ Mister Download Manager"
@@ -4077,10 +4093,6 @@
   "7ab13cf63ca91547": {
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "ทุกการเผยแพร่จะแสดงผลรวม SHA-256 ของแต่ละไฟล์ใน <g1>SHA256SUMS.txt</g1> บน Windows ให้เปรียบเทียบกับ <x2/>; บน macOS และ Linux ให้เปรียบเทียบกับ <x3/> ไฟล์ทั้งหมดสร้างจากซอร์สโค้ดสาธารณะโดย GitHub Actions; บันทึกการสร้างอยู่ใน <g4>GitHub</g4>"
-  },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; <x1/> ของตัวเลือกคือสิ่งที่ <x2/> ใช้"
   },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
@@ -4710,6 +4722,10 @@
    "source": "General",
    "text": "ทั่วไป"
   },
+  "8c81524f0b11e734": {
+   "source": "Can it download a video's subtitles?",
+   "text": "ดาวน์โหลดคำบรรยายวิดีโอได้ไหม"
+  },
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "การเชื่อมต่อต่อไฟล์"
@@ -5165,6 +5181,10 @@
   "99c3f60a725ee399": {
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>ดาวน์โหลดวิดีโอ</g2></g1> — ดาวน์โหลดวิดีโอจากหน้าเว็บ (YouTube, Vimeo และอื่นๆ อีกมากมาย) ด้วย yt-dlp"
+  },
+  "9a04fafd60d38722": {
+   "source": "lines, then <x1/> (the subtitle files saved beside it).",
+   "text": "บรรทัด จากนั้น <x1/> (ไฟล์คำบรรยายที่บันทึกไว้ข้างๆ)"
   },
   "9a26fd6f740cf884": {
    "source": "<g1>Show details &gt;&gt;</g1> (open by default) adds the connection view:",
@@ -5794,6 +5814,10 @@
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "ค้นหาการดาวน์โหลดในรายการยาวๆ — วิธีใช้ Mister Download Manager"
   },
+  "ad15abc4931df4fd": {
+   "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
+   "text": "; <x1/> ของตัวเลือกคือสิ่งที่ <x2/> ใช้, <x3/> ของคำบรรยายคือสิ่งที่ <x4/> ใช้"
+  },
   "ad20819c93bdea53": {
    "source": "Windows may give the stick another drive letter, such as <x1/> instead of <x2/>. The folders you set, and the downloads already in the list, still point at the old letter. Check <g3>Options → Save to</g3> and change the folders if needed. When MDM is about to save into a folder that doesn't exist, it asks whether to create it.",
    "text": "Windows อาจกำหนดอักษรชื่อไดรฟ์อื่นให้กับสติ๊ก เช่น <x1/> แทนที่จะเป็น <x2/> โฟลเดอร์ที่คุณตั้งค่าไว้ และไฟล์ที่ดาวน์โหลดที่อยู่ในรายการแล้ว ยังคงชี้ไปที่อักษรชื่อไดรฟ์เดิม ตรวจสอบ <g3>ตัวเลือก → บันทึกไปที่</g3> และเปลี่ยนโฟลเดอร์หากจำเป็น เมื่อ MDM กำลังจะบันทึกลงในโฟลเดอร์ที่ไม่มีอยู่ จะถามว่าจะสร้างหรือไม่"
@@ -5833,6 +5857,10 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM ดาวน์โหลดสิ่งที่คุณระบุให้ เหมือนกับที่เว็บเบราว์เซอร์ทำ แต่เร็วกว่าและควบคุมได้มากกว่า โปรแกรมนี้สร้างขึ้นสำหรับการดาวน์โหลดในชีวิตประจำวัน เช่น ซอฟต์แวร์และการอัปเดต เอกสาร ไฟล์ของคุณเองจากที่เก็บข้อมูลบนคลาวด์ วิดีโอและเพลงที่คุณได้รับอนุญาตให้บันทึก อิมเมจ Linux และไฟล์ torrent อื่นๆ ที่ผู้สร้างเผยแพร่ รวมถึงสิ่งอื่นๆ ที่คุณมีสิทธิ์ดาวน์โหลด"
+  },
+  "adfb560dd47a90fc": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "ดาวน์โหลดวิดีโอ; <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดี่ยวที่ดีที่สุด; <x4/>, <x5/>, <x6/> หรือ <x7/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x8/> ที่บิตเรตแปรผันที่ดีที่สุด; MP3 ต้องใช้ ffmpeg) <x9/> บันทึกคำบรรยายไว้ข้างๆ: รหัสภาษาจาก <x10/> (<x11/>), หรือ <x12/> สำหรับทุกภาษาที่ผู้อัปโหลดให้มา; <x13/> ใช้คำบรรยายอัตโนมัติของเว็บไซต์แทน; <x14/> ใส่คำบรรยายลงในวิดีโอ (ต้องใช้ ffmpeg, MP4 หรือ MKV)"
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6237,6 +6265,10 @@
   "ba0da96d77379606": {
    "source": "All the ways to add a download →",
    "text": "ทุกวิธีในการเพิ่มการดาวน์โหลด →"
+  },
+  "ba50bd62e3f13c56": {
+   "source": "When the video has subtitles, the <g1>Subtitles</g1> list offers them: the uploader's own languages first (and <g2>All the uploader's</g2> when there are several), then the site's automatic captions, marked <g3>automatic</g3>. Of those, only the ones in the language spoken and their translations into English and your interface language are listed; sites like YouTube offer a machine translation into every language they know.",
+   "text": "เมื่อวิดีโอมีคำบรรยาย รายการ <g1>คำบรรยาย</g1> จะแสดงตัวเลือกให้: ภาษาของผู้ที่อัปโหลดเองก่อน (และ <g2>ทั้งหมดของผู้ที่อัปโหลด</g2> เมื่อมีหลายภาษา) จากนั้นเป็นคำบรรยายอัตโนมัติของเว็บไซต์ ซึ่งมีเครื่องหมาย <g3>อัตโนมัติ</g3> ในจำนวนนี้ จะแสดงเฉพาะภาษาที่พูดและคำแปลเป็นภาษาอังกฤษและภาษาอินเทอร์เฟซของคุณเท่านั้น เว็บไซต์อย่าง YouTube มีการแปลด้วยเครื่องเป็นทุกภาษาที่พวกเขารู้จัก"
   },
   "ba71746213a31b99": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> and <g5>Vivaldi</g5>, and in <g6>Firefox</g6> 140 or later.",
@@ -6802,9 +6834,9 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "ใน <g1>ข้อมูลไฟล์ดาวน์โหลด</g1> คลิก <g2>ดาวน์โหลดภายหลัง</g2>"
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "ดาวน์โหลดวิดีโอ; <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดี่ยวที่ดีที่สุด; <x4/>, <x5/>, <x6/> หรือ <x7/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x8/> ที่บิตเรตแปรผันที่ดีที่สุด; MP3 ต้องใช้ ffmpeg)"
+  "ccf432f5c2c618e6": {
+   "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
+   "text": "ต้องการคำบรรยายใช่ไหม? เลือกภาษาใน <g1>คำบรรยาย</g1> ไฟล์จะถูกบันทึกไว้ข้างวิดีโอ หรือฝังอยู่ในวิดีโอหากคุณเลือก <g2>ใส่ลงในวิดีโอ</g2> (ดู <g3>คำบรรยาย</g3>)"
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -6986,6 +7018,10 @@
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Mister Download Manager, ส่วนขยายเบราว์เซอร์ และเว็บไซต์นี้ทำอะไรกับข้อมูลของคุณ: แอปและส่วนขยายไม่เก็บข้อมูลใด ๆ; เว็บไซต์นับจำนวนการเข้าชมด้วย Statcounter"
   },
+  "d354d0b6bb0bfffe": {
+   "source": "Subtitles",
+   "text": "คำบรรยาย"
+  },
   "d398b17cf99a3004": {
    "source": "IDM median ms (IQR)",
    "text": "ค่ามัธยฐาน IDM ms (IQR)"
@@ -7129,6 +7165,10 @@
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
    "text": "<g1>ใช้สคริปต์การกำหนดค่าอัตโนมัติ</g1> — สคริปต์การกำหนดค่าพร็อกซีอัตโนมัติ (PAC) ที่เครือข่ายของคุณให้มา: พิมพ์ที่อยู่ (<x2/> หรือไฟล์) MDM จะดึงข้อมูลและสอบถามว่าการดาวน์โหลดแต่ละครั้งจะผ่านพร็อกซีใด (<x3/>, <x4/> หรือ <x5/>) เหมือนที่เบราว์เซอร์ทำ จนกว่าจะดึงข้อมูลมาได้ หรือหากไม่สามารถดึงข้อมูลได้ MDM จะใช้การตั้งค่าของระบบ"
+  },
+  "d7952baff7c37dbf": {
+   "source": "Yes. When a video has subtitles, the <g1>Subtitles</g1> list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an <x2/> file, or put inside it with <g3>Put them into the video</g3>. See <g4>Subtitles</g4>.",
+   "text": "ใช่ เมื่อวิดีโอมีคำบรรยาย รายการ <g1>คำบรรยาย</g1> ในหน้าต่างวิดีโอจะแสดงตัวเลือกให้: ภาษาที่ผู้เผยแพร่อัปโหลดและคำบรรยายอัตโนมัติของเว็บไซต์ คำบรรยายจะถูกบันทึกไว้ข้างวิดีโอเป็นไฟล์ <x2/> หรือใส่เข้าไปในวิดีโอด้วย <g3>ใส่ลงในวิดีโอ</g3> ดูที่ <g4>คำบรรยาย</g4>"
   },
   "d7a59305d1341d4e": {
    "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
@@ -7686,6 +7726,10 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "หากต้องการให้การดาวน์โหลดของเว็บไซต์อยู่กับเบราว์เซอร์ตลอดไป ให้ใช้ <g1>ไม่รับการดาวน์โหลดจาก</g1> ของปุ่มแถบเครื่องมือ หรือเพิ่มเว็บไซต์ลงใน <g2>ไม่เริ่มดาวน์โหลดอัตโนมัติจากเว็บไซต์ต่อไปนี้</g2> หากต้องการเก็บชนิดไฟล์ไว้ในเบราว์เซอร์ ให้ลบออกจากรายการชนิดไฟล์"
   },
+  "ea5082456c0a9e2c": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
+   "text": "ตัวเลือกเฉพาะเสียง (<g1>เฉพาะเสียง</g1>, MP3) จะไม่มีคำบรรยาย"
+  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "เปิด การตั้งค่า Windows → แอป ค้นหา Mister Download Manager แล้วเลือก ถอนการติดตั้ง โปรแกรมถอนการติดตั้งจะถามว่าจะลบรายการดาวน์โหลดและการตั้งค่าของคุณด้วยหรือไม่ ไฟล์ที่คุณดาวน์โหลดจะไม่ถูกแตะต้อง สำหรับชุดโปรแกรมแบบพกพา ให้ลบโฟลเดอร์ของโปรแกรม"
@@ -8218,6 +8262,10 @@
    "source": "Choose whether to install for you only or for everyone on the computer. For you only needs no administrator rights and goes to <x1/>. For everyone goes to <x2/>.",
    "text": "เลือกว่าจะติดตั้งสำหรับคุณคนเดียว หรือสำหรับทุกคนในคอมพิวเตอร์ สำหรับคุณคนเดียวไม่จำเป็นต้องมีสิทธิ์ผู้ดูแลระบบและจะไปที่ <x1/> สำหรับทุกคนจะไปที่ <x2/>"
   },
+  "fc9568529f8e5d11": {
+   "source": "MDM offers the same choice again for the next video when it has that language.",
+   "text": "MDM จะเสนอตัวเลือกเดียวกันอีกครั้งสำหรับวิดีโอถัดไป หากมีภาษานั้น"
+  },
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "ตัวเลือก →"
@@ -8325,6 +8373,10 @@
   "ffa04c1a8eba0f68": {
    "source": "Report a vulnerability",
    "text": "รายงานช่องโหว่"
+  },
+  "ffa0b11d5591b771": {
+   "source": "Can it download a video's subtitles? — Mister Download Manager",
+   "text": "ดาวน์โหลดคำบรรยายวิดีโอได้ไหม — Mister Download Manager"
   },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",

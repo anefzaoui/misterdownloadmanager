@@ -294,10 +294,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13e generatie Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (deze repo), 127.0.0.1:8097, gegenereerde inhoud. beide met standaardinstellingen: 8 verbindingen."
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "regels, dan <x1/>."
-  },
   "079d154ef3b379ef": {
    "source": "When MDM isn't running, the browser starts it for each download and waits for it. It waited about 20 seconds this time and gave up.",
    "text": "Wanneer MDM niet actief is, start de browser het voor elke download en wacht erop. Het heeft deze keer ongeveer 20 seconden gewacht en gaf het op."
@@ -605,6 +601,10 @@
   "110ed064f2b04424": {
    "source": "Time left",
    "text": "Resterende tijd"
+  },
+  "1118f34ca5d1ce1f": {
+   "source": "<g1>Put them into the video</g1> puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.",
+   "text": "<g1>In de video plaatsen</g1> plaatst ze in plaats daarvan in het bestand, als tracks die u in de speler inschakelt. Dit vereist ffmpeg en een MP4- of MKV-video."
   },
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
@@ -1274,6 +1274,10 @@
    "source": "A download resumes where it stopped: after you stop it, after the connection drops, or after Windows or MDM crashes. MDM saves how far each part has got as it goes.",
    "text": "Een download wordt hervat waar deze is gestopt: nadat u deze hebt gestopt, nadat de verbinding is verbroken of nadat Windows of MDM is gecrasht. MDM slaat de voortgang van elk onderdeel onderweg op."
   },
+  "2461ee7efa8da964": {
+   "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're…",
+   "text": "Ja. Als een video ondertitels heeft, toont de lijst Ondertitels in het videovenster deze: de talen van de uploader en de automatische ondertitels van de site. Ze worden…"
+  },
   "246896eedd2eb25a": {
    "source": "<g1>Mister Download Manager</g1> appears. Make sure it is turned on.",
    "text": "<g1>Mister Download Manager</g1> verschijnt. Zorg ervoor dat het is ingeschakeld."
@@ -1445,6 +1449,10 @@
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
    "text": "Open <g1>Beeld → Taal...</g1>. Hetzelfde venster als bij de eerste start opent: elke taal met zijn vlag, zijn eigen naam en zijn Engelse naam. Typ in <g2>Zoeken</g2> om de lijst te verfijnen, dubbelklik dan op een taal of selecteer deze en klik op <g3>OK</g3>. Het venster schakelt onmiddellijk; er hoeft niets opnieuw te worden opgestart."
+  },
+  "282f9b6ea43027ed": {
+   "source": "Saved beside the video, they get its name and the language: <x1/>. Players such as VLC and MPV pick them up on their own. With ffmpeg they're always SRT; without it, the site's own format (often WebVTT, <x2/>).",
+   "text": "Opgeslagen naast de video krijgen ze de naam van de video en de taal: <x1/>. Spelers zoals VLC en MPV pakken ze zelf op. Met ffmpeg zijn ze altijd SRT; zonder, het eigen formaat van de site (vaak WebVTT, <x2/>)."
   },
   "2830286ac96f060a": {
    "source": "The race",
@@ -2193,6 +2201,10 @@
   "3e4175d77459c06a": {
    "source": "Click a column title to sort: <g1>Added</g1> for the newest, <g2>Size</g2> for the biggest, <g3>File Name</g3> for A to Z. Click again to reverse.",
    "text": "Klik op een kolomtitel om te sorteren: <g1>Toegevoegd</g1> voor de nieuwste, <g2>Grootte</g2> voor de grootste, <g3>Bestandsnaam</g3> voor A tot Z. Klik nogmaals om om te keren."
+  },
+  "3e55e9b0929671e4": {
+   "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an .srt file, or put inside it with Put them into the video. See Subtitles.",
+   "text": "Ja. Als een video ondertitels heeft, toont de lijst Ondertitels in het videovenster deze: de talen van de uploader en de automatische ondertitels van de site. Ze worden naast de video opgeslagen als een .srt-bestand, of erin geplaatst met In de video plaatsen. Zie Ondertitels."
   },
   "3e6e10c300b6b5ce": {
    "source": "For all downloads together",
@@ -4058,6 +4070,10 @@
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "Een download toevoegen (<g1>URL toevoegen</g1>)"
   },
+  "7a431c024b9ed18e": {
+   "source": "Choose <g1>Subtitles</g1> if you want them (see below).",
+   "text": "Kies <g1>Ondertitels</g1> als u die wilt (zie hieronder)."
+  },
   "7a6583f7f0b33adf": {
    "source": "The browser and MDM aren't connected — Mister Download Manager help",
    "text": "De browser en MDM zijn niet verbonden — Mister Download Manager help"
@@ -4077,10 +4093,6 @@
   "7ab13cf63ca91547": {
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Elke release vermeldt de SHA-256 checksum van elk bestand in <g1>SHA256SUMS.txt</g1>. Vergelijk deze op Windows met <x2/>; op macOS en Linux met <x3/>. Alle bestanden worden gebouwd vanuit de openbare broncode door GitHub Actions; de buildlogs staan op <g4>GitHub</g4>."
-  },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; de <x1/> van een keuze is wat <x2/> gebruikt."
   },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
@@ -4710,6 +4722,10 @@
    "source": "General",
    "text": "Algemeen"
   },
+  "8c81524f0b11e734": {
+   "source": "Can it download a video's subtitles?",
+   "text": "Kan het de ondertitels van een video downloaden?"
+  },
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "Verbindingen per bestand"
@@ -5165,6 +5181,10 @@
   "99c3f60a725ee399": {
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>Video downloads</g2></g1> — een video downloaden vanaf de pagina (YouTube, Vimeo en vele andere) met yt-dlp."
+  },
+  "9a04fafd60d38722": {
+   "source": "lines, then <x1/> (the subtitle files saved beside it).",
+   "text": "regels, dan <x1/> (de ondertitelbestanden die ernaast zijn opgeslagen)."
   },
   "9a26fd6f740cf884": {
    "source": "<g1>Show details &gt;&gt;</g1> (open by default) adds the connection view:",
@@ -5794,6 +5814,10 @@
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "Een download zoeken in een lange lijst — Mister Download Manager help"
   },
+  "ad15abc4931df4fd": {
+   "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
+   "text": "; de <x1/> van een keuze is wat <x2/> gebruikt, de <x3/> van een ondertitel is wat <x4/> gebruikt."
+  },
   "ad20819c93bdea53": {
    "source": "Windows may give the stick another drive letter, such as <x1/> instead of <x2/>. The folders you set, and the downloads already in the list, still point at the old letter. Check <g3>Options → Save to</g3> and change the folders if needed. When MDM is about to save into a folder that doesn't exist, it asks whether to create it.",
    "text": "Windows kan de stick een andere stationsletter geven, zoals <x1/> in plaats van <x2/>. De mappen die u hebt ingesteld, en de downloads die al in de lijst staan, verwijzen nog steeds naar de oude letter. Controleer <g3>Opties → Opslaan in</g3> en wijzig de mappen indien nodig. Wanneer MDM op het punt staat op te slaan in een map die niet bestaat, vraagt het of deze moet worden aangemaakt."
@@ -5833,6 +5857,10 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM downloadt wat u aanwijst, net zoals een webbrowser dat doet, maar dan sneller en met meer controle. Het is gemaakt voor alledaagse downloads: software en updates, documenten, uw eigen bestanden uit cloudopslag, video's en muziek die u mag opslaan, Linux-images en andere torrents die door hun makers worden gedeeld, en al het andere dat u rechtmatig mag downloaden."
+  },
+  "adfb560dd47a90fc": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Download een video; <x1/> gebruikt een kwaliteitsselector van <x2/> (<x3/> = het beste losse bestand; <x4/>, <x5/>, <x6/> of <x7/> = het geluid als MP3 met die bitrate, <x8/> met de beste variabele bitrate; MP3 vereist ffmpeg). <x9/> slaat ondertitels ernaast op: taalcodes van <x10/> (<x11/>), of <x12/> voor elke ondertitel die de uploader heeft opgegeven; <x13/> gebruikt in plaats daarvan de automatische ondertitels van de site; <x14/> voegt ze toe aan de video (vereist ffmpeg, MP4 of MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6237,6 +6265,10 @@
   "ba0da96d77379606": {
    "source": "All the ways to add a download →",
    "text": "Alle manieren om een download toe te voegen →"
+  },
+  "ba50bd62e3f13c56": {
+   "source": "When the video has subtitles, the <g1>Subtitles</g1> list offers them: the uploader's own languages first (and <g2>All the uploader's</g2> when there are several), then the site's automatic captions, marked <g3>automatic</g3>. Of those, only the ones in the language spoken and their translations into English and your interface language are listed; sites like YouTube offer a machine translation into every language they know.",
+   "text": "Als de video ondertitels heeft, biedt de lijst <g1>Ondertitels</g1> deze aan: eerst de talen van de uploader zelf (en <g2>Alle ondertitels van de uploader</g2> als er meerdere zijn), daarna de automatische ondertitels van de site, gemarkeerd met <g3>automatisch</g3>. Hiervan worden alleen die in de gesproken taal en hun vertalingen naar het Engels en uw interfacetaal vermeld; sites zoals YouTube bieden een machinevertaling naar elke taal die ze kennen."
   },
   "ba71746213a31b99": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> and <g5>Vivaldi</g5>, and in <g6>Firefox</g6> 140 or later.",
@@ -6802,9 +6834,9 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "Klik in <g1>Bestandsinfo downloaden</g1> op <g2>Later downloaden</g2>."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Download een video; <x1/> neemt een kwaliteitsselector van <x2/> (<x3/> = het beste losse bestand; <x4/>, <x5/>, <x6/> of <x7/> = het geluid als MP3 met die bitrate, <x8/> met de beste variabele bitrate; MP3 vereist ffmpeg)."
+  "ccf432f5c2c618e6": {
+   "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
+   "text": "Wilt u ondertitels? Kies een taal bij <g1>Ondertitels</g1>. Ze worden naast de video opgeslagen, of erin als u <g2>In de video plaatsen</g2> aanvinkt (zie <g3>Ondertitels</g3>)."
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -6986,6 +7018,10 @@
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Wat Mister Download Manager, zijn browserextensie en deze website doen met uw gegevens: de app en extensie verzamelen niets; de website telt bezoeken met Statcounter."
   },
+  "d354d0b6bb0bfffe": {
+   "source": "Subtitles",
+   "text": "Ondertitels"
+  },
   "d398b17cf99a3004": {
    "source": "IDM median ms (IQR)",
    "text": "IDM mediaan ms (IQR)"
@@ -7129,6 +7165,10 @@
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
    "text": "<g1>Automatisch configuratiescript gebruiken</g1> — het proxy auto-config (PAC) script dat uw netwerk geeft: typ het adres (<x2/>, of een bestand). MDM haalt het op en vraagt welke proxy elke download gebruikt (<x3/>, <x4/> of <x5/>), net als browsers. Totdat het is opgehaald, of als dat niet lukt, gebruikt MDM de systeeminstellingen."
+  },
+  "d7952baff7c37dbf": {
+   "source": "Yes. When a video has subtitles, the <g1>Subtitles</g1> list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an <x2/> file, or put inside it with <g3>Put them into the video</g3>. See <g4>Subtitles</g4>.",
+   "text": "Ja. Als een video ondertitels heeft, toont de lijst <g1>Ondertitels</g1> in het videovenster deze: de talen van de uploader en de automatische ondertitels van de site. Ze worden naast de video opgeslagen als een <x2/>-bestand, of erin geplaatst met <g3>In de video plaatsen</g3>. Zie <g4>Ondertitels</g4>."
   },
   "d7a59305d1341d4e": {
    "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
@@ -7686,6 +7726,10 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Om de downloads van een site permanent in de browser te houden, gebruikt u de werkbalkknop <g1>Nooit downloads overnemen van</g1>, of voegt u de site toe aan <g2>Niet automatisch downloaden starten vanaf de volgende sites</g2>. Om een bestandstype in de browser te houden, verwijdert u het uit de lijst met bestandstypen."
   },
+  "ea5082456c0a9e2c": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
+   "text": "Een alleen-geluid-keuze (<g1>Alleen audio</g1>, MP3) heeft geen ondertitels."
+  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Open Windows Instellingen → Apps, zoek Mister Download Manager en kies Verwijderen. Het deïnstallatieprogramma vraagt of u ook uw downloadlijst en instellingen wilt verwijderen. Bestanden die u hebt gedownload, worden nooit aangeraakt. Voor de draagbare versie verwijdert u de map."
@@ -8218,6 +8262,10 @@
    "source": "Choose whether to install for you only or for everyone on the computer. For you only needs no administrator rights and goes to <x1/>. For everyone goes to <x2/>.",
    "text": "Kies of u alleen voor uzelf of voor iedereen op de computer wilt installeren. Alleen voor uzelf vereist geen beheerdersrechten en gaat naar <x1/>. Voor iedereen gaat naar <x2/>."
   },
+  "fc9568529f8e5d11": {
+   "source": "MDM offers the same choice again for the next video when it has that language.",
+   "text": "MDM biedt dezelfde keuze opnieuw aan voor de volgende video als die die taal heeft."
+  },
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "Opties →"
@@ -8325,6 +8373,10 @@
   "ffa04c1a8eba0f68": {
    "source": "Report a vulnerability",
    "text": "Een kwetsbaarheid melden"
+  },
+  "ffa0b11d5591b771": {
+   "source": "Can it download a video's subtitles? — Mister Download Manager",
+   "text": "Kan het ondertitels van een video downloaden? — Mister Download Manager"
   },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",

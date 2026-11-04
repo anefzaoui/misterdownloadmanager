@@ -294,10 +294,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "第 13 代英特尔(R) 酷睿(TM) i5-13400F，63.8 GB 内存，Windows-11-10.0.26200-SP0。labserver（此仓库），127.0.0.1:8097，生成内容。两者均使用默认设置：8 个连接。"
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "行，然后是 <x1/>。"
-  },
   "079d154ef3b379ef": {
    "source": "When MDM isn't running, the browser starts it for each download and waits for it. It waited about 20 seconds this time and gave up.",
    "text": "当 MDM 未运行时，浏览器会为每个下载启动它并等待。这次它等待了大约 20 秒后放弃了。"
@@ -605,6 +601,10 @@
   "110ed064f2b04424": {
    "source": "Time left",
    "text": "剩余时间"
+  },
+  "1118f34ca5d1ce1f": {
+   "source": "<g1>Put them into the video</g1> puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.",
+   "text": "<g1>将它们放入视频</g1>会将字幕嵌入到视频文件中，作为您可以在播放器中切换的轨道。这需要ffmpeg，并且视频格式为MP4或MKV。"
   },
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
@@ -1274,6 +1274,10 @@
    "source": "A download resumes where it stopped: after you stop it, after the connection drops, or after Windows or MDM crashes. MDM saves how far each part has got as it goes.",
    "text": "下载会在停止的地方恢复：无论您是手动停止、连接中断，还是 Windows 或 MDM 崩溃。MDM 会在下载过程中保存每个部分的进度。"
   },
+  "2461ee7efa8da964": {
+   "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're…",
+   "text": "是。如果视频有字幕，视频窗口中的字幕列表会提供它们：上传者提供的语言和网站的自动字幕。它们会…"
+  },
   "246896eedd2eb25a": {
    "source": "<g1>Mister Download Manager</g1> appears. Make sure it is turned on.",
    "text": "<g1>Mister Download Manager</g1> 出现。请确保它已开启。"
@@ -1445,6 +1449,10 @@
   "2826420ef85a1bcf": {
    "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
    "text": "打开<g1>视图 → 语言...</g1>。将打开与首次启动时相同的窗口：每种语言都显示其国旗、本国名称和英文名称。在<g2>搜索</g2>中输入内容以缩小列表范围，然后双击一种语言或选择它并点击<g3>确定</g3>。窗口会立即切换，无需重新启动。"
+  },
+  "282f9b6ea43027ed": {
+   "source": "Saved beside the video, they get its name and the language: <x1/>. Players such as VLC and MPV pick them up on their own. With ffmpeg they're always SRT; without it, the site's own format (often WebVTT, <x2/>).",
+   "text": "字幕文件保存在视频旁边，名称与视频相同，并带有语言标识：<x1/>。VLC和MPV等播放器会自动识别它们。如果使用ffmpeg，字幕总是SRT格式；否则，则是网站自己的格式（通常是WebVTT，<x2/>）。"
   },
   "2830286ac96f060a": {
    "source": "The race",
@@ -2193,6 +2201,10 @@
   "3e4175d77459c06a": {
    "source": "Click a column title to sort: <g1>Added</g1> for the newest, <g2>Size</g2> for the biggest, <g3>File Name</g3> for A to Z. Click again to reverse.",
    "text": "点击列标题进行排序：<g1>添加时间</g1> 按最新排序，<g2>大小</g2> 按最大排序，<g3>文件名</g3> 按 A 到 Z 排序。再次点击可反转排序。"
+  },
+  "3e55e9b0929671e4": {
+   "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an .srt file, or put inside it with Put them into the video. See Subtitles.",
+   "text": "是。如果视频有字幕，视频窗口中的字幕列表会提供它们：上传者提供的语言和网站的自动字幕。它们会作为.srt文件保存在视频旁边，或者通过将它们放入视频选项嵌入视频中。请参阅字幕。"
   },
   "3e6e10c300b6b5ce": {
    "source": "For all downloads together",
@@ -4058,6 +4070,10 @@
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "添加下载（<g1>添加 URL</g1>）"
   },
+  "7a431c024b9ed18e": {
+   "source": "Choose <g1>Subtitles</g1> if you want them (see below).",
+   "text": "如果您需要字幕，请选择<g1>字幕</g1>（见下文）。"
+  },
   "7a6583f7f0b33adf": {
    "source": "The browser and MDM aren't connected — Mister Download Manager help",
    "text": "浏览器与 MDM 未连接 — Mister Download Manager 帮助"
@@ -4077,10 +4093,6 @@
   "7ab13cf63ca91547": {
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "每个发布版本都在<g1>SHA256SUMS.txt</g1>中列出了每个文件的 SHA-256 校验和。在 Windows 上，请与<x2/>进行比较；在 macOS 和 Linux 上，请与<x3/>进行比较。所有文件均由 GitHub Actions 从公共源代码构建；构建日志可在<g4>GitHub</g4>上查看。"
-  },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "；选项的 <x1/> 是 <x2/> 所取的值。"
   },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
@@ -4710,6 +4722,10 @@
    "source": "General",
    "text": "常规"
   },
+  "8c81524f0b11e734": {
+   "source": "Can it download a video's subtitles?",
+   "text": "能下载视频字幕吗？"
+  },
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "每个文件的连接数"
@@ -5165,6 +5181,10 @@
   "99c3f60a725ee399": {
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>视频下载</g2></g1> — 使用 yt-dlp 从视频页面（YouTube、Vimeo 等）下载视频。"
+  },
+  "9a04fafd60d38722": {
+   "source": "lines, then <x1/> (the subtitle files saved beside it).",
+   "text": "行，然后是<x1/>（字幕文件保存到旁边）。"
   },
   "9a26fd6f740cf884": {
    "source": "<g1>Show details &gt;&gt;</g1> (open by default) adds the connection view:",
@@ -5794,6 +5814,10 @@
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "在长列表中查找下载 — Mister Download Manager 帮助"
   },
+  "ad15abc4931df4fd": {
+   "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
+   "text": "；选项的<x1/>是<x2/>接受的，字幕的<x3/>是<x4/>接受的。"
+  },
   "ad20819c93bdea53": {
    "source": "Windows may give the stick another drive letter, such as <x1/> instead of <x2/>. The folders you set, and the downloads already in the list, still point at the old letter. Check <g3>Options → Save to</g3> and change the folders if needed. When MDM is about to save into a folder that doesn't exist, it asks whether to create it.",
    "text": "Windows 可能会为 U 盘分配另一个驱动器号，例如<x1/>而不是<x2/>。您设置的文件夹以及列表中已有的下载仍然指向旧的驱动器号。检查<g3>选项 → 保存到</g3>，如果需要，请更改文件夹。当 MDM 即将保存到不存在的文件夹时，它会询问是否创建该文件夹。"
@@ -5833,6 +5857,10 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM 像网页浏览器一样下载您指定的内容，只是速度更快，控制更多。它专为日常下载而设计：软件和更新、文档、您自己的云存储文件、您可以保存的视频和音乐、Linux 镜像以及制造商分享的其他种子文件，以及您有权下载的任何其他内容。"
+  },
+  "adfb560dd47a90fc": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "下载视频；<x1/>从<x2/>中选择画质（<x3/>=最佳单文件；<x4/>、<x5/>、<x6/>或<x7/>=该比特率的MP3音频，<x8/>=最佳可变比特率；MP3需要ffmpeg）。<x9/>将字幕保存到旁边：语言代码来自<x10/>（<x11/>），或<x12/>表示上传者提供的所有字幕；<x13/>改为使用网站的自动字幕；<x14/>将字幕嵌入视频中（需要ffmpeg，MP4或MKV）。"
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6237,6 +6265,10 @@
   "ba0da96d77379606": {
    "source": "All the ways to add a download →",
    "text": "所有添加下载的方式 →"
+  },
+  "ba50bd62e3f13c56": {
+   "source": "When the video has subtitles, the <g1>Subtitles</g1> list offers them: the uploader's own languages first (and <g2>All the uploader's</g2> when there are several), then the site's automatic captions, marked <g3>automatic</g3>. Of those, only the ones in the language spoken and their translations into English and your interface language are listed; sites like YouTube offer a machine translation into every language they know.",
+   "text": "当视频有字幕时，<g1>字幕</g1>列表会提供它们：首先是上传者自己的语言（如果有多种，则显示<g2>上传者所有</g2>），然后是网站的自动字幕，标记为<g3>自动</g3>。其中，只列出视频所用语言的字幕及其英语和您的界面语言的翻译；像YouTube这样的网站会提供机器翻译成它们所知的所有语言。"
   },
   "ba71746213a31b99": {
    "source": "The extension works in <g1>Google Chrome</g1>, <g2>Microsoft Edge</g2>, <g3>Brave</g3>, <g4>Opera</g4> and <g5>Vivaldi</g5>, and in <g6>Firefox</g6> 140 or later.",
@@ -6802,9 +6834,9 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "在<g1>下载文件信息</g1>中，点击<g2>稍后下载</g2>。"
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单文件；<x4/>、<x5/>、<x6/> 或 <x7/> = 该比特率的 MP3 音频，<x8/> 为最佳可变比特率；MP3 需要 ffmpeg）。"
+  "ccf432f5c2c618e6": {
+   "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
+   "text": "想要字幕？在<g1>字幕</g1>中选择一种语言。字幕会保存在视频旁边，如果您勾选<g2>将它们放入视频</g2>（请参阅<g3>字幕</g3>），则会保存在视频内部。"
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -6986,6 +7018,10 @@
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Mister Download Manager、其浏览器扩展程序和本网站如何处理您的数据：应用程序和扩展程序不收集任何数据；网站使用 Statcounter 统计访问量。"
   },
+  "d354d0b6bb0bfffe": {
+   "source": "Subtitles",
+   "text": "字幕"
+  },
   "d398b17cf99a3004": {
    "source": "IDM median ms (IQR)",
    "text": "IDM 中位数 毫秒 (IQR)"
@@ -7129,6 +7165,10 @@
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
    "text": "<g1>使用自动配置脚本</g1> — 您的网络提供的代理自动配置 (PAC) 脚本：输入其地址（<x2/>，或一个文件）。MDM 会获取它并询问它每个下载应通过哪个代理（<x3/>、<x4/> 或 <x5/>），就像浏览器一样。在获取之前，或者如果无法获取，MDM 会使用系统设置。"
+  },
+  "d7952baff7c37dbf": {
+   "source": "Yes. When a video has subtitles, the <g1>Subtitles</g1> list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an <x2/> file, or put inside it with <g3>Put them into the video</g3>. See <g4>Subtitles</g4>.",
+   "text": "是。如果视频有字幕，视频窗口中的<g1>字幕</g1>列表会提供它们：上传者使用的语言和网站的自动字幕。它们会作为<x2/>文件保存在视频旁边，或者使用<g3>将它们放入视频</g3>嵌入到视频中。请参阅<g4>字幕</g4>。"
   },
   "d7a59305d1341d4e": {
    "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
@@ -7686,6 +7726,10 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "要永久将某个网站的下载保留在浏览器中，请使用工具栏按钮的 <g1>从不接管来自</g1>，或将该网站添加到 <g2>不自动从以下网站开始下载</g2>。要将某种文件类型保留在浏览器中，请将其从文件类型列表中删除。"
   },
+  "ea5082456c0a9e2c": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
+   "text": "仅音频选项（<g1>仅音频</g1>，MP3）没有字幕。"
+  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "打开 Windows 设置 → 应用，找到 Mister Download Manager 并选择“卸载”。卸载程序会询问是否同时删除您的下载列表和设置。您已下载的文件永远不会被触及。对于便携版，请删除其文件夹。"
@@ -8218,6 +8262,10 @@
    "source": "Choose whether to install for you only or for everyone on the computer. For you only needs no administrator rights and goes to <x1/>. For everyone goes to <x2/>.",
    "text": "选择是仅为您安装还是为计算机上的所有人安装。仅为您安装不需要管理员权限，并会安装到 <x1/>。为所有人安装会安装到 <x2/>。"
   },
+  "fc9568529f8e5d11": {
+   "source": "MDM offers the same choice again for the next video when it has that language.",
+   "text": "当下一个视频有相同语言的字幕时，MDM会再次提供相同的选择。"
+  },
   "fc95c628452145ed": {
    "source": "Options →",
    "text": "选项 →"
@@ -8325,6 +8373,10 @@
   "ffa04c1a8eba0f68": {
    "source": "Report a vulnerability",
    "text": "报告漏洞"
+  },
+  "ffa0b11d5591b771": {
+   "source": "Can it download a video's subtitles? — Mister Download Manager",
+   "text": "能下载视频字幕吗？— Mister Download Manager"
   },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",

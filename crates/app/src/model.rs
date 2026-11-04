@@ -374,6 +374,9 @@ impl Job {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct VideoSpec {
     pub selector: String,
+    /// The subtitles saved with it (#68; none in a list saved before them).
+    #[serde(default)]
+    pub subs: mdm_tools::video::Subs,
 }
 
 /// A running download and its speed measurement.
@@ -525,6 +528,31 @@ impl Item {
                 self.error = s.failure.as_ref().map(crate::errors::describe).or(s.error);
                 if status == Status::Complete {
                     self.downloaded = self.size.unwrap_or(self.downloaded);
+                }
+                // A video and its subtitles (#68), marked as downloaded from the web once
+                // yt-dlp has saved them, as the engine's files are as they are created.
+                if status == Status::Complete
+                    && let Some(Live {
+                        dl: Job::Video { job, url },
+                        ..
+                    }) = &self.live
+                    && matches!(url.scheme(), "http" | "https")
+                {
+                    let side = job.progress().side_files;
+                    for f in s.file.iter().chain(side.iter()) {
+                        #[cfg(windows)]
+                        crate::win32::mark_downloaded(
+                            f,
+                            url.as_str(),
+                            self.context.referer.as_deref(),
+                        );
+                        #[cfg(unix)]
+                        crate::unix::mark_downloaded(
+                            f,
+                            url.as_str(),
+                            self.context.referer.as_deref(),
+                        );
+                    }
                 }
                 self.live = None;
                 true

@@ -28,6 +28,91 @@ pub struct Progress {
     pub speed: f64,
     /// Notes for the download's log, oldest first (a server swapped for another).
     pub events: Vec<(std::time::SystemTime, String)>,
+    /// Saved beside the video once it is done: its subtitle files (#68).
+    pub side_files: Vec<PathBuf>,
+}
+
+/// Which subtitles to save with a video (#68). `langs` empty: none.
+#[derive(Clone, Debug, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
+pub struct Subs {
+    /// yt-dlp's language codes, or [`ALL_UPLOADERS`] alone for every one the uploader gave.
+    pub langs: Vec<String>,
+    /// The site's automatic captions rather than the uploader's.
+    pub automatic: bool,
+    /// Put into the video file instead of beside it (needs ffmpeg; otherwise beside it).
+    pub embed: bool,
+}
+
+/// `Subs::langs` for all of the uploader's subtitles.
+pub const ALL_UPLOADERS: &str = "all";
+
+/// The files subtitles are saved as.
+const SUB_EXTS: [&str; 4] = ["srt", "vtt", "ass", "ttml"];
+
+/// yt-dlp's arguments for `subs`: written beside the video as `<stem>.<lang>.srt` (converted to
+/// SRT by ffmpeg, which every player reads; without ffmpeg SRT when the site has it, else its
+/// own format, usually WebVTT), or embedded into the video with ffmpeg (yt-dlp removes the
+/// separate files then).
+fn subtitle_args(subs: &Subs, ffmpeg: bool) -> Vec<String> {
+    if subs.langs.is_empty() {
+        return Vec::new();
+    }
+    let langs = if subs.langs.len() == 1 && subs.langs[0] == ALL_UPLOADERS {
+        // Not the chat replay of a live stream, which yt-dlp lists with them.
+        "all,-live_chat".to_owned()
+    } else {
+        subs.langs.join(",")
+    };
+    let embed = subs.embed && ffmpeg;
+    let mut out: Vec<String> = Vec::new();
+    // `--embed-subs` fetches the uploader's itself, and keeps no files behind when it is the
+    // only one asked (`--write-subs` too would keep them).
+    match (subs.automatic, embed) {
+        (true, _) => out.push("--write-auto-subs".into()),
+        (false, false) => out.push("--write-subs".into()),
+        (false, true) => {}
+    }
+    out.extend(["--sub-langs".into(), langs]);
+    if ffmpeg {
+        out.extend([
+            "--sub-format".into(),
+            "srt/best".into(),
+            "--convert-subs".into(),
+            "srt".into(),
+        ]);
+    } else {
+        out.extend(["--sub-format".into(), "srt/vtt/best".into()]);
+    }
+    if embed {
+        out.push("--embed-subs".into());
+    }
+    out
+}
+
+/// The subtitle files saved beside `video` (`<stem>.<lang>.<srt|vtt…>`, as yt-dlp names them).
+fn side_files(video: &Path) -> Vec<PathBuf> {
+    let (Some(dir), Some(stem)) = (video.parent(), video.file_stem()) else {
+        return Vec::new();
+    };
+    let prefix = format!("{}.", stem.to_string_lossy());
+    let mut out: Vec<PathBuf> = std::fs::read_dir(dir)
+        .into_iter()
+        .flatten()
+        .filter_map(Result::ok)
+        .map(|e| e.path())
+        .filter(|p| p != video && p.is_file())
+        .filter(|p| {
+            let name = p.file_name().map(|n| n.to_string_lossy().into_owned());
+            let ext = p
+                .extension()
+                .map(|e| e.to_string_lossy().to_ascii_lowercase());
+            name.is_some_and(|n| n.starts_with(&prefix))
+                && ext.is_some_and(|e| SUB_EXTS.contains(&e.as_str()))
+        })
+        .collect();
+    out.sort();
+    out
 }
 
 pub struct VideoJob {
@@ -89,9 +174,11 @@ fn supervise(
                 // The saved file's own size: a merged video or a converted MP3 isn't the size
                 // of what came down.
                 let saved = std::fs::metadata(&f).ok().map(|m| m.len());
+                let side = side_files(&f);
                 let mut p = progress.lock().unwrap();
                 if p.state != State::Stopped {
                     p.speed = 0.0;
+                    p.side_files = side;
                     if let Some(len) = saved {
                         p.total = Some(len);
                         p.downloaded = len;
@@ -300,7 +387,8 @@ impl VideoJob {
     /// Download `url` in format `selector` to `dir/<stem>.<ext>`, at most `rate` bytes/s;
     /// `ffmpeg` (its exe) merges separate video and audio into an MP4. `expected`: the size the
     /// choice was shown with (every stream), so the progress starts from the whole. `browser`:
-    /// what the browser's request for the page carried (proc::FromBrowser).
+    /// what the browser's request for the page carried (proc::FromBrowser). `subs`: the
+    /// subtitles to save with it (#68; none for an MP3, which has no picture to put them on).
     #[allow(clippy::too_many_arguments)]
     pub fn start(
         exe: &Path,
@@ -312,6 +400,7 @@ impl VideoJob {
         ffmpeg: Option<&Path>,
         expected: Option<u64>,
         browser: &proc::FromBrowser,
+        subs: &Subs,
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let output = dir.join(format!("{}.%(ext)s", template_text(stem)));
@@ -340,14 +429,15 @@ impl VideoJob {
         if let Some(r) = rate {
             ours.extend(["--limit-rate".into(), r.to_string()]);
         }
-        if let Some(q) = mp3 {
-            ours.extend([
+        match mp3 {
+            Some(q) => ours.extend([
                 "-x".into(),
                 "--audio-format".into(),
                 "mp3".into(),
                 "--audio-quality".into(),
                 q,
-            ]);
+            ]),
+            None => ours.extend(subtitle_args(subs, ffmpeg.is_some())),
         }
         let (theirs, cookies) = browser.args(url)?;
         ours.extend(theirs);
@@ -368,6 +458,7 @@ impl VideoJob {
             total: None,
             speed: 0.0,
             events: Vec::new(),
+            side_files: Vec::new(),
         }));
         let child: Child = Arc::new(Mutex::new(None));
         {
@@ -431,6 +522,7 @@ mod tests {
             ffmpeg.as_deref(),
             None,
             &Default::default(),
+            &Default::default(),
         )
         .unwrap();
         let end = std::time::Instant::now() + std::time::Duration::from_secs(180);
@@ -472,6 +564,7 @@ mod tests {
             None,
             None,
             &Default::default(),
+            &Default::default(),
         )
         .unwrap();
         let size = || {
@@ -500,6 +593,7 @@ mod tests {
             None,
             None,
             &Default::default(),
+            &Default::default(),
         )
         .unwrap();
         std::thread::sleep(std::time::Duration::from_secs(8));
@@ -523,6 +617,7 @@ mod tests {
             total: None,
             speed: 0.0,
             events: Vec::new(),
+            side_files: Vec::new(),
         };
         lines
             .iter()
@@ -572,6 +667,63 @@ mod tests {
         assert_eq!(v[0], (400, Some(1000)));
         let v = run(None, &["NA NA NA NA"]);
         assert_eq!(v[0], (0, None));
+    }
+
+    /// The subtitle arguments (#68): none asked, none passed; beside the video as SRT with
+    /// ffmpeg, the site's own format without; embedded only with ffmpeg; every uploader's
+    /// language but a live stream's chat.
+    #[test]
+    fn subtitle_arguments() {
+        let subs = |langs: &[&str], automatic: bool, embed: bool| Subs {
+            langs: langs.iter().map(|l| l.to_string()).collect(),
+            automatic,
+            embed,
+        };
+        let s = |v: Vec<String>| v.join(" ");
+        assert!(subtitle_args(&Subs::default(), true).is_empty());
+        assert_eq!(
+            s(subtitle_args(&subs(&["fr"], false, false), true)),
+            "--write-subs --sub-langs fr --sub-format srt/best --convert-subs srt"
+        );
+        assert_eq!(
+            s(subtitle_args(&subs(&["fr"], false, false), false)),
+            "--write-subs --sub-langs fr --sub-format srt/vtt/best"
+        );
+        assert_eq!(
+            s(subtitle_args(&subs(&["en-orig"], true, true), true)),
+            "--write-auto-subs --sub-langs en-orig --sub-format srt/best --convert-subs srt --embed-subs"
+        );
+        assert_eq!(
+            s(subtitle_args(&subs(&[ALL_UPLOADERS], false, true), true)),
+            "--sub-langs all,-live_chat --sub-format srt/best --convert-subs srt --embed-subs"
+        );
+        // Embedding needs ffmpeg: without it they're saved beside the video.
+        assert_eq!(
+            s(subtitle_args(&subs(&["de", "fr"], false, true), false)),
+            "--write-subs --sub-langs de,fr --sub-format srt/vtt/best"
+        );
+    }
+
+    /// The files found beside a finished video are its own subtitles only.
+    #[test]
+    fn side_files_are_the_videos_subtitles() {
+        let dir = tempfile::tempdir().unwrap();
+        for f in [
+            "Talk.mp4",
+            "Talk.fr.srt",
+            "Talk.en-orig.vtt",
+            "Talk.part",
+            "Talk 2.en.srt",
+            "Other.fr.srt",
+            "Talk.jpg",
+        ] {
+            std::fs::write(dir.path().join(f), b"x").unwrap();
+        }
+        let names: Vec<String> = side_files(&dir.path().join("Talk.mp4"))
+            .iter()
+            .map(|p| p.file_name().unwrap().to_string_lossy().into_owned())
+            .collect();
+        assert_eq!(names, ["Talk.en-orig.vtt", "Talk.fr.srt"]);
     }
 
     #[test]

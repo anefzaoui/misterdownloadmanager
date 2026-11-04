@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Video downloads: subtitles, beside the video or inside it
+  ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
   from the internet, network switches (incoming, UPnP, port, DHT, local peers), SOCKS5 proxy and
   IP blocklist ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40))
@@ -45,7 +47,6 @@ Everything below ships together, in one release.
 - 🔄 Torrents: speed limits per torrent and under the global cap, then upload limits, a share
   ratio that survives restarts, seeding limits, more torrent actions, and RSS feeds with
   auto-download rules ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
-- 🔄 Video downloads: subtitles ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
 
 ### Bugs being looked into
 
