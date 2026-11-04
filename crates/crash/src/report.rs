@@ -64,9 +64,37 @@ pub fn text(input: &Input, home: Option<&Path>) -> String {
         Kind::Freeze => {
             match &input.notes.freeze {
                 Some(f) if f.seconds > 0 => {
+                    let top = key_thread(kind, input).and_then(|t| t.frames.first());
+                    let secs = |ms: u64| format!("{:.1}", ms as f64 / 1000.0);
+                    let why = match (stuck(f, top, main_module(input)), f.busy) {
+                        (Some(Stuck::Running), Some(b)) => format!(
+                            ". Its thread ran all along ({} of {} s): an endless or very long loop.",
+                            secs(b.cpu_ms),
+                            secs(b.wall_ms)
+                        ),
+                        (Some(Stuck::Waiting), Some(b)) => format!(
+                            ". Its thread was waiting (it ran {} of {} s): a deadlock, or a wait on the disk or the network.",
+                            secs(b.cpu_ms),
+                            secs(b.wall_ms)
+                        ),
+                        (Some(Stuck::Starved), Some(b)) => format!(
+                            ". Its thread ran only {} of {} s, and not in a wait: the computer was too busy to run MDM, or slow to load it from disk{}. Most likely not a bug in MDM.",
+                            secs(b.cpu_ms),
+                            secs(b.wall_ms),
+                            b.faults
+                                .map(|n| format!(" ({n} page faults meanwhile)"))
+                                .unwrap_or_default()
+                        ),
+                        (_, Some(b)) => format!(
+                            ". Its thread ran {} of {} s.",
+                            secs(b.cpu_ms),
+                            secs(b.wall_ms)
+                        ),
+                        (_, None) => " (a deadlock or an endless loop).".to_owned(),
+                    };
                     let _ = writeln!(
                         s,
-                        "The window did not answer for {} s: one frame never finished (a deadlock or an endless loop).",
+                        "The window did not answer for {} s: one frame never finished{why}",
                         f.seconds
                     );
                 }
@@ -305,10 +333,14 @@ pub fn description(kind: Kind, notes: &Notes) -> &'static str {
 /// already filed for it): the kind and the first of MDM's own functions on the stack that
 /// matters ("freeze in misterdownloadmanager::winui::combo_edit").
 pub fn signature(kind: Kind, input: &Input) -> String {
-    let main_module = input
-        .analysis
-        .and_then(|a| a.modules.first())
-        .map(|m| m.name.as_str());
+    let main_module = main_module(input);
+    // A computer too busy to run MDM: one name for all of them, wherever the thread happened to be.
+    if let Some(f) = input.notes.freeze.as_ref().filter(|_| kind == Kind::Freeze) {
+        let top = key_thread(kind, input).and_then(|t| t.frames.first());
+        if stuck(f, top, main_module) == Some(Stuck::Starved) {
+            return format!("{} while the computer was busy", kind.word());
+        }
+    }
     let ours = key_thread(kind, input).and_then(|t| {
         // A panic's stack starts in the panic hook (the reporter asking for the dump): what
         // panicked is below the last frame of Rust's panic machinery.
@@ -338,6 +370,82 @@ pub fn signature(kind: Kind, input: &Input) -> String {
             .unwrap_or_else(|| "unknown".to_owned()),
     };
     format!("{} in {place}", kind.word())
+}
+
+/// The program's own module (the dump's first).
+fn main_module<'a>(input: &Input<'a>) -> Option<&'a str> {
+    input
+        .analysis
+        .and_then(|a| a.modules.first())
+        .map(|m| m.name.as_str())
+}
+
+/// What a frozen window thread was doing, judged from the processor time it got and its top frame.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Stuck {
+    /// It ran nearly all along: a loop that doesn't end, or a very long one.
+    Running,
+    /// It hardly ran and sits in a wait: a deadlock, or a wait on the disk or the network.
+    Waiting,
+    /// It hardly ran, yet sits in ordinary code: the computer didn't give it time, or was loading
+    /// MDM's code from disk (a page fault stops a thread wherever it is).
+    Starved,
+}
+
+/// Its share of the processor at least this: running. At most `STARVED_SHARE`, outside a wait:
+/// starved. In between, or with too little measured, no verdict.
+const RUNNING_SHARE: f64 = 0.6;
+const STARVED_SHARE: f64 = 0.3;
+
+pub fn stuck(
+    f: &crate::protocol::Freeze,
+    top: Option<&Frame>,
+    main: Option<&str>,
+) -> Option<Stuck> {
+    let b = f.busy?;
+    if b.wall_ms < 1000 {
+        return None;
+    }
+    let share = b.cpu_ms as f64 / b.wall_ms as f64;
+    if share >= RUNNING_SHARE {
+        return Some(Stuck::Running);
+    }
+    let top = top?;
+    match top.function.as_deref() {
+        Some(n) if is_wait(n) => Some(Stuck::Waiting),
+        Some(_) => (share <= STARVED_SHARE).then_some(Stuck::Starved),
+        // Unnamed (no symbols): MDM's own module is ordinary code; a system module where the
+        // thread hardly ran is almost always a wait (the system's waits live there).
+        None if share > STARVED_SHARE => None,
+        None if main.is_some() && top.module.as_deref() == main => Some(Stuck::Starved),
+        None => top.module.is_some().then_some(Stuck::Waiting),
+    }
+}
+
+/// A function a thread waits in: the system's waits and sleeps, locks, I/O.
+fn is_wait(function: &str) -> bool {
+    const WAITS: &[&str] = &[
+        "Wait",
+        "wait",
+        "Sleep",
+        "sleep",
+        "Delay",
+        "futex",
+        "psynch",
+        "poll",
+        "select",
+        "Recv",
+        "recv",
+        "NtRead",
+        "IoCompletion",
+        "accept",
+        "semaphore",
+        "park",
+        "lock_slow",
+        "syscall",
+        "mach_msg",
+    ];
+    WAITS.iter().any(|w| function.contains(w))
 }
 
 /// Where a panic begins on its thread's stack (core::panicking::panic_fmt and the like): what is
@@ -568,6 +676,7 @@ mod tests {
                     ui_thread: 1,
                     main: false,
                     seconds: 9,
+                    busy: None,
                 }),
                 session: Some(Session {
                     version: "0.2.3".into(),
@@ -591,6 +700,107 @@ mod tests {
         assert!(!t.contains("Someone"));
         // The watchdog's thread is listed among the others.
         assert!(t.contains("-- Thread watchdog (2) --"));
+    }
+
+    fn freeze_with(a: &Analysis, cpu_ms: u64) -> Input<'_> {
+        Input {
+            kind: Some(Kind::Freeze),
+            notes: Notes {
+                freeze: Some(Freeze {
+                    ui_thread: 1,
+                    main: false,
+                    seconds: 8,
+                    busy: Some(crate::protocol::Busy {
+                        wall_ms: 7_500,
+                        cpu_ms,
+                        faults: Some(12_000),
+                    }),
+                }),
+                ..Default::default()
+            },
+            analysis: Some(a),
+            ..Default::default()
+        }
+    }
+
+    /// The window thread stopped in ordinary code of MDM's (#57: App::dialogs, 0 downloads).
+    fn stopped_in_own_code() -> Analysis {
+        let mut a = frozen();
+        a.threads[0].frames = vec![
+            frame("misterdownloadmanager::app::App::dialogs"),
+            frame("misterdownloadmanager::app::impl$2::ui"),
+        ];
+        a
+    }
+
+    #[test]
+    fn a_freeze_that_hardly_ran_in_own_code_is_a_busy_computer() {
+        let a = stopped_in_own_code();
+        let input = freeze_with(&a, 400);
+        assert_eq!(
+            signature(Kind::Freeze, &input),
+            "freeze while the computer was busy"
+        );
+        let t = text(&input, None);
+        assert!(t.contains("Its thread ran only 0.4 of 7.5 s, and not in a wait"));
+        assert!(t.contains("(12000 page faults meanwhile)"));
+        assert!(t.contains("Most likely not a bug in MDM."));
+        // Without symbols, MDM's own module counts as ordinary code, a system one as a wait.
+        let mut bare = stopped_in_own_code();
+        bare.modules = vec![crate::analyze::ModuleInfo {
+            name: "misterdownloadmanager.exe".into(),
+            ..Default::default()
+        }];
+        bare.threads[0].frames[0].function = None;
+        let f = freeze_with(&bare, 400).notes.freeze.unwrap();
+        let main = Some("misterdownloadmanager.exe");
+        assert_eq!(
+            stuck(&f, bare.threads[0].frames.first(), main),
+            Some(Stuck::Starved)
+        );
+        bare.threads[0].frames[0].module = Some("ntdll.dll".into());
+        assert_eq!(
+            stuck(&f, bare.threads[0].frames.first(), main),
+            Some(Stuck::Waiting)
+        );
+    }
+
+    #[test]
+    fn a_freeze_in_a_lock_is_a_wait_and_keeps_its_place() {
+        let a = frozen();
+        let input = freeze_with(&a, 10);
+        assert_eq!(
+            signature(Kind::Freeze, &input),
+            "freeze in misterdownloadmanager::winui::combo_edit"
+        );
+        assert!(
+            text(&input, None).contains("Its thread was waiting (it ran 0.0 of 7.5 s): a deadlock")
+        );
+    }
+
+    #[test]
+    fn a_freeze_that_ran_all_along_is_a_loop() {
+        let a = stopped_in_own_code();
+        let input = freeze_with(&a, 7_300);
+        assert_eq!(
+            signature(Kind::Freeze, &input),
+            "freeze in misterdownloadmanager::app::App::dialogs"
+        );
+        assert!(
+            text(&input, None)
+                .contains("ran all along (7.3 of 7.5 s): an endless or very long loop")
+        );
+        // In between: no verdict, just the numbers.
+        let input = freeze_with(&a, 3_500);
+        let t = text(&input, None);
+        assert!(
+            t.contains("finished. Its thread ran 3.5 of 7.5 s.\n"),
+            "{t}"
+        );
+        // Not measured (an older MDM, macOS): the old sentence.
+        let mut input = freeze_with(&a, 0);
+        input.notes.freeze.as_mut().unwrap().busy = None;
+        assert!(text(&input, None).contains("never finished (a deadlock or an endless loop)."));
     }
 
     #[test]
