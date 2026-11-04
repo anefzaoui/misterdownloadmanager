@@ -37,6 +37,8 @@ Everything below ships together, in one release.
   ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22))
 - ✅ Long file names stay inside the progress window: the Save to path is shortened in the
   middle, in every language ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62))
+- ✅ Every button translated: Download complete's Open with... no longer stays in English
+  ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80))
 - ✅ A smaller download ([#25](https://github.com/anefzaoui/misterdownloadmanager/issues/25)),
   AppImage updates with zsync ([#24](https://github.com/anefzaoui/misterdownloadmanager/issues/24)),
   the Bangladesh flag for Bangla ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27))
