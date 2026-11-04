@@ -71,7 +71,8 @@ enum Cmd {
         /// The page's address.
         url: String,
         /// Which quality: a choice's selector from `video-info` (e.g. "b[height=360]"); "b" is
-        /// the best single file.
+        /// the best single file; "mp3:320", "mp3:256", "mp3:192" or "mp3:128" the sound as an
+        /// MP3 at that bitrate, "mp3:0" at its best variable one (MP3 needs ffmpeg).
         #[arg(short, long, default_value = "b")]
         format: String,
         /// Folder to save into.
@@ -474,7 +475,19 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
             let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
-            let stem = mdm_engine::naming::sanitize(&v.title);
+            // A stem no file in the folder has, whatever the extension: yt-dlp takes any
+            // `<stem>.*` there as its own (#32). The extension only sizes the name.
+            let ext = if mdm_tools::resolve::mp3_quality(&format).is_some() {
+                "mp3"
+            } else {
+                "mp4"
+            };
+            let name = format!("{}.{ext}", mdm_engine::naming::sanitize(&v.title));
+            let free = mdm_engine::naming::stem_destination(&output, &name, |_| false);
+            let stem = free
+                .file_stem()
+                .map(|s| s.to_string_lossy().into_owned())
+                .unwrap_or_else(|| "video".into());
             let ffmpeg = mdm_tools::ffmpeg::installed(&dir).map(|f| f.exe);
             let job = mdm_tools::video::VideoJob::start(
                 &tool.exe,
