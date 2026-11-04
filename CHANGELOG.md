@@ -14,8 +14,21 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **No silent overwrite**: when some of a torrent's files are already in the folder, MDM asks
   before writing into them (**No** is the default). The command line's `torrent-get` stops and
   names them, unless given `--use-existing`.
+- **Files from torrents are marked as downloaded from the internet**, as web downloads are:
+  SmartScreen checks a program before it first runs, Office opens documents in Protected View,
+  and Gatekeeper checks apps on a Mac.
+- Torrents' trackers on this computer or the local network aren't contacted, and a `.torrent`
+  file over 10 MB isn't read (it isn't one). Peers see MDM's major version only.
 
 ### Added
+
+- **Torrent settings: the network is yours to choose**
+  ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40)): accept incoming connections
+  or not, map the port with UPnP or not, a fixed port, the DHT, finding peers on the local network,
+  a SOCKS5 proxy from Proxy / Socks (which turns off what would go around it), an IP blocklist
+  (P2P or eMule format, fetched again every 7 days), and stopping the torrent engine when no
+  torrent runs. A new help page, [Torrents and your security](docs/torrent-security.md), says what
+  others can see and what each switch does.
 
 - **Zen, Helium and other browsers built on Firefox or Chromium** ([#41](https://github.com/anefzaoui/misterdownloadmanager/issues/41)):
   the extension reaches MDM in them, also when one is the only browser on Linux or macOS (Zen

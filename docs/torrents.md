@@ -19,7 +19,7 @@ You can also paste a magnet link into **Add URL**, or drop a magnet link or a `.
 
 If some of the torrent's files are already in the folder, MDM asks before using them. **Yes** keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. **No** (the default) goes back, so you can choose another folder and nothing of yours is overwritten.
 
-MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.
+MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in **Torrent settings**, blocklists and proxies: [Torrents and your security](torrent-security.md).
 
 ## While it downloads
 
