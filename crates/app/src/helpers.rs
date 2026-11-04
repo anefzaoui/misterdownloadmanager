@@ -94,7 +94,7 @@ impl Helpers {
                     Ok(installed) => s.ready.push((name, installed.version)),
                     Err(e) => {
                         tracing::warn!("helper download failed: {name}: {e}");
-                        s.error = Some((name, e.to_string()));
+                        s.error = Some((name, crate::errors::tools(&e)));
                         break;
                     }
                 }

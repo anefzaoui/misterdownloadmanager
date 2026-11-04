@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Lehetőség van fájlnevek szekvenciális csoportjának hozzáadására, mint például img001.jpg, img002.jpg stb.,\nimg100.jpg az MDM letöltési sorához. Használja a csillag karaktert a fájlnév mintájához.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	fájljai nem írhatók: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	kiadási információi nem a vártnak megfelelőek: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Január
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	A letöltési sor elkészült.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	a letöltött program nem egyezik az aláírt ellenőrzőösszegével
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	a kiadásnak nincs verziója
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	a kiadásból hiányzik a(z) {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	a kiadás ellenőrzőösszeg-listáját nem írta alá a kiadó kulcsa
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

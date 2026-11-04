@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Et ass méiglech, eng Grupp vu sequenzielle Dateinimm wéi img001.jpg, img002.jpg, asw.,\nimg100.jpg an d'MDM Download-Schlaang ze setzen. Benotzt den Asterisk-Wildcard fir d'Dateinumm-Muster.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	seng Fichiere konnten net geschriwwe ginn: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	seng Verëffentlechungsinformatioun ass net wéi erwaart: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Januar
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	D'Downloadschlaang ass fäerdeg.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	den erofgeluedene Programm passt net mat sengem ënnerschriwwene Checksum
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	D'Verëffentlechung huet keng Versioun
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	d'Verëffentlechung huet kee(n) {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	d'Checksum-Lëscht vun der Verëffentlechung ass net mam Schlëssel vu sengem Editeur ënnerschriwwen
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	可以将一组连续的文件名（如 img001.jpg、img002.jpg 等，\nimg100.jpg）添加到 MDM 下载队列。对文件名模式使用星号通配符。
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	无法写入其文件: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	其发布信息与预期不符: {detail}
 #. text in the Scheduler window
 #, machine
 	January	一月
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	下载队列已完成。
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	下载的程序与其签名校验和不匹配
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	此版本没有版本号
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	此版本没有 {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	此版本的校验和列表未由其发布者的密钥签名
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Можно е да додадете група секвенцијални имиња на датотеки како img001.jpg, img002.jpg, итн.,\nimg100.jpg во редот за преземање на MDM. Користете го џокер знакот ѕвездичка за шаблонот на името на датотеката.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	не можеа да се запишат неговите датотеки: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	неговите информации за издавање не се очекувани: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Јануари
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Редицата за преземање е завршена.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	преземената програма не се совпаѓа со нејзината потпишана контролна сума
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	изданието нема верзија
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	изданието нема {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	списокот со контролни суми на изданието не е потпишан од клучот на неговиот издавач
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

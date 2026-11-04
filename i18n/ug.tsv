@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	MDM چۈشۈرۈش ئۆچرېتىگە img001.jpg، img002.jpg قاتارلىق تەرتىپلىك ھۆججەت ئىسمى گۇرۇپپىسىنى قوشۇش مۇمكىن.\nimg100.jpg. ھۆججەت ئىسمى ئەندىزىسى ئۈچۈن يۇلتۇز بەلگىسىنى ئىشلىتىڭ.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	ھۆججەتلىرى يېزىلالمىدى: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	تارقىتىش ئۇچۇرى ئويلىغاندەك ئەمەس: {detail}
 #. text in the Scheduler window
 #, machine
 	January	يانۋار
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	چۈشۈرۈش كۆتۈرمىسى تاماملىنىدۇ.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	چۈشۈرۈلگەن پروگرامما ئىمزالانغان تەكشۈرۈش يىغىندىسىغا ماس كەلمەيدۇ
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	نۇسخىنىڭ نۇسخا نومۇرى يوق
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	تارقىتىشتا {what} يوق
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	تارقىتىشنىڭ تەكشۈرۈش يىغىندىسى تىزىملىكى نەشر قىلغۇچىنىڭ ئاچقۇچى تەرىپىدىن ئىمزالانمىغان
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

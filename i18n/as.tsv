@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	MDM ডাউনলোড কিউলৈ img001.jpg, img002.jpg, ইত্যাদি, img100.jpg-ৰ দৰে ক্ৰমিক ফাইল নামৰ এটা গোট যোগ কৰাটো সম্ভৱ। ফাইল নামৰ আৰ্হিৰ বাবে এষ্টাৰিস্ক ৱাইল্ডকাৰ্ড ব্যৱহাৰ কৰক।
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	ইয়াৰ ফাইলসমূহ লিখিব পৰা নগ'ল: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	ইয়াৰ ৰিলিজ তথ্য আশা কৰা ধৰণৰ নহয়: {detail}
 #. text in the Scheduler window
 #, machine
 	January	জানুৱাৰী
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ডাউনলোড কিউ শেষ হৈছে।
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	ডাউনলোড কৰা প্ৰ'গ্ৰামটো ইয়াৰ স্বাক্ষৰিত চেকছামৰ সৈতে মিল খোৱা নাই
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	সংস্কৰণটোৰ কোনো সংস্কৰণ নাই
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	ৰিলিজটোত কোনো {what} নাই
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	ৰিলিজটোৰ চেকছাম তালিকা ইয়াৰ প্ৰকাশকৰ কী-ৰ দ্বাৰা স্বাক্ষৰিত নহয়
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

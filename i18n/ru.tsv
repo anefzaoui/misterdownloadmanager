@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Можно добавить группу последовательных имен файлов, таких как img001.jpg, img002.jpg и т. д.,\nimg100.jpg, в очередь загрузки MDM. Используйте подстановочный знак звездочки для шаблона имени файла.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	не удалось записать файлы: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	сведения о выпуске не соответствуют ожидаемым: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Январь
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Очередь загрузки завершена.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	загруженная программа не соответствует своей подписанной контрольной сумме
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	у выпуска нет версии
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	в выпуске отсутствует {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	список контрольных сумм выпуска не подписан ключом издателя
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

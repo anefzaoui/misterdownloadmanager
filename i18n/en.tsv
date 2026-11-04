@@ -689,6 +689,11 @@
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+	its files could not be written: {error}	its files could not be written: {error}
+#. text in errors.rs
+	its release information is not as expected: {detail}	its release information is not as expected: {detail}
 #. text in the Scheduler window
 	January	January
 #. text in the Scheduler window
@@ -1418,6 +1423,8 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.
 #. text in a dialog box
 	The download queue is done.	The download queue is done.
+#. text in errors.rs
+	the downloaded program doesn't match its signed checksum	the downloaded program doesn't match its signed checksum
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	The downloads you add, or drop on this window, show here.	The downloads you add, or drop on this window, show here.
@@ -1468,6 +1475,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 	the release has no version	the release has no version
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+	the release has no {what}	the release has no {what}
+#. text in errors.rs
+	the release's checksum list is not signed by its publisher's key	the release's checksum list is not signed by its publisher's key
 #. text in crashui.rs
 #. crash report window: label above the report's text
 	The report	The report

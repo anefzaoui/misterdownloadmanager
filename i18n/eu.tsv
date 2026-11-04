@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Fitxategi-izen sekuentzialen talde bat gehitu daiteke, hala nola img001.jpg, img002.jpg, etab.,\nimg100.jpg MDM deskarga-ilara. Erabili izartxoaren komodina fitxategi-izenaren patroiarentzat.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	bere fitxategiak ezin izan dira idatzi: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	bere bertsio-informazioa ez da espero bezalakoa: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Urtarrila
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Deskarga-ilarak amaitu du.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	deskargatutako programak ez du bat egiten sinatutako kontrol-sumarekin
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	bertsioak ez du zenbakirik
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	bertsioak ez du {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	bertsioaren kontrol-suma zerrenda ez dago bere argitaratzailearen gakoak sinatuta
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

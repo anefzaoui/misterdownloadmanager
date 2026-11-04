@@ -257,7 +257,7 @@ impl VideoDialog {
                 Tool::YtDlp => mdm_tools::install_latest(&dir, &net, None).await,
                 Tool::Ffmpeg => mdm_tools::ffmpeg::install_latest(&dir, &net, None).await,
             };
-            *out.lock().unwrap() = Some(res.map_err(|e| e.to_string()));
+            *out.lock().unwrap() = Some(res.map_err(|e| crate::errors::tools(&e)));
             ctx.request_repaint();
         });
         self.install = Some((tool, slot));

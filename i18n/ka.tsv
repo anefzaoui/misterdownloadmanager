@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	შესაძლებელია MDM ჩამოტვირთვის რიგში თანმიმდევრული ფაილების ჯგუფის დამატება, როგორიცაა img001.jpg, img002.jpg და ა.შ.,\nimg100.jpg. გამოიყენეთ ვარსკვლავის სიმბოლო ფაილის სახელის შაბლონისთვის.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	მისი ფაილების ჩაწერა ვერ მოხერხდა: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	მისი გამოშვების ინფორმაცია არ არის მოსალოდნელი: {detail}
 #. text in the Scheduler window
 #, machine
 	January	იანვარი
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ჩამოტვირთვის რიგი დასრულებულია.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	ჩამოტვირთული პროგრამა არ ემთხვევა მის ხელმოწერილ საკონტროლო ჯამს
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	გამოცემას არ აქვს ვერსია
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	გამოშვებას არ აქვს {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	გამოშვების საკონტროლო ჯამების სია არ არის ხელმოწერილი მისი გამომცემლის გასაღებით
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

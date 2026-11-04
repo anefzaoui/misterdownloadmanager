@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Es posible agregar un grupo de nombres de archivo secuenciales como img001.jpg, img002.jpg, etc.,\nimg100.jpg a la cola de descarga de MDM. Use el comodín de asterisco para el patrón de nombre de archivo.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	no se pudieron escribir sus archivos: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	la información de su versión no es la esperada: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Enero
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	La cola de descargas ha terminado.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	el programa descargado no coincide con su suma de comprobación firmada
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	la versión no tiene número
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	la versión no tiene {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	la lista de sumas de comprobación de la versión no está firmada por la clave de su editor
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

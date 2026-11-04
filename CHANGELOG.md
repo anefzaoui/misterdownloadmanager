@@ -111,6 +111,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **ffmpeg could fail to install** with "the release has no an LGPL Windows build": BtbN, whose
+  builds MDM installs, publishes a dated build each day and then remakes its `latest` release,
+  and meanwhile GitHub's "latest" is the dated one, whose files are named differently. MDM now
+  reads BtbN's newest releases, either naming, and takes the newest complete build. Errors while
+  installing yt-dlp or ffmpeg are also worded in the interface language now.
 - A download whose address ends in a long token (file hosts such as AnkerGames' mirrors) failed
   with "the path is too long for Windows" before it started
   ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28)). Every new download's name

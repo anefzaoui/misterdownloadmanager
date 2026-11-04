@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	MDM ڈاؤن لوڈ کی قطار میں img001.jpg، img002.jpg، وغیرہ، img100.jpg جیسے ترتیب وار فائل ناموں کا ایک گروپ شامل کرنا ممکن ہے۔ فائل نام کے پیٹرن کے لیے ستارے کا وائلڈ کارڈ استعمال کریں۔
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	اس کی فائلیں لکھی نہیں جا سکیں: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	اس کی ریلیز کی معلومات توقع کے مطابق نہیں ہیں: {detail}
 #. text in the Scheduler window
 #, machine
 	January	جنوری
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ڈاؤن لوڈ قطار مکمل ہو گئی ہے۔
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	ڈاؤن لوڈ کردہ پروگرام اس کے دستخط شدہ چیک سم سے مماثل نہیں ہے
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	ریلیز کا کوئی ورژن نہیں ہے۔
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	ریلیز میں {what} نہیں ہے
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	ریلیز کی چیک سم فہرست اس کے پبلشر کی کلید سے دستخط شدہ نہیں ہے
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

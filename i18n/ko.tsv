@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg 등 img100.jpg와 같은 순차적인 파일 이름 그룹을 MDM 다운로드 대기열에 추가할 수 있습니다. 파일 이름 패턴에 별표 와일드카드를 사용하세요.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	파일을 쓸 수 없습니다. {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	릴리스 정보가 예상과 다릅니다. {detail}
 #. text in the Scheduler window
 #, machine
 	January	1월
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	다운로드 큐가 완료되었습니다.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	다운로드한 프로그램이 서명된 체크섬과 일치하지 않습니다.
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	릴리스에 버전이 없습니다.
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	릴리스에 {what}이(가) 없습니다.
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	릴리스의 체크섬 목록이 게시자의 키로 서명되지 않았습니다.
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

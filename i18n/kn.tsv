@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, ಇತ್ಯಾದಿ, img100.jpg ನಂತಹ ಅನುಕ್ರಮ ಫೈಲ್ ಹೆಸರುಗಳ ಗುಂಪನ್ನು MDM ಡೌನ್‌ಲೋಡ್ ಕ್ಯೂಗೆ ಸೇರಿಸಲು ಸಾಧ್ಯವಿದೆ. ಫೈಲ್ ಹೆಸರಿನ ಮಾದರಿಗಾಗಿ ನಕ್ಷತ್ರ ಚಿಹ್ನೆ ವೈಲ್ಡ್‌ಕಾರ್ಡ್ ಬಳಸಿ.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	ಅದರ ಫೈಲ್‌ಗಳನ್ನು ಬರೆಯಲಾಗಲಿಲ್ಲ: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	ಅದರ ಬಿಡುಗಡೆ ಮಾಹಿತಿ ನಿರೀಕ್ಷಿಸಿದಂತೆ ಇಲ್ಲ: {detail}
 #. text in the Scheduler window
 #, machine
 	January	ಜನವರಿ
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ಡೌನ್‌ಲೋಡ್ ಕ್ಯೂ ಮುಗಿದಿದೆ.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಪ್ರೋಗ್ರಾಂ ಅದರ ಸಹಿ ಮಾಡಿದ ಚೆಕ್‌ಸಮ್‌ಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	ಬಿಡುಗಡೆಗೆ ಯಾವುದೇ ಆವೃತ್ತಿ ಇಲ್ಲ
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	ಬಿಡುಗಡೆಯಲ್ಲಿ {what} ಇಲ್ಲ
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	ಬಿಡುಗಡೆಯ ಚೆಕ್‌ಸಮ್ ಪಟ್ಟಿಗೆ ಅದರ ಪ್ರಕಾಶಕರ ಕೀಲಿಯಿಂದ ಸಹಿ ಮಾಡಲಾಗಿಲ್ಲ
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	És possible afegir un grup de noms de fitxer seqüencials com ara img001.jpg, img002.jpg, etc.,\nimg100.jpg a la cua de descàrregues de MDM. Utilitzeu el comodí d'asterisc per al patró del nom de fitxer.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	no s'han pogut escriure els seus fitxers: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	la informació de la seva versió no és l'esperada: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Gener
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	La cua de descàrregues ha finalitzat.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	el programa descarregat no coincideix amb la seva suma de comprovació signada
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	la versió no té número
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	la versió no té {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	la llista de sumes de comprovació de la versió no està signada per la clau del seu editor
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

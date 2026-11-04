@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, మొదలైన img100.jpg వంటి వరుస ఫైల్ పేర్ల సమూహాన్ని MDM డౌన్‌లోడ్ క్యూకి జోడించడం సాధ్యపడుతుంది.\nఫైల్ పేరు నమూనా కోసం ఆస్టరిస్క్ వైల్డ్‌కార్డ్‌ను ఉపయోగించండి.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	దాని ఫైల్‌లను వ్రాయలేకపోయాము: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	దాని విడుదల సమాచారం ఊహించిన విధంగా లేదు: {detail}
 #. text in the Scheduler window
 #, machine
 	January	జనవరి
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	డౌన్‌లోడ్ క్యూ పూర్తయింది.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	డౌన్‌లోడ్ చేయబడిన ప్రోగ్రామ్ దాని సంతకం చేసిన చెక్‌సమ్‌తో సరిపోలడం లేదు
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	విడుదలకు వెర్షన్ లేదు
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	విడుదలలో {what} లేదు
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	విడుదల చెక్‌సమ్ జాబితా దాని ప్రచురణకర్త కీ ద్వారా సంతకం చేయబడలేదు
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

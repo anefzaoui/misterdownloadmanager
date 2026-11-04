@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	من الممكن إضافة مجموعة من أسماء الملفات المتسلسلة مثل img001.jpg وimg002.jpg وما إلى ذلك،\nimg100.jpg إلى قائمة انتظار تنزيل MDM. استخدم حرف البدل النجمة لنمط اسم الملف.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	تعذر كتابة ملفاته: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	معلومات الإصدار الخاصة به ليست كما هو متوقع: {detail}
 #. text in the Scheduler window
 #, machine
 	January	يناير
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	اكتملت قائمة انتظار التنزيل.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	البرنامج الذي تم تنزيله لا يتطابق مع المجموع الاختباري الموقع الخاص به
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	الإصدار ليس له رقم
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	الإصدار لا يحتوي على {what}
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	قائمة المجموع الاختباري للإصدار غير موقعة بواسطة مفتاح الناشر
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

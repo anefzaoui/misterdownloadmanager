@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	វាអាចបន្ថែមក្រុមនៃឈ្មោះឯកសារតាមលំដាប់លំដោយ ដូចជា img001.jpg, img002.jpg, ជាដើម,\nimg100.jpg ទៅក្នុងជួរទាញយក MDM។ ប្រើសញ្ញាផ្កាយសម្រាប់លំនាំឈ្មោះឯកសារ។
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	មិនអាចសរសេរឯកសាររបស់វាបានទេ៖ {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	ព័ត៌មានចេញផ្សាយរបស់វាមិនដូចការរំពឹងទុកទេ៖ {detail}
 #. text in the Scheduler window
 #, machine
 	January	មករា
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ជួរទាញយកបានបញ្ចប់។
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	កម្មវិធីដែលបានទាញយកមិនត្រូវគ្នានឹងលេខត្រួតពិនិត្យដែលបានចុះហត្ថលេខារបស់វាទេ
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	ការចេញផ្សាយមិនមានកំណែ
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	ការចេញផ្សាយមិនមាន {what} ទេ
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	បញ្ជីលេខត្រួតពិនិត្យនៃការចេញផ្សាយមិនត្រូវបានចុះហត្ថលេខាដោយសោរបស់អ្នកបោះពុម្ពផ្សាយរបស់វាទេ
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

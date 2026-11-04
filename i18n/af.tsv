@@ -956,6 +956,13 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Dit is moontlik om 'n groep opeenvolgende lêername soos img001.jpg, img002.jpg, ens.,\nimg100.jpg by die MDM-aflaaiwachtry te voeg. Gebruik die asterisk-jokerteken vir die lêernaampatroon.
+#. text in errors.rs
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files could not be written: {error}	sy lêers kon nie geskryf word nie: {error}
+#. text in errors.rs
+#, machine
+	its release information is not as expected: {detail}	sy vrystellinginligting is nie soos verwag nie: {detail}
 #. text in the Scheduler window
 #, machine
 	January	Januarie
@@ -1977,6 +1984,9 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Die aflaaiwaglys is klaar.
+#. text in errors.rs
+#, machine
+	the downloaded program doesn't match its signed checksum	die afgelaaide program stem nie ooreen met sy getekende kontrolesom nie
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2046,6 +2056,13 @@
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
 	the release has no version	die vrystelling het geen weergawe nie
+#. text in errors.rs
+#. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+#, machine
+	the release has no {what}	die vrystelling het geen {what} nie
+#. text in errors.rs
+#, machine
+	the release's checksum list is not signed by its publisher's key	die vrystelling se kontrolesomlys is nie deur sy uitgewer se sleutel geteken nie
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine

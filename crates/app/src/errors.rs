@@ -120,6 +120,32 @@ pub fn torrent(e: &mdm_torrent::TorrentError) -> String {
     }
 }
 
+/// Why yt-dlp or ffmpeg couldn't be installed, in the interface language (mdm-tools words its
+/// errors in English, for the command line). File and build names stay as they are.
+pub fn tools(e: &mdm_tools::Error) -> String {
+    use mdm_tools::Error as E;
+    match e {
+        E::Http(e) => http(e),
+        // i18n: error installing yt-dlp or ffmpeg; {error} = the system's reason
+        E::Io(e) => fmt(
+            t("its files could not be written: {error}"),
+            &[("error", &e.to_string())],
+        ),
+        E::BadSignature => {
+            t("the release's checksum list is not signed by its publisher's key").to_owned()
+        }
+        E::BadChecksum => t("the downloaded program doesn't match its signed checksum").to_owned(),
+        // i18n: error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
+        E::Missing(what) => fmt(t("the release has no {what}"), &[("what", &ltr(what))]),
+        // i18n: error installing yt-dlp or ffmpeg; {detail} = the technical detail, in English
+        E::BadRelease(detail) => fmt(
+            t("its release information is not as expected: {detail}"),
+            &[("detail", detail)],
+        ),
+        E::Download(text) => text.clone(),
+    }
+}
+
 /// A network error in words a user can act on, with Windows' own description of the cause
 /// (Windows words it in its display language) but not the address, which the window shows.
 fn http(e: &reqwest::Error) -> String {
