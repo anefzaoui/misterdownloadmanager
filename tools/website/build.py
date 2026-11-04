@@ -78,6 +78,15 @@ def setup_size() -> str:
     return ""
 
 
+def mac_file(arch: str) -> str:
+    """The .dmg for a Mac with `arch` (arm64, x86_64): one per processor (#25), or the one
+    universal .dmg of a release from before."""
+    universal = f"MisterDownloadManager-{VERSION}-macos-universal-experimental.dmg"
+    if any(a.get("name") == universal for a in LATEST.get("assets", [])):
+        return f"{RELEASE}-macos-universal-experimental.dmg"
+    return f"{RELEASE}-macos-{arch}-experimental.dmg"
+
+
 VERSION = published_version()
 SETUP_SIZE = setup_size()
 TODAY = datetime.date.today().isoformat()
@@ -86,7 +95,8 @@ FILES = {
     "setup": f"{RELEASE}-setup.exe",
     "portable": f"{RELEASE}-portable.zip",
     "zip": f"{RELEASE}-x64.zip",
-    "dmg": f"{RELEASE}-macos-universal-experimental.dmg",
+    "dmg_arm64": mac_file("arm64"),
+    "dmg_intel": mac_file("x86_64"),
     "appimage": f"{RELEASE}-linux-x86_64-experimental.AppImage",
     "deb": f"{RELEASE}-linux-x86_64-experimental.deb",
     "rpm": f"{RELEASE}-linux-x86_64-experimental.rpm",
@@ -230,7 +240,8 @@ def os_menu() -> str:
     rows = [
         ("windows", "Windows installer", "setup.exe · Windows 10 and 11", FILES["setup"]),
         ("windows", "Windows portable", "portable.zip · runs from a folder or USB stick", FILES["portable"]),
-        ("macos", "macOS", ".dmg · Apple Silicon and Intel · experimental", FILES["dmg"]),
+        ("macos", "macOS Apple Silicon", ".dmg · M1 and later · experimental", FILES["dmg_arm64"]),
+        ("macos", "macOS Intel", ".dmg · Macs with an Intel processor · experimental", FILES["dmg_intel"]),
         ("linux", "Linux AppImage", "any distribution · experimental", FILES["appimage"]),
         ("linux", "Linux .deb / .rpm", "Debian, Ubuntu · Fedora, openSUSE", "/download.html#linux"),
     ]

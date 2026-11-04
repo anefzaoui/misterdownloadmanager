@@ -117,7 +117,8 @@ help make them as solid as the Windows version.
 
 | File | For |
 | --- | --- |
-| `...-macos-universal-experimental.dmg` | Mac. Open it and drag MDM to Applications. The first time, right-click the app and choose **Open**. |
+| `...-macos-arm64-experimental.dmg` | Mac with Apple Silicon (M1 or later). Open it and drag MDM to Applications. The first time, right-click the app and choose **Open**. |
+| `...-macos-x86_64-experimental.dmg` | Mac with an Intel processor, the same way. |
 | `...-linux-x86_64-experimental.AppImage` | Any Linux. Make it executable and run it. |
 | `...-linux-x86_64-experimental.deb` | Ubuntu, Debian, Mint, Pop!_OS. |
 | `...-linux-x86_64-experimental.rpm` | Fedora, openSUSE, RHEL. |
@@ -138,7 +139,7 @@ right-to-left window.
 <img src="crates/app/assets/flags/am.svg" width="28" height="21" alt="Հայերեն (Armenian)" title="Հայերեն (Armenian)">
 <img src="crates/app/assets/flags/in.svg" width="28" height="21" alt="অসমীয়া (Assamese)" title="অসমীয়া (Assamese)">
 <img src="crates/app/assets/flags/az.svg" width="28" height="21" alt="Azərbaycan (Azerbaijani)" title="Azərbaycan (Azerbaijani)">
-<img src="crates/app/assets/flags/in.svg" width="28" height="21" alt="বাংলা (Bangla)" title="বাংলা (Bangla)">
+<img src="crates/app/assets/flags/bd.svg" width="28" height="21" alt="বাংলা (Bangla)" title="বাংলা (Bangla)">
 <img src="crates/app/assets/flags/es-pv.svg" width="28" height="21" alt="Euskara (Basque)" title="Euskara (Basque)">
 <img src="crates/app/assets/flags/by.svg" width="28" height="21" alt="Беларуская (Belarusian)" title="Беларуская (Belarusian)">
 <img src="crates/app/assets/flags/ba.svg" width="28" height="21" alt="Bosanski (Bosnian)" title="Bosanski (Bosnian)">

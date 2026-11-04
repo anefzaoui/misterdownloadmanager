@@ -84,7 +84,27 @@ pub fn quiet(builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
     }
 }
 
-fn main() -> eframe::Result {
+fn main() -> std::process::ExitCode {
+    // misterdownloadmanager-cli's commands (crates/cli): its launcher starts this program for
+    // them. Nothing of the app's runs: no window, instance, crash monitor or crash log.
+    if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {
+        // A windowed program has no console: the launcher's, unless the output goes to a file
+        // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
+        #[cfg(windows)]
+        win32::cli_console(cli.launcher);
+        return mdm_cli::main(cli.args);
+    }
+    match app() {
+        Ok(()) => std::process::ExitCode::SUCCESS,
+        // As `main` returning the error would.
+        Err(e) => {
+            eprintln!("Error: {e:?}");
+            std::process::ExitCode::FAILURE
+        }
+    }
+}
+
+fn app() -> eframe::Result {
     // MDM's crash monitor (crash.rs started it): the report window when the app crashes or
     // freezes; it never becomes MDM's instance.
     let all: Vec<String> = std::env::args().collect();

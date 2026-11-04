@@ -5,8 +5,11 @@
 //!   `content`); the file params shape its headers (`cd`, `cdstar`, `inline`)
 //! - `POST /form/{size}[/{name}]?need=FIELD=VALUE[&see_other=1]&<as /gen>` — the same file, only
 //!   for a form post that carries `FIELD=VALUE`
-//! - `GET /redirect?to=URL[&ttl_ms=N]` — 302 to `URL` (cross-host redirects, credential scoping);
-//!   with `ttl_ms` the target gets `expires=<unix ms>` and answers 403 after it (signed CDN links)
+//! - `GET /redirect?to=URL[&ttl_ms=N][&code=3xx]` — a redirect (302 unless `code` says) to `URL`
+//!   (cross-host redirects, credential scoping); with `ttl_ms` the target gets `expires=<unix ms>`
+//!   and answers 403 after it (signed CDN links)
+//! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
+//!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
 //! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`)
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
@@ -25,7 +28,7 @@ use axum::body::{Body, HttpBody};
 use axum::extract::{ConnectInfo, Path, RawQuery, Request, State};
 use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, header};
 use axum::middleware::Next;
-use axum::response::{IntoResponse, Response};
+use axum::response::{Html, IntoResponse, Response};
 use axum::routing::{any, get};
 use axum::{Json, Router};
 use bytes::Bytes;
@@ -226,6 +229,7 @@ impl LabServer {
             .route("/form/{size}", any(form))
             .route("/form/{size}/{*name}", any(form))
             .route("/redirect", get(redirect))
+            .route("/hop", get(hop))
             .route("/_log", get(get_log).delete(clear_log))
             .merge(simple)
             .with_state(shared.clone());
@@ -294,7 +298,8 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     the file, only for a POST whose form (urlencoded, multipart or text/plain) has FIELD=VALUE
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
-GET /redirect?to=URL[&ttl_ms=N]   302 to URL (not logged); ttl_ms: a signed link expiring after N ms
+GET /redirect?to=URL[&ttl_ms=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms
+GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]   a page that sends the browser on to URL (meta refresh or Refresh header)
 
 PAGES  for the browser extension's tests (tools/extension/e2e.mjs); styles and scripts are files
 GET /page?<any of>
@@ -368,7 +373,8 @@ async fn log_simple(
     resp
 }
 
-/// `/redirect?to=URL[&ttl_ms=N]`: 302 to `URL`; with `ttl_ms`, to a signed link that expires.
+/// `/redirect?to=URL[&ttl_ms=N][&code=3xx]`: a redirect (302 unless `code` says) to `URL`; with
+/// `ttl_ms`, to a signed link that expires.
 async fn redirect(RawQuery(q): RawQuery) -> Response {
     let mut m = q
         .and_then(|q| serde_urlencoded::from_str::<HashMap<String, String>>(&q).ok())
@@ -380,7 +386,44 @@ async fn redirect(RawQuery(q): RawQuery) -> Response {
         let sep = if to.contains('?') { '&' } else { '?' };
         to = format!("{to}{sep}expires={}", unix_ms() + ttl);
     }
-    (StatusCode::FOUND, [(header::LOCATION, to)]).into_response()
+    let code = m
+        .get("code")
+        .and_then(|c| c.parse::<u16>().ok())
+        .and_then(|c| StatusCode::from_u16(c).ok())
+        .filter(StatusCode::is_redirection)
+        .unwrap_or(StatusCode::FOUND);
+    (code, [(header::LOCATION, to)]).into_response()
+}
+
+/// `/hop?to=URL&how=meta|header[&wait=S][&cookie=NAME=VALUE]`: a web page (200) that sends the
+/// browser on to `URL` itself, as download sites' "your download starts in a moment" pages do:
+/// with a `<meta http-equiv="refresh">` in it, or a `Refresh` header; `cookie` is set on the way.
+async fn hop(RawQuery(q): RawQuery) -> Response {
+    let m = q
+        .and_then(|q| serde_urlencoded::from_str::<HashMap<String, String>>(&q).ok())
+        .unwrap_or_default();
+    let Some(to) = m.get("to") else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let wait = m.get("wait").map_or("0", String::as_str);
+    let content = format!("{wait}; url={to}");
+    let mut resp = match m.get("how").map(String::as_str) {
+        Some("header") => (
+            [(header::REFRESH, content)],
+            Html("<p>Your download starts in a moment.</p>".to_owned()),
+        )
+            .into_response(),
+        _ => Html(format!(
+            "<!doctype html><title>Download</title><meta http-equiv=\"refresh\" \
+             content=\"{}\"><p>Your download starts in a moment.</p>",
+            content.replace('&', "&amp;").replace('"', "&quot;")
+        ))
+        .into_response(),
+    };
+    if let Some(cookie) = m.get("cookie").and_then(|c| c.parse().ok()) {
+        resp.headers_mut().insert(header::SET_COOKIE, cookie);
+    }
+    resp
 }
 
 fn unix_ms() -> u64 {

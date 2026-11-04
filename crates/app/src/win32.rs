@@ -1442,6 +1442,71 @@ pub fn process_alive(pid: u32) -> bool {
     }
 }
 
+/// The command line in this windowed program (main.rs, `misterdownloadmanager-cli`'s
+/// launcher started it): the console it was started from, for what it prints and reads and for
+/// Ctrl+C. Input and output the launcher handed over stay as they are (a file, a pipe, the console
+/// itself); only those it didn't have get the console's. With the launcher's process id, this
+/// process ends when the launcher does first (killed): nothing else would wait for it.
+pub fn cli_console(launcher: Option<u32>) {
+    use windows_sys::Win32::Foundation::{
+        GENERIC_READ, GENERIC_WRITE, HANDLE, INVALID_HANDLE_VALUE,
+    };
+    use windows_sys::Win32::Storage::FileSystem::{
+        CreateFileW, FILE_SHARE_READ, FILE_SHARE_WRITE, OPEN_EXISTING,
+    };
+    use windows_sys::Win32::System::Console::{
+        ATTACH_PARENT_PROCESS, AttachConsole, GetStdHandle, STD_ERROR_HANDLE, STD_INPUT_HANDLE,
+        STD_OUTPUT_HANDLE, SetStdHandle,
+    };
+    use windows_sys::Win32::System::Threading::{
+        INFINITE, OpenProcess, PROCESS_SYNCHRONIZE, WaitForSingleObject,
+    };
+    let usable = |h: HANDLE| !h.is_null() && h != INVALID_HANDLE_VALUE;
+    let ids = [STD_INPUT_HANDLE, STD_OUTPUT_HANDLE, STD_ERROR_HANDLE];
+    // SAFETY: plain queries and settings of this process's standard handles; the names are
+    // NUL-terminated, and the handles opened are kept for the process's life.
+    unsafe {
+        let given = ids.map(|id| GetStdHandle(id));
+        if AttachConsole(ATTACH_PARENT_PROCESS) != 0 {
+            for (id, h) in ids.into_iter().zip(given) {
+                if usable(h) {
+                    SetStdHandle(id, h);
+                } else if !usable(GetStdHandle(id)) {
+                    let name = if id == STD_INPUT_HANDLE {
+                        "CONIN$\0"
+                    } else {
+                        "CONOUT$\0"
+                    };
+                    let name: Vec<u16> = name.encode_utf16().collect();
+                    let console = CreateFileW(
+                        name.as_ptr(),
+                        GENERIC_READ | GENERIC_WRITE,
+                        FILE_SHARE_READ | FILE_SHARE_WRITE,
+                        std::ptr::null(),
+                        OPEN_EXISTING,
+                        0,
+                        std::ptr::null_mut(),
+                    );
+                    if usable(console) {
+                        SetStdHandle(id, console);
+                    }
+                }
+            }
+        }
+        let watched = launcher.map_or(std::ptr::null_mut(), |pid| {
+            OpenProcess(PROCESS_SYNCHRONIZE, 0, pid)
+        });
+        if !watched.is_null() {
+            // A handle isn't Send; its value is, and the handle stays open.
+            let watched = watched as usize;
+            std::thread::spawn(move || {
+                WaitForSingleObject(watched as HANDLE, INFINITE);
+                std::process::exit(1);
+            });
+        }
+    }
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 pub fn end_process(pid: u32) -> bool {
     use windows_sys::Win32::Foundation::CloseHandle;
