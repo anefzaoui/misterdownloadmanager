@@ -28,7 +28,9 @@ sha1.workspace = true
 crc32fast.workspace = true
 base64.workspace = true
 hex.workspace = true
-boa_engine = { version = "0.22.0", default-features = false }
+# Proxy auto-config scripts (src/pac.rs): QuickJS, built from C (no bindgen: its bindings come
+# with it). Only the language: no module loader, no file or OS access.
+rquickjs = { version = "0.14.0", default-features = false, features = ["std"] }
 suppaftp.workspace = true
 rustls.workspace = true
 rustls-platform-verifier.workspace = true

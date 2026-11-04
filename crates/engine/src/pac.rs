@@ -1,13 +1,19 @@
 //! Proxy auto-config (Options → Proxy / Socks → "Use automatic configuration script"): the
 //! script's `FindProxyForURL(url, host)` decides the proxy for each address. It runs in a small
-//! JavaScript engine (Boa), with the helper functions PAC scripts expect written here (our own,
-//! from the PAC definition) and DNS answered by the system. Answers are kept per script and host.
+//! JavaScript engine (QuickJS), with the helper functions PAC scripts expect written here (our
+//! own, from the PAC definition) and DNS answered by the system. Answers are kept per script and
+//! host. The script comes from the network: it gets the language only (no files, no modules),
+//! limited memory and a limited time.
 
+use std::cell::Cell;
 use std::collections::HashMap;
 use std::net::{IpAddr, ToSocketAddrs, UdpSocket};
+use std::rc::Rc;
 use std::sync::{Arc, Mutex};
+use std::time::{Duration, Instant};
 
-use boa_engine::{Context, JsResult, JsString, JsValue, NativeFunction, Source, js_string};
+use rquickjs::prelude::{Coerced, Opt};
+use rquickjs::{CatchResultExt, Context, Function, Runtime, Value};
 use url::Url;
 
 /// Where a request goes, in the script's order of preference.
@@ -68,72 +74,74 @@ pub fn parse(answer: &str) -> Vec<Route> {
     out
 }
 
+/// What a script may take: memory (a PAC script needs well under 1 MB), stack (deep recursion
+/// stops there, short of the thread's own) and running time (the system's DNS answers not
+/// counted, up to `DNS_LIMIT` of them: a script that keeps looking up slow names still ends).
+/// Past one it stops with an error.
+const MEMORY_LIMIT: usize = 32 << 20;
+const STACK_LIMIT: usize = 512 << 10;
+const TIME_LIMIT: Duration = Duration::from_secs(2);
+const DNS_LIMIT: Duration = Duration::from_secs(30);
+
 /// Run the script and call `FindProxyForURL(url, host)`.
 fn run(script: &str, url: &str, host: &str) -> Result<String, String> {
-    let err = |e: boa_engine::JsError| e.to_string();
-    let mut ctx = Context::default();
-    ctx.register_global_callable(
-        js_string!("__mdmResolve"),
-        1,
-        NativeFunction::from_fn_ptr(resolve),
-    )
-    .map_err(err)?;
-    ctx.register_global_callable(
-        js_string!("__mdmMyIp"),
-        0,
-        NativeFunction::from_fn_ptr(my_ip),
-    )
-    .map_err(err)?;
-    ctx.eval(Source::from_bytes(HELPERS)).map_err(err)?;
-    ctx.eval(Source::from_bytes(script)).map_err(err)?;
-    let find = ctx
-        .global_object()
-        .get(js_string!("FindProxyForURL"), &mut ctx)
-        .map_err(err)?;
-    let find = find
-        .as_callable()
-        .ok_or_else(|| "the script has no FindProxyForURL".to_owned())?;
-    let answer = find
-        .call(
-            &JsValue::undefined(),
-            &[
-                JsValue::from(JsString::from(url)),
-                JsValue::from(JsString::from(host)),
-            ],
-            &mut ctx,
-        )
-        .map_err(err)?;
-    Ok(answer
-        .to_string(&mut ctx)
-        .map_err(err)?
-        .to_std_string_escaped())
+    let rt = Runtime::new().map_err(|e| e.to_string())?;
+    rt.set_memory_limit(MEMORY_LIMIT);
+    rt.set_max_stack_size(STACK_LIMIT);
+    // QuickJS asks now and then while the script runs; a DNS lookup moves the end on by the
+    // time it took, never past `last`.
+    let begun = Instant::now();
+    let last = begun + TIME_LIMIT + DNS_LIMIT;
+    let end = Rc::new(Cell::new(begun + TIME_LIMIT));
+    let over = end.clone();
+    rt.set_interrupt_handler(Some(Box::new(move || Instant::now() > over.get())));
+    let ctx = Context::full(&rt).map_err(|e| e.to_string())?;
+    ctx.with(|ctx| {
+        let find = (|| {
+            let global = ctx.globals();
+            let lookup = move |host: Opt<Coerced<String>>| {
+                let start = Instant::now();
+                let ip = resolve(&host.0.map(|h| h.0).unwrap_or_default());
+                end.set((end.get() + start.elapsed()).min(last));
+                ip
+            };
+            global.set("__mdmResolve", Function::new(ctx.clone(), lookup)?)?;
+            global.set("__mdmMyIp", Function::new(ctx.clone(), my_ip)?)?;
+            ctx.eval::<(), _>(HELPERS)?;
+            ctx.eval::<(), _>(script)?;
+            global.get::<_, Value>("FindProxyForURL")
+        })()
+        .catch(&ctx)
+        .map_err(|e| e.to_string())?;
+        let find = find
+            .into_function()
+            .ok_or_else(|| "the script has no FindProxyForURL".to_owned())?;
+        find.call::<_, Coerced<String>>((url, host))
+            .catch(&ctx)
+            .map(|answer| answer.0)
+            .map_err(|e| e.to_string())
+    })
 }
 
 /// `__mdmResolve(host)`: the host's first IPv4 address, or "".
-fn resolve(_: &JsValue, args: &[JsValue], ctx: &mut Context) -> JsResult<JsValue> {
-    let host = args
-        .first()
-        .map(|v| v.to_string(ctx).map(|s| s.to_std_string_escaped()))
-        .transpose()?
-        .unwrap_or_default();
-    let ip = (host.as_str(), 0)
+fn resolve(host: &str) -> String {
+    (host, 0)
         .to_socket_addrs()
         .ok()
         .and_then(|mut a| a.find(|s| s.is_ipv4()))
         .map(|s| s.ip().to_string())
-        .unwrap_or_default();
-    Ok(JsValue::from(JsString::from(ip.as_str())))
+        .unwrap_or_default()
 }
 
 /// `__mdmMyIp()`: this computer's address on its network (the one a connection out would use;
 /// nothing is sent), else 127.0.0.1.
-fn my_ip(_: &JsValue, _: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
-    let ip = UdpSocket::bind("0.0.0.0:0")
+fn my_ip() -> String {
+    UdpSocket::bind("0.0.0.0:0")
         .and_then(|s| s.connect("192.0.2.1:9").map(|_| s))
         .and_then(|s| s.local_addr())
         .map(|a| a.ip())
-        .unwrap_or(IpAddr::from([127, 0, 0, 1]));
-    Ok(JsValue::from(JsString::from(ip.to_string().as_str())))
+        .unwrap_or(IpAddr::from([127, 0, 0, 1]))
+        .to_string()
 }
 
 /// The functions PAC scripts may call (as browsers provide them).
@@ -319,5 +327,36 @@ mod tests {
             .is_err()
         );
         assert!(routes(&Arc::from("var x = 1;"), &Url::parse("http://x/").unwrap()).is_err());
+    }
+
+    #[test]
+    fn a_runaway_script_is_stopped() {
+        let fails = |body: &str| {
+            let script = format!("function FindProxyForURL(u, h) {{ {body} }}");
+            routes(&Arc::from(script), &Url::parse("http://x/").unwrap()).unwrap_err()
+        };
+        // Endless, even catching what stops it: stopped at the time limit.
+        let started = Instant::now();
+        let e = fails("for (;;) { try { for (;;) {} } catch (e) {} }");
+        assert!(e.contains("interrupted"), "{e}");
+        assert!(started.elapsed() < TIME_LIMIT * 3);
+        // Ever more memory: stopped at the memory limit.
+        let e = fails("var a = []; for (;;) a.push(new Array(1e5).fill(1.5)); return 'DIRECT';");
+        assert!(e.contains("out of memory"), "{e}");
+        let e = fails("var b = new ArrayBuffer(1 << 30); return 'DIRECT';");
+        assert!(e.contains("out of memory"), "{e}");
+        let e = fails("var s = 'x'; for (;;) s += s; return 'DIRECT';");
+        assert!(e.contains("memory") || e.contains("too long"), "{e}");
+        // Endless recursion: stopped at the stack limit.
+        let e = fails("function f(n) { return f(n + 1) + 1; } return f(0);");
+        assert!(e.contains("stack"), "{e}");
+        // The script itself endless, before FindProxyForURL is called.
+        assert!(
+            routes(
+                &Arc::from("while (true) {}"),
+                &Url::parse("http://x/").unwrap()
+            )
+            .is_err()
+        );
     }
 }
