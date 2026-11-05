@@ -1101,6 +1101,50 @@ pub struct RowLook {
     pub name: String,
 }
 
+/// Rows of a virtual list a screen reader reaches (#111): every row of a list up to
+/// `A11Y_ROWS`, else that many around the view (`first`, `page` rows), so a list of thousands
+/// costs no more than a short one. Further rows come within reach as the list scrolls (the keys
+/// scroll it, as a list view's own).
+pub fn reachable_rows(n: usize, first: usize, page: usize) -> std::ops::Range<usize> {
+    if n <= A11Y_ROWS {
+        return 0..n;
+    }
+    let before = A11Y_ROWS.saturating_sub(page) / 2;
+    let start = first.saturating_sub(before).min(n - A11Y_ROWS);
+    start..start + A11Y_ROWS
+}
+
+/// How many rows of a list a screen reader reaches at most ([`reachable_rows`]).
+pub const A11Y_ROWS: usize = 300;
+
+/// The row of `rows` (widget ids `id_of(i)`) a screen reader asked to scroll into view, or to
+/// select (AccessKit's click), this frame.
+pub fn row_asked_for(
+    ui: &Ui,
+    rows: std::ops::Range<usize>,
+    id_of: impl Fn(usize) -> egui::Id,
+) -> Option<usize> {
+    use egui::accesskit::Action;
+    let targets: Vec<egui::accesskit::NodeId> = ui.input(|i| {
+        i.events
+            .iter()
+            .filter_map(|e| match e {
+                egui::Event::AccessKitActionRequest(r)
+                    if matches!(r.action, Action::ScrollIntoView | Action::Click) =>
+                {
+                    Some(r.target_node)
+                }
+                _ => None,
+            })
+            .collect()
+    });
+    if targets.is_empty() {
+        return None;
+    }
+    rows.into_iter()
+        .find(|i| targets.contains(&id_of(*i).accesskit_id()))
+}
+
 /// The one list of whole rows in a box (a dialog's list, a tree drawn as rows): its frame,
 /// rows scrolled whole by the wheel (travel kept until it makes a row) and by a scroll bar
 /// when they don't all fit, the row under the pointer tinted, the selected row in the
@@ -1198,6 +1242,23 @@ pub fn row_list(
     {
         st.show_row(s, page);
     }
+    // Rows out of view are there for screen readers too (#111): those `reachable_rows` gives
+    // (every row of a list up to a few hundred, else that many around the view) while a
+    // screen reader is on. A row brought into view by one (Scroll into view, or Select, which
+    // AccessKit sends as a click) shows from this frame on.
+    // The number of rows is the list's (UI Automation reads a row's "of M" from its list).
+    let a11y = ui
+        .ctx()
+        .accesskit_node_builder(resp.id, |node| node.set_size_of_set(n))
+        .is_some();
+    let reach = if a11y {
+        reachable_rows(n, st.first, page)
+    } else {
+        st.first..n.min(st.first + page)
+    };
+    if a11y && let Some(i) = row_asked_for(ui, reach.clone(), |i| id.with(i)) {
+        st.show_row(i, page);
+    }
     st.first = st.first.min(max_first);
     ev.focused = focused;
     let clip = p.with_clip_rect(rect(area));
@@ -1209,12 +1270,18 @@ pub fn row_list(
             .max_rect(rect(inner))
             .accessibility_parent(resp.id),
     );
-    for i in st.first..n.min(st.first + page) {
-        let top = inner.top() + 1.0 + row_h * (i - st.first) as f32;
+    // Rows out of view lie above or below it, clipped: nothing of them shows or takes a click.
+    rows_ui.set_clip_rect(rect(area).intersect(ui.clip_rect()));
+    let shown = st.first..n.min(st.first + page);
+    for i in reach {
+        let in_view = shown.contains(&i);
+        let top = inner.top() + 1.0 + row_h * (i as f32 - st.first as f32);
         let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
         let r = rows_ui.interact(rect(row), id.with(i), pointer_only());
         let selected = st.selected == Some(i);
-        let fill = if selected && focused {
+        let fill = if !in_view {
+            None
+        } else if selected && focused {
             Some(ROW_SELECTED())
         } else if selected {
             Some(SELECTED_INACTIVE())
@@ -1234,6 +1301,8 @@ pub fn row_list(
             if st.selected != Some(i) {
                 st.selected = Some(i);
                 ev.picked = Some(i);
+                // Selected out of view (a screen reader's Select): brought into view.
+                st.pending |= !in_view;
                 // This frame drew the old selection; draw (and expose) the new one now, not on
                 // the next mouse move: a screen reader's click moves no mouse.
                 ui.ctx().request_repaint();
@@ -1274,10 +1343,12 @@ pub fn row_list(
         // Its place among all the rows, not only those drawn (only the rows in view exist).
         ui.ctx().accesskit_node_builder(r.id, |node| {
             node.set_selected(selected);
-            node.set_position_in_set(i + 1);
+            // AccessKit counts from 0 (UI Automation and AT-SPI say i + 1).
+            node.set_position_in_set(i);
             node.set_size_of_set(n);
+            node.add_action(egui::accesskit::Action::ScrollIntoView);
         });
-        if selected && focused {
+        if selected && focused && in_view {
             focus_ring(&clip, rect(row));
         }
     }
@@ -4661,6 +4732,171 @@ mod tests {
             assert_eq!(ellipsize_middle(p, &font, path, 1.0), "...");
         });
         out.textures_delta.clear();
+    }
+
+    /// A row list drawn headless with AccessKit on: its rows' nodes (role, name, place in the
+    /// list) and the list's state after the frame.
+    struct Drawn {
+        rows: Vec<(egui::accesskit::NodeId, String, usize, usize)>,
+        list_children: usize,
+        st: RowList,
+        events: RowEvents,
+        took: std::time::Duration,
+    }
+
+    fn draw_list(ctx: &egui::Context, n: usize, st: RowList, events: Vec<egui::Event>) -> Drawn {
+        let mut st = st;
+        let mut ev = RowEvents::default();
+        let input = egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(400.0, 300.0))),
+            events,
+            ..Default::default()
+        };
+        let started = std::time::Instant::now();
+        let mut out = ctx.run_ui(input, |ui| {
+            let rc = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(200.0, 102.0));
+            ev = row_list(ui, "test-rows", rc, n, 20.0, &mut st, |_, _, i, _, look| {
+                look.name = format!("Row {i}");
+            });
+        });
+        let took = started.elapsed();
+        out.textures_delta.clear();
+        let update = out
+            .platform_output
+            .accesskit_update
+            .expect("AccessKit is on");
+        let mut rows = Vec::new();
+        let by_id: std::collections::HashMap<_, _> =
+            update.nodes.iter().map(|(id, n)| (*id, n)).collect();
+        // The list's rows as a screen reader sees them: its children, through the containers
+        // that AccessKit leaves out.
+        fn options(
+            by_id: &std::collections::HashMap<egui::accesskit::NodeId, &egui::accesskit::Node>,
+            node: &egui::accesskit::Node,
+        ) -> usize {
+            node.children()
+                .iter()
+                .filter_map(|c| by_id.get(c))
+                .map(|c| match c.role() {
+                    egui::accesskit::Role::ListBoxOption => 1,
+                    egui::accesskit::Role::GenericContainer => options(by_id, c),
+                    _ => 0,
+                })
+                .sum()
+        }
+        let mut list_children = 0;
+        for (id, node) in &update.nodes {
+            match node.role() {
+                egui::accesskit::Role::ListBoxOption => rows.push((
+                    *id,
+                    node.label().unwrap_or_default().to_owned(),
+                    node.position_in_set().unwrap_or(0),
+                    node.size_of_set().unwrap_or(0),
+                )),
+                egui::accesskit::Role::ListBox => list_children = options(&by_id, node),
+                _ => {}
+            }
+        }
+        rows.sort_by_key(|r| r.2);
+        Drawn {
+            rows,
+            list_children,
+            st,
+            events: ev,
+            took,
+        }
+    }
+
+    fn ask(target: egui::accesskit::NodeId, action: egui::accesskit::Action) -> egui::Event {
+        egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+            action,
+            target_tree: egui::accesskit::TreeId::ROOT,
+            target_node: target,
+            data: None,
+        })
+    }
+
+    /// #111: every row of a short list is in the accessibility tree, in view or not, inside the
+    /// list, named, with its place; a screen reader can scroll one into view or select it.
+    #[test]
+    fn every_row_of_a_short_list_is_reachable() {
+        use egui::accesskit::Action;
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        let st = RowList::default();
+        let d = draw_list(&ctx, 40, st, vec![]);
+        let d = draw_list(&ctx, 40, d.st, vec![]);
+        assert_eq!(d.rows.len(), 40, "every row has a node");
+        assert_eq!(d.list_children, 40, "inside the list");
+        for (i, (_, name, pos, size)) in d.rows.iter().enumerate() {
+            assert_eq!(
+                (name.as_str(), *pos, *size),
+                (format!("Row {i}").as_str(), i, 40)
+            );
+        }
+        assert_eq!(d.st.first, 0);
+        // Scroll into view: row 35 shows (the view is 5 rows).
+        let row35 = d.rows[35].0;
+        let d = draw_list(&ctx, 40, d.st, vec![ask(row35, Action::ScrollIntoView)]);
+        assert!((d.st.first..d.st.first + 5).contains(&35), "{:?}", d.st);
+        // Select (AccessKit's click) a row out of view: selected and brought into view.
+        let row2 = d.rows[2].0;
+        let d = draw_list(&ctx, 40, d.st, vec![ask(row2, Action::Click)]);
+        assert_eq!((d.st.selected, d.events.picked), (Some(2), Some(2)));
+        let d = draw_list(&ctx, 40, d.st, vec![]);
+        assert!((d.st.first..d.st.first + 5).contains(&2), "{:?}", d.st);
+    }
+
+    /// #111: a list of thousands (a playlist, #69) exposes a bounded window of rows around the
+    /// view, each with its place among all of them, so a frame costs what a short list's does.
+    #[test]
+    fn a_long_list_exposes_a_window_of_rows_around_the_view() {
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        let st = RowList {
+            first: 5_000,
+            ..RowList::default()
+        };
+        let d = draw_list(&ctx, 10_000, st, vec![]);
+        let d = draw_list(&ctx, 10_000, d.st, vec![]);
+        assert_eq!(d.rows.len(), A11Y_ROWS);
+        let (lo, hi) = (d.rows[0].2, d.rows[A11Y_ROWS - 1].2);
+        assert!(lo < 5_000 && hi >= 5_004, "{lo}..={hi}");
+        assert!(d.rows.iter().all(|r| r.3 == 10_000));
+        // Timing, for the record (cargo test --release -- --nocapture): AccessKit on vs off.
+        let mut on = std::time::Duration::ZERO;
+        let mut st = d.st;
+        for _ in 0..20 {
+            let d = draw_list(&ctx, 10_000, st, vec![]);
+            on += d.took;
+            st = d.st;
+        }
+        let off_ctx = egui::Context::default();
+        let mut off = std::time::Duration::ZERO;
+        for _ in 0..20 {
+            let started = std::time::Instant::now();
+            let mut out = off_ctx.run_ui(egui::RawInput::default(), |ui| {
+                let rc = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(200.0, 102.0));
+                row_list(
+                    ui,
+                    "test-rows",
+                    rc,
+                    10_000,
+                    20.0,
+                    &mut st,
+                    |_, _, i, _, look| {
+                        look.name = format!("Row {i}");
+                    },
+                );
+            });
+            off += started.elapsed();
+            out.textures_delta.clear();
+        }
+        println!(
+            "10,000 rows, a frame: {:?} with a screen reader on, {:?} off",
+            on / 20,
+            off / 20
+        );
     }
 
     #[test]
