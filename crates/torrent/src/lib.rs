@@ -257,6 +257,9 @@ pub struct Stats {
     /// Bytes of the chosen files.
     pub total: u64,
     pub uploaded: u64,
+    /// Bytes received from peers since it last started (0 while paused; it starts again at 0
+    /// each time it resumes).
+    pub fetched: u64,
     /// Bytes/s.
     pub down_speed: f64,
     pub up_speed: f64,
@@ -325,6 +328,22 @@ pub struct Torrents {
     api: Api,
     /// Through a proxy: UDP trackers are dropped (`trackers::allowed`).
     proxied: bool,
+    /// One add at a time: librqbit gives a new torrent the saved ids' highest plus one, so two
+    /// adds at once both took id 0, and the second was answered "already managed" with the
+    /// first one's handle: it was never added (two torrents started together, #39).
+    adding: tokio::sync::Mutex<()>,
+}
+
+/// The lowest limit a torrent can have, bytes/s: librqbit's limiter holds one second's budget
+/// and asks it for a whole 16 KiB block at once; under that, every request fails and each peer
+/// is dropped, so the torrent would stall instead of going slowly.
+pub const MIN_RATE: u64 = 16 * 1024;
+
+/// A rate for librqbit's limiter: 0 and None are unlimited; at least `MIN_RATE`, and above
+/// u32::MAX bytes/s is clamped.
+fn rate(bps: Option<u64>) -> Option<NonZeroU32> {
+    bps.filter(|b| *b > 0)
+        .and_then(|b| NonZeroU32::new(b.clamp(MIN_RATE, u32::MAX as u64) as u32))
 }
 
 fn id(hash: &str) -> Result<TorrentIdOrHash, TorrentError> {
@@ -393,6 +412,7 @@ impl Torrents {
             session,
             api,
             proxied,
+            adding: tokio::sync::Mutex::new(()),
         })
     }
 
@@ -460,6 +480,10 @@ impl Torrents {
     ) -> Result<String, TorrentError> {
         // Checked here too, whatever the caller (the app, the command line, a saved torrent).
         check_bytes(torrent)?;
+        let wanted = librqbit::torrent_from_bytes(torrent)
+            .map_err(|_| TorrentError::NotATorrent)?
+            .info_hash
+            .as_string();
         let torrent =
             trackers::filter_torrent(torrent, self.proxied).unwrap_or_else(|| torrent.to_vec());
         let opts = AddTorrentOptions {
@@ -471,15 +495,23 @@ impl Torrents {
             initial_peers: (!peers.is_empty()).then_some(peers),
             ..Default::default()
         };
-        let res = self
-            .session
-            .add_torrent(AddTorrent::from_bytes(torrent), Some(opts))
-            .await
-            .map_err(engine)?;
+        let res = {
+            let _one = self.adding.lock().await;
+            self.session
+                .add_torrent(AddTorrent::from_bytes(torrent), Some(opts))
+                .await
+                .map_err(engine)?
+        };
         let handle = res
             .into_handle()
             .ok_or_else(|| engine("the torrent was listed instead of started"))?;
-        Ok(handle.info_hash().as_string())
+        let got = handle.info_hash().as_string();
+        if got != wanted {
+            return Err(engine(format!(
+                "the session answered with another torrent ({got}) for {wanted}"
+            )));
+        }
+        Ok(got)
     }
 
     /// Whether the session still has it (resume data from an earlier run).
@@ -504,6 +536,7 @@ impl Torrents {
             done: s.progress_bytes,
             total: s.total_bytes,
             uploaded: s.uploaded_bytes,
+            fetched: live.map_or(0, |l| l.snapshot.fetched_bytes),
             down_speed: live.map_or(0.0, |l| mib(l.download_speed.mbps)),
             up_speed: live.map_or(0.0, |l| mib(l.upload_speed.mbps)),
             file_done: s.file_progress.clone(),
@@ -580,8 +613,14 @@ impl Torrents {
         self.session.pause(&h).await.map_err(engine)
     }
 
+    /// Start it again. One still checking its files (added paused, or restored at start) is
+    /// waited for: it is Paused only once checked, and unpausing it before did nothing, so it
+    /// stayed paused (seen on Linux, where the check took longer than the call).
     pub async fn resume(&self, hash: &str) -> Result<(), TorrentError> {
         let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
+        if matches!(h.stats().state, TorrentStatsState::Initializing { .. }) {
+            h.wait_until_initialized().await.map_err(engine)?;
+        }
         if !matches!(h.stats().state, TorrentStatsState::Paused) {
             return Ok(());
         }
@@ -611,16 +650,49 @@ impl Torrents {
             .with_torrents(|all| all.map(|(_, h)| h.info_hash().as_string()).collect())
     }
 
-    /// The global download limit, bytes/s (None: unlimited).
+    /// The whole session's download limit, bytes/s (None: unlimited): every torrent together.
+    /// Setting the same rate again changes nothing (a new limiter would start a new burst), so
+    /// it may be called often.
     pub fn set_download_limit(&self, bps: Option<u64>) {
-        let v = bps.and_then(|b| NonZeroU32::new(b.min(u32::MAX as u64) as u32));
-        self.session.ratelimits.set_download_bps(v);
+        let want = rate(bps);
+        if self.session.ratelimits.get_config().download_bps != want {
+            self.session.ratelimits.set_download_bps(want);
+        }
+    }
+
+    /// The whole session's download limit now, bytes/s (None: unlimited).
+    pub fn download_limit(&self) -> Option<u64> {
+        let c = self.session.ratelimits.get_config();
+        c.download_bps.map(|b| u64::from(b.get()))
     }
 
     /// The whole session's upload limit, bytes/s (None: unlimited).
     pub fn set_upload_limit(&self, bps: Option<u64>) {
-        let v = bps.and_then(|b| NonZeroU32::new(b.min(u32::MAX as u64) as u32));
-        self.session.ratelimits.set_upload_bps(v);
+        self.session.ratelimits.set_upload_bps(rate(bps));
+    }
+
+    /// One torrent's own limits, bytes/s (None: unlimited), on top of the session's. They apply
+    /// at once, running or paused, and last while the session runs (librqbit doesn't save them).
+    pub fn set_torrent_limits(
+        &self,
+        hash: &str,
+        down: Option<u64>,
+        up: Option<u64>,
+    ) -> Result<(), TorrentError> {
+        let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
+        h.set_ratelimits(librqbit::limits::LimitsConfig {
+            download_bps: rate(down),
+            upload_bps: rate(up),
+        });
+        Ok(())
+    }
+
+    /// One torrent's own limits (down, up), as `set_torrent_limits` stored them.
+    pub fn torrent_limits(&self, hash: &str) -> Option<(Option<u64>, Option<u64>)> {
+        let h = self.session.get(id(hash).ok()?)?;
+        let c = h.ratelimits();
+        let get = |v: Option<NonZeroU32>| v.map(|b| u64::from(b.get()));
+        Some((get(c.download_bps), get(c.upload_bps)))
     }
 
     /// Where peers can reach us (None when not listening).
@@ -950,6 +1022,109 @@ mod tests {
             out.join(&meta.files[only_b].path).exists(),
             "files stay unless asked"
         );
+        seeder.stop().await;
+        leecher.stop().await;
+    }
+
+    /// #39: two torrents added at the same moment are both in the session. (librqbit gave both
+    /// the id 0 and answered the second with the first's handle: it was never added.)
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn two_torrents_added_at_once_are_both_there() {
+        let tmp = tempfile::tempdir().unwrap();
+        let t = Torrents::start(offline(&tmp.path().join("state")))
+            .await
+            .unwrap();
+        let (a, b) = (torrent_naming("a.bin"), torrent_naming("b.bin"));
+        let (oa, ob) = (tmp.path().join("out-a"), tmp.path().join("out-b"));
+        let (ha, hb) = tokio::join!(
+            t.add(&a, &oa, None, Vec::new(), true),
+            t.add(&b, &ob, None, Vec::new(), true),
+        );
+        let (ha, hb) = (ha.unwrap(), hb.unwrap());
+        assert_ne!(ha, hb);
+        assert!(t.has(&ha) && t.has(&hb), "both in the session");
+        let mut all = t.hashes();
+        all.sort();
+        let mut want = vec![ha, hb];
+        want.sort();
+        assert_eq!(all, want);
+        t.stop().await;
+    }
+
+    /// #39: a torrent's own limit holds it back, the session's stays as it was, and the bytes
+    /// it fetched are counted (the app leaves file downloads the global cap's rest by them).
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_torrents_own_limit_holds_it_back() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("one");
+        std::fs::create_dir_all(&src).unwrap();
+        let data: Vec<u8> = (0..1_048_576u32).map(|i| (i % 241) as u8).collect();
+        std::fs::write(src.join("data.bin"), &data).unwrap();
+        let torrent = make_torrent(&src).await;
+
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let meta = seeder
+            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while seeder.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        let addr = seeder.listen_addr().expect("seeder listens");
+
+        let leecher = Torrents::start(offline(&tmp.path().join("s2")))
+            .await
+            .unwrap();
+        let out = meta.folder_in(&tmp.path().join("got"));
+        let h2 = leecher
+            .add(&torrent, &out, None, vec![addr], true)
+            .await
+            .unwrap();
+        assert_eq!(leecher.torrent_limits(&h2), Some((None, None)));
+        // 1 MiB at 256 KiB/s: about 3 s after the first second's burst.
+        leecher
+            .set_torrent_limits(&h2, Some(256 * 1024), None)
+            .unwrap();
+        assert_eq!(leecher.torrent_limits(&h2), Some((Some(256 * 1024), None)));
+        leecher.set_torrent_limits(&h2, Some(1), None).unwrap();
+        assert_eq!(
+            leecher.torrent_limits(&h2),
+            Some((Some(MIN_RATE), None)),
+            "never under one block a second"
+        );
+        leecher
+            .set_torrent_limits(&h2, Some(256 * 1024), None)
+            .unwrap();
+        assert_eq!(leecher.download_limit(), None, "the session's untouched");
+        assert!(matches!(
+            leecher.set_torrent_limits(&"0".repeat(40), None, None),
+            Err(TorrentError::Unknown)
+        ));
+
+        let t = std::time::Instant::now();
+        leecher.resume(&h2).await.unwrap();
+        let deadline = t + Duration::from_secs(40);
+        let fetched = loop {
+            let s = leecher.stats(&h2).unwrap();
+            if s.phase == Phase::Finished {
+                break s.fetched;
+            }
+            assert!(std::time::Instant::now() < deadline, "no transfer: {s:?}");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        };
+        let secs = t.elapsed().as_secs_f64();
+        assert!(secs >= 2.0, "1 MiB at 256 KiB/s took {secs:.2}s");
+        assert!(fetched >= data.len() as u64, "fetched {fetched}");
+        let got = std::fs::read(out.join(&meta.files[0].path)).unwrap();
+        assert!(got == data, "the file arrived whole");
         seeder.stop().await;
         leecher.stop().await;
     }

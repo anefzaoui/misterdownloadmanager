@@ -368,7 +368,8 @@ impl Job {
     pub fn speed_limit(&self) -> Option<u64> {
         match self {
             Job::File(d) => d.speed_limit(),
-            Job::Video { .. } | Job::Torrent(_) => None,
+            Job::Torrent(t) => t.speed_limit(),
+            Job::Video { .. } => None,
         }
     }
 }

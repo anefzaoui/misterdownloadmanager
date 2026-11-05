@@ -1882,7 +1882,10 @@ it from Mister Download Manager list of downloads?",
 /// to nothing while it sat behind the main window.
 pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
-    ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
+    // Off-screen test runs never take the focus (main.rs `offscreen`), as the other paths here.
+    if !crate::offscreen() {
+        ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
+    }
 }
 
 /// A dialog's window ([`window`], [`question`]) by its id.

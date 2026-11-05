@@ -388,11 +388,13 @@ impl OptionsDialog {
             &mut self.browser_rows,
             |ui, clip, i, row, look| {
                 let (name, on) = &mut browsers[i];
+                look.name = name.clone();
                 winui::row_check(
                     ui,
                     clip,
                     pos2(row.left() + 5.0, row.top() + 2.0),
                     on,
+                    name,
                     ("browser", i),
                 );
                 // Its name in the row's ink (white on the selection).
@@ -1579,6 +1581,7 @@ impl OptionsDialog {
         );
         let grid = winui::GRID();
         let sounds = &mut self.s.sounds;
+        self.sound_rows.name = crate::i18n::t("Sounds");
         let ev = winui::row_list(
             ui,
             "sounds",
@@ -1591,8 +1594,16 @@ impl OptionsDialog {
                 fill(clip, row.left(), top + 16.0, row.right(), top + 16.0, grid);
                 fill(clip, o.x + 225.0, top, o.x + 225.0, top + 16.0, grid);
                 let (on, file) = &mut sounds[i];
-                winui::row_check(ui, clip, pos2(o.x + 39.0, top + 2.0), on, ("sound", i));
                 let event = crate::i18n::t(SOUND_EVENTS[i]);
+                look.name = event.to_owned();
+                winui::row_check(
+                    ui,
+                    clip,
+                    pos2(o.x + 39.0, top + 2.0),
+                    on,
+                    event,
+                    ("sound", i),
+                );
                 winui::fit(
                     ui,
                     clip,
@@ -2664,6 +2675,13 @@ fn report(
         st,
         |ui, clip, k, line, look| {
             let top = line.top();
+            // Read as its cells, joined.
+            look.name = rows[k]
+                .iter()
+                .filter(|c| !c.is_empty())
+                .cloned()
+                .collect::<Vec<_>>()
+                .join(", ");
             if grid {
                 fill(
                     clip,

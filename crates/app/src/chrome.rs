@@ -110,11 +110,11 @@ impl ShellIcons {
             .or_insert_with(|| {
                 #[cfg(windows)]
                 {
+                    // File types are drawn from the app's own icons (fileicons.rs), the same on
+                    // every system; Windows' shell gives only Download complete's open folder.
                     let rgba = match &key {
-                        IconKey::Ext(e) => crate::win32::shell_icon(e),
-                        IconKey::ExtLarge(e) => crate::win32::shell_icon_large(e),
                         IconKey::FolderOpenLarge => crate::win32::folder_open_icon_large(),
-                        IconKey::Silk(_) => None,
+                        IconKey::Ext(_) | IconKey::ExtLarge(_) | IconKey::Silk(_) => None,
                     }?;
                     let side = if matches!(key, IconKey::ExtLarge(_) | IconKey::FolderOpenLarge) {
                         32
@@ -151,11 +151,20 @@ impl ShellIcons {
         };
         let rc = winui::rect(Rect::from_min_size(min, vec2(side, side)));
         let min = rc.min;
-        if let IconKey::Silk(name) = key {
-            if let Some(src) = silk(name) {
-                paint_image(ui, painter, src, rc);
+        match &key {
+            IconKey::Silk(name) => {
+                if let Some(src) = silk(name) {
+                    paint_image(ui, painter, src, rc);
+                }
+                return;
             }
-            return;
+            IconKey::Ext(e) | IconKey::ExtLarge(e) => {
+                // The key holds the extension alone ("unknown" when there is none).
+                let name = format!("x.{e}");
+                crate::fileicons::paint(ui, painter, crate::fileicons::Kind::File(&name), rc);
+                return;
+            }
+            IconKey::FolderOpenLarge => {}
         }
         match self.get(ui.ctx(), key) {
             Some(id) => {

@@ -3,6 +3,7 @@
 | Asset | Author | Licence | Where |
 |---|---|---|---|
 | Lucide icons v1.63.0 (toolbar, dialog glyphs) | Lucide Icons and Contributors | ISC — `crates/app/assets/icons/lucide/LICENSE` | `crates/app/assets/icons/lucide/` |
+| Material Icon Theme v5.40.0, 48 of its file icons (the icon before a file's name: the download list, Download File Info, Properties, a torrent's files, the Scheduler's files) | Material Extensions (Philipp Kief and contributors), <https://github.com/material-extensions/vscode-material-icon-theme> | MIT — `crates/app/assets/icons/material/LICENSE` | `crates/app/assets/icons/material/` (chosen and fetched by `tools/icons/material.py`; release and commit in `VERSION`) |
 | flag-icons 7.6.0 (language flags: picker, View → Language, README) | Panayiotis Lipiridis and contributors, <https://github.com/lipis/flag-icons> | MIT — `crates/app/assets/flags/LICENSE` | `crates/app/assets/flags/` |
 | Patrick Hand (the README's hand-drawn pictures, as outlines; not in the app) | Patrick Wagesreiter | SIL Open Font License 1.1 — `tools/readme/node_modules/@fontsource/patrick-hand/LICENSE` | `docs/images/races-*.svg` |
 | *Big Buck Bunny* (the film in the README's pictures of the download button over a video; not in the app) | Blender Foundation, <https://peach.blender.org> | Creative Commons Attribution 3.0 | `docs/images/video-button-*.png` |
