@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "คำตอบเกี่ยวกับ Mister Download Manager: ฟรีหรือไม่ ปลอดภัยหรือไม่ เปรียบเทียบกับ IDM อย่างไร, เบราว์เซอร์, วิดีโอ, ทอร์เรนต์, ความเร็ว, Mac และ Linux และอื่นๆ"
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>จำกัดการอัปโหลดสำหรับทอร์เรนต์ทั้งหมดเป็น</g1> — ปิดใช้งานโดยค่าเริ่มต้น จำกัดสิ่งที่ทอร์เรนต์ทั้งหมดของคุณส่งไปยังเพียร์อื่น ๆ ในขณะที่ดาวน์โหลดและในขณะที่แชร์ ขีดจำกัดการอัปโหลดของทอร์เรนต์เองในหน้าต่างความคืบหน้าจะถูกนำมาใช้เพิ่มเติมจากขีดจำกัดนี้"
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "เริ่มคิวการดาวน์โหลดหลัก; <x1/>"
@@ -305,10 +309,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13th Gen Intel(R) Core(TM) i5-13400F, RAM 63.8 GB, Windows-11-10.0.26200-SP0. labserver (ที่เก็บนี้), 127.0.0.1:8097, เนื้อหาที่สร้างขึ้น ทั้งสองค่าเริ่มต้น: 8 การเชื่อมต่อ"
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "บรรทัด, จากนั้น <x1/>"
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> หรือใหม่กว่าบน Apple Silicon หรือ Intel (ทดลอง)"
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "ในหน้าต่างเดียวกัน ให้ทำเครื่องหมายที่ <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และตั้งค่าความเร็ว ซึ่งจะจำกัด MDM โดยรวม ไม่ว่าจะมีไฟล์กำลังดาวน์โหลดอยู่กี่ไฟล์ก็ตาม การตั้งค่านี้จะใช้เมื่อมีการทำเครื่องหมายไว้ ไม่ว่าตัวจำกัดต่อไฟล์จะเปิดหรือปิดอยู่ก็ตาม"
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "คลิกขวาที่พื้นที่ว่างของรายการเพื่อ <g1>เพิ่มการดาวน์โหลดใหม่</g1>, <g2>เลือกทั้งหมด</g2>, <g3>จัดเรียงไฟล์</g3>, <g4>ล้างตัวกรองทั้งหมด</g4> และ <g5>ลบที่เสร็จสมบูรณ์ทั้งหมด</g5>"
@@ -2749,6 +2745,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "เปิดรายการดาวน์โหลดที่เลือก (การดับเบิลคลิกจะตามหลังการคลิกขวา → <g1>เมื่อดับเบิลคลิก</g1>)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "แท็บ <g1>ตัวจำกัดความเร็ว</g1> ของหน้าต่างทอร์เรนต์ นอกจากขีดจำกัดการดาวน์โหลดแล้ว ยังมี <g2>จำกัดการอัปโหลด</g2> ตามความเร็วที่คุณเลือก ขีดจำกัดนั้นจะถูกเก็บไว้กับทอร์เรนต์: จะถูกนำมาใช้อีกครั้งเมื่อใดก็ตามที่ทอร์เรนต์ทำงานหรือแชร์ ทอร์เรนต์ไม่สามารถถูกจำกัดต่ำกว่า 16 กิโลไบต์/วินาทีได้ไม่ว่าจะด้วยวิธีใด"
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -4310,10 +4310,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "ทุกการเผยแพร่จะแสดงผลรวม SHA-256 ของแต่ละไฟล์ใน <g1>SHA256SUMS.txt</g1> บน Windows ให้เปรียบเทียบกับ <x2/>; บน macOS และ Linux ให้เปรียบเทียบกับ <x3/> ไฟล์ทั้งหมดสร้างจากซอร์สโค้ดสาธารณะโดย GitHub Actions; บันทึกการสร้างอยู่ใน <g4>GitHub</g4>"
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; <x1/> ของตัวเลือกคือสิ่งที่ <x2/> ใช้"
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "ทำเครื่องหมายที่ <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และพิมพ์ความเร็วเป็น กิโลไบต์/วินาที จุดเริ่มต้นที่ดีคือประมาณสองในสามของความเร็วการเชื่อมต่อของคุณ (1 เมกะไบต์/วินาที ประมาณ 1000 กิโลไบต์/วินาที)"
@@ -4553,10 +4549,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "การเชื่อมต่อและความเร็ว — วิธีใช้ Mister Download Manager"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>General</g1> — แฮชข้อมูล ชิ้นส่วน เพียร์ ปริมาณที่ส่ง อัตราส่วนการแชร์ และโฟลเดอร์"
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -7210,10 +7202,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "ใน <g1>ข้อมูลไฟล์ดาวน์โหลด</g1> คลิก <g2>ดาวน์โหลดภายหลัง</g2>"
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "ดาวน์โหลดวิดีโอ; <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดี่ยวที่ดีที่สุด; <x4/>, <x5/>, <x6/> หรือ <x7/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x8/> ที่บิตเรตแปรผันที่ดีที่สุด; MP3 ต้องใช้ ffmpeg)"
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "ต้องการคำบรรยายใช่ไหม? เลือกภาษาใน <g1>คำบรรยาย</g1> ไฟล์จะถูกบันทึกไว้ข้างวิดีโอ หรือฝังอยู่ในวิดีโอหากคุณเลือก <g2>ใส่ลงในวิดีโอ</g2> (ดู <g3>คำบรรยาย</g3>)"
@@ -8429,6 +8417,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "คลิก <g1>เพิ่ม URL</g1> บนแถบเครื่องมือ เลือก <g2>งาน → เพิ่มการดาวน์โหลดใหม่</g2> หรือกด <g3>Ctrl+N</g3>"
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>ทั่วไป</g1> — ข้อมูลแฮช, ชิ้นส่วน, เพียร์, จำนวนที่ส่งไป, อัตราส่วนการแชร์, ระยะเวลาที่แชร์ และโฟลเดอร์ จำนวนที่ส่งไปและเวลาที่แชร์จะถูกรวมกันตลอดการทำงานของทอร์เรนต์: จะไม่เริ่มต้นใหม่ที่ 0 หลังจากหยุดชั่วคราวหรือรีสตาร์ท MDM"
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",

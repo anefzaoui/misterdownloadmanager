@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager에 대한 답변: 무료인지, 안전한지, IDM과의 비교, 브라우저, 비디오, 토렌트, 속도, Mac 및 Linux 등."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>모든 토렌트의 업로드 제한</g1> — 기본적으로 꺼져 있습니다. 모든 토렌트가 다운로드 및 공유하는 동안 다른 피어에게 보내는 총량을 제한합니다. 토렌트 자체의 업로드 제한(진행 창에 있음)은 이 제한 위에 적용됩니다."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "주 다운로드 대기열을 시작합니다. <x1/>."
@@ -305,10 +309,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13세대 Intel(R) Core(TM) i5-13400F, 63.8GB RAM, Windows-11-10.0.26200-SP0. labserver (이 저장소), 127.0.0.1:8097, 생성된 콘텐츠. 둘 다 기본값: 8개 연결."
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "줄, 그 다음 <x1/>."
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon 또는 Intel 기반 <g1>macOS 11</g1> 이상 (실험적)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "동일한 창에서 <g1>모든 다운로드 제한</g1>을 선택하고 속도를 설정합니다. 이는 다운로드 중인 파일 수에 관계없이 MDM 전체의 속도를 제한합니다. 파일별 제한기가 켜져 있든 꺼져 있든 관계없이 선택될 때마다 적용됩니다."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "목록의 빈 공간을 마우스 오른쪽 버튼으로 클릭하면 <g1>새 다운로드 추가</g1>, <g2>모두 선택</g2>, <g3>파일 정렬</g3>, <g4>모든 필터 지우기</g4>, <g5>완료된 항목 모두 삭제</g5>를 사용할 수 있습니다."
@@ -2749,6 +2745,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "선택한 다운로드 열기(두 번 클릭은 마우스 오른쪽 버튼 클릭 → <g1>두 번 클릭 시</g1>를 따릅니다)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "토렌트 창의 <g1>속도 제한</g1> 탭에는 다운로드 제한 외에 원하는 속도로 <g2>업로드 제한</g2> 기능이 있습니다. 이 제한은 토렌트와 함께 유지되며, 토렌트가 실행되거나 공유될 때마다 다시 적용됩니다. 어떤 경우에도 토렌트는 16KB/초 미만으로 유지될 수 없습니다."
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -4310,10 +4310,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "모든 릴리스는 <g1>SHA256SUMS.txt</g1>에 각 파일의 SHA-256 체크섬을 나열합니다. Windows에서는 <x2/>와 비교하고, macOS 및 Linux에서는 <x3/>와 비교합니다. 모든 파일은 GitHub Actions에 의해 공개 소스에서 빌드됩니다. 빌드 로그는 <g4>GitHub</g4>에서 확인할 수 있습니다."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; 선택의 <x1/>는 <x2/>가 가져오는 것입니다."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>모든 다운로드 제한</g1>을 선택하고 KBytes/sec 단위로 속도를 입력합니다. 연결 속도의 약 3분의 2가 좋은 시작점입니다. (1 MByte/sec는 약 1000 KBytes/sec입니다.)"
@@ -4553,10 +4549,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "연결 및 속도 — Mister Download Manager 도움말"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>일반</g1> — 정보 해시, 조각, 피어, 보낸 양, 공유 비율 및 폴더."
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -7210,10 +7202,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>파일 정보 다운로드</g1>에서 <g2>나중에 다운로드</g2>를 클릭합니다."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "동영상 다운로드; <x1/>는 <x2/>에서 화질 선택자를 가져옵니다 (<x3/> = 가장 좋은 단일 파일; <x4/>, <x5/>, <x6/> 또는 <x7/> = 해당 비트레이트의 MP3 사운드, <x8/>는 가장 좋은 가변 비트레이트; MP3는 ffmpeg 필요)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "자막을 원하시면 <g1>자막</g1>에서 언어를 선택하세요. 자막은 비디오 옆에 저장되거나, <g2>비디오에 포함</g2>을 선택하면 비디오 안에 저장됩니다 (<g3>자막</g3> 참조)."
@@ -8429,6 +8417,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "도구 모음에서 <g1>URL 추가</g1>를 클릭하거나, <g2>작업 → 새 다운로드 추가</g2>를 선택하거나, <g3>Ctrl+N</g3>을 누르세요."
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>일반</g1> — 정보 해시, 조각, 피어, 전송된 양, 공유 비율, 공유된 시간 및 폴더. 전송된 양과 공유된 시간은 토렌트의 모든 실행에 걸쳐 합산됩니다. 일시 중지하거나 MDM을 다시 시작해도 0부터 다시 시작하지 않습니다."
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",

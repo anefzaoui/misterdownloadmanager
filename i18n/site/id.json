@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Jawaban tentang Mister Download Manager: apakah gratis, apakah aman, perbandingannya dengan IDM, peramban, video, torrent, kecepatan, Mac dan Linux, dan lainnya."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Batasi pengunggahan untuk semua torrent hingga</g1> — mati secara default. Membatasi apa yang semua torrent Anda kirimkan bersama ke rekan lain, saat mereka mengunduh dan saat mereka berbagi. Batas unggah torrent sendiri, di jendela progresnya, berlaku di atasnya."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Memulai antrean unduhan utama; <x1/>."
@@ -305,10 +309,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "Intel(R) Core(TM) i5-13400F Generasi ke-13, RAM 63,8 GB, Windows-11-10.0.26200-SP0. labserver (repo ini), 127.0.0.1:8097, konten yang dihasilkan. keduanya pada pengaturan default: 8 koneksi."
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "baris, lalu <x1/>."
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> atau yang lebih baru di Apple Silicon atau Intel (eksperimental)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Di jendela yang sama, centang <g1>Batasi semua unduhan bersama-sama hingga</g1> dan atur kecepatannya. Ini membatasi MDM secara keseluruhan, berapa pun jumlah file yang sedang diunduh. Ini berlaku setiap kali dicentang, baik pembatas per-file aktif atau tidak."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Klik kanan ruang kosong daftar untuk <g1>Tambahkan unduhan baru</g1>, <g2>Pilih semua</g2>, <g3>Atur file</g3>, <g4>Hapus semua filter</g4>, dan <g5>Hapus Semua yang Selesai</g5>."
@@ -2749,6 +2745,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "Buka unduhan yang dipilih (klik ganda mengikuti klik kanan → <g1>Pada Klik Ganda</g1>)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "Tab <g1>Pembatas Kecepatan</g1> pada jendela torrent memiliki, selain batas unduhannya, <g2>Batasi pengunggahan</g2> ke kecepatan pilihan Anda. Batas tersebut dipertahankan dengan torrent: berlaku lagi setiap kali torrent berjalan atau berbagi. Torrent tidak dapat ditahan di bawah 16 KB/dtk dalam kedua kasus."
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -4310,10 +4310,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Setiap rilis mencantumkan checksum SHA-256 dari setiap file di <g1>SHA256SUMS.txt</g1>. Di Windows, bandingkan dengan <x2/>; di macOS dan Linux dengan <x3/>. Semua file dibuat dari kode sumber publik oleh GitHub Actions; log pembangunan ada di <g4>GitHub</g4>."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; <x1/> dari pilihan adalah apa yang diambil <x2/>."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Centang <g1>Batasi semua unduhan bersama-sama hingga</g1> dan ketik kecepatan dalam KB/dtk. Awal yang baik adalah sekitar dua pertiga dari kecepatan koneksi Anda. (1 MB/dtk sekitar 1000 KB/dtk.)"
@@ -4553,10 +4549,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "Koneksi dan kecepatan — Bantuan Mister Download Manager"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>Umum</g1> — info hash, potongan, rekan, berapa banyak yang dikirim, rasio berbagi, dan folder."
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -7210,10 +7202,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "Di <g1>Info File Unduhan</g1>, klik <g2>Unduh Nanti</g2>."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Unduh video; <x1/> mengambil pemilih kualitas dari <x2/> (<x3/> = file tunggal terbaik; <x4/>, <x5/>, <x6/> atau <x7/> = suara sebagai MP3 pada bitrate tersebut, <x8/> pada bitrate variabel terbaiknya; MP3 memerlukan ffmpeg)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Mau subtitel? Pilih bahasa di <g1>Subtitel</g1>. Subtitel akan disimpan di samping video, atau di dalam video jika Anda mencentang <g2>Masukkan ke dalam video</g2> (lihat <g3>Subtitel</g3>)."
@@ -8429,6 +8417,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "Klik <g1>Tambah URL</g1> di bilah alat, pilih <g2>Tugas → Tambahkan unduhan baru</g2>, atau tekan <g3>Ctrl+N</g3>."
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>Umum</g1> — info hash, potongan, rekan, berapa banyak yang dikirim, rasio berbagi, berapa lama telah dibagikan, dan folder. Jumlah yang dikirim dan waktu berbagi diakumulasikan selama semua jalannya torrent: tidak dimulai lagi dari 0 setelah jeda atau memulai ulang MDM."
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",

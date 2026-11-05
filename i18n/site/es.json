@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Respuestas sobre Mister Download Manager: si es gratis, si es seguro, cómo se compara con IDM, navegadores, vídeos, torrents, velocidad, Mac y Linux, y más."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Limitar subida para todos los torrents a</g1> — desactivado por defecto. Limita lo que todos tus torrents juntos envían a otros pares, mientras descargan y mientras comparten. El propio límite de subida de un torrent, en su ventana de progreso, se aplica además de este."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Inicia la cola principal de descargas; <x1/>."
@@ -305,10 +309,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13.ª Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (este repositorio), 127.0.0.1:8097, contenido generado. Ambos con la configuración predeterminada: 8 conexiones."
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "líneas, luego <x1/>."
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> o posterior en Apple Silicon o Intel (experimental)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "En la misma ventana, marca <g1>Limitar todas las descargas juntas a</g1> y establece la velocidad. Esto limita MDM en su conjunto, sin importar cuántos archivos se estén descargando. Se aplica siempre que esté marcado, ya sea que el limitador por archivo esté activado o desactivado."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Haga clic derecho en el espacio en blanco de la lista para <g1>Añadir nueva descarga</g1>, <g2>Seleccionar todo</g2>, <g3>Organizar archivos</g3>, <g4>Borrar todos los filtros</g4> y <g5>Eliminar todas las completadas</g5>."
@@ -2749,6 +2745,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "Abrir la descarga seleccionada (un doble clic sigue a hacer clic derecho → <g1>Al hacer doble clic</g1>)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "La pestaña <g1>Limitador de velocidad</g1> de la ventana de un torrent tiene, además de su límite de descarga, <g2>Limitar subida</g2> a la velocidad que elijas. Ese límite se mantiene con el torrent: se aplica de nuevo cada vez que el torrent se ejecuta o comparte. Un torrent no puede mantenerse por debajo de 16 KB/s de ninguna manera."
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -4310,10 +4310,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Cada versión lista la suma de comprobación SHA-256 de cada archivo en <g1>SHA256SUMS.txt</g1>. En Windows, compárala con <x2/>; en macOS y Linux con <x3/>. Todos los archivos se construyen desde el código fuente público mediante GitHub Actions; los registros de compilación están en <g4>GitHub</g4>."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; el <x1/> de una opción es lo que <x2/> toma."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Marque <g1>Limitar todas las descargas juntas a</g1> y escriba una velocidad en KB/s. Un buen punto de partida es aproximadamente dos tercios de la velocidad de su conexión. (1 MB/s equivale a unos 1000 KB/s)."
@@ -4553,10 +4549,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "Conexiones y velocidad — Ayuda de Mister Download Manager"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>General</g1> — el hash de información, las partes, los pares, cuánto se envió, la relación de compartición y la carpeta."
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -7210,10 +7202,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "En <g1>Información del archivo de descarga</g1>, haz clic en <g2>Descargar más tarde</g2>."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Descargar un vídeo; <x1/> toma un selector de calidad de <x2/> (<x3/> = el mejor archivo único; <x4/>, <x5/>, <x6/> o <x7/> = el sonido como MP3 a esa tasa de bits, <x8/> a su mejor tasa variable; MP3 necesita ffmpeg)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "¿Quieres subtítulos? Elige un idioma en <g1>Subtítulos</g1>. Se guardan junto al vídeo, o dentro de él si marcas <g2>Ponerlos en el vídeo</g2> (ver <g3>Subtítulos</g3>)."
@@ -8429,6 +8417,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "Haga clic en <g1>Añadir URL</g1> en la barra de herramientas, elija <g2>Tareas → Añadir nueva descarga</g2>, o pulse <g3>Ctrl+N</g3>."
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>General</g1> — el info hash, las piezas, los pares, cuánto se ha enviado, la relación de compartición, cuánto tiempo se ha compartido y la carpeta. Lo que se envió y el tiempo compartido se suman en todas las ejecuciones del torrent: no vuelven a 0 después de una pausa o un reinicio de MDM."
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",

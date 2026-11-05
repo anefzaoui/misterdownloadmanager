@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager hakkında cevaplar: ücretsiz mi, güvenli mi, IDM ile karşılaştırması, tarayıcılar, videolar, torrentler, hız, Mac ve Linux ve daha fazlası."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Tüm torrentler için karşıya yüklemeyi şuna sınırla</g1> — varsayılan olarak kapalıdır. Tüm torrentlerinizin diğer eşlere gönderdiği toplam veriyi, hem indirirken hem de paylaşırken sınırlar. Bir torrentin kendi yükleme limiti, ilerleme penceresinde, bunun üzerine uygulanır."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Ana indirme kuyruğunu başlatır; <x1/>."
@@ -305,10 +309,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13. Nesil Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (bu depo), 127.0.0.1:8097, oluşturulan içerik. İkisi de varsayılan ayarlarda: 8 bağlantı."
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "satır, sonra <x1/>."
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon veya Intel üzerinde <g1>macOS 11</g1> veya üzeri (deneysel)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Aynı pencerede, <g1>Tüm indirmeleri birlikte şuna sınırla</g1> seçeneğini işaretleyin ve hızı ayarlayın. Bu, kaç dosya indirilirse indirilsin, MDM'yi bir bütün olarak sınırlar. Dosya başına sınırlayıcı açık veya kapalı olsa da, işaretlendiği her zaman uygulanır."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Listenin boş alanına sağ tıklayarak <g1>Yeni indirme ekle</g1>, <g2>Tümünü seç</g2>, <g3>Dosyaları düzenle</g3>, <g4>Tüm filtreleri temizle</g4> ve <g5>Tamamlananların Tümünü Sil</g5> seçeneklerini görebilirsiniz."
@@ -2749,6 +2745,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "Seçili indirmeyi aç (çift tıklama, sağ tıklama → <g1>Çift tıklamada</g1> seçeneğini takip eder)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "Bir torrent penceresinin <g1>Hız Sınırlayıcı</g1> sekmesinde, indirme limitinin yanı sıra, <g2>Karşıya yüklemeyi sınırla</g2> seçeneğiyle istediğiniz bir hıza ayarlayabilirsiniz. Bu limit torrent ile birlikte korunur: torrent her çalıştığında veya paylaşıldığında tekrar uygulanır. Bir torrent her iki durumda da 16 KB/sn'nin altında tutulamaz."
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -4310,10 +4310,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Her sürüm, <g1>SHA256SUMS.txt</g1> dosyasında her dosyanın SHA-256 sağlama toplamını listeler. Windows'ta <x2/> ile; macOS ve Linux'ta <x3/> ile karşılaştırın. Tüm dosyalar GitHub Actions tarafından genel kaynaktan derlenir; derleme günlükleri <g4>GitHub</g4>'da bulunur."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; bir seçimin <x1/>'i, <x2/>'nin aldığıdır."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>Tüm indirmeleri birlikte şuna sınırla</g1> seçeneğini işaretleyin ve hızı KB/sn cinsinden yazın. İyi bir başlangıç, bağlantınızın hızının yaklaşık üçte ikisidir. (1 MB/sn yaklaşık 1000 KB/sn'dir.)"
@@ -4553,10 +4549,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "Bağlantılar ve hız — Mister Download Manager yardım"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>Genel</g1> — bilgi karması, parçalar, eşler, ne kadar gönderildiği, paylaşım oranı ve klasör."
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -7210,10 +7202,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>Dosya Bilgilerini İndir</g1> penceresinde <g2>Daha Sonra İndir</g2>'e tıklayın."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Bir video indirin; <x1/>, <x2/> içinden bir kalite seçici alır (<x3/> = en iyi tek dosya; <x4/>, <x5/>, <x6/> veya <x7/> = o bit hızında MP3 olarak ses, <x8/> en iyi değişken hızında; MP3 için ffmpeg gerekir)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Altyazı mı istiyorsunuz? <g1>Altyazılar</g1> bölümünden bir dil seçin. Videonun yanına kaydedilirler veya <g2>Videoya yerleştir</g2> seçeneğini işaretlerseniz içine kaydedilirler (bkz. <g3>Altyazılar</g3>)."
@@ -8429,6 +8417,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "Araç çubuğunda <g1>URL Ekle</g1>'ye tıklayın, <g2>Görevler → Yeni indirme ekle</g2> seçeneğini belirleyin veya <g3>Ctrl+N</g3> tuşlarına basın."
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>Genel</g1> — bilgi karması, parçalar, eşler, ne kadar gönderildiği, paylaşım oranı, ne kadar süredir paylaşıldığı ve klasör. Gönderilen miktar ve paylaşılan süre, torrentin tüm çalıştırmaları boyunca toplanır: duraklatıldıktan veya MDM yeniden başlatıldıktan sonra 0'dan tekrar başlamazlar."
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",

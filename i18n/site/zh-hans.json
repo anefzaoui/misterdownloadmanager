@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "关于 Mister Download Manager 的解答：它是否免费、是否安全、与 IDM 的比较、浏览器、视频、种子、速度、Mac 和 Linux 等。"
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和分享时向其他对等点发送的总量。torrent 进度窗口中自己的上传限制会在此基础上生效。"
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "启动主下载队列；<x1/>。"
@@ -305,10 +309,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "第 13 代英特尔(R) 酷睿(TM) i5-13400F，63.8 GB 内存，Windows-11-10.0.26200-SP0。labserver（此仓库），127.0.0.1:8097，生成内容。两者均使用默认设置：8 个连接。"
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "行，然后是 <x1/>。"
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon 或 Intel 芯片上的<g1>macOS 11</g1>或更高版本（实验性）。"
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "在同一窗口中，勾选<g1>将所有下载总计限制为</g1>并设置速度。这会限制 MDM 的整体速度，无论正在下载多少文件。只要勾选此项，它就会生效，无论单个文件限制器是否开启。"
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "右键点击列表的空白处，可选择<g1>添加新下载</g1>、<g2>全选</g2>、<g3>整理文件</g3>、<g4>清除所有筛选器</g4>和<g5>删除所有已完成</g5>。"
@@ -2749,6 +2745,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "打开所选下载（双击操作遵循右键单击 → <g1>双击时</g1> 的设置）"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "torrent 窗口的<g1>速度限制器</g1>选项卡除了下载限制外，还有<g2>限制上传</g2>到您选择的速度。该限制会随 torrent 保存：每当 torrent 运行或分享时，该限制都会再次生效。无论如何，torrent 的上传速度不能低于 16 千字节/秒。"
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -4310,10 +4310,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "每个发布版本都在<g1>SHA256SUMS.txt</g1>中列出了每个文件的 SHA-256 校验和。在 Windows 上，请与<x2/>进行比较；在 macOS 和 Linux 上，请与<x3/>进行比较。所有文件均由 GitHub Actions 从公共源代码构建；构建日志可在<g4>GitHub</g4>上查看。"
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "；选项的 <x1/> 是 <x2/> 所取的值。"
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "勾选<g1>将所有下载总计限制为</g1>，并输入速度（单位为千字节/秒）。一个好的开始是您连接速度的大约三分之二。（1 兆字节/秒大约是 1000 千字节/秒。）"
@@ -4553,10 +4549,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "连接和速度 — Mister Download Manager 帮助"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>常规</g1> — 信息哈希、分块、对等方、已发送量、共享率和文件夹。"
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -7210,10 +7202,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "在<g1>下载文件信息</g1>中，点击<g2>稍后下载</g2>。"
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单文件；<x4/>、<x5/>、<x6/> 或 <x7/> = 该比特率的 MP3 音频，<x8/> 为最佳可变比特率；MP3 需要 ffmpeg）。"
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "想要字幕？在<g1>字幕</g1>中选择一种语言。它们会保存在视频旁边，如果您勾选<g2>将它们放入视频</g2>，则会保存在视频内部（参见<g3>字幕</g3>）。"
@@ -8429,6 +8417,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "点击工具栏上的<g1>添加 URL</g1>，选择<g2>任务 → 添加新下载</g2>，或按<g3>Ctrl+N</g3>。"
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>常规</g1> — 信息哈希、分块、对等点、已发送量、分享率、已分享时长以及文件夹。已发送量和已分享时长是该 torrent 所有运行的总和：在暂停或重启 MDM 后，它们不会从 0 重新开始计算。"
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",

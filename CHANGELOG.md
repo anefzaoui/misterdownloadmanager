@@ -22,6 +22,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Torrents: upload limits, and a share ratio that lasts**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Torrent settings can
+  limit what all torrents together send, and a torrent's progress window can limit its own, kept
+  with it. Its General tab now counts what it sent and how long it shared over all its runs, so
+  the share ratio no longer starts again at 0 after a pause or a restart.
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the

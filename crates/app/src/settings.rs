@@ -157,6 +157,10 @@ pub struct Settings {
     pub torrent_blocklist: String,
     /// Stop the torrent engine when no torrent runs (it stops listening; new settings apply).
     pub torrent_stop_idle: bool,
+    /// Torrent settings → "Limit uploading to [n] KBytes/sec" for all torrents together (#39;
+    /// off by default: a torrent's own limit, in its progress window, still applies).
+    pub torrent_upload_on: bool,
+    pub torrent_upload_kb: u64,
     /// Help: look for a newer release once a week (D-020; its switch is in Check for updates:
     /// Options → General has no free row in IDM's layout).
     pub update_check: bool,
@@ -285,6 +289,8 @@ impl Default for Settings {
             torrent_proxy: false,
             torrent_blocklist: String::new(),
             torrent_stop_idle: true,
+            torrent_upload_on: false,
+            torrent_upload_kb: 100,
             update_check: true,
             update_checked: 0,
             custom_categories: Vec::new(),
@@ -483,6 +489,12 @@ impl Settings {
     pub fn speed_limit(&self) -> Option<u64> {
         self.speed_limit_on
             .then_some(self.speed_limit_kb.max(1) * 1024)
+    }
+
+    /// Torrent settings' upload limit for all torrents together, bytes/s (None: off).
+    pub fn torrent_upload_limit(&self) -> Option<u64> {
+        self.torrent_upload_on
+            .then_some(self.torrent_upload_kb.max(1) * 1024)
     }
 }
 
