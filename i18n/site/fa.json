@@ -2566,10 +2566,6 @@
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>شروع دانلود در</g1> — یک زمان، سپس یا:"
   },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>ویژگی‌ها</g1> — پوشه آن را تغییر دهید (و برای دسته‌های خودتان، نام و انواع فایل آن را)."
-  },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
    "text": "Mister Download Manager را از منوی شروع اجرا کنید، سپس <g1>اولین فایل خود را دانلود کنید</g1>."
@@ -3597,6 +3593,10 @@
   "66a39a85a0d50d8a": {
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>فراخوانی‌های فقط Windows در <x2/> قرار دارند</g1>، معادل‌های Linux و macOS آن‌ها در <x3/>؛ بقیه فضای کاری Rust امن و قابل حمل است (<x4/>). در Windows، <x5/> بررسی می‌کند که همچنان برای Linux و macOS ساخته می‌شود."
+  },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>ویژگی‌ها</g1> — نام، انواع فایل و پوشه آن را تغییر دهید. دسته‌بندی‌های عمومی و تورنت‌ها فقط پوشه خود را تغییر می‌دهند. یک دسته‌بندی تغییر نام یافته پوشه خود را حفظ می‌کند؛ یک دسته‌بندی داخلی نام خود را به زبان شما حفظ می‌کند تا زمانی که آن را تغییر نام دهید."
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -5265,10 +5265,6 @@
   "96076440a6a16300": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
    "text": "بارگیری یک فایل با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> فایل تمام‌شده را بررسی می‌کند: هگز MD5، SHA-1، SHA-256، SHA-512 یا CRC32، با نام اختیاری (<x5/>)."
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>حذف</g1> — یکی از دسته‌های خودتان را حذف کنید. دانلودهای آن عمومی می‌شوند؛ فایل‌هایشان در جای خود باقی می‌مانند."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7254,6 +7250,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>حذف</g1> — یک دسته‌بندی را حذف کنید، چه دسته‌بندی خودتان باشد و چه یک دسته‌بندی داخلی (نه عمومی یا تورنت‌ها). MDM می‌پرسد چه اتفاقی برای دانلودهای آن بیفتد: <g2>انتقال دانلودهای آن به عمومی</g2>، یا <g3>حذف دانلودهای آن از لیست</g3> (یک دانلود در حال اجرا به جای آن به عمومی منتقل می‌شود). فایل‌های آن‌ها در هر صورت در جای خود باقی می‌مانند. از آن به بعد، فایل‌های از انواع آن به دسته‌بندی دیگری که آن‌ها را دارد، یا به عمومی می‌روند."
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "از قبل yt-dlp یا ffmpeg را برای برنامه دیگری دارید؟ به جای یک نسخه دوم، از آنها استفاده کنید: در <g1>بارگیری ویدئو از یک صفحه</g1>، روی <g2>کمک‌کننده‌ها...</g2> کلیک کنید، سپس <g3>استفاده از برنامه دیگر...</g3> را کنار yt-dlp یا ffmpeg انتخاب کرده و برنامه را برگزینید. MDM آن را یک بار اجرا می‌کند تا مطمئن شود که همان برنامه است و از آن به بعد از آن استفاده می‌کند، خط فرمان نیز همینطور. MDM برنامه‌ای را که شما انتخاب کرده‌اید به‌روزرسانی نمی‌کند: خودتان آن را به‌روز نگه دارید (yt-dlp: <x4/>، یا مدیر بسته شما). <g5>استفاده از نسخه خود MDM</g5> به نسخه‌ای برمی‌گردد که MDM دانلود و بررسی می‌کند."
@@ -8021,6 +8021,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>منبع</g1> متن انگلیسی است؛ آن را همانطور که هست رها کنید. فقط <g2>ترجمه</g2> را تغییر دهید."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "برای بازگرداندن دسته‌بندی‌های داخلی به حالت اولیه، با نام‌ها، انواع فایل‌ها و پوشه‌هایشان، از <g1>گزینه‌ها ← ذخیره در ← بازیابی دسته‌بندی‌های داخلی</g1> استفاده کنید. دسته‌بندی‌های خودتان، عمومی و تورنت‌ها به همان شکل باقی می‌مانند."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

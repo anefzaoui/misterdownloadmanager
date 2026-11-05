@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The built-in categories are yours to change** ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93)):
+  Compressed, Documents, Music, Programs and Video can be renamed, given other file types and
+  deleted, like your own categories (right-click → Properties or Delete). A renamed category keeps
+  its folder. Deleting one asks what happens to its downloads: move them to General, or take them
+  off the list; their files stay either way. **Options → Save to → Restore the built-in
+  categories** brings them back as they came. General and Torrents still change only their folder.
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the

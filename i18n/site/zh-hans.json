@@ -2566,10 +2566,6 @@
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>在以下时间开始下载</g1> — 一个时间，然后是："
   },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>属性</g1> — 更改其文件夹（对于您自己的类别，还可以更改其名称和文件类型）。"
-  },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
    "text": "从“开始”菜单启动 Mister Download Manager，然后<g1>下载您的第一个文件</g1>。"
@@ -3597,6 +3593,10 @@
   "66a39a85a0d50d8a": {
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>仅限 Windows 的调用位于<x2/></g1>中，其 Linux 和 macOS 对应项位于<x3/>中；工作区的其余部分是安全、可移植的 Rust（<x4/>）。在 Windows 上，<x5/>检查它是否仍然可以为 Linux 和 macOS 构建。"
+  },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>属性</g1> — 更改其名称、文件类型和文件夹。“常规”和“种子”只更改其文件夹。重命名的类别会保留其文件夹；内置类别在您重命名之前会保留其语言名称。"
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -5265,10 +5265,6 @@
   "96076440a6a16300": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
    "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>删除</g1> — 移除您自己的一个类别。该类别下的下载会变为常规类别；它们的文件会保留在原位。"
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7254,6 +7250,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>删除</g1> — 删除一个类别，无论是您自己的还是内置的（“常规”或“种子”除外）。MDM 会询问如何处理其下载：<g2>将其下载移动到“常规”</g2>，或<g3>从列表中删除其下载</g3>（正在运行的下载会改为移动到“常规”）。无论哪种方式，它们的文件都会保留在原处。从那时起，其文件类型的文件将转到包含它们的另一个类别，或转到“常规”。"
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "已经为其他程序安装了 yt-dlp 或 ffmpeg？使用它们，而不是再安装一份：在<g1>从页面下载视频</g1>中，点击<g2>帮助程序...</g2>，然后在 yt-dlp 或 ffmpeg 旁边点击<g3>使用其他程序...</g3>，选择该程序。MDM 会运行它一次，以确认是该程序，之后就会一直使用它，包括命令行。MDM 不会更新您选择的程序：请自行保持其最新（yt-dlp：<x4/>，或您的包管理器）。<g5>使用 MDM 自己的副本</g5>会回到 MDM 下载并检查的那个版本。"
@@ -8021,6 +8021,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1>是英文文本；请保持不变。只更改<g2>translation</g2>。"
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "要将内置类别恢复到其原始状态，包括名称、文件类型和文件夹，请使用<g1>选项 → 保存到 → 恢复内置类别</g1>。您自己的类别、“常规”和“种子”将保持不变。"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

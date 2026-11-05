@@ -48,6 +48,8 @@ Everything below ships together, in one release.
   ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), and dragging the file out
   of Download complete works in every language
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
+- ✅ The built-in categories can be renamed, given other file types and deleted, and restored
+  ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with

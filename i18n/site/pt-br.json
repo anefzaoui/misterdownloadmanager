@@ -2566,10 +2566,6 @@
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>Iniciar download em</g1> — um horário, então:"
   },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>Propriedades</g1> — alterar sua pasta (e, para suas próprias categorias, seu nome e tipos de arquivo)."
-  },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
    "text": "Inicie o Mister Download Manager pelo menu Iniciar e, em seguida, <g1>baixe seu primeiro arquivo</g1>."
@@ -3597,6 +3593,10 @@
   "66a39a85a0d50d8a": {
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>Chamadas somente para Windows ficam em <x2/></g1>, suas contrapartes para Linux e macOS em <x3/>; o resto do espaço de trabalho é Rust seguro e portátil (<x4/>). No Windows, <x5/> verifica se ainda é compilado para Linux e macOS."
+  },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>Propriedades</g1> — altere o nome, os tipos de arquivo e a pasta. As categorias Geral e Torrents só permitem alterar a pasta. Uma categoria renomeada mantém sua pasta; uma categoria interna mantém seu nome no seu idioma até que você a renomeie."
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -5265,10 +5265,6 @@
   "96076440a6a16300": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
    "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo finalizado: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>)."
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>Excluir</g1> — remover uma de suas próprias categorias. Seus downloads se tornam Geral; seus arquivos permanecem onde estão."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7254,6 +7250,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>Excluir</g1> — remove uma categoria, seja uma criada por você ou uma interna (exceto Geral ou Torrents). O MDM pergunta o que fazer com os downloads dela: <g2>Mover seus downloads para Geral</g2>, ou <g3>Remover seus downloads da lista</g3> (um download em andamento é movido para Geral). Os arquivos permanecem onde estão em ambos os casos. A partir de então, os arquivos dos tipos dela vão para outra categoria que os tenha, ou para Geral."
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "Já tem yt-dlp ou ffmpeg para outro programa? Use-os em vez de uma segunda cópia: em <g1>Baixar vídeo de uma página</g1>, clique em <g2>Auxiliares...</g2>, depois em <g3>Usar outro programa...</g3> ao lado de yt-dlp ou ffmpeg, e escolha o programa. O MDM o executa uma vez para verificar se é esse programa, e o usa a partir de então, a linha de comando também. O MDM não atualiza um programa que você escolheu: mantenha-o atualizado você mesmo (yt-dlp: <x4/>, ou seu gerenciador de pacotes). <g5>Usar a cópia própria do MDM</g5> volta para o que o MDM baixa e verifica."
@@ -8021,6 +8021,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> é o texto em inglês; deixe-o como está. Altere apenas <g2>translation</g2>."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "Para restaurar as categorias internas como vieram, com seus nomes, tipos de arquivo e pastas, use <g1>Opções → Salvar em → Restaurar as categorias internas</g1>. Suas próprias categorias, Geral e Torrents permanecem como estão."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
