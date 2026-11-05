@@ -44,6 +44,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   torrent's right-click menu has **Torrent → Recheck files**, **Reannounce**, **Add trackers...**
   and **Copy magnet link**. Its Files tab can tick and untick files while it runs. A `.torrent`
   file's web address, in Add URL or from the browser, opens Add torrent with what the file holds.
+  TORRENT is in Options → File types' defaults, so the browser hands `.torrent` files over; a
+  list saved before keeps what it had.
 - **Torrents: seeding limits** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)):
   under "Keep sharing torrents after they finish", Torrent settings can stop sharing a finished
   torrent at a share ratio, or after it has been shared for some minutes; both off by default. A
