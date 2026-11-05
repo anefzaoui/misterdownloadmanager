@@ -17,6 +17,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} கோப்பு {folder} இல் பிரித்தெடுக்கப்பட்டது|{n} கோப்புகள் {folder} இல் பிரித்தெடுக்கப்பட்டன
+#. count in rssdlg.rs
+#. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	இப்போது {n} கட்டுரையுடன் பொருந்துகிறது (இது புதியவற்றை மட்டுமே சேர்க்கிறது):|இப்போது {n} கட்டுரைகளுடன் பொருந்துகிறது (இது புதியவற்றை மட்டுமே சேர்க்கிறது):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -27,6 +32,10 @@
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} {n} இணைப்பு அனுமதிக்கிறது|{host} {n} இணைப்புகளை அனுமதிக்கிறது
+#. count in rssdlg.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} article|{n} articles	{n} கட்டுரை|{n} கட்டுரைகள்
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -113,6 +122,10 @@
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(பெயர்களை இடைவெளிகளால் பிரிக்கவும்)
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown in the empty Save to box
+#, machine
+	(the Torrents category's folder)	(டாரன்ட்கள் வகையின் கோப்புறை)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -151,6 +164,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ஒரு அறிக்கை சேமிக்கப்பட்டது. அதை GitHub இல் உள்ள டெவலப்பர்களுக்கு அனுப்புவது இதைச் சரிசெய்ய அவர்களுக்கு உதவுகிறது; அதில் உள்ள அனைத்தையும் நீங்கள் முதலில் கீழே படிக்கலாம். எதுவும் தானாக அனுப்பப்படாது: அனுப்பு பொத்தான் உங்கள் உலாவியில் அறிக்கை படிவத்தைத் திறந்து, அதை நிரப்பி, நீங்கள் சரிபார்த்து சமர்ப்பிக்க உதவுகிறது.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown when there are no rules yet
+#, machine
+	A rule adds the new articles whose titles it matches, as they come.	ஒரு விதி, புதிய கட்டுரைகளின் தலைப்புகளைப் பொருத்தி, அவை வரும்போது சேர்க்கும்.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -195,6 +212,10 @@
 #. text in categories.rs
 #, machine
 	Add category	வகை சேர்
+#. button in rssdlg.rs
+#. RSS feeds window: button that subscribes to the feed whose address is typed
+#, machine
+	Add feed	ஊட்டத்தைச் சேர்
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
@@ -220,6 +241,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	இலவச நீட்டிப்பைச் சேர்க்கவும்: உங்கள் உலாவியில் பதிவிறக்கும் கோப்புகள் இங்கே வரும், மேலும் வீடியோக்களுக்கு ஒரு பதிவிறக்க பொத்தான் கிடைக்கும்.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: add the torrents to the list without starting them
+#, machine
+	Add them without starting them	அவற்றைத் தொடங்காமல் சேர்
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -243,6 +268,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Add...	சேர்...
+#. message or event log entry in the main window
+#. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
+#, machine
+	Added by the RSS rule {rule} from {feed}	RSS விதி {rule} மூலம் {feed} இலிருந்து சேர்க்கப்பட்டது
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -360,6 +389,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து "{name}" என்பதை நீக்க விரும்புகிறீர்களா?
+#. text in rssdlg.rs
+#, machine
+	Articles	கட்டுரைகள்
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	கணினியின் பிராந்தியம் எழுதுவது போல
@@ -503,6 +535,10 @@
 #. Link grabber button (IDM's): tick every link
 #, machine
 	Check all	அனைத்தையும் சரிபார்க்கவும்
+#. text in rssdlg.rs
+#. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
+#, machine
+	Check feeds every	ஒவ்வொரு முறையும் ஊட்டங்களைச் சரிபார்க்கவும்
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	புதுப்பிப்புகளைச் சரிபார்க்கவும்
@@ -571,7 +607,7 @@
 #. text in the Options window
 #, machine
 	Clock:	கடிகாரம்:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -636,6 +672,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	அறிக்கையை நகலெடு
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed's last fetch failed, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Could not be read: {error}	படிக்க முடியவில்லை: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -694,7 +735,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	இயல்புநிலை அதிகபட்ச இணைப்பு எண்
-#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -830,6 +871,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	பதிவிறக்கப் பேனல்கள்
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the rules that add articles by themselves
+#, machine
+	Download rules	பதிவிறக்க விதிகள்
 #. text in a download's progress window
 #. tab title: how the download is going
 #, machine
@@ -849,6 +894,11 @@
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
 	Download {files} files at the same time	ஒரே நேரத்தில் {files} கோப்புகளைப் பதிவிறக்கு
+#. button in rssdlg.rs
+#. RSS feeds window: add the selected article's torrent (opens Add torrent)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Download...	பதிவிறக்கு...
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -973,6 +1023,14 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	வரிசை பெயரை உள்ளிடவும்
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: which episodes to take (season x episode)
+#, machine
+	Episodes:	பாகங்கள்:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the episode filter can't be read
+#, machine
+	Episodes: like 1x2;1x5-8;2x1- (season x episode)	பாகங்கள்: 1x2;1x5-8;2x1- (பருவம் x பாகம்) போன்றவை
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1050,6 +1108,18 @@
 #. text in the Scheduler window
 #, machine
 	February	பிப்ரவரி
+#. text in rssdlg.rs
+#. RSS feeds window: label before the box where a feed's web address is typed
+#, machine
+	Feed address:	ஊட்ட முகவரி:
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the feeds and their articles
+#, machine
+	Feeds	ஊட்டங்கள்
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the feeds the rule watches
+#, machine
+	Feeds:	ஊட்டங்கள்:
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
@@ -1453,6 +1523,10 @@
 #. window title (the interface language)
 #, machine
 	Language	மொழி
+#. message or event log entry in the main window
+#. RSS: a feed bigger than MDM reads (5 MB)
+#, machine
+	larger than a feed can be	ஊட்டமாக இருக்கக்கூடியதை விட பெரியது
 #. text in the Batch download window
 #, machine
 	Last file:	கடைசி கோப்பு:
@@ -1606,7 +1680,8 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	அறிவிப்புப் பகுதிக்குச் சுருக்கு
-#. text in the Add torrent window
+#. text in rssdlg.rs; text in the Add torrent window
+#. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
 #, machine
 	minutes	நிமிடங்கள்
@@ -1708,6 +1783,14 @@
 #. category name: audio files
 #, machine
 	Music	இசை
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words the article's title must contain
+#, machine
+	Must contain:	கட்டாயம் கொண்டிருக்க வேண்டும்:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words that make the rule skip an article
+#, machine
+	Must not contain:	கட்டாயம் கொண்டிருக்கக் கூடாது:
 #. option (radio button) in the Options window
 #, machine
 	My own way:	எனது சொந்த வழி:
@@ -1719,8 +1802,9 @@
 #. column title: file name
 #, machine
 	Name	பெயர்
-#. text in categories.rs; text in the Link grabber window
+#. text in categories.rs; text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the package's name (a label before its box)
+#. RSS feeds window, Download rules: the rule's name
 #, machine
 	Name:	பெயர்:
 #. text in the Options window
@@ -1750,6 +1834,11 @@
 #. text in the Options window
 #, machine
 	New login	புதிய உள்நுழைவு
+#. text in rssdlg.rs
+#. RSS feeds window: the name a new download rule starts with
+#. RSS feeds window, Download rules: make a new rule
+#, machine
+	New rule	புதிய விதி
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	இல்லை
@@ -1832,12 +1921,21 @@
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
 	None on this page	இந்தப் பக்கத்தில் ஏதுமில்லை
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
+#, machine
+	None ticked: every feed.	எதுவும் டிக் செய்யப்படவில்லை: ஒவ்வொரு ஊட்டமும்.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ஏதுமில்லை: பியர்கள் DHT மற்றும் பிற பியர்களிடமிருந்து வருகின்றன
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	இது படிக்க முடியாத சரிபார்ப்புச் சுருக்கம்
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: a regular expression that can't be read, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Not a regular expression: {error}	சாதாரண வெளிப்பாடு அல்ல: {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
@@ -1845,6 +1943,10 @@
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	போதுமான வட்டு இடம் இல்லை: {needed} தேவை, {free} இலவசம்
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed hasn't been fetched yet
+#, machine
+	Not fetched yet	இன்னும் பெறப்படவில்லை
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	வரிசையில் இல்லை
@@ -2175,10 +2277,18 @@
 #. text in a download's Properties window
 #, machine
 	Referer:	பரிந்துரையாளர்:
+#. button in rssdlg.rs
+#. RSS feeds window: fetch the selected feed again now
+#, machine
+	Refresh	புதுப்பி
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
 	Regional	பிராந்திய
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the two boxes above hold regular expressions
+#, machine
+	Regular expressions	சாதாரண வெளிப்பாடுகள்
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	இந்தக் கோப்பிற்கான வேக வரம்பு அமைப்புகளை நினைவில் கொள்ளவும்
@@ -2186,8 +2296,9 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	"{category}" வகைக்கு இந்தப் பாதையை நினைவில் கொள்ளவும்
-#. button in the Options window
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
+#. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	அகற்று
 #. text in the Scheduler window
@@ -2233,6 +2344,9 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	மீண்டும் முயற்சிக்கிறது: {error}
+#. window title in rssdlg.rs
+#, machine
+	RSS feeds	RSS ஊட்டங்கள்
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2259,8 +2373,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	சேமிக்க வேண்டிய இடம்:
-#. text in the Link grabber window
+#. text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the folder the package's files go to (a label before its box)
+#. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
 	Save to:	இதில் சேமிக்க:
 #. text in a download's progress window
@@ -3124,6 +3239,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	இரண்டு இலவச உதவியாளர்கள் இதைச் செயல்படுத்துகிறார்கள். இப்போதே அவற்றைப் பெறுங்கள், ஒரு வீடியோவைக் கண்டறிந்தால், அதைச் சேமிப்பது ஒரே கிளிக்கில் முடிந்துவிடும்.
+#. text in rssdlg.rs
+#. RSS feeds window: shown when there are no feeds yet
+#, machine
+	Type a feed's address above and click Add feed.	மேலே ஒரு ஊட்டத்தின் முகவரியைத் தட்டச்சு செய்து, ஊட்டத்தைச் சேர் என்பதைக் கிளிக் செய்யவும்.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3247,6 +3366,10 @@
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	பின்வரும் நெறிமுறைகளுக்கு இந்த ப்ராக்ஸியைப் பயன்படுத்து:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the rule is on
+#, machine
+	Use this rule	இந்த விதியைப் பயன்படுத்து
 #. text in the Options window
 #, machine
 	Used by the list of downloads and the Scheduler.	பதிவிறக்கப் பட்டியலிலும் திட்டமிடுபவரிலும் பயன்படுத்தப்படுகிறது.
@@ -3370,6 +3493,10 @@
 #. Torrent settings, under "Use the proxy"
 #, machine
 	With it, incoming connections, the DHT and local peers are off.	இதன் மூலம், உள்வரும் இணைப்புகள், DHT மற்றும் உள்ளூர் பியர்கள் முடக்கப்படும்.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
+#, machine
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	வார்த்தைகள்: அனைத்தும்; | மாற்றுகளுக்கு இடையில்; * மற்றும் ?. பாகங்கள்: 1x2;1x5-8;2x1-. ஒவ்வொரு பாகமும் ஒருமுறை.
 #. group box title in the Options window
 #, machine
 	Write dates and times	தேதிகளையும் நேரங்களையும் எழுது
@@ -3634,6 +3761,23 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} வினாடி
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: {title} was added by the rule {rule}
+#, machine
+	{title}: added by {rule}	{title}: {rule} மூலம் சேர்க்கப்பட்டது
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article is a torrent the list already has
+#, machine
+	{title}: already in the list	{title}: ஏற்கனவே பட்டியலில் உள்ளது
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
+#, machine
+	{title}: not added: files of its names are already in {folder}	{title}: சேர்க்கப்படவில்லை: அதன் பெயர்களின் கோப்புகள் ஏற்கனவே {folder} இல் உள்ளன
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article could not be added, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{title}: not added: {error}	{title}: சேர்க்கப்படவில்லை: {error}
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3988,6 +4132,12 @@ menu	&Report a problem	சிக்கலைப் புகாரளி(&R)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Reset columns	நெடுவரிசைகளை &மீட்டமை
+#. menu command in the main window
+#. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&RSS feeds...	&RSS ஊட்டங்கள்...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

@@ -17,6 +17,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	បានពន្លាឯកសារ {n} ទៅកាន់ {folder}
+#. count in rssdlg.rs
+#. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	ត្រូវគ្នានឹងអត្ថបទ {n} ឥឡូវនេះ (វាបន្ថែមតែអត្ថបទថ្មីៗប៉ុណ្ណោះ)៖
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -27,6 +32,10 @@
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} អនុញ្ញាតការតភ្ជាប់ {n}
+#. count in rssdlg.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} article|{n} articles	{n} អត្ថបទ
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -113,6 +122,10 @@
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(បំបែកឈ្មោះដោយដកឃ្លា)
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown in the empty Save to box
+#, machine
+	(the Torrents category's folder)	(ថតឯកសារនៃប្រភេទ Torrents)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -151,6 +164,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	របាយការណ៍ត្រូវបានរក្សាទុក។ ការផ្ញើវាទៅកាន់អ្នកអភិវឌ្ឍន៍នៅលើ GitHub ជួយពួកគេជួសជុលបញ្ហានេះ។ អ្នកអាចអានអ្វីគ្រប់យ៉ាងដែលវាមាននៅខាងក្រោមជាមុនសិន។ គ្មានអ្វីត្រូវបានផ្ញើដោយខ្លួនឯងទេ៖ ផ្ញើបើកទម្រង់របាយការណ៍នៅក្នុងកម្មវិធីរុករករបស់អ្នក ដែលបានបំពេញរួចជាស្រេច សម្រាប់អ្នកពិនិត្យ និងដាក់ស្នើ។
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown when there are no rules yet
+#, machine
+	A rule adds the new articles whose titles it matches, as they come.	ច្បាប់មួយបន្ថែមអត្ថបទថ្មីដែលចំណងជើងរបស់វាត្រូវគ្នា នៅពេលដែលពួកវាចូលមក។
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -195,6 +212,10 @@
 #. text in categories.rs
 #, machine
 	Add category	បន្ថែមប្រភេទ
+#. button in rssdlg.rs
+#. RSS feeds window: button that subscribes to the feed whose address is typed
+#, machine
+	Add feed	បន្ថែម​មតិព័ត៌មាន
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
@@ -220,6 +241,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	បន្ថែមផ្នែកបន្ថែមឥតគិតថ្លៃ៖ ឯកសារដែលអ្នកទាញយកនៅក្នុងកម្មវិធីរុករករបស់អ្នកនឹងមកទីនេះ ហើយវីដេអូនឹងទទួលបានប៊ូតុងទាញយក។
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: add the torrents to the list without starting them
+#, machine
+	Add them without starting them	បន្ថែមពួកវាដោយមិនចាប់ផ្ដើមពួកវា
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -243,6 +268,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Add...	បន្ថែម...
+#. message or event log entry in the main window
+#. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
+#, machine
+	Added by the RSS rule {rule} from {feed}	បានបន្ថែមដោយច្បាប់ RSS {rule} ពី {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -360,6 +389,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	តើអ្នកពិតជាចង់លុប “{name}” ចេញពីបញ្ជីទាញយករបស់ Mister Download Manager មែនទេ?
+#. text in rssdlg.rs
+#, machine
+	Articles	អត្ថបទ
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	តាមការកំណត់តំបន់របស់ប្រព័ន្ធ
@@ -503,6 +535,10 @@
 #. Link grabber button (IDM's): tick every link
 #, machine
 	Check all	ធីកទាំងអស់
+#. text in rssdlg.rs
+#. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
+#, machine
+	Check feeds every	ពិនិត្យមើលមតិព័ត៌មានរៀងរាល់
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	ពិនិត្យមើលបច្ចុប្បន្នភាព
@@ -571,7 +607,7 @@
 #. text in the Options window
 #, machine
 	Clock:	នាឡិកា៖
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -636,6 +672,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	ចម្លងរបាយការណ៍
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed's last fetch failed, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Could not be read: {error}	មិនអាចអានបាន៖ {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -694,7 +735,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ចំនួនតំណភ្ជាប់អតិបរមា​លំនាំដើម
-#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -830,6 +871,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	ផ្ទាំងទាញយក
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the rules that add articles by themselves
+#, machine
+	Download rules	ច្បាប់ទាញយក
 #. text in a download's progress window
 #. tab title: how the download is going
 #, machine
@@ -849,6 +894,11 @@
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
 	Download {files} files at the same time	ទាញយក {files} ឯកសារក្នុងពេលតែមួយ
+#. button in rssdlg.rs
+#. RSS feeds window: add the selected article's torrent (opens Add torrent)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Download...	ទាញយក...
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -973,6 +1023,14 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	បញ្ចូលឈ្មោះជួរ
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: which episodes to take (season x episode)
+#, machine
+	Episodes:	វគ្គ៖
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the episode filter can't be read
+#, machine
+	Episodes: like 1x2;1x5-8;2x1- (season x episode)	វគ្គ៖ ដូចជា 1x2;1x5-8;2x1- (រដូវកាល x វគ្គ)
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1050,6 +1108,18 @@
 #. text in the Scheduler window
 #, machine
 	February	ខែកុម្ភៈ
+#. text in rssdlg.rs
+#. RSS feeds window: label before the box where a feed's web address is typed
+#, machine
+	Feed address:	អាសយដ្ឋានមតិព័ត៌មាន៖
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the feeds and their articles
+#, machine
+	Feeds	មតិព័ត៌មាន
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the feeds the rule watches
+#, machine
+	Feeds:	មតិព័ត៌មាន៖
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
@@ -1453,6 +1523,10 @@
 #. window title (the interface language)
 #, machine
 	Language	ភាសា
+#. message or event log entry in the main window
+#. RSS: a feed bigger than MDM reads (5 MB)
+#, machine
+	larger than a feed can be	ធំជាងមតិព័ត៌មានអាចមាន
 #. text in the Batch download window
 #, machine
 	Last file:	ឯកសារចុងក្រោយ:
@@ -1606,7 +1680,8 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	បង្រួមអប្បបរមាទៅតំបន់ជូនដំណឹង
-#. text in the Add torrent window
+#. text in rssdlg.rs; text in the Add torrent window
+#. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
 #, machine
 	minutes	នាទី
@@ -1708,6 +1783,14 @@
 #. category name: audio files
 #, machine
 	Music	តន្ត្រី
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words the article's title must contain
+#, machine
+	Must contain:	ត្រូវតែមាន៖
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words that make the rule skip an article
+#, machine
+	Must not contain:	មិនត្រូវមាន៖
 #. option (radio button) in the Options window
 #, machine
 	My own way:	តាមវិធីរបស់ខ្ញុំ៖
@@ -1719,8 +1802,9 @@
 #. column title: file name
 #, machine
 	Name	ឈ្មោះ
-#. text in categories.rs; text in the Link grabber window
+#. text in categories.rs; text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the package's name (a label before its box)
+#. RSS feeds window, Download rules: the rule's name
 #, machine
 	Name:	ឈ្មោះ៖
 #. text in the Options window
@@ -1750,6 +1834,11 @@
 #. text in the Options window
 #, machine
 	New login	ការចូលថ្មី
+#. text in rssdlg.rs
+#. RSS feeds window: the name a new download rule starts with
+#. RSS feeds window, Download rules: make a new rule
+#, machine
+	New rule	ច្បាប់ថ្មី
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	ទេ
@@ -1832,12 +1921,21 @@
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
 	None on this page	គ្មាននៅលើទំព័រនេះទេ
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
+#, machine
+	None ticked: every feed.	គ្មានការធីក៖ រាល់មតិព័ត៌មានទាំងអស់។
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	គ្មាន៖ ភៀរមកពី DHT និងភៀរផ្សេងទៀត
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	មិនមែនជា Checksum ដែលនេះអាចអានបានទេ
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: a regular expression that can't be read, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Not a regular expression: {error}	មិនមែនជាកន្សោមធម្មតាទេ៖ {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
@@ -1845,6 +1943,10 @@
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	ទំហំថាសមិនគ្រប់គ្រាន់៖ ត្រូវការ {needed}, នៅសល់ {free}
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed hasn't been fetched yet
+#, machine
+	Not fetched yet	មិនទាន់បានទាញយកនៅឡើយ
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	មិននៅក្នុងជួរ
@@ -2175,10 +2277,18 @@
 #. text in a download's Properties window
 #, machine
 	Referer:	ឯកសារយោង៖
+#. button in rssdlg.rs
+#. RSS feeds window: fetch the selected feed again now
+#, machine
+	Refresh	ផ្ទុកឡើងវិញ
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
 	Regional	តំបន់
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the two boxes above hold regular expressions
+#, machine
+	Regular expressions	កន្សោមធម្មតា
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	ចងចាំការកំណត់ Speed Limiter សម្រាប់ឯកសារនេះ
@@ -2186,8 +2296,9 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	ចងចាំផ្លូវនេះសម្រាប់ប្រភេទ "{category}"
-#. button in the Options window
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
+#. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	លុបចេញ
 #. text in the Scheduler window
@@ -2233,6 +2344,9 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	កំពុងព្យាយាមម្ដងទៀត៖ {error}
+#. window title in rssdlg.rs
+#, machine
+	RSS feeds	មតិព័ត៌មាន RSS
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2259,8 +2373,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	រក្សាទុកទៅ៖
-#. text in the Link grabber window
+#. text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the folder the package's files go to (a label before its box)
+#. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
 	Save to:	រក្សាទុកទៅ៖
 #. text in a download's progress window
@@ -3124,6 +3239,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ជំនួយការឥតគិតថ្លៃពីរធ្វើឱ្យវាដំណើរការ។ ទទួលបានពួកវាឥឡូវនេះ ហើយការរក្សាទុកវីដេអូគឺគ្រាន់តែចុចមួយដងប៉ុណ្ណោះ នៅពេលអ្នករកឃើញមួយ។
+#. text in rssdlg.rs
+#. RSS feeds window: shown when there are no feeds yet
+#, machine
+	Type a feed's address above and click Add feed.	វាយអាសយដ្ឋានមតិព័ត៌មានខាងលើ ហើយចុច បន្ថែមមតិព័ត៌មាន។
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3247,6 +3366,10 @@
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	ប្រើប្រូកស៊ីនេះសម្រាប់ពិធីការខាងក្រោម៖
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the rule is on
+#, machine
+	Use this rule	ប្រើច្បាប់នេះ
 #. text in the Options window
 #, machine
 	Used by the list of downloads and the Scheduler.	ប្រើដោយបញ្ជីទាញយក និងកម្មវិធីកំណត់ពេល។
@@ -3370,6 +3493,10 @@
 #. Torrent settings, under "Use the proxy"
 #, machine
 	With it, incoming connections, the DHT and local peers are off.	ជាមួយវា ការតភ្ជាប់ចូល DHT និងមិត្តភក្ដិមូលដ្ឋានត្រូវបានបិទ។
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
+#, machine
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	ពាក្យ៖ ទាំងអស់; | រវាងជម្រើស; * និង ?។ វគ្គ៖ 1x2;1x5-8;2x1-។ វគ្គនីមួយៗម្ដង។
 #. group box title in the Options window
 #, machine
 	Write dates and times	សរសេរកាលបរិច្ឆេទ និងពេលវេលា
@@ -3634,6 +3761,23 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} វិនាទី
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: {title} was added by the rule {rule}
+#, machine
+	{title}: added by {rule}	{title}៖ បានបន្ថែមដោយ {rule}
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article is a torrent the list already has
+#, machine
+	{title}: already in the list	{title}៖ មាននៅក្នុងបញ្ជីរួចហើយ
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
+#, machine
+	{title}: not added: files of its names are already in {folder}	{title}៖ មិនបានបន្ថែម៖ ឯកសារដែលមានឈ្មោះរបស់វាមាននៅក្នុងថត {folder} រួចហើយ
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article could not be added, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{title}: not added: {error}	{title}៖ មិនបានបន្ថែម៖ {error}
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3988,6 +4132,12 @@ menu	&Report a problem	រាយការណ៍បញ្ហា(&R)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Reset columns	កំណត់ជួរឈ&រឡើងវិញ
+#. menu command in the main window
+#. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&RSS feeds...	មតិព័ត៌មាន &RSS...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

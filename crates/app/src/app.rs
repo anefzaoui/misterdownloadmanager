@@ -136,6 +136,9 @@ enum Cmd {
     TorrentReannounce,
     TorrentAddTrackers,
     TorrentCopyMagnet,
+    /// Tasks → RSS feeds… (also the Add Torrent button's arrow), #39: true opens it on its
+    /// Download rules tab.
+    RssFeeds(bool),
     /// Right-click → Refresh download address: open the source page, edit the address.
     RefreshAddress,
     /// Right-click → Verify checksum… (beyond IDM).
@@ -158,6 +161,18 @@ enum Cmd {
     /// Header right-click → Reset columns.
     ResetColumns,
     None,
+}
+
+/// What an RSS fetch or look-up sends back to the app (`App::rss_tick`).
+enum RssEvent {
+    Fetched(u64, Result<crate::rss::Parsed, String>),
+    /// An article a rule took, looked up: what its torrent holds.
+    Looked {
+        rule: u64,
+        feed: u64,
+        title: String,
+        res: Result<mdm_torrent::Meta, String>,
+    },
 }
 
 /// A download's standing (a gone one counts as complete: nothing to start).
@@ -352,6 +367,12 @@ pub struct App {
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Right-click → Torrent → Add trackers… (#39).
     add_trackers: Option<crate::torrentdlg::AddTrackers>,
+    /// RSS feeds and their download rules (#39, rss.rs), kept in rss.json; the window; the
+    /// feeds being fetched; what the fetches and look-ups sent back (`rss_tick`).
+    rss: crate::rss::Store,
+    rss_dlg: Option<crate::rssdlg::RssWindow>,
+    rss_busy: std::collections::HashSet<u64>,
+    rss_events: std::sync::Arc<std::sync::Mutex<Vec<RssEvent>>>,
     /// Torrents whose list numbers wait for the session after an action (Recheck, files
     /// chosen; `torrent_resync`), by info hash: true when what the check found goes in the
     /// event log.
@@ -788,6 +809,12 @@ impl App {
             torrent_dlg: None,
             torrent_settings: None,
             add_trackers: None,
+            rss: crate::rss::Store::path()
+                .map(|p| crate::rss::Store::load(&p))
+                .unwrap_or_default(),
+            rss_dlg: None,
+            rss_busy: Default::default(),
+            rss_events: Default::default(),
             torrent_resync: HashMap::new(),
             torrent_idle_since: None,
             accountant: Default::default(),
@@ -1544,6 +1571,7 @@ impl App {
             .set_upload(self.settings.torrent_upload_limit());
         self.torrent_outcomes();
         self.torrent_accounts();
+        self.rss_tick();
         if !self.settings.torrent_blocklist.trim().is_empty() {
             crate::torrents::refresh_blocklist(
                 &self.rt,
@@ -1594,6 +1622,8 @@ impl App {
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
             // The first download's: Add trackers (a torrent), its right-click menu.
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
+            // rss:rules opens it on its Download rules tab.
+            "rss" => self.run(Cmd::RssFeeds(tab == "rules"), None, ctx),
             // menu:torrent opens it with its Torrent submenu open.
             "menu" if first.is_some() => {
                 if let Some(id) = first {
@@ -3026,6 +3056,246 @@ impl App {
 
     /// A torrent action (#39) on download `id`, in the background; what it did goes in the
     /// download's event log (`torrent_outcomes`). One at a time per torrent.
+    /// RSS (#39), every 2 s: what fetches and look-ups sent back (new articles through the
+    /// rules, the torrents they took added), then the feeds that are due fetched.
+    fn rss_tick(&mut self) {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs() as i64);
+        let events = std::mem::take(&mut *self.rss_events.lock().unwrap());
+        let mut save = false;
+        for ev in events {
+            match ev {
+                RssEvent::Fetched(id, res) => {
+                    self.rss_busy.remove(&id);
+                    save = true;
+                    match res {
+                        Ok(parsed) => {
+                            for (rule, article) in self.rss.fetched(id, parsed, now) {
+                                self.rss_look_up(rule, id, article);
+                            }
+                        }
+                        Err(e) => {
+                            tracing::warn!("rss: feed {id}: {e}");
+                            self.rss.failed(id, e, now);
+                        }
+                    }
+                }
+                RssEvent::Looked {
+                    rule,
+                    feed,
+                    title,
+                    res,
+                } => self.rss_add(rule, feed, &title, res),
+            }
+        }
+        for id in self.rss.due(now) {
+            self.rss_fetch(id);
+        }
+        if save {
+            self.save_rss();
+        }
+    }
+
+    fn save_rss(&self) {
+        if let Some(path) = crate::rss::Store::path()
+            && let Err(e) = self.rss.save(&path)
+        {
+            tracing::warn!("rss: {} not saved: {e}", path.display());
+        }
+    }
+
+    /// Fetch feed `id` in the background (once at a time), with MDM's own connection settings.
+    fn rss_fetch(&mut self, id: u64) {
+        let Some(feed) = self.rss.feeds.iter().find(|f| f.id == id) else {
+            return;
+        };
+        if !self.rss_busy.insert(id) {
+            return;
+        }
+        let url = feed.url.clone();
+        let out = self.rss_events.clone();
+        self.rt.spawn(async move {
+            let res = match url::Url::parse(&url) {
+                Ok(url) => {
+                    let remote = crate::torrents::Remote {
+                        url,
+                        parts: crate::app::RequestParts {
+                            headers: Default::default(),
+                            opts: crate::settings::own_net(),
+                        },
+                    };
+                    match crate::torrents::fetch_small(remote, crate::rss::MAX_FEED).await {
+                        Ok(Some(bytes)) => crate::rss::parse(&String::from_utf8_lossy(&bytes)),
+                        // i18n: RSS: a feed bigger than MDM reads (5 MB)
+                        Ok(None) => Err(crate::i18n::t("larger than a feed can be").to_owned()),
+                        Err(e) => Err(e),
+                    }
+                }
+                Err(e) => Err(e.to_string()),
+            };
+            out.lock().unwrap().push(RssEvent::Fetched(id, res));
+        });
+    }
+
+    /// A rule took an article: what its torrent holds is looked up (a magnet asks the swarm, a
+    /// .torrent's address is fetched), then `rss_add` adds it.
+    fn rss_look_up(&mut self, rule: u64, feed: u64, article: crate::rss::Article) {
+        let (host, known, out) = (
+            self.torrent_host.clone(),
+            self.torrent_hashes(),
+            self.rss_events.clone(),
+        );
+        self.rt.spawn(async move {
+            let res = async {
+                let src = match mdm_torrent::Source::magnet(&article.torrent) {
+                    Some(m) => m,
+                    None => {
+                        let url =
+                            url::Url::parse(article.torrent.trim()).map_err(|e| e.to_string())?;
+                        let remote = crate::torrents::Remote {
+                            url,
+                            parts: crate::app::RequestParts {
+                                headers: Default::default(),
+                                opts: crate::settings::own_net(),
+                            },
+                        };
+                        mdm_torrent::Source::File(crate::torrents::fetch_torrent(remote).await?)
+                    }
+                };
+                let t = host.session(known).await?;
+                t.metadata(&src, std::time::Duration::from_secs(180))
+                    .await
+                    .map_err(|e| crate::errors::torrent(&e))
+            }
+            .await;
+            out.lock().unwrap().push(RssEvent::Looked {
+                rule,
+                feed,
+                title: article.title,
+                res,
+            });
+        });
+    }
+
+    /// Add what a rule took, as Add torrent's Download Now (or Later) would: every file, to the
+    /// rule's folder (else the Torrents category's). Not when the list has it, or files of its
+    /// names are already in the folder (#40: nothing is written into them unasked).
+    fn rss_add(
+        &mut self,
+        rule: u64,
+        feed: u64,
+        title: &str,
+        res: Result<mdm_torrent::Meta, String>,
+    ) {
+        let Some(r) = self.rss.rules.iter().find(|r| r.id == rule).cloned() else {
+            return;
+        };
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs() as i64);
+        let title_i = crate::i18n::isolate(title);
+        let meta = match res {
+            Ok(m) => m,
+            Err(e) => {
+                tracing::warn!("rss: rule {:?}: {title}: {e}", r.name);
+                self.rss.note(
+                    now,
+                    crate::i18n::fmt(
+                        // i18n: RSS feeds window, under the rules: a rule's article could not be added, with why
+                        crate::i18n::t("{title}: not added: {error}"),
+                        &[("title", &title_i), ("error", &e)],
+                    ),
+                );
+                self.save_rss();
+                return;
+            }
+        };
+        if self.torrent_hashes().contains(&meta.info_hash) {
+            self.rss.note(
+                now,
+                crate::i18n::fmt(
+                    // i18n: RSS feeds window, under the rules: a rule's article is a torrent the list already has
+                    crate::i18n::t("{title}: already in the list"),
+                    &[("title", &title_i)],
+                ),
+            );
+            self.save_rss();
+            return;
+        }
+        let dir = if r.folder.trim().is_empty() {
+            self.settings
+                .category_dir(Category::Torrents, &self.downloads)
+        } else {
+            PathBuf::from(r.folder.trim())
+        };
+        if !meta.existing_in(&dir).is_empty() {
+            tracing::warn!(
+                "rss: rule {:?}: {title}: its files are already in {}",
+                r.name,
+                dir.display()
+            );
+            self.rss.note(
+                now,
+                crate::i18n::fmt(
+                    // i18n: RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
+                    crate::i18n::t(
+                        "{title}: not added: files of its names are already in {folder}",
+                    ),
+                    &[
+                        ("title", &title_i),
+                        ("folder", &crate::i18n::ltr(&dir.display().to_string())),
+                    ],
+                ),
+            );
+            self.save_rss();
+            return;
+        }
+        let hash = meta.info_hash.clone();
+        let from_magnet = false;
+        self.add_torrent(crate::torrentdlg::TorrentAdd {
+            meta,
+            dir,
+            files: None,
+            category: Category::Torrents,
+            start_now: !r.later,
+            from_magnet,
+        });
+        let feed = self
+            .rss
+            .feeds
+            .iter()
+            .find(|f| f.id == feed)
+            .map(|f| f.name().to_owned())
+            .unwrap_or_default();
+        self.rss.note(
+            now,
+            crate::i18n::fmt(
+                // i18n: RSS feeds window, under the rules: {title} was added by the rule {rule}
+                crate::i18n::t("{title}: added by {rule}"),
+                &[
+                    ("title", &title_i),
+                    ("rule", &crate::i18n::isolate(&r.name)),
+                ],
+            ),
+        );
+        self.save_rss();
+        if let Some(item) = self
+            .items
+            .iter_mut()
+            .find(|i| i.torrent.as_ref().is_some_and(|t| t.hash == hash))
+        {
+            item.note(crate::i18n::fmt(
+                // i18n: event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
+                crate::i18n::t("Added by the RSS rule {rule} from {feed}"),
+                &[
+                    ("rule", &crate::i18n::isolate(&r.name)),
+                    ("feed", &crate::i18n::isolate(&feed)),
+                ],
+            ));
+        }
+    }
+
     fn torrent_act(&mut self, id: u64, act: crate::torrents::Act) {
         let known = self.torrent_hashes();
         let Some(spec) = self
@@ -3760,6 +4030,11 @@ impl App {
                         Some(crate::torrentdlg::TorrentSettings::new(&self.settings));
                 }
             }
+            Cmd::RssFeeds(rules) => {
+                if self.rss_dlg.is_none() {
+                    self.rss_dlg = Some(crate::rssdlg::RssWindow::new(&self.rss, rules));
+                }
+            }
             Cmd::TorrentRecheck => {
                 if let Some(id) = target {
                     self.torrent_act(id, crate::torrents::Act::Recheck);
@@ -4078,6 +4353,8 @@ impl App {
                 ),
                 // i18n: Tasks menu: open Link grabber (links in packages, to tick before adding)
                 I("&Link grabber...", Cmd::LinkGrabber, true, false),
+                // i18n: Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
+                I("&RSS feeds...", Cmd::RssFeeds(false), true, false),
                 Sep,
                 I(
                     "Show &drop target",
@@ -5120,6 +5397,7 @@ impl App {
                     vec![
                         MenuEntry::Item("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
                         MenuEntry::Item("Add &magnet link...", Cmd::AddMagnet, true, false),
+                        MenuEntry::Item("&RSS feeds...", Cmd::RssFeeds(false), true, false),
                         MenuEntry::Sep,
                         MenuEntry::Item("Torrent setti&ngs...", Cmd::TorrentSettings, true, false),
                     ],
@@ -6346,6 +6624,41 @@ impl App {
                         crate::unix::set_torrent_handlers(assoc);
                     }
                     self.dirty = true;
+                }
+            }
+        }
+        if let Some(w) = &mut self.rss_dlg {
+            match w.show(ctx, &mut self.rss, &self.rss_busy) {
+                Outcome::Open => {}
+                Outcome::Closed => {
+                    self.rss_dlg = None;
+                    self.save_rss();
+                }
+                Outcome::Done(crate::rssdlg::Act::Saved) => self.save_rss(),
+                Outcome::Done(crate::rssdlg::Act::Refresh(ids)) => {
+                    self.save_rss();
+                    let ids = if ids.is_empty() {
+                        self.rss.feeds.iter().map(|f| f.id).collect()
+                    } else {
+                        ids
+                    };
+                    for id in ids {
+                        self.rss_fetch(id);
+                    }
+                }
+                // By hand: Add torrent, as for any address (a .torrent's is fetched).
+                Outcome::Done(crate::rssdlg::Act::Download(link)) => {
+                    let remote = url::Url::parse(&link)
+                        .ok()
+                        .filter(|u| matches!(u.scheme(), "http" | "https"))
+                        .map(|url| crate::torrents::Remote {
+                            parts: crate::app::RequestParts {
+                                headers: Default::default(),
+                                opts: crate::settings::own_net(),
+                            },
+                            url,
+                        });
+                    self.open_torrent_dialog_with(Some(link), remote, ctx);
                 }
             }
         }

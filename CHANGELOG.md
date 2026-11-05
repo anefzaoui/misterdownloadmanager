@@ -58,6 +58,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its
   releases only when signed by its author's key, or your own copy (Helpers). On the command line:
   `install-gallery-dl` and `gallery-get`.
+- **RSS feeds** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Tasks → RSS
+  feeds... watches RSS and Atom feeds of torrents, lists their articles (download one by hand), and
+  its download rules add the new ones whose titles they match: words or regular expressions, words
+  to skip, an episode filter (`1x2;1x5-8;2x1-`) that takes each episode once, a folder per rule.
+  A feed's backlog is never downloaded by itself.
 - **Torrent commands** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a
   torrent's right-click menu has **Torrent → Recheck files**, **Reannounce**, **Add trackers...**
   and **Copy magnet link**. Its Files tab can tick and untick files while it runs. A `.torrent`

@@ -14,6 +14,10 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Extracted {n} file to {folder}|Extracted {n} files to {folder}
+#. count in rssdlg.rs
+#. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
+#. {n} = a number (keep the braces as they are)
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -22,6 +26,9 @@
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} allows {n} connection|{host} allows {n} connections
+#. count in rssdlg.rs
+#. {n} = a number (keep the braces as they are)
+@plural	{n} article|{n} articles	{n} article|{n} articles
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 @plural	{n} byte|{n} bytes	{n} byte|{n} bytes
@@ -89,6 +96,9 @@
 	&Start now	&Start now
 #. text in the Options window
 	(separate names by spaces)	(separate names by spaces)
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown in the empty Save to box
+	(the Torrents category's folder)	(the Torrents category's folder)
 #. text in the Options window
 #. a 12-hour clock, with an example
 	12-hour (9:41 PM)	12-hour (9:41 PM)
@@ -117,6 +127,9 @@
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown when there are no rules yet
+	A rule adds the new articles whose titles it matches, as they come.	A rule adds the new articles whose titles it matches, as they come.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	a server on this computer sent the download elsewhere, which would not go through {adapter}
@@ -149,6 +162,9 @@
 	Add browser...	Add browser...
 #. text in categories.rs
 	Add category	Add category
+#. button in rssdlg.rs
+#. RSS feeds window: button that subscribes to the feed whose address is typed
+	Add feed	Add feed
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 	Add many downloads	Add many downloads
@@ -167,6 +183,9 @@
 	Add the extension	Add the extension
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Add the free extension: files you download in your browser come here, and videos get a Download button.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: add the torrents to the list without starting them
+	Add them without starting them	Add them without starting them
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 	Add to queue	Add to queue
@@ -184,6 +203,9 @@
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
 	Add...	Add...
+#. message or event log entry in the main window
+#. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
+	Added by the RSS rule {rule} from {feed}	Added by the RSS rule {rule} from {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 	Added {source}	Added {source}
@@ -271,6 +293,8 @@
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?
+#. text in rssdlg.rs
+	Articles	Articles
 #. option (radio button) in the Options window
 	As the system's region writes them	As the system's region writes them
 #. text in the Options window
@@ -374,6 +398,9 @@
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 	Check all	Check all
+#. text in rssdlg.rs
+#. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
+	Check feeds every	Check feeds every
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Check for updates	Check for updates
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -425,7 +452,7 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -473,6 +500,10 @@
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 	Copy report	Copy report
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed's last fetch failed, with why
+#. {error} = an error message (keep the braces as they are)
+	Could not be read: {error}	Could not be read: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -514,7 +545,7 @@
 	Default download settings	Default download settings
 #. text in the Options window
 	Default max. conn. number	Default max. conn. number
-#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 	Delete	Delete
@@ -611,6 +642,9 @@
 #. window title in the Options window
 #. window title: the download button the extension shows over videos
 	Download panels	Download panels
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the rules that add articles by themselves
+	Download rules	Download rules
 #. text in a download's progress window
 #. tab title: how the download is going
 	Download status	Download status
@@ -625,6 +659,10 @@
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 	Download {files} files at the same time	Download {files} files at the same time
+#. button in rssdlg.rs
+#. RSS feeds window: add the selected article's torrent (opens Add torrent)
+#. the trailing ... means it opens a window: keep it
+	Download...	Download...
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -716,6 +754,12 @@
 	Enter new address to download	Enter new address to download
 #. window title in the Scheduler window
 	Enter queue name	Enter queue name
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: which episodes to take (season x episode)
+	Episodes:	Episodes:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the episode filter can't be read
+	Episodes: like 1x2;1x5-8;2x1- (season x episode)	Episodes: like 1x2;1x5-8;2x1- (season x episode)
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -773,6 +817,15 @@
 	Extracting...	Extracting...
 #. text in the Scheduler window
 	February	February
+#. text in rssdlg.rs
+#. RSS feeds window: label before the box where a feed's web address is typed
+	Feed address:	Feed address:
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the feeds and their articles
+	Feeds	Feeds
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the feeds the rule watches
+	Feeds:	Feeds:
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	Fetched again every 7 days. Changes apply when no torrent is running.
@@ -1064,6 +1117,9 @@
 #. text in langpick.rs
 #. window title (the interface language)
 	Language	Language
+#. message or event log entry in the main window
+#. RSS: a feed bigger than MDM reads (5 MB)
+	larger than a feed can be	larger than a feed can be
 #. text in the Batch download window
 	Last file:	Last file:
 #. text in a download's Properties window
@@ -1177,7 +1233,8 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 	Minimize to the notification area	Minimize to the notification area
-#. text in the Add torrent window
+#. text in rssdlg.rs; text in the Add torrent window
+#. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
 	minutes	minutes
 #. text in a download's progress window
@@ -1250,6 +1307,12 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: audio files
 	Music	Music
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words the article's title must contain
+	Must contain:	Must contain:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words that make the rule skip an article
+	Must not contain:	Must not contain:
 #. option (radio button) in the Options window
 	My own way:	My own way:
 #. text in a download's progress window
@@ -1258,8 +1321,9 @@
 #. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 	Name	Name
-#. text in categories.rs; text in the Link grabber window
+#. text in categories.rs; text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the package's name (a label before its box)
+#. RSS feeds window, Download rules: the rule's name
 	Name:	Name:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
@@ -1280,6 +1344,10 @@
 	New exception	New exception
 #. text in the Options window
 	New login	New login
+#. text in rssdlg.rs
+#. RSS feeds window: the name a new download rule starts with
+#. RSS feeds window, Download rules: make a new rule
+	New rule	New rule
 #. button in a dialog box; text in a download's progress window
 	No	No
 #. text in a dialog box
@@ -1339,15 +1407,25 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: the video has no subtitles
 	None on this page	None on this page
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
+	None ticked: every feed.	None ticked: every feed.
 #. text in a download's progress window
 	None: peers come from the DHT and other peers	None: peers come from the DHT and other peers
 #. text in the Checksum window
 	Not a checksum this can read	Not a checksum this can read
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: a regular expression that can't be read, with why
+#. {error} = an error message (keep the braces as they are)
+	Not a regular expression: {error}	Not a regular expression: {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 	Not a tracker address: {line}	Not a tracker address: {line}
 #. text in errors.rs
 	not enough disk space: {needed} needed, {free} free	not enough disk space: {needed} needed, {free} free
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed hasn't been fetched yet
+	Not fetched yet	Not fetched yet
 #. value in a column's filter list in the download list
 	Not in a queue	Not in a queue
 #. text in helpers.rs
@@ -1587,16 +1665,23 @@
 	Redownload	Redownload
 #. text in a download's Properties window
 	Referer:	Referer:
+#. button in rssdlg.rs
+#. RSS feeds window: fetch the selected feed again now
+	Refresh	Refresh
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 	Regional	Regional
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the two boxes above hold regular expressions
+	Regular expressions	Regular expressions
 #. text in a download's progress window
 	Remember Speed Limiter settings for this file	Remember Speed Limiter settings for this file
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Remember this path for "{category}" category	Remember this path for "{category}" category
-#. button in the Options window
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
+#. RSS feeds window: unsubscribe from the selected feed
 	Remove	Remove
 #. text in the Scheduler window
 	Remove from the queue	Remove from the queue
@@ -1630,6 +1715,8 @@
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
 	Retrying: {error}	Retrying: {error}
+#. window title in rssdlg.rs
+	RSS feeds	RSS feeds
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -1649,8 +1736,9 @@
 	Save To...	Save To...
 #. text in a download's progress window; text in a download's Properties window
 	Save To:	Save To:
-#. text in the Link grabber window
+#. text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the folder the package's files go to (a label before its box)
+#. RSS feeds window, Download rules: the folder the rule's torrents go to
 	Save to:	Save to:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
@@ -2276,6 +2364,9 @@
 	Turn on	Turn on
 #. text in helpers.rs
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.
+#. text in rssdlg.rs
+#. RSS feeds window: shown when there are no feeds yet
+	Type a feed's address above and click Add feed.	Type a feed's address above and click Add feed.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Type a letter in From and in To	Type a letter in From and in To
@@ -2366,6 +2457,9 @@
 	Use them for this torrent? What matches it is kept, the rest replaced.	Use them for this torrent? What matches it is kept, the rest replaced.
 #. label in the Options window
 	Use this proxy for the following protocols:	Use this proxy for the following protocols:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the rule is on
+	Use this rule	Use this rule
 #. text in the Options window
 	Used by the list of downloads and the Scheduler.	Used by the list of downloads and the Scheduler.
 #. text in the Options window
@@ -2455,6 +2549,9 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 	With it, incoming connections, the DHT and local peers are off.	With it, incoming connections, the DHT and local peers are off.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.
 #. group box title in the Options window
 	Write dates and times	Write dates and times
 #. text in extracting archives (a download's log, the Archive password window)
@@ -2654,6 +2751,19 @@
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 	{s} sec	{s} sec
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: {title} was added by the rule {rule}
+	{title}: added by {rule}	{title}: added by {rule}
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article is a torrent the list already has
+	{title}: already in the list	{title}: already in the list
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
+	{title}: not added: files of its names are already in {folder}	{title}: not added: files of its names are already in {folder}
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article could not be added, with why
+#. {error} = an error message (keep the braces as they are)
+	{title}: not added: {error}	{title}: not added: {error}
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} can't go through a chosen network adapter ({adapter}) yet
@@ -2922,6 +3032,11 @@ menu	&Report a problem	&Report a problem
 #. header menu: put the columns back as they first were (order, widths, all shown)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Reset columns	&Reset columns
+#. menu command in the main window
+#. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&RSS feeds...	&RSS feeds...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Scheduler and queues	&Scheduler and queues

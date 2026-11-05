@@ -17,6 +17,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Pakket ut {n} fil til {folder}|Pakket ut {n} filer til {folder}
+#. count in rssdlg.rs
+#. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Matcher {n} artikkel nå (den legger bare til nye):|Matcher {n} artikler nå (den legger bare til nye):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -27,6 +32,10 @@
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} tillater {n} tilkobling|{host} tillater {n} tilkoblinger
+#. count in rssdlg.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} article|{n} articles	{n} artikkel|{n} artikler
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -113,6 +122,10 @@
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(skill navn med mellomrom)
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown in the empty Save to box
+#, machine
+	(the Torrents category's folder)	(Torrents-kategoriens mappe)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -151,6 +164,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	En rapport ble lagret. Å sende den til utviklerne på GitHub hjelper dem med å fikse dette; du kan lese alt den inneholder nedenfor først. Ingenting sendes av seg selv: Send åpner rapportskjemaet i nettleseren din, ferdig utfylt, slik at du kan sjekke og sende inn.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown when there are no rules yet
+#, machine
+	A rule adds the new articles whose titles it matches, as they come.	En regel legger til nye artikler hvis titler den samsvarer med, etter hvert som de kommer.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -195,6 +212,10 @@
 #. text in categories.rs
 #, machine
 	Add category	Legg til kategori
+#. button in rssdlg.rs
+#. RSS feeds window: button that subscribes to the feed whose address is typed
+#, machine
+	Add feed	Legg til feed
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
@@ -220,6 +241,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Legg til den gratis utvidelsen: filer du laster ned i nettleseren din, kommer hit, og videoer får en Last ned-knapp.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: add the torrents to the list without starting them
+#, machine
+	Add them without starting them	Legg dem til uten å starte dem
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -243,6 +268,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Add...	Legg til...
+#. message or event log entry in the main window
+#. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
+#, machine
+	Added by the RSS rule {rule} from {feed}	Lagt til av RSS-regelen {rule} fra {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -360,6 +389,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Er du sikker på at du vil slette «{name}» fra Mister Download Managers nedlastingsliste?
+#. text in rssdlg.rs
+#, machine
+	Articles	Artikler
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Som systemets områdeinnstillinger skriver dem
@@ -503,6 +535,10 @@
 #. Link grabber button (IDM's): tick every link
 #, machine
 	Check all	Merk alle
+#. text in rssdlg.rs
+#. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
+#, machine
+	Check feeds every	Sjekk feeder hvert
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Se etter oppdateringer
@@ -571,7 +607,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Klokke:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -636,6 +672,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	Kopier rapport
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed's last fetch failed, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Could not be read: {error}	Kunne ikke leses: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -694,7 +735,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Standard maks. antall tilkoblinger
-#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -830,6 +871,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	Nedlastingspaneler
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the rules that add articles by themselves
+#, machine
+	Download rules	Nedlastingsregler
 #. text in a download's progress window
 #. tab title: how the download is going
 #, machine
@@ -849,6 +894,11 @@
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
 	Download {files} files at the same time	Last ned {files} filer samtidig
+#. button in rssdlg.rs
+#. RSS feeds window: add the selected article's torrent (opens Add torrent)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Download...	Last ned...
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -973,6 +1023,14 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	Angi kønavn
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: which episodes to take (season x episode)
+#, machine
+	Episodes:	Episoder:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the episode filter can't be read
+#, machine
+	Episodes: like 1x2;1x5-8;2x1- (season x episode)	Episoder: som 1x2;1x5-8;2x1- (sesong x episode)
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1050,6 +1108,18 @@
 #. text in the Scheduler window
 #, machine
 	February	Februar
+#. text in rssdlg.rs
+#. RSS feeds window: label before the box where a feed's web address is typed
+#, machine
+	Feed address:	Feed-adresse:
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the feeds and their articles
+#, machine
+	Feeds	Feeder
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the feeds the rule watches
+#, machine
+	Feeds:	Feeder:
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
@@ -1453,6 +1523,10 @@
 #. window title (the interface language)
 #, machine
 	Language	Språk
+#. message or event log entry in the main window
+#. RSS: a feed bigger than MDM reads (5 MB)
+#, machine
+	larger than a feed can be	større enn en feed kan være
 #. text in the Batch download window
 #, machine
 	Last file:	Siste fil:
@@ -1606,7 +1680,8 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimer til varslingsområdet
-#. text in the Add torrent window
+#. text in rssdlg.rs; text in the Add torrent window
+#. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
 #, machine
 	minutes	minutter
@@ -1708,6 +1783,14 @@
 #. category name: audio files
 #, machine
 	Music	Musikk
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words the article's title must contain
+#, machine
+	Must contain:	Må inneholde:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words that make the rule skip an article
+#, machine
+	Must not contain:	Må ikke inneholde:
 #. option (radio button) in the Options window
 #, machine
 	My own way:	Min egen måte:
@@ -1719,8 +1802,9 @@
 #. column title: file name
 #, machine
 	Name	Navn
-#. text in categories.rs; text in the Link grabber window
+#. text in categories.rs; text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the package's name (a label before its box)
+#. RSS feeds window, Download rules: the rule's name
 #, machine
 	Name:	Navn:
 #. text in the Options window
@@ -1750,6 +1834,11 @@
 #. text in the Options window
 #, machine
 	New login	Ny pålogging
+#. text in rssdlg.rs
+#. RSS feeds window: the name a new download rule starts with
+#. RSS feeds window, Download rules: make a new rule
+#, machine
+	New rule	Ny regel
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	Nei
@@ -1832,12 +1921,21 @@
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
 	None on this page	Ingen på denne siden
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
+#, machine
+	None ticked: every feed.	Ingen avkrysset: alle feeder.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Ingen: peers kommer fra DHT og andre peers
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	Ikke en kontrollsum som kan leses
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: a regular expression that can't be read, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Not a regular expression: {error}	Ikke et regulært uttrykk: {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
@@ -1845,6 +1943,10 @@
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	ikke nok diskplass: {needed} trengs, {free} ledig
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed hasn't been fetched yet
+#, machine
+	Not fetched yet	Ikke hentet ennå
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Ikke i en kø
@@ -2175,10 +2277,18 @@
 #. text in a download's Properties window
 #, machine
 	Referer:	Referer:
+#. button in rssdlg.rs
+#. RSS feeds window: fetch the selected feed again now
+#, machine
+	Refresh	Oppdater
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
 	Regional	Regionale innstillinger
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the two boxes above hold regular expressions
+#, machine
+	Regular expressions	Regulære uttrykk
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	Husk innstillinger for hastighetsbegrenser for denne filen
@@ -2186,8 +2296,9 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	Husk denne banen for kategorien «{category}»
-#. button in the Options window
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
+#. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	Fjern
 #. text in the Scheduler window
@@ -2233,6 +2344,9 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	Prøver på nytt: {error}
+#. window title in rssdlg.rs
+#, machine
+	RSS feeds	RSS-feeder
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2259,8 +2373,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Lagre i:
-#. text in the Link grabber window
+#. text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the folder the package's files go to (a label before its box)
+#. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
 	Save to:	Lagre til:
 #. text in a download's progress window
@@ -3124,6 +3239,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	To gratis hjelpere får det til å fungere. Hent dem nå, og det er bare ett klikk unna å lagre en video når du finner en.
+#. text in rssdlg.rs
+#. RSS feeds window: shown when there are no feeds yet
+#, machine
+	Type a feed's address above and click Add feed.	Skriv inn en feeds adresse ovenfor og klikk Legg til feed.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3247,6 +3366,10 @@
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Bruk denne proxyen for følgende protokoller:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the rule is on
+#, machine
+	Use this rule	Bruk denne regelen
 #. text in the Options window
 #, machine
 	Used by the list of downloads and the Scheduler.	Brukes av nedlastingslisten og Planleggeren.
@@ -3370,6 +3493,10 @@
 #. Torrent settings, under "Use the proxy"
 #, machine
 	With it, incoming connections, the DHT and local peers are off.	Med den er innkommende tilkoblinger, DHT og lokale likemenn deaktivert.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
+#, machine
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Ord: alle; | mellom alternativer; * og ?. Episoder: 1x2;1x5-8;2x1-. Hver episode én gang.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Skriv datoer og klokkeslett
@@ -3634,6 +3761,23 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} sek
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: {title} was added by the rule {rule}
+#, machine
+	{title}: added by {rule}	{title}: lagt til av {rule}
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article is a torrent the list already has
+#, machine
+	{title}: already in the list	{title}: allerede i listen
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
+#, machine
+	{title}: not added: files of its names are already in {folder}	{title}: ikke lagt til: filer med samme navn er allerede i {folder}
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article could not be added, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{title}: not added: {error}	{title}: ikke lagt til: {error}
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3988,6 +4132,12 @@ menu	&Report a problem	&Rapporter et problem
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Reset columns	&Tilbakestill kolonner
+#. menu command in the main window
+#. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&RSS feeds...	&RSS-feeder...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

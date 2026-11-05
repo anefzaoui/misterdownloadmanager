@@ -17,6 +17,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder}కు {n} ఫైల్ సంగ్రహించబడింది|{folder}కు {n} ఫైల్‌లు సంగ్రహించబడ్డాయి
+#. count in rssdlg.rs
+#. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	ఇప్పుడు {n} కథనంతో సరిపోలుతుంది (ఇది కొత్త వాటిని మాత్రమే జోడిస్తుంది):|ఇప్పుడు {n} కథనాలతో సరిపోలుతుంది (ఇది కొత్త వాటిని మాత్రమే జోడిస్తుంది):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -27,6 +32,10 @@
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} {n} కనెక్షన్‌ను అనుమతిస్తుంది|{host} {n} కనెక్షన్‌లను అనుమతిస్తుంది
+#. count in rssdlg.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} article|{n} articles	{n} కథనం|{n} కథనాలు
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -113,6 +122,10 @@
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(పేర్లను ఖాళీలతో వేరు చేయండి)
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown in the empty Save to box
+#, machine
+	(the Torrents category's folder)	(టొరెంట్ల వర్గం యొక్క ఫోల్డర్)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -151,6 +164,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ఒక నివేదిక సేవ్ చేయబడింది. దీన్ని GitHubలోని డెవలపర్‌లకు పంపడం వలన వారు దీన్ని పరిష్కరించడంలో సహాయపడుతుంది; మీరు ముందుగా అది కలిగి ఉన్న ప్రతిదాన్ని క్రింద చదవవచ్చు. ఏదీ స్వయంగా పంపబడదు: పంపు బటన్ మీ బ్రౌజర్‌లో నివేదిక ఫారమ్‌ను తెరుస్తుంది, పూరించబడి ఉంటుంది, మీరు తనిఖీ చేసి సమర్పించడానికి.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: shown when there are no rules yet
+#, machine
+	A rule adds the new articles whose titles it matches, as they come.	ఒక నియమం కొత్త కథనాలను, వాటి శీర్షికలకు సరిపోలినప్పుడు, అవి వచ్చిన వెంటనే జోడిస్తుంది.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -195,6 +212,10 @@
 #. text in categories.rs
 #, machine
 	Add category	వర్గాన్ని జోడించు
+#. button in rssdlg.rs
+#. RSS feeds window: button that subscribes to the feed whose address is typed
+#, machine
+	Add feed	ఫీడ్‌ను జోడించు
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
@@ -220,6 +241,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ఉచిత ఎక్స్‌టెన్షన్‌ను జోడించండి: మీ బ్రౌజర్‌లో మీరు డౌన్‌లోడ్ చేసే ఫైల్‌లు ఇక్కడికి వస్తాయి, మరియు వీడియోలకు డౌన్‌లోడ్ బటన్ వస్తుంది.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: add the torrents to the list without starting them
+#, machine
+	Add them without starting them	వాటిని ప్రారంభించకుండానే జోడించు
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -243,6 +268,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Add...	జోడించు...
+#. message or event log entry in the main window
+#. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
+#, machine
+	Added by the RSS rule {rule} from {feed}	{feed} నుండి RSS నియమం {rule} ద్వారా జోడించబడింది
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -360,6 +389,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager డౌన్‌లోడ్‌ల జాబితా నుండి "{name}"ని తొలగించాలనుకుంటున్నారా?
+#. text in rssdlg.rs
+#, machine
+	Articles	కథనాలు
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	సిస్టమ్ ప్రాంతం వ్రాసినట్లు
@@ -503,6 +535,10 @@
 #. Link grabber button (IDM's): tick every link
 #, machine
 	Check all	అన్నింటినీ తనిఖీ చేయండి
+#. text in rssdlg.rs
+#. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
+#, machine
+	Check feeds every	ప్రతి
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	అప్‌డేట్‌ల కోసం తనిఖీ చేయండి
@@ -571,7 +607,7 @@
 #. text in the Options window
 #, machine
 	Clock:	గడియారం:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -636,6 +672,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	నివేదికను కాపీ చేయండి
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed's last fetch failed, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Could not be read: {error}	చదవలేకపోయింది: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -694,7 +735,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	డిఫాల్ట్ గరిష్ఠ. కనెక్షన్ సంఖ్య
-#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -830,6 +871,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	డౌన్‌లోడ్ ప్యానెల్‌లు
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the rules that add articles by themselves
+#, machine
+	Download rules	డౌన్‌లోడ్ నియమాలు
 #. text in a download's progress window
 #. tab title: how the download is going
 #, machine
@@ -849,6 +894,11 @@
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
 	Download {files} files at the same time	ఒకేసారి {files} ఫైల్‌లను డౌన్‌లోడ్ చేయండి
+#. button in rssdlg.rs
+#. RSS feeds window: add the selected article's torrent (opens Add torrent)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Download...	డౌన్‌లోడ్...
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -973,6 +1023,14 @@
 #. window title in the Scheduler window
 #, machine
 	Enter queue name	క్యూ పేరును నమోదు చేయండి
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: which episodes to take (season x episode)
+#, machine
+	Episodes:	ఎపిసోడ్‌లు:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the episode filter can't be read
+#, machine
+	Episodes: like 1x2;1x5-8;2x1- (season x episode)	ఎపిసోడ్‌లు: 1x2;1x5-8;2x1- వంటివి (సీజన్ x ఎపిసోడ్)
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1050,6 +1108,18 @@
 #. text in the Scheduler window
 #, machine
 	February	ఫిబ్రవరి
+#. text in rssdlg.rs
+#. RSS feeds window: label before the box where a feed's web address is typed
+#, machine
+	Feed address:	ఫీడ్ చిరునామా:
+#. text in rssdlg.rs
+#. RSS feeds window: the tab of the feeds and their articles
+#, machine
+	Feeds	ఫీడ్‌లు
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the feeds the rule watches
+#, machine
+	Feeds:	ఫీడ్‌లు:
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
@@ -1453,6 +1523,10 @@
 #. window title (the interface language)
 #, machine
 	Language	భాష
+#. message or event log entry in the main window
+#. RSS: a feed bigger than MDM reads (5 MB)
+#, machine
+	larger than a feed can be	ఫీడ్ ఉండగలిగే దానికంటే పెద్దది
 #. text in the Batch download window
 #, machine
 	Last file:	చివరి ఫైల్:
@@ -1606,7 +1680,8 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	నోటిఫికేషన్ ప్రాంతానికి కనిష్టీకరించు
-#. text in the Add torrent window
+#. text in rssdlg.rs; text in the Add torrent window
+#. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
 #, machine
 	minutes	నిమిషాలు
@@ -1708,6 +1783,14 @@
 #. category name: audio files
 #, machine
 	Music	సంగీతం
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words the article's title must contain
+#, machine
+	Must contain:	వీటిని కలిగి ఉండాలి:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: words that make the rule skip an article
+#, machine
+	Must not contain:	వీటిని కలిగి ఉండకూడదు:
 #. option (radio button) in the Options window
 #, machine
 	My own way:	నా స్వంత మార్గం:
@@ -1719,8 +1802,9 @@
 #. column title: file name
 #, machine
 	Name	పేరు
-#. text in categories.rs; text in the Link grabber window
+#. text in categories.rs; text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the package's name (a label before its box)
+#. RSS feeds window, Download rules: the rule's name
 #, machine
 	Name:	పేరు:
 #. text in the Options window
@@ -1750,6 +1834,11 @@
 #. text in the Options window
 #, machine
 	New login	కొత్త లాగిన్
+#. text in rssdlg.rs
+#. RSS feeds window: the name a new download rule starts with
+#. RSS feeds window, Download rules: make a new rule
+#, machine
+	New rule	కొత్త నియమం
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	లేదు
@@ -1832,12 +1921,21 @@
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
 	None on this page	ఈ పేజీలో ఏవీ లేవు
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
+#, machine
+	None ticked: every feed.	ఏదీ టిక్ చేయబడలేదు: ప్రతి ఫీడ్.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ఏదీ లేదు: పీర్‌లు DHT మరియు ఇతర పీర్‌ల నుండి వస్తాయి
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	ఇది చదవలేని చెక్‌సమ్ కాదు
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: a regular expression that can't be read, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Not a regular expression: {error}	సాధారణ వ్యక్తీకరణ కాదు: {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
@@ -1845,6 +1943,10 @@
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	తగినంత డిస్క్ స్థలం లేదు: {needed} అవసరం, {free} ఖాళీ
+#. text in rssdlg.rs
+#. RSS feeds window: the selected feed hasn't been fetched yet
+#, machine
+	Not fetched yet	ఇంకా పొందబడలేదు
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	క్యూలో లేదు
@@ -2175,10 +2277,18 @@
 #. text in a download's Properties window
 #, machine
 	Referer:	రిఫరర్:
+#. button in rssdlg.rs
+#. RSS feeds window: fetch the selected feed again now
+#, machine
+	Refresh	తాజాకరించు
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
 	Regional	ప్రాంతీయ
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the two boxes above hold regular expressions
+#, machine
+	Regular expressions	సాధారణ వ్యక్తీకరణలు
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	ఈ ఫైల్ కోసం స్పీడ్ లిమిటర్ సెట్టింగ్‌లను గుర్తుంచుకోండి
@@ -2186,8 +2296,9 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	"{category}" వర్గం కోసం ఈ మార్గాన్ని గుర్తుంచుకోండి
-#. button in the Options window
+#. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
+#. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	తీసివేయండి
 #. text in the Scheduler window
@@ -2233,6 +2344,9 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	మళ్లీ ప్రయత్నిస్తోంది: {error}
+#. window title in rssdlg.rs
+#, machine
+	RSS feeds	RSS ఫీడ్‌లు
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2259,8 +2373,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ఇందులోకి సేవ్ చేయి:
-#. text in the Link grabber window
+#. text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the folder the package's files go to (a label before its box)
+#. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
 	Save to:	దీనికి సేవ్ చేయి:
 #. text in a download's progress window
@@ -3124,6 +3239,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	రెండు ఉచిత సహాయకులు దీన్ని పని చేస్తాయి. వాటిని ఇప్పుడే పొందండి, మరియు మీరు ఒక వీడియోను కనుగొన్నప్పుడు దాన్ని సేవ్ చేయడం ఒక క్లిక్ దూరంలో ఉంటుంది.
+#. text in rssdlg.rs
+#. RSS feeds window: shown when there are no feeds yet
+#, machine
+	Type a feed's address above and click Add feed.	పైన ఒక ఫీడ్ చిరునామాను టైప్ చేసి, ఫీడ్‌ను జోడించు క్లిక్ చేయండి.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3247,6 +3366,10 @@
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	కింది ప్రోటోకాల్‌ల కోసం ఈ ప్రాక్సీని ఉపయోగించండి:
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: the rule is on
+#, machine
+	Use this rule	ఈ నియమాన్ని ఉపయోగించు
 #. text in the Options window
 #, machine
 	Used by the list of downloads and the Scheduler.	డౌన్‌లోడ్‌ల జాబితా మరియు షెడ్యూలర్ ద్వారా ఉపయోగించబడుతుంది.
@@ -3370,6 +3493,10 @@
 #. Torrent settings, under "Use the proxy"
 #, machine
 	With it, incoming connections, the DHT and local peers are off.	దీనితో, ఇన్‌కమింగ్ కనెక్షన్‌లు, DHT మరియు స్థానిక పీర్‌లు ఆఫ్ చేయబడతాయి.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
+#, machine
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	పదాలు: అవన్నీ; ప్రత్యామ్నాయాల మధ్య |; * మరియు ?. ఎపిసోడ్‌లు: 1x2;1x5-8;2x1-. ప్రతి ఎపిసోడ్ ఒక్కసారి.
 #. group box title in the Options window
 #, machine
 	Write dates and times	తేదీలు మరియు సమయాలను వ్రాయండి
@@ -3634,6 +3761,23 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} సెక
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: {title} was added by the rule {rule}
+#, machine
+	{title}: added by {rule}	{title}: {rule} ద్వారా జోడించబడింది
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article is a torrent the list already has
+#, machine
+	{title}: already in the list	{title}: ఇప్పటికే జాబితాలో ఉంది
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
+#, machine
+	{title}: not added: files of its names are already in {folder}	{title}: జోడించబడలేదు: దాని పేర్ల ఫైల్‌లు ఇప్పటికే {folder}లో ఉన్నాయి
+#. message or event log entry in the main window
+#. RSS feeds window, under the rules: a rule's article could not be added, with why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	{title}: not added: {error}	{title}: జోడించబడలేదు: {error}
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3988,6 +4132,12 @@ menu	&Report a problem	సమస్యను &నివేదించండి
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Reset columns	నిలువు వరుసలను &రీసెట్ చేయండి
+#. menu command in the main window
+#. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&RSS feeds...	&RSS ఫీడ్‌లు...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
