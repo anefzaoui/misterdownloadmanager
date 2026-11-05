@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
+  tabs while it is shared ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
@@ -80,8 +82,7 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents, the rest: seeding limits, more torrent actions, and RSS feeds with auto-download
-  rules
+- 🔄 Torrents, the rest: more torrent actions, and RSS feeds with auto-download rules
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 
 ### Bugs being looked into

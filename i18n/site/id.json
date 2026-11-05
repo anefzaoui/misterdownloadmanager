@@ -158,10 +158,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Jawaban tentang Mister Download Manager: apakah gratis, apakah aman, perbandingannya dengan IDM, peramban, video, torrent, kecepatan, Mac dan Linux, dan lainnya."
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>Batasi pengunggahan untuk semua torrent hingga</g1> — mati secara default. Membatasi apa yang semua torrent Anda kirimkan bersama ke rekan lain, saat mereka mengunduh dan saat mereka berbagi. Batas unggah torrent sendiri, di jendela progresnya, berlaku di atasnya."
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Memulai antrean unduhan utama; <x1/>."
@@ -626,6 +622,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Checksum SHA-256</g1><g2>untuk setiap berkas</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "Di macOS, VPN yang terhubung kembali mungkin mendapatkan antarmuka baru (<x1/> alih-alih <x2/>): pilih lagi."
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "Ekstensi harus diizinkan untuk membaca situs. Saat Anda membatasinya ke beberapa situs (atau <g1>Saat diklik</g1>), ekstensi tidak dapat meneruskan informasi masuk Anda, sehingga ekstensi menyerahkan unduhan dari situs-situs tersebut ke browser."
@@ -977,6 +977,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 dtk</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Di Windows, mesin torrent belum bisa mengikat ke adaptor. Jadi torrent tidak akan mulai saat adaptor dipilih (\"torrent belum bisa melalui adaptor jaringan yang dipilih di Windows\"), daripada melewatinya. Nama pelacak masih dicari oleh DNS sistem."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1794,6 +1798,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>Berhenti berbagi pada rasio berbagi</g1> — torrent yang sudah selesai berhenti dibagikan setelah mengirimkan data sebanyak kelipatan yang diunduh (2.00: dua kali). Nonaktif secara default."
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "klik kanan aplikasi → Buka (belum disahkan)"
@@ -1978,6 +1986,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Manajer unduhan gratis dan sumber terbuka untuk Windows, dengan macOS dan Linux untuk dicoba. Tata letak IDM yang Anda kenal, 5× lebih cepat dalam tolok ukur kami: setiap koneksi sekaligus, melanjutkan unduhan yang aman dari kerusakan, torrent, video dari halaman web, integrasi peramban, 86 bahasa."
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "Koneksi ke komputer ini sendiri (<x1/>) tidak terikat. Proksi di komputer ini membawa unduhan, dan ke mana ia mengirimkannya terserah padanya."
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "Video yang dilindungi DRM (sebagian besar layanan streaming berbayar) tidak dapat diunduh, dan MDM tidak mencoba."
@@ -2137,10 +2149,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, zip portabel atau biasa"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>Buka tautan magnet dan file .torrent dengan Mister Download Manager</g1> — Windows kemudian membuka tautan magnet di browser Anda dan file <x2/> di Explorer dengan MDM. Ini hanya untuk akun Windows Anda; program yang Anda pilih di <g3>Buka dengan</g3> Windows tetap menjadi yang utama. Pengaturan dapat mengaktifkannya untuk Anda."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2389,6 +2397,10 @@
   "406376ea6db241ce": {
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "Apakah Anda mengklik <g1>Terapkan</g1> setelah mengatur waktu?"
+  },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "DNS sistem meminta nama dengan caranya sendiri, dan Windows mungkin meminta melalui setiap adaptor. Untuk menjaga nama tetap berada di dalam adaptor juga, pilih DNS di bawah <g1>Koneksi</g1> → <g2>DNS</g2>: MDM kemudian memintanya melalui adaptor."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -3662,6 +3674,10 @@
    "source": "Reinstall MDM to restore its files.",
    "text": "Instal ulang MDM untuk memulihkan file-nya."
   },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "Untuk merutekan <g1>semuanya</g1> melalui jaringan lain, gunakan VPN untuk seluruh komputer."
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4214,6 +4230,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>Tampilan → Dukungan Mode Gelap</g1> dan <g2>Tampilan → Bahasa</g2>."
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "Adaptor jaringan"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>Pemecahan masalah</g2></g1> — apa yang harus diperiksa saat unduhan gagal, peramban tidak menyerahkan unduhan, atau jadwal tidak dimulai."
@@ -4486,6 +4506,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Diperlukan Firefox 140 atau yang lebih baru."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Opsi → Proksi / Socks → Adaptor jaringan</g1> menahan koneksi MDM ke satu adaptor, biasanya milik VPN (<g2>Opsi</g2>). Di Linux dan macOS, mesin torrent mengikat setiap soket ke adaptor tersebut: rekan, pelacak, DHT, dan port pendengarnya. UPnP dan penemuan rekan lokal dimatikan saat itu, karena mereka berkomunikasi dengan jaringan lokal daripada melalui adaptor. Jika adaptor hilang, mesin berhenti, dan akan mulai lagi melalui adaptor saat adaptor kembali."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Tugas → Pengaturan torrent → Buka tautan magnet dan file .torrent dengan Mister Download Manager</g1> memang menulis ke registri, hanya untuk akun Windows Anda. Biarkan mati untuk menjaga salinan portabel bebas registri."
@@ -4741,10 +4765,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Pada waktu mulai, antrean akan berjalan dengan sendirinya. Di pagi hari, file yang sudah selesai berada di bawah <g1>Selesai</g1> dalam kategori."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Untuk merutekan <g1>semuanya</g1> melalui jaringan lain, gunakan VPN untuk seluruh komputer. MDM tidak dapat mengikat torrent ke satu adaptor jaringan di Windows."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5258,6 +5278,10 @@
    "source": "Keep some speed for everything else →",
    "text": "Pertahankan sebagian kecepatan untuk hal lain →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "Mengunduh berkas dengan hingga 8 koneksi (<x1/>, 1 hingga 128), menampilkan progres. <x2/> menjeda; <x3/> melanjutkan. <x4/> memeriksa berkas yang sudah selesai: hex MD5, SHA-1, SHA-256, SHA-512, atau CRC32, opsional diberi nama (<x5/>). <x6/> memilih DNS: <x7/> (standar); layanan dan cara memintanya, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; alamat server DNS, <x13/>; atau alamat DNS-over-HTTPS. Ini tidak pernah kembali ke DNS sistem. <x14/> mengirim setiap koneksi melalui satu adaptor jaringan, berdasarkan namanya (<x15/>, <x16/>) atau salah satu alamatnya; jika tidak terhubung, tidak ada yang dikirim dan unduhan gagal."
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager (\"MDM\", \"perangkat lunak\") dan situs web misterdownloadmanager.com (\"situs\") dibuat oleh Ahmed Nefzaoui dan kontributor (\"kami\"). Dengan menggunakan perangkat lunak atau situs, Anda menerima ketentuan ini. Jika tidak, mohon jangan menggunakannya."
@@ -5277,6 +5301,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> memilih semua."
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Belum terikat ke adaptor, jadi tidak dimulai saat salah satunya dipilih:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5345,6 +5373,10 @@
   "9675f888cdb836b1": {
    "source": "Select the first / last download",
    "text": "Pilih unduhan pertama / terakhir"
+  },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "Tab akan tetap ada setelah torrent selesai, selama masih dibagikan."
   },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
@@ -5926,6 +5958,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "Cara kerjanya: Windows mengikat alamat adaptor itu sendiri. Windows kemudian hanya mengirimkan paket-paket tersebut melalui adaptor itu (model host yang kuat). Linux mengikat perangkat itu sendiri (Linux 5.7 atau yang lebih baru), dan macOS mengikat antarmuka. Alamat yang tidak dimiliki adaptor (IPv6 pada VPN khusus IPv4) ditolak, tidak dikirim di sekitarnya."
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1>, atau <g2>Alt</g2> ditekan sendiri"
@@ -6169,6 +6205,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Kategori</g1> — dipilih dari jenis file (Terkompresi, Dokumen, Musik, Program, Video, atau Umum). Setiap kategori memiliki foldernya sendiri. <g2>+</g2> di sampingnya membuat kategori baru."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Adaptor jaringan</g1> — <g2>Apa pun (sistem memilih)</g2> adalah pengaturan bawaan. Pilih adaptor, biasanya adaptor VPN Anda, dan setiap koneksi yang dibuka MDM akan melalui adaptor tersebut, atau tidak sama sekali. Ini mencakup unduhan, FTP, DNS yang Anda pilih, unduhan MDM sendiri, dan pemeriksaan pembaruan. Ini berfungsi sebagai sakelar pemutus: ketika adaptor terputus, atau VPN dimatikan, tidak ada yang keluar melalui koneksi normal Anda. Unduhan yang sedang berjalan berhenti dengan \"… tidak terhubung\" dan dimulai lagi ketika adaptor kembali. Baris di bawah daftar menunjukkan alamat adaptor, atau bahwa adaptor tidak terhubung."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6909,6 +6949,10 @@
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
    "text": "Dari papan klip"
+  },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "torrent di Windows;"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -7894,6 +7938,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>MDM yang lebih lama?</g1> Perbarui MDM: ekstensi yang lebih baru mungkin memiliki ID yang tidak diketahui oleh pembantu lama."
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(TLS implisit; <x1/> dengan TLS tidak masalah)."
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "Antrean yang berjalan memulai unduhannya sesuai urutan daftar, beberapa sekaligus (empat secara default). Ketika satu gagal, ia berpindah ke akhir antrean dan dicoba lagi 30 detik kemudian. Antrean berhenti ketika tidak ada lagi yang perlu diunduh."
@@ -7901,10 +7949,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Melanjutkan unduhan yang terputus"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Mengunduh file dengan hingga 8 koneksi (<x1/>, 1 hingga 128), menampilkan progres. <x2/> menjeda; <x3/> melanjutkan. <x4/> memeriksa file yang sudah selesai: hex MD5, SHA-1, SHA-256, SHA-512, atau CRC32, dengan nama opsional (<x5/>). <x6/> memilih DNS: <x7/> (default); layanan dan cara memintanya, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; alamat server DNS, <x13/>; atau alamat DNS-over-HTTPS. Ini tidak pernah kembali ke DNS sistem."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8286,6 +8330,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "<g1>Bahasa Windows</g1>, di bagian atas, mengikuti bahasa tampilan Windows. Jika Windows menggunakan bahasa yang tidak dimiliki MDM, MDM akan menampilkan bahasa Inggris."
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "Torrent yang dihentikan oleh salah satu pengaturan ini akan tercatat di log peristiwa, dan tidak akan dibagikan lagi saat MDM dimulai. Tingkatkan atau nonaktifkan batas untuk membagikannya lagi. - <g1>Batasi pengunggahan untuk semua torrent hingga</g1> — nonaktif secara default. Membatasi total data yang dikirimkan semua torrent Anda ke rekan lain, baik saat mengunduh maupun saat berbagi. Batas unggah torrent itu sendiri, di jendela progresnya, berlaku di atas batas ini. - <g2>Buka tautan magnet dan berkas .torrent dengan Mister Download Manager</g2> — Windows kemudian akan membuka tautan magnet di peramban Anda dan berkas <x3/> di Explorer dengan MDM. Ini hanya untuk akun Windows Anda; program yang Anda pilih di <g4>Buka dengan</g4> Windows tetap menjadi yang utama. Pengaturan dapat mengaktifkannya untuk Anda."
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "Opsi"
@@ -8478,6 +8526,10 @@
    "source": "Installer",
    "text": "Pemasang"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "halaman video (yt-dlp tidak dapat diikat ke adaptor);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Jika video tidak dapat diunduh, lihat <g1>Unduhan video</g1>."
@@ -8661,6 +8713,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "Tunggu MDM mencari halaman tersebut. Daftar kualitas akan muncul, yang terbaik di awal, dengan <g1>Audio saja</g1> di akhir: suara seperti yang disediakan situs, lalu, dengan ffmpeg (langkah berikutnya), sebagai MP3 dengan bitrate variabel terbaiknya atau pada 320, 256, 192, atau 128 kbps."
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>Berhenti berbagi setelah berbagi selama … menit</g1> — atau setelah dibagikan selama itu, di semua sesi. Nonaktif secara default."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

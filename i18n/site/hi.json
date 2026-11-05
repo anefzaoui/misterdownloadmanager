@@ -158,10 +158,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager के बारे में उत्तर: क्या यह मुफ़्त है, क्या यह सुरक्षित है, IDM, ब्राउज़र, वीडियो, टॉरेंट, गति, Mac और Linux, और बहुत कुछ से इसकी तुलना कैसे की जाती है।"
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>सभी टोरेंट के लिए अपलोडिंग को इस पर सीमित करें</g1> — डिफ़ॉल्ट रूप से बंद। यह नियंत्रित करता है कि आपके सभी टोरेंट एक साथ अन्य पीयर को कितना भेजते हैं, जब वे डाउनलोड करते हैं और जब वे साझा करते हैं। टोरेंट की अपनी अपलोड सीमा, उसकी प्रगति विंडो में, इसके ऊपर लागू होती है।"
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "मुख्य डाउनलोड कतार शुरू करता है; <x1/>।"
@@ -626,6 +622,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>SHA-256 चेकसम</g1><g2>हर फ़ाइल के लिए</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "macOS पर एक VPN जो फिर से कनेक्ट होता है उसे एक नया इंटरफ़ेस मिल सकता है (<x1/> <x2/> के बजाय): इसे फिर से चुनें।"
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "एक्सटेंशन को साइट पढ़ने की अनुमति होनी चाहिए। जब आप इसे कुछ साइटों तक सीमित करते हैं (या <g1>क्लिक करने पर</g1>), तो यह आपके साइन-इन को पास नहीं कर सकता है, इसलिए यह उन साइटों के डाउनलोड को ब्राउज़र के लिए छोड़ देता है।"
@@ -977,6 +977,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 से</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Windows पर टॉरेंट इंजन अभी तक किसी अडैप्टर से नहीं जुड़ सकता है। इसलिए जब कोई अडैप्टर चुना जाता है तो टॉरेंट शुरू नहीं होते हैं (\"Windows पर टॉरेंट अभी तक चुने हुए नेटवर्क अडैप्टर के ज़रिए नहीं जा सकते\"), बजाय इसके कि वे उसके चारों ओर जाएँ। ट्रैकर के नाम अभी भी सिस्टम के DNS द्वारा देखे जाते हैं।"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1794,6 +1798,10 @@
    "source": "Mac",
    "text": "मैक"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>इस साझा अनुपात पर साझा करना बंद करें</g1> — एक पूरा किया गया टोरेंट तब साझा होना बंद कर देता है जब वह अपने पास मौजूद डेटा का उतनी बार (2.00: दो बार) भेज चुका होता है। डिफ़ॉल्ट रूप से बंद।"
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "ऐप पर राइट-क्लिक करें → खोलें (अभी तक नोटरीकृत नहीं है)"
@@ -1978,6 +1986,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Windows के लिए मुफ्त, ओपन-सोर्स डाउनलोड मैनेजर, macOS और Linux पर भी उपलब्ध। IDM जैसा लेआउट, हमारे बेंचमार्क में 5 गुना तेज़: एक साथ कई कनेक्शन, क्रैश होने पर भी डाउनलोड फिर से शुरू, टोरेंट, वेब पेजों से वीडियो, ब्राउज़र इंटीग्रेशन, 86 भाषाएँ।"
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "इस कंप्यूटर से कनेक्शन (<x1/>) बंधे नहीं हैं। इस कंप्यूटर पर एक प्रॉक्सी डाउनलोड करता है, और यह उन्हें कहाँ भेजता है यह उस पर निर्भर करता है।"
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "DRM से सुरक्षित वीडियो (अधिकांश सशुल्क स्ट्रीमिंग सेवाएँ) डाउनलोड नहीं किए जा सकते, और MDM कोशिश नहीं करता है।"
@@ -2137,10 +2149,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, पोर्टेबल या सादा ज़िप"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>मैग्नेट लिंक और .torrent फ़ाइलें Mister Download Manager के साथ खोलें</g1> — Windows फिर आपके ब्राउज़र में मैग्नेट लिंक और Explorer में <x2/> फ़ाइलें MDM के साथ खोलता है। यह केवल आपके Windows खाते के लिए है; Windows के <g3>इसके साथ खोलें</g3> में आपके द्वारा चुना गया प्रोग्राम पहले रहता है। सेटअप इसे आपके लिए चालू कर सकता है।"
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2389,6 +2397,10 @@
   "406376ea6db241ce": {
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "क्या आपने समय निर्धारित करने के बाद <g1>लागू करें</g1> पर क्लिक किया?"
+  },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "सिस्टम का DNS अपने तरीके से नाम पूछता है, और Windows हर एडाप्टर पर पूछ सकता है। नामों को एडाप्टर के अंदर भी रखने के लिए, <g1>कनेक्शन</g1> → <g2>DNS</g2> के तहत एक DNS चुनें: MDM फिर इसे एडाप्टर के माध्यम से पूछता है।"
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -3662,6 +3674,10 @@
    "source": "Reinstall MDM to restore its files.",
    "text": "अपनी फ़ाइलों को पुनर्स्थापित करने के लिए MDM को फिर से स्थापित करें।"
   },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "किसी दूसरे नेटवर्क के ज़रिए <g1>सब कुछ</g1> भेजने के लिए, पूरे कंप्यूटर के लिए VPN का इस्तेमाल करें।"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4214,6 +4230,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>देखें → डार्क मोड समर्थन</g1> और <g2>देखें → भाषा</g2>।"
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "एक नेटवर्क अडैप्टर"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>समस्या निवारण</g2></g1> — जब कोई डाउनलोड विफल हो जाता है, ब्राउज़र डाउनलोड नहीं सौंपता है, या कोई शेड्यूल शुरू नहीं होता है तो क्या जाँच करें।"
@@ -4486,6 +4506,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 या उसके बाद का संस्करण आवश्यक है।"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>विकल्प → प्रॉक्सी / SOCKS → नेटवर्क अडैप्टर</g1> MDM के कनेक्शन को एक अडैप्टर से जोड़ता है, आमतौर पर VPN के (<g2>विकल्प</g2>)। Linux और macOS पर टॉरेंट इंजन हर सॉकेट को इससे जोड़ता है: पीयर, ट्रैकर, DHT और उसका लिसनिंग पोर्ट। UPnP और लोकल पीयर डिस्कवरी तब बंद हो जाते हैं, क्योंकि वे अडैप्टर के बजाय लोकल नेटवर्क से बात करते हैं। अगर अडैप्टर चला जाता है, तो इंजन रुक जाता है, और जब वह वापस आता है तो अडैप्टर के ज़रिए फिर से शुरू होता है।"
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>कार्य → टॉरेंट सेटिंग्स → मैग्नेट लिंक और .torrent फ़ाइलें Mister Download Manager के साथ खोलें</g1> रजिस्ट्री में लिखता है, केवल आपके Windows खाते के लिए। पोर्टेबल कॉपी को रजिस्ट्री-मुक्त रखने के लिए इसे बंद रखें।"
@@ -4741,10 +4765,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "प्रारंभ समय पर कतार अपने आप शुरू हो जाती है। सुबह, पूर्ण की गई फ़ाइलें श्रेणियों में <g1>पूर्ण</g1> के तहत होती हैं।"
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "<g1>सब कुछ</g1> दूसरे नेटवर्क के माध्यम से रूट करने के लिए, पूरे कंप्यूटर के लिए VPN का उपयोग करें। MDM Windows पर टॉरेंट को एक नेटवर्क एडाप्टर से नहीं जोड़ सकता है।"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5258,6 +5278,10 @@
    "source": "Keep some speed for everything else →",
    "text": "बाकी सब के लिए कुछ गति रखें →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "प्रगति दिखाते हुए, 8 कनेक्शनों तक (<x1/>, 1 से 128) के साथ एक फ़ाइल डाउनलोड करें। <x2/> इसे रोकता है; <x3/> जारी रखता है। <x4/> समाप्त फ़ाइल की जाँच करता है: हेक्स MD5, SHA-1, SHA-256, SHA-512 या CRC32, वैकल्पिक रूप से नामित (<x5/>)। <x6/> DNS चुनता है: <x7/> (डिफ़ॉल्ट); एक सेवा और उससे कैसे पूछें, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS सर्वर के पते, <x13/>; या एक DNS-ओवर-HTTPS पता। यह कभी भी सिस्टम के DNS पर वापस नहीं आता है। <x14/> प्रत्येक कनेक्शन को एक नेटवर्क एडाप्टर के माध्यम से भेजता है, उसके नाम (<x15/>, <x16/>) या उसके पतों में से एक से; जब यह कनेक्ट नहीं होता है, तो कुछ भी नहीं भेजा जाता है और डाउनलोड विफल हो जाता है।"
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager (\"MDM\", \"सॉफ़्टवेयर\") और वेबसाइट misterdownloadmanager.com (\"साइट\") Ahmed Nefzaoui और योगदानकर्ताओं (\"हम\") द्वारा बनाए गए हैं। सॉफ़्टवेयर या साइट का उपयोग करके आप इन शर्तों को स्वीकार करते हैं। यदि आप ऐसा नहीं करते हैं, तो कृपया उनका उपयोग न करें।"
@@ -5277,6 +5301,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> सभी का चयन करता है।"
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "अभी तक एडाप्टर से जुड़े नहीं हैं, इसलिए जब कोई चुना जाता है तो वे शुरू नहीं होते हैं:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5345,6 +5373,10 @@
   "9675f888cdb836b1": {
    "source": "Select the first / last download",
    "text": "पहला / अंतिम डाउनलोड चुनें"
+  },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "टोरेंट पूरा होने के बाद भी टैब तब तक रहते हैं जब तक उसे साझा किया जाता है।"
   },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
@@ -5926,6 +5958,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "यह कैसे काम करता है: Windows एडाप्टर के अपने पते को बांधता है। Windows फिर उन पैकेटों को केवल उसी एडाप्टर (इसका मजबूत होस्ट मॉडल) के माध्यम से भेजता है। Linux डिवाइस को ही बांधता है (Linux 5.7 या नया), और macOS इंटरफ़ेस को बांधता है। एक ऐसा पता जो एडाप्टर के पास नहीं है (IPv4-केवल VPN पर IPv6) अस्वीकार कर दिया जाता है, उसके चारों ओर नहीं भेजा जाता।"
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1>, या केवल <g2>Alt</g2> दबाएँ"
@@ -6169,6 +6205,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>श्रेणी</g1> — फ़ाइल के प्रकार (संपीड़ित, दस्तावेज़, संगीत, प्रोग्राम, वीडियो या सामान्य) से चुनी गई। प्रत्येक श्रेणी का अपना फ़ोल्डर होता है। इसके बगल में <g2>+</g2> एक नई श्रेणी बनाता है।"
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>नेटवर्क एडाप्टर</g1> — <g2>कोई भी (सिस्टम चुनता है)</g2> डिफ़ॉल्ट है। एक एडाप्टर चुनें, आमतौर पर आपका VPN, और MDM द्वारा खोला गया हर कनेक्शन उसी के माध्यम से बाहर जाता है, या बिल्कुल नहीं। इसमें डाउनलोड, FTP, आपके द्वारा चुना गया DNS, MDM के अपने डाउनलोड और अपडेट जांच शामिल हैं। यह एक किल स्विच के रूप में काम करता है: जब एडाप्टर डिस्कनेक्ट हो जाता है, या VPN बंद हो जाता है, तो आपके सामान्य कनेक्शन के माध्यम से कुछ भी बाहर नहीं जाता है। चल रहे डाउनलोड \"...कनेक्टेड नहीं है\" के साथ रुक जाते हैं और एडाप्टर के वापस आने पर फिर से शुरू हो जाते हैं। सूची के नीचे की पंक्ति एडाप्टर का पता दिखाती है, या यह कि यह कनेक्टेड नहीं है।"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6909,6 +6949,10 @@
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
    "text": "क्लिपबोर्ड से"
+  },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "Windows पर टोरेंट;"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -7894,6 +7938,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>एक पुराना MDM?</g1> MDM को अपडेट करें: एक नए एक्सटेंशन में एक ID हो सकती है जिसे एक पुराना सहायक नहीं जानता।"
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(निहित TLS; <x1/> TLS के साथ ठीक है)।"
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "एक चल रही कतार सूची क्रम में अपने डाउनलोड शुरू करती है, एक समय में कुछ (डिफ़ॉल्ट रूप से चार)। जब एक विफल हो जाता है, तो वह कतार के अंत में चला जाता है और 30 सेकंड बाद फिर से कोशिश की जाती है। जब डाउनलोड करने के लिए कुछ भी नहीं बचता है तो कतार रुक जाती है।"
@@ -7901,10 +7949,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "एक टूटे हुए डाउनलोड को फिर से शुरू करें"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "प्रगति दिखाते हुए, 8 कनेक्शन (<x1/>, 1 से 128) तक के साथ एक फ़ाइल डाउनलोड करें। <x2/> इसे रोकता है; <x3/> जारी रखता है। <x4/> समाप्त फ़ाइल की जाँच करता है: हेक्स MD5, SHA-1, SHA-256, SHA-512 या CRC32, वैकल्पिक रूप से नामित (<x5/>)। <x6/> DNS चुनता है: <x7/> (डिफ़ॉल्ट); एक सेवा और उससे कैसे पूछें, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS सर्वर के पते, <x13/>; या एक DNS-ओवर-HTTPS पता। यह कभी भी सिस्टम के DNS पर वापस नहीं आता है।"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8286,6 +8330,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "शीर्ष पर <g1>Windows की भाषा</g1>, Windows की डिस्प्ले भाषा का अनुसरण करती है। जब Windows ऐसी भाषा का उपयोग करता है जो MDM के पास नहीं है, तो MDM अंग्रेजी दिखाता है।"
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "इनमें से किसी एक द्वारा रोका गया टोरेंट अपने इवेंट लॉग में ऐसा बताता है, और MDM शुरू होने पर उसे फिर से साझा नहीं किया जाता है। इसे फिर से साझा करने के लिए सीमा बढ़ाएँ या बंद करें। - <g1>सभी टोरेंट के लिए अपलोडिंग को इस पर सीमित करें</g1> — डिफ़ॉल्ट रूप से बंद। यह आपके सभी टोरेंट द्वारा अन्य पीयर को भेजे जाने वाले डेटा को सीमित करता है, जब वे डाउनलोड करते हैं और जब वे साझा करते हैं। टोरेंट की अपनी अपलोड सीमा, उसकी प्रगति विंडो में, इसके ऊपर लागू होती है। - <g2>मैग्नेट लिंक और .torrent फ़ाइलें Mister Download Manager के साथ खोलें</g2> — Windows तब आपके ब्राउज़र में मैग्नेट लिंक और Explorer में <x3/> फ़ाइलें MDM के साथ खोलता है। यह केवल आपके Windows खाते के लिए है; Windows की <g4>इसके साथ खोलें</g4> में आपके द्वारा चुना गया प्रोग्राम पहले रहता है। सेटअप इसे आपके लिए चालू कर सकता है।"
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "विकल्प"
@@ -8478,6 +8526,10 @@
    "source": "Installer",
    "text": "इंस्टॉलर"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "वीडियो पेज (yt-dlp को एडाप्टर से नहीं जोड़ा जा सकता);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "यदि वीडियो डाउनलोड नहीं होता है, तो <g1>वीडियो डाउनलोड</g1> देखें।"
@@ -8661,6 +8713,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "जब तक MDM पेज को देखता है, तब तक प्रतीक्षा करें। क्वालिटी की सूची सबसे अच्छी क्वालिटी के साथ दिखाई देती है, जिसमें <g1>केवल ऑडियो</g1> अंत में होता है: साइट पर उपलब्ध ध्वनि, फिर, ffmpeg (अगला चरण) के साथ, अपनी सर्वोत्तम परिवर्तनीय बिटरेट पर या 320, 256, 192 या 128 kbps पर MP3 के रूप में।"
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>इतने समय तक साझा करने के बाद साझा करना बंद करें … मिनट</g1> — या एक बार जब इसे इतनी देर तक साझा किया गया हो, इसके सभी रन के दौरान। डिफ़ॉल्ट रूप से बंद।"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

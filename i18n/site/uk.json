@@ -158,10 +158,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Відповіді про Mister Download Manager: чи безкоштовний він, чи безпечний, як він порівнюється з IDM, браузери, відео, торренти, швидкість, Mac і Linux та інше."
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>Обмежити надсилання для всіх торентів до</g1> — за замовчуванням вимкнено. Обмежує те, що всі ваші торенти разом надсилають іншим пірам, під час завантаження та під час роздачі. Власне обмеження надсилання торента, у вікні його прогресу, застосовується поверх цього."
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Запускає головну чергу завантажень; <x1/>."
@@ -626,6 +622,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Контрольні суми SHA-256</g1><g2>для кожного файлу</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "На macOS VPN, який перепідключається, може отримати новий інтерфейс (<x1/> замість <x2/>): виберіть його знову."
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "Розширенню має бути дозволено читати сайт. Якщо ви обмежите його певними сайтами (або <g1>По кліку</g1>), воно не зможе передати ваші дані для входу, тому залишить завантаження з цих сайтів браузеру."
@@ -977,6 +977,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 с</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "У Windows торрент-рушій ще не може прив’язуватися до адаптера. Тому торренти не запускаються, поки вибрано адаптер («торренти ще не можуть проходити через вибраний мережевий адаптер у Windows»), замість того, щоб обходити його. Імена трекерів все ще шукаються за допомогою системного DNS."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1794,6 +1798,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>Зупинити розповсюдження при коефіцієнті розповсюдження</g1> — завершений торент припиняє розповсюджуватися, коли він надіслав у стільки разів більше, ніж отримав (2.00: удвічі). За замовчуванням вимкнено."
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "клацніть правою кнопкою миші на застосунку → Відкрити (ще не нотаріально засвідчено)"
@@ -1978,6 +1986,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Безкоштовний менеджер завантажень з відкритим кодом для Windows, з експериментальними збірками для macOS та Linux. Знайомий інтерфейс IDM, у 5 разів швидший у нашому тесті: всі з'єднання одночасно, безпечне відновлення після збою, торренти, відео з веб-сторінок, інтеграція з браузером, 86 мов."
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "З’єднання з цим комп’ютером (<x1/>) не прив’язані. Проксі на цьому комп’ютері здійснює завантаження, і куди він їх надсилає, залежить від нього."
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "Відео, захищені DRM (більшість платних потокових сервісів), не можуть бути завантажені, і MDM не намагається цього робити."
@@ -2137,10 +2149,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, портативна або звичайний zip"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>Відкривати magnet-посилання та файли .torrent за допомогою Mister Download Manager</g1> — тоді Windows відкриватиме magnet-посилання у вашому браузері та файли <x2/> у Провіднику за допомогою MDM. Це стосується лише вашого облікового запису Windows; програма, яку ви вибрали в меню <g3>Відкрити за допомогою</g3> Windows, залишається першою. Програма встановлення може увімкнути це для вас."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2389,6 +2397,10 @@
   "406376ea6db241ce": {
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "Чи натиснули ви <g1>Застосувати</g1> після встановлення часу?"
+  },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "Системний DNS запитує імена по-своєму, і Windows може запитувати через кожен адаптер. Щоб зберегти імена також всередині адаптера, виберіть DNS у <g1>Підключення</g1> → <g2>DNS</g2>: тоді MDM запитує його через адаптер."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -3662,6 +3674,10 @@
    "source": "Reinstall MDM to restore its files.",
    "text": "Перевстановіть MDM, щоб відновити його файли."
   },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "Щоб спрямувати <g1>весь</g1> трафік через іншу мережу, використовуйте VPN для всього комп’ютера."
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4214,6 +4230,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>Вигляд → Підтримка темного режиму</g1> та <g2>Вигляд → Мова</g2>."
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "Мережевий адаптер"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>Вирішення проблем</g2></g1> — що перевірити, коли завантаження не вдається, браузер не передає завантаження або розклад не запускається."
@@ -4486,6 +4506,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Потрібен Firefox 140 або новішої версії."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Параметри → Проксі / Socks → Мережевий адаптер</g1> прив’язує з’єднання MDM до одного адаптера, зазвичай VPN (<g2>Параметри</g2>). У Linux та macOS торрент-рушій прив’язує до нього кожен сокет: піри, трекери, DHT та його порт для прослуховування. UPnP та виявлення локальних пірів тоді вимикаються, оскільки вони спілкуються з локальною мережею, а не через адаптер. Якщо адаптер зникає, рушій зупиняється і знову запускається через адаптер, коли він повертається."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Завдання → Налаштування торрентів → Відкривати магнітні посилання та файли .torrent за допомогою Mister Download Manager</g1> записує дані до реєстру, лише для вашого облікового запису Windows. Залиште цю опцію вимкненою, щоб портативна копія залишалася вільною від реєстру."
@@ -4741,10 +4765,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "У встановлений час черга запускається сама. Вранці завершені файли знаходяться в розділі <g1>Завершено</g1> в категоріях."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Щоб маршрутизувати <g1>все</g1> через іншу мережу, використовуйте VPN для всього комп'ютера. MDM не може прив'язати торренти до одного мережевого адаптера в Windows."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5258,6 +5278,10 @@
    "source": "Keep some speed for everything else →",
    "text": "Залишити певну швидкість для всього іншого →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "Завантажити файл, використовуючи до 8 з’єднань (<x1/>, від 1 до 128), з відображенням прогресу. <x2/> призупиняє завантаження; <x3/> продовжує. <x4/> перевіряє завершений файл: шістнадцятковий MD5, SHA-1, SHA-256, SHA-512 або CRC32, за бажанням з назвою (<x5/>). <x6/> вибирає DNS: <x7/> (за замовчуванням); сервіс та спосіб запиту, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреси DNS-серверів, <x13/>; або адресу DNS-over-HTTPS. Він ніколи не повертається до системного DNS. <x14/> надсилає кожне з’єднання через один мережевий адаптер, за його назвою (<x15/>, <x16/>) або однією з його адрес; якщо він не підключений, нічого не надсилається, і завантаження не вдається."
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Програму Mister Download Manager («MDM», «програмне забезпечення») та вебсайт misterdownloadmanager.com («сайт») створено Ahmed Nefzaoui та співавторами («ми»). Використовуючи програмне забезпечення або сайт, ви приймаєте ці умови. Якщо ви не згодні, будь ласка, не використовуйте їх."
@@ -5277,6 +5301,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> вибирає все."
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Ще не прив’язані до адаптера, тому вони не запускаються, поки вибрано один:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5345,6 +5373,10 @@
   "9675f888cdb836b1": {
    "source": "Select the first / last download",
    "text": "Вибрати перше / останнє завантаження"
+  },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "Вкладки залишаються після завершення завантаження торента, доки він розповсюджується."
   },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
@@ -5926,6 +5958,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "Як це працює: Windows прив’язує власну адресу адаптера. Потім Windows надсилає ці пакети лише через цей адаптер (її модель сильного хоста). Linux прив’язує сам пристрій (Linux 5.7 або новіший), а macOS прив’язує інтерфейс. Адреса типу, якого адаптер не має (IPv6 на VPN лише для IPv4), відхиляється, а не надсилається навколо нього."
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1> або просто <g2>Alt</g2>"
@@ -6169,6 +6205,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Категорія</g1> — обирається за типом файлу (Стиснуті, Документи, Музика, Програми, Відео або Загальні). Кожна категорія має власну папку. <g2>+</g2> поруч створює нову категорію."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Мережевий адаптер</g1> — за замовчуванням <g2>Будь-який (система вибирає)</g2>. Виберіть адаптер, зазвичай ваш VPN, і кожне з’єднання, яке відкриває MDM, проходитиме через нього, або не проходитиме взагалі. Це стосується завантажень, FTP, вибраного вами DNS, власних завантажень MDM та перевірки оновлень. Це працює як аварійний вимикач: коли адаптер відключається або VPN вимикається, нічого не проходить через ваше звичайне з’єднання. Запущені завантаження зупиняються з повідомленням «… не підключено» і відновлюються, коли адаптер повертається. Рядок під списком показує адресу адаптера або те, що він не підключений."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6909,6 +6949,10 @@
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
    "text": "З буфера обміну"
+  },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "торренти на Windows;"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -7894,6 +7938,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>Старіший MDM?</g1> Оновіть MDM: новіше розширення може мати ідентифікатор, який старий помічник не знає."
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(неявний TLS; <x1/> з TLS працює нормально)."
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "Запущена черга починає завантаження в порядку списку, по кілька за раз (за замовчуванням чотири). Якщо одне завантаження не вдається, воно переміщується в кінець черги і повторюється через 30 секунд. Черга зупиняється, коли більше нічого завантажувати."
@@ -7901,10 +7949,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Продовжити перерване завантаження"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Завантажити файл із до 8 з’єднаннями (<x1/>, від 1 до 128), показуючи прогрес. <x2/> призупиняє його; <x3/> продовжує. <x4/> перевіряє готовий файл: шістнадцятковий MD5, SHA-1, SHA-256, SHA-512 або CRC32, за бажанням названий (<x5/>). <x6/> вибирає DNS: <x7/> (за замовчуванням); службу та спосіб запиту, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреси DNS-серверів, <x13/>; або адресу DNS-over-HTTPS. Він ніколи не повертається до системного DNS."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8286,6 +8330,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "<g1>Мова Windows</g1> угорі відповідає мові відображення Windows. Якщо Windows використовує мову, якої немає в MDM, MDM відображає англійську."
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "Торент, зупинений одним із цих способів, вказує це у своєму журналі подій і не розповсюджується знову при запуску MDM. Збільште або вимкніть ліміт, щоб розповсюдити його знову. - <g1>Обмежити надсилання для всіх торентів до</g1> — за замовчуванням вимкнено. Обмежує те, що всі ваші торенти разом надсилають іншим учасникам, поки вони завантажуються та поки вони розповсюджуються. Власний ліміт надсилання торента, у його вікні прогресу, застосовується додатково. - <g2>Відкривати магніт-посилання та файли .torrent за допомогою Mister Download Manager</g2> — тоді Windows відкриває магніт-посилання у вашому браузері та <x3/> файли в Провіднику за допомогою MDM. Це стосується лише вашого облікового запису Windows; програма, яку ви вибрали в <g4>Відкрити за допомогою</g4> Windows, залишається першою. Налаштування можуть увімкнути це для вас."
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "Параметри"
@@ -8478,6 +8526,10 @@
    "source": "Installer",
    "text": "Інсталятор"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "відеосторінки (yt-dlp не може бути прив’язаний до адаптера);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Якщо відео не завантажується, дивіться <g1>Завантаження відео</g1>."
@@ -8661,6 +8713,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "Зачекайте, поки MDM знайде сторінку. З'явиться список якостей, найкращі спочатку, з <g1>Тільки аудіо</g1> в кінці: звук, як він є на сайті, потім, за допомогою ffmpeg (наступний крок), як MP3 з найкращим змінним бітрейтом або 320, 256, 192 чи 128 кбіт/с."
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>Зупинити розповсюдження після розповсюдження протягом … хвилин</g1> — або коли він розповсюджувався стільки часу, за всі свої запуски. За замовчуванням вимкнено."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

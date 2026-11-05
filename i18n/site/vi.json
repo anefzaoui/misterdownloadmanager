@@ -158,10 +158,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Trả lời các câu hỏi về Mister Download Manager: nó có miễn phí không, có an toàn không, so sánh với IDM, trình duyệt, video, torrent, tốc độ, Mac và Linux, và nhiều hơn nữa."
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>Giới hạn tải lên cho tất cả torrent thành</g1> — tắt theo mặc định. Giới hạn tổng dung lượng mà tất cả các torrent của bạn gửi cho các người ngang hàng khác, trong khi chúng tải xuống và trong khi chúng chia sẻ. Giới hạn tải lên riêng của một torrent, trong cửa sổ tiến trình của nó, sẽ được áp dụng thêm vào trên giới hạn này."
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Bắt đầu hàng đợi tải xuống chính; <x1/>."
@@ -626,6 +622,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Tổng kiểm SHA-256</g1><g2>cho mọi tệp</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "Trên macOS, một VPN kết nối lại có thể nhận một giao diện mới (<x1/> thay vì <x2/>): hãy chọn lại nó."
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "Tiện ích mở rộng phải được phép đọc trang web. Khi bạn giới hạn nó ở một số trang web (hoặc <g1>Khi nhấp</g1>), nó không thể chuyển thông tin đăng nhập của bạn, vì vậy nó sẽ để các lượt tải xuống của các trang web đó cho trình duyệt."
@@ -977,6 +977,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 giây</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Trên Windows, công cụ torrent chưa thể liên kết với bộ điều hợp. Vì vậy, torrent không bắt đầu khi một bộ điều hợp được chọn (\"torrent chưa thể đi qua bộ điều hợp mạng đã chọn trên Windows\"), thay vì đi vòng qua nó. Tên trình theo dõi vẫn được tra cứu bởi DNS của hệ thống."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1794,6 +1798,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>Dừng chia sẻ ở tỷ lệ chia sẻ</g1> — một torrent đã hoàn tất sẽ ngừng chia sẻ khi nó đã gửi đi số lần bằng với những gì nó có (2.00: gấp đôi). Mặc định là tắt."
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "nhấp chuột phải vào ứng dụng → Mở (chưa được chứng thực)"
@@ -1978,6 +1986,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Trình quản lý tải xuống miễn phí, mã nguồn mở dành cho Windows, có bản thử nghiệm cho macOS và Linux. Giao diện IDM quen thuộc, nhanh hơn 5 lần trong thử nghiệm của chúng tôi: mọi kết nối cùng lúc, tiếp tục tải xuống an toàn khi gặp sự cố, torrent, video từ trang web, tích hợp trình duyệt, 86 ngôn ngữ."
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "Các kết nối đến chính máy tính này (<x1/>) không bị ràng buộc. Một proxy trên máy tính này thực hiện các lượt tải xuống, và nơi nó gửi chúng là tùy thuộc vào nó."
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "Các video được bảo vệ bằng DRM (hầu hết các dịch vụ phát trực tuyến trả phí) không thể tải xuống, và MDM không cố gắng làm điều đó."
@@ -2137,10 +2149,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, bản di động hoặc tệp zip thông thường"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g1> — Windows sau đó sẽ mở liên kết magnet trong trình duyệt của bạn và tệp <x2/> trong Explorer bằng MDM. Điều này chỉ dành cho tài khoản Windows của bạn; một chương trình bạn đã chọn trong <g3>Mở bằng</g3> của Windows vẫn là ưu tiên hàng đầu. Trình cài đặt có thể bật tính năng này cho bạn."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2389,6 +2397,10 @@
   "406376ea6db241ce": {
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "Bạn đã nhấp vào <g1>Áp dụng</g1> sau khi đặt thời gian chưa?"
+  },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "DNS của hệ thống hỏi các tên theo cách riêng của nó, và Windows có thể hỏi qua mọi bộ điều hợp. Để giữ các tên bên trong bộ điều hợp, hãy chọn một DNS trong <g1>Kết nối</g1> → <g2>DNS</g2>: MDM sau đó sẽ hỏi nó qua bộ điều hợp."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -3662,6 +3674,10 @@
    "source": "Reinstall MDM to restore its files.",
    "text": "Cài đặt lại MDM để khôi phục các tệp của nó."
   },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "Để định tuyến <g1>mọi thứ</g1> qua một mạng khác, hãy dùng VPN cho toàn bộ máy tính."
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4214,6 +4230,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>Xem → Hỗ trợ Chế độ tối</g1> và <g2>Xem → Ngôn ngữ</g2>."
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "Bộ điều hợp mạng"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>Khắc phục sự cố</g2></g1> — những gì cần kiểm tra khi tải xuống thất bại, trình duyệt không chuyển bản tải xuống hoặc lịch trình không bắt đầu."
@@ -4486,6 +4506,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Cần có Firefox 140 trở lên."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Tùy chọn → Proxy / Socks → Bộ điều hợp mạng</g1> giữ các kết nối của MDM với một bộ điều hợp, thường là của VPN (<g2>Tùy chọn</g2>). Trên Linux và macOS, công cụ torrent liên kết mọi socket với nó: các peer, trình theo dõi, DHT và cổng nghe của nó. UPnP và khám phá peer cục bộ sau đó bị tắt, vì chúng nói chuyện với mạng cục bộ thay vì qua bộ điều hợp. Nếu bộ điều hợp biến mất, công cụ sẽ dừng và nó sẽ khởi động lại qua bộ điều hợp khi nó quay lại."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Tác vụ → Cài đặt torrent → Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g1> có ghi vào registry, chỉ cho tài khoản Windows của bạn. Hãy tắt nó để giữ bản di động không có registry."
@@ -4741,10 +4765,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Vào thời gian bắt đầu, hàng đợi sẽ tự động bắt đầu. Vào buổi sáng, các tệp đã hoàn tất nằm trong <g1>Đã hoàn tất</g1> trong các danh mục."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Để định tuyến <g1>mọi thứ</g1> qua một mạng khác, hãy sử dụng VPN cho toàn bộ máy tính. MDM không thể gắn torrent vào một bộ điều hợp mạng trên Windows."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5258,6 +5278,10 @@
    "source": "Keep some speed for everything else →",
    "text": "Giữ một phần tốc độ cho mọi thứ khác →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>, từ 1 đến 128), hiển thị tiến độ. <x2/> tạm dừng; <x3/> tiếp tục. <x4/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn đặt tên (<x5/>). <x6/> chọn DNS: <x7/> (mặc định); một dịch vụ và cách hỏi nó, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; địa chỉ máy chủ DNS, <x13/>; hoặc địa chỉ DNS-over-HTTPS. Nó không bao giờ quay lại DNS của hệ thống. <x14/> gửi mọi kết nối qua một bộ điều hợp mạng, bằng tên của nó (<x15/>, <x16/>) hoặc một trong các địa chỉ của nó; khi nó không được kết nối, không có gì được gửi và quá trình tải xuống thất bại."
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager (\"MDM\", \"phần mềm\") và trang web misterdownloadmanager.com (\"trang web\") được tạo bởi Ahmed Nefzaoui và những người đóng góp (\"chúng tôi\"). Bằng cách sử dụng phần mềm hoặc trang web, bạn chấp nhận các điều khoản này. Nếu không, vui lòng không sử dụng chúng."
@@ -5277,6 +5301,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> chọn tất cả."
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Chưa được giữ vào bộ điều hợp, vì vậy chúng không bắt đầu khi một bộ điều hợp được chọn:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5345,6 +5373,10 @@
   "9675f888cdb836b1": {
    "source": "Select the first / last download",
    "text": "Chọn bản tải xuống đầu tiên / cuối cùng"
+  },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "Các tab vẫn còn sau khi torrent hoàn tất, miễn là nó còn được chia sẻ."
   },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
@@ -5926,6 +5958,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "Cách nó giữ: Windows liên kết địa chỉ riêng của bộ điều hợp. Windows sau đó chỉ gửi các gói đó qua bộ điều hợp đó (mô hình máy chủ mạnh của nó). Linux liên kết chính thiết bị (Linux 5.7 trở lên), và macOS liên kết giao diện. Một địa chỉ mà bộ điều hợp không có (IPv6 trên VPN chỉ IPv4) sẽ bị từ chối, không được gửi xung quanh nó."
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1>, hoặc <g2>Alt</g2> nhấn một mình"
@@ -6169,6 +6205,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Danh mục</g1> — được chọn từ loại tệp (Đã nén, Tài liệu, Nhạc, Chương trình, Video hoặc Chung). Mỗi danh mục có thư mục riêng. <g2>+</g2> bên cạnh nó tạo một danh mục mới."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Bộ điều hợp mạng</g1> — <g2>Bất kỳ (hệ thống tự chọn)</g2> là mặc định. Chọn một bộ điều hợp, thường là của VPN của bạn, và mọi kết nối MDM mở ra đều đi qua nó, hoặc không đi qua. Điều này bao gồm các lượt tải xuống, FTP, DNS bạn đã chọn, các lượt tải xuống của MDM và kiểm tra cập nhật. Nó hoạt động như một công tắc ngắt mạch: khi bộ điều hợp bị ngắt kết nối, hoặc VPN bị tắt, không có gì đi ra qua kết nối thông thường của bạn. Các lượt tải xuống đang chạy dừng lại với “… không được kết nối” và bắt đầu lại khi bộ điều hợp hoạt động trở lại. Dòng bên dưới danh sách hiển thị địa chỉ của bộ điều hợp, hoặc cho biết nó không được kết nối."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6909,6 +6949,10 @@
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
    "text": "Từ bảng tạm"
+  },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "torrent trên Windows;"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -7894,6 +7938,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>Một MDM cũ hơn?</g1> Cập nhật MDM: một tiện ích mở rộng mới hơn có thể có một ID mà trình hỗ trợ cũ không biết."
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(TLS ngầm; <x1/> với TLS thì ổn)."
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "Một hàng đợi đang chạy sẽ bắt đầu các lượt tải xuống theo thứ tự danh sách, mỗi lần một vài lượt (mặc định là bốn). Khi một lượt tải xuống thất bại, nó sẽ di chuyển đến cuối hàng đợi và được thử lại sau 30 giây. Hàng đợi dừng khi không còn gì để tải xuống."
@@ -7901,10 +7949,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Tiếp tục bản tải xuống bị gián đoạn"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>, từ 1 đến 128), hiển thị tiến độ. <x2/> tạm dừng; <x3/> tiếp tục. <x4/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn đặt tên (<x5/>). <x6/> chọn DNS: <x7/> (mặc định); một dịch vụ và cách yêu cầu nó, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; địa chỉ máy chủ DNS, <x13/>; hoặc địa chỉ DNS-over-HTTPS. Nó không bao giờ quay lại DNS của hệ thống."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8286,6 +8330,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "<g1>Ngôn ngữ của Windows</g1>, ở trên cùng, tuân theo ngôn ngữ hiển thị của Windows. Khi Windows sử dụng một ngôn ngữ mà MDM không có, MDM sẽ hiển thị tiếng Anh."
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "Một torrent bị dừng bởi một trong các giới hạn này sẽ hiển thị trong nhật ký sự kiện của nó và sẽ không được chia sẻ lại khi MDM khởi động. Tăng hoặc tắt giới hạn để chia sẻ lại. - <g1>Giới hạn tải lên cho tất cả torrent thành</g1> — mặc định là tắt. Giới hạn tổng dung lượng mà tất cả các torrent của bạn gửi đến các peer khác, trong khi chúng tải xuống và trong khi chúng chia sẻ. Giới hạn tải lên riêng của một torrent, trong cửa sổ tiến trình của nó, sẽ được áp dụng thêm vào. - <g2>Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g2> — Windows sau đó sẽ mở liên kết magnet trong trình duyệt của bạn và các tệp <x3/> trong Explorer bằng MDM. Điều này chỉ dành cho tài khoản Windows của bạn; một chương trình bạn đã chọn trong <g4>Mở bằng</g4> của Windows vẫn được ưu tiên. Trình cài đặt có thể bật tính năng này cho bạn."
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "Tùy chọn"
@@ -8478,6 +8526,10 @@
    "source": "Installer",
    "text": "Trình cài đặt"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "các trang video (yt-dlp không thể được giữ vào một bộ điều hợp);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Nếu video không tải xuống được, hãy xem <g1>Tải xuống video</g1>."
@@ -8661,6 +8713,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "Chờ MDM tìm kiếm trang. Danh sách chất lượng sẽ hiện ra, chất lượng tốt nhất ở đầu, với <g1>Chỉ âm thanh</g1> ở cuối: âm thanh như trang web có, sau đó, với ffmpeg (bước tiếp theo), dưới dạng MP3 ở tốc độ bit biến đổi tốt nhất hoặc ở 320, 256, 192 hoặc 128 kbps."
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>Dừng chia sẻ sau khi chia sẻ trong … phút</g1> — hoặc sau khi nó đã được chia sẻ trong khoảng thời gian đó, qua tất cả các lần chạy của nó. Mặc định là tắt."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

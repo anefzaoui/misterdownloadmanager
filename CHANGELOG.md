@@ -22,6 +22,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Torrents: seeding limits** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)):
+  under "Keep sharing torrents after they finish", Torrent settings can stop sharing a finished
+  torrent at a share ratio, or after it has been shared for some minutes; both off by default. A
+  torrent stopped so says it in its event log and isn't shared again at the next start.
 - **The built-in categories are yours to change** ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93)):
   Compressed, Documents, Music, Programs and Video can be renamed, given other file types and
   deleted, like your own categories (right-click → Properties or Delete). A renamed category keeps
@@ -207,6 +211,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A finished torrent's progress window lost its tabs while it was still shared**: Files, Peers,
+  Trackers, Pieces and General (with the share ratio) said "Shown while the torrent is
+  downloading." They now stay for as long as the torrent is shared.
+- **"Hide tab" was cut in longer languages** (German "Registerkarte au..."): the button grows to
+  fit its label where there is room, through a shared helper other buttons can use.
 - **A video download could fail in MDM while yt-dlp went on and finished it**
   ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)). A line yt-dlp printed in
   the system's code page rather than UTF-8 (a title in Turkish or Russian on some Windows) ended
