@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Jeni i sigurt që doni të fshini {n} shkarkim nga lista e shkarkimeve të Mister Download Manager?|Jeni i sigurt që doni të fshini këto {n} shkarkime nga lista e shkarkimeve të Mister Download Manager?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	U hoq {n} skedar në {folder}|U hoqën {n} skedarë në {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,8 +39,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} duke shkarkuar|{n} duke shkarkuar
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} hyrje u la jashtë (një lidhje, ose një emër që të çon jashtë dosjes)|{n} hyrje u lanë jashtë (lidhje, ose emra që të çojnë jashtë dosjes)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} skedar|{n} skedarë
@@ -44,6 +55,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file chosen to download|{n} files chosen to download	{n} skedar i zgjedhur për shkarkim|{n} skedarë të zgjedhur për shkarkim
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} skedar kishte emrin e një skedari që ishte aty tashmë dhe u numërua|{n} skedarë kishin emrin e një skedari që ishte aty tashmë dhe u numëruan
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -105,6 +121,21 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-orësh (21:41)
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	Kërkohet 7-Zip
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	Arkivat 7z dhe RAR nxirren nga 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	Arkivat 7z dhe RAR kërkojnë 7-Zip (7-zip.org), i cili nuk është i instaluar.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	Arkivat 7z dhe RAR kërkojnë 7-Zip, i cili nuk është i instaluar
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Fshih detajet
@@ -128,6 +159,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	Një gjurmues në këtë kompjuter ose në rrjetin lokal nuk kontaktohet kurrë: {line}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	mungon një vëllim i tij
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Rreth Mister Download Manager
@@ -185,7 +220,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Shtoni zgjerimin falas: skedarët që shkarkoni në shfletuesin tuaj vijnë këtu dhe videot marrin një buton Shkarko.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	Shto në radhë
 #. text in a dialog box
@@ -257,6 +293,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	po shkarkohet tashmë: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	Tashmë në listë
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -275,6 +315,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Gjithmonë e errët
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	Gjithmonë në një dosje të emërtuar sipas tij
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Gjithmonë aktivizo Kufizuesin e Shpejtësisë në nisjen e Mister Download Manager
@@ -298,6 +342,20 @@
 #. text in the Scheduler window
 #, machine
 	April	Prill
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	Fjalëkalimi i arkivës
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	Arkivat
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	Arkivat dhe Kapësi i lidhjeve
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -364,7 +422,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Të rikthehen {names} siç ishin në fillim: emrat, llojet e skedarëve dhe dosjet e tyre? Kategoritë tuaja, Të përgjithshme dhe Torrente mbeten siç janë. Shkarkimet e zhvendosura tashmë te Të përgjithshme mbeten aty.
-#. button in the Options window
+#. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	Shfleto
@@ -378,13 +436,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Integrimi i shfletuesit/sistemit
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	E zënë, provoni më vonë
 #. message or event log entry in the main window
 #, machine
 	by batch download	nga shkarkimi grupor
 #. message or event log entry in the main window
 #, machine
-	by import	nga importimi
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	nga Link grabber
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Anulo
@@ -437,6 +499,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	Ndrysho dosjen për kategorinë "{category}" në të fundit të zgjedhur
+#. text in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	Zgjidh të gjitha
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Kontrollo për përditësime
@@ -480,7 +546,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	Po kontrollohet {name} ({n} nga {total})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Po kontrollohet...
@@ -570,6 +636,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	Kopjoni raportin
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	S'u hoq dot {name}: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Krijo dosje
@@ -628,6 +699,10 @@
 #. verb: delete the item
 #, machine
 	Delete	Fshi
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	Fshiji arkivat pasi t'i keni nxjerrë
 #. window title in a dialog box
 #, machine
 	Delete category	Fshi kategorinë
@@ -848,6 +923,10 @@
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	Çdo lidhje merr rrugën e sistemit.
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	Dosja e kategorisë së çdo skedari
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -947,6 +1026,27 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Shtesa të ndara me hapësira, për shembull MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	Nxirre
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	Nxirri arkivat kur të përfundojë shkarkimi i tyre
+#. text in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	Nxirre kur të ketë mbaruar
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	Po nxirret arkiva...
+#. message or event log entry in the main window
+#. a download's status: its archive is being extracted (#37)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting...	Po nxirret...
 #. text in the Scheduler window
 #, machine
 	February	Shkurt
@@ -1133,6 +1233,10 @@
 #. tab title: general information
 #, machine
 	General	Të përgjithshme
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	Merr 7-Zip
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1188,6 +1292,10 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	Fshih në zonën e njoftimeve
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	Fshih faqet e internetit
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mbani Alt ndërsa klikoni një lidhje për ta lënë shfletuesin ta shkarkojë atë në vend të Mister Download Manager.
@@ -1223,19 +1331,12 @@
 #. message or event log entry in the main window
 #, machine
 	Import	Importo
-#. window title in transfer.rs
-#, machine
-	Import downloads	Importo shkarkimet
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Në një radhë
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Në kategori: menuja e kategorisë së zgjedhur
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	në listë
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1248,6 +1349,10 @@
 #. the torrent's identifier
 #, machine
 	Info hash	Hash informacioni
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	Instaloni 7-Zip (falas), pastaj klikoni me të djathtën mbi shkarkimin dhe zgjidhni Nxirr.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1260,6 +1365,10 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Instalo yt-dlp
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	Në një dosje të emërtuar sipas tij, kur përmban disa gjëra
 #. text in a dialog box
 #, machine
 	Invalid address	Adresë e pavlefshme
@@ -1267,10 +1376,35 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	Adresat IP (opsionale):
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	përmban shumë skedarë ose dosje
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	është i dëmtuar, ose jo arkiva që thotë emri i tij
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	nuk është një arkivë që nxjerr MDM
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	i duhet një fjalëkalim
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	U tregon kompjuterave në rrjetin tuaj se cilat torrente keni.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	u ndal
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	do të shkruante {size}, më shumë se {limit} që ka vend ose arsye
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1352,8 +1486,17 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	Kufizo ngarkimin për të gjithë torrentët në
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	Link grabber
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	Lidhjet
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Lidhje nga shfletuesi
 #. text in playlistdlg.rs
@@ -1388,6 +1531,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	Identifikohu
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	Kërko lidhjet kur të mbërrijnë (emri, madhësia, online)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Kërko
@@ -1568,17 +1715,22 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	Nr.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	Emri
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	Emri:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Emrat në skedarin tuaj të hosteve dhe emrat lokalë (fjalë të vetme, .local, .lan) mbeten me DNS-në e sistemit. Faqet e videove dhe gjurmuesit e torrentëve përdorin DNS-në e sistemit për momentin.
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	I duhet një hyrje
 #. text in the Options window
 #, machine
 	Network adapter:	Përshtatësi i rrjetit:
@@ -1745,7 +1897,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Ofroni shkarkimin e lidhjeve të kopjuara në kujtesë
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	Jashtë linje ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	OK
 #. text in a download's progress window
@@ -1763,6 +1919,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Shkarkim një herë
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	Online
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1836,22 +1996,35 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	Ose ngjit tokenin tuaj API:
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	Paketa
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Adresa e faqes
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Fjalëkalimi
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
+#. Link grabber: the package's archives' password (a label before its box)
 #, machine
 	Password:	Fjalëkalimi:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Ngjisni një lidhje magnet ose zgjidhni një skedar .torrent, pastaj Kërkoni.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	Ngjitni lidhjet këtu (Ctrl+V), ose dërgoni lidhjet e një faqeje nga shfletuesi.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Ngjisni shumën kontrolluese që jep faqja e shkarkimit
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	E ngjitur
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -2086,6 +2259,10 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Ruaj te:
+#. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
+#, machine
+	Save to:	Ruaje në:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -2109,7 +2286,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Zgjidhni një dosje
-#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Zgjidh të gjitha
@@ -2119,7 +2296,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Zgjidh çdo shkarkim deri te ky
-#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: untick every video
 #, machine
 	Select none	Mos zgjidh asnjë
@@ -2297,7 +2474,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Sajtet dërgojnë cilësinë e tyre më të mirë si video dhe audio të ndara. ffmpeg i bashkon ato në një skedar të vetëm që luhet kudo.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -2337,6 +2514,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	Kodi burimor
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	Burimi: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2344,6 +2526,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Cilësimet e Kufizuesit të Shpejtësisë
+#. text in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	Fillo
 #. button in a dialog box
 #, machine
 	Start Download	Fillo Shkarkimin
@@ -2390,7 +2576,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	Gjendja
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -2444,6 +2630,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Ndalon kur shkarkimi përfundon
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	Direkt në dosjen e arkivës
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2471,6 +2661,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	Radha e sinkronizimit
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Detyrat → Kapësi i lidhjeve, ose "Shkarko të gjitha lidhjet" i shfletuesit: vëllimet e një arkive\ntë ndarë janë një paketë, lidhjet e tjera të një faqeje një tjetër.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Tregoja një miku
@@ -2504,6 +2698,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Adresa duhet të jetë një adresë http(s) ose ftp(s)
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	Arkiva nuk mund të zhvendosej në Shportën e Riciklimit: ajo u ruajt
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	Arkiva nuk mund të zhvendosej në Plehra: ajo u ruajt
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	Arkiva u zhvendos në Shportën e Riciklimit
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	Arkiva u zhvendos në Plehra
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Cilësitë më të mira, MP3, Opus dhe FLAC, kërkojnë ffmpeg (rreth 80 MB).
@@ -2650,6 +2858,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	përshtatësi i rrjetit {adapter} nuk është i lidhur
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	fjalëkalimi është i gabuar
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	shtegu është shumë i gjatë për Windows: {path}
@@ -2734,6 +2946,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Faqja e internetit nga e cila u mor ky skedar:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	Pastaj zhvendosi arkivat në Shportën e Riciklimit
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	Pastaj zhvendosi arkivat në Plehra
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Ekziston tashmë një kategori me këtë emër
@@ -2944,6 +3164,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	Lloji:
+#. text in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	Ç'zgjidh të gjitha
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -3045,6 +3269,10 @@
 #. text in a download's progress window
 #, machine
 	Value	Vlera
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	Skedarë të ndryshëm
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3082,6 +3310,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Cilësimet e kontrollit të viruseve
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	mungon vëllimi {n} i saj
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -3103,12 +3336,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Ueb
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	Adresat e uebit të gjetura në {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	E mërkurë
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	Çfarë përmban një arkiv shkon:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -3139,6 +3373,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Shkruani datat dhe orët
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	Fjalëkalim i gabuar për {name}. Shtypeni përsëri:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -3189,6 +3428,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: gjen videon
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ dhe XZ; një arkiv i ndarë (.part1.rar, .7z.001) pasi\nçdo vëllim është brenda. Një skedar që tashmë ekziston ruhet: i riu numërohet.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -3293,6 +3536,16 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} nuk mund të shkarkohej: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} është një arkiv 7z ose RAR. MDM i nxjerr ato me 7-Zip, i cili nuk është i instaluar.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} mbrohet me fjalëkalim:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -3308,7 +3561,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} chosen	{n} nga {total} të zgjedhura
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} nga {total} të zgjedhura
@@ -3704,6 +3957,12 @@ menu	&Keyboard shortcuts	Shkurtoret e &tastierës
 #, machine
 menu	&Language...	&Gjuha...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	Kapësi i &lidhjeve...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&Opsionet
@@ -3880,6 +4139,10 @@ menu	E&xport	E&ksporto
 #. menu command in the main window
 #, machine
 menu	Edit queue	Edito radhën
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	Nxirr
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	Gjej (Ctrl-F)

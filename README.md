@@ -373,6 +373,8 @@ pieces fit.
 | `python tools/readme/social.py` | The repository's social preview card (`docs/images/social-preview.png`) |
 | `MDM_FIT_AUDIT=<file>` | Lists every text that doesn't fit its window or runs over another, for checking a translation |
 | `MDM_OFFSCREEN=1` | Opens every window off the screen, without focus, tray icon or sound (screenshots and checks) |
+| `MDM_TEST_TRASH_DIR=<folder>` | Tests only: archives deleted after extracting go into this folder, never into the real Recycle Bin or Trash |
+| `MDM_TEST_7ZIP=<program>\|none` | Tests only: the 7-Zip program to use for 7z and RAR archives, or `none` to act as if 7-Zip weren't installed |
 
 </details>
 
@@ -409,8 +411,9 @@ Copyright (c) 2026 Ahmed Nefzaoui. Mister Download Manager is free software unde
 Built on [egui](https://github.com/emilk/egui) through
 [storytold's forks](https://github.com/storytold/egui) and
 [storytold/craft-libs](https://github.com/storytold/craft-libs) (MIT OR Apache-2.0),
-[librqbit](https://github.com/ikatson/rqbit) (Apache-2.0) and
-[yt-dlp](https://github.com/yt-dlp/yt-dlp) (Unlicense, run as a separate program). Flags from
+[librqbit](https://github.com/ikatson/rqbit) (Apache-2.0),
+[zip](https://github.com/zip-rs/zip2) (MIT), and [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+(Unlicense, run as a separate program; as are 7-Zip for 7z and RAR archives). Flags from
 [flag-icons](https://github.com/lipis/flag-icons) (MIT); pictures drawn with
 [rough.js](https://roughjs.com/) (MIT) in [Patrick Hand](https://fonts.google.com/specimen/Patrick+Hand)
 (SIL OFL) and [Vega-Lite](https://vega.github.io/vega-lite/) (BSD-3). Bundled icons and artwork

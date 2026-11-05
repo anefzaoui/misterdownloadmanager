@@ -12,9 +12,11 @@ mod dialogs;
 mod droptarget;
 mod errors;
 mod extension;
+mod extractq;
 mod fileicons;
 mod find;
 mod gallerydlg;
+mod grabber;
 mod help;
 mod helpers;
 mod i18n;
@@ -120,6 +122,20 @@ fn write_clipboard(off: bool, text: String) -> Option<String> {
     } else {
         Some(text)
     }
+}
+
+/// Where [`offscreen`] puts the main window: far off the screens, or at `MDM_OFFSCREEN_AT=x,y`.
+/// That is for a machine whose screen nobody watches (the docs screenshots on GitHub's runner,
+/// .github/workflows/docs-shots.yml): there the software OpenGL (Mesa's llvmpipe) presents
+/// through GDI, which draws nothing off the screens.
+fn offscreen_at() -> [f32; 2] {
+    std::env::var("MDM_OFFSCREEN_AT")
+        .ok()
+        .and_then(|v| {
+            let (x, y) = v.split_once(',')?;
+            Some([x.trim().parse().ok()?, y.trim().parse().ok()?])
+        })
+        .unwrap_or([-20000.0, -20000.0])
 }
 
 /// A window's builder as [`offscreen`] wants it; unchanged otherwise. Dialogs open centred on
@@ -266,7 +282,7 @@ fn app() -> eframe::Result {
         viewport = viewport.with_position([x as f32, y as f32]);
     }
     if offscreen() {
-        viewport = viewport.with_position([-20000.0, -20000.0]);
+        viewport = viewport.with_position(offscreen_at());
     }
     let opts = eframe::NativeOptions {
         viewport,

@@ -73,7 +73,7 @@ the whole window.
 ## Dropping links and files
 
 Drag a link from a browser (or a page's text with links in it) onto the list to add it: one
-link opens **Download File Info**, several open **Import** to choose which to add. Drop a
+link opens **Download File Info**, several open **Link grabber** to choose which to add. Drop a
 `.torrent` file to add the torrent, or a list of addresses (`.txt`, `.ef2`) to import it. The
 list is outlined while something you can drop is over it. On macOS and Linux, files can be
 dropped (links from a browser only on Windows).

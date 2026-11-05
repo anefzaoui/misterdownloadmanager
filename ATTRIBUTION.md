@@ -16,6 +16,21 @@ it by `tools/icon/build_icon.py`.
 The README's block icons (`docs/images/icons/`: arrow, globe, gift, magnet) were made for it
 with OpenAI's GPT-5 Image Mini by `tools/readme/icons.py`, given the app icon as the style to follow.
 
+## Archive extraction (mdm-extract)
+
+The libraries Link grabber's archive extraction is built on (all compatible with MDM's GPL-3.0):
+
+| Library | Licence | For |
+|---|---|---|
+| [zip](https://crates.io/crates/zip) 9.1 | MIT | .zip, with [deflate64](https://crates.io/crates/deflate64) (MIT) and WinZip AES ([RustCrypto](https://github.com/RustCrypto) aes, hmac, pbkdf2: MIT OR Apache-2.0) |
+| [lzma-rust2](https://crates.io/crates/lzma-rust2) 0.23 | Apache-2.0 | .xz |
+| [tar](https://crates.io/crates/tar) 0.4 | MIT OR Apache-2.0 | .tar |
+
+7z and RAR archives are extracted by [7-Zip](https://www.7-zip.org/) (GNU LGPL, with the
+unRAR restriction for its RAR code), run as a separate program when the user has it installed.
+It is neither bundled nor linked: UnRAR's licence doesn't allow its code in a GPL program, and a
+built-in 7z decoder made MDM about 1 MB larger.
+
 System resources used at run time and **not** bundled: Windows fonts (Segoe UI, Tahoma,
 Arial) and each system's own file-type icons (the Windows shell's, macOS Finder's, the Linux
 desktop's icon theme).

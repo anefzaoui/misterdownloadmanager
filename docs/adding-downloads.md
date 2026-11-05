@@ -142,10 +142,12 @@ The downloads go to a queue. As with Download Later, MDM asks which queue unless
 To add every link in a text file:
 
 1. Choose **Tasks → Import → From text file**.
-2. Pick the file. **Import downloads** lists every web address MDM found in it.
-3. Untick the addresses you don't want (**Select all** and **Select none** help), then click **OK**.
+2. Pick the file. **Link grabber** lists every web address MDM found in it, in packages.
+3. Untick the addresses you don't want (**Check all** and **Uncheck all** help), then click **Add to queue**.
 
-The downloads join the **Main download queue**, ready to start. **Tasks → Import → From IDM export file** reads an `.ef2` file, with each download's referrer and cookies.
+The downloads join the **Main download queue**, ready to start (**Start** starts it too). **Tasks → Import → From IDM export file** reads an `.ef2` file, with each download's referrer and cookies.
+
+**Tasks → Link grabber...** opens the same window empty: paste text with links in it (**Ctrl+V**). See [Link grabber and archives](link-grabber.md) for the packages, the archive password and extracting archives when they are downloaded.
 
 To save your own list, use **Tasks → Export → To text file** (one address per line) or **To IDM export file**.
 

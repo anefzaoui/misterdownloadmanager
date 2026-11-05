@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	ਕੀ ਤੁਸੀਂ Mister Download Manager ਦੀ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿੱਚੋਂ {n} ਡਾਊਨਲੋਡ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?|ਕੀ ਤੁਸੀਂ Mister Download Manager ਦੀ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿੱਚੋਂ ਇਹਨਾਂ {n} ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} ਫਾਈਲ ਨੂੰ {folder} ਵਿੱਚ ਐਕਸਟਰੈਕਟ ਕੀਤਾ ਗਿਆ|{n} ਫਾਈਲਾਂ ਨੂੰ {folder} ਵਿੱਚ ਐਕਸਟਰੈਕਟ ਕੀਤਾ ਗਿਆ
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,8 +39,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ|{n} ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ਐਂਟਰੀ ਛੱਡ ਦਿੱਤੀ ਗਈ ਸੀ (ਇੱਕ ਲਿੰਕ, ਜਾਂ ਫੋਲਡਰ ਤੋਂ ਬਾਹਰ ਜਾਣ ਵਾਲਾ ਨਾਮ)|{n} ਐਂਟਰੀਆਂ ਛੱਡ ਦਿੱਤੀਆਂ ਗਈਆਂ ਸਨ (ਲਿੰਕ, ਜਾਂ ਫੋਲਡਰ ਤੋਂ ਬਾਹਰ ਜਾਣ ਵਾਲੇ ਨਾਮ)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ਫਾਈਲ|{n} ਫਾਈਲਾਂ
@@ -44,6 +55,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file chosen to download|{n} files chosen to download	{n} ਫਾਈਲ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਚੁਣੀ ਗਈ|{n} ਫਾਈਲਾਂ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਚੁਣੀਆਂ ਗਈਆਂ
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ਫਾਈਲ ਦਾ ਨਾਮ ਪਹਿਲਾਂ ਹੀ ਉੱਥੇ ਮੌਜੂਦ ਫਾਈਲ ਦੇ ਨਾਮ ਵਰਗਾ ਸੀ ਅਤੇ ਉਸਨੂੰ ਨੰਬਰ ਦਿੱਤਾ ਗਿਆ ਸੀ|{n} ਫਾਈਲਾਂ ਦਾ ਨਾਮ ਪਹਿਲਾਂ ਹੀ ਉੱਥੇ ਮੌਜੂਦ ਫਾਈਲ ਦੇ ਨਾਮ ਵਰਗਾ ਸੀ ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਨੰਬਰ ਦਿੱਤਾ ਗਿਆ ਸੀ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -105,6 +121,21 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-ਘੰਟੇ (21:41)
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	7-Zip ਦੀ ਲੋੜ ਹੈ
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z ਅਤੇ RAR ਆਰਕਾਈਵ 7-Zip ({path}) ਦੁਆਰਾ ਐਕਸਟਰੈਕਟ ਕੀਤੇ ਜਾਂਦੇ ਹਨ।
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z ਅਤੇ RAR ਆਰਕਾਈਵ ਲਈ 7-Zip (7-zip.org) ਦੀ ਲੋੜ ਹੈ, ਜੋ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ।
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	7z ਅਤੇ RAR ਆਰਕਾਈਵ ਲਈ 7-Zip ਦੀ ਲੋੜ ਹੈ, ਜੋ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< ਵੇਰਵੇ ਲੁਕਾਓ
@@ -128,6 +159,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	ਇਸ ਕੰਪਿਊਟਰ ਜਾਂ ਸਥਾਨਕ ਨੈੱਟਵਰਕ 'ਤੇ ਕਿਸੇ ਟਰੈਕਰ ਨਾਲ ਕਦੇ ਸੰਪਰਕ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ: {line}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	ਇਸਦਾ ਇੱਕ ਵਾਲੀਅਮ ਗੁੰਮ ਹੈ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ਬਾਰੇ
@@ -185,7 +220,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ਮੁਫ਼ਤ ਐਕਸਟੈਂਸ਼ਨ ਸ਼ਾਮਲ ਕਰੋ: ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਫਾਈਲਾਂ ਇੱਥੇ ਆਉਂਦੀਆਂ ਹਨ, ਅਤੇ ਵੀਡੀਓਜ਼ ਨੂੰ ਇੱਕ ਡਾਊਨਲੋਡ ਬਟਨ ਮਿਲਦਾ ਹੈ।
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	ਕਤਾਰ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ
 #. text in a dialog box
@@ -257,6 +293,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ਪਹਿਲਾਂ ਹੀ ਡਾਊਨਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	ਪਹਿਲਾਂ ਹੀ ਸੂਚੀ ਵਿੱਚ ਹੈ
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -275,6 +315,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	ਹਮੇਸ਼ਾ ਡਾਰਕ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	ਹਮੇਸ਼ਾ ਇਸਦੇ ਨਾਮ ਵਾਲੇ ਫੋਲਡਰ ਵਿੱਚ
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ਸ਼ੁਰੂ ਹੋਣ 'ਤੇ ਹਮੇਸ਼ਾ ਸਪੀਡ ਲਿਮੀਟਰ ਚਾਲੂ ਕਰੋ
@@ -298,6 +342,20 @@
 #. text in the Scheduler window
 #, machine
 	April	ਅਪ੍ਰੈਲ
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	ਆਰਕਾਈਵ ਪਾਸਵਰਡ
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ਆਰਕਾਈਵਜ਼
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	ਆਰਕਾਈਵ ਅਤੇ ਲਿੰਕ ਗ੍ਰੈਬਰ
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -364,7 +422,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} ਨੂੰ ਉਸੇ ਤਰ੍ਹਾਂ ਵਾਪਸ ਲਿਆਓ ਜਿਵੇਂ ਉਹ ਭੇਜੇ ਗਏ ਸਨ: ਉਹਨਾਂ ਦੇ ਨਾਮ, ਫਾਈਲ ਕਿਸਮਾਂ ਅਤੇ ਫੋਲਡਰ? ਤੁਹਾਡੀਆਂ ਆਪਣੀਆਂ ਸ਼੍ਰੇਣੀਆਂ, ਆਮ ਅਤੇ ਟੋਰੈਂਟ ਉਸੇ ਤਰ੍ਹਾਂ ਰਹਿਣਗੇ ਜਿਵੇਂ ਉਹ ਹਨ। ਪਹਿਲਾਂ ਹੀ ਆਮ ਵਿੱਚ ਭੇਜੇ ਗਏ ਡਾਊਨਲੋਡ ਉੱਥੇ ਹੀ ਰਹਿਣਗੇ।
-#. button in the Options window
+#. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ਬ੍ਰਾਊਜ਼ ਕਰੋ
@@ -378,13 +436,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ਬ੍ਰਾਊਜ਼ਰ/ਸਿਸਟਮ ਇੰਟੀਗ੍ਰੇਸ਼ਨ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	ਵਿਅਸਤ, ਬਾਅਦ ਵਿੱਚ ਕੋਸ਼ਿਸ਼ ਕਰੋ
 #. message or event log entry in the main window
 #, machine
 	by batch download	ਬੈਚ ਡਾਊਨਲੋਡ ਦੁਆਰਾ
 #. message or event log entry in the main window
 #, machine
-	by import	ਆਯਾਤ ਦੁਆਰਾ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	ਲਿੰਕ ਗ੍ਰੈਬਰ ਦੁਆਰਾ
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ਰੱਦ ਕਰੋ
@@ -437,6 +499,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	ਆਖਰੀ ਚੁਣੀ ਗਈ "{category}" ਸ਼੍ਰੇਣੀ ਲਈ ਫੋਲਡਰ ਬਦਲੋ
+#. text in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	ਸਭ ਚੁਣੋ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	ਅੱਪਡੇਟਾਂ ਦੀ ਜਾਂਚ ਕਰੋ
@@ -480,7 +546,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	{name} ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ ({total} ਵਿੱਚੋਂ {n})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
@@ -570,6 +636,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	ਰਿਪੋਰਟ ਕਾਪੀ ਕਰੋ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	{name} ਐਕਸਟਰੈਕਟ ਨਹੀਂ ਕਰ ਸਕਿਆ: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	ਫੋਲਡਰ ਬਣਾਓ
@@ -628,6 +699,10 @@
 #. verb: delete the item
 #, machine
 	Delete	ਮਿਟਾਓ
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	ਐਕਸਟਰੈਕਟ ਕਰਨ ਤੋਂ ਬਾਅਦ ਆਰਕਾਈਵਜ਼ ਮਿਟਾਓ
 #. window title in a dialog box
 #, machine
 	Delete category	ਸ਼੍ਰੇਣੀ ਮਿਟਾਓ
@@ -848,6 +923,10 @@
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	ਹਰੇਕ ਕਨੈਕਸ਼ਨ ਸਿਸਟਮ ਦਾ ਰੂਟ ਲੈਂਦਾ ਹੈ।
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	ਹਰੇਕ ਫਾਈਲ ਦਾ ਸ਼੍ਰੇਣੀ ਫੋਲਡਰ
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -947,6 +1026,27 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	ਸਪੇਸ ਦੁਆਰਾ ਵੱਖ ਕੀਤੇ ਐਕਸਟੈਂਸ਼ਨ, ਉਦਾਹਰਨ ਲਈ MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	ਐਕਸਟਰੈਕਟ ਕਰੋ
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	ਆਰਕਾਈਵਜ਼ ਨੂੰ ਉਹਨਾਂ ਦਾ ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋਣ 'ਤੇ ਐਕਸਟਰੈਕਟ ਕਰੋ
+#. text in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	ਪੂਰਾ ਹੋਣ 'ਤੇ ਐਕਸਟਰੈਕਟ ਕਰੋ
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	ਆਰਕਾਈਵ ਐਕਸਟਰੈਕਟ ਕਰ ਰਿਹਾ ਹੈ...
+#. message or event log entry in the main window
+#. a download's status: its archive is being extracted (#37)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting...	ਐਕਸਟਰੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...
 #. text in the Scheduler window
 #, machine
 	February	ਫਰਵਰੀ
@@ -1133,6 +1233,10 @@
 #. tab title: general information
 #, machine
 	General	ਜਨਰਲ
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	7-Zip ਪ੍ਰਾਪਤ ਕਰੋ
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1188,6 +1292,10 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	ਸੂਚਨਾ ਖੇਤਰ ਵਿੱਚ ਲੁਕਾਓ
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	ਵੈੱਬ ਪੰਨੇ ਲੁਕਾਓ
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager ਦੀ ਬਜਾਏ ਬ੍ਰਾਊਜ਼ਰ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਦੇਣ ਲਈ ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਸਮੇਂ Alt ਦਬਾ ਕੇ ਰੱਖੋ।
@@ -1223,19 +1331,12 @@
 #. message or event log entry in the main window
 #, machine
 	Import	ਆਯਾਤ ਕਰੋ
-#. window title in transfer.rs
-#, machine
-	Import downloads	ਡਾਊਨਲੋਡ ਆਯਾਤ ਕਰੋ
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ਇੱਕ ਕਤਾਰ ਵਿੱਚ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	ਸ਼੍ਰੇਣੀਆਂ ਵਿੱਚ: ਚੁਣੀ ਗਈ ਸ਼੍ਰੇਣੀ ਦਾ ਮੀਨੂ
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	ਸੂਚੀ ਵਿੱਚ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1248,6 +1349,10 @@
 #. the torrent's identifier
 #, machine
 	Info hash	ਜਾਣਕਾਰੀ ਹੈਸ਼
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (ਮੁਫ਼ਤ) ਇੰਸਟਾਲ ਕਰੋ, ਫਿਰ ਡਾਊਨਲੋਡ 'ਤੇ ਸੱਜਾ-ਕਲਿੱਕ ਕਰੋ ਅਤੇ ਐਕਸਟਰੈਕਟ ਚੁਣੋ।
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1260,6 +1365,10 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ਸਥਾਪਤ ਕਰੋ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	ਇਸਦੇ ਨਾਮ ਵਾਲੇ ਫੋਲਡਰ ਵਿੱਚ, ਜਦੋਂ ਇਸ ਵਿੱਚ ਕਈ ਚੀਜ਼ਾਂ ਹੋਣ
 #. text in a dialog box
 #, machine
 	Invalid address	ਅਵੈਧ ਪਤਾ
@@ -1267,10 +1376,35 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP ਪਤੇ (ਵਿਕਲਪਿਕ):
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	ਇਸ ਵਿੱਚ ਬਹੁਤ ਸਾਰੀਆਂ ਫਾਈਲਾਂ ਜਾਂ ਫੋਲਡਰ ਹਨ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	ਇਹ ਖਰਾਬ ਹੋ ਗਿਆ ਹੈ, ਜਾਂ ਇਸਦੇ ਨਾਮ ਵਾਲਾ ਆਰਕਾਈਵ ਨਹੀਂ ਹੈ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	ਇਹ ਉਹ ਆਰਕਾਈਵ ਨਹੀਂ ਹੈ ਜਿਸਨੂੰ MDM ਐਕਸਟਰੈਕਟ ਕਰਦਾ ਹੈ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	ਇਸਨੂੰ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	ਇਹ ਤੁਹਾਡੇ ਨੈੱਟਵਰਕ 'ਤੇ ਕੰਪਿਊਟਰਾਂ ਨੂੰ ਦੱਸਦਾ ਹੈ ਕਿ ਤੁਹਾਡੇ ਕੋਲ ਕਿਹੜੇ ਟੋਰੈਂਟ ਹਨ।
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	ਇਸਨੂੰ ਰੋਕ ਦਿੱਤਾ ਗਿਆ ਸੀ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	ਇਹ {size} ਲਿਖੇਗਾ, ਜਿੰਨੀ ਜਗ੍ਹਾ ਜਾਂ ਕਾਰਨ ਹੈ ਉਸ ਤੋਂ ਵੱਧ {limit}
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1352,8 +1486,17 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ਸਾਰੇ ਟੋਰੈਂਟਾਂ ਲਈ ਅੱਪਲੋਡ ਕਰਨਾ ਇਸ ਤੱਕ ਸੀਮਤ ਕਰੋ
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	ਲਿੰਕ ਗ੍ਰੈਬਰ
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	ਲਿੰਕ
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ਬ੍ਰਾਊਜ਼ਰ ਤੋਂ ਲਿੰਕ
 #. text in playlistdlg.rs
@@ -1388,6 +1531,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	ਲੌਗਇਨ
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	ਲਿੰਕਾਂ ਦੇ ਆਉਣ 'ਤੇ ਉਹਨਾਂ ਨੂੰ ਦੇਖੋ (ਨਾਮ, ਆਕਾਰ, ਔਨਲਾਈਨ)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ਖੋਜੋ
@@ -1568,17 +1715,22 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	ਨੰ.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	ਨਾਮ
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	ਨਾਮ:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ਤੁਹਾਡੀ ਹੋਸਟ ਫਾਈਲ ਵਿੱਚ ਨਾਮ ਅਤੇ ਸਥਾਨਕ ਨਾਮ (ਇੱਕਲੇ ਸ਼ਬਦ, .local, .lan) ਸਿਸਟਮ ਦੇ DNS ਨਾਲ ਰਹਿੰਦੇ ਹਨ। ਵੀਡੀਓ ਪੰਨੇ ਅਤੇ ਟੋਰੈਂਟ ਟਰੈਕਰ ਫਿਲਹਾਲ ਸਿਸਟਮ ਦੇ DNS ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹਨ।
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	ਲੌਗਇਨ ਦੀ ਲੋੜ ਹੈ
 #. text in the Options window
 #, machine
 	Network adapter:	ਨੈੱਟਵਰਕ ਅਡਾਪਟਰ:
@@ -1745,7 +1897,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਕਾਪੀ ਕੀਤੇ ਲਿੰਕਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਦੀ ਪੇਸ਼ਕਸ਼ ਕਰੋ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ਆਫਲਾਈਨ ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ਠੀਕ ਹੈ
 #. text in a download's progress window
@@ -1763,6 +1919,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ਇੱਕ ਵਾਰੀ ਡਾਊਨਲੋਡ ਕਰਨਾ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ਔਨਲਾਈਨ
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1836,22 +1996,35 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	ਜਾਂ ਆਪਣਾ API ਟੋਕਨ ਪੇਸਟ ਕਰੋ:
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	ਪੈਕੇਜ
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ਪੰਨੇ ਦਾ ਪਤਾ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	ਪਾਸਵਰਡ
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
+#. Link grabber: the package's archives' password (a label before its box)
 #, machine
 	Password:	ਪਾਸਵਰਡ:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ਇੱਕ ਮੈਗਨੈੱਟ ਲਿੰਕ ਪੇਸਟ ਕਰੋ ਜਾਂ ਇੱਕ .torrent ਫਾਈਲ ਚੁਣੋ, ਫਿਰ ਲੁੱਕ ਅੱਪ ਕਰੋ।
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	ਲਿੰਕ ਇੱਥੇ ਪੇਸਟ ਕਰੋ (Ctrl+V), ਜਾਂ ਬ੍ਰਾਊਜ਼ਰ ਤੋਂ ਇੱਕ ਪੰਨੇ ਦੇ ਲਿੰਕ ਭੇਜੋ।
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ਡਾਊਨਲੋਡ ਦੇ ਪੰਨੇ ਦੁਆਰਾ ਦਿੱਤਾ ਗਿਆ ਚੈੱਕਸਮ ਪੇਸਟ ਕਰੋ
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	ਪੇਸਟ ਕੀਤਾ ਗਿਆ
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -2086,6 +2259,10 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ਇਸ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਕਰੋ:
+#. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
+#, machine
+	Save to:	ਇਸ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਕਰੋ:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -2109,7 +2286,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ਇੱਕ ਫੋਲਡਰ ਚੁਣੋ
-#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ਸਾਰੇ ਚੁਣੋ
@@ -2119,7 +2296,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ਇਸ ਤੱਕ ਹਰੇਕ ਡਾਊਨਲੋਡ ਚੁਣੋ
-#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: untick every video
 #, machine
 	Select none	ਕੋਈ ਨਹੀਂ ਚੁਣੋ
@@ -2297,7 +2474,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	ਸਾਈਟਾਂ ਆਪਣੀ ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ ਨੂੰ ਵੱਖਰੇ ਵੀਡੀਓ ਅਤੇ ਆਡੀਓ ਦੇ ਰੂਪ ਵਿੱਚ ਭੇਜਦੀਆਂ ਹਨ। ffmpeg ਉਹਨਾਂ ਨੂੰ ਇੱਕ ਫਾਈਲ ਵਿੱਚ ਇਕੱਠਾ ਕਰਦਾ ਹੈ ਜੋ ਕਿਤੇ ਵੀ ਚੱਲਦੀ ਹੈ।
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -2337,6 +2514,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	ਸਰੋਤ ਕੋਡ
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	ਸਰੋਤ: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2344,6 +2526,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	ਸਪੀਡ ਲਿਮੀਟਰ ਸੈਟਿੰਗਾਂ
+#. text in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	ਸ਼ੁਰੂ ਕਰੋ
 #. button in a dialog box
 #, machine
 	Start Download	ਡਾਊਨਲੋਡ ਸ਼ੁਰੂ ਕਰੋ
@@ -2390,7 +2576,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	ਸਥਿਤੀ
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -2444,6 +2630,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋਣ 'ਤੇ ਰੁਕ ਜਾਂਦਾ ਹੈ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	ਸਿੱਧਾ ਪੁਰਾਲੇਖ ਦੇ ਫੋਲਡਰ ਵਿੱਚ
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2471,6 +2661,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	ਸਮਕਾਲੀਕਰਨ ਕਤਾਰ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ਕਾਰਜ → ਲਿੰਕ ਗ੍ਰੈਬਰ, ਜਾਂ ਬ੍ਰਾਊਜ਼ਰ ਦਾ "ਸਾਰੇ ਲਿੰਕ ਡਾਊਨਲੋਡ ਕਰੋ": ਇੱਕ ਵੰਡਿਆ\nਪੁਰਾਲੇਖ ਦੇ ਵਾਲੀਅਮ ਇੱਕ ਪੈਕੇਜ ਹਨ, ਇੱਕ ਪੰਨੇ ਦੇ ਦੂਜੇ ਲਿੰਕ ਇੱਕ ਹੋਰ।
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ਕਿਸੇ ਦੋਸਤ ਨੂੰ ਦੱਸੋ
@@ -2504,6 +2698,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	ਪਤਾ ਇੱਕ http(s) ਜਾਂ ftp(s) ਪਤਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ਪੁਰਾਲੇਖ ਨੂੰ ਰੀਸਾਈਕਲ ਬਿਨ ਵਿੱਚ ਨਹੀਂ ਭੇਜਿਆ ਜਾ ਸਕਿਆ: ਇਸਨੂੰ ਰੱਖਿਆ ਗਿਆ ਸੀ
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ਪੁਰਾਲੇਖ ਨੂੰ ਰੱਦੀ ਵਿੱਚ ਨਹੀਂ ਭੇਜਿਆ ਜਾ ਸਕਿਆ: ਇਸਨੂੰ ਰੱਖਿਆ ਗਿਆ ਸੀ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ਪੁਰਾਲੇਖ ਨੂੰ ਰੀਸਾਈਕਲ ਬਿਨ ਵਿੱਚ ਭੇਜਿਆ ਗਿਆ ਸੀ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ਪੁਰਾਲੇਖ ਨੂੰ ਰੱਦੀ ਵਿੱਚ ਭੇਜਿਆ ਗਿਆ ਸੀ
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg (ਲਗਭਗ 80 MB) ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।
@@ -2650,6 +2858,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	ਨੈੱਟਵਰਕ ਅਡਾਪਟਰ {adapter} ਕਨੈਕਟ ਨਹੀਂ ਹੈ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	ਪਾਸਵਰਡ ਗਲਤ ਹੈ
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows ਲਈ ਪਾਥ ਬਹੁਤ ਲੰਬਾ ਹੈ: {path}
@@ -2734,6 +2946,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ਵੈੱਬ ਪੰਨਾ ਜਿੱਥੋਂ ਇਹ ਫਾਈਲ ਪ੍ਰਾਪਤ ਕੀਤੀ ਗਈ ਸੀ:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	ਫਿਰ ਪੁਰਾਲੇਖਾਂ ਨੂੰ ਰੀਸਾਈਕਲ ਬਿਨ ਵਿੱਚ ਭੇਜੋ
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	ਫਿਰ ਪੁਰਾਲੇਖਾਂ ਨੂੰ ਰੱਦੀ ਵਿੱਚ ਭੇਜੋ
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ਇਸ ਨਾਮ ਨਾਲ ਇੱਕ ਸ਼੍ਰੇਣੀ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ
@@ -2944,6 +3164,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	ਕਿਸਮ:
+#. text in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	ਸਾਰੇ ਅਨਚੈੱਕ ਕਰੋ
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -3045,6 +3269,10 @@
 #. text in a download's progress window
 #, machine
 	Value	ਮੁੱਲ
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	ਵੱਖ-ਵੱਖ ਫਾਈਲਾਂ
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3082,6 +3310,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ਵਾਇਰਸ ਜਾਂਚ ਸੈਟਿੰਗਾਂ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	ਇਸਦਾ ਵਾਲੀਅਮ {n} ਗੁੰਮ ਹੈ
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -3103,12 +3336,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	ਵੈੱਬ
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	{file} ਵਿੱਚ ਮਿਲੇ ਵੈੱਬ ਪਤੇ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	ਬੁੱਧਵਾਰ
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	ਇੱਕ ਪੁਰਾਲੇਖ ਵਿੱਚ ਕੀ ਹੈ, ਉਹ ਜਾਂਦਾ ਹੈ:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -3139,6 +3373,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	ਮਿਤੀਆਂ ਅਤੇ ਸਮੇਂ ਲਿਖੋ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	{name} ਲਈ ਗਲਤ ਪਾਸਵਰਡ। ਇਸਨੂੰ ਦੁਬਾਰਾ ਟਾਈਪ ਕਰੋ:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -3189,6 +3428,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ਵੀਡੀਓ ਲੱਭਦਾ ਹੈ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ਅਤੇ XZ; ਇੱਕ ਵੰਡਿਆ ਪੁਰਾਲੇਖ (.part1.rar, .7z.001) ਇੱਕ ਵਾਰ\nਹਰ ਵਾਲੀਅਮ ਵਿੱਚ ਹੈ। ਇੱਕ ਫਾਈਲ ਜੋ ਪਹਿਲਾਂ ਹੀ ਉੱਥੇ ਹੈ, ਰੱਖੀ ਜਾਂਦੀ ਹੈ: ਨਵੀਂ ਨੂੰ ਨੰਬਰ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ।
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -3293,6 +3536,16 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} ਇੱਕ 7z ਜਾਂ RAR ਆਰਕਾਈਵ ਹੈ। MDM ਉਹਨਾਂ ਨੂੰ 7-Zip ਨਾਲ ਐਕਸਟਰੈਕਟ ਕਰਦਾ ਹੈ, ਜੋ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ।
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} ਇੱਕ ਪਾਸਵਰਡ ਦੁਆਰਾ ਸੁਰੱਖਿਅਤ ਹੈ:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -3308,7 +3561,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} chosen	{total} ਵਿੱਚੋਂ {n} ਚੁਣੇ ਗਏ
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} ਵਿੱਚੋਂ {n} ਚੁਣੇ ਗਏ
@@ -3704,6 +3957,12 @@ menu	&Keyboard shortcuts	ਕੀਬੋਰਡ ਸ਼ਾਰਟਕੱਟ(&K)
 #, machine
 menu	&Language...	ਭਾਸ਼ਾ(&L)...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	ਲਿੰਕ ਗ੍ਰੈਬਰ(&L)...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	ਵਿਕਲਪ(&O)
@@ -3880,6 +4139,10 @@ menu	E&xport	ਐਕਸਪੋਰਟ ਕਰੋ(&x)
 #. menu command in the main window
 #, machine
 menu	Edit queue	ਕਤਾਰ ਸੰਪਾਦਿਤ ਕਰੋ
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	ਐਕਸਟਰੈਕਟ ਕਰੋ
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	ਲੱਭੋ (Ctrl-F)
