@@ -634,6 +634,20 @@ fn attempt(
         Ok(v) => v,
         Err(e) => return failed(e, false),
     };
+    // A live stream is recorded by ffmpeg, whose connections can't be held to a chosen network
+    // adapter (#35): refused rather than sent around it.
+    if let Some(label) = crate::proc::route().label()
+        && info["is_live"].as_bool() == Some(true)
+    {
+        return failed(
+            mdm_engine::NetError::NotSupported {
+                label: label.to_owned(),
+                what: "A live stream".into(),
+            }
+            .to_string(),
+            false,
+        );
+    }
     let changed = if reroute {
         let prober = servers::Prober::new();
         servers::reroute(

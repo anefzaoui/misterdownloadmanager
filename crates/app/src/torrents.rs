@@ -157,6 +157,28 @@ pub fn refresh_blocklist(
     });
 }
 
+/// Why torrents can't start with the network adapter as it is (#35), if they can't.
+pub fn route_refusal(route: &mdm_engine::Route) -> Option<String> {
+    match route {
+        mdm_engine::Route::Any => None,
+        mdm_engine::Route::Down { label } => Some(crate::i18n::fmt(
+            // i18n: an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+            crate::i18n::t("the network adapter {adapter} is not connected"),
+            &[("adapter", label)],
+        )),
+        // librqbit can't hold its sockets to an adapter on Windows (BindDevice isn't supported
+        // there): refused rather than sent around it.
+        #[cfg(windows)]
+        mdm_engine::Route::Bound(_) => Some(
+            // i18n: an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+            crate::i18n::t("torrents can't go through a chosen network adapter on Windows yet")
+                .to_owned(),
+        ),
+        #[cfg(not(windows))]
+        mdm_engine::Route::Bound(_) => None,
+    }
+}
+
 /// The app's one session, started on first use, as Torrent settings say (`set_config`); it
 /// stops when no torrent needs it (`stop_if_idle`), and a new one takes the settings of then.
 #[derive(Clone)]
@@ -227,6 +249,9 @@ impl Host {
         }
         // i18n: an error: the app has no folder for its torrent data
         state_dir().ok_or(crate::i18n::t("no data folder for torrents"))?;
+        if let Some(why) = route_refusal(&crate::settings::own_route()) {
+            return Err(why);
+        }
         let cfg = self.wanted.lock().unwrap().clone().ok_or_else(|| {
             // i18n: an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
             crate::i18n::t(
@@ -254,6 +279,16 @@ impl Host {
         *cell = Some(t.clone());
         *self.running.lock().unwrap() = Some(cfg);
         Ok(t)
+    }
+
+    /// Stop the session now, whatever it is doing (the network adapter changed, #35: its sockets
+    /// were bound to the one before, or to none). The next one starts as things are then.
+    pub fn stop_now(&self, rt: &tokio::runtime::Handle) {
+        let Some(t) = self.cell.try_lock().ok().and_then(|mut s| s.take()) else {
+            return;
+        };
+        *self.running.lock().unwrap() = None;
+        rt.spawn(async move { t.stop().await });
     }
 
     /// Stop the session when no torrent needs it (`idle`) and Torrent settings say so, or its

@@ -65,6 +65,53 @@ pub(crate) fn find_own_window(title: &str) -> Option<HWND> {
     (!f.found.is_null()).then_some(f.found)
 }
 
+/// The address a connection to `dst` would leave from (PAC's `myIpAddress`), asked of the
+/// routing table (GetBestRoute2). No socket is opened: a UDP socket, the usual way to ask, is a
+/// listening socket to Windows' firewall, which would ask the user about MDM. Installed as the
+/// engine's lookup at start (`mdm_engine::net::set_source_lookup`); unix.rs has none (the
+/// engine's UDP way raises no prompt there).
+pub fn source_address(dst: std::net::IpAddr) -> Option<std::net::IpAddr> {
+    use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+    use windows_sys::Win32::NetworkManagement::IpHelper::{GetBestRoute2, MIB_IPFORWARD_ROW2};
+    use windows_sys::Win32::Networking::WinSock::{AF_INET, AF_INET6, SOCKADDR_INET};
+    // SAFETY: plain-data structures, zero is a valid value for each; the union is written and
+    // read by its family; GetBestRoute2 only reads `dest` and writes `row` and `src`.
+    unsafe {
+        let mut dest: SOCKADDR_INET = zeroed();
+        match dst {
+            IpAddr::V4(a) => {
+                dest.Ipv4.sin_family = AF_INET;
+                dest.Ipv4.sin_addr.S_un.S_addr = u32::from_ne_bytes(a.octets());
+            }
+            IpAddr::V6(a) => {
+                dest.Ipv6.sin6_family = AF_INET6;
+                dest.Ipv6.sin6_addr.u.Byte = a.octets();
+            }
+        }
+        let mut row: MIB_IPFORWARD_ROW2 = zeroed();
+        let mut src: SOCKADDR_INET = zeroed();
+        let r = GetBestRoute2(
+            std::ptr::null(),
+            0,
+            std::ptr::null(),
+            &dest,
+            0,
+            &mut row,
+            &mut src,
+        );
+        if r != 0 {
+            return None;
+        }
+        match src.si_family {
+            AF_INET => Some(IpAddr::V4(Ipv4Addr::from(
+                src.Ipv4.sin_addr.S_un.S_addr.to_ne_bytes(),
+            ))),
+            AF_INET6 => Some(IpAddr::V6(Ipv6Addr::from(src.Ipv6.sin6_addr.u.Byte))),
+            _ => None,
+        }
+    }
+}
+
 /// Off-screen test runs (MDM_OFFSCREEN=1): every top-level window of ours gets WS_EX_NOACTIVATE,
 /// so Windows never makes it the foreground window, whatever asks (a click, a dialog coming to
 /// the front, an accessibility client): the user's keystrokes stay in their own window while

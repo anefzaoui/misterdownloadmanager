@@ -25,6 +25,64 @@ pub enum ProcError {
     Timeout(String),
     #[error("{tool} failed: {message}")]
     Failed { tool: String, message: String },
+    /// The chosen network adapter is down, or yt-dlp can't be held to it here (#35).
+    #[error(transparent)]
+    Adapter(#[from] mdm_engine::NetError),
+}
+
+/// Options → Proxy / Socks → Network adapter (#35) for yt-dlp and the media-server checks; the
+/// app shares it as it changes ([`set_route`]).
+static ROUTE: std::sync::RwLock<mdm_engine::Route> = std::sync::RwLock::new(mdm_engine::Route::Any);
+
+/// The network adapter yt-dlp and the media-server checks go through (the app's setting).
+pub fn set_route(route: mdm_engine::Route) {
+    if *ROUTE.read().unwrap() != route {
+        *ROUTE.write().unwrap() = route;
+    }
+}
+
+pub fn route() -> mdm_engine::Route {
+    ROUTE.read().unwrap().clone()
+}
+
+/// yt-dlp's arguments for the chosen adapter (#35), first of all: none when there's none.
+/// - Windows: its connections leave from the adapter's address (`--source-address`; the strong
+///   host model keeps them on that adapter), in that address's IP family only (`-4` / `-6`),
+///   and every stream downloaded by yt-dlp itself (`--downloader native`) rather than handed
+///   to ffmpeg, which would connect unbound.
+/// - Linux and macOS: an address alone doesn't hold a connection to an adapter there (they
+///   route by destination), and yt-dlp can't bind a device: refused rather than sent around it.
+fn route_args() -> Result<Vec<String>, ProcError> {
+    match route() {
+        mdm_engine::Route::Any => Ok(Vec::new()),
+        mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
+        #[cfg(windows)]
+        mdm_engine::Route::Bound(b) => {
+            let (ip, family) = match (b.v4, b.v6) {
+                (Some(v4), _) => (v4.to_string(), "-4"),
+                (None, Some(v6)) => (v6.to_string(), "-6"),
+                (None, None) => {
+                    return Err(mdm_engine::NetError::Down {
+                        label: b.label.clone(),
+                    }
+                    .into());
+                }
+            };
+            Ok(vec![
+                "--source-address".into(),
+                ip,
+                family.into(),
+                "--downloader".into(),
+                "native".into(),
+            ])
+        }
+        #[cfg(not(windows))]
+        mdm_engine::Route::Bound(b) => Err(mdm_engine::NetError::NotSupported {
+            label: b.label.clone(),
+            what: "Video pages (yt-dlp)".into(),
+        }
+        .into()),
+    }
 }
 
 /// Text that may go into an argument list: no line breaks or NUL (they would let a page title
@@ -145,12 +203,14 @@ pub fn ytdlp(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
+    let route = route_args()?;
     let mut cmd = ytdlp_command(exe);
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(UTF8);
+    cmd.args(route);
     cmd.arg("--");
     cmd.arg(safe(url)?);
     Ok(cmd)
@@ -164,12 +224,14 @@ pub fn ytdlp_info(
     ours: &[String],
     info: &Path,
 ) -> Result<Command, ProcError> {
+    let route = route_args()?;
     let mut cmd = ytdlp_command(exe);
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(UTF8);
+    cmd.args(route);
     cmd.arg("--load-info-json");
     cmd.arg(info);
     Ok(cmd)

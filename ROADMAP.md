@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
+  another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Choose the DNS: Cloudflare, Google, Quad9, AdGuard, NextDNS or your own, over HTTPS, TLS or
   plain, with a Test button and no silent fallback
   ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
@@ -106,7 +108,7 @@ Everything below ships together, in one release.
 
 ### Network
 
-- 📋 Bind downloads to a network adapter (VPN), with a kill switch
+- 📋 Torrents through a chosen network adapter on Windows, and video pages on Linux and macOS
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - 📋 Downloads follow a browser's VPN or proxy extension
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))

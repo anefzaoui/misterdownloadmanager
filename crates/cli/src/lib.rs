@@ -58,6 +58,11 @@ enum Cmd {
         /// "https://dns.example/dns-query". No falling back to the system's DNS.
         #[arg(long, default_value = "system", value_parser = parse_dns)]
         dns: mdm_engine::DnsChoice,
+        /// The network adapter every connection goes through (#35): its name ("Ethernet",
+        /// "wg0") or one of its addresses. When it isn't there or has no address, nothing is
+        /// sent and the download fails.
+        #[arg(long)]
+        adapter: Option<String>,
     },
     /// The running app's downloads, as JSON (automation API; turn it on with `api on`).
     Status,
@@ -290,6 +295,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             headers,
             checksum,
             dns,
+            adapter,
         } => {
             let dest = if output.is_dir() {
                 Destination::Dir(output)
@@ -304,6 +310,10 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let opts = Options {
                 checksum,
                 dns,
+                // Worked out once, as the app does each second (a missing adapter: Down).
+                route: adapter.map_or(mdm_engine::Route::Any, |a| {
+                    mdm_engine::net::route_for(&a, &mdm_engine::net::adapters())
+                }),
                 ..opts(connections)
             };
             watch(Download::start(req, opts), json).await

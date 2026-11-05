@@ -28,6 +28,7 @@ use crate::dns;
 use crate::html;
 use crate::limiter::Limiter;
 use crate::naming;
+use crate::net;
 use crate::planner::{Claim, Planner, WorkerId};
 use crate::sites::{self, PageSays, Refusal};
 use crate::sparse;
@@ -87,6 +88,9 @@ pub struct Options {
     pub hosts: Vec<(String, Vec<std::net::IpAddr>)>,
     /// Options → Connection → DNS: who answers the names (#36).
     pub dns: crate::dns::DnsChoice,
+    /// Options → Proxy / Socks → Network adapter (#35): the adapter every connection goes
+    /// through, or none at all.
+    pub route: crate::net::Route,
     /// Options → Proxy / Socks.
     pub proxy: Proxy,
     /// A limit shared by every download using the same limiter (a global speed cap), on top
@@ -188,6 +192,7 @@ impl Default for Options {
             verify_overlap: 64,
             hosts: Vec::new(),
             dns: Default::default(),
+            route: Default::default(),
             proxy: Proxy::None,
             global: None,
             checksum: None,
@@ -261,6 +266,9 @@ pub enum Error {
     TooBigForDrive { size: u64, file_system: String },
     #[error("cancelled")]
     Cancelled,
+    /// The chosen network adapter is down, or can't reach this server (#35).
+    #[error(transparent)]
+    Adapter(#[from] crate::net::NetError),
     /// Another download in this process is writing to the same file.
     #[error("already being downloaded: {0}")]
     InUse(PathBuf),
@@ -338,6 +346,7 @@ impl Error {
                 | Error::DestinationUnavailable(_)
                 | Error::DriveGone
                 | Error::PathTooLong(_)
+                | Error::Adapter(_)
                 | Error::ChecksumMismatch(_)
                 | Error::Cancelled
                 | Error::InUse(_)
@@ -1163,21 +1172,57 @@ const POOL_IDLE: Duration = Duration::from_secs(15);
 /// The client for a download of `url`; a POST download's redirects are noted in `as_get`.
 fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
     let port = url.port_or_known_default().unwrap_or(443);
+    let route = &opts.route;
+    // An IP address in the URL never reaches the resolver, which drops what the chosen adapter
+    // can't reach (#35): check it here.
+    net::check_url(route, url)?;
     let builder = Client::builder();
-    let builder = match &opts.proxy {
-        Proxy::None => builder.no_proxy(),
+    // With an adapter chosen, the system's proxy is looked up now, so that it can be checked
+    // (and a proxy on this computer recognised) like the others.
+    let system = match (&opts.proxy, route.is_any()) {
+        (Proxy::System, false) => Some(net::system_proxy(url)),
+        _ => None,
+    };
+    // The proxy that carries every request of this client, when it's on this computer: such a
+    // connection isn't bound; where the proxy sends the traffic is up to it.
+    let mut through_local_proxy = false;
+    let mut check_proxy = |proxy: &str, covers_all: bool| -> Result<(), Error> {
+        let host = Url::parse(proxy)
+            .ok()
+            .and_then(|u| u.host_str().map(str::to_owned))
+            .unwrap_or_default();
+        if net::is_this_computer(&host) {
+            through_local_proxy |= covers_all;
+        } else if let Ok(ip) = host.trim_matches(['[', ']']).parse() {
+            route.check(ip)?;
+        }
+        Ok(())
+    };
+    let builder = match (&opts.proxy, system) {
+        (Proxy::None, _) => builder.no_proxy(),
+        (Proxy::System, Some(Some(proxy))) => {
+            check_proxy(&proxy, true)?;
+            builder.no_proxy().proxy(reqwest::Proxy::all(&proxy)?)
+        }
+        (Proxy::System, Some(None)) => builder.no_proxy(),
         // reqwest reads the system's proxy by default.
-        Proxy::System => builder,
-        Proxy::Manual {
-            url: proxy,
-            login,
-            http,
-            https,
-        } => {
+        (Proxy::System, None) => builder,
+        (
+            Proxy::Manual {
+                url: proxy,
+                login,
+                http,
+                https,
+            },
+            _,
+        ) => {
             let with_login = |p: reqwest::Proxy| match login {
                 Some((user, pass)) => p.basic_auth(user, pass),
                 None => p,
             };
+            if *http || *https {
+                check_proxy(proxy, *http && *https)?;
+            }
             let mut b = builder.no_proxy();
             if *http {
                 b = b.proxy(with_login(reqwest::Proxy::http(proxy.as_str())?));
@@ -1188,24 +1233,57 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
             b
         }
         // The script's first route MDM can use: a proxy, or straight to the server.
-        Proxy::Pac { script } => match crate::pac::routes(script, url) {
-            Ok(routes) => {
-                let first = routes.into_iter().find_map(|r| match r {
+        (Proxy::Pac { script }, _) => {
+            let first = crate::pac::routes(script, url).ok().and_then(|routes| {
+                routes.into_iter().find_map(|r| match r {
                     crate::pac::Route::Direct => Some(None),
-                    crate::pac::Route::Proxy(p) => reqwest::Proxy::all(&p).ok().map(Some),
-                });
-                match first {
-                    Some(Some(p)) => builder.no_proxy().proxy(p),
-                    Some(None) => builder.no_proxy(),
-                    None => builder,
+                    crate::pac::Route::Proxy(p) => reqwest::Proxy::all(&p).ok().map(|_| Some(p)),
+                })
+            });
+            // No usable answer: the system's proxy, as reqwest reads it (with an adapter
+            // chosen, looked up now to be checked).
+            let first = match first {
+                None if !route.is_any() => Some(net::system_proxy(url)),
+                other => other,
+            };
+            match first {
+                Some(Some(p)) => {
+                    check_proxy(&p, true)?;
+                    builder.no_proxy().proxy(reqwest::Proxy::all(&p)?)
                 }
+                Some(None) => builder.no_proxy(),
+                None => builder,
             }
-            Err(_) => builder,
-        },
+        }
     };
-    let builder = match opts.post {
-        Some(_) => builder.redirect(as_get.policy()),
-        None => builder.redirect(get_policy()),
+    // A connection to this computer isn't bound (#35); its redirects may then only lead back
+    // to this computer, or they would leave unbound.
+    let to_this_computer = through_local_proxy
+        || (net::is_this_computer(url.host_str().unwrap_or_default())
+            && !matches!(opts.proxy, Proxy::Manual { .. } | Proxy::Pac { .. }));
+    let builder = net::bind_client(builder, route, to_this_computer)?;
+    let inner = match opts.post {
+        Some(_) => as_get.policy(),
+        None => get_policy(),
+    };
+    let builder = if route.is_any() {
+        builder.redirect(inner)
+    } else {
+        let route = route.clone();
+        let stay_here = to_this_computer && !through_local_proxy;
+        builder.redirect(reqwest::redirect::Policy::custom(move |attempt| {
+            let refused = net::check_url(&route, attempt.url()).err().or_else(|| {
+                (stay_here && !net::is_this_computer(attempt.url().host_str().unwrap_or(""))).then(
+                    || net::NetError::Unbound {
+                        label: route.label().unwrap_or_default().to_owned(),
+                    },
+                )
+            });
+            match refused {
+                Some(e) => attempt.error(e),
+                None => inner.redirect(attempt),
+            }
+        }))
     };
     Ok(builder
         .dns_resolver(Arc::new(dns::Resolver::new(
@@ -1213,6 +1291,7 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
             port,
             &opts.dns,
             &opts.extra_roots,
+            route,
         )))
         .http1_only()
         .user_agent(&opts.user_agent)
