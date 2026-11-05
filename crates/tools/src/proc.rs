@@ -124,6 +124,18 @@ fn cookie_file(host: &str, cookies: &str) -> std::io::Result<CookieFile> {
     Ok(file)
 }
 
+/// What yt-dlp prints is read as UTF-8 (#79): on a Windows with a legacy code page (Turkish,
+/// Russian…) Python writes to a pipe in that code page, and a title's letters made the
+/// final-path line unreadable. `--encoding` sets yt-dlp's own output, `PYTHONIOENCODING`
+/// Python's.
+const UTF8: [&str; 2] = ["--encoding", "utf-8"];
+
+fn ytdlp_command(exe: &Path) -> Command {
+    let mut cmd = Command::new(exe);
+    cmd.env("PYTHONIOENCODING", "utf-8");
+    cmd
+}
+
 /// `yt-dlp` with arguments in layers: `user` extras, then `ours`, then the fixed ones last
 /// (so nothing can switch them off), then `--` and the URL (so a URL starting with `-` is never
 /// read as an option).
@@ -133,11 +145,13 @@ pub fn ytdlp(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
-    let mut cmd = Command::new(exe);
+    let mut cmd = ytdlp_command(exe);
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }
-    cmd.args(["--ignore-config", "--no-exec", "--no-update", "--"]);
+    cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    cmd.args(UTF8);
+    cmd.arg("--");
     cmd.arg(safe(url)?);
     Ok(cmd)
 }
@@ -150,16 +164,13 @@ pub fn ytdlp_info(
     ours: &[String],
     info: &Path,
 ) -> Result<Command, ProcError> {
-    let mut cmd = Command::new(exe);
+    let mut cmd = ytdlp_command(exe);
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }
-    cmd.args([
-        "--ignore-config",
-        "--no-exec",
-        "--no-update",
-        "--load-info-json",
-    ]);
+    cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    cmd.args(UTF8);
+    cmd.arg("--load-info-json");
     cmd.arg(info);
     Ok(cmd)
 }
@@ -377,6 +388,8 @@ mod tests {
                 "--ignore-config",
                 "--no-exec",
                 "--no-update",
+                "--encoding",
+                "utf-8",
                 "--",
                 "-https://x/"
             ]

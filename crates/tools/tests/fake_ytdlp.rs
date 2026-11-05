@@ -23,6 +23,7 @@ fn main() -> ExitCode {
     }
     if std::env::var_os("MDM_SUBS_RETRY_SECS").is_some() {
         checks(&me);
+        job_checks(&me);
         println!("fake_ytdlp: ok");
         return ExitCode::SUCCESS;
     }
@@ -43,8 +44,37 @@ fn mode(dir: &Path) -> String {
     std::fs::read_to_string(dir.join("mode.txt")).unwrap_or_default()
 }
 
+/// A process the fake leaves behind (as yt-dlp's launcher leaves its child, and ffmpeg): it
+/// writes to `file` every 100 ms for 30 s, unless ended.
+fn linger(file: &Path) -> ExitCode {
+    use std::io::Write;
+    let end = Instant::now() + Duration::from_secs(30);
+    while Instant::now() < end {
+        if let Ok(mut f) = std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(file)
+        {
+            let _ = f.write_all(b"x");
+        }
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    ExitCode::SUCCESS
+}
+
+/// Raw bytes on stdout (a line in another code page than UTF-8, #79).
+fn out_bytes(b: &[u8]) {
+    use std::io::Write;
+    let mut o = std::io::stdout().lock();
+    let _ = o.write_all(b);
+    let _ = o.flush();
+}
+
 fn fake_ytdlp() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
+    if args.first().map(String::as_str) == Some("--linger") {
+        return linger(Path::new(&args[1]));
+    }
     let after = |flag: &str| {
         args.iter()
             .position(|a| a == flag)
@@ -68,6 +98,46 @@ fn fake_ytdlp() -> ExitCode {
         .and_then(|t| t.trim().parse::<u32>().ok())
         .unwrap_or(0);
     std::fs::write(&tries, (tried + 1).to_string()).unwrap();
+    let format = after("-f").unwrap_or_default();
+    // #94: the chosen height isn't offered (the reroute left it out); a fallback is.
+    if mode == "unavailable" && format.contains("[height=") {
+        eprintln!(
+            "ERROR: [youtube] abc: Requested format is not available. Use --list-formats for a list of available formats"
+        );
+        return ExitCode::FAILURE;
+    }
+    // #94: a media server that resolved when looked up doesn't when downloading, once.
+    if mode == "dns-once" && tried == 0 {
+        eprintln!(
+            "ERROR: [download] Got error: HTTPSConnection(host='rr1---sn-dead.googlevideo.com', port=443): Failed to resolve 'rr1---sn-dead.googlevideo.com' ([Errno 11004] getaddrinfo failed). Giving up after 10 retries"
+        );
+        return ExitCode::FAILURE;
+    }
+    println!("MDMP 1024 4096 NA 1000");
+    println!("MDMQ 18 640x360");
+    // #79: it falls over mid-way, leaving a helper running (Windows: the launcher's child).
+    if mode == "crash" {
+        let me = std::env::current_exe().unwrap();
+        let _ = Command::new(me)
+            .args(["--linger", &dir.join("linger.log").to_string_lossy()])
+            .stdin(std::process::Stdio::null())
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .spawn();
+        std::thread::sleep(Duration::from_millis(500));
+        eprintln!("ERROR: unable to download video data: HTTP Error 500");
+        return ExitCode::FAILURE;
+    }
+    // #79: lines that aren't UTF-8, before and as the final path (a legacy code page).
+    if mode == "odd-lines" {
+        out_bytes(b"\xff\xfe [download] Destination: \xde\xfd.mp4\n");
+        println!("not one of our lines");
+        println!("MDMP NA NA NA NA");
+    }
+    // #79: silent for a while, as when ffmpeg merges a long video.
+    if let Some(secs) = mode.strip_prefix("quiet:") {
+        std::thread::sleep(Duration::from_secs(secs.trim().parse().unwrap_or(1)));
+    }
     let langs = after("--sub-langs").unwrap_or_default();
     for lang in langs.split(',').filter(|l| !l.is_empty()) {
         let refused = lang == "en" && (mode == "refuse-always" || tried == 0);
@@ -85,9 +155,21 @@ fn fake_ytdlp() -> ExitCode {
         std::fs::write(file, "1\n00:00:00,000 --> 00:00:01,000\nHello\n").unwrap();
     }
     if !has("--skip-download") {
-        let video = template.replace("%(ext)s", "mp4");
+        let video = template.replace("%(ext)s", "mp4").replace("%%", "%");
         std::fs::write(&video, vec![0u8; 4096]).unwrap();
-        println!("MDMF {video}");
+        if mode == "odd-lines" {
+            // The path in a one-byte code page: every letter beyond ASCII one byte, not UTF-8.
+            let mut line = b"MDMF ".to_vec();
+            line.extend(
+                video
+                    .chars()
+                    .map(|c| if c.is_ascii() { c as u8 } else { 0xde }),
+            );
+            line.push(b'\n');
+            out_bytes(&line);
+        } else {
+            println!("MDMF {video}");
+        }
     }
     ExitCode::SUCCESS
 }
@@ -101,6 +183,18 @@ fn fake_in(me: &Path, dir: &Path) -> PathBuf {
 
 /// Download with `subs` while the fake behaves as `mode`; the end state, its log and folder.
 fn download(me: &Path, mode: &str, subs: &Subs) -> (mdm_tools::video::Progress, Vec<String>) {
+    let (p, files, _out) = download_as(me, mode, subs, "b", "Talk");
+    (p, files)
+}
+
+/// The same with a format `selector` and a file `stem`; also hands back the output folder.
+fn download_as(
+    me: &Path,
+    mode: &str,
+    subs: &Subs,
+    selector: &str,
+    stem: &str,
+) -> (mdm_tools::video::Progress, Vec<String>, tempfile::TempDir) {
     let tools = tempfile::tempdir().unwrap();
     let out = tempfile::tempdir().unwrap();
     std::fs::write(out.path().join("mode.txt"), mode).unwrap();
@@ -108,9 +202,9 @@ fn download(me: &Path, mode: &str, subs: &Subs) -> (mdm_tools::video::Progress, 
     let job = VideoJob::start(
         &exe,
         "https://video.example/talk",
-        "b",
+        selector,
         out.path(),
-        "Talk",
+        stem,
         None,
         None,
         None,
@@ -118,7 +212,7 @@ fn download(me: &Path, mode: &str, subs: &Subs) -> (mdm_tools::video::Progress, 
         subs,
     )
     .expect("started");
-    let end = Instant::now() + Duration::from_secs(60);
+    let end = Instant::now() + Duration::from_secs(120);
     let p = loop {
         let p = job.progress();
         if p.state != State::Running {
@@ -131,10 +225,91 @@ fn download(me: &Path, mode: &str, subs: &Subs) -> (mdm_tools::video::Progress, 
         .unwrap()
         .filter_map(Result::ok)
         .map(|e| e.file_name().to_string_lossy().into_owned())
-        .filter(|n| !n.ends_with(".txt"))
+        .filter(|n| !n.ends_with(".txt") && !n.ends_with(".log"))
         .collect();
     files.sort();
-    (p, files)
+    (p, files, out)
+}
+
+fn log_of(p: &mdm_tools::video::Progress) -> Vec<String> {
+    p.events.iter().map(|(_, t)| t.clone()).collect()
+}
+
+/// #79 and #94: the job never gives up while yt-dlp works, never leaves it running when it does
+/// give up, and mends what a new look-up or a nearby quality can mend.
+fn job_checks(me: &Path) {
+    let none = Subs::default();
+
+    // Silent for 30 s (ffmpeg merging a long video): no timeout of MDM's own ends it.
+    let (p, files, _o) = download_as(me, "quiet:30", &none, "b", "Talk");
+    assert!(matches!(p.state, State::Done(_)), "quiet: {:?}", p.state);
+    assert_eq!(files, ["Talk.mp4"]);
+
+    // Lines that aren't UTF-8, the final path among them: read through, the file found by name.
+    let (p, files, _o) = download_as(me, "odd-lines", &none, "b", "Şirin ğüş");
+    match &p.state {
+        State::Done(f) => assert_eq!(f.file_name().unwrap().to_string_lossy(), "Şirin ğüş.mp4"),
+        other => panic!("odd lines: {other:?}"),
+    }
+    assert_eq!(files, ["Şirin ğüş.mp4"]);
+
+    // It falls over mid-way: the failure is told, and what it left running is ended with it
+    // (Windows: the job; elsewhere yt-dlp is one process, so there's no child to leave).
+    let (p, _files, out) = download_as(me, "crash", &none, "b", "Talk");
+    match &p.state {
+        State::Failed(e) => assert!(e.contains("HTTP Error 500"), "{e}"),
+        other => panic!("crash: {other:?}"),
+    }
+    #[cfg(windows)]
+    {
+        let size = || std::fs::metadata(out.path().join("linger.log")).map_or(0, |m| m.len());
+        std::thread::sleep(Duration::from_millis(800));
+        let after = size();
+        std::thread::sleep(Duration::from_millis(1500));
+        assert_eq!(
+            size(),
+            after,
+            "the helper it left was ended with the download"
+        );
+    }
+    #[cfg(not(windows))]
+    let _ = out;
+
+    // The chosen height isn't offered (a reroute left it out): the nearest below, said so.
+    let (p, files, _o) = download_as(
+        me,
+        "unavailable",
+        &none,
+        "bv*[height=1080]+ba/b[height=1080]",
+        "Talk",
+    );
+    assert!(
+        matches!(p.state, State::Done(_)),
+        "unavailable: {:?}",
+        p.state
+    );
+    assert_eq!(files, ["Talk.mp4"]);
+    let log = log_of(&p);
+    assert!(
+        log.iter()
+            .any(|t| t.starts_with("The chosen quality isn't offered")),
+        "{log:?}"
+    );
+    assert!(
+        log.iter().any(|t| t == "Downloaded 18 640x360 instead"),
+        "{log:?}"
+    );
+
+    // A media server that stopped resolving: looked up again without it, then saved.
+    let (p, files, _o) = download_as(me, "dns-once", &none, "b", "Talk");
+    assert!(matches!(p.state, State::Done(_)), "dns: {:?}", p.state);
+    assert_eq!(files, ["Talk.mp4"]);
+    let log = log_of(&p);
+    assert!(
+        log.iter().any(|t| t
+            == "The server rr1---sn-dead.googlevideo.com couldn't be reached; looking the page up again without it"),
+        "{log:?}"
+    );
 }
 
 fn checks(me: &Path) {

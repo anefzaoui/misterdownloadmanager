@@ -21,7 +21,10 @@ Everything below ships together, in one release.
 - ✅ Google Drive: public files download by their share links
   ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)); folders come later
 - ✅ Video downloads: Stop ends yt-dlp and everything it started
-  ([#61](https://github.com/anefzaoui/misterdownloadmanager/issues/61))
+  ([#61](https://github.com/anefzaoui/misterdownloadmanager/issues/61)); no error while yt-dlp
+  goes on and finishes ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)); a
+  quality the reachable YouTube servers don't serve falls back to the nearest one
+  ([#94](https://github.com/anefzaoui/misterdownloadmanager/issues/94))
 - ✅ A video's sound as MP3, at the quality you pick
   ([#32](https://github.com/anefzaoui/misterdownloadmanager/issues/32))
 - ✅ More than 32 connections per download, if you want them
