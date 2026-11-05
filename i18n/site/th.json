@@ -2098,6 +2098,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "ลบรายการดาวน์โหลดที่เลือก (ถามก่อน)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "การตั้งค่าพร็อกซี / SOCKS ของ MDM ใช้สำหรับการดาวน์โหลดผ่านเว็บและ FTP ทอร์เรนต์ก็สามารถใช้ SOCKS5 ได้เช่นกัน: ตั้งค่าพร็อกซี <x1/> ใน <g2>ตัวเลือก → พร็อกซี / SOCKS</g2> และเปิด <g3>ใช้พร็อกซี</g3> ในการตั้งค่าทอร์เรนต์ พร็อกซีจะครอบคลุมเฉพาะการเชื่อมต่อกับเพียร์และเว็บแทร็กเกอร์เท่านั้น ดังนั้นเมื่อใช้พร็อกซี MDM จะปิด DHT, การค้นหาเพียร์ในเครื่อง, การเชื่อมต่อขาเข้า และ UDP แทร็กเกอร์; จะไม่เปิดซ็อกเก็ต UDP ไปยังเครือข่ายเลย หากพร็อกซีหายไปจากการตั้งค่าพร็อกซี / SOCKS ในขณะที่สวิตช์นั้นเปิดอยู่ ทอร์เรนต์จะไม่เริ่มทำงานแทนที่จะข้ามไป"
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>กล่องโต้ตอบไฟล์ของระบบจะไม่ทำให้หน้าต่างอื่น ๆ ของ MDM ค้าง</g1> ในขณะที่เปิดอยู่"
@@ -3993,10 +3997,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM สามารถทำงานได้โดยไม่ต้องเปิดหน้าต่างด้วยสามวิธีดังนี้:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "การตั้งค่าพร็อกซี / SOCKS ของ MDM ใช้สำหรับการดาวน์โหลดเว็บและ FTP ทอร์เรนต์สามารถใช้ SOCKS5 ได้เช่นกัน: ตั้งค่าพร็อกซี <x1/> ใน <g2>ตัวเลือก → พร็อกซี / SOCKS</g2> และเปิด <g3>ใช้พร็อกซี</g3> ในการตั้งค่าทอร์เรนต์ พร็อกซีจะครอบคลุมการเชื่อมต่อไปยังเพียร์และตัวติดตามเว็บเท่านั้น ดังนั้น MDM จะปิด DHT, การค้นหาเพียร์ในเครื่อง, การเชื่อมต่อขาเข้า และตัวติดตาม UDP หากพร็อกซีหายไปจากพร็อกซี / SOCKS ในขณะที่สวิตช์นั้นเปิดอยู่ ทอร์เรนต์จะไม่เริ่มทำงานแทนที่จะข้ามไป"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",

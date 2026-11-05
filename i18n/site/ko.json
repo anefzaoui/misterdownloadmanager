@@ -2098,6 +2098,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "선택한 다운로드 삭제(먼저 확인)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM의 프록시/Socks 설정은 웹 및 FTP 다운로드용입니다. 토렌트도 SOCKS5를 사용할 수 있습니다. <g2>옵션 → 프록시/Socks</g2>에서 <x1/> 프록시를 설정하고 토렌트 설정에서 <g3>프록시 사용</g3>을 켜세요. 프록시는 피어 및 웹 트래커에 대한 연결만 처리하므로, 이를 사용하면 MDM은 DHT, 로컬 피어 검색, 수신 연결 및 UDP 트래커를 끕니다. 네트워크를 향한 UDP 소켓은 전혀 열지 않습니다. 해당 스위치가 켜져 있는 동안 프록시/Socks에서 프록시가 사라지면, 토렌트는 프록시를 우회하지 않고 시작되지 않습니다."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>시스템 파일 대화 상자가 열려 있는 동안 MDM의 다른 창이 더 이상 멈추지 않습니다</g1>."
@@ -3993,10 +3997,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM은 창 없이 다음 세 가지 방법으로 실행할 수 있습니다."
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDM의 프록시/Socks 설정은 웹 및 FTP 다운로드용입니다. 토렌트도 SOCKS5를 사용할 수 있습니다. <g2>옵션 → 프록시/Socks</g2>에서 <x1/> 프록시를 설정하고 토렌트 설정에서 <g3>프록시 사용</g3>을 켜십시오. 프록시는 피어 및 웹 트래커에 대한 연결만 다루므로, 이를 사용하면 MDM은 DHT, 로컬 피어 검색, 들어오는 연결 및 UDP 트래커를 끕니다. 해당 스위치가 켜져 있는 동안 프록시/Socks에서 프록시가 사라지면 토렌트는 프록시를 우회하는 대신 시작되지 않습니다."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",

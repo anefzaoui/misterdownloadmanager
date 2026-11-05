@@ -13,6 +13,7 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
 - ✅ Less memory in the notification area: under 10 MB there, and the language list's fonts let
   go when it closes ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Video downloads: subtitles, beside the video or inside it

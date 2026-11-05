@@ -2098,6 +2098,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "删除所选下载（先询问）"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM 的代理/Socks 设置适用于网页和 FTP 下载。种子也可以使用 SOCKS5 代理：在<g2>选项 → 代理/Socks</g2>中设置<x1/>代理，并在种子设置中打开<g3>使用代理</g3>。代理仅覆盖与对等点和网页追踪器的连接，因此 MDM 会关闭 DHT、本地对等点发现、传入连接和 UDP 追踪器；它根本不会向网络打开 UDP 套接字。如果在代理/Socks 中代理消失而该开关仍处于打开状态，则种子不会启动，而不是绕过代理。"
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>系统文件对话框打开时不再冻结 MDM 的其他窗口</g1>。"
@@ -3993,10 +3997,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM 可以在不显示窗口的情况下通过以下三种方式运行："
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDM 的代理/Socks 设置适用于网页和 FTP 下载。种子也可以使用 SOCKS5 代理：在<g2>选项 → 代理/Socks</g2>中设置<x1/>代理，并在“种子设置”中打开<g3>使用代理</g3>。代理仅覆盖与对等点和网页跟踪器的连接，因此 MDM 会关闭 DHT、本地对等点发现、传入连接和 UDP 跟踪器。如果该开关打开时代理从“代理/Socks”中消失，则种子不会启动，而不是绕过它。"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",

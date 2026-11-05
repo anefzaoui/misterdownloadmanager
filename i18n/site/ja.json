@@ -2098,6 +2098,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "選択したダウンロードを削除 (最初に確認)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5プロキシを使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにしてください。このプロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア探索、受信接続、UDPトラッカーをオフにします。ネットワークに対してUDPソケットを一切開きません。このスイッチがオンの状態でプロキシ / SOCKSからプロキシがなくなると、トレントはプロキシを迂回せずに開始されません。"
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>システムファイルダイアログが開いている間、MDMの他のウィンドウがフリーズしなくなりました</g1>。"
@@ -3993,10 +3997,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDMは、ウィンドウを表示せずに次の3つの方法で操作できます。"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5を使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにします。プロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア検出、受信接続、UDPトラッカーをオフにします。そのスイッチがオンの間にプロキシがプロキシ / SOCKSからなくなると、トレントはそれを回避するのではなく、開始されません。"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",

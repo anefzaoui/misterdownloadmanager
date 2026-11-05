@@ -114,6 +114,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Torrents behind a proxy open no UDP socket toward the network**: UDP trackers were already
+  left out there; now their client stays on this computer too.
+- **Developers: tests no longer make Windows Firewall ask about them.** The torrent tests and
+  test tools listen on 127.0.0.1 only (a new setting of the torrent engine, its listen address),
+  so each new build of a test no longer opens sockets on every address.
 - **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
   closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
   **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to

@@ -2098,6 +2098,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Удалить выбранные загрузки (с запросом)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Настройки прокси / Socks в MDM предназначены для загрузок из интернета и по FTP. Торренты также могут использовать SOCKS5: установите <x1/> прокси в <g2>Параметры → Прокси / Socks</g2> и включите <g3>Использовать прокси</g3> в настройках торрента. Прокси охватывает только соединения с пирами и веб-трекерами, поэтому при его использовании MDM отключает DHT, обнаружение локальных пиров, входящие соединения и UDP-трекеры; он вообще не открывает UDP-сокет в сеть. Если прокси исчезает из Прокси / Socks, когда этот переключатель включен, торренты не запускаются, а не обходят его."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>Системные диалоги файлов больше не замораживают другие окна MDM</g1>, пока они открыты."
@@ -3993,10 +3997,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM можно управлять без его окна тремя способами:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Настройки Прокси / Socks в MDM предназначены для загрузок из интернета и FTP. Торренты также могут использовать SOCKS5: установите <x1/> прокси в <g2>Параметры → Прокси / Socks</g2> и включите <g3>Использовать прокси</g3> в Настройках торрента. Прокси охватывает только соединения с пирами и веб-трекерами, поэтому при его использовании MDM отключает DHT, обнаружение локальных пиров, входящие соединения и UDP-трекеры. Если прокси исчезает из Прокси / Socks, пока этот переключатель включён, торренты не запускаются, а не обходят его."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",

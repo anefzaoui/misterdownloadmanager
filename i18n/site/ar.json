@@ -2098,6 +2098,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "حذف التنزيلات المحددة (يسأل أولا)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "إعدادات الوكيل / SOCKS في MDM هي لتنزيلات الويب و FTP. يمكن للتورنت استخدام وكيل SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات مع النظراء ومتتبعات الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف النظراء المحليين، والاتصالات الواردة، ومتتبعات UDP؛ ولا يفتح أي مقبس UDP نحو الشبكة على الإطلاق. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوز الوكيل."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>مربعات حوار ملفات النظام لم تعد تجمد نوافذ MDM الأخرى</g1> أثناء فتحها."
@@ -3993,10 +3997,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "يمكن تشغيل MDM بدون نافذته بثلاث طرق:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "إعدادات الوكيل / SOCKS في MDM مخصصة لتنزيلات الويب و FTP. يمكن للتورنت استخدام SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات بالأقران والمتتبعات عبر الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف الأقران المحليين، والاتصالات الواردة، ومتتبعات UDP. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوزها."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",

@@ -7,7 +7,9 @@
 
 use std::cell::Cell;
 use std::collections::HashMap;
-use std::net::{IpAddr, ToSocketAddrs, UdpSocket};
+use std::net::ToSocketAddrs;
+#[cfg(not(test))]
+use std::net::{IpAddr, UdpSocket};
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
@@ -135,6 +137,7 @@ fn resolve(host: &str) -> String {
 
 /// `__mdmMyIp()`: this computer's address on its network (the one a connection out would use;
 /// nothing is sent), else 127.0.0.1.
+#[cfg(not(test))]
 fn my_ip() -> String {
     UdpSocket::bind("0.0.0.0:0")
         .and_then(|s| s.connect("192.0.2.1:9").map(|_| s))
@@ -142,6 +145,14 @@ fn my_ip() -> String {
         .map(|a| a.ip())
         .unwrap_or(IpAddr::from([127, 0, 0, 1]))
         .to_string()
+}
+
+/// Tests: a fixed address (TEST-NET-1) without opening a socket. The real one binds a UDP
+/// socket on every address of the computer, and Windows Firewall asks about each new test
+/// build that does.
+#[cfg(test)]
+fn my_ip() -> String {
+    "192.0.2.10".to_owned()
 }
 
 /// The functions PAC scripts may call (as browsers provide them).
