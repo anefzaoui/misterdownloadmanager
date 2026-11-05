@@ -233,11 +233,67 @@ impl Picker {
                     None,
                 );
                 let count = rows.len();
+                // A row's "of M" is read from its list.
+                ui.ctx()
+                    .accesskit_node_builder(list_resp.id, |n| n.set_size_of_set(count));
                 let rows_ui = ui.new_child(
                     egui::UiBuilder::new()
                         .max_rect(shown_list)
                         .accessibility_parent(list_resp.id),
                 );
+                // Read as its name (and its English name), selected or not (#95: the rows were
+                // blank to screen readers), with its place in the list.
+                let expose_row = |resp: &egui::Response, name: &str, english: &str, on, k| {
+                    let spoken = if english.is_empty() {
+                        name.to_owned()
+                    } else {
+                        format!("{name}, {english}")
+                    };
+                    winui::expose(resp, egui::Role::ListBoxOption, &spoken, true, None);
+                    resp.ctx.accesskit_node_builder(resp.id, |n| {
+                        n.set_selected(on);
+                        // AccessKit counts from 0 (the platforms say k + 1).
+                        n.set_position_in_set(k);
+                        n.set_size_of_set(count);
+                        n.add_action(egui::accesskit::Action::ScrollIntoView);
+                    });
+                };
+                // The rows out of view are the list's too (#111), named and in their place:
+                // made above and below the view, clipped to nothing (no pointer reaches them). A
+                // screen reader's Select (a click) or Scroll into view brings one into view.
+                let mut out_of_view = ui.new_child(
+                    egui::UiBuilder::new()
+                        .max_rect(shown_list)
+                        .accessibility_parent(list_resp.id),
+                );
+                out_of_view.set_clip_rect(Rect::NOTHING);
+                let in_view = first.min(count)..(first + page as usize + 1).min(count);
+                let mut bring = None;
+                let mut hidden_row = |k: usize, entry: Entry, selected: &mut Entry| {
+                    let y = list.top() + 1.0 + (k as f32 - first as f32) * ROW;
+                    let row =
+                        Rect::from_min_max(pos2(list.left() + 1.0, y), pos2(inner_right, y + ROW));
+                    let resp = out_of_view.interact(
+                        winui::rect(row),
+                        egui::Id::unique(("language-row", k)),
+                        winui::pointer_only(),
+                    );
+                    let scroll = egui::accesskit::Action::ScrollIntoView;
+                    if resp.clicked() {
+                        *selected = entry;
+                        bring = Some(k);
+                    } else if resp
+                        .ctx
+                        .input(|i| i.has_accesskit_action_request(resp.id, scroll))
+                    {
+                        bring = Some(k);
+                    }
+                    let (name, english) = row_names(entry);
+                    expose_row(&resp, &name, &english, *selected == entry, k);
+                };
+                for (k, entry) in rows.iter().enumerate().take(in_view.start) {
+                    hidden_row(k, *entry, &mut self.selected);
+                }
                 for (k, entry) in rows.iter().enumerate().skip(first).take(page as usize + 1) {
                     let y = list.top() + 1.0 + (k - first) as f32 * ROW;
                     let row =
@@ -281,30 +337,7 @@ impl Picker {
                         egui::Image::from_bytes(format!("bytes://flag-{}.svg", i.code), i.flag)
                             .paint_at(ui, winui::rect(flag));
                     }
-                    let (name, english) = match (entry, &info) {
-                        (None, Some(i)) => (
-                            crate::i18n::fmt(
-                                crate::i18n::t("Windows' language ({language})"),
-                                &[("language", i.native)],
-                            ),
-                            String::new(),
-                        ),
-                        (None, None) => (
-                            crate::i18n::t("Windows' language").to_owned(),
-                            String::new(),
-                        ),
-                        // Each name in its own direction: العربية right to left, English left to
-                        // right, in any interface.
-                        (Some(_), Some(i)) => (
-                            crate::i18n::isolate(i.native),
-                            if i.english == i.native {
-                                String::new()
-                            } else {
-                                crate::i18n::ltr(i.english)
-                            },
-                        ),
-                        (Some(c), None) => ((*c).to_owned(), String::new()),
-                    };
+                    let (name, english) = row_names(*entry);
                     let right = row.right() - 8.0;
                     let english_w = if english.is_empty() {
                         0.0
@@ -312,24 +345,20 @@ impl Picker {
                         winui::text_width(&clip, &english) + 12.0
                     };
                     let room = right - (row.left() + 36.0) - english_w;
-                    // Read as its name (and its English name), selected or not (#95: the rows
-                    // were blank to screen readers).
-                    let spoken = if english.is_empty() {
-                        name.clone()
-                    } else {
-                        format!("{name}, {english}")
-                    };
-                    winui::expose(&resp, egui::Role::ListBoxOption, &spoken, true, None);
-                    rows_ui.ctx().accesskit_node_builder(resp.id, |n| {
-                        n.set_selected(on);
-                        n.set_position_in_set(k + 1);
-                        n.set_size_of_set(count);
-                    });
+                    expose_row(&resp, &name, &english, on, k);
                     let shown = winui::ellipsize(&clip, &winui::tahoma(), &name, room);
                     winui::text(&clip, row.left() + 36.0, y + 17.0, &shown, fg);
                     if !english.is_empty() {
                         winui::text_right(&clip, right, y + 17.0, &english, muted);
                     }
+                }
+                for (k, entry) in rows.iter().enumerate().skip(in_view.end) {
+                    hidden_row(k, *entry, &mut self.selected);
+                }
+                if let Some(k) = bring {
+                    let k = k as f32;
+                    self.top = if k < self.top { k } else { k - page + 1.0 };
+                    ui.ctx().request_repaint();
                 }
                 if rows.is_empty() {
                     winui::text(
@@ -399,5 +428,34 @@ impl Picker {
                 }
             },
         )
+    }
+}
+
+/// A row's name and its English name (empty when it is the same), as the list shows and a
+/// screen reader says them. Each name in its own direction: Arabic's right to left, English left
+/// to right, in any interface.
+fn row_names(entry: Entry) -> (String, String) {
+    let info = crate::i18n::info(entry.unwrap_or_else(crate::i18n::system_code));
+    match (entry, info) {
+        (None, Some(i)) => (
+            crate::i18n::fmt(
+                crate::i18n::t("Windows' language ({language})"),
+                &[("language", i.native)],
+            ),
+            String::new(),
+        ),
+        (None, None) => (
+            crate::i18n::t("Windows' language").to_owned(),
+            String::new(),
+        ),
+        (Some(_), Some(i)) => (
+            crate::i18n::isolate(i.native),
+            if i.english == i.native {
+                String::new()
+            } else {
+                crate::i18n::ltr(i.english)
+            },
+        ),
+        (Some(c), None) => (c.to_owned(), String::new()),
     }
 }

@@ -325,6 +325,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   connections' answers came late (a busy computer), the download could finish and then start over
   on one connection, fetching the whole file again. MDM now stops once every byte is in, and tells
   a server that ignores ranges from a CDN node with its own ETag on the first answer.
+- **Screen readers reach every row of a list, not only those in view**
+  ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111)): a list's rows out of
+  view (the last qualities of Download video, a long playlist, the downloads) are there too,
+  named, with their place ("12 of 40"), and can be scrolled into view or selected. A list of
+  thousands offers 300 rows around the view, so it stays as fast.
 - **Less memory in the notification area, also after Minimize**
   ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)): a window minimized to the
   notification area (on by default) now gives its memory back too, as a closed one did; and both
