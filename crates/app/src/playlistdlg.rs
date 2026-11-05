@@ -125,6 +125,8 @@ pub struct PlaylistView {
     chosen: usize,
     rows: winui::RowList,
     pick: usize,
+    /// The file type the chosen quality gives (each row shows its icon).
+    ext: &'static str,
     error: Option<String>,
     confirm: Option<(Confirm, bool)>,
 }
@@ -152,11 +154,65 @@ impl PlaylistView {
             chosen: 0,
             rows: Default::default(),
             pick: DEFAULT_PICK,
+            ext: "mp4",
             error: None,
             confirm: None,
         };
         v.list_from(1);
         v
+    }
+
+    /// A listed playlist without yt-dlp or the network (`/show video-playlist`: the window's
+    /// check in every language, its screenshots), its quality the one at position `pick` in the
+    /// list (the same in every language; not a number: the default). Without ffmpeg the list
+    /// ends at "Audio only, original" (7).
+    pub fn sample(pick: &str) -> Self {
+        let titles = [
+            ("Segmented downloads, explained", Some(754.0), false),
+            ("Resuming a broken download", Some(512.0), false),
+            ("Torrents and magnet links", Some(1103.0), false),
+            ("A private video", None, true),
+            ("Queues and the scheduler", Some(689.0), false),
+            ("Video pages and subtitles", Some(1460.0), false),
+        ];
+        let entries: Vec<Entry> = titles
+            .iter()
+            .enumerate()
+            .map(|(i, (title, duration, unavailable))| Entry {
+                index: i as u64 + 1,
+                url: format!("https://video.example/watch/{}", i + 1),
+                title: (*title).into(),
+                duration: *duration,
+                unavailable: *unavailable,
+            })
+            .collect();
+        let checked: Vec<bool> = entries.iter().map(|e| !e.unavailable).collect();
+        let picks = picks(true);
+        let pick = pick
+            .parse::<usize>()
+            .ok()
+            .filter(|i| *i < picks.len())
+            .unwrap_or(DEFAULT_PICK);
+        PlaylistView {
+            exe: PathBuf::new(),
+            page: "https://video.example/playlist".into(),
+            browser: Default::default(),
+            title: "Download managers, a course".into(),
+            total: Some(entries.len() as u64),
+            paged: false,
+            listing: None,
+            taken: entries.len(),
+            more: false,
+            capped: false,
+            chosen: checked.iter().filter(|c| **c).count(),
+            entries,
+            checked,
+            rows: Default::default(),
+            pick,
+            ext: picks[pick].ext,
+            error: None,
+            confirm: None,
+        }
     }
 
     /// List from entry `from`: to the end when the size is known, else a page.
@@ -359,6 +415,8 @@ impl PlaylistView {
         // i18n: what a screen reader calls the list of a playlist's videos
         self.rows.name = crate::i18n::t("Videos");
         let (entries, checked) = (&self.entries, &self.checked);
+        // Each video after the icon of the file it will give (the quality chosen's type).
+        let file = format!("video.{}", self.ext);
         let mut toggle = None;
         let ev = winui::row_list(
             ui,
@@ -392,10 +450,12 @@ impl PlaylistView {
                 };
                 let len_w = winui::text_width(clip, &len);
                 let name = crate::i18n::isolate(&e.title);
+                let kind = crate::fileicons::Kind::File(&file);
+                crate::fileicons::paint_at(ui, clip, kind, pos2(glyph.x + 18.0, row.top()), 16.0);
                 winui::fit(
                     ui,
                     clip,
-                    glyph.x + 19.0,
+                    glyph.x + 18.0 + crate::fileicons::INDENT,
                     row.top() + 12.0,
                     &name,
                     ink,
@@ -507,6 +567,9 @@ impl PlaylistView {
         let pick = self.pick.min(labels.len().saturating_sub(1));
         if let Some(i) = winui::combo_light(ui, rc, &labels, pick, true, "playlist-quality") {
             self.pick = i;
+        }
+        if let Some(p) = picks.get(self.pick.min(picks.len().saturating_sub(1))) {
+            self.ext = p.ext;
         }
     }
 

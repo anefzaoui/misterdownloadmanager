@@ -1510,6 +1510,13 @@ impl App {
                     }
                 }
             }
+            // A sample playlist (#69), its quality by its place in the list: `video-playlist:7`.
+            "video-playlist" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.show_sample_list(tab);
+                }
+            }
             "existing-files" => {
                 // In General's folder (a test's own, set in its data folder), not the system's
                 // Downloads, whose path names the user.

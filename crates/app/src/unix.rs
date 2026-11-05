@@ -407,6 +407,7 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
     });
     let names = match what {
         What::Folder => vec!["folder".to_string()],
+        What::FolderOpen => vec!["folder-open".to_string(), "folder".to_string()],
         What::File(ext) => {
             let found = ext
                 .as_ref()
@@ -464,7 +465,8 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
     use objc2_foundation::{NSPoint, NSRect, NSSize, NSString};
     // An extension, or a type identifier where there is none.
     let ty = match what {
-        What::Folder => "public.folder".to_string(),
+        // Finder has no open folder of its own: its folder.
+        What::Folder | What::FolderOpen => "public.folder".to_string(),
         What::File(Some(ext)) => ext.clone(),
         What::File(None) => "public.data".to_string(),
     };

@@ -80,9 +80,11 @@ Everything below ships together, in one release.
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
 - ✅ The built-in categories can be renamed, given other file types and deleted, and restored
   ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93))
-- ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
-  a torrent's files and the Scheduler's, each the system's own icon for its type (Windows
-  Explorer's, macOS Finder's, the Linux desktop's icon theme), sharp at every display scale
+- ✅ A file-type icon before every file name, in every window that names a file (the download
+  list, Download File Info, Properties, Download complete, Add torrent, a torrent's files, the
+  Scheduler, Batch download, Download video and its playlists), each the system's own icon for
+  its type (Windows Explorer's, macOS Finder's, the Linux desktop's icon theme), sharp at every
+  display scale
   ([#122](https://github.com/anefzaoui/misterdownloadmanager/issues/122)), and every
   list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
   inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102));

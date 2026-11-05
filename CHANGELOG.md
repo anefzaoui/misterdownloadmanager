@@ -90,7 +90,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   ([#122](https://github.com/anefzaoui/misterdownloadmanager/issues/122)): the download list,
   Download File Info, Properties, Download complete (its open folder), Add torrent (the torrent and
   its tree), a torrent's Files tab, the progress window's Save To, the Scheduler's files, Batch
-  download's preview and Download video's qualities (the file each one gives). Each is your
+  download's preview, and Download video's qualities and a playlist's videos (the file each one
+  gives). Each is your
   system's own icon for that type, the one its file manager shows: Windows Explorer's, macOS
   Finder's, or your Linux desktop's icon theme (KDE's, GNOME's or GTK's choice, then the themes it
   builds on). It is sharp at every display scale (125, 150, 200 %), taken at the size the screen

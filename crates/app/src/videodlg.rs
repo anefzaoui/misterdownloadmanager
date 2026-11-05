@@ -251,6 +251,15 @@ impl VideoDialog {
         }
     }
 
+    /// A listed playlist, as [`crate::playlistdlg::PlaylistView::sample`] makes it, its quality
+    /// the one at position `pick` (`/show video-playlist:7`).
+    pub fn show_sample_list(&mut self, pick: &str) {
+        self.page = "https://video.example/playlist".into();
+        self.looked_up = self.page.clone();
+        self.auto_look = false;
+        self.list = Some(crate::playlistdlg::PlaylistView::sample(pick));
+    }
+
     /// The sample's choice whose label starts with `prefix` (any case), chosen and scrolled into
     /// view (`/show video-subs:flac`: a screenshot of a choice below the list's first rows).
     pub fn pick(&mut self, prefix: &str) {
