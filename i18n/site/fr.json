@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "L'extension de navigateur"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "La fenêtre de progression d'un téléchargement peut aussi y aller, avec son bouton Réduire ou son bouton <g1>Masquer dans la zone de notification</g1> : un petit tiret avec une flèche vers le coin."
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Options là où vous les attendez</g3> <g4>Chaque paramètre là où un utilisateur d'IDM cherche en premier : connexions, proxys, dossiers, sons.</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "Chemin"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "Cliquez dessus avec le bouton droit pour <g1>Ajouter un nouveau téléchargement</g1>, <g2>Ajouter un téléchargement par lot</g2>, <g3>Limiteur de vitesse</g3>, <g4>Planificateur</g4>, la file d’attente principale des téléchargements, les <g5>Options</g5> et <g6>Quitter</g6>."
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Téléchargements → Démarrer la file d’attente</g1> et <g2>Téléchargements → Arrêter la file d’attente</g2> les listent également."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "Minimiser masque aussi la fenêtre principale là, si <g1>Réduire dans la zone de notification</g1> est activé dans <g2>Options → Général</g2>. C'est activé par défaut."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Intégration au navigateur — Aide de Mister Download Manager"
@@ -2721,6 +2725,10 @@
   "4bc9bd6c4901c383": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM ne contient aucun logiciel publicitaire, espion, offre groupée ou suivi. L’intégralité de son code source est publique, afin que chacun puisse vérifier ce qu’il fait, et chaque version est construite à partir de ce code par les serveurs de GitHub, où la construction peut être inspectée. Les programmes d’aide qu’il peut récupérer pour les vidéos sont vérifiés avant d’être exécutés : yt-dlp par rapport à la clé de signature de ses développeurs, ffmpeg par rapport à ses sommes de contrôle publiées. Téléchargez MDM uniquement depuis <g1>ce site</g1> ou les versions GitHub du projet."
+  },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "Sous Windows, ce bouton se trouve dans la barre de titre de la fenêtre, à gauche de Réduire, et dans le menu de la barre de titre (Alt+Espace). Sous Linux et macOS, il est à la fin de la rangée d'onglets."
   },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
@@ -3017,6 +3025,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Fonctionne-t-il sous Windows 7 ou 8 ?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>Réduire dans la zone de notification</g1> — Réduire masque la fenêtre principale et la fenêtre de progression d'un téléchargement dans la zone de notification, comme le fait la fermeture de la fenêtre principale ; les téléchargements continuent. Activé par défaut. Grisé là où aucune barre d'état système n'affiche l'icône de MDM (certains bureaux Linux) ; dans une session Wayland, la fenêtre principale reste minimisée dans le dock, car Wayland ne peut pas masquer une fenêtre."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5125,6 +5137,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "La version <x1/> n’a pas d’installateur, mais vous pouvez enregistrer le programme d’aide vous-même. Ouvrez une invite de commande dans le dossier de MDM et exécutez :"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "Faites un clic droit dessus pour <g1>Ajouter un nouveau téléchargement</g1>, <g2>Ajouter un téléchargement par lot</g2>, <g3>Téléchargements en cours</g3>, <g4>Limiteur de vitesse</g4>, <g5>Planificateur</g5>, la file d'attente principale des téléchargements, <g6>Options</g6> et <g7>Quitter</g7>."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7614,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "Copiez l'adresse du fichier (dans un navigateur : clic droit sur le lien → <g1>Copier le lien</g1>)."
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "Pour ramener la fenêtre, choisissez-la dans <g1>Téléchargements en cours</g1>, ou double-cliquez sur le téléchargement dans la liste."
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "Configuration"
@@ -7737,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "Le navigateur a démarré l’aide de MDM, mais elle s’est arrêtée avant de répondre. Un logiciel de sécurité en est la cause habituelle."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>Téléchargements en cours</g1> liste les téléchargements en cours. Choisissez-en un pour voir sa fenêtre de progression."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

@@ -108,7 +108,16 @@ Closing the main window doesn't quit MDM. It hides in the notification area, and
 On Linux this needs a tray, which most desktops have (KDE, GNOME with its AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.
 
 - Click the tray icon to bring the window back.
-- Right-click it for **Add new download**, **Add batch download**, **Speed Limiter**, **Scheduler**, the main download queue, **Options** and **Exit**.
+- Right-click it for **Add new download**, **Add batch download**, **Downloads in progress**, **Speed Limiter**, **Scheduler**, the main download queue, **Options** and **Exit**.
+- **Downloads in progress** lists the running downloads. Choose one to see its progress window.
+
+Minimize hides the main window there too, while **Minimize to the notification area** is on in **Options → General**. It is on by default.
+
+A download's progress window can go there as well, with its Minimize or with its **Hide to the notification area** button: a short dash with an arrow down to the corner.
+
+On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.
+
+To bring the window back, choose it in **Downloads in progress**, or double-click the download in the list.
 
 To quit, choose **Tasks → Exit** or **Exit** in the tray menu.
 

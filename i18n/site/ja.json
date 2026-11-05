@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "ブラウザ拡張機能"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "ダウンロードの進行状況ウィンドウも、最小化ボタンまたは<g1>通知領域に隠す</g1>ボタン（角に向かう短いダッシュと矢印）でそこへ移動できます。"
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>期待通りの場所にオプション</g3> <g4>IDMユーザーがまず探すであろう、接続、プロキシ、フォルダー、サウンドなど、すべての設定が配置されています。</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "パス"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "右クリックすると、<g1>新しいダウンロードを追加</g1>、<g2>バッチ ダウンロードを追加</g2>、<g3>速度制限</g3>、<g4>スケジューラ</g4>、メインダウンロードキュー、<g5>オプション</g5>、<g6>終了</g6>が表示されます。"
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>ダウンロード → キューを開始</g1>と<g2>ダウンロード → キューを停止</g2>にも表示されます。"
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "<g1>オプション → 一般</g1>で<g2>通知領域に最小化する</g2>がオンになっている場合、最小化するとメイン ウィンドウもそこに隠されます。これは既定でオンになっています。"
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "ブラウザー統合 — Mister Download Manager ヘルプ"
@@ -2721,6 +2725,10 @@
   "4bc9bd6c4901c383": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM には、アドウェア、スパイウェア、バンドルされたオファー、トラッキングは含まれていません。ソースコード全体が公開されているため、誰でもその動作を確認でき、すべてのリリースは GitHub のサーバーによってそのコードからビルドされ、ビルドを検査することができます。ビデオ用に取得できるヘルパープログラムは、実行前に検証されます。yt-dlp は開発者の署名キーに対して、ffmpeg は公開されているチェックサムに対して検証されます。MDM は<g1>このサイト</g1>またはプロジェクトの GitHub リリースからのみダウンロードしてください。"
+  },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "Windowsでは、そのボタンはウィンドウのタイトルバーの最小化の左側にあり、タイトルバーのメニュー（Alt+Space）にもあります。LinuxとmacOSでは、タブ行の最後にあります。"
   },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
@@ -3017,6 +3025,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Windows 7または8で動作しますか？"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>通知領域に最小化する</g1> — この設定をオンにすると、メインウィンドウを閉じたり、ダウンロードの進行状況ウィンドウを閉じたりしたときに、メインウィンドウとダウンロードの進行状況ウィンドウが通知領域に隠されます。ダウンロードは続行されます。デフォルトでオンです。MDMのアイコンが表示されないトレイ（一部のLinuxデスクトップ）ではグレー表示されます。Waylandセッションではウィンドウを隠すことができないため、メインウィンドウはドックに最小化されたままになります。"
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5125,6 +5137,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "<x1/>版にはインストーラーがありませんが、ヘルパーを自分で登録できます。MDMのフォルダーでコマンドプロンプトを開き、以下を実行します。"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "<g1>新しいダウンロードを追加</g1>、<g2>バッチ ダウンロードを追加</g2>、<g3>進行中のダウンロード</g3>、<g4>速度制限</g4>、<g5>スケジューラ</g5>、メインのダウンロード キュー、<g6>オプション</g6>、<g7>終了</g7>には、これを右クリックします。"
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7614,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "ファイルのURLをコピーします（ブラウザの場合：リンクを右クリック → <g1>リンクをコピー</g1>）。"
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "ウィンドウを元に戻すには、<g1>進行中のダウンロード</g1>で選択するか、リスト内のダウンロードをダブルクリックします。"
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "設定"
@@ -7737,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "ブラウザーはMDMのヘルパーを起動しましたが、応答する前に停止しました。セキュリティソフトウェアが一般的な原因です。"
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>進行中のダウンロード</g1>には、実行中のダウンロードが一覧表示されます。いずれかを選択すると、その進行状況ウィンドウが表示されます。"
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

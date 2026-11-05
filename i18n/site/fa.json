@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "افزونه مرورگر"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "پنجره پیشرفت دانلود هم می‌تواند با دکمه کوچک‌نمایی یا دکمه <g1>پنهان کردن در ناحیه اعلان</g1> (یک خط تیره کوتاه با فلش رو به پایین به سمت گوشه) به آنجا برود."
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>گزینه‌ها در جایی که انتظار دارید</g3> <g4>هر تنظیماتی که کاربر IDM ابتدا به آن نگاه می‌کند: اتصالات، پراکسی‌ها، پوشه‌ها، صداها.</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "مسیر"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "روی آن راست‌کلیک کنید برای <g1>افزودن دانلود جدید</g1>، <g2>افزودن دانلود دسته‌ای</g2>، <g3>محدودکننده سرعت</g3>، <g4>زمان‌بند</g4>، صف اصلی دانلود، <g5>گزینه‌ها</g5> و <g6>خروج</g6>."
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>بارگیری‌ها → شروع صف</g1> و <g2>بارگیری‌ها → توقف صف</g2> نیز آنها را فهرست می‌کنند."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "کوچک‌نمایی، پنجره اصلی را نیز در آنجا پنهان می‌کند، در حالی که <g1>کوچک‌نمایی در ناحیه اعلان</g1> در <g2>گزینه‌ها ← عمومی</g2> فعال است. این گزینه به طور پیش‌فرض فعال است."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "یکپارچه‌سازی مرورگر — راهنمای Mister Download Manager"
@@ -2721,6 +2725,10 @@
   "4bc9bd6c4901c383": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM حاوی هیچ بدافزار، جاسوس‌افزار، پیشنهادات بسته‌بندی شده یا ردیابی نیست. کل کد منبع آن عمومی است، بنابراین هر کسی می‌تواند بررسی کند که چه کاری انجام می‌دهد، و هر نسخه از آن کد توسط سرورهای GitHub ساخته می‌شود، جایی که ساخت قابل بازرسی است. برنامه‌های کمکی که می‌تواند برای ویدئوها دریافت کند قبل از اجرا تأیید می‌شوند: yt-dlp در برابر کلید امضای توسعه‌دهندگانش، ffmpeg در برابر چک‌سام‌های منتشر شده‌اش. MDM را فقط از <g1>این سایت</g1> یا نسخه‌های GitHub پروژه دانلود کنید."
+  },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "در Windows، این دکمه در نوار عنوان پنجره، سمت چپ کوچک‌نمایی، و در منوی نوار عنوان (Alt+Space) قرار دارد. در Linux و macOS، در انتهای ردیف تب‌ها است."
   },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
@@ -3017,6 +3025,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "آیا روی Windows 7 یا 8 اجرا می‌شود؟"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>کوچک‌نمایی در ناحیه اعلان</g1> — کوچک‌نمایی، پنجره اصلی و پنجره پیشرفت دانلود را در ناحیه اعلان پنهان می‌کند، همان‌طور که بستن پنجره اصلی این کار را می‌کند؛ دانلودها ادامه می‌یابند. به‌طور پیش‌فرض فعال است. در جایی که آیکون MDM در سینی نمایش داده نمی‌شود (برخی دسکتاپ‌های Linux) خاکستری است؛ در یک جلسه Wayland، پنجره اصلی در داک کوچک‌شده باقی می‌ماند، زیرا Wayland نمی‌تواند یک پنجره را پنهان کند."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5125,6 +5137,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "نسخه <x1/> نصب‌کننده ندارد، اما می‌توانید برنامه کمکی را خودتان ثبت کنید. یک خط فرمان را در پوشه MDM باز کنید و اجرا کنید:"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "برای <g1>افزودن دانلود جدید</g1>، <g2>افزودن دانلود دسته‌ای</g2>، <g3>دانلودهای در حال انجام</g3>، <g4>محدودکننده سرعت</g4>، <g5>زمان‌بند</g5>، صف اصلی دانلود، <g6>گزینه‌ها</g6> و <g7>خروج</g7> روی آن راست‌کلیک کنید."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7614,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "آدرس فایل را کپی کنید (در یک مرورگر: روی لینک راست کلیک کنید ← <g1>کپی لینک</g1>)."
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "برای برگرداندن پنجره، آن را در <g1>دانلودهای در حال انجام</g1> انتخاب کنید، یا روی دانلود در لیست دوبار کلیک کنید."
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "راه‌اندازی آن"
@@ -7737,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "مرورگر کمک‌کننده MDM را راه‌اندازی کرد، اما قبل از پاسخ دادن متوقف شد. نرم‌افزار امنیتی علت معمول است."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>دانلودهای در حال انجام</g1>، دانلودهای فعال را فهرست می‌کند. یکی را انتخاب کنید تا پنجره پیشرفت آن را ببینید."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

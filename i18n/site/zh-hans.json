@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "浏览器扩展"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "下载进度窗口也可以通过其“最小化”按钮或“<g1>隐藏到通知区域</g1>”按钮（一个短横线，带一个指向角落的箭头）隐藏到那里。"
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>选项在您期望的位置</g3> <g4>所有设置都在 IDM 用户首先查找的位置：连接、代理、文件夹、声音。</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "路径"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "右键点击它可选择<g1>添加新下载</g1>、<g2>添加批量下载</g2>、<g3>速度限制器</g3>、<g4>计划程序</g4>、主下载队列、<g5>选项</g5>和<g6>退出</g6>。"
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>下载 → 启动队列</g1>和<g2>下载 → 停止队列</g2>也列出了它们。"
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "当<g1>最小化到通知区域</g1>在<g2>选项 → 常规</g2>中开启时，最小化也会将主窗口隐藏到那里。此选项默认开启。"
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "浏览器集成 — Mister Download Manager 帮助"
@@ -2721,6 +2725,10 @@
   "4bc9bd6c4901c383": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM 不包含广告软件、间谍软件、捆绑优惠或跟踪。它的全部源代码都是公开的，因此任何人都可以检查它的功能，并且每个版本都是由 GitHub 的服务器从该代码构建的，构建过程可以被检查。它为视频获取的辅助程序在运行前会进行验证：yt-dlp 会对照其开发者的签名密钥进行验证，ffmpeg 会对照其发布的校验和进行验证。请仅从<g1>本网站</g1>或项目的 GitHub 发布页面下载 MDM。"
+  },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "在 Windows 上，该按钮位于窗口标题栏的“最小化”按钮左侧，以及标题栏菜单 (Alt+Space) 中。在 Linux 和 macOS 上，它位于标签行末尾。"
   },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
@@ -3017,6 +3025,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "它能在 Windows 7 或 8 上运行吗？"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>最小化到通知区域</g1> — 最小化会将主窗口和下载进度窗口隐藏到通知区域，就像关闭主窗口一样；下载会继续。默认开启。在不显示 MDM 图标的托盘中（某些 Linux 桌面）会变灰；在 Wayland 会话中，主窗口会保持最小化在任务栏中，因为 Wayland 无法隐藏窗口。"
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5125,6 +5137,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "此 <x1/> 版本没有安装程序，但您可以自行注册辅助程序。在 MDM 文件夹中打开命令提示符并运行："
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "右键单击它可选择<g1>添加新下载</g1>、<g2>添加批量下载</g2>、<g3>正在进行的下载</g3>、<g4>速度限制器</g4>、<g5>计划程序</g5>、主下载队列、<g6>选项</g6>和<g7>退出</g7>。"
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7614,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "复制文件地址（在浏览器中：右键点击链接 → <g1>复制链接</g1>）。"
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "要恢复窗口，请在<g1>正在进行的下载</g1>中选择它，或双击列表中的下载项。"
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "设置"
@@ -7737,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "浏览器启动了 MDM 的辅助程序，但它在响应之前停止了。安全软件是常见原因。"
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>正在进行的下载</g1>列出正在运行的下载。选择一个可查看其进度窗口。"
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

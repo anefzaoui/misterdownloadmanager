@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "Расширение для браузера"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "Окно хода загрузки также может быть скрыто туда с помощью кнопки «Свернуть» или <g1>«Скрыть в область уведомлений»</g1>: короткий дефис со стрелкой вниз в угол."
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Параметры там, где вы их ожидаете</g3> <g4>Все настройки там, где пользователь IDM ищет в первую очередь: соединения, прокси, папки, звуки.</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "Путь"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "Щелкните его правой кнопкой мыши, чтобы вызвать <g1>Добавить новую загрузку</g1>, <g2>Добавить пакетную загрузку</g2>, <g3>Ограничитель скорости</g3>, <g4>Планировщик</g4>, главную очередь загрузок, <g5>Параметры</g5> и <g6>Выход</g6>."
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Загрузки → Запустить очередь</g1> и <g2>Загрузки → Остановить очередь</g2> также отображают их список."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "Свернуть также скрывает главное окно там, если включена опция <g1>Сворачивать в область уведомлений</g1> в <g2>Параметры → Общие</g2>. Она включена по умолчанию."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Интеграция с браузером — справка Mister Download Manager"
@@ -2721,6 +2725,10 @@
   "4bc9bd6c4901c383": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM не содержит рекламного, шпионского ПО, встроенных предложений или отслеживания. Весь его исходный код является общедоступным, поэтому любой может проверить, что он делает, и каждый выпуск собирается из этого кода серверами GitHub, где сборку можно проверить. Вспомогательные программы, которые он может получать для видео, проверяются перед запуском: yt-dlp — по ключу подписи разработчиков, ffmpeg — по опубликованным контрольным суммам. Загружайте MDM только с <g1>этого сайта</g1> или из релизов проекта на GitHub."
+  },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "В Windows эта кнопка находится в строке заголовка окна, слева от кнопки «Свернуть», а также в меню строки заголовка (Alt+Space). В Linux и macOS она находится в конце ряда вкладок."
   },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
@@ -3017,6 +3025,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Работает ли он на Windows 7 или 8?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>Сворачивать в область уведомлений</g1> — Сворачивание скрывает главное окно и окно хода загрузки в области уведомлений, как и при закрытии главного окна; загрузки продолжаются. Включено по умолчанию. Недоступно, если в трее не отображается значок MDM (некоторые рабочие столы Linux); в сеансе Wayland главное окно остается свернутым в доке, так как Wayland не может скрыть окно."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5125,6 +5137,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "Версия <x1/> не имеет установщика, но вы можете зарегистрировать вспомогательную программу самостоятельно. Откройте командную строку в папке MDM и выполните:"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "Нажмите на него правой кнопкой мыши, чтобы открыть <g1>Добавить новую загрузку</g1>, <g2>Добавить пакетную загрузку</g2>, <g3>Загрузки в процессе</g3>, <g4>Ограничитель скорости</g4>, <g5>Планировщик</g5>, основную очередь загрузок, <g6>Параметры</g6> и <g7>Выход</g7>."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7614,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "Скопируйте адрес файла (в браузере: щелкните правой кнопкой мыши по ссылке → <g1>Копировать ссылку</g1>)."
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "Чтобы вернуть окно, выберите его в <g1>«Загрузки в процессе»</g1> или дважды щелкните загрузку в списке."
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "Настройка"
@@ -7737,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "Браузер запустил вспомогательную программу MDM, но она остановилась до ответа. Обычная причина — программное обеспечение безопасности."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>Загрузки в процессе</g1> показывает список текущих загрузок. Выберите одну, чтобы увидеть окно её прогресса."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

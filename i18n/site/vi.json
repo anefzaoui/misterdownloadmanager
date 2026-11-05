@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "Tiện ích mở rộng trình duyệt"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "Cửa sổ tiến trình tải xuống cũng có thể ẩn vào đó, bằng nút Thu nhỏ hoặc nút <g1>Ẩn vào vùng thông báo</g1>: một dấu gạch ngang ngắn với mũi tên chỉ xuống góc."
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Tùy chọn ở nơi bạn mong đợi</g3> <g4>Mọi cài đặt mà người dùng IDM tìm kiếm đầu tiên: kết nối, proxy, thư mục, âm thanh.</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "Đường dẫn"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "Nhấp chuột phải vào đó để <g1>Thêm tải xuống mới</g1>, <g2>Thêm tải xuống hàng loạt</g2>, <g3>Giới hạn tốc độ</g3>, <g4>Bộ lập lịch</g4>, hàng đợi tải xuống chính, <g5>Tùy chọn</g5> và <g6>Thoát</g6>."
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Tải xuống → Bắt đầu hàng đợi</g1> và <g2>Tải xuống → Dừng hàng đợi</g2> cũng liệt kê chúng."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "Thu nhỏ cũng ẩn cửa sổ chính ở đó, trong khi <g1>Thu nhỏ vào vùng thông báo</g1> được bật trong <g2>Tùy chọn → Chung</g2>. Tính năng này được bật theo mặc định."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Tích hợp trình duyệt — Trợ giúp Mister Download Manager"
@@ -2721,6 +2725,10 @@
   "4bc9bd6c4901c383": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM không chứa phần mềm quảng cáo, phần mềm gián điệp, các ưu đãi đi kèm hoặc theo dõi. Toàn bộ mã nguồn của nó là công khai, vì vậy bất kỳ ai cũng có thể kiểm tra những gì nó làm, và mỗi bản phát hành đều được xây dựng từ mã đó bởi các máy chủ của GitHub, nơi bản dựng có thể được kiểm tra. Các chương trình trợ giúp mà nó có thể tìm nạp cho video được xác minh trước khi chạy: yt-dlp so với khóa ký của nhà phát triển, ffmpeg so với tổng kiểm đã công bố. Chỉ tải xuống MDM từ <g1>trang web này</g1> hoặc các bản phát hành GitHub của dự án."
+  },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "Trên Windows, nút đó nằm ở thanh tiêu đề của cửa sổ, bên trái nút Thu nhỏ, và trong menu của thanh tiêu đề (Alt+Space). Trên Linux và macOS, nó nằm ở cuối hàng tab."
   },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
@@ -3017,6 +3025,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Nó có chạy trên Windows 7 hoặc 8 không?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>Thu nhỏ vào vùng thông báo</g1> — Khi thu nhỏ, cửa sổ chính và cửa sổ tiến trình tải xuống sẽ ẩn vào vùng thông báo, giống như khi đóng cửa sổ chính; các lượt tải xuống vẫn tiếp tục. Mặc định là bật. Mục này sẽ bị làm mờ nếu không có khay hệ thống hiển thị biểu tượng của MDM (một số môi trường desktop Linux); trong phiên Wayland, cửa sổ chính vẫn được thu nhỏ trên thanh dock vì Wayland không thể ẩn cửa sổ."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5125,6 +5137,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "Bản sao <x1/> không có trình cài đặt, nhưng bạn có thể tự đăng ký trình hỗ trợ. Mở dấu nhắc lệnh trong thư mục của MDM và chạy:"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "Nhấp chuột phải vào đó để chọn <g1>Thêm tải xuống mới</g1>, <g2>Thêm tải xuống hàng loạt</g2>, <g3>Tải xuống đang tiến hành</g3>, <g4>Giới hạn tốc độ</g4>, <g5>Bộ lập lịch</g5>, hàng đợi tải xuống chính, <g6>Tùy chọn</g6> và <g7>Thoát</g7>."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7614,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "Sao chép địa chỉ của tệp (trong trình duyệt: nhấp chuột phải vào liên kết → <g1>Sao chép liên kết</g1>)."
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "Để đưa cửa sổ trở lại, hãy chọn nó trong <g1>Tải xuống đang tiến hành</g1>, hoặc nhấp đúp vào mục tải xuống trong danh sách."
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "Thiết lập"
@@ -7737,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "Trình duyệt đã khởi động trình hỗ trợ của MDM, nhưng nó đã dừng trước khi trả lời. Phần mềm bảo mật là nguyên nhân thông thường."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>Tải xuống đang tiến hành</g1> liệt kê các lượt tải xuống đang chạy. Chọn một lượt để xem cửa sổ tiến trình của nó."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",
