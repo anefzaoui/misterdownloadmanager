@@ -773,6 +773,17 @@ pub fn start_at(ctx: &egui::Context, id: &str, i: usize) {
     ctx.data_mut(|d| d.insert_temp::<(Option<usize>, Option<usize>)>(kb, (Some(i), None)));
 }
 
+/// Open a menu with its entry `i`'s submenu open and the submenu's first entry highlighted, as
+/// the keyboard leaves it (`/show menu:torrent`, for screenshots).
+pub fn open_sub_at(ctx: &egui::Context, id: &str, i: usize) {
+    show_cues(ctx);
+    let sub_key = egui::Id::unique(("popup-sub", id));
+    ctx.data_mut(|d| {
+        d.insert_temp(sub_key, i);
+        d.insert_temp::<(Option<usize>, Option<usize>)>(sub_key.with("kb"), (Some(i), Some(0)));
+    });
+}
+
 /// The surface of a popup drawn inside a window (the date picker's calendar, a column's filter
 /// box): the menus' colours and border, rounded as Windows 11's flyouts (they had their own).
 pub fn popup_surface(p: &egui::Painter, rc: egui::Rect) {
@@ -846,8 +857,13 @@ fn menu_size<C>(
 /// parent's left side. In a right-to-left interface `at` is the menu's top-right: it opens to
 /// the left, and flips to the right (a submenu to the parent's right side).
 fn place_menu(at: Pos2, size: egui::Vec2, parent: Option<Rect>) -> Pos2 {
+    // An off-screen test copy (MDM_OFFSCREEN) keeps its menus beside its window, off the
+    // screens too: the nearest monitor's work area brought them onto the screen, over the
+    // user's work.
     #[cfg(windows)]
-    if let Some([l, t, r, b]) = crate::win32::work_area(at.x as i32, at.y as i32) {
+    if !crate::offscreen()
+        && let Some([l, t, r, b]) = crate::win32::work_area(at.x as i32, at.y as i32)
+    {
         let (l, t, r, b) = (l as f32, t as f32, r as f32, b as f32);
         let mut p = at;
         if crate::i18n::rtl() {

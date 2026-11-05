@@ -29,6 +29,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its
   releases only when signed by its author's key, or your own copy (Helpers). On the command line:
   `install-gallery-dl` and `gallery-get`.
+- **Torrent commands** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a
+  torrent's right-click menu has **Torrent → Recheck files**, **Reannounce**, **Add trackers...**
+  and **Copy magnet link**. Its Files tab can tick and untick files while it runs. A `.torrent`
+  file's web address, in Add URL or from the browser, opens Add torrent with what the file holds.
 - **Torrents: seeding limits** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)):
   under "Keep sharing torrents after they finish", Torrent settings can stop sharing a finished
   torrent at a share ratio, or after it has been shared for some minutes; both off by default. A

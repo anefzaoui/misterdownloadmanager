@@ -75,6 +75,20 @@ fn check_bytes(torrent: &[u8]) -> Result<(), TorrentError> {
     )
 }
 
+/// A magnet link for a .torrent: its hash, its name and its trackers (`trackers::listed`).
+pub fn magnet_link(torrent: &[u8]) -> Option<String> {
+    let meta = librqbit::torrent_from_bytes(torrent).ok()?;
+    let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
+    let mut link = format!("magnet:?xt=urn:btih:{}", meta.info_hash.as_string());
+    if let Some(name) = meta.info.data.validate().ok()?.name() {
+        link.push_str(&format!("&dn={}", enc(&name)));
+    }
+    for t in trackers::listed(torrent) {
+        link.push_str(&format!("&tr={}", enc(&t)));
+    }
+    Some(link)
+}
+
 /// Before librqbit restores its saved torrents (`session.json` and a `<hash>.torrent` for each,
 /// in `dir`), take out the ones the name check refuses, and those saved without their .torrent
 /// (whose names it can't check): the app adds those again itself, through `add` and its own
@@ -344,6 +358,8 @@ pub struct Torrents {
     /// adds at once both took id 0, and the second was answered "already managed" with the
     /// first one's handle: it was never added (two torrents started together, #39).
     adding: tokio::sync::Mutex<()>,
+    /// librqbit's saved state (`session.json`, and each torrent's .torrent and piece map).
+    session_dir: PathBuf,
 }
 
 /// The lowest limit a torrent can have, bytes/s: librqbit's limiter holds one second's budget
@@ -449,6 +465,7 @@ impl Torrents {
             api,
             proxied,
             adding: tokio::sync::Mutex::new(()),
+            session_dir: cfg.state_dir.join("session"),
         })
     }
 
@@ -670,6 +687,72 @@ impl Torrents {
             .update_only_files(&h, files)
             .await
             .map_err(engine)
+    }
+
+    /// Take it out of the session and add it again from `torrent` (its .torrent, perhaps with
+    /// trackers added): the same folder, chosen files, paused or not, and own limits. With
+    /// `recheck`, every piece is read and checked again (Recheck); without, the pieces it had
+    /// are kept (librqbit's saved piece map, which it checks on a sample) and only the .torrent
+    /// changes (Add trackers).
+    pub async fn readd(
+        &self,
+        hash: &str,
+        torrent: &[u8],
+        recheck: bool,
+    ) -> Result<(), TorrentError> {
+        check_bytes(torrent)?;
+        let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
+        let folder = PathBuf::from(
+            self.api
+                .api_torrent_details(id(hash)?)
+                .map_err(engine)?
+                .output_folder,
+        );
+        let (files, paused) = (h.only_files(), h.is_paused());
+        let limits = self.torrent_limits(hash);
+        drop(h);
+        let map = self
+            .session_dir
+            .join(format!("{}.bitv", hash.to_ascii_lowercase()));
+        let kept = if recheck {
+            None
+        } else {
+            std::fs::read(&map).ok()
+        };
+        self.session
+            .delete(id(hash)?, false)
+            .await
+            .map_err(engine)?;
+        // librqbit removes the piece map with the torrent; on Windows a file still mapped is
+        // removed only once unmapped, so it is waited for: a recheck that found it would check
+        // only a sample.
+        if recheck {
+            for _ in 0..50 {
+                if std::fs::remove_file(&map).is_ok() || !map.exists() {
+                    break;
+                }
+                tokio::time::sleep(Duration::from_millis(100)).await;
+            }
+        } else if let Some(bits) = kept {
+            let _ = std::fs::write(&map, bits);
+        }
+        self.add(torrent, &folder, files, Vec::new(), paused)
+            .await?;
+        if let Some((down, up)) = limits {
+            let _ = self.set_torrent_limits(hash, down, up);
+        }
+        Ok(())
+    }
+
+    /// Ask its trackers (and the DHT) for peers again now: a running torrent is paused and
+    /// started again, which announces it afresh; a paused one announces when it starts.
+    pub async fn reannounce(&self, hash: &str) -> Result<(), TorrentError> {
+        let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
+        if !matches!(h.stats().state, TorrentStatsState::Live) {
+            return Ok(());
+        }
+        self.session.pause(&h).await.map_err(engine)?;
+        self.session.unpause(&h).await.map_err(engine)
     }
 
     /// Take it out of the session; the files stay unless `delete_files`.
@@ -1084,6 +1167,80 @@ mod tests {
         );
         seeder.stop().await;
         leecher.stop().await;
+    }
+
+    /// #39, more torrent actions: adding again with trackers added keeps the pieces and the
+    /// torrent's state; Recheck reads every piece again (a damaged one is found); a paused
+    /// torrent stays paused; Reannounce leaves it as it was; the magnet link has its trackers.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn readd_keeps_or_rechecks_the_pieces() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        let a: Vec<u8> = (0..300_000u32).map(|i| (i % 251) as u8).collect();
+        let b: Vec<u8> = (0..120_000u32).map(|i| (i % 13) as u8).collect();
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        std::fs::write(src.join("b.bin"), &b).unwrap();
+        let torrent = make_torrent(&src).await;
+        let t = Torrents::start(offline(&tmp.path().join("s")))
+            .await
+            .unwrap();
+        let hash = t
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let settled = |want: Phase| {
+            let t = &t;
+            let hash = hash.clone();
+            async move {
+                let deadline = std::time::Instant::now() + Duration::from_secs(30);
+                loop {
+                    let s = t.stats(&hash).unwrap();
+                    if s.phase == want {
+                        return s;
+                    }
+                    assert!(
+                        std::time::Instant::now() < deadline,
+                        "never {want:?}: {s:?}"
+                    );
+                    tokio::time::sleep(Duration::from_millis(50)).await;
+                }
+            }
+        };
+        assert_eq!(settled(Phase::Finished).await.done, 420_000);
+        t.set_torrent_limits(&hash, None, Some(64 * 1024)).unwrap();
+
+        // Trackers added: the same torrent, finished, its own limit kept, the trackers listed.
+        let tracker = "http://tracker.example/announce".to_owned();
+        let more = trackers::add(&torrent, std::slice::from_ref(&tracker)).unwrap();
+        t.readd(&hash, &more, false).await.unwrap();
+        assert_eq!(settled(Phase::Finished).await.done, 420_000);
+        assert_eq!(t.trackers(&hash), std::slice::from_ref(&tracker));
+        assert_eq!(t.torrent_limits(&hash), Some((None, Some(64 * 1024))));
+        t.reannounce(&hash).await.unwrap();
+        assert_eq!(settled(Phase::Finished).await.done, 420_000);
+
+        // A piece damaged on disk: Recheck finds it (and fetches nothing offline).
+        let mut damaged = a.clone();
+        damaged[100_000..100_100].fill(0xff);
+        std::fs::write(src.join("a.bin"), &damaged).unwrap();
+        t.pause(&hash).await.unwrap();
+        t.readd(&hash, &more, true).await.unwrap();
+        let s = settled(Phase::Paused).await;
+        assert!(s.done < 420_000, "the damaged piece is missing: {s:?}");
+        assert!(s.done >= 420_000 - 2 * 16 * 1024, "only it: {s:?}");
+        assert!(!t.pieces(&hash).iter().all(|p| *p));
+        // Paused stays paused; Reannounce doesn't start it.
+        t.reannounce(&hash).await.unwrap();
+        assert_eq!(t.stats(&hash).unwrap().phase, Phase::Paused);
+
+        let link = magnet_link(&more).unwrap();
+        assert_eq!(
+            link,
+            format!("magnet:?xt=urn:btih:{hash}&dn=set&tr=http%3A%2F%2Ftracker.example%2Fannounce")
+        );
+        assert_eq!(magnet_link(b"junk"), None);
+        t.stop().await;
     }
 
     /// #39: two torrents added at the same moment are both in the session. (librqbit gave both

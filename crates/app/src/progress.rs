@@ -190,6 +190,8 @@ pub struct Progress {
     up_kb: String,
     /// An upload limit change to report (`Action::UploadLimit`).
     pending_upload: Option<Option<u64>>,
+    /// Files ticked or unticked in a torrent's Files tab, to report (`Action::Choose`).
+    pending_choose: Option<Action>,
     show_complete: bool,
     /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
     pub keep_sharing: bool,
@@ -222,6 +224,13 @@ pub enum Action {
     Limit(Option<u64>, bool),
     /// A torrent's own upload limit (bytes/s, None: off), kept with it (`TorrentSpec`).
     UploadLimit(Option<u64>),
+    /// A torrent's files to download from now on (#39, its Files tab): indexes into its list,
+    /// whether that is every file, and their size together.
+    Choose {
+        files: Vec<usize>,
+        all: bool,
+        size: u64,
+    },
     /// Close the dialog, keep downloading.
     Close,
     /// Hide the dialog in the notification area, keep downloading (#63).
@@ -244,6 +253,7 @@ impl Progress {
             up_on: false,
             up_kb: "50".into(),
             pending_upload: None,
+            pending_choose: None,
             show_complete,
             keep_sharing: false,
             host: None,
@@ -386,12 +396,17 @@ impl Progress {
             (Action::None, Some((limit, remember))) => Action::Limit(limit, remember),
             (a, _) => a,
         };
-        // An upload change waits a frame when a download one goes first (one action a frame).
+        // An upload change waits a frame when a download one goes first (one action a frame);
+        // so does a change of files.
         let action = match action {
             Action::None => self
                 .pending_upload
                 .take()
                 .map_or(Action::None, Action::UploadLimit),
+            a => a,
+        };
+        let action = match action {
+            Action::None => self.pending_choose.take().unwrap_or(Action::None),
             a => a,
         };
         if matches!(action, Action::Close | Action::Cancel) {
@@ -1050,7 +1065,7 @@ impl Progress {
         let pieces = d.as_ref().map(|d| d.pieces.as_slice()).unwrap_or(&[]);
         piece_bar(p, o, pieces);
         let Some(d) = &d else {
-            table(ui, p, o, "t-none", &[(25.0, "")], &[], &[], false);
+            table(ui, p, o, "t-none", &[(25.0, "")], &[], &[], false, None);
             text(
                 p,
                 o.x + 25.0,
@@ -1065,7 +1080,7 @@ impl Progress {
                 let rows: Vec<Vec<String>> = d
                     .files
                     .iter()
-                    .map(|(f, on, done)| {
+                    .map(|(_, f, on, done)| {
                         let pct = if !on {
                             // i18n: a torrent file the user chose not to download
                             crate::i18n::t("Skipped").to_owned()
@@ -1077,7 +1092,8 @@ impl Progress {
                         vec![f.path.display().to_string(), model::size(f.size), pct]
                     })
                     .collect();
-                table(
+                let ticks: Vec<bool> = d.files.iter().map(|f| f.2).collect();
+                let clicked = table(
                     ui,
                     p,
                     o,
@@ -1091,7 +1107,22 @@ impl Progress {
                     &[330.0, 425.0],
                     &rows,
                     true,
+                    Some(&ticks),
                 );
+                // A box ticked or unticked (#39): the torrent downloads those files from now
+                // on; the last one ticked can't be unticked (a torrent of nothing).
+                if let Some(row) = clicked {
+                    let mut on: Vec<bool> = ticks.clone();
+                    on[row] = !on[row];
+                    if on.iter().any(|b| *b) {
+                        let chosen = d.files.iter().zip(&on).filter(|(_, b)| **b);
+                        self.pending_choose = Some(Action::Choose {
+                            files: chosen.clone().map(|(f, _)| f.0).collect(),
+                            all: on.iter().all(|b| *b),
+                            size: chosen.map(|(f, _)| f.1.size).sum(),
+                        });
+                    }
+                }
             }
             TTab::Peers => {
                 let rows: Vec<Vec<String>> = d
@@ -1124,6 +1155,7 @@ impl Progress {
                     &[185.0, 335.0, 420.0],
                     &rows,
                     false,
+                    None,
                 );
             }
             TTab::Trackers => {
@@ -1136,7 +1168,7 @@ impl Progress {
                 };
                 // i18n: column title: a server that lists the peers
                 let head = [(25.0, crate::i18n::mark("Tracker"))];
-                table(ui, p, o, "t-trackers", &head, &[], &rows, false);
+                table(ui, p, o, "t-trackers", &head, &[], &rows, false, None);
             }
             TTab::Pieces => {
                 let have = pieces.iter().filter(|b| **b).count();
@@ -1158,6 +1190,7 @@ impl Progress {
                     &[],
                     &[],
                     false,
+                    None,
                 );
                 piece_legend(p, o);
                 piece_grid(p, o, pieces);
@@ -1250,6 +1283,7 @@ impl Progress {
                     &[125.0],
                     &rows,
                     false,
+                    None,
                 );
             }
         }
@@ -1374,7 +1408,8 @@ fn piece_grid(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
 }
 
 /// A table in the connections table's frame: headers at x, column lines at `seps`, rows of
-/// text cut to their column (whole on hover), scrolled by the wheel.
+/// text cut to their column (whole on hover), scrolled by the wheel. `checks`: a check box
+/// before each row's icon, ticked or not (the Files tab); the row whose box was clicked.
 #[allow(clippy::too_many_arguments)]
 fn table(
     ui: &mut Ui,
@@ -1385,7 +1420,9 @@ fn table(
     seps: &[f32],
     rows: &[Vec<String>],
     icons: bool,
-) {
+    checks: Option<&[bool]>,
+) -> Option<usize> {
+    let mut clicked = None;
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
     winui::solid(p, outer, winui::FIELD_EDGE());
     let dark = crate::theme::dark();
@@ -1427,7 +1464,20 @@ fn table(
         let top = o.y + 299.0 + 17.0 * k as f32;
         for (c, cell) in row.iter().enumerate() {
             let mut x = heads.get(c).map_or(o.x + 25.0, |h| o.x + h.0);
-            // A table of files (the Files tab): each name after its type's icon.
+            // A table of files (the Files tab): each name after its type's icon, and its
+            // check box first when files can be chosen (#39). Only rows wholly shown take a
+            // click (the one cut off under the frame doesn't).
+            if icons
+                && c == 0
+                && let Some(&ticked) = checks.and_then(|t| t.get(first + k))
+            {
+                let mut on = ticked;
+                let at = egui::pos2(x - 4.0, top + 2.0);
+                if k < visible && winui::row_check(ui, &clip, at, &mut on, cell, (id, first + k)) {
+                    clicked = Some(first + k);
+                }
+                x += 17.0;
+            }
             if icons && c == 0 {
                 crate::fileicons::paint_at(
                     ui,
@@ -1461,6 +1511,7 @@ fn table(
             ui.ctx().data_mut(|d| d.insert_temp(key, first));
         }
     }
+    clicked
 }
 
 /// The custom-drawn segment bar (spec "Segment bar"): 13-row gradients, red start columns.

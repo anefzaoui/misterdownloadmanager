@@ -63,7 +63,8 @@ pub struct Command {
     /// screenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,
     /// `scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,
     /// `progress`, `existing-files`, `video-page`, `video-helpers`, `video-subs`,
-    /// `torrent-settings`, `options[:general|types|saveto|downloads|connection|proxy|logins|sounds|regional|panels]`.
+    /// `torrent-settings`, `add-trackers`, `menu` (the first download's right-click menu),
+    /// `options[:general|types|saveto|downloads|connection|proxy|logins|sounds|regional|panels]`.
     pub show: Option<String>,
     /// From the browser's download button over a video: open the Download video window for this
     /// page (its address; an embedded player's own).

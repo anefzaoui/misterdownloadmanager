@@ -17,6 +17,8 @@ MDM downloads BitTorrent files from magnet links and `.torrent` files. Torrents 
 
 You can also paste a magnet link into **Add URL**, or drop a magnet link or a `.torrent` file on the drop target (**Tasks → Show drop target**). If a torrent is already in the list, MDM says so instead of adding it twice.
 
+A `.torrent` file's web address works too: paste it into **Add URL** or **Torrent**, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and **Add torrent** shows what it holds. The browser hands `.torrent` downloads over when `TORRENT` is in **Options → File types**, or when you choose **Download with Mister Download Manager** on the link. A command line with `/n` (silent) saves the `.torrent` file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a `.torrent` file.
+
 If some of the torrent's files are already in the folder, MDM asks before using them. **Yes** keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. **No** (the default) goes back, so you can choose another folder and nothing of yours is overwritten.
 
 MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in **Torrent settings**, blocklists and proxies: [Torrents and your security](torrent-security.md).
@@ -25,7 +27,7 @@ MDM refuses a torrent with file names your system can't write safely, says which
 
 Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:
 
-- **Files** — each file, its size and how much of it is done. Files you unticked show **Skipped**.
+- **Files** — each file, its size and how much of it is done. Files you unticked show **Skipped**. Tick or untick a file's box to change what is downloaded, even while the torrent runs. At least one file stays ticked. If you untick everything still missing, the torrent finishes. If a finished torrent that isn't running gets a file back, it waits as stopped until you resume it, so nothing downloads unseen.
 - **Peers** — the computers you are downloading from, with how much you received from and sent to each.
 - **Trackers** — the torrent's trackers. With none, peers come from the DHT and other peers.
 - **Pieces** — a map of the torrent's pieces: there, partly there, or missing.
@@ -38,6 +40,17 @@ The **Speed Limiter** tab of a torrent's window has, besides its download limit,
 ![A torrent's progress window, on its Files tab](images/progress-torrent.png)
 
 ![The Pieces tab: a square for each piece, filled once it's here](images/progress-torrent-pieces.png)
+
+## Torrent commands
+
+Right-click a torrent in the list and open **Torrent**:
+
+- **Recheck files** — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.
+- **Reannounce** — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.
+- **Add trackers...** — adds trackers, one address a line (`http`, `https` or `udp`). They are kept with the torrent, after the ones it has, and the **Trackers** tab shows them. A tracker on your computer or your local network is refused: MDM never contacts those ([why](torrent-security.md)).
+- **Copy magnet link** — copies a magnet link for the torrent, with its trackers.
+
+Each command's outcome goes into the torrent's event log; hover its **Status** cell in the list to read it.
 
 ## Torrent settings
 

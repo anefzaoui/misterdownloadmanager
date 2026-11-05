@@ -116,7 +116,90 @@ pub fn save_torrent(hash: &str, bytes: &[u8]) -> std::io::Result<()> {
     if let Some(dir) = path.parent() {
         std::fs::create_dir_all(dir)?;
     }
-    std::fs::write(path, bytes)
+    // Through a temporary file: Add trackers rewrites it, and a half-written copy would lose
+    // the torrent.
+    let tmp = path.with_extension("torrent.tmp");
+    std::fs::write(&tmp, bytes)?;
+    std::fs::rename(&tmp, &path)
+}
+
+/// A magnet link for a torrent in the list, with its trackers, from the .torrent kept for it.
+pub fn magnet_of(hash: &str) -> Option<String> {
+    let bytes = std::fs::read(torrent_file(hash)?).ok()?;
+    mdm_torrent::magnet_link(&bytes)
+}
+
+/// Whether a web address is a .torrent file's (Add URL, the browser): its path ends in
+/// `.torrent`, or the browser named the file so or gave its type.
+pub fn is_torrent_url(url: &url::Url, name: Option<&str>, mime: Option<&str>) -> bool {
+    let ends = |s: &str| s.to_ascii_lowercase().ends_with(".torrent");
+    matches!(url.scheme(), "http" | "https")
+        && (ends(url.path())
+            || name.is_some_and(ends)
+            || mime.is_some_and(|m| {
+                m.split(';')
+                    .next()
+                    .is_some_and(|m| m.trim().eq_ignore_ascii_case("application/x-bittorrent"))
+            }))
+}
+
+/// A .torrent on the web: its address and the request it goes with (`App::request_parts`: the
+/// browser's cookies and Referer, a site login, Proxy / Socks).
+#[derive(Clone)]
+pub struct Remote {
+    pub url: url::Url,
+    pub parts: crate::app::RequestParts,
+}
+
+/// Fetch a .torrent from the web with MDM's own downloader, as `remote` says; at most
+/// `mdm_torrent::MAX_TORRENT_FILE` (a bigger file isn't a torrent, and is stopped there).
+pub async fn fetch_torrent(remote: Remote) -> Result<Vec<u8>, String> {
+    use mdm_engine::download::{Destination, Download, Request};
+    let dir = state_dir().ok_or(crate::i18n::t("no data folder"))?;
+    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    let path = dir.join(format!(
+        "fetched-{}.torrent",
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_nanos())
+    ));
+    let dl = Download::start(
+        Request {
+            url: remote.url,
+            headers: remote.parts.headers,
+            dest: Destination::File(path.clone()),
+        },
+        remote.parts.opts,
+    );
+    let too_big = loop {
+        let s = dl.snapshot();
+        let max = mdm_torrent::MAX_TORRENT_FILE;
+        if s.size.is_some_and(|z| z > max) || s.downloaded > max {
+            dl.cancel();
+            break true;
+        }
+        if matches!(s.state, State::Done | State::Failed | State::Cancelled) {
+            break false;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    };
+    let res = dl.wait().await;
+    let bytes = if too_big {
+        Err(crate::errors::torrent(
+            &mdm_torrent::TorrentError::NotATorrent,
+        ))
+    } else {
+        match res {
+            Ok(_) => mdm_torrent::read_file(&path)
+                .map_err(|_| crate::errors::torrent(&mdm_torrent::TorrentError::NotATorrent)),
+            Err(e) => Err(crate::errors::describe(&e)),
+        }
+    };
+    // The file, its resume state, and the part file a stopped one leaves.
+    let _ = std::fs::remove_file(&path);
+    let _ = std::fs::remove_file(mdm_engine::state::state_path(&path));
+    let _ = std::fs::remove_file(mdm_engine::naming::part_path(&path));
+    bytes
 }
 
 /// The blocklist as MDM converted it (mdm_torrent::blocklist), in the torrent data folder.
@@ -231,6 +314,44 @@ pub struct Host {
     cap: Arc<Mutex<Option<u64>>>,
     /// Torrent settings' upload limit for all torrents together, bytes/s (`set_upload`).
     upload: Arc<Mutex<Option<u64>>>,
+    /// The torrents an action is busy with (`act`): taken out of the session and added again,
+    /// or paused a moment. Their `Run` shows them checking meanwhile.
+    busy: Arc<Mutex<HashSet<String>>>,
+    /// What each finished action says, by info hash, for its event log (`take_outcomes`).
+    outcomes: Arc<Mutex<Vec<Outcome>>>,
+}
+
+/// A torrent action (#39): the list's right-click menu (Torrent), or the Files tab.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Act {
+    /// Read and check every piece again.
+    Recheck,
+    /// Ask the trackers for peers again now.
+    Reannounce,
+    /// Trackers to add, by address (kept in its .torrent, `torrent_file`).
+    AddTrackers(Vec<String>),
+    /// The files to download from now on (indexes into the torrent's list); `pause`: it isn't
+    /// running in the list (stopped, or finished and shared), so it is held paused, not left to
+    /// fetch the files out of sight.
+    Choose { files: Vec<usize>, pause: bool },
+}
+
+/// A finished action: on which torrent, what was asked, and what it did or why it couldn't.
+pub struct Outcome {
+    pub hash: String,
+    pub act: Act,
+    pub res: Result<Done, String>,
+}
+
+/// What a finished action did.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Done {
+    /// The check started (the app notes what it found once it ends).
+    Rechecking,
+    Reannounced,
+    /// How many trackers were new.
+    TrackersAdded(usize),
+    Chosen,
 }
 
 impl Host {
@@ -241,7 +362,103 @@ impl Host {
             running: Arc::new(Mutex::new(None)),
             cap: Arc::new(Mutex::new(None)),
             upload: Arc::new(Mutex::new(None)),
+            busy: Arc::new(Mutex::new(HashSet::new())),
+            outcomes: Arc::new(Mutex::new(Vec::new())),
         }
+    }
+
+    /// Do `act` on `spec`'s torrent, in the background; its outcome comes back through
+    /// `take_outcomes`. `known`: the list's torrents (for a session it starts).
+    pub fn act(
+        &self,
+        rt: &tokio::runtime::Handle,
+        known: HashSet<String>,
+        spec: &TorrentSpec,
+        act: Act,
+    ) {
+        let (host, spec) = (self.clone(), spec.clone());
+        self.busy.lock().unwrap().insert(spec.hash.clone());
+        rt.spawn(async move {
+            let res = host.act_now(known, &spec, act.clone()).await;
+            host.busy.lock().unwrap().remove(&spec.hash);
+            host.outcomes.lock().unwrap().push(Outcome {
+                hash: spec.hash,
+                act,
+                res,
+            });
+        });
+    }
+
+    async fn act_now(
+        &self,
+        known: HashSet<String>,
+        spec: &TorrentSpec,
+        act: Act,
+    ) -> Result<Done, String> {
+        let err = |e: mdm_torrent::TorrentError| crate::errors::torrent(&e);
+        let hash = spec.hash.as_str();
+        match act {
+            Act::AddTrackers(more) => {
+                let file = torrent_file(hash).ok_or(crate::i18n::t("no data folder"))?;
+                let bytes = std::fs::read(&file)
+                    .map_err(|_| crate::i18n::t("the .torrent file kept for it is gone"))?;
+                let with = mdm_torrent::trackers::add(&bytes, &more)
+                    .ok_or_else(|| err(mdm_torrent::TorrentError::NotATorrent))?;
+                let added = mdm_torrent::trackers::listed(&with).len()
+                    - mdm_torrent::trackers::listed(&bytes).len();
+                if with != bytes {
+                    save_torrent(hash, &with).map_err(|e| e.to_string())?;
+                    // The running session's copy too; a session isn't started for it (the
+                    // next one adds it from the file).
+                    if let Some(t) = self.get().filter(|t| t.has(hash)) {
+                        t.readd(hash, &with, false).await.map_err(err)?;
+                    }
+                }
+                Ok(Done::TrackersAdded(added))
+            }
+            Act::Recheck => {
+                let t = self.session(known).await?;
+                let file = torrent_file(hash).ok_or(crate::i18n::t("no data folder"))?;
+                let bytes = std::fs::read(&file)
+                    .map_err(|_| crate::i18n::t("the .torrent file kept for it is gone"))?;
+                if t.has(hash) {
+                    t.readd(hash, &bytes, true).await.map_err(err)?;
+                } else {
+                    // Not in the session: added paused, which checks what is there.
+                    t.add(&bytes, &spec.folder, spec.files.clone(), Vec::new(), true)
+                        .await
+                        .map_err(err)?;
+                }
+                Ok(Done::Rechecking)
+            }
+            Act::Reannounce => {
+                if let Some(t) = self.get() {
+                    t.reannounce(hash).await.map_err(err)?;
+                }
+                Ok(Done::Reannounced)
+            }
+            Act::Choose { files, pause } => {
+                if let Some(t) = self.get().filter(|t| t.has(hash)) {
+                    t.choose(hash, &files.into_iter().collect())
+                        .await
+                        .map_err(err)?;
+                    if pause {
+                        t.pause(hash).await.map_err(err)?;
+                    }
+                }
+                Ok(Done::Chosen)
+            }
+        }
+    }
+
+    /// Whether an action is busy with this torrent.
+    pub fn busy(&self, hash: &str) -> bool {
+        self.busy.lock().unwrap().contains(hash)
+    }
+
+    /// The finished actions' outcomes since last asked, by info hash.
+    pub fn take_outcomes(&self) -> Vec<Outcome> {
+        std::mem::take(&mut *self.outcomes.lock().unwrap())
     }
 
     /// Torrent settings' upload limit for all torrents (None: unlimited), for the session.
@@ -409,6 +626,10 @@ pub struct Run {
     /// (`TorrentSpec::upload_limit`). Set on the torrent once it is in the session, and again
     /// on each change.
     limit: Arc<Mutex<(Option<u64>, Option<u64>)>>,
+    /// The torrents an action is busy with (`Host::act`): while this one is, it shows as
+    /// checking, with the bytes last seen (`last`: done, total), not as gone or stopped.
+    busy: Arc<Mutex<HashSet<String>>>,
+    last: Mutex<(u64, Option<u64>)>,
 }
 
 /// The origin a torrent's files are marked with: not one website, and never the magnet link
@@ -434,8 +655,9 @@ fn mark_files(folder: &Path, files: &[mdm_torrent::FileEntry]) {
 
 /// What the progress window's torrent tabs show.
 pub struct Details {
-    /// Each file (padding left out): its entry, chosen?, bytes there.
-    pub files: Vec<(mdm_torrent::FileEntry, bool, u64)>,
+    /// Each file (padding left out): its index in the torrent's list, its entry, chosen?,
+    /// bytes there.
+    pub files: Vec<(usize, mdm_torrent::FileEntry, bool, u64)>,
     pub piece_length: u32,
     pub peers: Vec<mdm_torrent::Peer>,
     pub trackers: Vec<String>,
@@ -457,6 +679,7 @@ impl Run {
     ) -> Run {
         let state = Arc::new(Mutex::new(RunState::Starting));
         let own = Arc::new(Mutex::new((limit, spec.upload_limit)));
+        let busy = host.busy.clone();
         let (out, host, spec2, own2) = (state.clone(), host.clone(), spec.clone(), own.clone());
         rt.spawn(async move {
             let res = async {
@@ -506,6 +729,8 @@ impl Run {
             folder: spec.folder.clone(),
             marked: Arc::new(std::sync::atomic::AtomicU8::new(0)),
             limit: own,
+            busy,
+            last: Mutex::new((0, None)),
         }
     }
 
@@ -558,6 +783,11 @@ impl Run {
             }
             return s;
         }
+        if self.busy.lock().unwrap().contains(&self.hash) {
+            s.state = State::Verifying;
+            (s.downloaded, s.size) = *self.last.lock().unwrap();
+            return s;
+        }
         let t = match &*self.state.lock().unwrap() {
             RunState::Starting => return s,
             RunState::Failed(e) => {
@@ -575,6 +805,7 @@ impl Run {
         };
         s.downloaded = st.done;
         s.size = Some(st.total);
+        *self.last.lock().unwrap() = (st.done, s.size);
         s.state = match st.phase {
             Phase::Checking => State::Verifying,
             Phase::Downloading => State::Downloading,
@@ -664,7 +895,7 @@ pub fn details_of(t: &Torrents, hash: &str) -> Option<Details> {
             .filter(|(_, f)| !f.padding)
             .map(|(i, f)| {
                 let on = chosen.as_ref().is_none_or(|c| c.contains(&i));
-                (f, on, done.get(i).copied().unwrap_or(0))
+                (i, f, on, done.get(i).copied().unwrap_or(0))
             })
             .collect(),
         piece_length,

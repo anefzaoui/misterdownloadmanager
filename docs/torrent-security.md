@@ -24,7 +24,9 @@ The torrent engine is written in Rust, which rules out many memory bugs, and MDM
 
 ## Trackers
 
-A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (`127.0.0.1`, `192.168.…`, `localhost` and the like), so a torrent can't make MDM send requests into the network it sits in.
+A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (`127.0.0.1`, `192.168.…`, `localhost` and the like), so a torrent can't make MDM send requests into the network it sits in. **Add trackers...** follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.
+
+A `.torrent` file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.
 
 ## Blocking addresses
 

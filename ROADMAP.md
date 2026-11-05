@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Torrents: Recheck, Reannounce, Add trackers and Copy magnet link; files chosen while a
+  torrent runs; a `.torrent` file's web address opens Add torrent ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
   verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 - ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
@@ -91,7 +93,7 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents, the rest: more torrent actions, and RSS feeds with auto-download rules
+- 🔄 Torrents, the rest: RSS feeds with auto-download rules
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 
 ### Bugs being looked into

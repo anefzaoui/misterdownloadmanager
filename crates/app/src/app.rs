@@ -130,6 +130,12 @@ enum Cmd {
     OpenTorrentFile,
     /// Add torrent → Torrent settings… (sharing after finishing, Windows associations).
     TorrentSettings,
+    /// Right-click → Torrent (#39): read every piece again; ask the trackers again; add
+    /// trackers (a window); copy its magnet link.
+    TorrentRecheck,
+    TorrentReannounce,
+    TorrentAddTrackers,
+    TorrentCopyMagnet,
     /// Right-click → Refresh download address: open the source page, edit the address.
     RefreshAddress,
     /// Right-click → Verify checksum… (beyond IDM).
@@ -337,6 +343,12 @@ pub struct App {
     gallery_dlg: Option<crate::gallerydlg::GalleryDialog>,
     torrent_dlg: Option<crate::torrentdlg::TorrentDialog>,
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
+    /// Right-click → Torrent → Add trackers… (#39).
+    add_trackers: Option<crate::torrentdlg::AddTrackers>,
+    /// Torrents whose list numbers wait for the session after an action (Recheck, files
+    /// chosen; `torrent_resync`), by info hash: true when what the check found goes in the
+    /// event log.
+    torrent_resync: HashMap<String, bool>,
     /// Since when no torrent has needed the torrent engine (`torrent_tick`).
     torrent_idle_since: Option<Instant>,
     /// What each torrent sent, run after run (`torrent_accounts`), when last counted (whole
@@ -763,6 +775,8 @@ impl App {
             gallery_dlg: None,
             torrent_dlg: None,
             torrent_settings: None,
+            add_trackers: None,
+            torrent_resync: HashMap::new(),
             torrent_idle_since: None,
             accountant: Default::default(),
             account_at: Instant::now(),
@@ -1408,6 +1422,40 @@ impl App {
             if let Some(why) = stopped {
                 i.note(sharing_stopped_note(why));
             }
+            // After a Recheck or a change of files (`torrent_outcomes`), once the session has
+            // checked it: the list's numbers are the session's. One not running in the list
+            // takes its standing from them; one no longer complete is held paused (shared, it
+            // would fetch what is missing out of sight).
+            if st.phase != mdm_torrent::Phase::Checking
+                && !self.torrent_host.busy(&hash)
+                && let Some(report) = self.torrent_resync.remove(&hash)
+            {
+                if report {
+                    i.note(crate::i18n::fmt(
+                        // i18n: event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+                        crate::i18n::t("Checked: {have} of {total} there"),
+                        &[
+                            ("have", &model::size(st.done)),
+                            ("total", &model::size(st.total)),
+                        ],
+                    ));
+                }
+                if i.live.is_none() {
+                    i.downloaded = st.done;
+                    i.size = Some(st.total);
+                    let whole = st.total > 0 && st.done >= st.total;
+                    if whole {
+                        i.status = Status::Complete;
+                    } else if i.status == Status::Complete {
+                        i.status = Status::Stopped;
+                        let t2 = t.clone();
+                        self.rt.spawn(async move {
+                            let _ = t2.pause(&hash).await;
+                        });
+                    }
+                }
+                self.dirty = true;
+            }
         }
         self.accountant.keep(&hashes);
         if changed && self.account_saved.elapsed() >= Duration::from_secs(10) {
@@ -1421,6 +1469,7 @@ impl App {
         self.torrent_host.set_config(cfg);
         self.torrent_host
             .set_upload(self.settings.torrent_upload_limit());
+        self.torrent_outcomes();
         self.torrent_accounts();
         if !self.settings.torrent_blocklist.trim().is_empty() {
             crate::torrents::refresh_blocklist(
@@ -1470,6 +1519,23 @@ impl App {
             "tray" => self.hide_to_tray(ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
+            // The first download's: Add trackers (a torrent), its right-click menu.
+            "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
+            // menu:torrent opens it with its Torrent submenu open.
+            "menu" if first.is_some() => {
+                if let Some(id) = first {
+                    self.selection.set(id);
+                }
+                self.open_popup(Popup::Item(first), Pos2::new(240.0, 150.0));
+                let sub = self
+                    .item_entries(first)
+                    .iter()
+                    .position(|e| matches!(e, MenuEntry::Sub("Torrent", ..)));
+                if let (Some(i), "torrent") = (sub, tab) {
+                    let id = format!("popup-{}", self.popup_serial);
+                    chrome::open_sub_at(ctx, &id, i);
+                }
+            }
             // category:Music / category-delete:Music — the Categories right-click menu's
             // Properties and Delete for a category by name (#93; the docs' shots and checks);
             // category-remove:Music opens Delete with "Remove its downloads" chosen.
@@ -1653,6 +1719,26 @@ impl App {
             }
             return;
         };
+        // A .torrent on the web (#39; the browser's download of one): Add torrent fetches it with
+        // the browser's request (its cookies) and shows what it holds. Silent (`/n`, a script's
+        // command line) asks nothing: the .torrent itself is downloaded, as any file.
+        let final_url = cmd
+            .final_url
+            .as_deref()
+            .and_then(|u| url::Url::parse(u).ok());
+        let torrent = |u: &url::Url| {
+            crate::torrents::is_torrent_url(u, cmd.name.as_deref(), cmd.mime.as_deref())
+        };
+        if !cmd.silent && (torrent(&url) || final_url.as_ref().is_some_and(torrent)) {
+            let parts = self.request_parts(&url, None, &cmd);
+            self.show_window(ctx);
+            self.open_torrent_dialog_with(
+                Some(url.to_string()),
+                Some(crate::torrents::Remote { url, parts }),
+                ctx,
+            );
+            return;
+        }
         if !self.duplicate_gate(&url, || Pending::Command(Box::new(cmd.clone()))) {
             return;
         }
@@ -2643,11 +2729,22 @@ impl App {
     }
 
     fn open_torrent_dialog(&mut self, source: Option<String>, ctx: &egui::Context) {
+        self.open_torrent_dialog_with(source, None, ctx);
+    }
+
+    /// Add torrent for a .torrent on the web (#39): fetched with `remote`'s request.
+    fn open_torrent_dialog_with(
+        &mut self,
+        source: Option<String>,
+        remote: Option<crate::torrents::Remote>,
+        ctx: &egui::Context,
+    ) {
         if self.torrent_dlg.is_some() {
             return;
         }
         self.torrent_dlg = Some(crate::torrentdlg::TorrentDialog::new(
             source,
+            remote,
             self.torrent_host.clone(),
             self.torrent_hashes(),
             self.downloads.clone(),
@@ -2741,6 +2838,119 @@ impl App {
         if show && !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
+        }
+    }
+
+    /// A torrent action (#39) on download `id`, in the background; what it did goes in the
+    /// download's event log (`torrent_outcomes`). One at a time per torrent.
+    fn torrent_act(&mut self, id: u64, act: crate::torrents::Act) {
+        let known = self.torrent_hashes();
+        let Some(spec) = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .and_then(|i| i.torrent.clone())
+        else {
+            return;
+        };
+        if self.torrent_host.busy(&spec.hash) {
+            return;
+        }
+        self.torrent_host.act(&self.rt, known, &spec, act);
+    }
+
+    /// Files ticked or unticked in a torrent's Files tab (#39): the torrent downloads `files`
+    /// from now on (`all`: every one), `size` together. Kept with it (`TorrentSpec::files`); the
+    /// session changes now. One that isn't running in the list and gains files is held paused
+    /// (Resume fetches them): nothing downloads out of sight.
+    fn choose_files(&mut self, id: u64, files: Vec<usize>, all: bool, size: u64) {
+        let Some(item) = self.item(id) else { return };
+        let live = item.live.is_some();
+        let Some(spec) = item.torrent.as_mut() else {
+            return;
+        };
+        let before: Option<Vec<usize>> = spec.files.clone();
+        let gains = match &before {
+            None => false,
+            Some(had) => files.iter().any(|f| !had.contains(f)),
+        };
+        spec.files = if all { None } else { Some(files.clone()) };
+        if spec.files == before {
+            return;
+        }
+        item.size = Some(size);
+        let n = files.len() as u64;
+        // i18n: event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+        let note = crate::i18n::tn(
+            n,
+            "{n} file chosen to download",
+            "{n} files chosen to download",
+        );
+        item.note(note);
+        self.dirty = true;
+        self.torrent_act(
+            id,
+            crate::torrents::Act::Choose {
+                files,
+                pause: !live && gains,
+            },
+        );
+    }
+
+    /// The torrent actions done since the last tick, in their downloads' event logs; after a
+    /// Recheck or a change of files, the list's numbers follow the session (`torrent_resync`).
+    fn torrent_outcomes(&mut self) {
+        use crate::torrents::{Act, Done};
+        for o in self.torrent_host.take_outcomes() {
+            let Some(item) = self
+                .items
+                .iter_mut()
+                .find(|i| i.torrent.as_ref().is_some_and(|t| t.hash == o.hash))
+            else {
+                continue;
+            };
+            let note = match (&o.act, o.res) {
+                (_, Ok(Done::Rechecking)) => {
+                    self.torrent_resync.insert(o.hash.clone(), true);
+                    // i18n: event log entry: a torrent's files are being read and checked again (Recheck)
+                    crate::i18n::t("Checking every piece again").to_owned()
+                }
+                (_, Ok(Done::Reannounced)) => {
+                    // i18n: event log entry: the torrent's trackers were asked for peers again (Reannounce)
+                    crate::i18n::t("Asked the trackers for peers again").to_owned()
+                }
+                (_, Ok(Done::TrackersAdded(0))) => {
+                    // i18n: event log entry: Add trackers changed nothing, the torrent had them all
+                    crate::i18n::t("No tracker added: it has them already").to_owned()
+                }
+                (_, Ok(Done::TrackersAdded(n))) => {
+                    // i18n: event log entry: trackers were added to the torrent
+                    crate::i18n::tn(n as u64, "{n} tracker added", "{n} trackers added")
+                }
+                (_, Ok(Done::Chosen)) => {
+                    self.torrent_resync.insert(o.hash.clone(), false);
+                    continue;
+                }
+                (act, Err(e)) => crate::i18n::fmt(
+                    match act {
+                        // i18n: event log entry: Recheck failed, with the reason
+                        Act::Recheck => crate::i18n::t("Recheck failed: {error}"),
+                        // i18n: event log entry: Reannounce failed, with the reason
+                        Act::Reannounce => crate::i18n::t("Reannounce failed: {error}"),
+                        // i18n: event log entry: Add trackers failed, with the reason
+                        Act::AddTrackers(_) => {
+                            crate::i18n::t("The trackers could not be added: {error}")
+                        }
+                        // i18n: event log entry: the files chosen in the Files tab could not be applied, with the reason
+                        Act::Choose { .. } => {
+                            crate::i18n::t("The files could not be chosen: {error}")
+                        }
+                    },
+                    &[("error", &e)],
+                ),
+            };
+            item.note(note);
+            self.dirty = true;
         }
     }
 
@@ -3359,6 +3569,36 @@ impl App {
                         Some(crate::torrentdlg::TorrentSettings::new(&self.settings));
                 }
             }
+            Cmd::TorrentRecheck => {
+                if let Some(id) = target {
+                    self.torrent_act(id, crate::torrents::Act::Recheck);
+                }
+            }
+            Cmd::TorrentReannounce => {
+                if let Some(id) = target {
+                    self.torrent_act(id, crate::torrents::Act::Reannounce);
+                }
+            }
+            Cmd::TorrentAddTrackers => {
+                let torrent = |i: &&Item| i.torrent.is_some();
+                if let Some(i) = target
+                    .and_then(|id| self.items.iter().find(|i| i.id == id))
+                    .filter(torrent)
+                {
+                    self.add_trackers =
+                        Some(crate::torrentdlg::AddTrackers::new(i.id, &i.file_name));
+                }
+            }
+            Cmd::TorrentCopyMagnet => {
+                // With its trackers, from the .torrent kept for it; else the list's address.
+                let found = target.and_then(|id| self.items.iter().find(|i| i.id == id));
+                if let Some((spec, url)) = found.and_then(|i| i.torrent.as_ref().zip(Some(&i.url)))
+                {
+                    let link =
+                        crate::torrents::magnet_of(&spec.hash).unwrap_or_else(|| url.to_string());
+                    ctx.copy_text(link);
+                }
+            }
             Cmd::OpenTorrentFile => {
                 let kind = crate::i18n::t("Torrent files").to_owned();
                 let title = crate::i18n::t("Open torrent file").to_owned();
@@ -3942,7 +4182,8 @@ impl App {
         let open = self.settings.double_click_open;
         let movable = it.is_some_and(|i| !live && (done || i.downloaded == 0));
         let redo = it.is_some_and(|i| self.can_redownload(i.id));
-        vec![
+        let torrent = it.and_then(|i| i.torrent.as_ref().map(|t| (i, t)));
+        let mut entries = vec![
             // i18n: verb: opens the downloaded file
             I("Open", Cmd::Open, done, false),
             I("Open with...", Cmd::OpenWith, done, false),
@@ -3993,7 +4234,49 @@ impl App {
             Sep,
             // i18n: noun: opens the download's Properties window
             I("Properties", Cmd::Properties, sel, false),
-        ]
+        ];
+        // A torrent's own actions (#39), after Verify checksum.
+        if let Some((i, spec)) = torrent {
+            let busy = self.torrent_host.busy(&spec.hash);
+            // Running or shared now (the session has it going): Reannounce has someone to ask.
+            let going = self
+                .torrent_host
+                .get()
+                .and_then(|t| t.stats(&spec.hash).ok())
+                .is_some_and(|s| {
+                    matches!(
+                        s.phase,
+                        mdm_torrent::Phase::Downloading | mdm_torrent::Phase::Finished
+                    )
+                });
+            let at = entries
+                .iter()
+                .position(|e| matches!(e, I(_, Cmd::VerifyChecksum, _, _)))
+                .map_or(entries.len(), |p| p + 1);
+            entries.insert(
+                at,
+                Sub(
+                    // i18n: right-click menu: the submenu of a torrent's own commands
+                    "Torrent",
+                    true,
+                    vec![
+                        // i18n: right-click → Torrent: read every piece of the torrent's files again and check it
+                        I(
+                            "Recheck files",
+                            Cmd::TorrentRecheck,
+                            !busy && i.status != Status::Queued,
+                            false,
+                        ),
+                        // i18n: right-click → Torrent: ask the torrent's trackers for peers again now
+                        I("Reannounce", Cmd::TorrentReannounce, !busy && going, false),
+                        I("Add trackers...", Cmd::TorrentAddTrackers, !busy, false),
+                        Sep,
+                        I("Copy magnet link", Cmd::TorrentCopyMagnet, true, false),
+                    ],
+                ),
+            );
+        }
+        entries
     }
 
     /// Categories right-click: categories (Browse, Properties, Add category, Delete; greyed
@@ -5558,6 +5841,17 @@ impl App {
                     self.add_url = None;
                     self.open_torrent_dialog(Some(new.url.to_string()), ctx);
                 }
+                // A .torrent's address (#39): Add torrent fetches it and shows what it holds.
+                Outcome::Done(new) if crate::torrents::is_torrent_url(&new.url, None, None) => {
+                    self.add_url = None;
+                    let parts =
+                        self.request_parts(&new.url, new.login.as_ref(), &Default::default());
+                    let remote = crate::torrents::Remote {
+                        url: new.url.clone(),
+                        parts,
+                    };
+                    self.open_torrent_dialog_with(Some(new.url.to_string()), Some(remote), ctx);
+                }
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
                     self.add_url = None;
@@ -5764,6 +6058,17 @@ impl App {
                 }
             }
         }
+        if let Some(d) = &mut self.add_trackers {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.add_trackers = None,
+                Outcome::Done(list) => {
+                    let id = d.id;
+                    self.add_trackers = None;
+                    self.torrent_act(id, crate::torrents::Act::AddTrackers(list));
+                }
+            }
+        }
         if let Some(t) = &mut self.torrent_dlg {
             match t.show(ctx, &self.rt) {
                 Outcome::Open => {}
@@ -5956,6 +6261,9 @@ impl App {
                         }
                         self.dirty = true;
                     }
+                }
+                progress::Action::Choose { files, all, size } => {
+                    self.choose_files(id, files, all, size)
                 }
             }
         }

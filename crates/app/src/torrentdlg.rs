@@ -74,6 +74,9 @@ pub struct TorrentDialog {
     asking: Option<(crate::dialogs::CreateFolder, ())>,
     /// Asking whether to use files of the torrent's names already in the folder (#40).
     asking_files: Option<(crate::dialogs::ExistingFiles, ())>,
+    /// A .torrent on the web (#39, Add URL or the browser): the request it is fetched with
+    /// (the browser's cookies). One typed in the box goes as MDM's own downloads do.
+    remote: Option<crate::torrents::Remote>,
 }
 
 /// The category of a torrent: its largest file's.
@@ -100,10 +103,13 @@ pub(crate) fn spinner(ui: &Ui, center: Pos2, radius: f32) {
 }
 
 impl TorrentDialog {
-    /// `source`: a magnet link or a .torrent path to look up at once, or None (the clipboard's
-    /// magnet, if any, is offered and looked up).
+    /// `source`: a magnet link, a .torrent path or a .torrent's web address (`remote`: how to
+    /// ask for it) to look up at once, or None (the clipboard's magnet, if any, is offered and
+    /// looked up).
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         source: Option<String>,
+        remote: Option<crate::torrents::Remote>,
         host: Host,
         known: HashSet<String>,
         downloads: PathBuf,
@@ -142,6 +148,7 @@ impl TorrentDialog {
             start_now: None,
             asking: None,
             asking_files: None,
+            remote,
         };
         if !d.source.is_empty() {
             d.look_up(rt, ctx);
@@ -156,6 +163,20 @@ impl TorrentDialog {
         // A .torrent file is read with the rest of the look-up, off the window's thread (a
         // path on a slow share froze every window).
         let path = text.trim_matches('"').to_owned();
+        // A web address: fetched (#39), with the request it came with when it is that one.
+        let web = url::Url::parse(&text)
+            .ok()
+            .filter(|u| matches!(u.scheme(), "http" | "https"))
+            .map(|url| match self.remote.clone().filter(|r| r.url == url) {
+                Some(r) => r,
+                None => crate::torrents::Remote {
+                    url,
+                    parts: crate::app::RequestParts {
+                        headers: Default::default(),
+                        opts: crate::settings::own_net(),
+                    },
+                },
+            });
         let not_found = crate::i18n::t("Enter a magnet link or choose a .torrent file").to_owned();
         let slot: Slot = Arc::new(Mutex::new(None));
         let (out, host, known, ctx) = (
@@ -165,10 +186,18 @@ impl TorrentDialog {
             ctx.clone(),
         );
         let task = rt.spawn(async move {
-            let src = match magnet {
-                Some(m) => m,
+            let src = match (magnet, web) {
+                (Some(m), _) => m,
+                (None, Some(web)) => match crate::torrents::fetch_torrent(web).await {
+                    Ok(bytes) => Source::File(bytes),
+                    Err(e) => {
+                        *out.lock().unwrap() = Some(Err(e));
+                        ctx.request_repaint();
+                        return;
+                    }
+                },
                 // At most mdm_torrent::MAX_TORRENT_FILE (#40): a bigger file isn't a torrent.
-                None => match tokio::task::spawn_blocking(move || {
+                (None, None) => match tokio::task::spawn_blocking(move || {
                     mdm_torrent::read_file(std::path::Path::new(&path))
                 })
                 .await
@@ -1166,6 +1195,158 @@ impl TorrentSettings {
                             minutes: self.stop_min.parse().unwrap_or(0).max(1),
                         },
                     })
+                } else {
+                    Outcome::Open
+                }
+            },
+        )
+    }
+}
+
+/// Right-click → Torrent → Add trackers… (#39): tracker addresses, one a line, for download `id`.
+/// OK gives them once each is one MDM may contact (`mdm_torrent::trackers::allowed`).
+pub struct AddTrackers {
+    pub id: u64,
+    name: String,
+    text: String,
+    error: Option<String>,
+    /// The box has had the focus (it takes it once, when the window opens).
+    focused: bool,
+}
+
+impl AddTrackers {
+    pub fn new(id: u64, name: &str) -> Self {
+        AddTrackers {
+            id,
+            name: name.to_owned(),
+            text: String::new(),
+            error: None,
+            focused: false,
+        }
+    }
+
+    /// The addresses typed, each once, or why one can't be added.
+    fn addresses(&self) -> Result<Vec<String>, String> {
+        let mut out: Vec<String> = Vec::new();
+        for line in self.text.lines().map(str::trim).filter(|l| !l.is_empty()) {
+            let tracker = url::Url::parse(line)
+                .ok()
+                .filter(|u| matches!(u.scheme(), "http" | "https" | "udp"));
+            if tracker.is_none() {
+                return Err(crate::i18n::fmt(
+                    // i18n: Add trackers: a line that isn't a tracker's address (http, https or udp)
+                    crate::i18n::t("Not a tracker address: {line}"),
+                    &[("line", &crate::i18n::ltr(line))],
+                ));
+            }
+            // The rule every torrent's trackers follow (#40), told here rather than dropped
+            // out of sight.
+            if !mdm_torrent::trackers::allowed(line, false) {
+                return Err(crate::i18n::fmt(
+                    // i18n: Add trackers: MDM never contacts a tracker on this computer or the local network
+                    crate::i18n::t(
+                        "A tracker on this computer or the local network is never contacted: {line}",
+                    ),
+                    &[("line", &crate::i18n::ltr(line))],
+                ));
+            }
+            if !out.iter().any(|o| o == line) {
+                out.push(line.to_owned());
+            }
+        }
+        if out.is_empty() {
+            // i18n: Add trackers: OK with an empty box
+            return Err(crate::i18n::t("Enter a tracker's address, one a line").to_owned());
+        }
+        Ok(out)
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Vec<String>> {
+        window(
+            ctx,
+            "add-trackers",
+            "Add trackers",
+            [460.0, 250.0],
+            false,
+            winui::BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                winui::fit(
+                    ui,
+                    &p,
+                    o.x + 14.0,
+                    o.y + 24.0,
+                    &crate::i18n::fmt(
+                        // i18n: Add trackers: above the box; {name} is the torrent's name
+                        crate::i18n::t("Trackers to add to {name}, one address a line:"),
+                        &[("name", &crate::i18n::isolate(&self.name))],
+                    ),
+                    winui::TEXT(),
+                    o.x + 446.0,
+                    ("add-trackers", 1),
+                );
+                let before = self.text.clone();
+                let field = winui::multiline_light(
+                    ui,
+                    r(o, 14.0, 32.0, 432.0, 150.0),
+                    &mut self.text,
+                    "add-trackers",
+                    true,
+                );
+                if !std::mem::replace(&mut self.focused, true) {
+                    field.request_focus();
+                }
+                if self.text != before {
+                    self.error = None;
+                }
+                let (line, color) = match &self.error {
+                    Some(e) => (e.clone(), winui::ERROR()),
+                    None => (
+                        // i18n: Add trackers: under the box
+                        crate::i18n::t("Kept with the torrent, after the trackers it has.")
+                            .to_owned(),
+                        winui::MUTED(),
+                    ),
+                };
+                winui::fit(
+                    ui,
+                    &p,
+                    o.x + 14.0,
+                    o.y + 202.0,
+                    &line,
+                    color,
+                    o.x + 446.0,
+                    ("add-trackers", 2),
+                );
+                let ok = winui::button(
+                    ui,
+                    r(o, 288.0, 218.0, 77.0, 21.0),
+                    "OK",
+                    ButtonKind::Default,
+                    false,
+                    None,
+                )
+                .clicked();
+                let cancel = winui::button(
+                    ui,
+                    r(o, 371.0, 218.0, 77.0, 21.0),
+                    "Cancel",
+                    ButtonKind::Normal,
+                    false,
+                    None,
+                )
+                .clicked();
+                // Enter is a new line in the box: only OK adds them.
+                if cancel || winui::escape_pressed(ui) {
+                    Outcome::Closed
+                } else if ok {
+                    match self.addresses() {
+                        Ok(list) => Outcome::Done(list),
+                        Err(e) => {
+                            self.error = Some(e);
+                            Outcome::Open
+                        }
+                    }
                 } else {
                     Outcome::Open
                 }

@@ -122,6 +122,84 @@ pub fn filter_torrent(bytes: &[u8], proxied: bool) -> Option<Vec<u8>> {
     Some(out)
 }
 
+/// A .torrent's trackers, each once, in its order: `announce-list`'s tiers, or `announce` when
+/// it has no list (BEP 12: a list replaces it).
+pub fn listed(bytes: &[u8]) -> Vec<String> {
+    let Some(entries) = top_level(bytes) else {
+        return Vec::new();
+    };
+    let value = |k: &[u8]| entries.iter().find(|(key, _)| *key == k).map(|e| e.1);
+    let urls: Vec<&[u8]> = match value(b"announce-list").and_then(list_of_lists) {
+        Some(tiers) if !tiers.is_empty() => tiers.into_iter().flatten().collect(),
+        _ => value(b"announce").and_then(string_at).into_iter().collect(),
+    };
+    let mut out: Vec<String> = Vec::new();
+    for u in urls {
+        let u = String::from_utf8_lossy(u).trim().to_owned();
+        if !u.is_empty() && !out.contains(&u) {
+            out.push(u);
+        }
+    }
+    out
+}
+
+/// A .torrent with `more` trackers (each a tier of its own, after the ones it has; those it
+/// has already are skipped); everything else byte for byte, so its info hash is the same. One
+/// with only `announce` gets a list holding it first; one with none gets `announce` too. None
+/// when it isn't a bencoded dictionary.
+pub fn add(bytes: &[u8], more: &[String]) -> Option<Vec<u8>> {
+    let entries = top_level(bytes)?;
+    let have = listed(bytes);
+    let mut fresh: Vec<&str> = Vec::new();
+    for u in more.iter().map(|u| u.trim()) {
+        if !u.is_empty() && !have.iter().any(|h| h == u) && !fresh.contains(&u) {
+            fresh.push(u);
+        }
+    }
+    if fresh.is_empty() {
+        return Some(bytes.to_vec());
+    }
+    let mut tiers: Vec<Vec<&[u8]>> = match entries
+        .iter()
+        .find(|(k, _)| *k == b"announce-list")
+        .map(|e| list_of_lists(e.1))
+    {
+        Some(None) => return None,
+        Some(Some(list)) if !list.is_empty() => list,
+        _ => have.iter().map(|u| vec![u.as_bytes()]).collect(),
+    };
+    tiers.extend(fresh.iter().map(|u| vec![u.as_bytes()]));
+    let mut list = b"l".to_vec();
+    for tier in &tiers {
+        list.push(b'l');
+        for u in tier {
+            push_string(&mut list, u);
+        }
+        list.push(b'e');
+    }
+    list.push(b'e');
+    let mut out: Vec<(&[u8], Vec<u8>)> = entries
+        .into_iter()
+        .filter(|(k, _)| *k != b"announce-list")
+        .map(|(k, v)| (k, v.to_vec()))
+        .collect();
+    out.push((b"announce-list", list));
+    if !out.iter().any(|(k, _)| *k == b"announce") {
+        let mut first = Vec::new();
+        push_string(&mut first, fresh[0].as_bytes());
+        out.push((b"announce", first));
+    }
+    // A dictionary's keys are sorted (bencode); the info dictionary's bytes are untouched.
+    out.sort_by(|a, b| a.0.cmp(b.0));
+    let mut done = b"d".to_vec();
+    for (k, v) in out {
+        push_string(&mut done, k);
+        done.extend_from_slice(&v);
+    }
+    done.push(b'e');
+    Some(done)
+}
+
 fn push_string(out: &mut Vec<u8>, s: &[u8]) {
     out.extend_from_slice(s.len().to_string().as_bytes());
     out.push(b':');
@@ -246,6 +324,75 @@ mod tests {
             "magnet:?xt=urn:btih:abc&dn=x&tr=udp%3A%2F%2Ft.example%3A1337"
         );
         assert_eq!(filter_magnet(m, true), "magnet:?xt=urn:btih:abc&dn=x");
+    }
+
+    /// Add trackers (#39): new ones after the ones there, each once, keys still sorted, the info
+    /// dictionary byte for byte.
+    #[test]
+    fn trackers_are_added_after_the_ones_there() {
+        let info = b"d6:lengthi5e4:name1:a12:piece lengthi16384e6:pieces20:aaaaaaaaaaaaaaaaaaaae";
+        let s = |v: &str| format!("{}:{v}", v.len());
+        let with = |head: &str| {
+            let mut t = format!("d{head}4:info").into_bytes();
+            t.extend(info);
+            t.push(b'e');
+            t
+        };
+        let (a, b, c) = (
+            "http://a.example/announce",
+            "udp://b.example:1337/announce",
+            "https://c.example/announce",
+        );
+        let more = |v: &[&str]| v.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+
+        // Only `announce`: a list with it first, then the new ones, each a tier.
+        let one = with(&format!("8:announce{}", s(a)));
+        let out = add(&one, &more(&[b, a, b, " ", c])).unwrap();
+        assert_eq!(
+            out,
+            with(&format!(
+                "8:announce{}13:announce-listll{}el{}el{}ee",
+                s(a),
+                s(a),
+                s(b),
+                s(c)
+            ))
+        );
+        assert_eq!(listed(&out), [a, b, c]);
+
+        // A list already: kept as it is, the new one after; a comment key stays in its place.
+        let listed_one = with(&format!(
+            "8:announce{}13:announce-listll{}{}ee7:comment2:hi",
+            s(a),
+            s(a),
+            s(b)
+        ));
+        let out = add(&listed_one, &more(&[c])).unwrap();
+        assert_eq!(
+            out,
+            with(&format!(
+                "8:announce{}13:announce-listll{}{}el{}ee7:comment2:hi",
+                s(a),
+                s(a),
+                s(b),
+                s(c)
+            ))
+        );
+
+        // None at all (a magnet's): `announce` and a list.
+        let bare = with("");
+        let out = add(&bare, &more(&[b])).unwrap();
+        assert_eq!(
+            out,
+            with(&format!("8:announce{}13:announce-listll{}ee", s(b), s(b)))
+        );
+        // Nothing new: the same bytes.
+        assert_eq!(add(&out, &more(&[b])).unwrap(), out);
+        assert_eq!(add(b"junk", &more(&[a])), None);
+
+        // The hash is the same: the info bytes are untouched.
+        let at = |t: &[u8]| t.windows(info.len()).position(|w| w == info).is_some();
+        assert!(at(&add(&one, &more(&[c])).unwrap()));
     }
 
     /// The trackers change; the info dictionary, and so the hash, doesn't.
