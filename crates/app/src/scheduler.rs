@@ -518,6 +518,7 @@ impl Scheduler {
                     ),
                     None => (crate::i18n::t(LIMITS_LABEL), "folder_delete"),
                 };
+                look.name = label.to_owned();
                 icons.paint_in(
                     ui,
                     clip,
@@ -890,6 +891,15 @@ impl Scheduler {
                 let item = rows[k];
                 let top = row.top();
                 fill(clip, row.left(), top + 16.0, row.right(), top + 16.0, grid);
+                look.name = [
+                    item.file_name.clone(),
+                    item.size.map(model::size_list).unwrap_or_default(),
+                    item.status_text(),
+                ]
+                .into_iter()
+                .filter(|t| !t.is_empty())
+                .collect::<Vec<_>>()
+                .join(", ");
                 let cells = [
                     // Its own direction (an Arabic name right to left in any window).
                     crate::i18n::isolate(&item.file_name),
@@ -897,7 +907,7 @@ impl Scheduler {
                     item.status_text(),
                     item.time_left(),
                 ];
-                for ((_, x0, x1), cell) in cols.iter().zip(&cells) {
+                for (c, ((_, x0, x1), cell)) in cols.iter().zip(&cells).enumerate() {
                     fill(clip, o.x + x1, top, o.x + x1, top + 16.0, grid);
                     let cell_clip = clip.with_clip_rect(
                         winui::rect(Rect::from_min_max(
@@ -906,10 +916,22 @@ impl Scheduler {
                         ))
                         .intersect(clip.clip_rect()),
                     );
+                    // The name column: the file's type icon, then its name.
+                    let mut tx = o.x + x0 + 6.0;
+                    if c == 0 {
+                        crate::fileicons::paint_at(
+                            ui,
+                            &cell_clip,
+                            crate::fileicons::Kind::File(&item.file_name),
+                            pos2(o.x + x0 + 4.0, top),
+                            16.0,
+                        );
+                        tx = o.x + x0 + 4.0 + crate::fileicons::INDENT;
+                    }
                     winui::fit(
                         ui,
                         &cell_clip,
-                        o.x + x0 + 6.0,
+                        tx,
                         top + 12.0,
                         cell,
                         look.ink,

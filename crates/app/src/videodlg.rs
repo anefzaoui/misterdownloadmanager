@@ -551,6 +551,9 @@ impl VideoDialog {
                         crate::i18n::t("size unknown").into(),
                         crate::dialogs::dialog_size,
                     );
+                // Read as the format and its size (#95: the choices were blank to a screen reader
+                // and alike to UI Automation).
+                look.name = format!("{}, {size}", c.label);
                 winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
             },
         );

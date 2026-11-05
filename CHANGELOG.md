@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **A file-type icon before every file name**: the download list, Download File Info, Properties,
+  Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
+  audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
+  system (exe, msi, dmg, pkg, deb, rpm, AppImage, apk, iso…) each have their own, from Material
+  Icon Theme (MIT), the same on Windows, macOS and Linux; a .torrent shows MDM's magnet. Windows'
+  own icons were used before, on Windows only.
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the
@@ -155,6 +161,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Lists read as blank items to screen readers** ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)):
+  the rows of Download video's qualities, Add torrent's files, the language picker, Options
+  (browsers, sounds, the file-type and site lists), the Scheduler and Import now have their names
+  (a format and its size, a file's name and size), their check boxes theirs, ticked or not, and
+  their selected row; the lists take their caption as their name.
 - **The browser extension's Download video menu: an item's highlight ran past the menu's
   edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
 - **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):

@@ -1093,6 +1093,9 @@ pub struct RowEvents {
 pub struct RowLook {
     pub selected: bool,
     pub ink: Color32,
+    /// What a screen reader says for the row: the row's painter sets it (its text, e.g. a
+    /// file's name and size). Left empty, the row is read without a name.
+    pub name: String,
 }
 
 /// The one list of whole rows in a box (a dialog's list, a tree drawn as rows): its frame,
@@ -1110,7 +1113,7 @@ pub fn row_list(
     n: usize,
     row_h: f32,
     st: &mut RowList,
-    mut paint: impl FnMut(&mut Ui, &Painter, usize, Rect, &RowLook),
+    mut paint: impl FnMut(&mut Ui, &Painter, usize, Rect, &mut RowLook),
 ) -> RowEvents {
     let mut ev = RowEvents::default();
     let id = widget_id(ui, ("row-list", id));
@@ -1125,6 +1128,8 @@ pub fn row_list(
     let right = inner.right() - if bar { crate::scrollbar::THICK } else { 0.0 };
     let area = Rect::from_min_max(inner.min, pos2(right, inner.bottom()));
     let resp = ui.interact(rect(inner), id, Sense::click());
+    // Unnamed: a caption found near the list is often a column title ("Size"), and a wrong name
+    // is worse than none; its rows carry the names (#95).
     expose(&resp, egui::Role::ListBox, "", true, None);
     // Its arrows (a tree's Left / Right too) stay with it.
     keep_keys(ui, &resp, true, true, false);
@@ -1198,7 +1203,6 @@ pub fn row_list(
         let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
         let r = ui.interact(rect(row), id.with(i), pointer_only());
         let selected = st.selected == Some(i);
-        expose(&r, egui::Role::ListBoxOption, "", true, Some(selected));
         let fill = if selected && focused {
             Some(ROW_SELECTED())
         } else if selected {
@@ -1219,6 +1223,9 @@ pub fn row_list(
             if st.selected != Some(i) {
                 st.selected = Some(i);
                 ev.picked = Some(i);
+                // This frame drew the old selection; draw (and expose) the new one now, not on
+                // the next mouse move: a screen reader's click moves no mouse.
+                ui.ctx().request_repaint();
             }
         }
         if r.double_clicked() {
@@ -1229,15 +1236,23 @@ pub fn row_list(
         {
             ev.context = Some((i, at));
         }
-        let look = RowLook {
+        let mut look = RowLook {
             selected,
             ink: if selected && focused {
                 Color32::WHITE
             } else {
                 TEXT()
             },
+            name: String::new(),
         };
-        paint(ui, &clip, i, row, &look);
+        paint(ui, &clip, i, row, &mut look);
+        // Named by what its painter drew (#95: rows were read as blank items, and alike rows
+        // couldn't be told apart by UI Automation).
+        expose(&r, egui::Role::ListBoxOption, &look.name, true, None);
+        // Selected as a list's item (UI Automation's SelectionItem), as the download list does;
+        // expose's `on` would make it "toggled".
+        ui.ctx()
+            .accesskit_node_builder(r.id, |n| n.set_selected(selected));
         if selected && focused {
             focus_ring(&clip, rect(row));
         }
@@ -3165,6 +3180,7 @@ pub fn row_check(
     p: &Painter,
     at: Pos2,
     on: &mut bool,
+    label: &str,
     salt: impl std::hash::Hash + std::fmt::Debug,
 ) -> bool {
     let rc = rect(Rect::from_min_size(at, vec2(13.0, 13.0)));
@@ -3176,6 +3192,8 @@ pub fn row_check(
     if resp.clicked() {
         *on = !*on;
     }
+    // Named by its row's item, ticked or not (#95).
+    expose(&resp, egui::Role::CheckBox, label, true, Some(*on));
     check_box_glyph(p, rc, *on, State::of(&resp, true));
     resp.clicked()
 }

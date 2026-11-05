@@ -13,8 +13,8 @@ use windows_sys::Win32::Graphics::Gdi::{
 use windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_NORMAL;
 use windows_sys::Win32::System::Threading::GetCurrentProcessId;
 use windows_sys::Win32::UI::Shell::{
-    DefSubclassProc, SHFILEINFOW, SHGFI_ICON, SHGFI_SMALLICON, SHGFI_USEFILEATTRIBUTES,
-    SHGetFileInfoW, SetWindowSubclass,
+    DefSubclassProc, SHFILEINFOW, SHGFI_ICON, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW,
+    SetWindowSubclass,
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
@@ -912,17 +912,8 @@ pub fn work_area(x: i32, y: i32) -> Option<[i32; 4]> {
     }
 }
 
-/// The shell's 16 × 16 icon for files with extension `ext` (e.g. "zip"), as RGBA.
-pub fn shell_icon(ext: &str) -> Option<Vec<u8>> {
-    icon_for(
-        &format!("file.{ext}"),
-        FILE_ATTRIBUTE_NORMAL,
-        SHGFI_SMALLICON,
-        16,
-    )
-}
-
-/// The shell's 32 × 32 icon for files with extension `ext`, as RGBA.
+/// The shell's 32 × 32 icon for files with extension `ext`, as RGBA: the picture under the
+/// pointer while a file is dragged out (lists draw fileicons.rs's icons instead).
 pub fn shell_icon_large(ext: &str) -> Option<Vec<u8>> {
     icon_for(&format!("file.{ext}"), FILE_ATTRIBUTE_NORMAL, 0, 32)
 }

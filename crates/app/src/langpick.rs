@@ -283,6 +283,16 @@ impl Picker {
                         winui::text_width(&clip, &english) + 12.0
                     };
                     let room = right - (row.left() + 36.0) - english_w;
+                    // Read as its name (and its English name), selected or not (#95: the rows
+                    // were blank to screen readers).
+                    let spoken = if english.is_empty() {
+                        name.clone()
+                    } else {
+                        format!("{name}, {english}")
+                    };
+                    winui::expose(&resp, egui::Role::ListBoxOption, &spoken, true, None);
+                    ui.ctx()
+                        .accesskit_node_builder(resp.id, |n| n.set_selected(on));
                     let shown = winui::ellipsize(&clip, &winui::tahoma(), &name, room);
                     winui::text(&clip, row.left() + 36.0, y + 17.0, &shown, fg);
                     if !english.is_empty() {
