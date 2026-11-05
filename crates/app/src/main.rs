@@ -14,6 +14,7 @@ mod extension;
 mod extractq;
 mod fileicons;
 mod find;
+mod gallerydlg;
 mod grabber;
 mod help;
 mod helpers;

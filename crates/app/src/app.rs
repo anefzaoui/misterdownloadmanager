@@ -340,6 +340,8 @@ pub struct App {
     checksums: Vec<crate::checksum::ChecksumDialog>,
     batch: Option<crate::batch::Batch>,
     video_dlg: Option<crate::videodlg::VideoDialog>,
+    /// Download a gallery (#58).
+    gallery_dlg: Option<crate::gallerydlg::GalleryDialog>,
     torrent_dlg: Option<crate::torrentdlg::TorrentDialog>,
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Since when no torrent has needed the torrent engine (`torrent_tick`).
@@ -766,6 +768,7 @@ impl App {
             checksums: Vec::new(),
             batch: None,
             video_dlg: None,
+            gallery_dlg: None,
             torrent_dlg: None,
             torrent_settings: None,
             torrent_idle_since: None,
@@ -1378,6 +1381,7 @@ impl App {
         let Some(t) = self.torrent_host.get() else {
             return;
         };
+        let limits = self.settings.sharing_limits();
         let mut changed = false;
         let mut hashes = std::collections::HashSet::new();
         for i in self.items.iter_mut() {
@@ -1397,8 +1401,25 @@ impl App {
                 spec.seeded_secs += dt;
                 changed = true;
             }
+            // Torrent settings' seeding limits: a finished torrent over one stops being shared
+            // (paused; it stays so after a restart, `complete_torrents`), with or without a Run.
+            let mut stopped = None;
+            if st.phase == mdm_torrent::Phase::Finished
+                && let Some(why) = crate::torrents::sharing_limit_reached(spec, st.done, limits)
+            {
+                let (t2, hash) = (t.clone(), spec.hash.clone());
+                self.rt.spawn(async move {
+                    let _ = t2.pause(&hash).await;
+                });
+                stopped = Some(why);
+                changed = true;
+            }
+            let (hash, up) = (spec.hash.clone(), spec.upload_limit);
             if i.live.is_none() {
-                let _ = t.set_torrent_limits(&spec.hash, None, spec.upload_limit);
+                let _ = t.set_torrent_limits(&hash, None, up);
+            }
+            if let Some(why) = stopped {
+                i.note(sharing_stopped_note(why));
             }
         }
         self.accountant.keep(&hashes);
@@ -1492,10 +1513,14 @@ impl App {
                 }
             }
             // Download video from a page with a sample video's subtitles (#68).
+            // `video-subs:flac`: with that choice picked (screenshots of the lower choices).
             "video-subs" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
                     v.show_sample();
+                    if !tab.is_empty() {
+                        v.pick(tab);
+                    }
                 }
             }
             "existing-files" => {
@@ -1767,12 +1792,18 @@ impl App {
     fn start(&mut self, id: u64, show: bool) {
         let rt = self.rt.clone();
         let Some(item) = self.item(id) else { return };
-        if item.live.is_some() || item.status == Status::Complete {
+        // A finished gallery may start again: it fetches the files not there yet (#58).
+        if item.live.is_some() || (item.status == Status::Complete && item.gallery.is_none()) {
             return;
         }
         // A video from a page: yt-dlp, not the engine.
         if self.item(id).is_some_and(|i| i.video.is_some()) {
             self.start_video(id, show);
+            return;
+        }
+        // An image gallery: gallery-dl.
+        if self.item(id).is_some_and(|i| i.gallery.is_some()) {
+            self.start_gallery(id, show);
             return;
         }
         // The download limit is reached: it starts when the window has room again.
@@ -1915,7 +1946,11 @@ impl App {
         if self.item(id).is_some_and(|i| i.live.is_none()) {
             if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
                 self.torrent_host.forget(&self.rt, &spec.hash, files);
-            } else if files && let Some(i) = self.items.iter().find(|i| i.id == id) {
+            } else if files
+                && let Some(i) = self.items.iter().find(|i| i.id == id)
+                // A gallery's folder stays (it may hold other files; #58).
+                && i.gallery.is_none()
+            {
                 // The file itself: one that can't go (open in a player) is said, not skipped
                 // silently; the row still leaves the list.
                 if i.status == Status::Complete
@@ -2543,6 +2578,94 @@ impl App {
         }
     }
 
+    /// Download a gallery → Download Now / Later (#58): one row for the gallery, its folder its
+    /// own.
+    fn add_gallery(&mut self, add: crate::gallerydlg::GalleryAdd) {
+        let id = self.push_item(
+            add.page,
+            add.folder,
+            Category::General,
+            String::new(),
+            None,
+            None,
+            Default::default(),
+            // i18n: where a download came from, in its log: an image gallery, by gallery-dl
+            crate::i18n::mark("from a gallery (gallery-dl)"),
+        );
+        if let Some(item) = self.items.last_mut() {
+            item.file_name = add.name;
+            item.gallery = Some(model::GallerySpec { limit: add.limit });
+        }
+        self.selection.set(id);
+        if add.start_now {
+            self.start(id, true);
+        } else {
+            self.queue_later(vec![id], self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+    }
+
+    /// Start (or start again) a gallery: gallery-dl, installed and verified, or the person's.
+    fn start_gallery(&mut self, id: u64, show: bool) {
+        let tool = mdm_tools::tools_dir()
+            .as_deref()
+            .and_then(mdm_tools::gallery::installed);
+        let rate = self.settings.speed_limit();
+        let Some(item) = self.item(id) else { return };
+        let Some(spec) = item.gallery.clone() else {
+            return;
+        };
+        let Some(tool) = tool else {
+            item.status = Status::Error;
+            item.error = Some(
+                crate::i18n::t(
+                    // i18n: a gallery download's error: the helper program it needs is missing
+                    "gallery-dl is not installed (Add URL with a gallery's address installs it)",
+                )
+                .into(),
+            );
+            self.dirty = true;
+            return;
+        };
+        let ask = mdm_tools::gallery::Ask {
+            limit: spec.limit,
+            rate,
+        };
+        let started = mdm_tools::gallery::GalleryJob::start(
+            &tool.exe,
+            item.url.as_str(),
+            &item.dest,
+            &ask,
+            &crate::videodlg::from_browser(&item.context),
+        );
+        match started {
+            Ok(job) => {
+                item.note(crate::i18n::fmt(
+                    // i18n: a gallery download's log: {version} = gallery-dl's version
+                    crate::i18n::t("Started with gallery-dl {version}"),
+                    &[("version", &tool.version)],
+                ));
+                let url = item.url.clone();
+                // A gallery counts what it saves this run.
+                item.downloaded = 0;
+                item.size = None;
+                item.live = Some(Live::new(model::Job::Gallery { job, url }, 0));
+                item.status = Status::Downloading;
+                item.error = None;
+                item.last_try = Some(model::now_stamp());
+            }
+            Err(e) => {
+                item.status = Status::Error;
+                item.error = Some(e.to_string());
+            }
+        }
+        self.dirty = true;
+        if show && !self.progress.iter().any(|p| p.id == id) {
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
+        }
+    }
+
     /// The info hashes of the torrents in the list (the torrent session keeps only these).
     fn torrent_hashes(&self) -> std::collections::HashSet<String> {
         self.items
@@ -2552,11 +2675,16 @@ impl App {
     }
 
     /// The list's finished torrents (what "keep sharing" shares).
+    /// The finished torrents to share (Torrent settings' "Keep sharing"): those that haven't
+    /// reached a seeding limit.
     fn complete_torrents(&self) -> Vec<String> {
+        let limits = self.settings.sharing_limits();
         self.items
             .iter()
             .filter(|i| i.status == Status::Complete)
-            .filter_map(|i| i.torrent.as_ref().map(|t| t.hash.clone()))
+            .filter_map(|i| i.torrent.as_ref().map(|t| (t, i.downloaded)))
+            .filter(|(t, done)| crate::torrents::sharing_limit_reached(t, *done, limits).is_none())
+            .map(|(t, _)| t.hash.clone())
             .collect()
     }
 
@@ -2747,7 +2875,7 @@ impl App {
     }
 
     /// The automation API's actions on downloads by id: pause one running, start one stopped,
-    /// queued or failed, remove one (its file kept) or delete it with its file; one that runs
+    /// queued or failed (or a finished gallery), remove one (its file kept) or delete it with its file; one that runs
     /// is paused first by the caller.
     fn act(
         &mut self,
@@ -2770,10 +2898,8 @@ impl App {
                 continue;
             };
             let running = item.live.is_some();
-            let startable = matches!(
-                item.status,
-                Status::Queued | Status::Stopped | Status::Error
-            );
+            // As Resume: a finished gallery may start again (#58).
+            let startable = running || item.can_start();
             let why = match action {
                 "pause" if !running => Some("not running"),
                 "pause" => {
@@ -3097,10 +3223,7 @@ impl App {
             Cmd::RemoveWithFiles => self.ask_delete(many, true),
             Cmd::Resume => {
                 for id in many {
-                    if self.item(id).is_some_and(|i| {
-                        i.live.is_none()
-                            && matches!(i.status, Status::Queued | Status::Stopped | Status::Error)
-                    }) {
+                    if self.item(id).is_some_and(|i| i.can_start()) {
                         self.start(id, true);
                     }
                 }
@@ -3553,9 +3676,7 @@ impl App {
         let sel = self.selected_item();
         let picked = self.chosen(None);
         let running = picked.iter().any(|i| i.live.is_some());
-        let resumable = picked.iter().any(|i| {
-            i.live.is_none() && matches!(i.status, Status::Queued | Status::Stopped | Status::Error)
-        });
+        let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let any_running = self.items.iter().any(|i| i.live.is_some());
         let off = |label| I(label, Cmd::None, false, false);
@@ -3859,9 +3980,7 @@ impl App {
         let live = it.is_some_and(|i| i.live.is_some());
         let any = !chosen.is_empty();
         let any_live = chosen.iter().any(|i| i.live.is_some());
-        let any_resumable = chosen.iter().any(|i| {
-            i.live.is_none() && matches!(i.status, Status::Queued | Status::Stopped | Status::Error)
-        });
+        let any_resumable = chosen.iter().any(|i| i.can_start());
         let any_idle = chosen.iter().any(|i| i.live.is_none());
         let all_done = any && chosen.iter().all(|i| i.status == Status::Complete);
         let queue_of = |q: &Queue| chosen.iter().all(|i| q.items.contains(&i.id)) && any;
@@ -4243,7 +4362,7 @@ impl App {
 
         // Menu bar and its popups.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let clicked = ui.input(|x| x.pointer.any_released());
+            let clicked = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
             self.open_menu = if self.open_menu == Some(i) && clicked {
                 None
             } else {
@@ -4284,9 +4403,7 @@ impl App {
         // Toolbar — full labels (IDM truncates "Delete Co...", "Start Qu...": user decision).
         let picked = self.chosen(None);
         let running = picked.iter().any(|i| i.live.is_some());
-        let resumable = picked.iter().any(|i| {
-            i.live.is_none() && matches!(i.status, Status::Queued | Status::Stopped | Status::Error)
-        });
+        let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let any_running = self.items.iter().any(|i| i.live.is_some());
         let any_complete = self.items.iter().any(|i| i.status == Status::Complete);
@@ -5604,6 +5721,15 @@ impl App {
                         .with_subs(self.settings.video_subs.clone()),
                     );
                 }
+                // An image gallery's page (Wikimedia Commons, Flickr…): gallery-dl (#58).
+                Outcome::Done(new) if mdm_tools::pages::is_gallery_page(&new.url) => {
+                    self.add_url = None;
+                    let dir = self
+                        .settings
+                        .category_dir(Category::General, &self.downloads);
+                    self.gallery_dlg =
+                        Some(crate::gallerydlg::GalleryDialog::new(dir, new.url.as_str()));
+                }
                 Outcome::Done(new) => {
                     self.add_url = None;
                     let url = new.url.clone();
@@ -5738,6 +5864,7 @@ impl App {
                     assoc,
                     net,
                     upload,
+                    seeding,
                 }) => {
                     self.torrent_settings = None;
                     // The network: the next torrent session takes it (torrent_tick).
@@ -5747,6 +5874,25 @@ impl App {
                         self.settings.torrent_upload_on,
                         self.settings.torrent_upload_kb,
                     ) = upload;
+                    // Seeding limits: the tick stops those over them; raised, the finished
+                    // torrents now under them are shared again (when sharing stays on).
+                    let s = &mut self.settings;
+                    let before = s.sharing_limits();
+                    s.torrent_stop_ratio_on = seeding.ratio_on;
+                    s.torrent_stop_ratio = seeding.ratio;
+                    s.torrent_stop_minutes_on = seeding.minutes_on;
+                    s.torrent_stop_minutes = seeding.minutes;
+                    if share
+                        && share == self.settings.torrent_keep_sharing
+                        && before != self.settings.sharing_limits()
+                    {
+                        self.torrent_host.set_sharing(
+                            &self.rt,
+                            self.torrent_hashes(),
+                            self.complete_torrents(),
+                            true,
+                        );
+                    }
                     if share != self.settings.torrent_keep_sharing {
                         self.settings.torrent_keep_sharing = share;
                         self.torrent_host.set_sharing(
@@ -5774,6 +5920,16 @@ impl App {
                 Outcome::Done(add) => {
                     self.torrent_dlg = None;
                     self.add_torrent(add);
+                }
+            }
+        }
+        if let Some(g) = &mut self.gallery_dlg {
+            match g.show(ctx, &self.rt) {
+                Outcome::Open => {}
+                Outcome::Closed => self.gallery_dlg = None,
+                Outcome::Done(add) => {
+                    self.gallery_dlg = None;
+                    self.add_gallery(add);
                 }
             }
         }
@@ -5898,6 +6054,9 @@ impl App {
         let tray = (self.tray.is_some() || crate::offscreen()) && crate::tray::available();
         for p in &mut self.progress {
             p.keep_sharing = self.settings.torrent_keep_sharing;
+            if p.host.is_none() {
+                p.host = Some(self.torrent_host.clone());
+            }
             p.tray = tray;
             p.minimize_to_tray = self.settings.minimize_to_tray;
             // Hidden: not shown (its window is gone) until the tray or the list brings it back.
@@ -6130,6 +6289,22 @@ impl Drop for App {
             &self.settings,
             &self.queues,
         );
+    }
+}
+
+/// The event log's line when a seeding limit stops a torrent's sharing.
+fn sharing_stopped_note(why: crate::torrents::Reached) -> String {
+    match why {
+        crate::torrents::Reached::Ratio(r) => crate::i18n::fmt(
+            // i18n: event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+            crate::i18n::t("Sharing stopped: the share ratio reached {ratio}"),
+            &[("ratio", &format!("{r:.2}"))],
+        ),
+        crate::torrents::Reached::Time(s) => crate::i18n::fmt(
+            // i18n: event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+            crate::i18n::t("Sharing stopped after sharing for {time}"),
+            &[("time", &model::time(s as f64))],
+        ),
     }
 }
 

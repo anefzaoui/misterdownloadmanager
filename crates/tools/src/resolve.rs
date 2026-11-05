@@ -206,6 +206,42 @@ pub fn resolve(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Vid
 
 /// The audio choice's label starts with this (the app translates it).
 pub const AUDIO_ONLY: &str = "Audio only";
+/// The sound as the site has it, not converted (#70): its label starts with this.
+pub const AUDIO_ORIGINAL: &str = "Audio only original";
+
+/// Opus and FLAC choices' selectors (#70): the best sound converted by ffmpeg (Opus as is when
+/// it already is Opus: yt-dlp then only moves it into an `.opus` file).
+pub const OPUS: &str = "opus:";
+pub const FLAC: &str = "flac:";
+
+/// What an audio choice converts to: the file type and yt-dlp's `--audio-quality`, if any.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct AudioOut {
+    pub format: &'static str,
+    pub quality: Option<String>,
+}
+
+/// The conversion an audio choice's selector asks for (MP3 #32, Opus and FLAC #70); none for a
+/// video or the original sound.
+pub fn audio_conversion(selector: &str) -> Option<AudioOut> {
+    if let Some(q) = mp3_quality(selector) {
+        return Some(AudioOut {
+            format: "mp3",
+            quality: Some(q),
+        });
+    }
+    match selector {
+        OPUS => Some(AudioOut {
+            format: "opus",
+            quality: None,
+        }),
+        FLAC => Some(AudioOut {
+            format: "flac",
+            quality: None,
+        }),
+        _ => None,
+    }
+}
 
 /// An MP3 choice's selector: `mp3:<kbps>`, the best sound converted to MP3 by ffmpeg at that
 /// constant bitrate, or `mp3:0` at its best variable one (`VideoJob::start`; #32).
@@ -238,7 +274,7 @@ fn audio_container(ext: &str) -> bool {
 
 /// A choice that saves only the sound (no picture to show subtitles on, #68).
 pub fn is_audio(c: &Choice) -> bool {
-    c.selector == "ba" || mp3_quality(&c.selector).is_some() || audio_container(&c.ext)
+    c.selector == "ba" || audio_conversion(&c.selector).is_some() || audio_container(&c.ext)
 }
 
 /// A choice whose file can hold subtitles put into it (yt-dlp's `--embed-subs` with SRT).
@@ -331,8 +367,9 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
     }
     if let Some(a) = best_audio {
         out.push(Choice {
-            // The app shows it in its language (videodlg::label).
-            label: format!("{AUDIO_ONLY} {}", a.ext.to_uppercase()),
+            // The app shows it in its language (videodlg::choice_label): the site's own file,
+            // not converted (#70).
+            label: format!("{AUDIO_ORIGINAL} {}", a.ext.to_uppercase()),
             selector: "ba".into(),
             ext: a.ext.clone(),
             size: a.size,
@@ -357,6 +394,25 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
                 size: size(kbps),
             });
         }
+        // Opus (#70): about the size of the best sound when that is Opus already (it is only
+        // moved into an .opus file), else of a 160 kbit/s encoding.
+        let opus_size = best_audio
+            .filter(|a| a.ext.eq_ignore_ascii_case("webm") || a.ext.eq_ignore_ascii_case("opus"))
+            .and_then(|a| a.size)
+            .or_else(|| size(160));
+        out.push(Choice {
+            label: format!("{AUDIO_ONLY} OPUS"),
+            selector: OPUS.into(),
+            ext: "opus".into(),
+            size: opus_size,
+        });
+        // FLAC (#70): lossless from a lossy source, about 900 kbit/s for 48 kHz stereo.
+        out.push(Choice {
+            label: format!("{AUDIO_ONLY} FLAC"),
+            selector: FLAC.into(),
+            ext: "flac".into(),
+            size: size(900),
+        });
     }
     out
 }
@@ -392,7 +448,7 @@ mod tests {
         let labels: Vec<String> = choices(&v, true)
             .into_iter()
             .map(|c| c.label)
-            .filter(|l| !l.contains("MP3"))
+            .filter(|l| !l.starts_with("Audio only"))
             .collect();
         assert_eq!(
             labels,
@@ -422,14 +478,21 @@ mod tests {
                 "1080p 60fps MP4",
                 "720p MP4",
                 "360p MP4",
-                "Audio only M4A",
+                "Audio only original M4A",
                 "Audio only MP3 VBR",
                 "Audio only MP3 320 kbps",
                 "Audio only MP3 256 kbps",
                 "Audio only MP3 192 kbps",
                 "Audio only MP3 128 kbps",
+                "Audio only OPUS",
+                "Audio only FLAC",
             ]
         );
+        // Opus from M4A is encoded (160 kbit/s); FLAC about 900 kbit/s (61.5 s).
+        let opus = &merged[merged.len() - 2];
+        assert_eq!((opus.selector.as_str(), opus.size), (OPUS, Some(1_230_000)));
+        let flac = &merged[merged.len() - 1];
+        assert_eq!((flac.selector.as_str(), flac.size), (FLAC, Some(6_918_750)));
         assert_eq!(merged[0].size, Some(61_000_000), "video + best audio");
         // MP3 (#32): converted from the best sound, sized from the duration (61.5 s).
         let mp3 = &merged[5];
@@ -441,8 +504,27 @@ mod tests {
         // Without ffmpeg only the format that has both survives, and no MP3 (it converts).
         let plain = choices(&v, false);
         let labels: Vec<&str> = plain.iter().map(|c| c.label.as_str()).collect();
-        assert_eq!(labels, ["360p MP4", "Audio only M4A"]);
+        assert_eq!(labels, ["360p MP4", "Audio only original M4A"]);
         assert_eq!(plain[0].selector, "b[height=360]");
+    }
+
+    /// #70: what each audio choice converts to; the original and videos convert nothing.
+    #[test]
+    fn audio_conversions() {
+        let c = |s: &str| audio_conversion(s).map(|a| (a.format, a.quality));
+        assert_eq!(c("mp3:320"), Some(("mp3", Some("320K".into()))));
+        assert_eq!(c(OPUS), Some(("opus", None)));
+        assert_eq!(c(FLAC), Some(("flac", None)));
+        assert_eq!(c("ba"), None);
+        assert_eq!(c("bv*[height=720]+ba/b[height=720]"), None);
+        assert_eq!(c("opus:x"), None);
+        let flac = Choice {
+            label: "x".into(),
+            selector: FLAC.into(),
+            ext: "flac".into(),
+            size: None,
+        };
+        assert!(is_audio(&flac));
     }
 
     #[test]
@@ -486,7 +568,7 @@ mod tests {
             {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a", "filesize": 500}]}"#;
         let v = parse(json.as_bytes()).unwrap();
         let labels: Vec<String> = choices(&v, false).into_iter().map(|c| c.label).collect();
-        assert_eq!(labels, ["360p MP4", "Audio only M4A"]);
+        assert_eq!(labels, ["360p MP4", "Audio only original M4A"]);
     }
 
     /// A page's subtitles (#68), as yt-dlp -J lists them: the uploader's by name, the chat

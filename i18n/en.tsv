@@ -230,6 +230,9 @@
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 	Audio only {type}	Audio only {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+	Audio only, original {type}	Audio only, original {type}
 #. text in the Scheduler window
 	August	August
 #. text in the Options window
@@ -263,7 +266,7 @@
 	by batch download	by batch download
 #. message or event log entry in the main window
 	by Link grabber	by Link grabber
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
@@ -314,6 +317,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 	Checking for updates...	Checking for updates...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+	Checking the address with gallery-dl...	Checking the address with gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -498,6 +505,9 @@
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Download "{name}" again from the start? A finished file is replaced when the new download completes.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+	Download a gallery	Download a gallery
 #. window title in a dialog box; text in a dialog box; text in the Options window
 	Download complete	Download complete
 #. text in the Options window
@@ -515,7 +525,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 	Download no more than {mb} MBytes\nevery {hours} hours	Download no more than {mb} MBytes\nevery {hours} hours
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 	Download Now	Download Now
 #. window title in the Options window
 #. window title: the download button the extension shows over videos
@@ -548,6 +558,9 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying ffmpeg (about 80 MB)...	Downloading and verifying ffmpeg (about 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+	Downloading and verifying gallery-dl...	Downloading and verifying gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying yt-dlp...	Downloading and verifying yt-dlp...
@@ -602,6 +615,9 @@
 	Edit...	Edit...
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	Email
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+	Empty: all of them. On most sites the newest come first.	Empty: all of them. On most sites the newest come first.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 	End and restart MDM	End and restart MDM
@@ -696,6 +712,9 @@
 	Files	Files
 #. window title in a dialog box
 	Files already there	Files already there
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+	Files at most	Files at most
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 	Files go to: {folder}	Files go to: {folder}
@@ -725,6 +744,9 @@
 	First day of the week:	First day of the week:
 #. text in the Batch download window
 	First file:	First file:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.
 #. text in categories.rs
 	Folder:	Folder:
 #. text in the Batch download window
@@ -746,6 +768,9 @@
 #. text in the Scheduler window
 	Friday	Friday
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+	from a gallery (gallery-dl)	from a gallery (gallery-dl)
+#. message or event log entry in the main window
 	from a magnet link	from a magnet link
 #. message or event log entry in the main window
 	from a page (yt-dlp)	from a page (yt-dlp)
@@ -762,6 +787,19 @@
 	From:	From:
 #. checkbox in the Options window
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galleries use gallery-dl (about 23 MB, checked against its signature).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.
+#. text in gallerydlg.rs
+	gallery-dl can download this gallery's files.	gallery-dl can download this gallery's files.
+#. text in gallerydlg.rs
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl can't read this address. Add it as a file instead (Add URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl is not installed (Add URL with a gallery's address installs it)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -790,7 +828,10 @@
 #. button in the Options window
 #. noun: button that opens the help
 	Help	Help
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+	Helpers	Helpers
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 	Helpers...	Helpers...
@@ -800,7 +841,7 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Hide &categories	Hide &categories
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 	Hide tab	Hide tab
 #. text in a download's progress window; text in standard windows
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
@@ -834,6 +875,8 @@
 	Import	Import
 #. value in a column's filter list in the download list
 	In a queue	In a queue
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	In the categories: the selected category's menu	In the categories: the selected category's menu
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 	Increase	Increase
@@ -846,6 +889,9 @@
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	Install ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+	Install gallery-dl	Install gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Install yt-dlp
@@ -915,7 +961,7 @@
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 	Last try  {last}	Last try  {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 	Later	Later
@@ -1005,6 +1051,9 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 	Minimize to the notification area	Minimize to the notification area
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+	minutes	minutes
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 	Missing	Missing
@@ -1048,6 +1097,8 @@
 	Move	Move
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move a page up / down	Move a page up / down
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	Move between the categories and the download list	Move between the categories and the download list
 #. text in the Scheduler window
 	Move down	Move down
 #. text in a dialog box
@@ -1263,7 +1314,7 @@
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Package
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 	Page address	Page address
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	Password
@@ -1439,7 +1490,7 @@
 	Saturday	Saturday
 #. text in a dialog box
 	Save As	Save As
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 	Save to	Save to
 #. group box title in the Options window
@@ -1531,6 +1582,13 @@
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 	Sharing	Sharing
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+	Sharing stopped after sharing for {time}	Sharing stopped after sharing for {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+	Sharing stopped: the share ratio reached {ratio}	Sharing stopped: the share ratio reached {ratio}
 #. text in the download list
 	Show	Show
 #. message or event log entry in the main window
@@ -1641,6 +1699,10 @@
 #. event log entry, past tense: the download started (just now)
 	Started	Started
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+	Started with gallery-dl {version}	Started with gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 	Started with yt-dlp {version} ({format})	Started with yt-dlp {version} ({format})
 #. text in helpers.rs
@@ -1659,6 +1721,12 @@
 	Stop download at	Stop download at
 #. text in the tray icon's menu
 	Stop main download queue	Stop main download queue
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+	Stop sharing after sharing for	Stop sharing after sharing for
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+	Stop sharing at a share ratio of	Stop sharing at a share ratio of
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 	Stop the torrent engine when no torrent is running	Stop the torrent engine when no torrent is running
@@ -1738,10 +1806,10 @@
 #. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
 	The archive was moved to the Trash	The archive was moved to the Trash
 #. text in the Download video window
-	The best qualities and MP3 need ffmpeg (about 80 MB).	The best qualities and MP3 need ffmpeg (about 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 	The browsers can find Mister Download Manager	The browsers can find Mister Download Manager
@@ -2125,9 +2193,6 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-	Video helpers	Video helpers
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
@@ -2333,7 +2398,7 @@
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} can't go through a chosen network adapter ({adapter}) yet
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 	{what} could not be installed: {error}	{what} could not be installed: {error}
@@ -2524,7 +2589,13 @@ key	Shift+Delete	Shift+Delete
 key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Type a name	Type a name

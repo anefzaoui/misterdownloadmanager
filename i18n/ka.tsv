@@ -307,6 +307,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	მხოლოდ აუდიო {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	მხოლოდ აუდიო, ორიგინალი {type}
 #. text in the Scheduler window
 #, machine
 	August	აგვისტო
@@ -354,7 +358,7 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	ბმულების ამომღების მიერ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	გაუქმება
@@ -425,6 +429,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	განახლებების შემოწმება...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	მისამართის შემოწმება gallery-dl-ით...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -679,6 +688,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	ხელახლა ჩამოიტვირთოს „{name}“ თავიდან? დასრულებული ფაილი შეიცვლება, როდესაც ახალი ჩამოტვირთვა დასრულდება.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	გალერეის ჩამოტვირთვა
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ჩამოტვირთვა დასრულდა
@@ -703,7 +716,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	ჩამოტვირთეთ არაუმეტეს {mb} მბ\nყოველ {hours} საათში
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	ჩამოტვირთვა ახლა
 #. window title in the Options window
@@ -748,6 +761,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg-ის ჩამოტვირთვა და შემოწმება (დაახლოებით 80 მბ)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl-ის ჩამოტვირთვა და შემოწმება...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -821,6 +838,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ელფოსტა
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	ცარიელი: ყველა მათგანი. უმეტეს საიტებზე უახლესი პირველია.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -951,6 +972,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ფაილები უკვე არსებობს
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	ფაილები მაქსიმუმ
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -992,6 +1017,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	პირველი ფაილი:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ზუსტად ინახავს ხმას, მაგრამ მას არ შეუძლია ხარისხის დამატება, რაც საიტის ხმას არ აქვს: ფაილი მხოლოდ უფრო დიდია.
 #. text in categories.rs
 #, machine
 	Folder:	საქაღალდე:
@@ -1021,6 +1050,10 @@
 #, machine
 	Friday	პარასკევი
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	გალერეიდან (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	მაგნიტური ბმულიდან
 #. message or event log entry in the main window
@@ -1045,6 +1078,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	გალერეები იყენებენ gallery-dl-ს (დაახლოებით 23 მბ, შემოწმებულია მისი ხელმოწერის მიხედვით).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	გალერეები იყენებენ gallery-dl-ს: დააინსტალირეთ თქვენი სისტემის პაკეტებით (Homebrew, pip), შემდეგ აირჩიეთ დამხმარეებში.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl-ს შეუძლია ამ გალერეის ფაილების ჩამოტვირთვა.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl-ს არ შეუძლია ამ მისამართის წაკითხვა. ამის ნაცვლად დაამატეთ ის როგორც ფაილი (URL-ის დამატება).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl არ არის დაინსტალირებული (URL-ის დამატება გალერეის მისამართით აინსტალირებს მას)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1082,7 +1133,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	დახმარება
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	დამხმარეები
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1095,7 +1150,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	კატეგორიების &დამალვა
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	ჩანართის დამალვა
 #. text in a download's progress window; text in standard windows
@@ -1144,6 +1199,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	რიგში
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	კატეგორიებში: არჩეული კატეგორიის მენიუ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1160,6 +1218,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg-ის ინსტალაცია
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl-ის ინსტალაცია
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1255,7 +1317,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	ბოლო მცდელობა {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1378,6 +1440,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	შეტყობინებების ზონაში ჩახურვა
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	წუთი
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1437,6 +1503,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	გვერდის ზევით/ქვევით გადატანა
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	კატეგორიებსა და ჩამოტვირთვების სიას შორის გადაადგილება
 #. text in the Scheduler window
 #, machine
 	Move down	ქვემოთ გადატანა
@@ -1741,7 +1810,7 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	პაკეტი
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	გვერდის მისამართი
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1981,7 +2050,7 @@
 #. text in a dialog box
 #, machine
 	Save As	შენახვა როგორც
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	შენახვა
@@ -2108,6 +2177,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	გაზიარება
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	გაზიარება შეჩერდა {time} გაზიარების შემდეგ
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	გაზიარება შეჩერდა: გაზიარების კოეფიციენტმა მიაღწია {ratio}-ს
 #. text in the download list
 #, machine
 	Show	ჩვენება
@@ -2263,6 +2341,11 @@
 #, machine
 	Started	დაწყებულია
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	დაიწყო gallery-dl {version}-ით
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	დაწყებულია yt-dlp {version} ({format})-ით
@@ -2288,6 +2371,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	მთავარი ჩამოტვირთვის რიგის შეჩერება
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	გაზიარების შეწყვეტა გაზიარებიდან
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	გაზიარების შეწყვეტა გაზიარების კოეფიციენტით
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2396,11 +2487,11 @@
 	The archive was moved to the Trash	არქივი გადატანილია ნაგავში
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	საუკეთესო ხარისხისთვის და MP3-ისთვის საჭიროა ffmpeg (დაახლოებით 80 მბ).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	საუკეთესო ხარისხისთვის, MP3, Opus და FLAC საჭიროებს ffmpeg-ს (დაახლოებით 80 მბ).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	საუკეთესო ხარისხისთვის და MP3-ისთვის საჭიროა ffmpeg: დააინსტალირეთ თქვენი სისტემის პაკეტის მენეჯერის (ან Homebrew) მეშვეობით.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	საუკეთესო ხარისხისთვის, MP3, Opus და FLAC საჭიროებს ffmpeg-ს: დააინსტალირეთ ის თქვენი სისტემის პაკეტის მენეჯერის (ან Homebrew) მეშვეობით.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2932,10 +3023,6 @@
 #. category name: video files
 #, machine
 	Video	ვიდეო
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	ვიდეოს დამხმარეები
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ვიდეოს ძიება იყენებს yt-dlp-ს (დაახლოებით 23 მბ, შემოწმებულია მის ხელმოწერასთან).
@@ -3210,7 +3297,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ჯერ ვერ გაივლის არჩეულ ქსელის ადაპტერს ({adapter})
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3464,7 +3551,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / მენიუ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+ზემოთ / Shift+ქვემოთ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

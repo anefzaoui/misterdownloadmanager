@@ -22,6 +22,12 @@ craft-libs), laid out the way Internet Download Manager users expect. Start by r
    whole system end to end after each change.
 5. Every PR updates [ROADMAP.md](ROADMAP.md): move its item to done (or add it), keep the
    statuses true. Public file: no security details beyond CHANGELOG's wording, no private notes.
+6. Every PR description shows what it changed in screenshots, as many as it takes: each changed
+   window and state, before and after, light and dark, a long language (de) and right to left (ar);
+   phone width for the website. The images live on the `pr-shots` branch (`<pr>/<name>.png`, never
+   merged) and are embedded from `raw.githubusercontent.com/anefzaoui/misterdownloadmanager/pr-shots/`.
+   Neutral test folders in shots, no IDM artwork. A change with nothing to see shows its proof
+   (tables, logs) instead and says so.
 
 ## Commands
 

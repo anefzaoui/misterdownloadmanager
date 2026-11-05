@@ -52,15 +52,37 @@ pub fn route() -> mdm_engine::Route {
 /// would leave by the normal route. The way to cover it is a proxy on this computer whose own
 /// connections MDM binds (a follow-up).
 fn route_args() -> Result<Vec<String>, ProcError> {
+    route_for("Video pages (yt-dlp)")
+}
+
+/// The same rule for any helper that can't be held to an adapter (`what` names it).
+fn route_for(what: &str) -> Result<Vec<String>, ProcError> {
     match route() {
         mdm_engine::Route::Any => Ok(Vec::new()),
         mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
         mdm_engine::Route::Bound(b) => Err(mdm_engine::NetError::NotSupported {
             label: b.label.clone(),
-            what: "Video pages (yt-dlp)".into(),
+            what: what.into(),
         }
         .into()),
     }
+}
+
+/// `gallery-dl` (#58) with arguments in the same layers as [`ytdlp`]: `ours`, then the fixed
+/// ones (no configuration file of the person's, never a question on the console), then `--` and
+/// the address. Its output is read as UTF-8, as yt-dlp's is (#79). Like yt-dlp it can't be held
+/// to a network adapter, so it is refused while one is chosen (#35).
+pub fn gallery_dl(exe: &Path, ours: &[String], url: &str) -> Result<Command, ProcError> {
+    route_for("Image galleries (gallery-dl)")?;
+    let mut cmd = Command::new(exe);
+    cmd.env("PYTHONIOENCODING", "utf-8");
+    for a in ours {
+        cmd.arg(safe(a)?);
+    }
+    cmd.args(["--ignore-config", "--no-input"]);
+    cmd.arg("--");
+    cmd.arg(safe(url)?);
+    Ok(cmd)
 }
 
 /// Text that may go into an argument list: no line breaks or NUL (they would let a page title

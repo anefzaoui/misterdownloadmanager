@@ -7,7 +7,9 @@
 //!
 //! The app leaves out trackers on this computer (#40), so for the app add `lsd`: the seeders
 //! then answer Local Service Discovery, and the app finds them that way (Torrent settings'
-//! local peers on). Without it they talk to nothing but the tracker. Pieces are 1 MiB unless
+//! local peers on). Without it they talk to nothing but the tracker, and everything stays on
+//! loopback (127.0.0.1). With `lsd` the seeders listen on the computer's network addresses, which
+//! LSD names (so Windows Firewall asks about this program once). Pieces are 1 MiB unless
 //! `piece KB` says otherwise (smaller ones make the list's progress, counted in whole pieces,
 //! finer for measuring speeds). Two swarms of different sizes are two different torrents.
 

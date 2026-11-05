@@ -6,6 +6,7 @@
 
 pub mod chosen;
 pub mod ffmpeg;
+pub mod gallery;
 mod openpgp;
 pub mod pages;
 pub mod proc;
@@ -293,13 +294,14 @@ pub async fn install_latest(
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }
-    put(dir, &release.tag_name, asset, &program, &exe_url)
+    put(dir, "yt-dlp", &release.tag_name, asset, &program, &exe_url)
 }
 
-/// Install verified `program` as `version` and make it current (atomically), keeping the
-/// previous version for rollback and removing older ones.
-fn put(
+/// Install verified `program` as `version` of `tool` (`dir/<tool>/<version>/<asset>`) and make it
+/// current (atomically), keeping the previous version for rollback and removing older ones.
+pub(crate) fn put(
     dir: &Path,
+    tool: &str,
     version: &str,
     asset: &str,
     program: &[u8],
@@ -308,7 +310,7 @@ fn put(
     if version.is_empty() || version.contains(['/', '\\', ':']) || version.starts_with('.') {
         return Err(Error::BadRelease(format!("version {version:?}")));
     }
-    let root = dir.join("yt-dlp");
+    let root = dir.join(tool);
     let folder = root.join(version);
     std::fs::create_dir_all(&folder)?;
     let exe = folder.join(asset);
@@ -423,9 +425,33 @@ mod tests {
     fn installs_switch_and_keep_one_previous_version() {
         let dir = tempfile::tempdir().unwrap();
         let name = ytdlp_asset();
-        put(dir.path(), "2026.01.01", name, b"one", "https://x/").unwrap();
-        put(dir.path(), "2026.02.01", name, b"two", "https://x/").unwrap();
-        let now = put(dir.path(), "2026.03.01", name, b"three", "https://x/").unwrap();
+        put(
+            dir.path(),
+            "yt-dlp",
+            "2026.01.01",
+            name,
+            b"one",
+            "https://x/",
+        )
+        .unwrap();
+        put(
+            dir.path(),
+            "yt-dlp",
+            "2026.02.01",
+            name,
+            b"two",
+            "https://x/",
+        )
+        .unwrap();
+        let now = put(
+            dir.path(),
+            "yt-dlp",
+            "2026.03.01",
+            name,
+            b"three",
+            "https://x/",
+        )
+        .unwrap();
         assert_eq!(installed(dir.path()).unwrap(), now);
         assert_eq!(std::fs::read(&now.exe).unwrap(), b"three");
         let root = dir.path().join("yt-dlp");
@@ -434,6 +460,6 @@ mod tests {
             "the previous version stays"
         );
         assert!(!root.join("2026.01.01").exists(), "older ones go");
-        assert!(put(dir.path(), "../evil", name, b"x", "https://x/").is_err());
+        assert!(put(dir.path(), "yt-dlp", "../evil", name, b"x", "https://x/").is_err());
     }
 }
