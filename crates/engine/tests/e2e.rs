@@ -4,6 +4,9 @@
 use mdm_engine::{Destination, Download, Options, Request};
 use mdm_labserver::{Config, Faults, LabServer, LogEntry, content};
 
+/// How long a test waits for the lab server's log to take in every request (`settled`).
+const SETTLE: std::time::Duration = std::time::Duration::from_secs(20);
+
 async fn server(faults: &str) -> LabServer {
     LabServer::start(Config {
         faults: Faults::parse(faults).unwrap(),
@@ -223,7 +226,11 @@ async fn a_wrong_checksum_fails_and_keeps_the_data() {
 
 #[tokio::test]
 async fn the_event_log_tells_what_happened() {
-    let s = server("rate=8M&drop_after=300K&drop_every=3").await;
+    // Every response is cut after 300 KiB, so a retry is certain (#123). Cutting only every
+    // third request left it to timing: on a busy machine that request could be a part under
+    // 300 KiB, be taken over before it got there, or be cut after its part was already done,
+    // and the download then had nothing to retry.
+    let s = server("rate=8M&drop_after=300K").await;
     let dir = tempfile::tempdir().unwrap();
     let req = Request {
         url: s.url("/gen/4M/log.bin?seed=29").parse().unwrap(),
@@ -468,8 +475,17 @@ async fn tiny_file_is_not_split() {
     assert_eq!(log.iter().filter(|e| e.bytes_sent > 0).count(), 1);
 }
 
-/// Start a slow download, cancel it once some data is on disk; returns (dir, state file).
+/// Start a download, cancel it once some data is on disk; returns (dir, state file). The server
+/// holds the byte at 4 MiB back meanwhile, so the download can't finish before it is stopped
+/// however busy the machine (#123: on a slow CI runner the whole file could arrive before the
+/// stop). On return the server's faults are as before and every request of the stopped
+/// download is in its log.
 async fn paused(s: &LabServer, path: &str) -> (tempfile::TempDir, std::path::PathBuf) {
+    let faults = s.faults();
+    s.set_faults(Faults {
+        stall_at: Some(4 << 20),
+        ..faults.clone()
+    });
     let dir = tempfile::tempdir().unwrap();
     let req = Request {
         url: s.url(path).parse().unwrap(),
@@ -482,12 +498,12 @@ async fn paused(s: &LabServer, path: &str) -> (tempfile::TempDir, std::path::Pat
     };
     let dl = Download::start(req, opts);
     // Wait for the real condition (not a fixed time: a busy machine is slower): the probe is
-    // done and some data is on disk.
+    // done and a MiB is in (the server holds back only what follows its stall point).
     let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
     let file = loop {
         tokio::time::sleep(std::time::Duration::from_millis(50)).await;
         let snap = dl.snapshot();
-        if let Some(f) = snap.file.filter(|_| snap.downloaded > 0) {
+        if let Some(f) = snap.file.filter(|_| snap.downloaded >= 1 << 20) {
             break f;
         }
         assert!(
@@ -495,10 +511,37 @@ async fn paused(s: &LabServer, path: &str) -> (tempfile::TempDir, std::path::Pat
             "the download never started"
         );
     };
-    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
     dl.cancel();
-    assert!(matches!(dl.wait().await, Err(mdm_engine::Error::Cancelled)));
+    let stopped = dl.wait().await;
+    assert!(
+        matches!(stopped, Err(mdm_engine::Error::Cancelled)),
+        "{:?}",
+        stopped.map(|o| o.size)
+    );
+    // The held-back responses go on (into connections the download closed), and end.
+    s.set_faults(faults);
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("the stopped download's requests end");
     (dir, mdm_engine::state::state_path(&file))
+}
+
+/// Bytes of `range` (a `Range` header, `bytes=a-b`; none: the whole file) that the saved
+/// segments say were already on disk: outside every segment's part still to fetch.
+fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
+    let (from, to) = match range.and_then(|r| r.strip_prefix("bytes=")?.split_once('-')) {
+        Some((a, b)) => (
+            a.parse::<u64>().unwrap(),
+            b.parse::<u64>().map_or(saved.size, |b| b + 1),
+        ),
+        None => (0, saved.size),
+    };
+    let to_fetch: u64 = saved
+        .segments
+        .iter()
+        .map(|g| to.min(g.end).saturating_sub(from.max(g.cursor)))
+        .sum();
+    (to - from) - to_fetch
 }
 
 #[tokio::test]
@@ -511,9 +554,7 @@ async fn pause_and_resume_continues_where_it_stopped() {
         before > 0 && before < 8 << 20,
         "partial progress saved: {before}"
     );
-    // The server logs a request when its response body is dropped, which trails the cancel:
-    // let the paused phase's entries land before clearing, so only the resume is counted.
-    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+    // Every request of the stopped download is in the log (`paused`): only the resume's follow.
     s.clear_log();
 
     let out = Download::resume(state.clone(), Default::default(), fast_opts())
@@ -526,12 +567,23 @@ async fn pause_and_resume_continues_where_it_stopped() {
     content::fill(7, 0, &mut want);
     assert!(data == want, "content mismatch after resume");
     assert!(!state.exists(), "state file removed on completion");
-    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
-    let refetched: u64 = s.log().iter().map(|e| e.bytes_sent).sum();
-    assert!(
-        refetched <= (8 << 20) - before + (1 << 20),
-        "resume re-downloaded too much: {refetched} after {before}"
-    );
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("the resume's requests end");
+    // Nothing that was on disk is asked for again, but for the few bytes before each part that
+    // a connection re-reads to check the file is the same (verify_overlap). How much of the
+    // rest comes twice depends on timing (a part split while its bytes are on the way), so a
+    // total would be flaky on a busy machine (#123).
+    let overlap = fast_opts().verify_overlap;
+    for e in s.log() {
+        assert!(
+            on_disk(e.range.as_deref(), &saved) <= overlap,
+            "the resume asked again for data it had: {:?} ({} on disk)",
+            e.range,
+            on_disk(e.range.as_deref(), &saved)
+        );
+    }
+    assert!(!s.log().is_empty());
     assert!(
         s.log().iter().all(|e| e.if_range.is_some()),
         "resume validates with If-Range"
@@ -593,9 +645,18 @@ async fn resume_overlap_check_detects_changed_data() {
     let (_dir, state) = paused_without_validator(&s, "/gen/8M/c.bin?seed=12").await;
     // Make the data on disk differ from the server's just before every resume point, as if
     // the file had changed on the server since.
-    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    let mut saved = mdm_engine::state::ResumeState::load(&state).unwrap();
     let part = mdm_engine::naming::part_path(&saved.dest);
     let mut bytes = std::fs::read(&part).unwrap();
+    // Every part with data resumes inside it: a finished one is saved as half done (its data is
+    // on disk all the same). Which parts are under way when the download stops depends on the
+    // machine's speed (#123: on a busy one only the first connection had any).
+    for seg in &mut saved.segments {
+        if seg.cursor == seg.end && seg.end - seg.start > 4096 {
+            seg.cursor = seg.start + (seg.end - seg.start) / 2;
+        }
+    }
+    std::fs::write(&state, serde_json::to_vec(&saved).unwrap()).unwrap();
     let mut flipped = 0;
     for seg in &saved.segments {
         if seg.cursor > seg.start && seg.cursor < seg.end {

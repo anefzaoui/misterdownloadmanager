@@ -235,6 +235,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: two engine tests no longer fail now and then**
+  ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123)): the pause-and-resume
+  and event-log tests no longer depend on how fast the machine is. The lab server can hold a
+  byte back until a test lets it go (`stall_at`), and a test can wait until every request it
+  made is in the server's log.
 - **Torrents behind a proxy open no UDP socket toward the network**: UDP trackers were already
   left out there; now their client stays on this computer too.
 - **Developers: tests no longer make Windows Firewall ask about them.** The torrent tests and
