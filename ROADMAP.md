@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
+  verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
@@ -100,7 +102,6 @@ Everything below ships together, in one release.
   ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70))
 - 📋 Whole playlists and channels, also as MP3
   ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69))
-- 📋 gallery-dl support ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 
 ### Downloads and windows
 

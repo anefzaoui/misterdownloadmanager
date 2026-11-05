@@ -28,6 +28,7 @@ These pages explain each part of the program. The tutorials walk through the thi
 ## Video and torrents
 
 - **[Video downloads](video.md)** — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.
+- **[Image galleries](galleries.md)** — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.
 - **[Torrents](torrents.md)** — magnet links and .torrent files, choosing files, and sharing.
 - **[Torrents and your security](torrent-security.md)** — what others can see, the network switches, blocklists, proxies.
 

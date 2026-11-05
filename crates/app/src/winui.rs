@@ -3415,6 +3415,14 @@ pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
 /// (the full translated label, "&" taken out), whether it can be used, and for a check box,
 /// radio button, tab or list row whether it is on. Our controls are painted by hand, so egui
 /// can't tell otherwise. Call right after the control's `interact`, before any tooltip.
+/// A line of text a window paints (a status, an error) made readable too: a screen reader and UI
+/// Automation find it as static text at `rc`, by `salt`, with `text` as it reads (no mnemonic).
+pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug, text: &str) {
+    let resp = ui.interact(rc, widget_id(ui, ("readable", salt)), Sense::hover());
+    let text = text.to_owned();
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+}
+
 pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on: Option<bool>) {
     let name = label
         .replace("&&", "\u{1}")

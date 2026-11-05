@@ -66,6 +66,10 @@
    "source": "<g1>Start Download</g1> (or <g2>Enter</g2>) — download now. The progress window opens.",
    "text": "<g1>开始下载</g1>（或<g2>Enter</g2>） — 立即下载。进度窗口打开。"
   },
+  "021dced76e91e8e1": {
+   "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
+   "text": "<g1>来源：</g1> MDM 从 Codeberg 上的发布版本下载 gallery-dl。它只在发布版本的校验和列表由 gallery-dl 作者的密钥（已固定在 MDM 中）签名，并且程序与该列表匹配时才接受。它会保留上一个版本，并且绝不会回滚到更旧的版本。在 Windows 和 Linux (x86-64) 上，MDM 会安装它；在 macOS 上，请使用 Homebrew (<x2/>) 或 pip 安装，并在<g3>帮助程序...</g3>中选择它。"
+  },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
    "text": "<g1>下载 Mister Download Manager</g1>并安装；勾选<g2>设置浏览器集成</g2>。"
@@ -77,6 +81,10 @@
   "0255cefc03d71cf4": {
    "source": "<g1><g2>Keep some speed for everything else</g2></g1> — cap MDM so browsing and calls stay smooth.",
    "text": "<g1><g2>为其他任务保留一些速度</g2></g1> — 限制 MDM 的速度，以便浏览和通话保持流畅。"
+  },
+  "02627b049e4a7241": {
+   "source": "Image galleries",
+   "text": "图片库"
   },
   "026a1b767daa1fa2": {
    "source": "<g1>File name or part of the name</g1> — on by default.",
@@ -189,6 +197,10 @@
   "04ec5358d75ceff7": {
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "将鼠标指向网页上的视频，其边缘会出现一个小的 <g1>下载视频</g1> 按钮。点击它，MDM 的 <g2>从页面下载视频</g2> 窗口会打开并查找可下载的质量。它会下载您点击的视频：如果播放的是自己的文件，则下载该文件；如果是播放器加载的流（HLS 或 DASH），则下载该流；否则下载页面。嵌入式播放器也适用，您的网站登录信息、嵌入播放器的页面以及您的浏览器用户代理都会随之发送，因此会员视频或仅在嵌入它们的网站上播放的视频也可以下载。音频播放器也会显示该按钮。"
+  },
+  "050edc04316dd70a": {
+   "source": "On the command line",
+   "text": "在命令行中"
   },
   "053263e0b7c48cfa": {
    "source": "What reaches your computer",
@@ -337,6 +349,10 @@
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "不会，除非您希望它这样做。在种子下载过程中，它会像所有种子客户端一样与其他用户交换数据块。下载完成后，它会停止，就像任何…"
+  },
+  "084f72ae121f3c2a": {
+   "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
+   "text": "<g1>删除</g1>会将图库从列表中移除。其文件夹和图片会保留，即使你勾选了删除文件的选项：如果你想删除文件夹，请自行删除。"
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -625,6 +641,10 @@
   "10b8609f61290221": {
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>SHA-256 校验和</g1><g2>适用于每个文件</g2>"
+  },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "在 macOS 上，重新连接的 VPN 可能会获得一个新的接口（<x1/> 而不是 <x2/>）：请重新选择它。"
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -978,6 +998,10 @@
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 秒</g1><g2></g2>"
   },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "在Windows上，洪流引擎尚无法绑定到适配器。因此，当选择了一个适配器时，洪流不会启动（“洪流尚无法通过Windows上选定的网络适配器”），而不是绕过它。跟踪器名称仍然由系统的DNS查找。"
+  },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "浏览器扩展程序随应用提供，也可单独下载，支持 <g1>Chrome、Edge、Brave、Opera 和 Vivaldi</g1> 以及 <g2>Firefox</g2>。应用商店上架正在进行中。所有文件均由 GitHub Actions 从公共源代码构建，并列出其 SHA-256 校验和。"
@@ -1145,6 +1169,10 @@
   "1dd3fad91652b5ff": {
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "选择安装程序应执行的操作：- <g1>设置浏览器集成 (Chrome, Edge, Brave, Firefox)</g1> - <g2>使用 Mister Download Manager 打开 .torrent 文件和磁力链接</g2> - <g3>Windows 启动时启动 Mister Download Manager</g3> - <g4>创建桌面快捷方式</g4>（默认关闭，除非您勾选）"
+  },
+  "1e06a14724b6ac4b": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
+   "text": "MDM 使用 gallery-dl 下载图库中的图片（例如 Wikimedia Commons 分类、Flickr 相册、DeviantArt 图库、Imgur 相册等）..."
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -1978,6 +2006,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "适用于 Windows 的免费开源下载管理器，macOS 和 Linux 版本可供试用。您熟悉的 IDM 布局，在我们的基准测试中速度快 5 倍：所有连接同时进行，防崩溃恢复，支持种子下载，可从网页下载视频，浏览器集成，支持 86 种语言。"
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "到此计算机本身的连接（<x1/>）未绑定。此计算机上的代理负责下载，发送到何处由它决定。"
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "受 DRM 保护的视频（大多数付费流媒体服务）无法下载，MDM 不会尝试下载。"
@@ -2097,6 +2129,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "删除所选下载（先询问）"
+  },
+  "39202940bfd37e73": {
+   "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
+   "text": "<g1>你自己的副本：</g1><g2>帮助程序...</g2>（在图库窗口或视频窗口中）列出了 yt-dlp、ffmpeg 和 gallery-dl，而<g3>使用其他程序...</g3>则使用你自己的每个程序的副本，而不是 MDM 的。"
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2390,6 +2426,10 @@
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "设置时间后，您点击了<g1>应用</g1>吗？"
   },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "系统的 DNS 以自己的方式查询名称，Windows 可能会通过每个适配器查询。为了也将名称保留在适配器内部，请在<g1>连接</g1> → <g2>DNS</g2>下选择一个 DNS：MDM 然后通过该适配器查询它。"
+  },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "更多内容请参阅<g1>连接和速度</g1>。"
@@ -2462,6 +2502,10 @@
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
    "text": "50 MiB，服务器允许 2 个连接，每个 2 MB/秒"
   },
+  "42bd9026482d491d": {
+   "source": "gallery-dl itself",
+   "text": "gallery-dl 本身"
+  },
   "432cbb1ffee89925": {
    "source": "<g1>Your downloads are yours to answer for.</g1> Respect copyright and the terms of the sites you download from. With torrents, remember that a torrent client also shares what it downloads.",
    "text": "<g1>您的下载由您负责。</g1> 请尊重版权和您下载网站的条款。对于种子文件，请记住种子客户端也会分享它下载的内容。"
@@ -2509,6 +2553,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447b0cdb28e67b18": {
+   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
+   "text": "<g1>停止</g1>会终止 gallery-dl 及其启动的所有进程。已保存的图片会保留。"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -2709,6 +2757,10 @@
   "4b6527605342a06c": {
    "source": "Confirm deletion of downloads",
    "text": "确认删除下载"
+  },
+  "4b6da766cbb50be6": {
+   "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
+   "text": "MDM 会打开<g1>下载图库</g1>窗口，而不是将页面作为文件下载。第一次使用时，请点击<g2>安装 gallery-dl</g2>。"
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3102,6 +3154,10 @@
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "您可以在“计划程序”中添加自己的队列，或者通过下载右键菜单中的<g1>创建新队列</g1>来添加。"
   },
+  "5704b78ea54419dd": {
+   "source": "Click <g1>Add URL</g1> and paste the gallery's address, for example <x2/>.",
+   "text": "点击<g1>添加 URL</g1>并粘贴图库地址，例如<x2/>。"
+  },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "五分钟内切换"
@@ -3266,6 +3322,10 @@
    "source": "What they do",
    "text": "功能"
   },
+  "5cf4f742d0a41f0e": {
+   "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
+   "text": "将图库下载到以其命名的文件夹中。请参阅<g1>命令行和自动化</g1>。"
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "选择<g1>帮助 → 报告问题</g1>。它会在 GitHub 上打开错误报告表单，其中已预填您的 MDM 版本、系统及其版本、MDM 的安装方式以及界面语言。请描述发生了什么、您期望的结果以及重现问题的步骤。如果是下载问题，如果可以分享，请包含地址，以及<g2>状态</g2>下显示的原因。"
@@ -3325,6 +3385,10 @@
   "5e921749406a7933": {
    "source": "Reporting a problem",
    "text": "报告问题"
+  },
+  "5ea1452a0cb5fbf8": {
+   "source": "Stop, delete",
+   "text": "停止、删除"
   },
   "5ea184bc04ad2f73": {
    "source": "See <g1>If a video won't download</g1>.",
@@ -3478,9 +3542,17 @@
    "source": "Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.",
    "text": "发现 Bug？在应用中选择“帮助”→“报告问题”，即可创建一个已填写版本、系统和语言的问题。阅读后即可发布。"
   },
+  "61c0ff783f077afd": {
+   "source": "Get the new pictures later",
+   "text": "稍后获取新图片"
+  },
   "61e77c7c55f48e1e": {
    "source": "4. Decide what happens at the end (optional)",
    "text": "4. 决定结束时发生什么（可选）"
+  },
+  "6216638d7aa4db3f": {
+   "source": "Check <g1>Save to</g1> (the General category's folder by default). The pictures go into a folder of their own there, named after the gallery.",
+   "text": "检查<g1>保存到</g1>（默认为常规分类的文件夹）。图片会保存到该文件夹中以图库命名的子文件夹里。"
   },
   "62296921bc8016ff": {
    "source": "<g1>Always turn on Speed Limiter on Mister Download Manager startup</g1> turns it on each time MDM starts.",
@@ -3602,6 +3674,10 @@
    "source": "<g1>Download limits</g1> — download no more than a set amount every few hours. The same setting is in the Scheduler; see <g2>Queues and the Scheduler</g2>.",
    "text": "<g1>下载限制</g1> — 每隔几小时下载不超过设定的量。此设置也在计划程序中；请参阅<g2>队列和计划程序</g2>。"
   },
+  "647d714bfaad02a5": {
+   "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
+   "text": "<g1>网络适配器：</g1> 像 yt-dlp 一样，gallery-dl 无法绑定到单个网络适配器。当选择了一个适配器（<g2>选项 → 代理/Socks → 网络适配器</g2>）时，图库不会开始下载。"
+  },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>GitHub 上的项目</g1><g2>代码、问题和所有发布版本</g2>"
@@ -3662,6 +3738,10 @@
    "source": "Reinstall MDM to restore its files.",
    "text": "重新安装 MDM 以恢复其文件。"
   },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "要将<g1>所有</g1>流量都通过另一个网络路由，请为整台计算机使用VPN。"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -3690,6 +3770,10 @@
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
    "text": "浏览器的原生消息主机：从扩展程序获取捕获的下载并将其交给应用"
   },
+  "687eb3437405d3f6": {
+   "source": "A picture's own address (one ending in <x1/> or <x2/>) downloads as a file, as before.",
+   "text": "图片本身的地址（以<x1/>或<x2/>结尾的）会像以前一样作为文件下载。"
+  },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
    "text": "<g1><g2>命令行和自动化</g2></g1>：IDM 的开关（<x3/>）、<x4/>（文件、视频、种子）以及一个本地的、受令牌保护的自动化 API，用于列出、暂停、启动、移除和删除下载。"
@@ -3697,6 +3781,10 @@
   "688b2703f9059b6f": {
    "source": "Is Mister Download Manager really free?",
    "text": "Mister Download Manager 真的免费吗？"
+  },
+  "689d48a0fd15b011": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
+   "text": "再次启动已完成的图库（<g1>恢复</g1>），只获取其文件夹中尚未存在的图片。gallery-dl 会跳过已有的图片。"
   },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
@@ -4062,6 +4150,10 @@
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>新建</g1> — 创建您自己的类别。<g2>编辑...</g2>更改所选类别：其文件夹，以及对于您自己的类别，其名称和文件类型。"
   },
+  "720b69230bc62f14": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
+   "text": "将图库的图片（维基共享资源类别、Flickr相册等）下载到<x1/>中以其命名的文件夹中；<x2/>最多下载这么多，即网站列出的前几个。再次启动时，它只获取新的图片。"
+  },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
    "text": "1.2.0 桌面测试版<g1>2026年10月25日</g1>"
@@ -4213,6 +4305,10 @@
   "75adee39bc161169": {
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>视图 → 深色模式支持</g1>和<g2>视图 → 语言</g2>。"
+  },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "网络适配器"
   },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
@@ -4486,6 +4582,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "需要 Firefox 140 或更高版本。"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>选项 → 代理/Socks → 网络适配器</g1>将MDM的连接绑定到一个适配器，通常是VPN的（<g2>选项</g2>）。在Linux和macOS上，洪流引擎会将所有套接字绑定到它：对等点、跟踪器、DHT及其监听端口。UPnP和本地对等点发现功能会关闭，因为它们与本地网络通信，而不是通过适配器。如果适配器消失，引擎会停止，并在适配器恢复时再次通过它启动。"
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>任务 → 种子设置 → 使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g1>确实会写入注册表，但仅限于您的 Windows 帐户。将其关闭以保持便携副本无注册表。"
@@ -4706,6 +4806,10 @@
    "source": "Was MDM installed with the setup, with <g1>Set up browser integration</g1> ticked? A portable copy can't take browser downloads. Run the setup again to add it.",
    "text": "MDM 是否通过安装程序安装，并勾选了<g1>设置浏览器集成</g1>？便携版无法获取浏览器下载。重新运行安装程序以添加它。"
   },
+  "8362706ee6422965": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "MDM 使用 <g1>gallery-dl</g1> 下载图库中的图片（例如 Wikimedia Commons 分类、Flickr 相册、DeviantArt 图库、Imgur 相册等），gallery-dl 是一款免费程序，支持数百个网站。它像用于视频的 yt-dlp 一样，是一个可选的帮助程序：MDM 会在你第一次需要时安装它，或者使用你自己的副本。"
+  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "将下载添加到队列"
@@ -4741,10 +4845,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "在开始时间，队列会自动启动。早上，已完成的文件会在类别下的<g1>已完成</g1>中。"
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "要通过另一个网络路由<g1>所有内容</g1>，请为整个计算机使用 VPN。MDM 无法将种子绑定到 Windows 上的一个网络适配器。"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5042,6 +5142,10 @@
    "source": "3. Using it responsibly",
    "text": "3. 负责任地使用"
   },
+  "8d6911b8ed8eb4d4": {
+   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
+   "text": "<g1>请求方式：</g1> gallery-dl 以 MDM 的身份请求网站，最多每秒一张图片。Wikimedia 的服务器会拒绝请求过快或没有名称的工具。它不使用你的任何配置文件。"
+  },
   "8d82bd27db3d3e27": {
    "source": "In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with <x1/>.",
    "text": "在 Wayland 会话（GNOME、KDE Plasma 及其他）中，如果存在 XWayland，MDM 的窗口会通过 XWayland 运行：Wayland 不允许程序自行放置窗口，因此 MDM 的菜单和下拉列表会出现在屏幕中央。若要仍在 Wayland 上运行，请使用 <x1/> 启动它。"
@@ -5093,6 +5197,10 @@
   "8eb2929f09075835": {
    "source": "Download your first file →",
    "text": "下载您的第一个文件 →"
+  },
+  "8ebacedce5c28ec5": {
+   "source": "Add URL sends these to the gallery window: - Wikimedia Commons categories; - Flickr photographers and albums; - DeviantArt and ArtStation galleries; - Imgur albums; - Pixiv artists and works; - Pinterest boards and pins; - Danbooru and Gelbooru searches; - Tumblr blogs; - Bluesky profiles.",
+   "text": "“添加 URL”会将以下地址发送到图库窗口：- Wikimedia Commons 分类；- Flickr 摄影师和相册；- DeviantArt 和 ArtStation 图库；- Imgur 相册；- Pixiv 艺术家和作品；- Pinterest 画板和图钉；- Danbooru 和 Gelbooru 搜索；- Tumblr 博客；- Bluesky 个人资料。"
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
@@ -5258,6 +5366,10 @@
    "source": "Keep some speed for everything else →",
    "text": "为其他一切保留一些速度 →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "下载一个文件，最多8个连接（<x1/>，1到128），并显示进度。<x2/>暂停；<x3/>继续。<x4/>检查完成的文件：十六进制MD5、SHA-1、SHA-256、SHA-512或CRC32，可选择命名（<x5/>）。<x6/>选择DNS：<x7/>（默认）；一个服务及其查询方式，<x8/>、<x9/>、<x10/>、<x11/>、<x12/>；DNS服务器地址，<x13/>；或一个DNS-over-HTTPS地址。它绝不会回退到系统的DNS。<x14/>通过一个网络适配器发送每个连接，通过其名称（<x15/>，<x16/>）或其一个地址；当它未连接时，不发送任何内容，下载失败。"
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager（“MDM”，“本软件”）和网站 misterdownloadmanager.com（“本网站”）由 Ahmed Nefzaoui 和贡献者（“我们”）制作。使用本软件或本网站即表示您接受这些条款。如果您不接受，请不要使用它们。"
@@ -5277,6 +5389,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1>选择所有。"
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "尚未绑定到适配器，因此在选择适配器时它们不会启动："
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5714,6 +5830,10 @@
    "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
    "text": "通过扩展支持 Chrome、Edge、Brave、Opera 和 Vivaldi；Firefox 正在测试中。如果没有扩展，复制链接后 MDM 会打开下载窗口。<g1>更多</g1>"
   },
+  "a0f44b2041902a09": {
+   "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
+   "text": "gallery-dl 会在你的电脑上检查地址，无需联网。当显示“<g1>gallery-dl 可以下载此图库的文件</g1>”时，即可开始。"
+  },
   "a111ff2e536e8112": {
    "source": "Linux <g1>x86-64</g1>",
    "text": "Linux <g1>x86-64</g1>"
@@ -5925,6 +6045,10 @@
   "a6ce09b9c1c7e4cf": {
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
+  },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "它的工作方式：Windows 绑定适配器自己的地址。然后 Windows 只通过该适配器发送这些数据包（其强主机模型）。Linux 绑定设备本身（Linux 5.7 或更高版本），macOS 绑定接口。适配器不具备的地址类型（IPv4-only VPN 上的 IPv6）将被拒绝，而不会绕过它发送。"
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6170,6 +6294,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>类别</g1> — 根据文件类型（压缩文件、文档、音乐、程序、视频或常规）选择。每个类别都有自己的文件夹。<g2>+</g2> 旁边可创建新类别。"
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>网络适配器</g1> — 默认是<g2>任何（系统选择）</g2>。选择一个适配器，通常是您的 VPN 适配器，MDM 打开的每个连接都将通过它发出，否则不发出。这包括下载、FTP、您选择的 DNS、MDM 自己的下载和更新检查。它起到一个终止开关的作用：当适配器断开连接或 VPN 关闭时，不会通过您的正常连接发出任何内容。正在进行的下载会显示“……未连接”并停止，当适配器恢复时会重新开始。列表下方的行显示适配器的地址，或者显示它未连接。"
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "点击 <g1>查找</g1>。第一个匹配项将被选中。"
@@ -6413,6 +6541,10 @@
   "b2e253fd75c1763a": {
    "source": "<g1>Move a column:</g1> drag its title sideways.",
    "text": "<g1>移动列：</g1>拖动其标题横向移动。"
+  },
+  "b2fc02b26cb8300d": {
+   "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
+   "text": "安装或更新gallery-dl，用于图片库：其校验和列表会根据作者的签名密钥进行检查，程序会根据该列表进行检查（Windows和Linux x86-64；其他地方请自行安装）。"
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -6910,6 +7042,10 @@
    "source": "From the clipboard",
    "text": "从剪贴板"
   },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "Windows 上的 torrent；"
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -6953,6 +7089,10 @@
   "c3b2f678a0ea5986": {
    "source": "A connection that is far slower than the others is dropped and opened again.",
    "text": "比其他连接慢得多的连接会被断开并重新打开。"
+  },
+  "c3da286564016a74": {
+   "source": "Which addresses open the gallery window",
+   "text": "哪些地址会打开图库窗口"
   },
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
@@ -7258,9 +7398,17 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "在<g1>下载文件信息</g1>中，点击<g2>稍后下载</g2>。"
   },
+  "cce4b744dcc264df": {
+   "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
+   "text": "（可选）在<g1>最多文件数</g1>中输入一个数字，只下载网站列出的前几张图片。在大多数网站上，这些是最新图片。留空则下载所有图片。"
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "想要字幕？在<g1>字幕</g1>中选择一种语言。它们会保存在视频旁边，如果您勾选<g2>将它们放入视频</g2>，则会保存在视频内部（参见<g3>字幕</g3>）。"
+  },
+  "cd259ac663c10ccb": {
+   "source": "Download a gallery",
+   "text": "下载图库"
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -7654,6 +7802,10 @@
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
    "text": "打开<x1/>（代码在<g2><x3/></g2>中）。"
   },
+  "d880c385e71b0520": {
+   "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
+   "text": "图库会在列表中占据一行。其大小会随着图片的到来而增加，日志会显示已保存的数量。每张图片都像任何下载一样，被标记为从互联网下载。"
+  },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",
    "text": "<g1>Enter 键执行两项操作</g1>：当“取消”或复选框获得焦点时，Enter 键也会按下“确定”。"
@@ -7894,6 +8046,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>旧版 MDM？</g1> 更新 MDM：较新的扩展程序可能具有旧版辅助程序不知道的 ID。"
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "（隐式 TLS；<x1/> 与 TLS 正常）。"
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "正在运行的队列会按列表顺序启动下载，每次启动几个（默认四个）。当一个下载失败时，它会移到队列末尾，并在30秒后再次尝试。当没有可下载的内容时，队列停止。"
@@ -7901,10 +8057,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "恢复中断的下载"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。<x6/> 选择 DNS：<x7/>（默认）；服务及其查询方式，<x8/>、<x9/>、<x10/>、<x11/>、<x12/>；DNS 服务器地址，<x13/>；或 DNS-over-HTTPS 地址。它从不回退到系统 DNS。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8338,6 +8490,10 @@
    "source": "x86_64.dmg",
    "text": "x86_64.dmg"
   },
+  "edc9abcb08e77b81": {
+   "source": "<g1><g2>Image galleries</g2></g1> — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.",
+   "text": "<g1><g2>图片库</g2></g1> — 使用 gallery-dl 下载图片库中的图片（Wikimedia Commons、Flickr、DeviantArt 等）。"
+  },
   "edf69d8463a4ea4c": {
    "source": "<g1></g1>Free",
    "text": "<g1></g1>免费"
@@ -8430,6 +8586,10 @@
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
    "text": "是。MDM自带一个MCP服务器，misterdownloadmanager-mcp：将其添加到Claude Desktop、Claude Code、Cursor、VS Code或其他支持MCP的助手，您就可以用自己的话要求它列出、添加、暂停、恢复或删除下载。它只适用于您电脑上的MDM，并且需要启用自动化API。请参阅AI助手。"
   },
+  "f01bb992070dab45": {
+   "source": "Image galleries — Mister Download Manager help",
+   "text": "图片图库 — Mister Download Manager 帮助"
+  },
   "f0367ba56d9b43fa": {
    "source": "Mister Download Manager — free download manager and IDM alternative",
    "text": "Mister Download Manager — 免费下载管理器和 IDM 替代品"
@@ -8477,6 +8637,10 @@
   "f20112b73092bc18": {
    "source": "Installer",
    "text": "安装程序"
+  },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "视频页面（yt-dlp 无法绑定到适配器）；"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
@@ -8913,6 +9077,10 @@
   "ff20db8e8bec6162": {
    "source": "On the first start MDM asks for the language; see <g1>Languages</g1>.",
    "text": "首次启动时，MDM 会询问语言；请参阅<g1>语言</g1>。"
+  },
+  "ff26f3ab22a86c09": {
+   "source": "installs or updates gallery-dl, verified in the same way.",
+   "text": "安装或更新 gallery-dl，以相同方式进行验证。"
   },
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",

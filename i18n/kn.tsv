@@ -307,7 +307,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ಆಮದು ಮೂಲಕ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ರದ್ದುಮಾಡಿ
@@ -374,6 +374,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dl ನೊಂದಿಗೆ ವಿಳಾಸವನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -619,6 +624,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" ಅನ್ನು ಮೊದಲಿನಿಂದ ಮತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡುವುದೇ? ಹೊಸ ಡೌನ್‌ಲೋಡ್ ಪೂರ್ಣಗೊಂಡಾಗ ಪೂರ್ಣಗೊಂಡ ಫೈಲ್ ಅನ್ನು ಬದಲಾಯಿಸಲಾಗುತ್ತದೆ.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	ಗ್ಯಾಲರಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ಡೌನ್‌ಲೋಡ್ ಪೂರ್ಣಗೊಂಡಿದೆ
@@ -643,7 +652,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB ಗಿಂತ ಹೆಚ್ಚು ಡೌನ್‌ಲೋಡ್ ಮಾಡಬೇಡಿ\nಪ್ರತಿ {hours} ಗಂಟೆಗಳಿಗೆ
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	ಈಗ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. window title in the Options window
@@ -688,6 +697,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ಮತ್ತು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ (ಸುಮಾರು 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ಮತ್ತು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -757,6 +770,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ಇಮೇಲ್
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	ಖಾಲಿ: ಅವೆಲ್ಲವೂ. ಹೆಚ್ಚಿನ ಸೈಟ್‌ಗಳಲ್ಲಿ ಹೊಸವುಗಳು ಮೊದಲು ಬರುತ್ತವೆ.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -866,6 +883,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ಫೈಲ್‌ಗಳು ಈಗಾಗಲೇ ಇವೆ
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	ಹೆಚ್ಚೆಂದರೆ ಫೈಲ್‌ಗಳು
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -936,6 +957,10 @@
 #, machine
 	Friday	ಶುಕ್ರವಾರ
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	ಗ್ಯಾಲರಿಯಿಂದ (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ನಿಂದ
 #. message or event log entry in the main window
@@ -960,6 +985,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	ಗ್ಯಾಲರಿಗಳು gallery-dl ಅನ್ನು ಬಳಸುತ್ತವೆ (ಸುಮಾರು 23 MB, ಅದರ ಸಹಿಯ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	ಗ್ಯಾಲರಿಗಳು gallery-dl ಅನ್ನು ಬಳಸುತ್ತವೆ: ಅದನ್ನು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಪ್ಯಾಕೇಜ್‌ಗಳೊಂದಿಗೆ (Homebrew, pip) ಸ್ಥಾಪಿಸಿ, ನಂತರ ಸಹಾಯಕರ ವಿಭಾಗದಲ್ಲಿ ಅದನ್ನು ಆಯ್ಕೆಮಾಡಿ.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl ಈ ಗ್ಯಾಲರಿಯ ಫೈಲ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಬಹುದು.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ಈ ವಿಳಾಸವನ್ನು ಓದಲು ಸಾಧ್ಯವಿಲ್ಲ. ಬದಲಿಗೆ ಅದನ್ನು ಫೈಲ್ ಆಗಿ ಸೇರಿಸಿ (URL ಸೇರಿಸಿ).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ಸ್ಥಾಪಿಸಿಲ್ಲ (ಗ್ಯಾಲರಿಯ ವಿಳಾಸದೊಂದಿಗೆ URL ಸೇರಿಸಿ ಅದನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -997,7 +1040,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	ಸಹಾಯ
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	ಸಹಾಯಕರು
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1078,6 +1125,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ಅನ್ನು ಸ್ಥಾಪಿಸಿ
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl ಅನ್ನು ಸ್ಥಾಪಿಸಿ
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1144,7 +1195,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	ಕೊನೆಯ ಪ್ರಯತ್ನ {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1600,7 +1651,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	ಪೂರ್ಣಗೊಂಡ ನಂತರದ ಆಯ್ಕೆಗಳು
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ಪುಟ ವಿಳಾಸ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1820,7 +1871,7 @@
 #. text in a dialog box
 #, machine
 	Save As	ಹೀಗೆ ಉಳಿಸಿ
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	ಇಲ್ಲಿಗೆ ಉಳಿಸಿ
@@ -2088,6 +2139,11 @@
 #. event log entry, past tense: the download started (just now)
 #, machine
 	Started	ಪ್ರಾರಂಭಿಸಲಾಗಿದೆ
+#. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} ನೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸಲಾಗಿದೆ
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -2716,10 +2772,6 @@
 #. category name: video files
 #, machine
 	Video	ವೀಡಿಯೊ
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	ವೀಡಿಯೊ ಸಹಾಯಕರು
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ವೀಡಿಯೊ ಹುಡುಕಾಟಗಳು yt-dlp ಅನ್ನು ಬಳಸುತ್ತವೆ (ಸುಮಾರು 23 MB, ಅದರ ಸಹಿಯ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ).
@@ -2974,7 +3026,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ಆಯ್ಕೆಮಾಡಿದ ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ ({adapter}) ಮೂಲಕ ಇನ್ನೂ ಹೋಗಲು ಸಾಧ್ಯವಿಲ್ಲ
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine

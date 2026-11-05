@@ -17,6 +17,8 @@ use crate::{Error, Installed};
 pub enum Helper {
     YtDlp,
     Ffmpeg,
+    /// Image galleries (#58).
+    GalleryDl,
 }
 
 impl Helper {
@@ -24,6 +26,7 @@ impl Helper {
         match self {
             Helper::YtDlp => "yt-dlp",
             Helper::Ffmpeg => "ffmpeg",
+            Helper::GalleryDl => "gallery-dl",
         }
     }
 }
@@ -34,6 +37,12 @@ struct Programs {
     ytdlp: Option<Installed>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     ffmpeg: Option<Installed>,
+    #[serde(
+        rename = "gallery-dl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    gallery_dl: Option<Installed>,
 }
 
 const FILE: &str = "programs.json";
@@ -62,6 +71,7 @@ fn slot(p: &mut Programs, h: Helper) -> &mut Option<Installed> {
     match h {
         Helper::YtDlp => &mut p.ytdlp,
         Helper::Ffmpeg => &mut p.ffmpeg,
+        Helper::GalleryDl => &mut p.gallery_dl,
     }
 }
 
@@ -96,7 +106,7 @@ pub fn forget(dir: &Path, h: Helper) -> Result<(), Error> {
 fn version_of(h: Helper, exe: &Path) -> Result<String, Error> {
     let mut cmd = Command::new(exe);
     cmd.arg(match h {
-        Helper::YtDlp => "--version",
+        Helper::YtDlp | Helper::GalleryDl => "--version",
         Helper::Ffmpeg => "-version",
     });
     let out = crate::proc::output(cmd, h.name(), Duration::from_secs(20))
@@ -104,11 +114,12 @@ fn version_of(h: Helper, exe: &Path) -> Result<String, Error> {
     parse_version(h, &String::from_utf8_lossy(&out)).ok_or(Error::NotTheProgram(h.name()))
 }
 
-/// yt-dlp prints its version alone (`2026.10.26`); ffmpeg starts with `ffmpeg version 8.0 …`.
+/// yt-dlp and gallery-dl print their version alone (`2026.10.26`, `1.32.19`); ffmpeg starts
+/// with `ffmpeg version 8.0 …`.
 fn parse_version(h: Helper, out: &str) -> Option<String> {
     let first = out.lines().next()?.trim();
     let v = match h {
-        Helper::YtDlp => first,
+        Helper::YtDlp | Helper::GalleryDl => first,
         Helper::Ffmpeg => first
             .strip_prefix("ffmpeg version ")?
             .split_whitespace()
@@ -173,11 +184,13 @@ mod tests {
             &Programs {
                 ytdlp: Some(mine.clone()),
                 ffmpeg: Some(mine.clone()),
+                gallery_dl: Some(mine.clone()),
             },
         )
         .unwrap();
         assert_eq!(crate::installed(dir.path()), Some(mine.clone()));
         assert_eq!(crate::ffmpeg::installed(dir.path()), Some(mine.clone()));
+        assert_eq!(crate::gallery::installed(dir.path()), Some(mine.clone()));
         let net = mdm_engine::Options::default();
         assert_eq!(
             crate::install_latest(dir.path(), &net, None).await.unwrap(),
@@ -189,7 +202,17 @@ mod tests {
                 .unwrap(),
             mine
         );
+        assert_eq!(
+            crate::gallery::install_latest(dir.path(), &net, None)
+                .await
+                .unwrap(),
+            mine
+        );
         assert!(!dir.path().join("yt-dlp").exists(), "nothing downloaded");
+        assert!(
+            !dir.path().join("gallery-dl").exists(),
+            "nothing downloaded"
+        );
     }
 
     #[test]
@@ -220,6 +243,7 @@ mod tests {
                 version: "8.0".into(),
                 exe: exe.clone(),
             }),
+            gallery_dl: None,
         };
         write(dir.path(), &p).unwrap();
         assert_eq!(

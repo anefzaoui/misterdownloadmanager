@@ -226,7 +226,7 @@
 	by batch download	by batch download
 #. message or event log entry in the main window
 	by import	by import
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
@@ -274,6 +274,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 	Checking for updates...	Checking for updates...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+	Checking the address with gallery-dl...	Checking the address with gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -451,6 +455,9 @@
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Download "{name}" again from the start? A finished file is replaced when the new download completes.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+	Download a gallery	Download a gallery
 #. window title in a dialog box; text in a dialog box; text in the Options window
 	Download complete	Download complete
 #. text in the Options window
@@ -468,7 +475,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 	Download no more than {mb} MBytes\nevery {hours} hours	Download no more than {mb} MBytes\nevery {hours} hours
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 	Download Now	Download Now
 #. window title in the Options window
 #. window title: the download button the extension shows over videos
@@ -501,6 +508,9 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying ffmpeg (about 80 MB)...	Downloading and verifying ffmpeg (about 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+	Downloading and verifying gallery-dl...	Downloading and verifying gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying yt-dlp...	Downloading and verifying yt-dlp...
@@ -552,6 +562,9 @@
 	Edit...	Edit...
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	Email
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+	Empty: all of them. On most sites the newest come first.	Empty: all of them. On most sites the newest come first.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 	End and restart MDM	End and restart MDM
@@ -630,6 +643,9 @@
 	Files	Files
 #. window title in a dialog box
 	Files already there	Files already there
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+	Files at most	Files at most
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 	Files go to: {folder}	Files go to: {folder}
@@ -680,6 +696,9 @@
 #. text in the Scheduler window
 	Friday	Friday
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+	from a gallery (gallery-dl)	from a gallery (gallery-dl)
+#. message or event log entry in the main window
 	from a magnet link	from a magnet link
 #. message or event log entry in the main window
 	from a page (yt-dlp)	from a page (yt-dlp)
@@ -696,6 +715,19 @@
 	From:	From:
 #. checkbox in the Options window
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galleries use gallery-dl (about 23 MB, checked against its signature).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.
+#. text in gallerydlg.rs
+	gallery-dl can download this gallery's files.	gallery-dl can download this gallery's files.
+#. text in gallerydlg.rs
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl can't read this address. Add it as a file instead (Add URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl is not installed (Add URL with a gallery's address installs it)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -724,7 +756,10 @@
 #. button in the Options window
 #. noun: button that opens the help
 	Help	Help
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+	Helpers	Helpers
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 	Helpers...	Helpers...
@@ -782,6 +817,9 @@
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	Install ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+	Install gallery-dl	Install gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Install yt-dlp
@@ -829,7 +867,7 @@
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 	Last try  {last}	Last try  {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 	Later	Later
@@ -1154,7 +1192,7 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 	Options on completion	Options on completion
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 	Page address	Page address
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	Password
@@ -1315,7 +1353,7 @@
 	Saturday	Saturday
 #. text in a dialog box
 	Save As	Save As
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 	Save to	Save to
 #. group box title in the Options window
@@ -1506,6 +1544,10 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 	Started	Started
+#. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+	Started with gallery-dl {version}	Started with gallery-dl {version}
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 	Started with yt-dlp {version} ({format})	Started with yt-dlp {version} ({format})
@@ -1960,9 +2002,6 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-	Video helpers	Video helpers
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
@@ -2152,7 +2191,7 @@
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} can't go through a chosen network adapter ({adapter}) yet
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 	{what} could not be installed: {error}	{what} could not be installed: {error}

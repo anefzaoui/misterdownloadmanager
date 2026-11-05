@@ -307,7 +307,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	permezz ta' importazzjoni
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Ikkanċella
@@ -374,6 +374,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Qed jiċċekkja għal aġġornamenti...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Qed jiġi ċċekkjat l-indirizz b'gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -619,6 +624,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Niżżel "{name}" mill-ġdid mill-bidu? Fajl lest jiġi sostitwit meta t-tniżżil il-ġdid jitlesta.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Niżżel gallerija
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Tniżżil lest
@@ -643,7 +652,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Niżżel mhux aktar minn {mb} MBytes\nkull {hours} siegħa
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Niżżel Issa
 #. window title in the Options window
@@ -688,6 +697,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Qed jitniżżel u jiġi vverifikat ffmpeg (madwar 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Qed jitniżżel u jiġi vverifikat gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -757,6 +770,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Email
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Voja: kollha. Fuq il-biċċa l-kbira tas-siti l-aktar ġodda jiġu l-ewwel.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -866,6 +883,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Fajls diġà jeżistu
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Fajls l-aktar
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -936,6 +957,10 @@
 #, machine
 	Friday	Il-Ġimgħa
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	minn gallerija (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	minn link manjetiku
 #. message or event log entry in the main window
@@ -960,6 +985,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Il-galleriji jużaw gallery-dl (madwar 23 MB, iċċekkjati kontra l-firma tagħha).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Il-galleriji jużaw gallery-dl: installah bil-pakketti tas-sistema tiegħek (Homebrew, pip), imbagħad agħżlu f'Helpers.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl jista' jniżżel il-fajls ta' din il-gallerija.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ma jistax jaqra dan l-indirizz. Żidu bħala fajl minflok (Żid URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl mhux installat (Żid URL b'indirizz ta' gallerija jinstallah)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -997,7 +1040,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Għajnuna
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Helpers
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1078,6 +1125,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Installa ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Installa gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1144,7 +1195,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	L-aħħar prova {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1600,7 +1651,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Għażliet mat-tlestija
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Indirizz tal-paġna
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1820,7 +1871,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Issejvja Bħala
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Issejvja f'
@@ -2088,6 +2139,11 @@
 #. event log entry, past tense: the download started (just now)
 #, machine
 	Started	Beda
+#. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Beda b'gallery-dl {version}
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -2716,10 +2772,6 @@
 #. category name: video files
 #, machine
 	Video	Vidjo
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Għajnuniet tal-vidjo
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	It-tfittxijiet tal-vidjo jużaw yt-dlp (madwar 23 MB, iċċekkjati kontra l-firma tiegħu).
@@ -2974,7 +3026,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ma jistax jgħaddi minn adapter tan-netwerk magħżul ({adapter}) għadu
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine

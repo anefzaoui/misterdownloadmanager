@@ -22,6 +22,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Image galleries** ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58)): a
+  gallery's address in Add URL (a Wikimedia Commons category, a Flickr album, a DeviantArt or
+  Imgur gallery and more) opens **Download a gallery**, which downloads its pictures with
+  gallery-dl into a folder of their own, all of them or the first N. Started again, a gallery
+  fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its
+  releases only when signed by its author's key, or your own copy (Helpers). On the command line:
+  `install-gallery-dl` and `gallery-get`.
 - **The built-in categories are yours to change** ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93)):
   Compressed, Documents, Music, Programs and Video can be renamed, given other file types and
   deleted, like your own categories (right-click → Properties or Delete). A renamed category keeps
