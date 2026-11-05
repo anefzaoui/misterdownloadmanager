@@ -72,6 +72,20 @@ enum Cmd {
     /// Install (or update) ffmpeg, for the video qualities that merge video and audio: BtbN's
     /// LGPL build, checked against its release's SHA-256 list (Windows; elsewhere the system's).
     InstallFfmpeg,
+    /// Install (or update) gallery-dl for image galleries: its checksum list is verified against
+    /// its author's signing key, the program against that list (Windows and Linux x86-64).
+    InstallGalleryDl,
+    /// Download an image gallery's files with gallery-dl (needs `install-gallery-dl`).
+    GalleryGet {
+        /// The gallery's address (a Wikimedia Commons category, a Flickr album, ...).
+        url: String,
+        /// Folder to save into: a folder named after the gallery is made there.
+        #[arg(short, long, default_value = ".")]
+        output: PathBuf,
+        /// At most this many files (the first the site lists).
+        #[arg(long)]
+        limit: Option<u64>,
+    },
     /// What video a page holds, and the choices to download (needs `install-ytdlp`).
     VideoInfo {
         /// The page's address (YouTube, Vimeo, ...).
@@ -82,8 +96,10 @@ enum Cmd {
         /// The page's address.
         url: String,
         /// Which quality: a choice's selector from `video-info` (e.g. "b[height=360]"); "b" is
-        /// the best single file; "mp3:320", "mp3:256", "mp3:192" or "mp3:128" the sound as an
-        /// MP3 at that bitrate, "mp3:0" at its best variable one (MP3 needs ffmpeg).
+        /// the best single file; "ba" the sound alone as the site has it (not converted);
+        /// "mp3:320", "mp3:256", "mp3:192" or "mp3:128" the sound as an MP3 at that bitrate,
+        /// "mp3:0" at its best variable one; "opus:" as Opus; "flac:" as FLAC (lossless, but it
+        /// can't add quality a lossy source doesn't have). Conversions need ffmpeg.
         #[arg(short, long, default_value = "b")]
         format: String,
         /// Folder to save into.
@@ -103,6 +119,35 @@ enum Cmd {
         /// (elsewhere video pages are refused while an adapter is chosen).
         #[arg(long)]
         adapter: Option<String>,
+    },
+    /// The videos of a playlist or a channel, listed as they come (needs `install-ytdlp`).
+    PlaylistInfo {
+        /// The playlist's or channel's address.
+        url: String,
+        /// The first entry (from 1).
+        #[arg(long, default_value_t = 1)]
+        from: u64,
+        /// How many entries at most (none: to the end of the list).
+        #[arg(long)]
+        count: Option<u64>,
+    },
+    /// Download a playlist's or channel's videos one after another (needs `install-ytdlp`).
+    PlaylistGet {
+        /// The playlist's or channel's address.
+        url: String,
+        /// One quality for all: a selector such as "bv*[height<=720]+ba/b[height<=720]", "ba",
+        /// "mp3:0" (as for `video-get`); by default each video's best.
+        #[arg(short, long, default_value = "bv*+ba/b")]
+        format: String,
+        /// Folder to save into: a folder named after the list is made there.
+        #[arg(short, long, default_value = ".")]
+        output: PathBuf,
+        /// The first entry (from 1).
+        #[arg(long, default_value_t = 1)]
+        from: u64,
+        /// How many entries at most (none: to the end of the list).
+        #[arg(long)]
+        count: Option<u64>,
     },
     /// Make a .torrent of a file or folder (no trackers; peers find it through the DHT).
     TorrentCreate {
@@ -351,11 +396,85 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             }
             Ok(())
         }
+        Cmd::InstallGalleryDl => {
+            let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+            let i = mdm_tools::gallery::install_latest(&dir, &mdm_tools::net(Proxy::System), None)
+                .await?;
+            if json {
+                emit(json!({ "tool": "gallery-dl", "version": i.version, "path": i.exe }));
+            } else {
+                println!(
+                    "gallery-dl {} verified and installed: {}",
+                    i.version,
+                    i.exe.display()
+                );
+            }
+            Ok(())
+        }
+        Cmd::GalleryGet { url, output, limit } => {
+            use mdm_tools::video::State;
+            let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+            let tool = mdm_tools::gallery::installed(&dir).ok_or_else(|| {
+                anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl")
+            })?;
+            if !mdm_tools::gallery::handles(&tool.exe, &url)? {
+                anyhow::bail!("gallery-dl can't read this address");
+            }
+            let name = mdm_tools::gallery::name_of(&url::Url::parse(&url)?);
+            let folder = output.join(name);
+            let ask = mdm_tools::gallery::Ask { limit, rate: None };
+            let job = mdm_tools::gallery::GalleryJob::start(
+                &tool.exe,
+                &url,
+                &folder,
+                &ask,
+                &Default::default(),
+            )?;
+            let p = loop {
+                let p = job.progress();
+                if p.state != State::Running {
+                    break p;
+                }
+                if !json {
+                    eprint!("\r{} bytes so far", p.downloaded);
+                }
+                tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+            };
+            if !json {
+                eprintln!();
+            }
+            for (_, e) in &p.events {
+                eprintln!("{e}");
+            }
+            match p.state {
+                State::Done(f) => {
+                    if json {
+                        emit(json!({ "folder": f, "bytes": p.downloaded }));
+                    } else {
+                        println!("saved into {}", f.display());
+                    }
+                    Ok(())
+                }
+                State::Failed(e) => anyhow::bail!(e),
+                _ => anyhow::bail!("stopped"),
+            }
+        }
         Cmd::VideoInfo { url } => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
-            let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
+            let v = match mdm_tools::resolve::look_up(&tool.exe, &url, &Default::default())? {
+                mdm_tools::resolve::Looked::Video(v) => v,
+                mdm_tools::resolve::Looked::List(l) => {
+                    let size = l.total.map_or(String::new(), |n| format!(", {n} videos"));
+                    if json {
+                        emit(json!({ "list": l.title, "total": l.total }));
+                    } else {
+                        println!("{}: a list of videos{size}; see playlist-info", l.title);
+                    }
+                    return Ok(());
+                }
+            };
             let merge = mdm_tools::ffmpeg::installed(&dir).is_some();
             let choices = mdm_tools::resolve::choices(&v, merge);
             // The subtitles a person would be offered (the automatic ones: the spoken
@@ -386,6 +505,148 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                     let auto = if s.automatic { "  --auto-subs" } else { "" };
                     println!("  {}    --subs {}{auto}", s.name, s.code);
                 }
+            }
+            Ok(())
+        }
+        Cmd::PlaylistInfo { url, from, count } => {
+            let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+            let tool = mdm_tools::installed(&dir)
+                .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
+            let to = count.map(|c| from + c.max(1) - 1);
+            let listing = mdm_tools::playlist::Listing::start(
+                &tool.exe,
+                &url,
+                &Default::default(),
+                from,
+                to,
+            )?;
+            let mut seen = 0;
+            loop {
+                tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+                let p = listing.progress();
+                for e in listing.entries_from(seen) {
+                    seen += 1;
+                    if json {
+                        emit(json!({
+                            "index": e.index, "title": e.title, "url": e.url,
+                            "duration": e.duration, "unavailable": e.unavailable,
+                        }));
+                    } else {
+                        let len = e
+                            .duration
+                            .map_or("--:--".into(), mdm_tools::playlist::clock);
+                        let gone = if e.unavailable { "  (unavailable)" } else { "" };
+                        println!("{:>6}  {len:>8}  {}  {}{gone}", e.index, e.title, e.url);
+                    }
+                }
+                if p.done {
+                    if let Some(e) = p.error {
+                        anyhow::bail!(e);
+                    }
+                    let total = p.total.map_or(String::new(), |t| format!(" of {t}"));
+                    let capped = if p.capped { " (the most kept)" } else { "" };
+                    if json {
+                        emit(
+                            json!({ "title": p.title, "listed": p.listed, "total": p.total, "capped": p.capped }),
+                        );
+                    } else {
+                        eprintln!(
+                            "{}: {} listed{total}{capped}",
+                            p.title.as_deref().unwrap_or("the list"),
+                            p.listed
+                        );
+                    }
+                    return Ok(());
+                }
+            }
+        }
+        Cmd::PlaylistGet {
+            url,
+            format,
+            output,
+            from,
+            count,
+        } => {
+            let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+            let tool = mdm_tools::installed(&dir)
+                .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
+            let ffmpeg = mdm_tools::ffmpeg::installed(&dir).map(|f| f.exe);
+            let to = count.map(|c| from + c.max(1) - 1);
+            let listing = mdm_tools::playlist::Listing::start(
+                &tool.exe,
+                &url,
+                &Default::default(),
+                from,
+                to,
+            )?;
+            while !listing.progress().done {
+                tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+            }
+            let p = listing.progress();
+            if let Some(e) = p.error {
+                anyhow::bail!(e);
+            }
+            let entries: Vec<_> = listing
+                .entries_from(0)
+                .into_iter()
+                .filter(|e| !e.unavailable)
+                .collect();
+            // A folder named after the list, as the window makes it.
+            let folder = output.join(mdm_engine::naming::sanitize(
+                p.title.as_deref().unwrap_or("playlist"),
+            ));
+            std::fs::create_dir_all(&folder)?;
+            let ext = mdm_tools::resolve::mp3_quality(&format).map_or("mp4", |_| "mp3");
+            let n = entries.len();
+            let mut failed = 0;
+            for (i, e) in entries.iter().enumerate() {
+                let name = format!("{}.{ext}", mdm_engine::naming::sanitize(&e.title));
+                let free = mdm_engine::naming::stem_destination(&folder, &name, |_| false);
+                let stem = free
+                    .file_stem()
+                    .map(|s| s.to_string_lossy().into_owned())
+                    .unwrap_or_else(|| "video".into());
+                let job = mdm_tools::video::VideoJob::start(
+                    &tool.exe,
+                    &e.url,
+                    &format,
+                    &folder,
+                    &stem,
+                    None,
+                    ffmpeg.as_deref(),
+                    None,
+                    &Default::default(),
+                    &Default::default(),
+                )?;
+                let state = loop {
+                    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+                    let s = job.progress().state;
+                    if s != mdm_tools::video::State::Running {
+                        break s;
+                    }
+                };
+                match state {
+                    mdm_tools::video::State::Done(f) => {
+                        if json {
+                            emit(json!({ "event": "done", "index": e.index, "path": f }));
+                        } else {
+                            println!("[{}/{n}] saved {}", i + 1, f.display());
+                        }
+                    }
+                    other => {
+                        failed += 1;
+                        if json {
+                            emit(
+                                json!({ "event": "failed", "index": e.index, "error": format!("{other:?}") }),
+                            );
+                        } else {
+                            println!("[{}/{n}] failed: {} ({other:?})", i + 1, e.title);
+                        }
+                    }
+                }
+            }
+            if failed > 0 {
+                anyhow::bail!("{failed} of {n} videos failed");
             }
             Ok(())
         }
@@ -534,11 +795,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
             // A stem no file in the folder has, whatever the extension: yt-dlp takes any
             // `<stem>.*` there as its own (#32). The extension only sizes the name.
-            let ext = if mdm_tools::resolve::mp3_quality(&format).is_some() {
-                "mp3"
-            } else {
-                "mp4"
-            };
+            let ext = mdm_tools::resolve::audio_conversion(&format).map_or("mp4", |a| a.format);
             let name = format!("{}.{ext}", mdm_engine::naming::sanitize(&v.title));
             let free = mdm_engine::naming::stem_destination(&output, &name, |_| false);
             let stem = free

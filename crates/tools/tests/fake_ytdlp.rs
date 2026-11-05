@@ -24,6 +24,7 @@ fn main() -> ExitCode {
     if std::env::var_os("MDM_SUBS_RETRY_SECS").is_some() {
         checks(&me);
         job_checks(&me);
+        list_checks(&me);
         println!("fake_ytdlp: ok");
         return ExitCode::SUCCESS;
     }
@@ -82,6 +83,13 @@ fn fake_ytdlp() -> ExitCode {
             .cloned()
     };
     let has = |flag: &str| args.iter().any(|a| a == flag);
+    // #69: `https://list.example/playlist/<n>` (its size said) or `.../channel/<n>` (not).
+    if let Some(list) = args
+        .last()
+        .and_then(|u| u.strip_prefix("https://list.example/"))
+    {
+        return fake_list(list, has("-J"), after("--playlist-items"));
+    }
     if has("-J") {
         const PAGE: &str = r#"{"title": "Talk", "language": "ru", "formats": [
             {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a"}],
@@ -169,6 +177,55 @@ fn fake_ytdlp() -> ExitCode {
             out_bytes(&line);
         } else {
             println!("MDMF {video}");
+        }
+    }
+    ExitCode::SUCCESS
+}
+
+/// A list of `n` videos as yt-dlp lists them: `-J` (flat, one entry) says what it is; flat
+/// `-j` prints the entries in `--playlist-items`' range, a line each, a little at a time (as
+/// YouTube's pages of 100 come). Every 7th is private.
+fn fake_list(list: &str, whole: bool, items: Option<String>) -> ExitCode {
+    let (kind, n) = list.split_once('/').unwrap_or((list, "0"));
+    // `?fail=<i>`: the site stops answering at entry i (on a listing from the start only: listed
+    // again from there, as after a pause, it goes on).
+    let (n, fail) = match n.split_once("?fail=") {
+        Some((n, f)) => (n, f.parse::<u64>().ok()),
+        None => (n, None),
+    };
+    let n: u64 = n.parse().unwrap_or(0);
+    let count = if kind == "playlist" {
+        format!(r#", "playlist_count": {n}"#)
+    } else {
+        String::new()
+    };
+    if whole {
+        println!(r#"{{"_type": "playlist", "title": "A fake {kind}"{count}, "entries": []}}"#);
+        return ExitCode::SUCCESS;
+    }
+    let (from, to) = items
+        .as_deref()
+        .and_then(|r| r.split_once(':'))
+        .map(|(a, b)| (a.parse().unwrap_or(1), b.parse().unwrap_or(n)))
+        .unwrap_or((1, n));
+    for i in from..=to.min(n) {
+        if fail == Some(i) && from == 1 {
+            eprintln!(
+                "ERROR: [youtube:tab] Unable to download API page: HTTP Error 429: Too Many Requests"
+            );
+            return ExitCode::FAILURE;
+        }
+        let title = if i % 7 == 0 {
+            "[Private video]".to_owned()
+        } else {
+            format!("Video {i}")
+        };
+        println!(
+            r#"{{"_type": "url", "url": "https://video.example/v{i}", "title": "{title}", "duration": {}, "playlist_index": {i}, "playlist_title": "A fake {kind}"{count}}}"#,
+            60 + i % 600
+        );
+        if i % 100 == 0 {
+            std::thread::sleep(Duration::from_millis(50));
         }
     }
     ExitCode::SUCCESS
@@ -309,6 +366,85 @@ fn job_checks(me: &Path) {
         log.iter().any(|t| t
             == "The server rr1---sn-dead.googlevideo.com couldn't be reached; looking the page up again without it"),
         "{log:?}"
+    );
+}
+
+/// #69: a list is told from a video, listed whole as it comes (thousands, in order), a channel a
+/// page at a time, and a listing stops when asked, ending yt-dlp.
+fn list_checks(me: &Path) {
+    use mdm_tools::playlist::{Listing, PAGE};
+    use mdm_tools::resolve::{Looked, look_up};
+    let tools = tempfile::tempdir().unwrap();
+    let exe = fake_in(me, tools.path());
+    let none = Default::default();
+    let wait = |l: &Listing| {
+        let end = Instant::now() + Duration::from_secs(60);
+        loop {
+            let p = l.progress();
+            if p.done {
+                return p;
+            }
+            assert!(Instant::now() < end, "still listing: {p:?}");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    };
+
+    match look_up(&exe, "https://list.example/playlist/6000", &none).unwrap() {
+        Looked::List(l) => assert_eq!((l.title.as_str(), l.total), ("A fake playlist", Some(6000))),
+        Looked::Video(_) => panic!("a playlist taken for a video"),
+    }
+    assert!(matches!(
+        look_up(&exe, "https://video.example/talk", &none).unwrap(),
+        Looked::Video(_)
+    ));
+
+    // Six thousand, whole: all of them, in order, the private ones marked.
+    let t = Instant::now();
+    let l = Listing::start(&exe, "https://list.example/playlist/6000", &none, 1, None).unwrap();
+    let p = wait(&l);
+    let all = l.entries_from(0);
+    assert_eq!((all.len(), p.total, p.error), (6000, Some(6000), None));
+    assert!(all.iter().enumerate().all(|(i, e)| e.index == i as u64 + 1));
+    assert!(all[6].unavailable && !all[7].unavailable);
+    assert_eq!(l.entries_from(5990).len(), 10);
+    println!("fake_ytdlp: 6000 listed in {:?}", t.elapsed());
+
+    // A channel (no size said): a page, then the next from where it stopped, then the end.
+    let url = "https://list.example/channel/120";
+    let l = Listing::start(&exe, url, &none, 1, Some(PAGE)).unwrap();
+    let p = wait(&l);
+    assert_eq!((l.entries_from(0).len(), p.total), (PAGE as usize, None));
+    let l = Listing::start(&exe, url, &none, 101, Some(150)).unwrap();
+    wait(&l);
+    let last = l.entries_from(0);
+    assert_eq!((last.len(), last[0].index), (20, 101));
+
+    // The site stops answering part-way: what was listed stays, and why it stopped is told;
+    // listed again from the next one, it goes on to the end.
+    let url = "https://list.example/playlist/300?fail=121";
+    let l = Listing::start(&exe, url, &none, 1, None).unwrap();
+    let p = wait(&l);
+    assert_eq!(l.entries_from(0).len(), 120);
+    assert!(p.error.as_deref().unwrap_or("").contains("429"), "{p:?}");
+    let l = Listing::start(&exe, url, &none, 121, None).unwrap();
+    let p = wait(&l);
+    let rest = l.entries_from(0);
+    assert_eq!((rest.len(), rest[0].index, p.error), (180, 121, None));
+
+    // Stopped part-way: what was listed stays, and it's done at once.
+    let l = Listing::start(&exe, "https://list.example/playlist/20000", &none, 1, None).unwrap();
+    while l.progress().listed < 150 {
+        std::thread::sleep(Duration::from_millis(10));
+    }
+    l.cancel();
+    let p = l.progress();
+    let kept = l.entries_from(0).len();
+    assert!(p.done && (150..20000).contains(&kept), "{p:?}");
+    std::thread::sleep(Duration::from_millis(300));
+    assert_eq!(
+        l.entries_from(0).len(),
+        kept,
+        "nothing listed after the stop"
     );
 }
 

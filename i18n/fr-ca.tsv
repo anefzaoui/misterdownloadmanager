@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} sélectionné|{n} sélectionnés
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title} : {count} vidéo|{title} : {count} vidéos
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title} : {listed} de {total} vidéo répertoriée|{title} : {listed} de {total} vidéos répertoriées
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -121,6 +130,10 @@
 #. text in categories.rs
 #, machine
 	Add category	Ajouter une catégorie
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	Ajouter plusieurs téléchargements
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -151,6 +164,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Ajouter un torrent
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	Ajouter {n} téléchargements à la liste? Chaque vidéo obtient sa propre ligne.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -264,6 +282,14 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Audio seulement {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	Audio seulement, original
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Audio seulement, {type} original
 #. text in the Scheduler window
 #, machine
 	August	Août
@@ -277,6 +303,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Téléchargement par lot
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	Meilleure qualité
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -307,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	par importation
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Annuler
@@ -374,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Recherche de mises à jour...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Vérification de l’adresse avec gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -619,6 +654,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Télécharger « {name} » à nouveau depuis le début? Un fichier terminé est remplacé lorsque le nouveau téléchargement est terminé.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Télécharger une galerie
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Téléchargement terminé
@@ -643,7 +682,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Télécharger au maximum {mb} Mo\ntoutes les {hours} heures
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Télécharger maintenant
 #. window title in the Options window
@@ -688,6 +727,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Téléchargement et vérification de ffmpeg (environ 80 Mo)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Téléchargement et vérification de gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -757,6 +800,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Courriel
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Vide : toutes. Sur la plupart des sites, les plus récentes apparaissent en premier.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -866,6 +913,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Fichiers déjà présents
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Fichiers au maximum
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -907,6 +958,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Premier fichier :
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC conserve le son exactement, mais il ne peut pas ajouter de qualité que le son du site n’a pas : le fichier est seulement plus gros.
 #. text in categories.rs
 #, machine
 	Folder:	Dossier :
@@ -936,11 +991,19 @@
 #, machine
 	Friday	Vendredi
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	d’une galerie (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	à partir d’un lien magnet
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	à partir d’une page (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	d’une liste de lecture (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	à partir d’un fichier torrent
@@ -960,6 +1023,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Les galeries utilisent gallery-dl (environ 23 Mo, vérifié par sa signature).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Les galeries utilisent gallery-dl : installez-le avec les paquets de votre système (Homebrew, pip), puis choisissez-le dans Assistants.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl peut télécharger les fichiers de cette galerie.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ne peut pas lire cette adresse. Ajoutez-la plutôt comme un fichier (Ajouter une URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl n’est pas installé (Ajouter une URL avec l’adresse d’une galerie l’installe)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -997,7 +1078,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Aide
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Assistants
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1010,7 +1095,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Masquer les &catégories
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Masquer l’onglet
 #. text in a download's progress window; text in standard windows
@@ -1058,6 +1143,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Dans une file d’attente
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Dans les catégories : le menu de la catégorie sélectionnée
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1078,6 +1166,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Installer ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Installer gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1144,7 +1236,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Dernière tentative {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1174,10 +1266,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Liens du navigateur
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	Lister le reste
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	La liste s’est arrêtée après {n} vidéos : {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	Liste des vidéos : {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	Liste des vidéos : {n} sur {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	Listes d’adresses
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	Charger plus
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1254,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Réduire dans la zone de notification
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minutes
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1313,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Monter/descendre d’une page
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Se déplacer entre les catégories et la liste de téléchargements
 #. text in the Scheduler window
 #, machine
 	Move down	Descendre
@@ -1550,6 +1672,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Seules les vidéos MP4 et MKV peuvent contenir des sous-titres
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	Seules les {n} premières vidéos sont listées.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Uniquement lorsque j’utilise l’ordinateur
@@ -1600,7 +1727,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Options à la fin
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Adresse de la page
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1696,6 +1823,7 @@
 	Put them into the video	Les intégrer à la vidéo
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	Qualité
 #. text in the Scheduler window
@@ -1820,7 +1948,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Enregistrer sous
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Enregistrer dans
@@ -1854,7 +1982,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Sélectionner un dossier
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Sélectionner tout
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1863,7 +1992,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Sélectionner tous les téléchargements jusqu’à celui-ci
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	Ne rien sélectionner
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1943,6 +2073,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Partage
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Partage arrêté après un partage de {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Partage arrêté : le ratio de partage a atteint {ratio}
 #. text in the download list
 #, machine
 	Show	Afficher
@@ -2089,6 +2228,11 @@
 #, machine
 	Started	Démarré
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Démarré avec gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Démarré avec yt-dlp {version} ({format})
@@ -2111,9 +2255,21 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Arrêter le téléchargement à
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	Arrêter la liste
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Arrêter la file d’attente de téléchargement principale
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Arrêter le partage après un partage de
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Arrêter le partage à un ratio de partage de
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2200,15 +2356,15 @@
 	The address must be an http(s) or ftp(s) address	L'adresse doit être une adresse http(s) ou ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Les meilleures qualités et le format MP3 nécessitent ffmpeg (environ 80 Mo).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Les meilleures qualités, MP3, Opus et FLAC, nécessitent ffmpeg (environ 80 Mo).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Les meilleures qualités et le format MP3 nécessitent ffmpeg : installez-le avec le gestionnaire de paquets de votre système (ou Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Les meilleures qualités, MP3, Opus et FLAC, nécessitent ffmpeg : installez-le avec le gestionnaire de paquets de votre système (ou Homebrew).
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	le serveur mandataire du navigateur (un RPV ou une extension de serveur mandataire) demande une connexion que seule cette extension possède : utilisez l’application du RPV ou choisissez son adaptateur réseau dans Options → Serveur mandataire/SOCKS
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	Le serveur proxy du navigateur (un RPV ou une extension de proxy) demande une connexion que seule cette extension possède : utilisez l’application du RPV ou choisissez son adaptateur réseau dans Options → Proxy/SOCKS.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2458,6 +2614,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Ceci est la copie installée, pas une copie portable
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	Cette liste ne contient aucune vidéo
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2623,6 +2783,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	inconnu
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	Jusqu’à {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2720,10 +2884,6 @@
 #. category name: video files
 #, machine
 	Video	Vidéo
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Programmes d’aide vidéo
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Les recherches de vidéos utilisent yt-dlp (environ 23 Mo, vérifié par sa signature).
@@ -2735,9 +2895,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	Les pages vidéo ne peuvent pas encore l’utiliser.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	Vidéos
 #. text in the Options window
 #, machine
 	Virus checking settings	Paramètres de vérification des virus
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	Attendez la liste ou arrêtez de lister
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2955,6 +3123,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (auto)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{n} sur {total} choisi
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -2978,7 +3151,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ne peut pas encore passer par une carte réseau choisie ({adapter})
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3232,7 +3405,15 @@ key	Shift+F10	Maj+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Maj+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Maj+Haut / Maj+Bas
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

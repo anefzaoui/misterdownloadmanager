@@ -193,6 +193,9 @@ pub struct Progress {
     show_complete: bool,
     /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
     pub keep_sharing: bool,
+    /// The torrent session (the app's), for a finished torrent still shared without a `Run`:
+    /// its tabs read the session directly.
+    pub host: Option<crate::torrents::Host>,
     /// Hidden in the notification area (#63): not shown, its tab and choices kept for when it
     /// comes back (the tray's "Downloads in progress", or the download double-clicked).
     pub hidden: bool,
@@ -243,6 +246,7 @@ impl Progress {
             pending_upload: None,
             show_complete,
             keep_sharing: false,
+            host: None,
             hidden: false,
             tray: false,
             minimize_to_tray: false,
@@ -853,15 +857,15 @@ impl Progress {
 
 /// "Hide tab" (401,135,96,21) with its 1 px #f9f9f9 focus ring.
 fn hide_tab(ui: &mut Ui, o: Pos2) -> bool {
-    winui::button(
-        ui,
+    // A longer translation ("Registerkarte ausblenden") widens it to the left, into the free
+    // room right of the Remember caption (which ends before x 300).
+    let rc = winui::button_rect_for(
+        ui.painter(),
         r(o, 401.0, 135.0, 96.0, 21.0),
         "Hide tab",
-        ButtonKind::Normal,
-        false,
-        None,
-    )
-    .clicked()
+        190.0,
+    );
+    winui::button(ui, rc, "Hide tab", ButtonKind::Normal, false, None).clicked()
 }
 
 /// Right end for text on the tab page (its frame is x 18..529).
@@ -1004,7 +1008,14 @@ impl Progress {
                 dl: crate::model::Job::Torrent(run),
                 ..
             }) => Some(run.details()),
-            _ => None,
+            // Finished and still shared (no Run): the session has it all the same, so the
+            // tabs stay, the General tab's share ratio included.
+            _ => self
+                .host
+                .as_ref()
+                .and_then(|h| h.get())
+                .zip(item.torrent.as_ref())
+                .and_then(|(t, spec)| crate::torrents::details_of(&t, &spec.hash)),
         };
         let tabs = [
             // i18n: tab title: the torrent's files

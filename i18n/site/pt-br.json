@@ -66,6 +66,10 @@
    "source": "<g1>Start Download</g1> (or <g2>Enter</g2>) — download now. The progress window opens.",
    "text": "<g1>Iniciar Download</g1> (ou <g2>Enter</g2>) — baixar agora. A janela de progresso é aberta."
   },
+  "021dced76e91e8e1": {
+   "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
+   "text": "<g1>De onde ele vem:</g1> O MDM baixa o gallery-dl de seus lançamentos no Codeberg. Ele o aceita apenas quando a lista de checksums do lançamento é assinada pela chave do autor do gallery-dl, fixada no MDM, e o programa corresponde a essa lista. Ele mantém a versão anterior e nunca volta para uma mais antiga. No Windows e no Linux (x86-64) o MDM o instala; no macOS, instale-o com Homebrew (<x2/>) ou pip e escolha-o em <g3>Auxiliares...</g3>."
+  },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
    "text": "<g1>Baixe o Mister Download Manager</g1> e instale-o; mantenha <g2>Configurar integração com o navegador</g2> marcado."
@@ -77,6 +81,10 @@
   "0255cefc03d71cf4": {
    "source": "<g1><g2>Keep some speed for everything else</g2></g1> — cap MDM so browsing and calls stay smooth.",
    "text": "<g1><g2>Manter alguma velocidade para o resto</g2></g1> — limite o MDM para que a navegação e as chamadas permaneçam fluidas."
+  },
+  "02627b049e4a7241": {
+   "source": "Image galleries",
+   "text": "Galerias de imagens"
   },
   "026a1b767daa1fa2": {
    "source": "<g1>File name or part of the name</g1> — on by default.",
@@ -170,10 +178,6 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Se alguns dos arquivos do torrent já estiverem na pasta, o MDM pergunta antes de usá-los. <g1>Sim</g1> os mantém para o torrent: o MDM os verifica, mantém o que corresponde ao torrent e baixa o restante. É assim que você continua um download iniciado em outro lugar ou compartilha arquivos que já possui. <g2>Não</g2> (o padrão) volta, para que você possa escolher outra pasta e nada do que é seu seja sobrescrito."
   },
-  "045b50361ed710f2": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
-   "text": "No Firefox, o MDM vê o proxy que a própria requisição do navegador para o arquivo usou, incluindo os que uma extensão VPN escolhe para cada requisição. No Chrome, Edge, Brave, Opera e Vivaldi, ele vê as configurações de proxy do navegador."
-  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "O MDM recusa um torrent com nomes de arquivo que seu sistema não pode gravar com segurança, informa qual nome e não grava nada."
@@ -193,6 +197,10 @@
   "04ec5358d75ceff7": {
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "Aponte para um vídeo em uma página da web e um pequeno botão <g1>Baixar vídeo</g1> aparece em sua borda. Clique nele e a janela <g2>Baixar vídeo de uma página</g2> do MDM se abre e procura as qualidades que pode baixar. Ele pega o vídeo em que você clicou: seu próprio arquivo quando reproduz um, ou o stream que o player carregou (HLS ou DASH), ou a página. Players incorporados também funcionam, e seu login para o site, a página que incorpora o player e o User-Agent do seu navegador vão junto, para que vídeos para membros, ou que só são reproduzidos no site que os incorpora, possam ser baixados. Players de áudio também recebem o botão."
+  },
+  "050edc04316dd70a": {
+   "source": "On the command line",
+   "text": "Na linha de comando"
   },
   "053263e0b7c48cfa": {
    "source": "What reaches your computer",
@@ -241,10 +249,6 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> para Debian e Ubuntu, <g2>.rpm</g2> para Fedora"
-  },
-  "05bd7f3cbec0de04": {
-   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
-   "text": "Quando o navegador não usou proxy, e <g1>Sem proxy/socks</g1> está selecionado, o MDM usa as configurações de proxy do Windows, como os navegadores fazem."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -345,6 +349,10 @@
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "Não, a menos que você queira. Enquanto um torrent baixa, ele troca partes com outras pessoas, como todo cliente de torrent faz. Quando termina, ele para, como qualquer..."
+  },
+  "084f72ae121f3c2a": {
+   "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
+   "text": "<g1>Excluir</g1> remove a galeria da lista. Sua pasta e imagens permanecem, mesmo que você marque a caixa para excluir arquivos: exclua a pasta você mesmo se quiser que ela desapareça."
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -634,6 +642,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Somas de verificação SHA-256</g1><g2>para cada arquivo</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "No macOS, uma VPN que reconecta pode obter uma nova interface (<x1/> em vez de <x2/>): escolha-a novamente."
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "A extensão deve ter permissão para ler o site. Quando você a limita a alguns sites (ou <g1>Ao clicar</g1>), ela não consegue passar seu login, então deixa os downloads desses sites para o navegador."
@@ -854,6 +866,10 @@
    "source": "Find a download in a long list",
    "text": "Localizar um download em uma lista longa"
   },
+  "16cc6550e7f6316d": {
+   "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
+   "text": "No painel <g1>Categorias</g1>: o menu da categoria selecionada (<g2>Propriedades</g2>, <g3>Adicionar categoria</g3>, <g4>Excluir</g4>)"
+  },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
    "text": "<g1>O modo escuro tem os tamanhos e locais do modo claro</g1>: a barra de menus, a barra de ferramentas, os painéis, as linhas e a seleção da lista, os botões e a tabela da janela de progresso medem o mesmo em ambos os modos. Apenas as cores mudam."
@@ -902,6 +918,10 @@
    "source": "A future website's pages (not published yet)",
    "text": "Páginas de um futuro site (ainda não publicado)"
   },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "Escolha um. Sem o ffmpeg, apenas as qualidades que vêm com seu áudio são listadas, e nenhum MP3, Opus ou FLAC (o ffmpeg os cria)."
+  },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
    "text": "A janela do Agendador"
@@ -946,10 +966,6 @@
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Respostas curtas para as perguntas mais frequentes, cada uma com um link para o guia completo."
   },
-  "19bbae838750029a": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "Suas permissões e porquê: <g1>downloads</g1> para ver e entregar downloads; <g2>cookies</g2> para que downloads autenticados funcionem no MDM; <g3>nativeMessaging</g3> para se comunicar com o MDM; <g4>contextMenus</g4> para os itens do botão direito do mouse; <g5>storage</g5> para suas configurações; <g6>webRequest</g6> para ver formulários enviados e streams de vídeo carregados (não altera nada); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge e outros navegadores Chromium) para que os arquivos que o navegador abriria (um PDF) sejam baixados em vez disso, para os tipos que o MDM aceita; no Firefox, <g8>webRequestBlocking</g8> faz isso; <g9>scripting</g9> para ler os links de uma página quando você solicita, e para adicionar o botão de vídeo a páginas já abertas quando a extensão é instalada; <g10>proxy</g10> para ler qual proxy o navegador usa, para que os downloads feitos de um navegador atrás de uma VPN ou extensão de proxy também passem por ele (nunca altera o proxy do navegador); acesso a todos os sites porque downloads e vídeos podem vir de qualquer site."
-  },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
    "text": "Quando o navegador não consegue entregar um download ao MDM, ele mantém o download, então nada é perdido. O botão da barra de ferramentas da extensão mostra um ! vermelho. Clique nele…"
@@ -989,6 +1005,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 s</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "No Windows, o motor de torrents ainda não consegue se vincular a um adaptador. Então, os torrents não iniciam enquanto um é escolhido (\"torrents ainda não podem passar por um adaptador de rede escolhido no Windows\"), em vez de contorná-lo. Os nomes dos rastreadores ainda são pesquisados pelo DNS do sistema."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1157,6 +1177,10 @@
   "1dd3fad91652b5ff": {
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "Escolha o que o programa de instalação deve fazer: - <g1>Configurar integração com o navegador (Chrome, Edge, Brave, Firefox)</g1> - <g2>Abrir arquivos .torrent e links magnéticos com o Mister Download Manager</g2> - <g3>Iniciar o Mister Download Manager quando o Windows iniciar</g3> - <g4>Criar um atalho na área de trabalho</g4> (desativado, a menos que você o marque)"
+  },
+  "1e06a14724b6ac4b": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
+   "text": "O MDM baixa as imagens de uma galeria (uma categoria do Wikimedia Commons, um álbum do Flickr, uma galeria do DeviantArt, um álbum do Imgur e muitos outros) com gallery-dl..."
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -1570,6 +1594,10 @@
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it.",
    "text": "A extensão pergunta ao host quais tipos de arquivo deve capturar, verifica cada download em relação a eles e cancela o download do navegador somente depois que o aplicativo o aceitou; caso contrário, o navegador o mantém."
   },
+  "292621fe40d7beca": {
+   "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
+   "text": "Todo vídeo começa marcado. Desmarque os que você não quer, ou use <g1>Selecionar tudo</g1> e <g2>Desmarcar tudo</g2>. Vídeos privados e excluídos ficam esmaecidos e não podem ser marcados."
+  },
   "296bb6abbc747f28": {
    "source": "If it gives up and shows <g1>Error</g1>:",
    "text": "Se ele desistir e mostrar <g1>Erro</g1>:"
@@ -1722,6 +1750,10 @@
    "source": "1. Put the downloads in a queue",
    "text": "1. Coloque os downloads em uma fila"
   },
+  "2cb242c75b5117f9": {
+   "source": "A channel is listed 50 videos at a time, newest first. <g1>Load more</g1> lists the next 50.",
+   "text": "Um canal é listado 50 vídeos por vez, os mais recentes primeiro. <g1>Carregar mais</g1> lista os próximos 50."
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Procurar</g1> — abrir sua pasta no Explorador de Arquivos."
@@ -1805,6 +1837,10 @@
   "2e238218e51993b0": {
    "source": "Mac",
    "text": "Mac"
+  },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>Parar de compartilhar com uma taxa de compartilhamento de</g1> — um torrent finalizado para de ser compartilhado depois de ter enviado essa quantidade de vezes o que ele tem (2.00: o dobro). Desativado por padrão."
   },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
@@ -1990,6 +2026,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Gerenciador de downloads gratuito e de código aberto para Windows, com versões experimentais para macOS e Linux. O layout do IDM que você já conhece, 5× mais rápido em nosso benchmark: todas as conexões de uma vez, retomada segura após falhas, torrents, vídeos de páginas da web, integração com navegadores, 86 idiomas."
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "Conexões para este próprio computador (<x1/>) não são vinculadas. Um proxy neste computador carrega os downloads, e para onde ele os envia depende dele."
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "Vídeos protegidos com DRM (a maioria dos serviços de streaming pagos) não podem ser baixados, e o MDM não tenta."
@@ -2109,6 +2149,14 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "Excluir os downloads selecionados (pergunta primeiro)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "As configurações de Proxy / Socks do MDM são para downloads da web e FTP. Torrents também podem usar um SOCKS5: defina um <x1/> proxy em <g2>Opções → Proxy / Socks</g2> e ative <g3>Usar o proxy</g3> nas Configurações de torrent. O proxy cobre apenas conexões com pares e rastreadores da web, então com ele o MDM desativa o DHT, a descoberta de pares locais, as conexões de entrada e os rastreadores UDP; ele não abre nenhum soquete UDP para a rede. Se o proxy for removido de Proxy / Socks enquanto essa opção estiver ativada, os torrents não iniciarão em vez de contorná-lo."
+  },
+  "39202940bfd37e73": {
+   "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
+   "text": "<g1>Sua própria cópia:</g1> <g2>Auxiliares...</g2> (na janela da galeria ou na janela de vídeo) lista yt-dlp, ffmpeg e gallery-dl, e <g3>Usar outro programa...</g3> usa sua própria cópia de cada um em vez da do MDM."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2402,6 +2450,10 @@
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "Você clicou em <g1>Aplicar</g1> depois de definir a hora?"
   },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "O DNS do sistema consulta os nomes à sua própria maneira, e o Windows pode consultar por cada adaptador. Para manter os nomes dentro do adaptador também, escolha um DNS em <g1>Conexão</g1> → <g2>DNS</g2>: o MDM então o consulta através do adaptador."
+  },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "Mais em <g1>Conexões e velocidade</g1>."
@@ -2454,6 +2506,10 @@
    "source": "Crash reports",
    "text": "Relatórios de falhas"
   },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (cerca de 80 MB) junta o vídeo e o áudio quando um site os mantém separados, o que a maioria dos sites faz para as qualidades mais altas, e transforma o áudio em um arquivo MP3, Opus ou FLAC. Clique em <g2>Instalar ffmpeg</g2> quando o MDM o oferecer. O MDM o verifica em relação aos checksums publicados em seu lançamento."
+  },
   "42096c4007ec5640": {
    "source": "Then choose:",
    "text": "Em seguida, escolha:"
@@ -2473,6 +2529,10 @@
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
    "text": "50 MiB, servidor permite 2 conexões, 2 MB/s cada"
+  },
+  "42bd9026482d491d": {
+   "source": "gallery-dl itself",
+   "text": "O gallery-dl em si"
   },
   "432cbb1ffee89925": {
    "source": "<g1>Your downloads are yours to answer for.</g1> Respect copyright and the terms of the sites you download from. With torrents, remember that a torrent client also shares what it downloads.",
@@ -2521,6 +2581,14 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447b0cdb28e67b18": {
+   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
+   "text": "<g1>Parar</g1> encerra o gallery-dl e tudo o que ele iniciou. As imagens salvas até agora permanecem."
+  },
+  "447cc2a2f0918427": {
+   "source": "Tab",
+   "text": "Tab"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -2722,6 +2790,10 @@
    "source": "Confirm deletion of downloads",
    "text": "Confirmar exclusão de downloads"
   },
+  "4b6da766cbb50be6": {
+   "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
+   "text": "O MDM abre <g1>Baixar uma galeria</g1> em vez de baixar a página como um arquivo. Na primeira vez, clique em <g2>Instalar gallery-dl</g2>."
+  },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
    "text": "É possível baixar conteúdo da Netflix ou de outros serviços de streaming pagos? — Mister Download Manager"
@@ -2845,10 +2917,6 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Todos os idiomas de exibição que o Windows 11 oferece, escolhidos pela bandeira no primeiro início ou a qualquer momento em Exibir → Idioma. Árabe, hebraico, persa, urdu e uigur são dispostos da direita para a esquerda."
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "Tudo pode ser feito pelo teclado, e o MDM funciona com leitores de tela (como Narrator e NVDA no Windows): suas janelas, diálogos e menus informam a eles o que cada controle é e seu estado, e a lista de downloads lê o nome, status e tamanho de cada download."
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3082,6 +3150,10 @@
    "source": "A small file",
    "text": "Um arquivo pequeno"
   },
+  "55ecea9df3d3ed23": {
+   "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
+   "text": "Cole o endereço de uma lista de reprodução (<x1/>) ou dos vídeos de um canal (<x2/>) e clique em <g3>Pesquisar</g3>. Em vez das qualidades de um vídeo, a janela lista os vídeos da lista, cada um com sua duração."
+  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "Imagem anterior"
@@ -3114,9 +3186,17 @@
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "Você pode adicionar suas próprias filas no Agendador, ou com <g1>Criar nova fila</g1> no menu de clique com o botão direito de um download."
   },
+  "5704b78ea54419dd": {
+   "source": "Click <g1>Add URL</g1> and paste the gallery's address, for example <x2/>.",
+   "text": "Clique em <g1>Adicionar URL</g1> e cole o endereço da galeria, por exemplo <x2/>."
+  },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "Mude em cinco minutos"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Aguarde a lista. Ela mostra cada resolução com seu tamanho, a melhor primeiro, depois apenas o áudio: - <g1>Somente áudio, original</g1>: o arquivo do próprio site, não convertido (M4A, ou WebM com Opus dentro, como o site o serve). O melhor som que existe, no menor arquivo. - <g2>Somente áudio MP3</g2> na sua melhor taxa de bits variável (VBR) e em 320, 256, 192 e 128 kbps, para players que só aceitam MP3. - <g3>Somente áudio OPUS</g3>: um arquivo <x4/>. Quando o áudio do site já é Opus (o do YouTube geralmente é), ele é apenas movido para esse arquivo, não convertido, então nada é perdido. - <g5>Somente áudio FLAC</g5>: um arquivo <x6/> sem perdas, para uma biblioteca ou um programa que deseja FLAC. Ele não pode adicionar qualidade: o áudio do site já é compactado com perdas, e o FLAC o mantém exatamente como veio, em um arquivo várias vezes maior. A janela informa isso quando você o escolhe."
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -3278,6 +3358,10 @@
    "source": "What they do",
    "text": "O que fazem"
   },
+  "5cf4f742d0a41f0e": {
+   "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
+   "text": "baixa uma galeria para uma pasta com o nome dela. Veja <g1>Linha de comando e automação</g1>."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Escolha <g1>Ajuda → Relatar um problema</g1>. Ele abre o formulário de relatório de bug no GitHub com sua versão do MDM, seu sistema e sua versão, como o MDM foi instalado e seu idioma de interface já preenchidos. Descreva o que aconteceu, o que você esperava e os passos que o fazem acontecer. Para um download, inclua o endereço se puder compartilhá-lo, e o motivo mostrado em <g2>Status</g2>."
@@ -3337,6 +3421,10 @@
   "5e921749406a7933": {
    "source": "Reporting a problem",
    "text": "Relatando um problema"
+  },
+  "5ea1452a0cb5fbf8": {
+   "source": "Stop, delete",
+   "text": "Parar, excluir"
   },
   "5ea184bc04ad2f73": {
    "source": "See <g1>If a video won't download</g1>.",
@@ -3490,9 +3578,17 @@
    "source": "Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.",
    "text": "Encontrou um bug? Ajuda → Relatar um problema no aplicativo abre uma questão com sua versão, sistema e idioma preenchidos. Leia, depois publique."
   },
+  "61c0ff783f077afd": {
+   "source": "Get the new pictures later",
+   "text": "Obter as novas imagens mais tarde"
+  },
   "61e77c7c55f48e1e": {
    "source": "4. Decide what happens at the end (optional)",
    "text": "4. Decida o que acontece no final (opcional)"
+  },
+  "6216638d7aa4db3f": {
+   "source": "Check <g1>Save to</g1> (the General category's folder by default). The pictures go into a folder of their own there, named after the gallery.",
+   "text": "Verifique <g1>Salvar em</g1> (a pasta da categoria Geral por padrão). As imagens vão para uma pasta própria lá, nomeada de acordo com a galeria."
   },
   "62296921bc8016ff": {
    "source": "<g1>Always turn on Speed Limiter on Mister Download Manager startup</g1> turns it on each time MDM starts.",
@@ -3614,6 +3710,10 @@
    "source": "<g1>Download limits</g1> — download no more than a set amount every few hours. The same setting is in the Scheduler; see <g2>Queues and the Scheduler</g2>.",
    "text": "<g1>Limites de download</g1> — não baixar mais do que uma quantidade definida a cada poucas horas. A mesma configuração está no Agendador; veja <g2>Filas e o Agendador</g2>."
   },
+  "647d714bfaad02a5": {
+   "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
+   "text": "<g1>Adaptador de rede:</g1> assim como o yt-dlp, o gallery-dl não pode ser restrito a um único adaptador de rede. Enquanto um é escolhido (<g2>Opções → Proxy / Socks → Adaptador de rede</g2>), as galerias não iniciam."
+  },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>O projeto no GitHub</g1><g2>Código, problemas e todos os lançamentos</g2>"
@@ -3658,10 +3758,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>Propriedades</g1> — altere o nome, os tipos de arquivo e a pasta. Geral e Torrents alteram apenas a pasta. Uma categoria renomeada mantém sua pasta; uma categoria interna mantém seu nome no seu idioma até que você a renomeie."
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Verificado em Outubro de 2026 · fontes abaixo</g2>"
@@ -3673,6 +3769,10 @@
   "672ffa07db0bd6d7": {
    "source": "Reinstall MDM to restore its files.",
    "text": "Reinstale o MDM para restaurar seus arquivos."
+  },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "Para rotear <g1>tudo</g1> por outra rede, use uma VPN para o computador inteiro."
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -3702,6 +3802,10 @@
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
    "text": "O host de mensagens nativas do navegador: recebe downloads capturados da extensão e os entrega ao aplicativo"
   },
+  "687eb3437405d3f6": {
+   "source": "A picture's own address (one ending in <x1/> or <x2/>) downloads as a file, as before.",
+   "text": "O endereço de uma imagem (um que termina em <x1/> ou <x2/>) é baixado como um arquivo, como antes."
+  },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
    "text": "<g1><g2>Linha de comando e automação</g2></g1>: as chaves do IDM (<x3/>), <x4/> (arquivos, vídeos, torrents) e uma API de automação local, protegida por token, que lista, pausa, inicia, remove e exclui downloads."
@@ -3710,13 +3814,13 @@
    "source": "Is Mister Download Manager really free?",
    "text": "O Mister Download Manager é realmente gratuito?"
   },
+  "689d48a0fd15b011": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
+   "text": "Inicie uma galeria finalizada novamente (<g1>Retomar</g1>) para buscar apenas as imagens que ainda não estão em sua pasta. O gallery-dl pula as que já estão lá."
+  },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "Colocar downloads na fila para mais tarde →"
-  },
-  "690e87be87eb0c8f": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
-   "text": "<g1>Usar proxy/socks da requisição do navegador…</g1> — ativado por padrão. Um download que o MDM pega do navegador passa pelo proxy que o navegador usou para ele. Esse é o proxy que uma VPN ou extensão de proxy configurou, o proxy manual do próprio navegador ou seu script de configuração automática de proxy. Sem ele, o download sairia do seu próprio endereço, e o conteúdo limitado ao país da VPN, ou ao seu endereço, falharia. A extensão do navegador lê esse proxy e o entrega ao MDM a cada download."
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4042,10 +4146,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "O MDM pode ser executado sem sua janela de três maneiras:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "As configurações de Proxy / Socks do MDM são para downloads da web e FTP. Torrents também podem usar um SOCKS5: defina um proxy <x1/> em <g2>Opções → Proxy / Socks</g2> e ative <g3>Usar o proxy</g3> nas Configurações de torrent. O proxy cobre apenas conexões com pares e rastreadores da web, então com ele o MDM desativa a DHT, a descoberta de pares locais, as conexões de entrada e os rastreadores UDP. Se o proxy desaparecer de Proxy / Socks enquanto essa opção estiver ativada, os torrents não iniciarão em vez de contorná-lo."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Janela de progresso de um vídeo"
@@ -4077,6 +4177,10 @@
   "71fe7ca9a5b99066": {
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>Novo</g1> — crie sua própria categoria. <g2>Editar...</g2> altera a selecionada: sua pasta e, para suas próprias categorias, seu nome e tipos de arquivo."
+  },
+  "720b69230bc62f14": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
+   "text": "Baixa as imagens de uma galeria (uma categoria do Wikimedia Commons, um álbum do Flickr, ...) para uma pasta com o nome dela dentro de <x1/>; <x2/> baixa no máximo essa quantidade, as primeiras que o site lista. Se iniciado novamente, baixa apenas as novas."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4125,6 +4229,14 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1,0 s</g1><g3></g3>"
+  },
+  "72f3284ff6dd83fc": {
+   "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
+   "text": "<g1>Seta para cima</g1> / <g2>Seta para baixo</g2>, <g3>Seta para a esquerda</g3> / <g4>Seta para a direita</g4>"
+  },
+  "72f381013a320442": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
+   "text": "<g1>Usar proxy/socks de uma requisição do navegador…</g1> — ativado por padrão. Com <g2>Sem proxy/socks</g2>, faz com que o MDM use as configurações de proxy do Windows, como os navegadores fazem."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4226,6 +4338,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>Exibir → Suporte ao Modo Escuro</g1> e <g2>Exibir → Idioma</g2>."
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "Um adaptador de rede"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>Solução de problemas</g2></g1> — o que verificar quando um download falha, o navegador não entrega um download ou um agendamento não inicia."
@@ -4265,6 +4381,10 @@
   "7795e2b94936333b": {
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "seu nome de usuário, que aparece como <x1/> nos caminhos das pastas."
+  },
+  "77a30c9b7d2a6105": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
+   "text": "Tudo pode ser feito pelo teclado, e o MDM funciona com leitores de tela (como Narrador e NVDA no Windows): suas janelas, diálogos e menus informam a eles o que cada controle é e seu estado, e a lista de downloads lê o nome, status e tamanho de cada download. O painel <g1>Categorias</g1> é lido como uma árvore (cada categoria com sua contagem, aberta ou fechada, selecionada ou não), e a barra de menus e cada menu de clique direito como menus cujos itens podem ser executados a partir dali."
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -4414,6 +4534,10 @@
    "source": "Torrents",
    "text": "Torrents"
   },
+  "7c13b99aeb6bd7c5": {
+   "source": "A playlist is listed whole, as its videos come in: the line above the list says how far it is (\"Listing the videos: 1,200 of 6,000\"). <g1>Stop listing</g1> keeps the ones listed so far, and <g2>List the rest</g2> carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and <g3>List the rest</g3> tries again from there.",
+   "text": "Uma playlist é listada por completo, à medida que seus vídeos são encontrados: a linha acima da lista mostra o progresso (\"Listando os vídeos: 1.200 de 6.000\"). <g1>Parar de listar</g1> mantém os vídeos já listados, e <g2>Listar o restante</g2> continua a partir dali. Se o site parar de responder no meio do processo (o YouTube pode fazer isso se for solicitado com muita frequência), a janela informa após quantos vídeos e por que, e <g3>Listar o restante</g3> tenta novamente a partir daquele ponto."
+  },
   "7c14c17b996d02f7": {
    "source": "explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.",
    "text": "explica os termos-chave (download, fila, categoria, conexão, retomar…). Traduza cada um da mesma forma em todos os lugares, da maneira que o Windows o diz em seu idioma."
@@ -4497,6 +4621,14 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "É necessário o Firefox 140 ou posterior."
+  },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Opções → Proxy / Socks → Adaptador de rede</g1> mantém as conexões do MDM a um adaptador, geralmente de uma VPN (<g2>Opções</g2>). No Linux e macOS, o motor de torrents vincula todos os sockets a ele: peers, rastreadores, o DHT e sua porta de escuta. UPnP e descoberta de peers locais são desativados então, porque eles se comunicam com a rede local em vez de através do adaptador. Se o adaptador sumir, o motor para, e ele reinicia através do adaptador quando este volta."
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>Qualidade</g1> se aplica a cada vídeo: <g2>Melhor qualidade</g2>, <g3>Até</g3> uma altura (cada vídeo nessa altura, ou a mais próxima abaixo dela), <g4>Somente áudio, original</g4>, <g5>Somente áudio MP3</g5>, <g6>Somente áudio OPUS</g6> ou <g7>Somente áudio FLAC</g7>. Sem o ffmpeg, são oferecidas apenas as qualidades que vêm com seu som, e não MP3, Opus ou FLAC."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -4718,6 +4850,10 @@
    "source": "Was MDM installed with the setup, with <g1>Set up browser integration</g1> ticked? A portable copy can't take browser downloads. Run the setup again to add it.",
    "text": "O MDM foi instalado com o instalador, com <g1>Configurar integração com o navegador</g1> marcado? Uma cópia portátil não pode receber downloads do navegador. Execute o instalador novamente para adicioná-lo."
   },
+  "8362706ee6422965": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "O MDM baixa as imagens de uma galeria (uma categoria do Wikimedia Commons, um álbum do Flickr, uma galeria do DeviantArt, um álbum do Imgur e muitos outros) com <g1>gallery-dl</g1>, um programa gratuito que lê centenas de sites. Assim como o yt-dlp para vídeos, é um auxiliar opcional: o MDM o instala na primeira vez que você precisa dele, ou usa sua própria cópia."
+  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "Colocar downloads em uma fila"
@@ -4753,10 +4889,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Na hora de início, a fila começa sozinha. De manhã, os arquivos concluídos estão em <g1>Concluídos</g1> nas categorias."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Para rotear <g1>tudo</g1> por outra rede, use uma VPN para todo o computador. O MDM não consegue vincular torrents a um adaptador de rede no Windows."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -4946,6 +5078,10 @@
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>Compilado por GitHub Actions</g1><g2>nunca no laptop de alguém</g2>"
   },
+  "89fa61b2290f1772": {
+   "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
+   "text": "<g1>Baixar Agora</g1> adiciona cada vídeo como seu próprio download e inicia a fila principal, que executa quantos downloads você configurou no <g2>Agendador</g2> (<g3>Baixar N arquivos ao mesmo tempo</g3>). <g4>Mais tarde</g4> os adiciona sem iniciar. Adicionar mais de 500 de uma vez pede confirmação primeiro."
+  },
   "89fc33b1b049584c": {
    "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
    "text": "Ela entrega os downloads do seu navegador ao MDM com os cookies, adiciona <g1>Baixar com Mister Download Manager</g1> ao menu de clique direito e coloca um botão <g2>Baixar vídeo</g2> sobre os vídeos. Ela vem com o aplicativo, na sua pasta <x3/>, e separadamente:"
@@ -5054,6 +5190,10 @@
    "source": "3. Using it responsibly",
    "text": "3. Usando-o com responsabilidade"
   },
+  "8d6911b8ed8eb4d4": {
+   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
+   "text": "<g1>Como ele solicita:</g1> O gallery-dl solicita aos sites como o MDM, uma imagem por segundo no máximo. Os servidores do Wikimedia recusam ferramentas que solicitam mais rápido ou sem um nome. Ele não usa nenhum arquivo de configuração seu."
+  },
   "8d82bd27db3d3e27": {
    "source": "In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with <x1/>.",
    "text": "Em uma sessão Wayland (GNOME, KDE Plasma e outros), as janelas do MDM são executadas via XWayland quando este está presente: o Wayland não permite que um programa posicione suas próprias janelas, então os menus e listas suspensas do MDM seriam abertos no meio da tela. Para executá-lo no próprio Wayland, inicie-o com <x1/>."
@@ -5105,6 +5245,10 @@
   "8eb2929f09075835": {
    "source": "Download your first file →",
    "text": "Baixe seu primeiro arquivo →"
+  },
+  "8ebacedce5c28ec5": {
+   "source": "Add URL sends these to the gallery window: - Wikimedia Commons categories; - Flickr photographers and albums; - DeviantArt and ArtStation galleries; - Imgur albums; - Pixiv artists and works; - Pinterest boards and pins; - Danbooru and Gelbooru searches; - Tumblr blogs; - Bluesky profiles.",
+   "text": "Adicionar URL envia estes para a janela da galeria: - Categorias do Wikimedia Commons; - Fotógrafos e álbuns do Flickr; - Galerias do DeviantArt e ArtStation; - Álbuns do Imgur; - Artistas e obras do Pixiv; - Painéis e pins do Pinterest; - Pesquisas do Danbooru e Gelbooru; - Blogs do Tumblr; - Perfis do Bluesky."
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
@@ -5270,6 +5414,10 @@
    "source": "Keep some speed for everything else →",
    "text": "Manter alguma velocidade para todo o resto →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo finalizado: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>). <x6/> escolhe o DNS: <x7/> (o padrão); um serviço e como consultá-lo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; endereços de servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca retorna ao DNS do sistema. <x14/> envia cada conexão por um adaptador de rede, pelo nome (<x15/>, <x16/>) ou por um de seus endereços; quando não está conectado, nada é enviado e o download falha."
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "O Mister Download Manager (\"MDM\", \"o software\") e o site misterdownloadmanager.com (\"o site\") são feitos por Ahmed Nefzaoui e colaboradores (\"nós\"). Ao usar o software ou o site, você aceita estes termos. Se não aceitar, por favor, não os utilize."
@@ -5289,6 +5437,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> seleciona tudo."
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Ainda não vinculados ao adaptador, então não iniciam enquanto um é escolhido:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5358,6 +5510,10 @@
    "source": "Select the first / last download",
    "text": "Selecionar o primeiro/último download"
   },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "As abas permanecem depois que o torrent termina, enquanto ele for compartilhado."
+  },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>Todos os arquivos e etapas de instalação</g1><g2>Todas as versões no GitHub</g2>"
@@ -5389,6 +5545,10 @@
   "974c25dc825af253": {
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Instale o MDM com o instalador e mantenha <g1>Configurar integração com o navegador (Chrome, Edge, Brave, Firefox)</g1> marcado. Isso registra o auxiliar. (A cópia portátil não pode fazer isso; veja <g2>Modo portátil</g2>.)"
+  },
+  "9752e164b9235433": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
+   "text": "Suas permissões e por que: <g1>downloads</g1> para ver e entregar downloads; <g2>cookies</g2> para que downloads autenticados funcionem no MDM; <g3>nativeMessaging</g3> para se comunicar com o MDM; <g4>contextMenus</g4> para os itens do botão direito; <g5>storage</g5> para suas configurações; <g6>webRequest</g6> para ver formulários enviados e fluxos de vídeo carregados (não altera nada); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge e outros navegadores Chromium) para que os arquivos que o navegador abriria (um PDF) sejam baixados, para os tipos que o MDM aceita; no Firefox, <g8>webRequestBlocking</g8> faz isso; <g9>scripting</g9> para ler os links de uma página quando você solicita e para adicionar o botão de vídeo a páginas já abertas quando a extensão é instalada; acesso a todos os sites porque downloads e vídeos podem vir de qualquer site."
   },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
@@ -5630,6 +5790,10 @@
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "Teste de velocidade de download: IDM 6.42 vs. Mister Download Manager"
   },
+  "9e30a9dbdaf7e2cf": {
+   "source": "<g1>Shift+F10</g1> or the <g2>Menu</g2> key",
+   "text": "<g1>Shift+F10</g1> ou a tecla <g2>Menu</g2>"
+  },
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Sete downloads, cada um executado pelo menos sete vezes por ambos os aplicativos. A barra representa a metade central das execuções, a linha representa a mediana."
@@ -5722,6 +5886,10 @@
    "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
    "text": "Chrome, Edge, Brave, Opera e Vivaldi através da extensão; Firefox está em teste. Sem a extensão, copie um link e o MDM abrirá a janela de download. <g1>Mais</g1>"
   },
+  "a0f44b2041902a09": {
+   "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
+   "text": "O gallery-dl verifica o endereço no seu computador, sem acessar a internet. Quando a linha indicar <g1>gallery-dl pode baixar os arquivos desta galeria</g1>, você está pronto."
+  },
   "a111ff2e536e8112": {
    "source": "Linux <g1>x86-64</g1>",
    "text": "Linux <g1>x86-64</g1>"
@@ -5733,10 +5901,6 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Linha de comando e automação</g2></g1> — os parâmetros de linha de comando do IDM, a ferramenta <x3/> e a API de automação que outros programas podem usar."
-  },
-  "a1280a73f600eb05": {
-   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
-   "text": "Quando o navegador usa um proxy para o download (definido por uma VPN ou extensão de proxy, ou em suas configurações), a extensão passa <g1>o endereço do proxy</g1>, ou seu <g2>script de configuração automática de proxy</g2>, para que o MDM faça o download através do mesmo proxy. Ele nunca lê ou passa o login do proxy. Ele apenas observa que um proxy solicitou um, para que o MDM possa informar que não pode usar esse proxy."
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -5829,10 +5993,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "Execute <x1/> com o MDM em execução."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "Playlists e mixes"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -5937,6 +6097,10 @@
   "a6ce09b9c1c7e4cf": {
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
+  },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "Como funciona: o Windows vincula o próprio endereço do adaptador. O Windows então envia esses pacotes apenas por esse adaptador (seu modelo de host forte). O Linux vincula o próprio dispositivo (Linux 5.7 ou mais recente), e o macOS vincula a interface. Um endereço de um tipo que o adaptador não possui (IPv6 em uma VPN somente IPv4) é recusado, não enviado por ele."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6045,6 +6209,10 @@
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "Capturar downloads do seu navegador"
+  },
+  "a9efaabb8e76e3a1": {
+   "source": "Move between the <g1>Categories</g1> pane and the download list",
+   "text": "Mover entre o painel <g1>Categorias</g1> e a lista de downloads"
   },
   "a9f05b8a13e881a4": {
    "source": "<g1>Mac and Linux too.</g1> As experimental builds, if you use more than Windows.",
@@ -6181,6 +6349,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Categoria</g1> — escolhida a partir do tipo de arquivo (Compactados, Documentos, Música, Programas, Vídeo ou Geral). Cada categoria tem sua própria pasta. O <g2>+</g2> ao lado cria uma nova categoria."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Adaptador de rede</g1> — <g2>Qualquer (o sistema escolhe)</g2> é o padrão. Escolha um adaptador, geralmente o da sua VPN, e toda conexão que o MDM abrir sairá por ele, ou não sairá. Isso cobre downloads, FTP, o DNS que você escolheu, os próprios downloads do MDM e a verificação de atualização. Funciona como um kill switch: quando o adaptador se desconecta, ou a VPN é desligada, nada sai pela sua conexão normal. Os downloads em andamento param com \"… não está conectado\" e recomeçam quando o adaptador volta. A linha abaixo da lista mostra o endereço do adaptador, ou que ele não está conectado."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6425,6 +6597,10 @@
   "b2e253fd75c1763a": {
    "source": "<g1>Move a column:</g1> drag its title sideways.",
    "text": "<g1>Mover uma coluna:</g1> arraste seu título para os lados."
+  },
+  "b2fc02b26cb8300d": {
+   "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
+   "text": "Instala ou atualiza o gallery-dl, para galerias de imagens: a lista de somas de verificação é verificada com a chave de assinatura do autor, o programa com essa lista (Windows e Linux x86-64; em outros sistemas, instale você mesmo)."
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -6746,6 +6922,10 @@
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "Para números, defina <g1>Tamanho do curinga</g1> para o número de dígitos. Com 3, os arquivos são <x2/>, <x3/> e assim por diante."
   },
+  "bc9abb4c3d1c81e8": {
+   "source": "MDM lists at most 20,000 videos of one list.",
+   "text": "O MDM lista no máximo 20.000 vídeos de uma lista."
+  },
   "bcb140c9553a0b1a": {
    "source": "Light / dark",
    "text": "Claro / escuro"
@@ -6922,6 +7102,10 @@
    "source": "From the clipboard",
    "text": "Da área de transferência"
   },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "torrents no Windows;"
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -6965,6 +7149,10 @@
   "c3b2f678a0ea5986": {
    "source": "A connection that is far slower than the others is dropped and opened again.",
    "text": "Uma conexão que é muito mais lenta que as outras é descartada e aberta novamente."
+  },
+  "c3da286564016a74": {
+   "source": "Which addresses open the gallery window",
+   "text": "Quais endereços abrem a janela da galeria"
   },
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
@@ -7065,6 +7253,10 @@
   "c6a2b86a33c71c9e": {
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
    "text": "Licença paga após um teste gratuito de 30 dias<g1><g2>1</g2></g1>"
+  },
+  "c6e9110f9e7fa8a3": {
+   "source": "In the <g1>Categories</g1> pane: the next category; close or open a branch",
+   "text": "No painel <g1>Categorias</g1>: a próxima categoria; fechar ou abrir um ramo"
   },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
@@ -7270,9 +7462,17 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "Em <g1>Informações do Arquivo de Download</g1>, clique em <g2>Baixar Mais Tarde</g2>."
   },
+  "cce4b744dcc264df": {
+   "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
+   "text": "Opcionalmente, digite um número em <g1>Arquivos no máximo</g1> para baixar apenas os primeiros que o site lista. Na maioria dos sites, esses são os mais recentes. Deixe em branco para todos eles."
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Quer legendas? Escolha um idioma em <g1>Legendas</g1>. Elas são salvas ao lado do vídeo, ou dentro dele se você marcar <g2>Colocá-las no vídeo</g2> (veja <g3>Legendas</g3>)."
+  },
+  "cd259ac663c10ccb": {
+   "source": "Download a gallery",
+   "text": "Baixar uma galeria"
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -7321,6 +7521,10 @@
   "ce7c22009e3efda1": {
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "Isso é apenas para sua conta do Windows. <x1/> desfaz isso. Em seguida, carregue a extensão como acima, da pasta <x2/> do zip."
+  },
+  "ceafeaa62d5e59ca": {
+   "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
+   "text": "Os vídeos vão para uma pasta com o nome da lista, dentro de <g1>Salvar em</g1>, cada um com seu próprio título."
   },
   "cee8fa5faa008467": {
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
@@ -7454,6 +7658,10 @@
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 ou 11</g1>, 64 bits; cerca de 100 MB de espaço em disco."
   },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "Uma escolha somente de áudio (<g1>Somente áudio</g1>, MP3, Opus, FLAC) não tem legendas."
+  },
   "d2ef5107c69b686f": {
    "source": "Maturity",
    "text": "Maturidade"
@@ -7513,6 +7721,10 @@
   "d4c66a15e09e8ca8": {
    "source": "<g1>Offer to download links copied to the clipboard</g1> — when you copy a link whose file type is on the <g2>File types</g2> page, <g3>Download File Info</g3> opens with it, ready to start (or the download starts at once, with <g4>Show start download dialog</g4> off). On by default.",
    "text": "<g1>Oferecer para baixar links copiados para a área de transferência</g1> — quando você copia um link cujo tipo de arquivo está na página <g2>Tipos de arquivo</g2>, <g3>Informações do Arquivo de Download</g3> é aberto com ele, pronto para iniciar (ou o download começa imediatamente, com <g4>Mostrar diálogo de iniciar download</g4> desativado). Ativado por padrão."
+  },
+  "d4c9212e6107e470": {
+   "source": "Playlists and channels",
+   "text": "Listas de reprodução e canais"
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -7666,6 +7878,10 @@
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
    "text": "Abra <x1/> (os códigos estão em <g2><x3/></g2>)."
   },
+  "d880c385e71b0520": {
+   "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
+   "text": "A galeria recebe uma linha na lista. Seu tamanho aumenta à medida que as imagens chegam, e seu registro informa quantas foram salvas. Cada imagem é marcada como baixada da internet, como qualquer download."
+  },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",
    "text": "<g1>Enter fazia duas coisas</g1>: com Cancelar ou uma caixa de seleção focada, Enter também pressionava OK."
@@ -7757,10 +7973,6 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Sim. O MDM aceita os conhecidos parâmetros de linha de comando do IDM, vem com misterdownloadmanager-cli para baixar de um terminal e tem uma API de automação local, protegida por token, que pode listar, pausar, iniciar e remover downloads. A API fica desativada até você ativá-la. Consulte Linha de comando e automação."
-  },
-  "db74b9137912e0a2": {
-   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
-   "text": "Um proxy que pede um login que a extensão VPN se dá não pode ser compartilhado: nenhum outro programa tem esse login. O download então para e avisa, em vez de prosseguir sem o proxy. Use o próprio aplicativo da VPN ou escolha seu adaptador em <g1>Adaptador de rede</g1>."
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -7910,6 +8122,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>Um MDM mais antigo?</g1> Atualize o MDM: uma extensão mais nova pode ter um ID que um auxiliar antigo não conhece."
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(TLS implícito; <x1/> com TLS está ok)."
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "Uma fila em execução inicia seus downloads na ordem da lista, alguns por vez (quatro por padrão). Quando um falha, ele se move para o final da fila e é tentado novamente 30 segundos depois. A fila para quando não há mais nada para baixar."
@@ -7917,10 +8133,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Retomar um download interrompido"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo concluído: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>). <x6/> escolhe o DNS: <x7/> (o padrão); um serviço e como consultá-lo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; endereços de servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca retorna ao DNS do sistema."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8302,6 +8514,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "<g1>Idioma do Windows</g1>, no topo, segue o idioma de exibição do Windows. Quando o Windows usa um idioma que o MDM não tem, o MDM mostra em inglês."
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "Um torrent parado por uma dessas opções informa isso em seu log de eventos e não é compartilhado novamente quando o MDM inicia. Aumente ou desative o limite para compartilhá-lo novamente. - <g1>Limitar envio para todos os torrents para</g1> — desativado por padrão. Limita o que todos os seus torrents juntos enviam para outros pares, enquanto eles baixam e enquanto eles compartilham. O limite de envio próprio de um torrent, em sua janela de progresso, se aplica além disso. - <g2>Abrir links magnet e arquivos .torrent com Mister Download Manager</g2> — o Windows então abre links magnet em seu navegador e arquivos <x3/> no Explorer com o MDM. Isso é apenas para sua conta do Windows; um programa que você escolheu em <g4>Abrir com</g4> do Windows permanece em primeiro lugar. A configuração pode ativá-lo para você."
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "Opções"
@@ -8353,6 +8569,10 @@
   "eda0bda9e04488cf": {
    "source": "x86_64.dmg",
    "text": "x86_64.dmg"
+  },
+  "edc9abcb08e77b81": {
+   "source": "<g1><g2>Image galleries</g2></g1> — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.",
+   "text": "<g1><g2>Galerias de imagens</g2></g1> — baixe as fotos de uma galeria (Wikimedia Commons, Flickr, DeviantArt e muitas outras) com gallery-dl."
   },
   "edf69d8463a4ea4c": {
    "source": "<g1></g1>Free",
@@ -8446,6 +8666,10 @@
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
    "text": "Sim. O MDM vem com um servidor MCP, misterdownloadmanager-mcp: adicione-o ao Claude Desktop, Claude Code, Cursor, VS Code ou outro assistente que suporte MCP, e você pode pedir a ele, com suas próprias palavras, para listar, adicionar, pausar, retomar ou remover downloads. Ele funciona apenas com o MDM em seu computador e precisa que a API de automação esteja ativada. Veja Assistentes de IA."
   },
+  "f01bb992070dab45": {
+   "source": "Image galleries — Mister Download Manager help",
+   "text": "Galerias de imagens — Ajuda do Mister Download Manager"
+  },
   "f0367ba56d9b43fa": {
    "source": "Mister Download Manager — free download manager and IDM alternative",
    "text": "Mister Download Manager — gerenciador de downloads grátis e alternativa ao IDM"
@@ -8474,6 +8698,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "O certificado do servidor é verificado em relação aos certificados confiáveis do Windows (ou do sistema), como para <x1/>."
   },
+  "f10113695e758efd": {
+   "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
+   "text": "Os vídeos de uma playlist ou canal, um por linha, como aparecem na lista: posição, duração, título e endereço."
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8494,9 +8722,17 @@
    "source": "Installer",
    "text": "Instalador"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "páginas de vídeo (yt-dlp não pode ser vinculado a um adaptador);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Se o vídeo não baixar, consulte <g1>Downloads de vídeo</g1>."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Baixar um vídeo; <x1/> pega um seletor de qualidade de <x2/> (<x3/> = o melhor arquivo único; <x4/> = apenas o áudio como o site o tem, não convertido; <x5/>, <x6/>, <x7/> ou <x8/> = o áudio como MP3 nessa taxa de bits, <x9/> na sua melhor taxa variável; <x10/> = como Opus; <x11/> = como FLAC, sem perdas, mas não melhor que o áudio do site; as conversões precisam de ffmpeg). <x12/> salva legendas ao lado: códigos de idioma de <x13/> (<x14/>), ou <x15/> para todas que o uploader forneceu; <x16/> pega as legendas automáticas do site; <x17/> as coloca no vídeo (precisa de ffmpeg, MP4 ou MKV)."
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
@@ -8662,6 +8898,10 @@
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "No Chrome, Edge e Brave, você pode limitar uma extensão a alguns sites (clique com o botão direito no botão da barra de ferramentas → <g1>Isso pode ler e alterar dados do site</g1>). Em um site que ela não pode ler, a extensão não consegue passar seu login, então ela deixa o download para o navegador. Escolha <g2>Em todos os sites</g2> para permitir que o MDM assuma downloads em qualquer lugar."
   },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "Baixa os vídeos de uma playlist ou canal um após o outro, em uma pasta com o nome da lista dentro de <x1/>. <x2/> é uma qualidade para todos, como para <x3/> (por padrão, a melhor de cada vídeo; <x4/> = até 720p; <x5/> = o som original; <x6/>, <x7/>, <x8/> como para <x9/>)."
+  },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
    "text": "Ele continua enviando depois que um torrent termina?"
@@ -8677,6 +8917,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "Aguarde enquanto o MDM pesquisa a página. A lista de qualidades aparece, da melhor para a pior, com <g1>Somente áudio</g1> no final: o som como o site o oferece, e depois, com o ffmpeg (próximo passo), como um MP3 na melhor taxa de bits variável ou em 320, 256, 192 ou 128 kbps."
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>Parar de compartilhar após compartilhar por … minutos</g1> — ou depois de ter sido compartilhado por esse tempo, em todas as suas execuções. Desativado por padrão."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
@@ -8930,6 +9174,10 @@
    "source": "On the first start MDM asks for the language; see <g1>Languages</g1>.",
    "text": "Na primeira inicialização, o MDM pede o idioma; veja <g1>Idiomas</g1>."
   },
+  "ff26f3ab22a86c09": {
+   "source": "installs or updates gallery-dl, verified in the same way.",
+   "text": "instala ou atualiza o gallery-dl, verificado da mesma forma."
+  },
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
@@ -8957,6 +9205,54 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "seus endereços de download ou nomes de arquivo;"
+  },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "No Firefox, o MDM vê o proxy que a própria requisição do navegador para o arquivo usou, incluindo os que uma extensão VPN escolhe para cada requisição. No Chrome, Edge, Brave, Opera e Vivaldi, ele vê as configurações de proxy do navegador."
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Quando o navegador não usou proxy, e <g1>Sem proxy/socks</g1> está selecionado, o MDM usa as configurações de proxy do Windows, como os navegadores fazem."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Suas permissões e porquê: <g1>downloads</g1> para ver e entregar downloads; <g2>cookies</g2> para que downloads autenticados funcionem no MDM; <g3>nativeMessaging</g3> para se comunicar com o MDM; <g4>contextMenus</g4> para os itens do botão direito do mouse; <g5>storage</g5> para suas configurações; <g6>webRequest</g6> para ver formulários enviados e streams de vídeo carregados (não altera nada); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge e outros navegadores Chromium) para que os arquivos que o navegador abriria (um PDF) sejam baixados em vez disso, para os tipos que o MDM aceita; no Firefox, <g8>webRequestBlocking</g8> faz isso; <g9>scripting</g9> para ler os links de uma página quando você solicita, e para adicionar o botão de vídeo a páginas já abertas quando a extensão é instalada; <g10>proxy</g10> para ler qual proxy o navegador usa, para que os downloads feitos de um navegador atrás de uma VPN ou extensão de proxy também passem por ele (nunca altera o proxy do navegador); acesso a todos os sites porque downloads e vídeos podem vir de qualquer site."
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "Tudo pode ser feito pelo teclado, e o MDM funciona com leitores de tela (como Narrator e NVDA no Windows): suas janelas, diálogos e menus informam a eles o que cada controle é e seu estado, e a lista de downloads lê o nome, status e tamanho de cada download."
+  },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Shift+F10"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Usar proxy/socks da requisição do navegador…</g1> — ativado por padrão. Um download que o MDM pega do navegador passa pelo proxy que o navegador usou para ele. Esse é o proxy que uma VPN ou extensão de proxy configurou, o proxy manual do próprio navegador ou seu script de configuração automática de proxy. Sem ele, o download sairia do seu próprio endereço, e o conteúdo limitado ao país da VPN, ou ao seu endereço, falharia. A extensão do navegador lê esse proxy e o entrega ao MDM a cada download."
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "As configurações de Proxy / Socks do MDM são para downloads da web e FTP. Torrents também podem usar um SOCKS5: defina um proxy <x1/> em <g2>Opções → Proxy / Socks</g2> e ative <g3>Usar o proxy</g3> nas Configurações de torrent. O proxy cobre apenas conexões com pares e rastreadores da web, então com ele o MDM desativa a DHT, a descoberta de pares locais, as conexões de entrada e os rastreadores UDP. Se o proxy desaparecer de Proxy / Socks enquanto essa opção estiver ativada, os torrents não iniciarão em vez de contorná-lo."
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "Para rotear <g1>tudo</g1> por outra rede, use uma VPN para todo o computador. O MDM não consegue vincular torrents a um adaptador de rede no Windows."
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Quando o navegador usa um proxy para o download (definido por uma VPN ou extensão de proxy, ou em suas configurações), a extensão passa <g1>o endereço do proxy</g1>, ou seu <g2>script de configuração automática de proxy</g2>, para que o MDM faça o download através do mesmo proxy. Ele nunca lê ou passa o login do proxy. Ele apenas observa que um proxy solicitou um, para que o MDM possa informar que não pode usar esse proxy."
+  },
+  "a4263adda2169cf6": {
+   "source": "Playlists and mixes",
+   "text": "Playlists e mixes"
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Um proxy que pede um login que a extensão VPN se dá não pode ser compartilhado: nenhum outro programa tem esse login. O download então para e avisa, em vez de prosseguir sem o proxy. Use o próprio aplicativo da VPN ou escolha seu adaptador em <g1>Adaptador de rede</g1>."
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo concluído: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>). <x6/> escolhe o DNS: <x7/> (o padrão); um serviço e como consultá-lo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; endereços de servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca retorna ao DNS do sistema."
   }
  }
 }

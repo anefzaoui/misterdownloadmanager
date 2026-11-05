@@ -13,6 +13,14 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
+  verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
+- ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
+  tabs while it is shared ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
+- ✅ A paused or finished download no longer leaves its progress file to be written again a moment
+  later ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)), and a download
+  finishing during a save no longer fails ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116))
+- ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Downloads from a browser behind a VPN or proxy extension go through the same proxy
@@ -20,13 +28,16 @@ Everything below ships together, in one release.
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
   and the main window's Minimize, with the tray's "Downloads in progress"
   ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
+- ✅ Whole playlists and channels, one quality for all: also as the original sound, MP3, Opus or FLAC
+  ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69))
 - ✅ Choose the DNS: Cloudflare, Google, Quad9, AdGuard, NextDNS or your own, over HTTPS, TLS or
   plain, with a Test button and no silent fallback
   ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - ✅ Less memory in the notification area: under 10 MB there, and the language list's fonts let
   go when it closes ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Video downloads: subtitles, beside the video or inside it
-  ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
+  ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)); more audio choices:
+  the original track, Opus and FLAC ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70))
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
   from the internet, network switches (incoming, UPnP, port, DHT, local peers), SOCKS5 proxy and
   IP blocklist ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40))
@@ -74,7 +85,9 @@ Everything below ships together, in one release.
 - ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
   a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
   list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
-  inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102))
+  inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102));
+  the Categories pane, the menu bar and every right-click menu too, with Shift+F10 and the Menu key
+  ([#113](https://github.com/anefzaoui/misterdownloadmanager/issues/113))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
@@ -82,8 +95,7 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents, the rest: seeding limits, more torrent actions, and RSS feeds with auto-download
-  rules
+- 🔄 Torrents, the rest: more torrent actions, and RSS feeds with auto-download rules
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 
 ### Bugs being looked into
@@ -95,14 +107,6 @@ Everything below ships together, in one release.
 - 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
 
 ## Planned
-
-### Video and audio
-
-- 📋 More audio choices: FLAC, Opus, the original track
-  ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70))
-- 📋 Whole playlists and channels, also as MP3
-  ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69))
-- 📋 gallery-dl support ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 
 ### Downloads and windows
 

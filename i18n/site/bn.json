@@ -66,6 +66,10 @@
    "source": "<g1>Start Download</g1> (or <g2>Enter</g2>) — download now. The progress window opens.",
    "text": "<g1>ডাউনলোড শুরু করুন</g1> (বা <g2>Enter</g2>) — এখন ডাউনলোড করুন। অগ্রগতির উইন্ডোটি খোলে।"
   },
+  "021dced76e91e8e1": {
+   "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
+   "text": "<g1>এটি কোথা থেকে আসে:</g1> MDM কোডবার্গ-এ এর রিলিজ থেকে gallery-dl ডাউনলোড করে। এটি শুধুমাত্র তখনই গ্রহণ করে যখন রিলিজের চেকসাম তালিকা gallery-dl-এর লেখকের কী দ্বারা স্বাক্ষরিত হয়, যা MDM-এ পিন করা থাকে, এবং প্রোগ্রামটি সেই তালিকার সাথে মেলে। এটি পূর্ববর্তী সংস্করণ রাখে এবং কখনও পুরানো সংস্করণে ফিরে যায় না। Windows এবং Linux-এ (x86-64) MDM এটি ইনস্টল করে; macOS-এ, Homebrew (<x2/>) বা pip দিয়ে এটি ইনস্টল করুন এবং <g3>হেল্পার...</g3>-এ এটি নির্বাচন করুন।"
+  },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
    "text": "<g1>Mister Download Manager ডাউনলোড করুন</g1> এবং এটি ইনস্টল করুন; <g2>ব্রাউজার ইন্টিগ্রেশন সেট আপ করুন</g2> টিক দেওয়া রাখুন।"
@@ -77,6 +81,10 @@
   "0255cefc03d71cf4": {
    "source": "<g1><g2>Keep some speed for everything else</g2></g1> — cap MDM so browsing and calls stay smooth.",
    "text": "<g1><g2>অন্যান্য সবকিছুর জন্য কিছু গতি রাখুন</g2></g1> — MDM-কে সীমাবদ্ধ করুন যাতে ব্রাউজিং এবং কলগুলি মসৃণ থাকে।"
+  },
+  "02627b049e4a7241": {
+   "source": "Image galleries",
+   "text": "ছবির গ্যালারি"
   },
   "026a1b767daa1fa2": {
    "source": "<g1>File name or part of the name</g1> — on by default.",
@@ -170,10 +178,6 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "যদি টরেন্টের কিছু ফাইল আগে থেকেই ফোল্ডারে থাকে, তাহলে MDM সেগুলো ব্যবহার করার আগে জিজ্ঞাসা করে। <g1>হ্যাঁ</g1> চাপলে টরেন্টের জন্য ফাইলগুলো রাখা হয়: MDM সেগুলো পরীক্ষা করে, টরেন্টের সাথে যা মেলে তা রাখে এবং বাকিটা ডাউনলোড করে। এভাবে আপনি অন্য কোথাও শুরু করা ডাউনলোড চালিয়ে যেতে পারেন বা আপনার কাছে থাকা ফাইলগুলো শেয়ার করতে পারেন। <g2>না</g2> (ডিফল্ট) চাপলে ফিরে যাওয়া হয়, যাতে আপনি অন্য একটি ফোল্ডার বেছে নিতে পারেন এবং আপনার কোনো ফাইল ওভাররাইট না হয়।"
   },
-  "045b50361ed710f2": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
-   "text": "Firefox-এ, MDM ব্রাউজারের নিজস্ব ফাইল অনুরোধের জন্য ব্যবহৃত প্রক্সি দেখতে পায়, যার মধ্যে VPN এক্সটেনশন প্রতিটি অনুরোধের জন্য যে প্রক্সি বেছে নেয় তাও অন্তর্ভুক্ত। Chrome, Edge, Brave, Opera এবং Vivaldi-তে এটি ব্রাউজারের প্রক্সি সেটিংস দেখতে পায়।"
-  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM এমন টরেন্ট গ্রহণ করে না যার ফাইলের নাম আপনার সিস্টেম নিরাপদে লিখতে পারে না। এটি কোন নামটির সমস্যা তা জানিয়ে দেয় এবং কিছু লেখে না।"
@@ -193,6 +197,10 @@
   "04ec5358d75ceff7": {
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "একটি ওয়েব পৃষ্ঠায় একটি ভিডিওর উপর পয়েন্ট করুন এবং এর প্রান্তে একটি ছোট <g1>ভিডিও ডাউনলোড করুন</g1> বাটন দেখা যাবে। এটিতে ক্লিক করুন এবং MDM-এর <g2>একটি পৃষ্ঠা থেকে ভিডিও ডাউনলোড করুন</g2> উইন্ডোটি খোলে এবং এটি ডাউনলোড করতে পারে এমন গুণাবলী খুঁজে বের করে। এটি আপনার ক্লিক করা ভিডিওটি নেয়: যখন এটি একটি ফাইল চালায় তখন তার নিজস্ব ফাইল, অথবা প্লেয়ার লোড করা স্ট্রিম (HLS বা DASH), অন্যথায় পৃষ্ঠাটি। এমবেডেড প্লেয়ারগুলিও কাজ করে, এবং সাইটের জন্য আপনার সাইন-ইন, প্লেয়ার এমবেড করা পৃষ্ঠা এবং আপনার ব্রাউজারের User-Agent এর সাথে যায়, তাই সদস্যদের জন্য ভিডিও, বা যেগুলি কেবল এমবেড করা সাইটে চলে, সেগুলি ডাউনলোড করা যায়। সাউন্ড প্লেয়ারগুলিও বাটনটি পায়।"
+  },
+  "050edc04316dd70a": {
+   "source": "On the command line",
+   "text": "কমান্ড লাইনে"
   },
   "053263e0b7c48cfa": {
    "source": "What reaches your computer",
@@ -241,10 +249,6 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "ডেবিয়ান ও উবুন্টুর জন্য <g1>.deb</g1>, ফেডোরার জন্য <g2>.rpm</g2>"
-  },
-  "05bd7f3cbec0de04": {
-   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
-   "text": "যখন ব্রাউজার কোনো প্রক্সি ব্যবহার করেনি, এবং <g1>কোনো প্রক্সি/SOCKS নেই</g1> নির্বাচন করা হয়, তখন MDM Windows-এর প্রক্সি সেটিংস ব্যবহার করে, যেমন ব্রাউজারগুলি করে থাকে।"
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -345,6 +349,10 @@
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "না, যদি না আপনি এটি চান। একটি টরেন্ট ডাউনলোড হওয়ার সময় এটি অন্যান্য মানুষের সাথে অংশ আদান-প্রদান করে, যেমনটি প্রতিটি টরেন্ট ক্লায়েন্ট করে। এটি শেষ হলে, এটি অন্য যেকোনো ডাউনলোডের মতো থেমে যায়।"
+  },
+  "084f72ae121f3c2a": {
+   "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
+   "text": "<g1>মুছুন</g1> তালিকা থেকে গ্যালারি সরিয়ে দেয়। এর ফোল্ডার এবং ছবিগুলি থাকে, এমনকি যদি আপনি ফাইলগুলি মুছে ফেলার জন্য বাক্সটি টিক দেন: আপনি যদি এটি সরাতে চান তবে ফোল্ডারটি নিজেই মুছুন।"
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -634,6 +642,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>SHA-256 চেক্সাম</g1><g2>প্রতিটি ফাইলের জন্য</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "macOS-এ একটি VPN যা পুনরায় সংযোগ করে একটি নতুন ইন্টারফেস পেতে পারে (<x1/> এর পরিবর্তে <x2/>): এটি আবার বেছে নিন।"
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "এক্সটেনশনটিকে সাইটটি পড়ার অনুমতি দিতে হবে। যখন আপনি এটিকে কিছু সাইটে (বা <g1>ক্লিক করলে</g1>) সীমাবদ্ধ করেন, তখন এটি আপনার সাইন-ইন পাস করতে পারে না, তাই এটি সেই সাইটগুলির ডাউনলোড ব্রাউজারের জন্য রেখে দেয়।"
@@ -854,6 +866,10 @@
    "source": "Find a download in a long list",
    "text": "একটি দীর্ঘ তালিকায় একটি ডাউনলোড খুঁজুন"
   },
+  "16cc6550e7f6316d": {
+   "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
+   "text": "<g1>শ্রেণীসমূহ</g1> প্যানে: নির্বাচিত ক্যাটাগরির মেনু (<g2>বৈশিষ্ট্য</g2>, <g3>ক্যাটাগরি যোগ করুন</g3>, <g4>মুছুন</g4>)"
+  },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
    "text": "<g1>ডার্ক মোডে দিনের মোডের আকার এবং স্থান রয়েছে</g1>: মেনু বার, টুলবার, প্যান, তালিকার লাইন এবং নির্বাচন, বোতাম এবং প্রগ্রেস উইন্ডোর টেবিল উভয় মোডে একই পরিমাপের। শুধুমাত্র রঙ পরিবর্তন হয়।"
@@ -902,6 +918,10 @@
    "source": "A future website's pages (not published yet)",
    "text": "একটি ভবিষ্যতের ওয়েবসাইটের পৃষ্ঠাগুলি (এখনও প্রকাশিত হয়নি)"
   },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "একটি বেছে নিন। ffmpeg ছাড়া, শুধুমাত্র সেই গুণমানগুলি তালিকাভুক্ত করা হয় যা তাদের সাউন্ড সহ আসে, এবং কোনো MP3, Opus বা FLAC নয় (ffmpeg এগুলি তৈরি করে)।"
+  },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
    "text": "সময়সূচী উইন্ডো"
@@ -946,10 +966,6 @@
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "মানুষের সবচেয়ে বেশি জিজ্ঞাসিত প্রশ্নগুলির সংক্ষিপ্ত উত্তর, প্রতিটি সম্পূর্ণ নির্দেশিকার লিঙ্কের সাথে।"
   },
-  "19bbae838750029a": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "এর অনুমতিসমূহ, এবং কেন: ডাউনলোডগুলি দেখতে এবং হস্তান্তর করতে <g1>downloads</g1>; MDM-এ সাইন-ইন করা ডাউনলোডগুলি কাজ করার জন্য <g2>cookies</g2>; MDM-এর সাথে কথা বলার জন্য <g3>nativeMessaging</g3>; রাইট-ক্লিক আইটেমগুলির জন্য <g4>contextMenus</g4>; এর সেটিংসের জন্য <g5>storage</g5>; জমা দেওয়া ফর্ম এবং লোড করা ভিডিও স্ট্রিমগুলি দেখতে <g6>webRequest</g6> (এটি কিছুই পরিবর্তন করে না); ব্রাউজার যে ফাইলগুলি খুলবে (একটি PDF) সেগুলিকে MDM যে প্রকারগুলি গ্রহণ করে সেগুলির জন্য ডাউনলোড করার জন্য <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge এবং অন্যান্য Chromium ব্রাউজার); Firefox-এ, <g8>webRequestBlocking</g8> এটি করে; আপনি যখন অনুরোধ করেন তখন একটি পৃষ্ঠার লিঙ্কগুলি পড়ার জন্য এবং এক্সটেনশন ইনস্টল করার সময় ইতিমধ্যে খোলা পৃষ্ঠাগুলিতে ভিডিও বোতাম যোগ করার জন্য <g9>scripting</g9>; ব্রাউজার কোন প্রক্সি ব্যবহার করে তা পড়ার জন্য <g10>proxy</g10>, যাতে একটি VPN বা প্রক্সি এক্সটেনশনের পিছনে থাকা ব্রাউজার থেকে নেওয়া ডাউনলোডগুলিও এর মাধ্যমে যায় (এটি কখনোই ব্রাউজারের প্রক্সি পরিবর্তন করে না); সমস্ত সাইটে অ্যাক্সেস কারণ ডাউনলোড এবং ভিডিও যেকোনো সাইট থেকে আসতে পারে।"
-  },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
    "text": "যখন ব্রাউজার MDM-কে একটি ডাউনলোড দিতে পারে না, তখন এটি ডাউনলোডটি নিজেই রাখে, তাই কিছুই হারায় না। এক্সটেনশনের টুলবার বোতামটি তখন একটি লাল ! দেখায়। এটিতে ক্লিক করুন..."
@@ -989,6 +1005,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 সে</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Windows-এ টরেন্ট ইঞ্জিন এখনও একটি অ্যাডাপ্টারের সাথে আবদ্ধ হতে পারে না। তাই একটি অ্যাডাপ্টার নির্বাচন করা হলে টরেন্টগুলি শুরু হয় না (\"Windows-এ টরেন্টগুলি এখনও নির্বাচিত নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে যেতে পারে না\"), বরং এটি এড়িয়ে যায়। ট্র্যাকার নামগুলি এখনও সিস্টেমের DNS দ্বারা দেখা হয়।"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1157,6 +1177,10 @@
   "1dd3fad91652b5ff": {
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "সেটআপ কী করবে তা বেছে নিন: - <g1>ব্রাউজার ইন্টিগ্রেশন সেট আপ করুন (Chrome, Edge, Brave, Firefox)</g1> - <g2>.torrent ফাইল এবং ম্যাগনেট লিঙ্কগুলি Mister Download Manager দিয়ে খুলুন</g2> - <g3>Windows শুরু হলে Mister Download Manager চালু করুন</g3> - <g4>একটি ডেস্কটপ শর্টকাট তৈরি করুন</g4> (আপনি টিক না দিলে বন্ধ থাকে)"
+  },
+  "1e06a14724b6ac4b": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
+   "text": "MDM gallery-dl ব্যবহার করে একটি গ্যালারির ছবি ডাউনলোড করে (একটি উইকিমিডিয়া কমন্স ক্যাটাগরি, একটি ফ্লিকার অ্যালবাম, একটি ডেভিয়ান্টআর্ট গ্যালারি, একটি ইমগুর অ্যালবাম এবং আরও অনেক কিছু)..."
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -1570,6 +1594,10 @@
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it.",
    "text": "এক্সটেনশন হোস্টকে জিজ্ঞাসা করে কোন ফাইল প্রকারগুলি নিতে হবে, সেগুলির বিরুদ্ধে প্রতিটি ডাউনলোড পরীক্ষা করে এবং অ্যাপ এটি গ্রহণ করার পরেই ব্রাউজারের ডাউনলোড বাতিল করে; অন্যথায় ব্রাউজার এটি রাখে।"
   },
+  "292621fe40d7beca": {
+   "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
+   "text": "প্রতিটি ভিডিও টিক করা অবস্থায় শুরু হয়। আপনি যেগুলি চান না সেগুলি আনটিক করুন, অথবা <g1>সব নির্বাচন করুন</g1> এবং <g2>কোনোটি নির্বাচন করবেন না</g2> ব্যবহার করুন। ব্যক্তিগত এবং মুছে ফেলা ভিডিওগুলি ধূসর হয়ে থাকে এবং টিক করা যায় না।"
+  },
   "296bb6abbc747f28": {
    "source": "If it gives up and shows <g1>Error</g1>:",
    "text": "যদি এটি হাল ছেড়ে দেয় এবং <g1>ত্রুটি</g1> দেখায়:"
@@ -1722,6 +1750,10 @@
    "source": "1. Put the downloads in a queue",
    "text": "1. ডাউনলোডগুলি একটি কিউতে রাখুন"
   },
+  "2cb242c75b5117f9": {
+   "source": "A channel is listed 50 videos at a time, newest first. <g1>Load more</g1> lists the next 50.",
+   "text": "একটি চ্যানেল একবারে 50টি ভিডিও তালিকাভুক্ত করে, নতুনগুলি প্রথমে। <g1>আরও লোড করুন</g1> পরবর্তী 50টি তালিকাভুক্ত করে।"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>ব্রাউজ করুন</g1> — এক্সপ্লোরারে এর ফোল্ডার খুলুন।"
@@ -1805,6 +1837,10 @@
   "2e238218e51993b0": {
    "source": "Mac",
    "text": "ম্যাক"
+  },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>এই শেয়ার অনুপাতে শেয়ার করা বন্ধ করুন</g1> — একটি সম্পূর্ণ টরেন্ট ততবার ডেটা পাঠানোর পর শেয়ার করা বন্ধ করে দেয়, যতবার এটি পেয়েছে (2.00: দ্বিগুণ)। এটি ডিফল্টরূপে বন্ধ থাকে।"
   },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
@@ -1990,6 +2026,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Windows-এর জন্য একটি বিনামূল্যের, ওপেন-সোর্স ডাউনলোড ম্যানেজার, macOS এবং Linux-এর পরীক্ষামূলক সংস্করণও আছে। এটি IDM-এর পরিচিত বিন্যাস অনুসরণ করে, আমাদের বেঞ্চমার্কে 5 গুণ দ্রুত: একবারে সব সংযোগ, ক্র্যাশ-সেফ রিজুম, টরেন্ট, ওয়েবপেজ থেকে ভিডিও ডাউনলোড, ব্রাউজার ইন্টিগ্রেশন এবং 86টি ভাষা সমর্থন করে।"
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "এই কম্পিউটারটির সাথে সংযোগগুলি (<x1/>) বাইন্ড করা হয় না। এই কম্পিউটারে একটি প্রক্সি ডাউনলোডগুলি বহন করে, এবং এটি কোথায় পাঠায় তা এর উপর নির্ভর করে।"
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "DRM দ্বারা সুরক্ষিত ভিডিও (বেশিরভাগ পেইড স্ট্রিমিং পরিষেবা) ডাউনলোড করা যায় না, এবং MDM চেষ্টা করে না।"
@@ -2109,6 +2149,14 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "নির্বাচিত ডাউনলোডগুলি মুছুন (প্রথমে জিজ্ঞাসা করে)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM-এর প্রক্সি / SOCKS সেটিংস ওয়েব এবং FTP ডাউনলোডের জন্য। টরেন্টও একটি SOCKS5 ব্যবহার করতে পারে: <g2>বিকল্প → প্রক্সি / SOCKS</g2>-এ একটি <x1/> প্রক্সি সেট করুন এবং টরেন্ট সেটিংসে <g3>প্রক্সি ব্যবহার করুন</g3> চালু করুন। প্রক্সি শুধুমাত্র পিয়ার এবং ওয়েব ট্র্যাকারের সাথে সংযোগ কভার করে, তাই এটি ব্যবহার করলে MDM DHT, স্থানীয় পিয়ার ডিসকভারি, ইনকামিং সংযোগ এবং UDP ট্র্যাকার বন্ধ করে দেয়; এটি নেটওয়ার্কের দিকে কোনো UDP সকেট খোলে না। যদি প্রক্সি / SOCKS থেকে প্রক্সি চলে যায় যখন সেই সুইচটি চালু থাকে, টরেন্টগুলি প্রক্সি ছাড়া শুরু না হয়ে বন্ধ হয়ে যায়।"
+  },
+  "39202940bfd37e73": {
+   "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
+   "text": "<g1>আপনার নিজস্ব কপি:</g1> <g2>হেল্পার...</g2> (গ্যালারি উইন্ডো বা ভিডিও উইন্ডোতে) yt-dlp, ffmpeg এবং gallery-dl তালিকাভুক্ত করে, এবং <g3>অন্য প্রোগ্রাম ব্যবহার করুন...</g3> MDM-এর পরিবর্তে প্রতিটিটির আপনার নিজস্ব কপি নেয়।"
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2402,6 +2450,10 @@
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "আপনি কি সময় সেট করার পরে <g1>প্রয়োগ করুন</g1>-এ ক্লিক করেছেন?"
   },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "সিস্টেমের DNS তার নিজস্ব উপায়ে নামগুলি জিজ্ঞাসা করে, এবং Windows প্রতিটি অ্যাডাপ্টারের মাধ্যমে জিজ্ঞাসা করতে পারে। নামগুলি অ্যাডাপ্টারের মধ্যেও রাখতে, <g1>সংযোগ</g1> → <g2>DNS</g2> এর অধীনে একটি DNS বেছে নিন: MDM তখন অ্যাডাপ্টারের মাধ্যমে এটি জিজ্ঞাসা করে।"
+  },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "<g1>সংযোগ এবং গতি</g1>-তে আরও দেখুন।"
@@ -2454,6 +2506,10 @@
    "source": "Crash reports",
    "text": "ক্র্যাশ রিপোর্ট"
   },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (প্রায় 80 এমবি) একটি ভিডিও এবং এর সাউন্ডকে একসাথে করে যখন কোনো সাইট সেগুলোকে আলাদা রাখে, যা বেশিরভাগ সাইট উচ্চ মানের জন্য করে থাকে, এবং সাউন্ডকে একটি MP3, Opus বা FLAC ফাইলে পরিণত করে। MDM যখন <g2>ffmpeg ইনস্টল করুন</g2> অফার করে, তখন ক্লিক করুন। MDM এর রিলিজ দ্বারা প্রকাশিত চেকসামের সাথে এটি পরীক্ষা করে।"
+  },
   "42096c4007ec5640": {
    "source": "Then choose:",
    "text": "তারপর বেছে নিন:"
@@ -2473,6 +2529,10 @@
   "429af5aabcba70df": {
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
    "text": "50 এমআইবি, সার্ভার 2টি সংযোগের অনুমতি দেয়, প্রতিটি 2 এমবি/এস"
+  },
+  "42bd9026482d491d": {
+   "source": "gallery-dl itself",
+   "text": "gallery-dl নিজেই"
   },
   "432cbb1ffee89925": {
    "source": "<g1>Your downloads are yours to answer for.</g1> Respect copyright and the terms of the sites you download from. With torrents, remember that a torrent client also shares what it downloads.",
@@ -2521,6 +2581,14 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447b0cdb28e67b18": {
+   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
+   "text": "<g1>বন্ধ করুন</g1> gallery-dl এবং এটি যা শুরু করেছিল তা শেষ করে। এ পর্যন্ত সংরক্ষিত ছবিগুলি থাকে।"
+  },
+  "447cc2a2f0918427": {
+   "source": "Tab",
+   "text": "Tab"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -2722,6 +2790,10 @@
    "source": "Confirm deletion of downloads",
    "text": "ডাউনলোডগুলি মুছে ফেলার বিষয়টি নিশ্চিত করুন"
   },
+  "4b6da766cbb50be6": {
+   "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
+   "text": "MDM পৃষ্ঠাটি ফাইল হিসাবে ডাউনলোড না করে <g1>একটি গ্যালারি ডাউনলোড করুন</g1> খোলে। প্রথমবার, <g2>gallery-dl ইনস্টল করুন</g2>-এ ক্লিক করুন।"
+  },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
    "text": "এটি কি নেটফ্লিক্স বা অন্যান্য পেইড স্ট্রিমিং সার্ভিস থেকে ডাউনলোড করতে পারে? — Mister Download Manager"
@@ -2845,10 +2917,6 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Windows 11-এ যতগুলি ডিসপ্লে ভাষা আছে, তার সবগুলিই প্রথমবার চালু করার সময় পতাকার মাধ্যমে অথবা যেকোনো সময় দেখুন → ভাষা থেকে বেছে নেওয়া যাবে। আরবি, হিব্রু, ফারসি, উর্দু এবং উইঘুর ভাষা ডান থেকে বাম দিকে বিন্যাস করা হয়েছে।"
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "কিবোর্ড থেকে সবকিছু করা যায়, এবং MDM স্ক্রিন রিডারগুলির (যেমন Windows-এ Narrator এবং NVDA) সাথে কাজ করে: এর উইন্ডো, ডায়ালগ এবং মেনুগুলি তাদের বলে যে প্রতিটি নিয়ন্ত্রণ কী এবং তার অবস্থা কী, এবং ডাউনলোড তালিকা প্রতিটি ডাউনলোডের নাম, অবস্থা এবং আকার পড়ে শোনায়।"
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3082,6 +3150,10 @@
    "source": "A small file",
    "text": "একটি ছোট ফাইল"
   },
+  "55ecea9df3d3ed23": {
+   "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
+   "text": "একটি প্লেলিস্টের (<x1/>) বা একটি চ্যানেলের ভিডিওর (<x2/>) ঠিকানা পেস্ট করুন এবং <g3>খুঁজুন</g3> ক্লিক করুন। একটি ভিডিওর গুণমানের পরিবর্তে, উইন্ডোটি তালিকার ভিডিওগুলি দেখাবে, প্রতিটি তার দৈর্ঘ্য সহ।"
+  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "পূর্ববর্তী ছবি"
@@ -3114,9 +3186,17 @@
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "আপনি সময়সূচীতে আপনার নিজস্ব সারি যোগ করতে পারেন, অথবা একটি ডাউনলোডের রাইট-ক্লিক মেনুতে <g1>নতুন সারি তৈরি করুন</g1> ব্যবহার করে।"
   },
+  "5704b78ea54419dd": {
+   "source": "Click <g1>Add URL</g1> and paste the gallery's address, for example <x2/>.",
+   "text": "<g1>URL যোগ করুন</g1>-এ ক্লিক করুন এবং গ্যালারির ঠিকানা পেস্ট করুন, উদাহরণস্বরূপ <x2/>।"
+  },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "পাঁচ মিনিটে পাল্টান"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "তালিকার জন্য অপেক্ষা করুন। এটি প্রতিটি রেজোলিউশনকে তার আকার সহ দেখায়, প্রথমে সেরাটি, তারপর শুধুমাত্র সাউন্ড: - <g1>শুধুমাত্র অডিও, আসল</g1>: সাইটের নিজস্ব ফাইল, রূপান্তরিত নয় (M4A, অথবা Opus সহ WebM, যেমন সাইট পরিবেশন করে)। এটি সবচেয়ে ছোট ফাইলে সেরা সাউন্ড। - <g2>শুধুমাত্র অডিও MP3</g2> তার সেরা পরিবর্তনশীল বিটরেট (VBR) এবং 320, 256, 192 এবং 128 kbps-এ, শুধুমাত্র MP3 সমর্থন করে এমন প্লেয়ারদের জন্য। - <g3>শুধুমাত্র অডিও OPUS</g3>: একটি <x4/> ফাইল। যখন সাইটের সাউন্ড ইতিমধ্যেই Opus হয় (YouTube-এর সাধারণত তাই হয়), তখন এটি শুধুমাত্র সেই ফাইলে স্থানান্তরিত হয়, রূপান্তরিত হয় না, তাই কিছুই হারায় না। - <g5>শুধুমাত্র অডিও FLAC</g5>: একটি লসলেস <x6/> ফাইল, একটি লাইব্রেরি বা FLAC চায় এমন একটি প্রোগ্রামের জন্য। এটি গুণমান যোগ করতে পারে না: সাইটের সাউন্ড ইতিমধ্যেই লস সহ সংকুচিত, এবং FLAC এটিকে ঠিক যেমন এসেছে তেমনই রাখে, একটি কয়েকগুণ বড় ফাইলে। আপনি যখন এটি নির্বাচন করেন তখন উইন্ডোটি তা বলে।"
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -3278,6 +3358,10 @@
    "source": "What they do",
    "text": "তারা কী করে"
   },
+  "5cf4f742d0a41f0e": {
+   "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
+   "text": "একটি গ্যালারি ডাউনলোড করে যা এর নামে নামকরণ করা একটি ফোল্ডারে যায়। <g1>কমান্ড লাইন এবং অটোমেশন</g1> দেখুন।"
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>সহায়তা → একটি সমস্যা রিপোর্ট করুন</g1> নির্বাচন করুন। এটি GitHub-এ বাগ রিপোর্ট ফর্ম খোলে যেখানে আপনার MDM সংস্করণ, আপনার সিস্টেম এবং এর সংস্করণ, MDM কীভাবে ইনস্টল করা হয়েছিল এবং এর ইন্টারফেস ভাষা ইতিমধ্যেই পূরণ করা থাকে। কী ঘটেছে, আপনি কী আশা করেছিলেন এবং এটি ঘটার ধাপগুলি বর্ণনা করুন। একটি ডাউনলোডের জন্য, আপনি যদি শেয়ার করতে পারেন তবে ঠিকানাটি এবং <g2>স্ট্যাটাস</g2>-এর অধীনে দেখানো কারণটি অন্তর্ভুক্ত করুন।"
@@ -3337,6 +3421,10 @@
   "5e921749406a7933": {
    "source": "Reporting a problem",
    "text": "একটি সমস্যা রিপোর্ট করা"
+  },
+  "5ea1452a0cb5fbf8": {
+   "source": "Stop, delete",
+   "text": "বন্ধ করুন, মুছুন"
   },
   "5ea184bc04ad2f73": {
    "source": "See <g1>If a video won't download</g1>.",
@@ -3490,9 +3578,17 @@
    "source": "Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.",
    "text": "একটি বাগ খুঁজে পেয়েছেন? অ্যাপে সহায়তা → একটি সমস্যা রিপোর্ট করুন আপনার সংস্করণ, সিস্টেম এবং ভাষা পূরণ করে একটি সমস্যা খোলে। এটি পড়ুন, তারপর পোস্ট করুন।"
   },
+  "61c0ff783f077afd": {
+   "source": "Get the new pictures later",
+   "text": "পরে নতুন ছবি পান"
+  },
   "61e77c7c55f48e1e": {
    "source": "4. Decide what happens at the end (optional)",
    "text": "4. শেষে কী হবে তা ঠিক করুন (ঐচ্ছিক)"
+  },
+  "6216638d7aa4db3f": {
+   "source": "Check <g1>Save to</g1> (the General category's folder by default). The pictures go into a folder of their own there, named after the gallery.",
+   "text": "<g1>এতে সংরক্ষণ করুন</g1> পরীক্ষা করুন (ডিফল্টরূপে সাধারণ ক্যাটাগরির ফোল্ডার)। ছবিগুলো সেখানে তাদের নিজস্ব একটি ফোল্ডারে যায়, যা গ্যালারির নামে নামকরণ করা হয়।"
   },
   "62296921bc8016ff": {
    "source": "<g1>Always turn on Speed Limiter on Mister Download Manager startup</g1> turns it on each time MDM starts.",
@@ -3614,6 +3710,10 @@
    "source": "<g1>Download limits</g1> — download no more than a set amount every few hours. The same setting is in the Scheduler; see <g2>Queues and the Scheduler</g2>.",
    "text": "<g1>ডাউনলোড সীমা</g1> — প্রতি কয়েক ঘণ্টায় একটি নির্দিষ্ট পরিমাণের বেশি ডাউনলোড করবেন না। একই সেটিং সময়সূচীতেও আছে; <g2>সারি এবং সময়সূচী</g2> দেখুন।"
   },
+  "647d714bfaad02a5": {
+   "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
+   "text": "<g1>নেটওয়ার্ক অ্যাডাপ্টার:</g1> yt-dlp-এর মতো, gallery-dl একটি নেটওয়ার্ক অ্যাডাপ্টারের সাথে আবদ্ধ হতে পারে না। যখন একটি নির্বাচন করা হয় (<g2>বিকল্প → প্রক্সি / SOCKS → নেটওয়ার্ক অ্যাডাপ্টার</g2>), তখন গ্যালারিগুলি শুরু হয় না।"
+  },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>GitHub-এ প্রোজেক্ট</g1><g2>কোড, সমস্যা এবং প্রতিটি রিলিজ</g2>"
@@ -3658,10 +3758,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>বৈশিষ্ট্য</g1> — এর নাম, ফাইল প্রকার এবং ফোল্ডার পরিবর্তন করুন। সাধারণ এবং টরেন্ট শুধুমাত্র তাদের ফোল্ডার পরিবর্তন করে। একটি পুনঃনামকরণ করা বিভাগ তার ফোল্ডার ধরে রাখে; একটি বিল্ট-ইন বিভাগকে আপনি পুনঃনামকরণ না করা পর্যন্ত আপনার ভাষায় তার নাম ধরে রাখে।"
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager বনাম IDM 6.42</g1><g2>2026 সালের অক্টোবর মাসে যাচাই করা হয়েছে · সূত্র নিচে</g2>"
@@ -3673,6 +3769,10 @@
   "672ffa07db0bd6d7": {
    "source": "Reinstall MDM to restore its files.",
    "text": "এর ফাইলগুলি পুনরুদ্ধার করতে MDM পুনরায় ইনস্টল করুন।"
+  },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "অন্য একটি নেটওয়ার্কের মাধ্যমে <g1>সবকিছু</g1> রাউট করতে, পুরো কম্পিউটারের জন্য একটি VPN ব্যবহার করুন।"
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -3702,6 +3802,10 @@
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
    "text": "ব্রাউজারের নেটিভ মেসেজিং হোস্ট: এক্সটেনশন থেকে ক্যাপচার করা ডাউনলোডগুলি নেয় এবং অ্যাপে হস্তান্তর করে"
   },
+  "687eb3437405d3f6": {
+   "source": "A picture's own address (one ending in <x1/> or <x2/>) downloads as a file, as before.",
+   "text": "একটি ছবির নিজস্ব ঠিকানা (যা <x1/> বা <x2/> দিয়ে শেষ হয়) আগের মতো একটি ফাইল হিসাবে ডাউনলোড হয়।"
+  },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
    "text": "<g1><g2>কমান্ড লাইন এবং অটোমেশন</g2></g1>: IDM-এর সুইচগুলি (<x3/>), <x4/> (ফাইল, ভিডিও, টরেন্ট) এবং একটি স্থানীয়, টোকেন-সুরক্ষিত অটোমেশন API যা ডাউনলোডগুলি তালিকাভুক্ত করে, বিরতি দেয়, শুরু করে, সরিয়ে দেয় এবং মুছে ফেলে।"
@@ -3710,13 +3814,13 @@
    "source": "Is Mister Download Manager really free?",
    "text": "Mister Download Manager কি সত্যিই বিনামূল্যে?"
   },
+  "689d48a0fd15b011": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
+   "text": "একটি সমাপ্ত গ্যালারি আবার শুরু করুন (<g1>পুনরায় শুরু করুন</g1>) শুধুমাত্র সেই ছবিগুলি আনতে যা এখনও এর ফোল্ডারে নেই। gallery-dl ইতিমধ্যে থাকা ছবিগুলি বাদ দেয়।"
+  },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "পরে ডাউনলোডের জন্য সারি করুন →"
-  },
-  "690e87be87eb0c8f": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
-   "text": "<g1>ব্রাউজারের অনুরোধ থেকে প্রক্সি/SOCKS ব্যবহার করুন…</g1> — এটি ডিফল্টভাবে চালু থাকে। MDM ব্রাউজার থেকে যে ডাউনলোড নেয়, সেটি ব্রাউজার যে প্রক্সি ব্যবহার করেছিল তার মাধ্যমে যায়। এটি একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা সেট করা প্রক্সি হতে পারে, ব্রাউজারের নিজস্ব ম্যানুয়াল প্রক্সি, অথবা এর প্রক্সি অটো-কনফিগ স্ক্রিপ্ট। এটি ছাড়া, ডাউনলোড আপনার নিজের ঠিকানা থেকে শুরু হবে, এবং VPN-এর দেশ বা এর ঠিকানায় সীমাবদ্ধ বিষয়বস্তু ডাউনলোড ব্যর্থ হবে। ব্রাউজার এক্সটেনশন সেই প্রক্সি পড়ে এবং প্রতিটি ডাউনলোডের সাথে MDM-কে তা দেয়।"
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4042,10 +4146,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM তার উইন্ডো ছাড়া তিনটি উপায়ে চালানো যেতে পারে:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDM-এর প্রক্সি / SOCKS সেটিংস ওয়েব এবং FTP ডাউনলোডের জন্য। টরেন্টগুলিও একটি SOCKS5 ব্যবহার করতে পারে: <g2>বিকল্প → প্রক্সি / SOCKS</g2> এ একটি <x1/> প্রক্সি সেট করুন এবং টরেন্ট সেটিংসে <g3>প্রক্সি ব্যবহার করুন</g3> চালু করুন। প্রক্সি শুধুমাত্র পিয়ার এবং ওয়েব ট্র্যাকারদের সাথে সংযোগ কভার করে, তাই এর সাথে MDM DHT, স্থানীয় পিয়ার ডিসকভারি, ইনকামিং সংযোগ এবং UDP ট্র্যাকারগুলি বন্ধ করে দেয়। যদি সেই সুইচটি চালু থাকা অবস্থায় প্রক্সি / SOCKS থেকে প্রক্সি চলে যায়, তাহলে টরেন্টগুলি এটি এড়িয়ে না গিয়ে শুরু হয় না।"
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "একটি ভিডিওর অগ্রগতি উইন্ডো"
@@ -4077,6 +4177,10 @@
   "71fe7ca9a5b99066": {
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>নতুন</g1> — আপনার নিজস্ব শ্রেণী তৈরি করুন। <g2>সম্পাদনা করুন...</g2> নির্বাচিত শ্রেণীটি পরিবর্তন করে: এর ফোল্ডার, এবং আপনার নিজস্ব শ্রেণীর জন্য এর নাম ও ফাইলের প্রকার।"
+  },
+  "720b69230bc62f14": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
+   "text": "একটি গ্যালারির ছবি (একটি উইকিমিডিয়া কমন্স ক্যাটাগরি, একটি ফ্লিকার অ্যালবাম, ...) <x1/> এর ভিতরে এর নামানুসারে একটি ফোল্ডারে ডাউনলোড করুন; <x2/> সর্বোচ্চ ততগুলি নেয়, সাইটটি যেগুলি প্রথমে তালিকাভুক্ত করে। আবার শুরু করলে, এটি শুধুমাত্র নতুনগুলি নিয়ে আসে।"
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4125,6 +4229,14 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 সে</g1><g3></g3>"
+  },
+  "72f3284ff6dd83fc": {
+   "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
+   "text": "<g1>উপর</g1> / <g2>নিচ</g2>, <g3>বাম</g3> / <g4>ডান</g4>"
+  },
+  "72f381013a320442": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
+   "text": "<g1>একটি ব্রাউজারের অনুরোধ থেকে প্রক্সি/SOCKS ব্যবহার করুন…</g1> — ডিফল্টরূপে চালু থাকে। <g2>কোনো প্রক্সি/SOCKS নেই</g2> বিকল্পের সাথে, এটি MDM-কে Windows-এর প্রক্সি সেটিংস ব্যবহার করতে বাধ্য করে, যেমন ব্রাউজারগুলি করে।"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4226,6 +4338,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>ভিউ → ডার্ক মোড সমর্থন</g1> এবং <g2>ভিউ → ভাষা</g2>।"
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "একটি নেটওয়ার্ক অ্যাডাপ্টার"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>সমস্যা সমাধান</g2></g1> — যখন একটি ডাউনলোড ব্যর্থ হয়, ব্রাউজার একটি ডাউনলোড হস্তান্তর করে না, বা একটি সময়সূচী শুরু হয় না তখন কী পরীক্ষা করতে হবে।"
@@ -4265,6 +4381,10 @@
   "7795e2b94936333b": {
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "আপনার ব্যবহারকারীর নাম, যা ফোল্ডার পাথে <x1/> হিসাবে দেখানো হয়।"
+  },
+  "77a30c9b7d2a6105": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
+   "text": "কিবোর্ড দিয়ে সবকিছু করা যায়, এবং MDM স্ক্রিন রিডার (যেমন Windows-এর Narrator ও NVDA)-এর সাথে কাজ করে: এর উইন্ডো, ডায়ালগ ও মেনুগুলো প্রতিটি কন্ট্রোলের কাজ ও অবস্থা সম্পর্কে জানায়, এবং ডাউনলোড তালিকা প্রতিটি ডাউনলোডের নাম, অবস্থা ও আকার পড়ে শোনায়। <g1>শ্রেণীসমূহ</g1> প্যান একটি ট্রি হিসেবে পড়া যায় (প্রতিটি ক্যাটাগরি তার সংখ্যা সহ, খোলা বা বন্ধ, নির্বাচিত বা নয়), এবং মেনু বার ও প্রতিটি রাইট-ক্লিক মেনু এমন মেনু হিসেবে পড়া যায় যার আইটেমগুলো সেখান থেকে চালানো যায়।"
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -4414,6 +4534,10 @@
    "source": "Torrents",
    "text": "টরেন্ট"
   },
+  "7c13b99aeb6bd7c5": {
+   "source": "A playlist is listed whole, as its videos come in: the line above the list says how far it is (\"Listing the videos: 1,200 of 6,000\"). <g1>Stop listing</g1> keeps the ones listed so far, and <g2>List the rest</g2> carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and <g3>List the rest</g3> tries again from there.",
+   "text": "একটি প্লেলিস্ট সম্পূর্ণভাবে তালিকাভুক্ত করা হয়, যখন এর ভিডিওগুলি আসে: তালিকার উপরের লাইনটি বলে এটি কতদূর (\"ভিডিওগুলি তালিকাভুক্ত করা হচ্ছে: 6,000 এর মধ্যে 1,200\")। <g1>তালিকাভুক্ত করা বন্ধ করুন</g1> এখন পর্যন্ত তালিকাভুক্ত করা ভিডিওগুলি রাখে এবং <g2>বাকিগুলো তালিকাভুক্ত করুন</g2> সেখান থেকে চালিয়ে যায়। যদি সাইটটি মাঝপথে উত্তর দেওয়া বন্ধ করে দেয় (YouTube এমনটি করতে পারে, যদি এটিকে খুব ঘন ঘন জিজ্ঞাসা করা হয়), উইন্ডোটি কতগুলি ভিডিওর পরে এবং কেন তা বলে, এবং <g3>বাকিগুলো তালিকাভুক্ত করুন</g3> সেখান থেকে আবার চেষ্টা করে।"
+  },
   "7c14c17b996d02f7": {
    "source": "explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.",
    "text": "মূল পদগুলি (ডাউনলোড, কিউ, ক্যাটাগরি, কানেকশন, রেজিউম…) ব্যাখ্যা করে। প্রতিটি পদকে সব জায়গায় একই ভাবে অনুবাদ করুন, যেভাবে Windows আপনার ভাষায় বলে।"
@@ -4497,6 +4621,14 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 বা তার পরের সংস্করণ প্রয়োজন।"
+  },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>বিকল্প → প্রক্সি / SOCKS → নেটওয়ার্ক অ্যাডাপ্টার</g1> MDM-এর সংযোগগুলিকে একটি অ্যাডাপ্টারের সাথে ধরে রাখে, সাধারণত একটি VPN-এর (<g2>বিকল্প</g2>)। Linux এবং macOS-এ টরেন্ট ইঞ্জিন প্রতিটি সকেটকে এর সাথে আবদ্ধ করে: পিয়ার, ট্র্যাকার, DHT এবং এর লিসেনিং পোর্ট। UPnP এবং স্থানীয় পিয়ার ডিসকভারি তখন বন্ধ হয়ে যায়, কারণ তারা অ্যাডাপ্টারের মাধ্যমে না গিয়ে স্থানীয় নেটওয়ার্কের সাথে কথা বলে। যদি অ্যাডাপ্টারটি চলে যায়, ইঞ্জিন বন্ধ হয়ে যায় এবং এটি ফিরে এলে অ্যাডাপ্টারের মাধ্যমে আবার শুরু হয়।"
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>গুণমান</g1> প্রতিটি ভিডিওর জন্য প্রযোজ্য: <g2>সেরা গুণমান</g2>, একটি নির্দিষ্ট উচ্চতা <g3>পর্যন্ত</g3> (প্রতিটি ভিডিও সেই উচ্চতায়, অথবা তার নিকটতম নিচের উচ্চতায়), <g4>শুধুমাত্র অডিও, আসল</g4>, <g5>শুধুমাত্র অডিও MP3</g5>, <g6>শুধুমাত্র অডিও OPUS</g6> অথবা <g7>শুধুমাত্র অডিও FLAC</g7>। ffmpeg ছাড়া, শুধুমাত্র সেই গুণমানগুলি দেওয়া হয় যেগুলি তাদের শব্দ সহ আসে, এবং কোনো MP3, Opus বা FLAC দেওয়া হয় না।"
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -4718,6 +4850,10 @@
    "source": "Was MDM installed with the setup, with <g1>Set up browser integration</g1> ticked? A portable copy can't take browser downloads. Run the setup again to add it.",
    "text": "MDM কি সেটআপের সাথে ইনস্টল করা হয়েছিল, <g1>ব্রাউজার ইন্টিগ্রেশন সেট আপ করুন</g1> টিক দেওয়া অবস্থায়? একটি পোর্টেবল কপি ব্রাউজার ডাউনলোড নিতে পারে না। এটি যোগ করতে সেটআপটি আবার চালান।"
   },
+  "8362706ee6422965": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "MDM <g1>gallery-dl</g1> ব্যবহার করে একটি গ্যালারির ছবি ডাউনলোড করে (একটি উইকিমিডিয়া কমন্স ক্যাটাগরি, একটি ফ্লিকার অ্যালবাম, একটি ডেভিয়ান্টআর্ট গ্যালারি, একটি ইমগুর অ্যালবাম এবং আরও অনেক কিছু)। এটি একটি বিনামূল্যের প্রোগ্রাম যা কয়েকশ সাইট পড়তে পারে। ভিডিওর জন্য yt-dlp-এর মতো, এটি একটি ঐচ্ছিক সহায়ক: আপনার প্রথমবার প্রয়োজন হলে MDM এটি ইনস্টল করে, অথবা আপনার নিজস্ব কপি ব্যবহার করে।"
+  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "সারি তে ডাউনলোড রাখুন"
@@ -4753,10 +4889,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "শুরুর সময়ে কিউ নিজে থেকেই শুরু হয়। সকালে, সম্পন্ন হওয়া ফাইলগুলি ক্যাটাগরির <g1>সম্পন্ন হয়েছে</g1>-এর নিচে থাকে।"
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "<g1>সবকিছু</g1> অন্য নেটওয়ার্কের মাধ্যমে রুট করতে, পুরো কম্পিউটারের জন্য একটি VPN ব্যবহার করুন। MDM Windows-এ টরেন্টগুলিকে একটি নেটওয়ার্ক অ্যাডাপ্টারের সাথে বাঁধতে পারে না।"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -4946,6 +5078,10 @@
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>GitHub Actions দ্বারা তৈরি</g1><g2>কখনোই কারো ল্যাপটপে নয়</g2>"
   },
+  "89fa61b2290f1772": {
+   "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
+   "text": "<g1>এখনই ডাউনলোড করুন</g1> প্রতিটি ভিডিওকে তার নিজস্ব ডাউনলোড হিসাবে যোগ করে এবং প্রধান সারি শুরু করে, যা <g2>সময়সূচী</g2> (<g3>একই সময়ে N ফাইল ডাউনলোড করুন</g3>) এ আপনি সেট করা অনুযায়ী একসাথে অনেকগুলি চালায়। <g4>পরে</g4> শুরু না করেই সেগুলিকে যোগ করে। একবারে 500টির বেশি যোগ করার জন্য প্রথমে জিজ্ঞাসা করা হয়।"
+  },
   "89fc33b1b049584c": {
    "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
    "text": "এটি আপনার ব্রাউজারের ডাউনলোডগুলি কুকিজ সহ MDM-এর কাছে হস্তান্তর করে, রাইট-ক্লিক মেনুতে <g1>Mister Download Manager দিয়ে ডাউনলোড করুন</g1> যোগ করে এবং ভিডিওগুলির উপরে একটি <g2>ভিডিও ডাউনলোড করুন</g2> বোতাম রাখে। এটি অ্যাপের সাথে এর <x3/> ফোল্ডারে এবং আলাদাভাবে আসে:"
@@ -5054,6 +5190,10 @@
    "source": "3. Using it responsibly",
    "text": "3. দায়িত্বশীলভাবে ব্যবহার করা"
   },
+  "8d6911b8ed8eb4d4": {
+   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
+   "text": "<g1>এটি কীভাবে জিজ্ঞাসা করে:</g1> gallery-dl MDM হিসাবে সাইটগুলিকে জিজ্ঞাসা করে, প্রতি সেকেন্ডে সর্বোচ্চ একটি ছবি। উইকিমিডিয়ার সার্ভারগুলি দ্রুত বা নাম ছাড়া জিজ্ঞাসা করা সরঞ্জামগুলি প্রত্যাখ্যান করে। এটি আপনার কোনো কনফিগারেশন ফাইল ব্যবহার করে না।"
+  },
   "8d82bd27db3d3e27": {
    "source": "In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with <x1/>.",
    "text": "ওয়েল্যান্ড সেশনে (GNOME, KDE Plasma এবং অন্যান্য), MDM-এর উইন্ডোগুলি XWayland-এর মাধ্যমে চলে যখন এটি থাকে: ওয়েল্যান্ড একটি প্রোগ্রামকে তার নিজস্ব উইন্ডো স্থাপন করতে দেয় না, তাই MDM-এর মেনু এবং ড্রপ-ডাউন তালিকাগুলি স্ক্রিনের মাঝখানে খুলবে। ওয়েল্যান্ডে এটি চালানোর জন্য, <x1/> দিয়ে শুরু করুন।"
@@ -5105,6 +5245,10 @@
   "8eb2929f09075835": {
    "source": "Download your first file →",
    "text": "আপনার প্রথম ফাইল ডাউনলোড করুন →"
+  },
+  "8ebacedce5c28ec5": {
+   "source": "Add URL sends these to the gallery window: - Wikimedia Commons categories; - Flickr photographers and albums; - DeviantArt and ArtStation galleries; - Imgur albums; - Pixiv artists and works; - Pinterest boards and pins; - Danbooru and Gelbooru searches; - Tumblr blogs; - Bluesky profiles.",
+   "text": "URL যোগ করুন এইগুলি গ্যালারি উইন্ডোতে পাঠায়: - উইকিমিডিয়া কমন্স ক্যাটাগরি; - ফ্লিকার ফটোগ্রাফার এবং অ্যালবাম; - ডেভিয়ান্টআর্ট এবং আর্টস্টেশন গ্যালারি; - ইমগুর অ্যালবাম; - পিক্সিভ শিল্পী এবং কাজ; - পিন্টারেস্ট বোর্ড এবং পিন; - ড্যানবোরু এবং গেলবোরু অনুসন্ধান; - টাম্বলার ব্লগ; - ব্লুস্কাই প্রোফাইল।"
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
@@ -5270,6 +5414,10 @@
    "source": "Keep some speed for everything else →",
    "text": "অন্য সবকিছুর জন্য কিছু গতি রাখুন →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "প্রগতি দেখিয়ে সর্বোচ্চ 8টি সংযোগে (<x1/>, 1 থেকে 128) একটি ফাইল ডাউনলোড করুন। <x2/> এটিকে থামিয়ে দেয়; <x3/> চালিয়ে যায়। <x4/> শেষ হওয়া ফাইলটি পরীক্ষা করে: হেক্স MD5, SHA-1, SHA-256, SHA-512 অথবা CRC32, ঐচ্ছিকভাবে নাম দেওয়া (<x5/>)। <x6/> DNS নির্বাচন করে: <x7/> (ডিফল্ট); একটি পরিষেবা এবং কীভাবে এটি জিজ্ঞাসা করতে হয়, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS সার্ভারের ঠিকানা, <x13/>; অথবা একটি DNS-over-HTTPS ঠিকানা। এটি কখনোই সিস্টেমের DNS-এ ফিরে যায় না। <x14/> প্রতিটি সংযোগ একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায়, এর নাম (<x15/>, <x16/>) অথবা এর একটি ঠিকানা দ্বারা; যখন এটি সংযুক্ত থাকে না, তখন কিছুই পাঠানো হয় না এবং ডাউনলোড ব্যর্থ হয়।"
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager (\"MDM\", \"সফটওয়্যার\") এবং misterdownloadmanager.com (\"সাইট\") ওয়েবসাইটটি আহমেদ নেফজাউই এবং অন্যান্য অবদানকারীরা (\"আমরা\") তৈরি করেছি। সফটওয়্যার বা সাইট ব্যবহার করার মাধ্যমে আপনি এই শর্তাবলী মেনে নিচ্ছেন। যদি আপনি না মানেন, তাহলে অনুগ্রহ করে এগুলো ব্যবহার করবেন না।"
@@ -5289,6 +5437,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> সব নির্বাচন করে।"
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "এখনো অ্যাডাপ্টারের সাথে সংযুক্ত নয়, তাই একটি বেছে নেওয়া হলে তারা শুরু হয় না:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5358,6 +5510,10 @@
    "source": "Select the first / last download",
    "text": "প্রথম / শেষ ডাউনলোড নির্বাচন করুন"
   },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "টরেন্ট ডাউনলোড শেষ হওয়ার পর, যতক্ষণ এটি শেয়ার করা হয়, ততক্ষণ ট্যাবগুলি থাকে।"
+  },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>সমস্ত ফাইল এবং ইনস্টল করার ধাপ</g1><g2>GitHub-এ প্রতিটি রিলিজ</g2>"
@@ -5389,6 +5545,10 @@
   "974c25dc825af253": {
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "সেটআপ দিয়ে MDM ইনস্টল করুন এবং <g1>ব্রাউজার ইন্টিগ্রেশন সেট আপ করুন (Chrome, Edge, Brave, Firefox)</g1> টিক দেওয়া রাখুন। এটি সাহায্যকারীকে রেজিস্টার করে। (পোর্টেবল কপি এটি করতে পারে না; <g2>পোর্টেবল মোড</g2> দেখুন।)"
+  },
+  "9752e164b9235433": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
+   "text": "এর অনুমতিগুলি, এবং কেন: <g1>downloads</g1> ডাউনলোডগুলি দেখতে এবং হস্তান্তর করতে; <g2>cookies</g2> যাতে সাইন-ইন করা ডাউনলোডগুলি MDM-এ কাজ করে; <g3>nativeMessaging</g3> MDM-এর সাথে কথা বলতে; <g4>contextMenus</g4> রাইট-ক্লিক আইটেমগুলির জন্য; <g5>storage</g5> এর সেটিংসের জন্য; <g6>webRequest</g6> জমা দেওয়া ফর্ম এবং লোড করা ভিডিও স্ট্রিমগুলি দেখতে (এটি কিছুই পরিবর্তন করে না); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge এবং অন্যান্য Chromium ব্রাউজার) ব্রাউজার যে ফাইলগুলি খুলবে (একটি PDF) সেগুলিকে MDM যে প্রকারগুলি নেয় সেগুলির জন্য ডাউনলোড করার পরিবর্তে; Firefox-এ, <g8>webRequestBlocking</g8> এটি করে; <g9>scripting</g9> আপনি যখন জিজ্ঞাসা করেন তখন একটি পৃষ্ঠার লিঙ্কগুলি পড়তে এবং এক্সটেনশন ইনস্টল করার সময় ইতিমধ্যে খোলা পৃষ্ঠাগুলিতে ভিডিও বোতামটি যুক্ত করতে; সমস্ত সাইটে অ্যাক্সেস কারণ ডাউনলোড এবং ভিডিও যেকোনো সাইট থেকে আসতে পারে।"
   },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
@@ -5630,6 +5790,10 @@
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 বনাম Mister Download Manager ডাউনলোড বেঞ্চমার্ক"
   },
+  "9e30a9dbdaf7e2cf": {
+   "source": "<g1>Shift+F10</g1> or the <g2>Menu</g2> key",
+   "text": "<g1>Shift+F10</g1> অথবা <g2>মেনু</g2> কী"
+  },
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "সাতটি ডাউনলোড, প্রতিটি অ্যাপ দিয়ে কমপক্ষে সাতবার চালানো হয়েছে। বারের মাঝের অর্ধেক রান, আর লাইনটি হলো মধ্যমা।"
@@ -5722,6 +5886,10 @@
    "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
    "text": "এক্সটেনশনের মাধ্যমে Chrome, Edge, Brave, Opera এবং Vivaldi; Firefox পরীক্ষা করা হচ্ছে। এক্সটেনশন ছাড়া, একটি লিঙ্ক কপি করুন এবং MDM ডাউনলোড উইন্ডো খুলবে। <g1>আরও</g1>"
   },
+  "a0f44b2041902a09": {
+   "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
+   "text": "gallery-dl অনলাইনে না গিয়ে আপনার কম্পিউটারে ঠিকানাটি পরীক্ষা করে। যখন লাইনটি <g1>gallery-dl এই গ্যালারির ফাইল ডাউনলোড করতে পারে</g1> দেখায়, তখন আপনি প্রস্তুত।"
+  },
   "a111ff2e536e8112": {
    "source": "Linux <g1>x86-64</g1>",
    "text": "Linux <g1>x86-64</g1>"
@@ -5733,10 +5901,6 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>কমান্ড লাইন এবং অটোমেশন</g2></g1> — IDM-এর কমান্ড-লাইন সুইচ, <x3/> টুল এবং অন্যান্য প্রোগ্রাম ব্যবহার করতে পারে এমন অটোমেশন API।"
-  },
-  "a1280a73f600eb05": {
-   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
-   "text": "যখন ব্রাউজার সেই ডাউনলোডের জন্য একটি প্রক্সি ব্যবহার করে (একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা, অথবা এর সেটিংসে সেট করা), তখন এক্সটেনশনটি <g1>প্রক্সির ঠিকানা</g1>, অথবা এর <g2>প্রক্সি অটো-কনফিগ স্ক্রিপ্ট</g2> পাস করে, যাতে MDM একই প্রক্সির মাধ্যমে ডাউনলোড করে। এটি কখনোই প্রক্সির লগইন পড়ে না বা পাস করে না। এটি শুধুমাত্র নোট করে যে একটি প্রক্সি একটির জন্য অনুরোধ করেছে, যাতে MDM আপনাকে বলতে পারে যে এটি সেই প্রক্সি ব্যবহার করতে পারবে না।"
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -5829,10 +5993,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "MDM চালু থাকা অবস্থায় <x1/> চালান।"
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "প্লেলিস্ট এবং মিক্স"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -5937,6 +6097,10 @@
   "a6ce09b9c1c7e4cf": {
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
+  },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "এটি যেভাবে কাজ করে: Windows অ্যাডাপ্টারের নিজস্ব ঠিকানা বাইন্ড করে। Windows তখন সেই প্যাকেটগুলি শুধুমাত্র সেই অ্যাডাপ্টারের মাধ্যমে পাঠায় (এর শক্তিশালী হোস্ট মডেল)। Linux ডিভাইসটি নিজেই বাইন্ড করে (Linux 5.7 বা নতুন), এবং macOS ইন্টারফেস বাইন্ড করে। এমন একটি ঠিকানার ধরন যা অ্যাডাপ্টারের নেই (শুধুমাত্র IPv4 VPN-এ IPv6) প্রত্যাখ্যান করা হয়, এর চারপাশে পাঠানো হয় না।"
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6045,6 +6209,10 @@
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "আপনার ব্রাউজার থেকে ডাউনলোড ধরুন"
+  },
+  "a9efaabb8e76e3a1": {
+   "source": "Move between the <g1>Categories</g1> pane and the download list",
+   "text": "<g1>শ্রেণীসমূহ</g1> প্যান এবং ডাউনলোড তালিকার মধ্যে সরান"
   },
   "a9f05b8a13e881a4": {
    "source": "<g1>Mac and Linux too.</g1> As experimental builds, if you use more than Windows.",
@@ -6181,6 +6349,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>শ্রেণী</g1> — ফাইলের প্রকার থেকে বেছে নেওয়া হয় (সংকুচিত, ডকুমেন্টস, সঙ্গীত, প্রোগ্রাম, ভিডিও অথবা সাধারণ)। প্রতিটি শ্রেণীর নিজস্ব ফোল্ডার আছে। এর পাশে <g2>+</g2> একটি নতুন শ্রেণী তৈরি করে।"
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>নেটওয়ার্ক অ্যাডাপ্টার</g1> — <g2>যেকোনো (সিস্টেম বেছে নেয়)</g2> হলো ডিফল্ট। একটি অ্যাডাপ্টার বেছে নিন, সাধারণত আপনার VPN-এর, এবং MDM যে সংযোগগুলি খোলে তার প্রতিটি এর মাধ্যমে যাবে, অথবা একেবারেই যাবে না। এটি ডাউনলোড, FTP, আপনার বেছে নেওয়া DNS, MDM-এর নিজস্ব ডাউনলোড এবং আপডেট চেক কভার করে। এটি একটি কিল সুইচের মতো কাজ করে: যখন অ্যাডাপ্টার সংযোগ বিচ্ছিন্ন হয়, বা VPN বন্ধ করা হয়, তখন আপনার স্বাভাবিক সংযোগের মাধ্যমে কিছুই যায় না। চলমান ডাউনলোডগুলি \"… সংযুক্ত নয়\" বার্তা দিয়ে বন্ধ হয়ে যায় এবং অ্যাডাপ্টার ফিরে এলে আবার শুরু হয়। তালিকার নিচের লাইনটি অ্যাডাপ্টারের ঠিকানা দেখায়, অথবা এটি সংযুক্ত নয় তা দেখায়।"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6425,6 +6597,10 @@
   "b2e253fd75c1763a": {
    "source": "<g1>Move a column:</g1> drag its title sideways.",
    "text": "<g1>একটি কলাম সরান:</g1> এর শিরোনাম পাশ থেকে টেনে ধরুন।"
+  },
+  "b2fc02b26cb8300d": {
+   "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
+   "text": "ছবি গ্যালারির জন্য gallery-dl ইনস্টল বা আপডেট করুন: এর চেকবুক তালিকা এর লেখকের স্বাক্ষর করা কী-এর সাথে যাচাই করা হয়, প্রোগ্রামটি সেই তালিকার সাথে যাচাই করা হয় (Windows এবং Linux x86-64; অন্য কোথাও এটি নিজে ইনস্টল করুন)।"
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -6746,6 +6922,10 @@
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "সংখ্যার জন্য, <g1>ওয়াইল্ডকার্ড আকার</g1> কে অঙ্কের সংখ্যায় সেট করুন। 3 দিয়ে, ফাইলগুলি হল <x2/>, <x3/> ইত্যাদি।"
   },
+  "bc9abb4c3d1c81e8": {
+   "source": "MDM lists at most 20,000 videos of one list.",
+   "text": "MDM একটি তালিকার সর্বোচ্চ 20,000 ভিডিও তালিকাভুক্ত করে।"
+  },
   "bcb140c9553a0b1a": {
    "source": "Light / dark",
    "text": "হালকা / গাঢ়"
@@ -6922,6 +7102,10 @@
    "source": "From the clipboard",
    "text": "ক্লিপবোর্ড থেকে"
   },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "Windows-এ টরেন্ট;"
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -6965,6 +7149,10 @@
   "c3b2f678a0ea5986": {
    "source": "A connection that is far slower than the others is dropped and opened again.",
    "text": "অন্যান্য সংযোগের চেয়ে অনেক ধীরগতির একটি সংযোগ বাদ দেওয়া হয় এবং আবার খোলা হয়।"
+  },
+  "c3da286564016a74": {
+   "source": "Which addresses open the gallery window",
+   "text": "কোন ঠিকানাগুলি গ্যালারি উইন্ডো খোলে"
   },
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
@@ -7065,6 +7253,10 @@
   "c6a2b86a33c71c9e": {
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
    "text": "30 দিনের বিনামূল্যে ট্রায়ালের পর পেইড লাইসেন্স<g1><g2>1</g2></g1>"
+  },
+  "c6e9110f9e7fa8a3": {
+   "source": "In the <g1>Categories</g1> pane: the next category; close or open a branch",
+   "text": "<g1>শ্রেণীসমূহ</g1> প্যানে: পরবর্তী ক্যাটাগরি; একটি শাখা বন্ধ বা খুলুন"
   },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
@@ -7270,9 +7462,17 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>ফাইল তথ্য ডাউনলোড করুন</g1>-এ, <g2>পরে ডাউনলোড করুন</g2>-এ ক্লিক করুন।"
   },
+  "cce4b744dcc264df": {
+   "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
+   "text": "ঐচ্ছিকভাবে, শুধুমাত্র সাইটটি তালিকাভুক্ত প্রথম ছবিগুলি ডাউনলোড করতে <g1>সর্বোচ্চ ফাইল সংখ্যা</g1>-এ একটি সংখ্যা টাইপ করুন। বেশিরভাগ সাইটে সেগুলি নতুনতম। সবগুলির জন্য এটি খালি রাখুন।"
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "সাবটাইটেল চান? <g1>সাবটাইটেল</g1>-এ একটি ভাষা বেছে নিন। এগুলো ভিডিওর পাশে সেভ হবে, অথবা আপনি যদি <g2>এগুলোকে ভিডিওতে রাখুন</g2> টিক দেন তাহলে ভিডিওর ভেতরে সেভ হবে (দেখুন <g3>সাবটাইটেল</g3>)।"
+  },
+  "cd259ac663c10ccb": {
+   "source": "Download a gallery",
+   "text": "একটি গ্যালারি ডাউনলোড করুন"
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -7321,6 +7521,10 @@
   "ce7c22009e3efda1": {
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "এটি শুধুমাত্র আপনার Windows অ্যাকাউন্টের জন্য। <x1/> এটি বাতিল করে। তারপর উপরের মতো জিপের <x2/> ফোল্ডার থেকে এক্সটেনশনটি লোড করুন।"
+  },
+  "ceafeaa62d5e59ca": {
+   "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
+   "text": "ভিডিওগুলি <g1>এতে সংরক্ষণ করুন</g1> এর ভিতরে তালিকার নামে একটি ফোল্ডারে যায়, প্রতিটি তার নিজস্ব শিরোনামে।"
   },
   "cee8fa5faa008467": {
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
@@ -7454,6 +7658,10 @@
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 বা 11</g1>, 64-বিট; প্রায় 100 MB ডিস্ক স্পেস।"
   },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "শুধুমাত্র সাউন্ডের একটি পছন্দ (<g1>শুধুমাত্র অডিও</g1>, MP3, Opus, FLAC)-এ কোনো সাবটাইটেল থাকে না।"
+  },
   "d2ef5107c69b686f": {
    "source": "Maturity",
    "text": "পরিপক্কতা"
@@ -7513,6 +7721,10 @@
   "d4c66a15e09e8ca8": {
    "source": "<g1>Offer to download links copied to the clipboard</g1> — when you copy a link whose file type is on the <g2>File types</g2> page, <g3>Download File Info</g3> opens with it, ready to start (or the download starts at once, with <g4>Show start download dialog</g4> off). On by default.",
    "text": "<g1>ক্লিপবোর্ডে কপি করা লিঙ্কগুলি ডাউনলোড করার অফার করুন</g1> — যখন আপনি এমন একটি লিঙ্ক কপি করেন যার ফাইলের প্রকার <g2>ফাইলের প্রকার</g2> পৃষ্ঠায় আছে, তখন <g3>ফাইল তথ্য ডাউনলোড করুন</g3> এটি নিয়ে খোলে, ডাউনলোড শুরু করার জন্য প্রস্তুত থাকে (অথবা ডাউনলোড অবিলম্বে শুরু হয়, যদি <g4>ডাউনলোড শুরু করার ডায়ালগ দেখান</g4> বন্ধ থাকে)। ডিফল্টরূপে চালু থাকে।"
+  },
+  "d4c9212e6107e470": {
+   "source": "Playlists and channels",
+   "text": "প্লেলিস্ট ও চ্যানেল"
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -7666,6 +7878,10 @@
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
    "text": "<x1/> খুলুন (কোডগুলি <g2><x3/></g2>-এ আছে)।"
   },
+  "d880c385e71b0520": {
+   "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
+   "text": "গ্যালারি তালিকায় একটি সারি পায়। ছবি আসার সাথে সাথে এর আকার বাড়ে, এবং এর লগ বলে কতগুলি সংরক্ষণ করা হয়েছে। প্রতিটি ছবি ইন্টারনেট থেকে ডাউনলোড করা হয়েছে বলে চিহ্নিত করা হয়, যেমন যেকোনো ডাউনলোড হয়।"
+  },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",
    "text": "<g1>Enter দুটি কাজ করত</g1>: বাতিল বা একটি চেক বক্স ফোকাস করা থাকলে, Enter OK-ও চাপত।"
@@ -7757,10 +7973,6 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "হ্যাঁ। MDM, IDM-এর পরিচিত কমান্ড-লাইন সুইচগুলি গ্রহণ করে, টার্মিনাল থেকে ডাউনলোডের জন্য misterdownloadmanager-cli সহ আসে এবং একটি স্থানীয়, টোকেন-সুরক্ষিত অটোমেশন API আছে যা ডাউনলোডগুলি তালিকাভুক্ত করতে, থামাতে, শুরু করতে এবং সরাতে পারে। আপনি চালু না করা পর্যন্ত API বন্ধ থাকে। কমান্ড লাইন এবং অটোমেশন দেখুন।"
-  },
-  "db74b9137912e0a2": {
-   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
-   "text": "একটি প্রক্সি যা VPN এক্সটেনশন নিজেই লগইন দেয়, তা শেয়ার করা যায় না: অন্য কোনো প্রোগ্রামের কাছে সেই লগইন নেই। সেক্ষেত্রে ডাউনলোড বন্ধ হয়ে যায় এবং তা জানিয়ে দেয়, প্রক্সি ছাড়া ডাউনলোড হয় না। VPN-এর নিজস্ব অ্যাপ ব্যবহার করুন, অথবা <g1>নেটওয়ার্ক অ্যাডাপ্টার</g1>-এর অধীনে এর অ্যাডাপ্টারটি বেছে নিন।"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -7910,6 +8122,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>একটি পুরানো MDM?</g1> MDM আপডেট করুন: একটি নতুন এক্সটেনশনের একটি আইডি থাকতে পারে যা একটি পুরানো সহায়ক জানে না।"
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(অন্তর্নিহিত TLS; <x1/> সহ TLS ঠিক আছে)।"
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "একটি চলমান সারি তার ডাউনলোডগুলি তালিকার ক্রমানুসারে শুরু করে, একবারে কয়েকটি (ডিফল্টরূপে চারটি)। যখন একটি ব্যর্থ হয়, এটি সারির শেষে চলে যায় এবং 30 সেকেন্ড পরে আবার চেষ্টা করা হয়। ডাউনলোড করার মতো কিছু না থাকলে সারিটি বন্ধ হয়ে যায়।"
@@ -7917,10 +8133,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "একটি ভাঙা ডাউনলোড পুনরায় শুরু করুন"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "একটি ফাইল ডাউনলোড করুন সর্বোচ্চ 8টি সংযোগ সহ (<x1/>, 1 থেকে 128), অগ্রগতি দেখাবে। <x2/> এটি থামিয়ে দেয়; <x3/> চালিয়ে যায়। <x4/> শেষ হওয়া ফাইলটি পরীক্ষা করে: হেক্স MD5, SHA-1, SHA-256, SHA-512 অথবা CRC32, ঐচ্ছিকভাবে নাম দেওয়া যায় (<x5/>)। <x6/> DNS নির্বাচন করে: <x7/> (ডিফল্ট); একটি পরিষেবা এবং কীভাবে এটি জিজ্ঞাসা করতে হয়, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS সার্ভারগুলির ঠিকানা, <x13/>; অথবা একটি DNS-ওভার-HTTPS ঠিকানা। এটি কখনও সিস্টেমের DNS-এ ফিরে যায় না।"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8302,6 +8514,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "উপরে থাকা <g1>Windows-এর ভাষা</g1> Windows-এর ডিসপ্লে ভাষাকে অনুসরণ করে। যখন Windows এমন একটি ভাষা ব্যবহার করে যা MDM-এর নেই, তখন MDM ইংরেজি দেখায়।"
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "এইগুলির মধ্যে যেকোনো একটি দ্বারা বন্ধ করা টরেন্ট তার ইভেন্ট লগে তা দেখায় এবং MDM শুরু হলে আবার শেয়ার করা হয় না। এটি আবার শেয়ার করতে সীমা বাড়ান বা বন্ধ করুন। - <g1>সমস্ত টরেন্টের জন্য আপলোড সীমিত করুন</g1> — ডিফল্টরূপে বন্ধ থাকে। এটি আপনার সমস্ত টরেন্ট একসাথে অন্যান্য পিয়ারদের কাছে যা পাঠায়, তা ডাউনলোড করার সময় এবং শেয়ার করার সময় সীমিত করে। একটি টরেন্টের নিজস্ব আপলোড সীমা, তার অগ্রগতি উইন্ডোতে, এর উপরে প্রযোজ্য হয়। - <g2>Mister Download Manager দিয়ে ম্যাগনেট লিঙ্ক এবং .torrent ফাইল খুলুন</g2> — Windows তখন আপনার ব্রাউজারে ম্যাগনেট লিঙ্ক এবং এক্সপ্লোরারে <x3/> ফাইল MDM দিয়ে খোলে। এটি শুধুমাত্র আপনার Windows অ্যাকাউন্টের জন্য; Windows-এর <g4>এর সাথে খুলুন</g4> এ আপনি যে প্রোগ্রামটি বেছে নিয়েছেন সেটি প্রথমে থাকে। সেটআপ এটি আপনার জন্য চালু করতে পারে।"
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "বিকল্প"
@@ -8353,6 +8569,10 @@
   "eda0bda9e04488cf": {
    "source": "x86_64.dmg",
    "text": "x86_64.dmg"
+  },
+  "edc9abcb08e77b81": {
+   "source": "<g1><g2>Image galleries</g2></g1> — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.",
+   "text": "<g1><g2>ছবির গ্যালারি</g2></g1> — gallery-dl ব্যবহার করে একটি গ্যালারির ছবি ডাউনলোড করুন (উইকিমিডিয়া কমন্স, ফ্লিকার, ডেভিয়ান্টআর্ট এবং আরও অনেক কিছু)।"
   },
   "edf69d8463a4ea4c": {
    "source": "<g1></g1>Free",
@@ -8446,6 +8666,10 @@
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
    "text": "হ্যাঁ। MDM-এর সাথে একটি MCP সার্ভার আসে, misterdownloadmanager-mcp: এটি Claude Desktop, Claude Code, Cursor, VS Code বা MCP সমর্থন করে এমন অন্য কোনো সহকারীর সাথে যোগ করুন। তারপর আপনি আপনার নিজের ভাষায় ডাউনলোড তালিকাভুক্ত করতে, যোগ করতে, থামাতে, আবার শুরু করতে বা সরাতে বলতে পারবেন। এটি শুধুমাত্র আপনার কম্পিউটারের MDM-এর সাথে কাজ করে এবং অটোমেশন API চালু থাকতে হবে। এআই সহকারী দেখুন।"
   },
+  "f01bb992070dab45": {
+   "source": "Image galleries — Mister Download Manager help",
+   "text": "ছবি গ্যালারি — Mister Download Manager সাহায্য"
+  },
   "f0367ba56d9b43fa": {
    "source": "Mister Download Manager — free download manager and IDM alternative",
    "text": "Mister Download Manager — বিনামূল্যে ডাউনলোড ম্যানেজার এবং IDM এর বিকল্প"
@@ -8474,6 +8698,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "সার্ভারের সার্টিফিকেট Windows-এর (বা সিস্টেমের) বিশ্বস্ত সার্টিফিকেটের সাথে যাচাই করা হয়, যেমন <x1/>-এর জন্য।"
   },
+  "f10113695e758efd": {
+   "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
+   "text": "একটি প্লেলিস্ট বা চ্যানেলের ভিডিও, প্রতিটি এক লাইনে যেমন তালিকাভুক্ত আছে: এর স্থান, দৈর্ঘ্য, শিরোনাম এবং ঠিকানা।"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8494,9 +8722,17 @@
    "source": "Installer",
    "text": "ইনস্টলার"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "ভিডিও পৃষ্ঠাগুলি (yt-dlp একটি অ্যাডাপ্টারের সাথে সংযুক্ত করা যায় না);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "যদি ভিডিও ডাউনলোড না হয়, তাহলে <g1>ভিডিও ডাউনলোড</g1> দেখুন।"
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "একটি ভিডিও ডাউনলোড করুন; <x1/> <x2/> থেকে একটি কোয়ালিটি সিলেক্টর নেয় (<x3/> = সেরা একক ফাইল; <x4/> = সাইটে যেমন আছে তেমন শুধু সাউন্ড, রূপান্তরিত নয়; <x5/>, <x6/>, <x7/> অথবা <x8/> = সেই বিটরেটে MP3 হিসেবে সাউন্ড, <x9/> তার সেরা পরিবর্তনশীল বিটরেটে; <x10/> = Opus হিসেবে; <x11/> = FLAC হিসেবে, লসলেস কিন্তু সাইটের সাউন্ডের চেয়ে ভালো নয়; রূপান্তরের জন্য ffmpeg প্রয়োজন)। <x12/> এর পাশে সাবটাইটেল সংরক্ষণ করে: <x13/> (<x14/>) থেকে ভাষার কোড, অথবা আপলোডার যতগুলো দিয়েছে তার সবগুলোর জন্য <x15/>; <x16/> এর পরিবর্তে সাইটের স্বয়ংক্রিয় ক্যাপশন নেয়; <x17/> সেগুলোকে ভিডিওতে রাখে (ffmpeg, MP4 অথবা MKV প্রয়োজন)।"
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
@@ -8662,6 +8898,10 @@
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "Chrome, Edge এবং Brave-এ আপনি একটি এক্সটেনশনকে কিছু সাইটে সীমাবদ্ধ করতে পারেন (এর টুলবার বোতামে ডান-ক্লিক করুন → <g1>এটি সাইটের ডেটা পড়তে এবং পরিবর্তন করতে পারে</g1>)। যে সাইট এটি পড়তে পারে না, সেখানে এক্সটেনশন আপনার সাইন-ইন পাস করতে পারে না, তাই এটি ডাউনলোডটি ব্রাউজারের জন্য রেখে দেয়। MDM কে সব জায়গা থেকে ডাউনলোড নিতে দিতে <g2>সব সাইটে</g2> নির্বাচন করুন।"
   },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "একটি প্লেলিস্ট বা চ্যানেলের ভিডিওগুলি একটার পর একটা ডাউনলোড করুন, <x1/> এর মধ্যে প্লেলিস্টের নামে একটি ফোল্ডারে। <x2/> সবার জন্য একটি গুণমান, যেমন <x3/> এর জন্য (ডিফল্টরূপে প্রতিটি ভিডিওর সেরা; <x4/> = 720p পর্যন্ত; <x5/> = আসল শব্দ; <x6/>, <x7/>, <x8/> যেমন <x9/> এর জন্য)।"
+  },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
    "text": "একটি টরেন্ট শেষ হওয়ার পরেও কি এটি আপলোড করতে থাকে?"
@@ -8677,6 +8917,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "MDM পৃষ্ঠাটি খুঁজে বের করা পর্যন্ত অপেক্ষা করুন। গুণমানের তালিকাটি প্রথমে সেরাটি সহ প্রদর্শিত হবে, শেষে <g1>শুধুমাত্র অডিও</g1> থাকবে: সাইটে যেমন আছে তেমন শব্দ, তারপর, ffmpeg (পরবর্তী ধাপ) ব্যবহার করে, সেরা পরিবর্তনশীল বিটরেটে অথবা 320, 256, 192 বা 128 kbps-এ একটি MP3 হিসাবে।"
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>এতক্ষণ শেয়ার করার পর শেয়ার করা বন্ধ করুন</g1> — অথবা এটি যতবার শেয়ার করা হয়েছে, তার সব রান মিলিয়ে। এটি ডিফল্টরূপে বন্ধ থাকে।"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
@@ -8930,6 +9174,10 @@
    "source": "On the first start MDM asks for the language; see <g1>Languages</g1>.",
    "text": "প্রথমবার চালু করার সময় MDM ভাষা জানতে চাইবে; <g1>ভাষা</g1> দেখুন।"
   },
+  "ff26f3ab22a86c09": {
+   "source": "installs or updates gallery-dl, verified in the same way.",
+   "text": "gallery-dl ইনস্টল বা আপডেট করে, একই উপায়ে যাচাই করা হয়।"
+  },
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
@@ -8957,6 +9205,54 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "আপনার ডাউনলোডের ঠিকানা বা ফাইলের নাম;"
+  },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Firefox-এ, MDM ব্রাউজারের নিজস্ব ফাইল অনুরোধের জন্য ব্যবহৃত প্রক্সি দেখতে পায়, যার মধ্যে VPN এক্সটেনশন প্রতিটি অনুরোধের জন্য যে প্রক্সি বেছে নেয় তাও অন্তর্ভুক্ত। Chrome, Edge, Brave, Opera এবং Vivaldi-তে এটি ব্রাউজারের প্রক্সি সেটিংস দেখতে পায়।"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "যখন ব্রাউজার কোনো প্রক্সি ব্যবহার করেনি, এবং <g1>কোনো প্রক্সি/SOCKS নেই</g1> নির্বাচন করা হয়, তখন MDM Windows-এর প্রক্সি সেটিংস ব্যবহার করে, যেমন ব্রাউজারগুলি করে থাকে।"
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "এর অনুমতিসমূহ, এবং কেন: ডাউনলোডগুলি দেখতে এবং হস্তান্তর করতে <g1>downloads</g1>; MDM-এ সাইন-ইন করা ডাউনলোডগুলি কাজ করার জন্য <g2>cookies</g2>; MDM-এর সাথে কথা বলার জন্য <g3>nativeMessaging</g3>; রাইট-ক্লিক আইটেমগুলির জন্য <g4>contextMenus</g4>; এর সেটিংসের জন্য <g5>storage</g5>; জমা দেওয়া ফর্ম এবং লোড করা ভিডিও স্ট্রিমগুলি দেখতে <g6>webRequest</g6> (এটি কিছুই পরিবর্তন করে না); ব্রাউজার যে ফাইলগুলি খুলবে (একটি PDF) সেগুলিকে MDM যে প্রকারগুলি গ্রহণ করে সেগুলির জন্য ডাউনলোড করার জন্য <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge এবং অন্যান্য Chromium ব্রাউজার); Firefox-এ, <g8>webRequestBlocking</g8> এটি করে; আপনি যখন অনুরোধ করেন তখন একটি পৃষ্ঠার লিঙ্কগুলি পড়ার জন্য এবং এক্সটেনশন ইনস্টল করার সময় ইতিমধ্যে খোলা পৃষ্ঠাগুলিতে ভিডিও বোতাম যোগ করার জন্য <g9>scripting</g9>; ব্রাউজার কোন প্রক্সি ব্যবহার করে তা পড়ার জন্য <g10>proxy</g10>, যাতে একটি VPN বা প্রক্সি এক্সটেনশনের পিছনে থাকা ব্রাউজার থেকে নেওয়া ডাউনলোডগুলিও এর মাধ্যমে যায় (এটি কখনোই ব্রাউজারের প্রক্সি পরিবর্তন করে না); সমস্ত সাইটে অ্যাক্সেস কারণ ডাউনলোড এবং ভিডিও যেকোনো সাইট থেকে আসতে পারে।"
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "কিবোর্ড থেকে সবকিছু করা যায়, এবং MDM স্ক্রিন রিডারগুলির (যেমন Windows-এ Narrator এবং NVDA) সাথে কাজ করে: এর উইন্ডো, ডায়ালগ এবং মেনুগুলি তাদের বলে যে প্রতিটি নিয়ন্ত্রণ কী এবং তার অবস্থা কী, এবং ডাউনলোড তালিকা প্রতিটি ডাউনলোডের নাম, অবস্থা এবং আকার পড়ে শোনায়।"
+  },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Shift+F10"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>ব্রাউজারের অনুরোধ থেকে প্রক্সি/SOCKS ব্যবহার করুন…</g1> — এটি ডিফল্টভাবে চালু থাকে। MDM ব্রাউজার থেকে যে ডাউনলোড নেয়, সেটি ব্রাউজার যে প্রক্সি ব্যবহার করেছিল তার মাধ্যমে যায়। এটি একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা সেট করা প্রক্সি হতে পারে, ব্রাউজারের নিজস্ব ম্যানুয়াল প্রক্সি, অথবা এর প্রক্সি অটো-কনফিগ স্ক্রিপ্ট। এটি ছাড়া, ডাউনলোড আপনার নিজের ঠিকানা থেকে শুরু হবে, এবং VPN-এর দেশ বা এর ঠিকানায় সীমাবদ্ধ বিষয়বস্তু ডাউনলোড ব্যর্থ হবে। ব্রাউজার এক্সটেনশন সেই প্রক্সি পড়ে এবং প্রতিটি ডাউনলোডের সাথে MDM-কে তা দেয়।"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM-এর প্রক্সি / SOCKS সেটিংস ওয়েব এবং FTP ডাউনলোডের জন্য। টরেন্টগুলিও একটি SOCKS5 ব্যবহার করতে পারে: <g2>বিকল্প → প্রক্সি / SOCKS</g2> এ একটি <x1/> প্রক্সি সেট করুন এবং টরেন্ট সেটিংসে <g3>প্রক্সি ব্যবহার করুন</g3> চালু করুন। প্রক্সি শুধুমাত্র পিয়ার এবং ওয়েব ট্র্যাকারদের সাথে সংযোগ কভার করে, তাই এর সাথে MDM DHT, স্থানীয় পিয়ার ডিসকভারি, ইনকামিং সংযোগ এবং UDP ট্র্যাকারগুলি বন্ধ করে দেয়। যদি সেই সুইচটি চালু থাকা অবস্থায় প্রক্সি / SOCKS থেকে প্রক্সি চলে যায়, তাহলে টরেন্টগুলি এটি এড়িয়ে না গিয়ে শুরু হয় না।"
+  },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "<g1>সবকিছু</g1> অন্য নেটওয়ার্কের মাধ্যমে রুট করতে, পুরো কম্পিউটারের জন্য একটি VPN ব্যবহার করুন। MDM Windows-এ টরেন্টগুলিকে একটি নেটওয়ার্ক অ্যাডাপ্টারের সাথে বাঁধতে পারে না।"
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "যখন ব্রাউজার সেই ডাউনলোডের জন্য একটি প্রক্সি ব্যবহার করে (একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা, অথবা এর সেটিংসে সেট করা), তখন এক্সটেনশনটি <g1>প্রক্সির ঠিকানা</g1>, অথবা এর <g2>প্রক্সি অটো-কনফিগ স্ক্রিপ্ট</g2> পাস করে, যাতে MDM একই প্রক্সির মাধ্যমে ডাউনলোড করে। এটি কখনোই প্রক্সির লগইন পড়ে না বা পাস করে না। এটি শুধুমাত্র নোট করে যে একটি প্রক্সি একটির জন্য অনুরোধ করেছে, যাতে MDM আপনাকে বলতে পারে যে এটি সেই প্রক্সি ব্যবহার করতে পারবে না।"
+  },
+  "a4263adda2169cf6": {
+   "source": "Playlists and mixes",
+   "text": "প্লেলিস্ট এবং মিক্স"
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "একটি প্রক্সি যা VPN এক্সটেনশন নিজেই লগইন দেয়, তা শেয়ার করা যায় না: অন্য কোনো প্রোগ্রামের কাছে সেই লগইন নেই। সেক্ষেত্রে ডাউনলোড বন্ধ হয়ে যায় এবং তা জানিয়ে দেয়, প্রক্সি ছাড়া ডাউনলোড হয় না। VPN-এর নিজস্ব অ্যাপ ব্যবহার করুন, অথবা <g1>নেটওয়ার্ক অ্যাডাপ্টার</g1>-এর অধীনে এর অ্যাডাপ্টারটি বেছে নিন।"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "একটি ফাইল ডাউনলোড করুন সর্বোচ্চ 8টি সংযোগ সহ (<x1/>, 1 থেকে 128), অগ্রগতি দেখাবে। <x2/> এটি থামিয়ে দেয়; <x3/> চালিয়ে যায়। <x4/> শেষ হওয়া ফাইলটি পরীক্ষা করে: হেক্স MD5, SHA-1, SHA-256, SHA-512 অথবা CRC32, ঐচ্ছিকভাবে নাম দেওয়া যায় (<x5/>)। <x6/> DNS নির্বাচন করে: <x7/> (ডিফল্ট); একটি পরিষেবা এবং কীভাবে এটি জিজ্ঞাসা করতে হয়, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS সার্ভারগুলির ঠিকানা, <x13/>; অথবা একটি DNS-ওভার-HTTPS ঠিকানা। এটি কখনও সিস্টেমের DNS-এ ফিরে যায় না।"
   }
  }
 }

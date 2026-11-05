@@ -2313,6 +2313,19 @@ pub fn button(
     button_face(ui, rc, &label, kind, focus_rect)
 }
 
+/// A button's rect `rc` widened to the left (its right edge stays: a button against the right
+/// side, with room before it) to fit its translated `label` whole, with the room [`button`]
+/// keeps inside the border, at most to `max_width`. English labels fit IDM's buttons, so
+/// English never changes; a label that would still not fit ends in "..." and shows whole on
+/// hover, as on every button. (A button with room after it would widen to the right: add that
+/// when one needs it.)
+pub fn button_rect_for(p: &Painter, rc: Rect, label: &str, max_width: f32) -> Rect {
+    let shown = crate::i18n::t(label).replace('&', "");
+    let want = (text_width(p, &shown) + 4.0 + 12.0).ceil();
+    let w = want.clamp(rc.width(), max_width.max(rc.width()));
+    Rect::from_min_max(pos2(rc.right() - w, rc.top()), rc.max)
+}
+
 /// `label` as it fits on a button `rc`: whole, or cut with "..." (true) when it would reach the
 /// border (English labels fit IDM's buttons, so English never changes).
 fn fit_label(p: &Painter, label: &str, rc: Rect) -> (String, bool) {
@@ -3415,6 +3428,14 @@ pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
 /// (the full translated label, "&" taken out), whether it can be used, and for a check box,
 /// radio button, tab or list row whether it is on. Our controls are painted by hand, so egui
 /// can't tell otherwise. Call right after the control's `interact`, before any tooltip.
+/// A line of text a window paints (a status, an error) made readable too: a screen reader and UI
+/// Automation find it as static text at `rc`, by `salt`, with `text` as it reads (no mnemonic).
+pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug, text: &str) {
+    let resp = ui.interact(rc, widget_id(ui, ("readable", salt)), Sense::hover());
+    let text = text.to_owned();
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+}
+
 pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on: Option<bool>) {
     let name = label
         .replace("&&", "\u{1}")

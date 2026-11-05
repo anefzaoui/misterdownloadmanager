@@ -52,15 +52,37 @@ pub fn route() -> mdm_engine::Route {
 /// would leave by the normal route. The way to cover it is a proxy on this computer whose own
 /// connections MDM binds (a follow-up).
 fn route_args() -> Result<Vec<String>, ProcError> {
+    route_for("Video pages (yt-dlp)")
+}
+
+/// The same rule for any helper that can't be held to an adapter (`what` names it).
+fn route_for(what: &str) -> Result<Vec<String>, ProcError> {
     match route() {
         mdm_engine::Route::Any => Ok(Vec::new()),
         mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
         mdm_engine::Route::Bound(b) => Err(mdm_engine::NetError::NotSupported {
             label: b.label.clone(),
-            what: "Video pages (yt-dlp)".into(),
+            what: what.into(),
         }
         .into()),
     }
+}
+
+/// `gallery-dl` (#58) with arguments in the same layers as [`ytdlp`]: `ours`, then the fixed
+/// ones (no configuration file of the person's, never a question on the console), then `--` and
+/// the address. Its output is read as UTF-8, as yt-dlp's is (#79). Like yt-dlp it can't be held
+/// to a network adapter, so it is refused while one is chosen (#35).
+pub fn gallery_dl(exe: &Path, ours: &[String], url: &str) -> Result<Command, ProcError> {
+    route_for("Image galleries (gallery-dl)")?;
+    let mut cmd = Command::new(exe);
+    cmd.env("PYTHONIOENCODING", "utf-8");
+    for a in ours {
+        cmd.arg(safe(a)?);
+    }
+    cmd.args(["--ignore-config", "--no-input"]);
+    cmd.arg("--");
+    cmd.arg(safe(url)?);
+    Ok(cmd)
 }
 
 /// Text that may go into an argument list: no line breaks or NUL (they would let a page title
@@ -233,6 +255,8 @@ pub struct Spawned {
     /// Every `WARNING:` line (a few dozen at most): a subtitle yt-dlp couldn't get is said early,
     /// and the tail has moved past it by the end (#68).
     warnings: Arc<Mutex<Vec<String>>>,
+    /// The stderr reader has read to the end (the helper and all it started closed it).
+    stderr_done: Arc<std::sync::atomic::AtomicBool>,
     name: String,
     #[cfg(windows)]
     job: Option<win32job::Job>,
@@ -263,8 +287,15 @@ impl Spawned {
         self.warnings.lock().unwrap().clone()
     }
 
-    /// A failure with what the tool said (its last `ERROR:` line, else its last line).
+    /// A failure with what the tool said (its last `ERROR:` line, else its last line). Called
+    /// once it has ended: its last lines are waited for (the stderr reader is another thread, and
+    /// on a busy machine it came after the exit was seen: "stopped without saying why"), up to
+    /// two seconds, as something it started may keep stderr open.
     pub fn failure(&self) -> ProcError {
+        let end = Instant::now() + Duration::from_secs(2);
+        while !self.stderr_done.load(std::sync::atomic::Ordering::Acquire) && Instant::now() < end {
+            std::thread::sleep(Duration::from_millis(10));
+        }
         let tail = self.tail.lock().unwrap();
         let message = tail
             .iter()
@@ -302,8 +333,9 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
     });
     let tail = Arc::new(Mutex::new(VecDeque::new()));
     let warnings = Arc::new(Mutex::new(Vec::new()));
+    let stderr_done = Arc::new(std::sync::atomic::AtomicBool::new(false));
     if let Some(err) = child.stderr.take() {
-        let (tail, warnings) = (tail.clone(), warnings.clone());
+        let (tail, warnings, done) = (tail.clone(), warnings.clone(), stderr_done.clone());
         std::thread::spawn(move || {
             for line in BufReader::new(err).lines().map_while(Result::ok) {
                 if let Some(w) = line.strip_prefix("WARNING:") {
@@ -318,12 +350,16 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
                 }
                 t.push_back(line);
             }
+            done.store(true, std::sync::atomic::Ordering::Release);
         });
+    } else {
+        stderr_done.store(true, std::sync::atomic::Ordering::Release);
     }
     Ok(Spawned {
         child,
         tail,
         warnings,
+        stderr_done,
         name: name.to_owned(),
         #[cfg(windows)]
         job,
@@ -347,8 +383,7 @@ pub fn output(cmd: Command, name: &str, timeout: Duration) -> Result<Vec<u8>, Pr
                 return if status.success() {
                     Ok(stdout)
                 } else {
-                    // Let the stderr reader catch up with the last lines.
-                    std::thread::sleep(Duration::from_millis(50));
+                    // `failure` waits for the stderr reader's last lines.
                     Err(s.failure())
                 };
             }

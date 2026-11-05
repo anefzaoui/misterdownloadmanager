@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n}個を選択済み
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} 個の動画
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {total} 個の動画中 {listed} 個をリスト表示
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -121,6 +130,10 @@
 #. text in categories.rs
 #, machine
 	Add category	カテゴリの追加
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	多数のダウンロードを追加
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -151,6 +164,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	トレントを追加
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	{n} 個のダウンロードをリストに追加しますか? 各動画は個別の行になります。
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -264,6 +282,14 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	オーディオのみ {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	音声のみ、オリジナル
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	音声のみ、オリジナル {type}
 #. text in the Scheduler window
 #, machine
 	August	8 月
@@ -277,6 +303,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	バッチ ダウンロード
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	最高品質
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -307,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	インポートによる
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	キャンセル
@@ -374,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	更新プログラムを確認しています...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dl でアドレスを確認しています...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -619,6 +654,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	「{name}」を最初からもう一度ダウンロードしますか? 新しいダウンロードが完了すると、完了したファイルは置き換えられます。
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	ギャラリーをダウンロード
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ダウンロード完了
@@ -643,7 +682,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB を超えてダウンロードしない\n{hours} 時間ごと
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	今すぐダウンロード
 #. window title in the Options window
@@ -688,6 +727,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg をダウンロードして確認しています (約 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl をダウンロードして確認しています...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -757,6 +800,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	メール
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	空欄の場合、すべてダウンロードします。ほとんどのサイトでは、新しいものが最初に表示されます。
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -866,6 +913,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	既存のファイル
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	最大ファイル数
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -907,6 +958,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	最初のファイル:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC は音声を正確に保持しますが、サイトの音声にない品質を追加することはできません。ファイルが大きくなるだけです。
 #. text in categories.rs
 #, machine
 	Folder:	フォルダー:
@@ -936,11 +991,19 @@
 #, machine
 	Friday	金曜日
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	ギャラリーから (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	マグネットリンクから
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	ページから (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	プレイリストから (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	トレントファイルから
@@ -960,6 +1023,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	ギャラリーは gallery-dl を使用します (約 23 MB、署名で確認済み)。
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	ギャラリーは gallery-dl を使用します。システムのパッケージ (Homebrew、pip) でインストールしてから、[ヘルパー] で選択してください。
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl はこのギャラリーのファイルをダウンロードできます。
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl はこのアドレスを読み取れません。代わりにファイルとして追加してください ([URL を追加])。
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl がインストールされていません (ギャラリーのアドレスで [URL を追加] を行うとインストールされます)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -997,7 +1078,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	ヘルプ
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	ヘルパー
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1010,7 +1095,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	カテゴリを非表示(&C)
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	タブを非表示
 #. text in a download's progress window; text in standard windows
@@ -1058,6 +1143,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	キュー内
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	カテゴリ内: 選択したカテゴリのメニュー
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1078,6 +1166,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg をインストール
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl をインストール
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1144,7 +1236,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	最終試行 {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1174,10 +1266,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ブラウザーからのリンク
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	残りをリスト
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	{n} 個の動画をリストした後に停止しました: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	動画をリスト中: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	動画をリスト中: {total} 個中 {n} 個
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	アドレスの一覧
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	さらに読み込む
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1254,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	通知領域に最小化する
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	分
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1313,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ページを上下に移動
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	カテゴリとダウンロード リスト間を移動する
 #. text in the Scheduler window
 #, machine
 	Move down	下に移動
@@ -1550,6 +1672,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	字幕を格納できるのは MP4 および MKV ビデオのみです
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	最初の {n} 個の動画のみがリストされています。
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	コンピューターを使用している間のみ
@@ -1600,7 +1727,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	完了時のオプション
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ページ アドレス
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1696,6 +1823,7 @@
 	Put them into the video	ビデオに埋め込む
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	品質
 #. text in the Scheduler window
@@ -1820,7 +1948,7 @@
 #. text in a dialog box
 #, machine
 	Save As	名前を付けて保存
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	保存先
@@ -1854,7 +1982,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	フォルダーの選択
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	すべて選択
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1863,7 +1992,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	これまでのすべてのダウンロードを選択
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	選択解除
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1943,6 +2073,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	共有中
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time}の共有後に共有を停止しました
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	共有を停止しました: 共有比率が{ratio}に達しました
 #. text in the download list
 #, machine
 	Show	表示
@@ -2089,6 +2228,11 @@
 #, machine
 	Started	開始済み
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} で開始しました
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) で開始
@@ -2111,9 +2255,21 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ダウンロードを停止する時刻
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	リストを停止
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	メインダウンロードキューを停止
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	共有後に共有を停止する
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	共有比率が次の値で共有を停止する
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2200,15 +2356,15 @@
 	The address must be an http(s) or ftp(s) address	アドレスは http(s) または ftp(s) である必要があります
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	最高品質と MP3 には ffmpeg (約 80 MB) が必要です。
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最高の品質 (MP3、Opus、FLAC) には ffmpeg (約 80 MB) が必要です。
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	最高品質と MP3 には ffmpeg が必要です。システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最高の品質 (MP3、Opus、FLAC) には ffmpeg が必要です。システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ブラウザーのプロキシ (VPN またはプロキシ拡張機能) は、その拡張機能のみが持つログインを要求します。VPN 独自のアプリを使用するか、[オプション] → [プロキシ / SOCKS] でネットワーク アダプターを選択してください。
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ブラウザーのプロキシ (VPN またはプロキシ拡張機能) は、その拡張機能のみが持つログインを要求します。VPN 独自のアプリを使用するか、[オプション] → [プロキシ / SOCKS] でネットワーク アダプターを選択してください
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2458,6 +2614,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	これはインストールされたコピーであり、ポータブル版ではありません
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	このリストには動画がありません
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2623,6 +2783,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	不明
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	{height}p まで
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2720,10 +2884,6 @@
 #. category name: video files
 #, machine
 	Video	ビデオ
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	ビデオ ヘルパー
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ビデオの検索には yt-dlp (約 23 MB、署名で確認済み) を使用します。
@@ -2735,9 +2895,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	動画ページではまだ使用できません。
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	動画
 #. text in the Options window
 #, machine
 	Virus checking settings	ウイルス チェック設定
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	リストを待つか、リストを停止してください
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2955,6 +3123,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (自動)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{total} 個中 {n} 個を選択済み
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -2978,7 +3151,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} は、選択したネットワーク アダプター ({adapter}) をまだ通過できません
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3232,7 +3405,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / メニュー
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+上 / Shift+下
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
