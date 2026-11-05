@@ -107,7 +107,7 @@ struct Message {
     open: bool,
 }
 
-#[derive(Debug, Default, Serialize)]
+#[derive(Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Reply {
     ok: bool,
@@ -260,7 +260,7 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
     } else if m.video {
         match video_command(&m, rules, browser) {
             Ok(cmd) => Some(cmd),
-            Err(reply) => return reply,
+            Err((why, error)) => return Reply::failed(why, error),
         }
     } else {
         None
@@ -281,19 +281,20 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
 }
 
 /// The Download video window's command for a video message: the page, or the video's own file
-/// or its stream's manifest (`src`) fetched as from its page; or the reply refusing it.
+/// or its stream's manifest (`src`) fetched as from its page; or why it is refused (the reply's
+/// `why` and `error`).
 fn video_command(
     m: &Message,
     rules: &mdm_ipc::capture::CaptureRules,
     browser: &str,
-) -> Result<mdm_ipc::Command, Reply> {
+) -> Result<mdm_ipc::Command, (&'static str, &'static str)> {
     if !(m.url.starts_with("http://") || m.url.starts_with("https://")) {
-        return Err(Reply::failed("refused", "not an http(s) page"));
+        return Err(("refused", "not an http(s) page"));
     }
     // The toolbar button's list of the tab's media (#38) asks for one explicitly: whether the
     // button over videos shows on this site doesn't matter then.
     if !m.explicit && !rules.panel_on(&m.url, browser) {
-        return Err(Reply::failed("options", "the video button is off here"));
+        return Err(("options", "the video button is off here"));
     }
     // The video clicked, not the page's first one (a feed plays many): its own file when there
     // is one, fetched as from its page.
