@@ -250,6 +250,14 @@ pub fn set_torrent_handlers(on: bool) {
     }
 }
 
+/// `win32::assistive_technology_listening`: Linux's AT-SPI adapter answers a screen reader with
+/// the first tree a frame produces (no placeholder to replace), and macOS has no such cheap
+/// question; there, as on Windows, a window's tree is ready at once for any window read after
+/// the first one (egui keeps AccessKit on from the first request).
+pub fn assistive_technology_listening() -> bool {
+    false
+}
+
 /// `win32::wheel_lines`: Linux and macOS have no such setting shared by every toolkit; three
 /// rows a notch, as GTK, Qt and Windows' default do.
 pub fn wheel_lines() -> Option<f32> {

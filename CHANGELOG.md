@@ -320,6 +320,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Screen readers see a window's contents the first time they read it**
+  ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131)): a window read for the
+  first time (Link grabber, Options, About...) showed only its title bar until it was drawn
+  again. It now answers with what it shows at once, as soon as a screen reader is running.
 - **A magnet link could wait minutes for its file list** ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92)):
   in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest
   of the session once a computer it asked was gone, so a magnet its trackers didn't serve never
