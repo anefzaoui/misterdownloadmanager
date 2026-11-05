@@ -79,7 +79,8 @@ Some sites, YouTube among them, send each viewer to a nearby video server, somet
 - Hover over the download's **Status**, or open its progress window, to read yt-dlp's message.
 - **No video this can download on that page** means yt-dlp found nothing on the page. Check that the address is the video's own page.
 - Sites change often, and a newer yt-dlp usually fixes it. MDM doesn't update yt-dlp on its own yet. To get the newest one: quit MDM (**Tasks → Exit**), delete the `tools\yt-dlp` folder in MDM's data folder (`%APPDATA%\misterdownloadmanager`, or the `data` folder of a portable copy), start MDM, open the video window and click **Install yt-dlp**.
-- Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.
+- Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's [Media on this page](browser-integration.md#media-on-this-page) shows such a stream as **Protected** and doesn't send it.
+- A page whose video the window can't find: play the video in your browser, then use the extension's [Media on this page](browser-integration.md#media-on-this-page) to send the stream the page loaded.
 - Downloading may be against some sites' terms. Checking that is up to you.
 - Still stuck? Use **Help → Report a problem** and include the page address.
 

@@ -1,16 +1,27 @@
 // The toolbar button's popup: whether the browser reaches Mister Download Manager (and, when it
 // doesn't, a link to the help page's section for why), pausing capture, leaving the current
-// site to the browser, and opening the app or its Options. background.js does the work.
+// site to the browser, opening the app or its Options, and the media the tab loaded (#38), each
+// to download. background.js does the work.
 const ext = globalThis.browser ?? globalThis.chrome;
 const HELP = "https://misterdownloadmanager.com/help/browser-help.html";
 const t = (key, ...subs) => ext.i18n.getMessage(key, subs) || key;
 const $ = (id) => document.getElementById(id);
 const ask = (m) => ext.runtime.sendMessage(m).catch(() => ({ ok: false }));
+const lang = ext.i18n.getUILanguage();
 
-document.documentElement.lang = ext.i18n.getUILanguage();
+document.documentElement.lang = lang;
 document.documentElement.dir = t("@@bidi_dir") === "rtl" ? "rtl" : "ltr";
 for (const el of document.querySelectorAll("[data-i18n]")) el.textContent = t(el.dataset.i18n);
 $("help").href = HELP;
+
+// The tab it is about: the window's active tab; with `?page=ADDRESS` (this page opened in a tab of
+// its own, for the tests and the pictures), the tab showing that address.
+async function currentTab() {
+  const page = new URLSearchParams(location.search).get("page");
+  if (page) return (await ext.tabs.query({}).catch(() => [])).find((x) => x.url === page) || null;
+  const [tab] = await ext.tabs.query({ active: true, currentWindow: true }).catch(() => []);
+  return tab || null;
+}
 
 async function show() {
   const s = await ask({ type: "state" });
@@ -34,7 +45,7 @@ async function show() {
   $("take").disabled = !s.connected;
   $("open").disabled = $("options").disabled = !s.connected;
   $("version").textContent = s.version ? `v${s.version}` : "";
-  const [tab] = await ext.tabs.query({ active: true, currentWindow: true }).catch(() => []);
+  const tab = await currentTab();
   let site = "";
   try {
     const u = new URL(tab && tab.url);
@@ -54,6 +65,124 @@ async function show() {
       $("excluded").textContent = t("popup_excluded", site);
     }
   };
+  if (site) await showMedia(tab, s.connected);
+}
+
+// ---- the media the tab loaded ------------------------------------------------------------------
+
+const TYPES = {
+  "video/mp4": "MP4",
+  "audio/mp4": "M4A",
+  "audio/mpeg": "MP3",
+  "video/webm": "WEBM",
+  "audio/webm": "WEBM",
+  "audio/ogg": "OGG",
+  "video/ogg": "OGV",
+  "video/quicktime": "MOV",
+  "video/x-matroska": "MKV",
+  "audio/flac": "FLAC",
+  "audio/wav": "WAV",
+};
+
+// Its type as a short tag: HLS, DASH, else the file's extension or its type's.
+function tagOf(m) {
+  if (m.kind === "hls") return "HLS";
+  if (m.kind === "dash") return "DASH";
+  const ext = (/\.([a-z0-9]{2,4})$/i.exec(m.url.split(/[?#]/)[0]) || [])[1];
+  return (ext || TYPES[m.mime] || (m.kind === "audio" ? "AUDIO" : "VIDEO")).toUpperCase();
+}
+
+// The address's last part, readable.
+function nameOf(url) {
+  const last = url.split(/[?#]/)[0].split("/").filter(Boolean).pop() || url;
+  try {
+    return decodeURIComponent(last);
+  } catch {
+    return last;
+  }
+}
+
+function clock(seconds) {
+  const s = Math.round(seconds);
+  const two = (n) => String(n).padStart(2, "0");
+  return s >= 3600 ? `${Math.floor(s / 3600)}:${two(Math.floor(s / 60) % 60)}:${two(s % 60)}` : `${Math.floor(s / 60)}:${two(s % 60)}`;
+}
+
+// A size in the browser's language (its own unit names).
+function sizeText(bytes) {
+  const units = [["gigabyte", 1 << 30], ["megabyte", 1 << 20], ["kilobyte", 1 << 10]];
+  const [unit, n] = units.find(([, n]) => bytes >= n) || ["byte", 1];
+  try {
+    return new Intl.NumberFormat(lang, { style: "unit", unit, unitDisplay: "short", maximumFractionDigits: 1 }).format(bytes / n);
+  } catch {
+    return `${(bytes / n).toFixed(1)} ${unit}`;
+  }
+}
+
+// What is known of it: its qualities (or picture size), length, size; "Live" for a live stream.
+function metaOf(m) {
+  const parts = [];
+  if (m.width && m.heights.length === 1) parts.push(`${m.width}×${m.heights[0]}`);
+  else if (m.heights.length) parts.push(m.heights.map((h) => `${h}p`).join(" · "));
+  if (m.live) parts.push(t("popup_media_live"));
+  else if (m.duration > 0) parts.push(clock(m.duration));
+  if (m.size > 0) parts.push(sizeText(m.size));
+  return parts.join(" · ");
+}
+
+function said(text, bad) {
+  const p = $("media-said");
+  p.hidden = !text;
+  p.textContent = text;
+  p.classList.toggle("bad", Boolean(bad));
+}
+
+async function showMedia(tab, connected) {
+  const r = await ask({ type: "media", tab: tab.id });
+  const list = (r && r.media) || [];
+  $("media").hidden = false;
+  $("media-none").hidden = list.length > 0;
+  const ul = $("media-list");
+  ul.replaceChildren();
+  for (const m of list) {
+    const li = document.createElement("li");
+    li.dataset.kind = m.kind;
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = tagOf(m);
+    const what = document.createElement("div");
+    what.className = "what";
+    const name = document.createElement("span");
+    name.className = "name";
+    name.textContent = nameOf(m.url);
+    name.title = m.url;
+    const meta = document.createElement("span");
+    meta.className = "meta";
+    meta.textContent = metaOf(m);
+    what.append(name, meta);
+    li.append(tag, what);
+    if (m.drm) {
+      // Copy-protected: listed, never sent.
+      const drm = document.createElement("span");
+      drm.className = "drm";
+      drm.textContent = t("popup_media_protected");
+      drm.title = t("video_drm");
+      li.append(drm);
+    } else {
+      const get = document.createElement("button");
+      get.textContent = t("popup_media_download");
+      get.title = t("menu");
+      get.disabled = !connected;
+      get.onclick = async () => {
+        get.disabled = true;
+        const reply = await ask({ type: "media-download", tab: tab.id, url: m.url });
+        said(reply.ok ? t("video_sent") : reply.why === "drm" ? t("video_drm") : t("video_failed"), !reply.ok);
+        get.disabled = false;
+      };
+      li.append(get);
+    }
+    ul.append(li);
+  }
 }
 
 $("take").addEventListener("change", async (e) => {

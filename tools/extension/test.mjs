@@ -11,12 +11,25 @@ const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
 // answer to a download; `types` its Options -> File types when the rules are asked (`host: false`:
 // the host isn't registered and every native message fails, as the browser says then).
 // `appName`: what runtime.getBrowserInfo says (Firefox's family only; "Zen").
-function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = true, finished, panelOn, access = true, rules = {}, appName, proxy }) {
+// `session`: storage.session's contents (shared between two loads: the browser stopped the
+// script and started it again); `frames`: what each frame's players are (mediaElements);
+// `tabs`: tabs.get's answers by id.
+function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = true, finished, panelOn, access = true, rules = {}, appName, proxy, session, frames, tabs = {} }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
   const calls = { push: (c) => raw.push(JSON.parse(JSON.stringify(c))) };
   const listeners = {};
-  const event = (name) => ({ addListener: (f) => (listeners[name] = f) });
+  // Every listener of an event is called (background.js has two for some); the answer is the
+  // last one given.
+  const event = (name) => {
+    const fns = [];
+    return {
+      addListener: (f) => {
+        fns.push(f);
+        listeners[name] = (...a) => fns.reduce((r, g) => g(...a) ?? r, undefined);
+      },
+    };
+  };
   const store = {};
   const downloads = {
     pause: async (id) => calls.push(["pause", id]),
@@ -36,6 +49,14 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
         get: async (defaults) => ({ ...defaults, ...JSON.parse(JSON.stringify(store)) }),
         set: async (v) => Object.assign(store, JSON.parse(JSON.stringify(v))),
       },
+      ...(session
+        ? {
+            session: {
+              get: async (defaults) => ({ ...defaults, ...JSON.parse(JSON.stringify(session)) }),
+              set: async (v) => Object.assign(session, JSON.parse(JSON.stringify(v))),
+            },
+          }
+        : {}),
     },
     cookies: {
       getAll: async (q) => {
@@ -61,12 +82,13 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
       onStartup: event("startup"),
       onMessage: event("message"),
       id: "ours",
+      getURL: (p) => `chrome-extension://ours/${p}`,
     },
     tabs: {
       onCreated: event("tabCreated"),
       onRemoved: event("tabRemoved"),
       onUpdated: event("tabUpdated"),
-      get: async (id) => ({ id, url: "about:blank", status: "complete" }),
+      get: async (id) => tabs[id] || { id, url: "about:blank", status: "complete" },
       remove: async (id) => calls.push(["closeTab", id]),
       query: async () => [],
       create: async (t) => calls.push(["openTab", t.url]),
@@ -79,7 +101,13 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
       onAuthRequired: event("authRequired"),
     },
     scripting: {
-      executeScript: async ({ func, args }) => (func ? [{ result: ["https://x/1.zip", "https://x/2.zip"] }] : []),
+      executeScript: async ({ func }) => {
+        if (func && func.name === "mediaElements") {
+          if (!frames) throw new Error("Cannot access contents of the page");
+          return Object.entries(frames).map(([frameId, result]) => ({ frameId: Number(frameId), result }));
+        }
+        return func ? [{ result: ["https://x/1.zip", "https://x/2.zip"] }] : [];
+      },
     },
     action: {
       setBadgeText: async (b) => calls.push(["badge", b.text]),
@@ -104,8 +132,19 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
   return { api, calls: raw, listeners, store };
 }
 
+// The servers the extension reads manifests from (#38): address -> {status, body}.
+let served = {};
+const fetched = [];
+async function fakeFetch(url, opts) {
+  fetched.push([String(url), opts && opts.credentials]);
+  const r = served[url];
+  if (!r) throw new TypeError("Failed to fetch");
+  return { ok: (r.status || 200) < 300, status: r.status || 200, headers: { get: () => null }, text: async () => r.body };
+}
+
 function load(api, firefox) {
   const ctx = {
+    fetch: fakeFetch,
     navigator: { userAgent: "UA", userAgentData: { brands: [{ brand: "Chromium" }, { brand: "Brave" }] } },
     console,
     URL,
@@ -465,6 +504,200 @@ const ok = (what) => {
   );
   assert.deepEqual(on, { on: false }, "where the app says no");
   ok("video button messages");
+}
+
+// #38: the media a tab loaded, as the popup lists them. A response is media by its type or its
+// address; segments, byte ranges and small pieces a player fetched are parts of a stream.
+const H = (type, more = {}) => [{ name: "Content-Type", value: type }, ...Object.entries(more).map(([name, value]) => ({ name, value }))];
+const res = (url, type, headers = [], more = {}) => ({ tabId: 9, frameId: 0, url, type, statusCode: 200, responseHeaders: headers, ...more });
+const popupAsk = (listeners, m) =>
+  new Promise((r) => listeners.message(m, { id: "ours", url: "chrome-extension://ours/popup.html" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+const MASTER = `#EXTM3U
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aud",NAME="English",URI="audio/index.m3u8"
+#EXT-X-STREAM-INF:BANDWIDTH=1280000,RESOLUTION=1280x720,AUDIO="aud"
+720p/index.m3u8?tok=1
+#EXT-X-STREAM-INF:BANDWIDTH=640000,RESOLUTION=640x360,AUDIO="aud"
+360p/index.m3u8?tok=1
+`;
+const MPD = (protect) => `<?xml version="1.0"?>
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" type="static" mediaPresentationDuration="PT1M30S">
+<Period><AdaptationSet mimeType="video/mp4">${protect ? '<ContentProtection schemeIdUri="urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed"/>' : ""}
+<Representation id="1080p" bandwidth="4000000" width="1920" height="1080"/>
+<Representation id="480p" bandwidth="900000" width="854" height="480"/>
+</AdaptationSet></Period></MPD>`;
+{
+  served = {
+    "https://cdn.test/v/master.m3u8": { body: MASTER },
+    "https://cdn.test/d/manifest.mpd": { body: MPD(false) },
+    "https://drm.test/p/manifest.mpd": { body: MPD(true) },
+    "https://fair.test/f/master.m3u8": {
+      body: '#EXTM3U\n#EXT-X-SESSION-KEY:METHOD=SAMPLE-AES,URI="skd://k",KEYFORMAT="com.apple.streamingkeydelivery"\n#EXT-X-STREAM-INF:RESOLUTION=1920x1080\nhi.m3u8\n',
+    },
+    "https://aes.test/a/index.m3u8": { body: '#EXTM3U\n#EXT-X-KEY:METHOD=AES-128,URI="key.bin"\n#EXTINF:6.0,\ns0.ts\n#EXTINF:4.5,\ns1.ts\n#EXT-X-ENDLIST\n' },
+  };
+  const frames = {
+    0: { href: "https://watch.test/v/1", players: [{ src: "https://files.test/movie.mp4", w: 1920, h: 1080, duration: 125, drm: false }] },
+    3: { href: "https://player.test/embed/7", players: [{ src: "blob:https://player.test/x", w: 0, h: 0, duration: 0, drm: true }] },
+  };
+  const tabs = { 9: { id: 9, url: "https://watch.test/v/1", title: "A film", incognito: false } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, frames, tabs });
+  load(api, false);
+  listeners.tabUpdated(9, { url: "https://watch.test/v/1" });
+  await settle();
+  const seen = [
+    // HLS: the master, then its variants (with a query) and segments.
+    res("https://cdn.test/v/master.m3u8", "xmlhttprequest", H("application/vnd.apple.mpegurl")),
+    res("https://cdn.test/v/720p/index.m3u8?tok=1", "xmlhttprequest", H("application/vnd.apple.mpegurl")),
+    res("https://cdn.test/v/audio/index.m3u8", "xmlhttprequest", H("audio/mpegurl")),
+    res("https://cdn.test/v/720p/seg0.ts", "xmlhttprequest", H("video/mp2t")),
+    // DASH, its init segment (video/mp4, in its folder) and fragments.
+    res("https://cdn.test/d/manifest.mpd", "xmlhttprequest", H("application/dash+xml")),
+    res("https://cdn.test/d/1080p/init.mp4", "xmlhttprequest", H("video/mp4", { "Content-Length": "4000000" })),
+    res("https://cdn.test/d/1080p/seg1.m4s", "xmlhttprequest", H("video/iso.segment")),
+    // A protected DASH stream, and one in a frame whose manifest can't be read.
+    res("https://drm.test/p/manifest.mpd", "xmlhttprequest", H("application/dash+xml")),
+    res("https://locked.test/l/master.m3u8", "xmlhttprequest", H("application/x-mpegURL"), { frameId: 3 }),
+    res("https://locked.test/l/hd/index.m3u8", "xmlhttprequest", H("application/x-mpegURL"), { frameId: 3 }),
+    // FairPlay (SAMPLE-AES), and AES-128 with a plain key (not DRM).
+    res("https://fair.test/f/master.m3u8", "xmlhttprequest", H("application/vnd.apple.mpegurl")),
+    res("https://aes.test/a/index.m3u8", "xmlhttprequest", H("application/vnd.apple.mpegurl")),
+    // A <video>'s own file in ranges (its size from Content-Range), asked twice.
+    res("https://files.test/movie.mp4", "media", H("video/mp4", { "Content-Range": "bytes 0-1023/52428800" }), { statusCode: 206 }),
+    res("https://files.test/movie.mp4", "media", H("video/mp4", { "Content-Range": "bytes 1024-2047/52428800" }), { statusCode: 206 }),
+    // An <audio>'s file sent as octet-stream, known by its extension.
+    res("https://files.test/song.mp3?x=1", "media", H("application/octet-stream", { "Content-Length": "3000000" })),
+    // A player's fetch: a whole large file is listed; a range, a small piece, a 404 are not.
+    res("https://files.test/whole.webm", "xmlhttprequest", H("video/webm", { "Content-Length": "9000000" })),
+    res("https://files.test/part.mp4", "xmlhttprequest", H("video/mp4", { "Content-Range": "bytes 0-99/900000000" }), { statusCode: 206 }),
+    res("https://yt.test/videoplayback?id=1&range=0-50000", "xmlhttprequest", H("video/mp4", { "Content-Length": "5000000" })),
+    res("https://files.test/tiny.mp4", "xmlhttprequest", H("video/mp4", { "Content-Length": "40000" })),
+    res("https://files.test/gone.mp4", "media", H("video/mp4"), { statusCode: 404 }),
+    // Not media; not the tab's (the extension's own fetch); not a web address.
+    res("https://files.test/page.html", "xmlhttprequest", H("text/html", { "Content-Length": "9000000" })),
+    res("https://files.test/other.mp4", "media", H("video/mp4"), { tabId: -1 }),
+    res("blob:https://files.test/1", "media", H("video/mp4")),
+  ];
+  for (const d of seen) listeners.responseStarted(d);
+  await settle();
+  const { media } = await popupAsk(listeners, { type: "media", tab: 9 });
+  const by = Object.fromEntries(media.map((m) => [m.url, m]));
+  assert.deepEqual(
+    media.map((m) => m.url),
+    [
+      "https://cdn.test/v/master.m3u8",
+      "https://cdn.test/d/manifest.mpd",
+      "https://drm.test/p/manifest.mpd",
+      "https://locked.test/l/master.m3u8",
+      "https://fair.test/f/master.m3u8",
+      "https://aes.test/a/index.m3u8",
+      "https://files.test/movie.mp4",
+      "https://files.test/song.mp3?x=1",
+      "https://files.test/whole.webm",
+    ],
+    "streams with their variants inside, files once, no segment or piece",
+  );
+  const master = by["https://cdn.test/v/master.m3u8"];
+  assert.deepEqual([master.kind, master.heights, master.drm, master.live], ["hls", [720, 360], false, false]);
+  const dash = by["https://cdn.test/d/manifest.mpd"];
+  assert.deepEqual([dash.kind, dash.heights, dash.duration, dash.drm], ["dash", [1080, 480], 90, false]);
+  assert.equal(by["https://drm.test/p/manifest.mpd"].drm, true, "Widevine's ContentProtection");
+  assert.equal(by["https://locked.test/l/master.m3u8"].drm, true, "unread, its frame's player has a key system");
+  assert.equal(by["https://fair.test/f/master.m3u8"].drm, true, "FairPlay, SAMPLE-AES");
+  const aes = by["https://aes.test/a/index.m3u8"];
+  assert.deepEqual([aes.drm, aes.duration, aes.live], [false, 10.5, false], "AES-128 with its key: not DRM");
+  const movie = by["https://files.test/movie.mp4"];
+  assert.deepEqual([movie.kind, movie.size, movie.width, movie.heights, movie.duration], ["video", 52428800, 1920, [1080], 125]);
+  const song = by["https://files.test/song.mp3?x=1"];
+  assert.deepEqual([song.kind, song.size], ["audio", 3000000]);
+  assert.ok(fetched.every(([, c]) => c === "include"), "manifests read with the site's cookies");
+  const reads = fetched.length;
+  await popupAsk(listeners, { type: "media", tab: 9 });
+  assert.equal(fetched.length, reads, "each manifest read once");
+  ok("media list: streams grouped, files, details, protected ones");
+
+  // Download: a stream goes to the Download video window (explicitly), with the page that played
+  // it and the cookies its own server gets; a file to the download path; a protected one nowhere.
+  const sent = await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://cdn.test/v/master.m3u8" });
+  assert.equal(sent.ok, true);
+  const v = natives(calls).find((m) => m.video);
+  assert.deepEqual([v.explicit, v.src, v.url, v.title, v.cookies, v.referrer], [true, "https://cdn.test/v/master.m3u8", "https://watch.test/v/1", "A film", "sid=1", ""]);
+  assert.deepEqual(calls.filter((c) => c[0] === "cookies").pop()[1], { url: "https://cdn.test/v/master.m3u8" });
+  await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://files.test/movie.mp4" });
+  const f = natives(calls).find((m) => m.url === "https://files.test/movie.mp4");
+  assert.deepEqual([f.explicit, f.referrer, f.size, f.mime, f.video], [true, "https://watch.test/v/1", 52428800, "video/mp4", undefined]);
+  const before = natives(calls).length;
+  assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://drm.test/p/manifest.mpd" }), { ok: false, why: "drm" });
+  assert.deepEqual(await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://evil.test/x.mp4" }), { ok: false, why: "gone" });
+  assert.equal(natives(calls).length, before, "nothing sent for a protected stream or an address the tab didn't load");
+  ok("media list: downloads, never a protected one");
+
+  // A move within the page keeps the list; another page clears it; so does closing the tab.
+  listeners.tabUpdated(9, { url: "https://watch.test/v/1#t=30" });
+  await settle();
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 9);
+  listeners.tabUpdated(9, { url: "https://watch.test/v/2" });
+  await settle();
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 0);
+  listeners.responseStarted(res("https://files.test/movie.mp4", "media", H("video/mp4")));
+  await settle();
+  listeners.tabRemoved(9);
+  await settle();
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 9 })).media.length, 0);
+  ok("media list: cleared on another page, kept within one");
+}
+{
+  // Bounded: a page loading file after file keeps at most 60 per tab, its first stream (the one
+  // the button sends) included; at most 50 tabs.
+  served = {};
+  const { api, listeners } = fakeApi({ firefox: true, frames: { 0: { href: "https://live.test/", players: [] } } });
+  load(api, true);
+  for (let tab = 100; tab < 160; tab++) listeners.responseStarted(res("https://x.test/a.mp4", "media", H("video/mp4"), { tabId: tab }));
+  listeners.responseStarted(res("https://live.test/s/master.m3u8", "xmlhttprequest", H("application/vnd.apple.mpegurl")));
+  for (let i = 0; i < 500; i++) listeners.responseStarted(res(`https://live.test/clip${i}.mp4`, "media", H("video/mp4")));
+  await settle();
+  const { media } = await popupAsk(listeners, { type: "media", tab: 9 });
+  assert.equal(media.length, 60);
+  assert.equal(media[0].url, "https://live.test/s/master.m3u8");
+  assert.equal(media[59].url, "https://live.test/clip499.mp4");
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 100 })).media.length, 0, "the least recent tabs go");
+  assert.equal((await popupAsk(listeners, { type: "media", tab: 159 })).media.length, 1);
+  ok("media list: bounded per tab and in tabs");
+}
+{
+  // A stream an embedded player (a frame) loaded: the frame's page goes as its page, the tab's
+  // as the referrer, as the button over videos sends it.
+  served = { "https://emb.test/e/master.m3u8": { body: "#EXTM3U\n#EXT-X-STREAM-INF:RESOLUTION=1280x720\nhd.m3u8\n" } };
+  const frames = { 0: { href: "https://blog.test/post", players: [] }, 2: { href: "https://emb.test/player/1", players: [] } };
+  const tabs = { 9: { id: 9, url: "https://blog.test/post", title: "Post" } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, frames, tabs });
+  load(api, false);
+  listeners.responseStarted(res("https://emb.test/e/master.m3u8", "xmlhttprequest", H("application/vnd.apple.mpegurl"), { frameId: 2 }));
+  await settle();
+  assert.equal((await popupAsk(listeners, { type: "media-download", tab: 9, url: "https://emb.test/e/master.m3u8" })).ok, true);
+  const v = natives(calls).find((m) => m.video);
+  assert.deepEqual([v.url, v.referrer, v.src], ["https://emb.test/player/1", "https://blog.test/post", "https://emb.test/e/master.m3u8"]);
+  ok("media list: a frame's stream goes with the frame's page");
+}
+{
+  // The browser stopped the script and started it again: what the tab loaded is read back.
+  const session = {};
+  const first = fakeApi({ firefox: false, session });
+  load(first.api, false);
+  first.listeners.responseStarted(res("https://files.test/kept.mp4", "media", H("video/mp4")));
+  await new Promise((r) => setTimeout(r, 300));
+  const again = fakeApi({ firefox: false, session, frames: {} });
+  load(again.api, false);
+  const { media } = await popupAsk(again.listeners, { type: "media", tab: 9 });
+  assert.deepEqual(
+    media.map((m) => m.url),
+    ["https://files.test/kept.mp4"],
+  );
+  // The popup opened in a tab of its own (popup.html?page=) is still the popup.
+  const state = await new Promise((r) =>
+    again.listeners.message({ type: "media", tab: 9 }, { id: "ours", url: "chrome-extension://ours/popup.html?page=x", tab: { id: 4 } }, r),
+  );
+  assert.equal(JSON.parse(JSON.stringify(state)).media.length, 1);
+  ok("media list: kept across the script's restarts; the popup in a tab");
 }
 
 // The button's logo is the extension's own icon, kept in video.js as data.
