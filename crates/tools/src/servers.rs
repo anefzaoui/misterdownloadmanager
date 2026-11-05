@@ -125,16 +125,73 @@ fn headers_of(format: &Value) -> BTreeMap<String, String> {
         .unwrap_or_default()
 }
 
+/// What [`reroute`] changed.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct Rerouted {
+    /// (dead host, replacement), each pair once.
+    pub swaps: Vec<(String, String)>,
+    /// The streams left out because no reachable alternative serves them, as "137 (1080p)" (for
+    /// the download's log: a quality chosen from the window may be among them, #94).
+    pub left_out: Vec<String>,
+}
+
+impl Rerouted {
+    pub fn is_empty(&self) -> bool {
+        self.swaps.is_empty() && self.left_out.is_empty()
+    }
+}
+
+/// A format as the log names it: its id and its height (or "audio").
+fn describe(f: &Value) -> String {
+    let id = f.get("format_id").and_then(Value::as_str).unwrap_or("?");
+    match f.get("height").and_then(Value::as_u64) {
+        Some(h) => format!("{id} ({h}p)"),
+        None if f.get("vcodec").and_then(Value::as_str) == Some("none") => format!("{id} (audio)"),
+        None => id.to_owned(),
+    }
+}
+
+/// The media servers yt-dlp's failure names as unreachable (#94): it couldn't resolve one, or
+/// connect to it, or it timed out (`HTTPSConnection(host='rr1---sn-x.googlevideo.com',
+/// port=443): Failed to resolve 'rr1---sn-x.googlevideo.com'`). A server answered at look-up
+/// time may be gone by download time (a flaky resolver): the next look-up treats these as dead.
+pub fn unreachable_in(message: &str) -> BTreeSet<String> {
+    let network = [
+        "Failed to resolve",
+        "getaddrinfo",
+        "Unable to connect",
+        "timed out",
+        "Connection refused",
+        "Max retries",
+    ]
+    .iter()
+    .any(|w| message.contains(w));
+    if !network {
+        return BTreeSet::new();
+    }
+    message
+        .split(|c: char| !(c.is_ascii_alphanumeric() || c == '-' || c == '.'))
+        .filter(|w| w.ends_with(".googlevideo.com") && w.contains("---"))
+        .map(str::to_owned)
+        .collect()
+}
+
+/// yt-dlp couldn't find the chosen format among the ones the page (or our edit of it) offers.
+pub fn format_unavailable(message: &str) -> bool {
+    message.contains("Requested format is not available")
+}
+
 /// Move the streams of unreachable media servers to an alternative that serves them; returns
-/// what changed (dead host, replacement), each pair once. `alive` decides whether a server can be
-/// reached ([`reachable`], all at once), `serves` whether it really serves one stream
-/// ([`Prober::serves`], one after another). A stream no reachable alternative serves is left out, so yt-dlp chooses an
-/// equivalent one (another codec of the same quality, the other audio).
+/// what changed. `alive` decides whether a server can be reached ([`reachable`], all at once),
+/// `serves` whether it really serves one stream ([`Prober::serves`], one after another). A stream
+/// no reachable alternative serves is left out, so yt-dlp chooses an equivalent one (another
+/// codec of the same quality, the other audio); the video job falls back to the nearest quality
+/// when the chosen one is among them (video.rs).
 pub fn reroute(
     info: &mut Value,
     alive: impl Fn(&str) -> bool + Sync,
     serves: impl Fn(&str, &BTreeMap<String, String>) -> bool,
-) -> Vec<(String, String)> {
+) -> Rerouted {
     // Media hosts with an `mn` list, and one link of each (for its alternatives).
     let mut links: BTreeMap<String, Url> = BTreeMap::new();
     strings_mut(info, &mut |s| {
@@ -166,10 +223,10 @@ pub fn reroute(
         .map(|(h, _)| h.clone())
         .collect();
     if dead.is_empty() {
-        return Vec::new();
+        return Rerouted::default();
     }
     let Some(Value::Array(formats)) = info.get_mut("formats") else {
-        return Vec::new();
+        return Rerouted::default();
     };
     // HLS formats list their pieces in a manifest fetched later, on the same servers, which
     // can't be edited here: leave them out so the choice falls on direct links (live
@@ -203,6 +260,7 @@ pub fn reroute(
         .collect();
     let mut swaps: Vec<(String, String)> = Vec::new();
     let mut drop = BTreeSet::new();
+    let mut left_out = Vec::new();
     for (i, host, to) in moves {
         match to {
             Some(alt) => {
@@ -214,6 +272,7 @@ pub fn reroute(
                 }
             }
             None => {
+                left_out.push(describe(&formats[i]));
                 drop.insert(i);
             }
         }
@@ -227,7 +286,7 @@ pub fn reroute(
     if let Some(o) = info.as_object_mut() {
         o.remove("requested_formats");
     }
-    swaps
+    Rerouted { swaps, left_out }
 }
 
 #[cfg(test)]
@@ -256,8 +315,9 @@ mod tests {
     #[test]
     fn an_unreachable_server_is_swapped_for_its_alternative() {
         let mut v = info();
-        let swaps = reroute(&mut v, |h| h != DEAD, |_, _| true);
-        assert_eq!(swaps, vec![(DEAD.to_owned(), ALT.to_owned())]);
+        let r = reroute(&mut v, |h| h != DEAD, |_, _| true);
+        assert_eq!(r.swaps, vec![(DEAD.to_owned(), ALT.to_owned())]);
+        assert!(r.left_out.is_empty());
         let text = v.to_string();
         assert!(!text.contains(DEAD), "every link moved: {text}");
         assert_eq!(
@@ -287,8 +347,10 @@ mod tests {
     fn a_stream_the_alternative_refuses_is_left_out() {
         // 249 is refused by the alternative (403), 139 is served: only 139 stays.
         let mut v = info();
-        let swaps = reroute(&mut v, |h| h != DEAD, |link, _| !link.contains("itag=249"));
-        assert_eq!(swaps, vec![(DEAD.to_owned(), ALT.to_owned())]);
+        let r = reroute(&mut v, |h| h != DEAD, |link, _| !link.contains("itag=249"));
+        assert_eq!(r.swaps, vec![(DEAD.to_owned(), ALT.to_owned())]);
+        // Said, for the log: what the choice may have lost (#94).
+        assert_eq!(r.left_out, ["249"]);
         let ids: Vec<&str> = v["formats"]
             .as_array()
             .unwrap()
@@ -298,8 +360,39 @@ mod tests {
         assert_eq!(ids, ["139"]);
         // Nothing served anywhere: every stream on the dead server is out, nothing swapped.
         let mut v = info();
-        assert!(reroute(&mut v, |h| h != DEAD, |_, _| false).is_empty());
+        let r = reroute(&mut v, |h| h != DEAD, |_, _| false);
+        assert!(r.swaps.is_empty());
+        assert_eq!(r.left_out, ["139", "249"]);
         assert!(v["formats"].as_array().unwrap().is_empty());
+    }
+
+    #[test]
+    fn a_left_out_stream_is_named_by_its_height() {
+        let f = serde_json::json!({"format_id": "137", "height": 1080});
+        assert_eq!(describe(&f), "137 (1080p)");
+        let a = serde_json::json!({"format_id": "251", "vcodec": "none"});
+        assert_eq!(describe(&a), "251 (audio)");
+    }
+
+    /// #94: yt-dlp's words for a server it couldn't reach name the server; other failures don't.
+    #[test]
+    fn unreachable_servers_from_ytdlps_failure() {
+        let dns = "[download] Got error: HTTPSConnection(host='rr1---sn-u0opnpxuxa-u0oz.googlevideo.com', port=443): Failed to resolve 'rr1---sn-u0opnpxuxa-u0oz.googlevideo.com' ([Errno 11004] getaddrinfo failed). Giving up after 10 retries";
+        assert_eq!(
+            unreachable_in(dns).into_iter().collect::<Vec<_>>(),
+            ["rr1---sn-u0opnpxuxa-u0oz.googlevideo.com"]
+        );
+        let refused = "Unable to connect to rr3---sn-abc.googlevideo.com: timed out";
+        assert_eq!(unreachable_in(refused).len(), 1);
+        // A googlevideo host in another kind of failure (403) isn't "unreachable".
+        assert!(
+            unreachable_in("HTTP Error 403: Forbidden (rr1---sn-x.googlevideo.com)").is_empty()
+        );
+        assert!(unreachable_in("Failed to resolve 'example.com'").is_empty());
+        assert!(format_unavailable(
+            "[youtube] jvfC98jCBuk: Requested format is not available. Use --list-formats for a list of available formats"
+        ));
+        assert!(!format_unavailable("HTTP Error 403"));
     }
 
     #[test]
