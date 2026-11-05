@@ -1050,6 +1050,10 @@
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 秒</g1><g2></g2>"
   },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Windowsでは、トレントエンジンはまだアダプターにバインドできません。そのため、アダプターが選択されている間はトレントが開始されず（「Windowsでは、選択されたネットワークアダプター経由でトレントを開始できません」）、アダプターを迂回することもありません。トラッカー名は引き続きシステムのDNSによって検索されます。"
+  },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "ブラウザ拡張機能はアプリに付属しており、<g1>Chrome、Edge、Brave、Opera、Vivaldi</g1>および<g2>Firefox</g2>向けに単独でダウンロードできます。ストアへの掲載は近日中です。すべてのファイルはGitHub Actionsによって公開ソースからビルドされ、SHA-256チェックサムとともにリストされています。"
@@ -2138,6 +2142,10 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "このコンピューター自体への接続（<x1/>）はバインドされません。このコンピューター上のプロキシがダウンロードを運び、どこに送信するかはプロキシ次第です。"
   },
+  "354fca97a75c4b55": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "お使いのコンピューターでDirect3Dが起動できない場合（Direct3D 12ドライバーがない、一部の仮想マシンなど）、MDMはOpenGLで描画し、<g1>表示 → 描画方法</g1>にその旨が表示されます。<g2>Direct3D</g2>を再度選択すると、次回の起動時に再試行されます。"
+  },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "初回起動時の言語選択"
@@ -2585,6 +2593,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "<g1>接続と速度</g1>で詳細を確認してください。"
+  },
+  "40a17209f38d66d2": {
+   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
+   "text": "MDMはOpenGLでウィンドウを描画します。Windowsでは、一部のグラフィックドライバーのOpenGLがウィンドウを数秒間停止させたり、誤って描画したりすることがあります。<g1>表示 → 描画方法 → Direct3D</g1>を選択すると、次回起動時からDirect3D 12で描画されます。<g2>表示 → 描画方法 → OpenGL</g2>で元に戻ります。"
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -3574,6 +3586,10 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "ギャラリー名にちなんだフォルダーにギャラリーをダウンロードします。<g1>コマンドラインと自動化</g1> を参照してください。"
   },
+  "5d132ac4f8b0c1aa": {
+   "source": "A freeze or crash report says which one was drawing.",
+   "text": "フリーズまたはクラッシュレポートには、どちらが描画していたかが記載されます。"
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>ヘルプ → 問題の報告</g1>を選択してください。これにより、MDMのバージョン、システムとそのバージョン、MDMのインストール方法、インターフェース言語がすでに記入されたGitHubのバグレポートフォームが開きます。何が起こったのか、何を期待したのか、そしてそれが起こる手順を説明してください。ダウンロードの場合、共有できる場合はアドレスと、<g2>状態</g2>の下に表示される理由を含めてください。"
@@ -4390,6 +4406,10 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "ブラウザがファイルをダウンロードする代わりに、MDMが<g1>ダウンロード ファイル情報</g1>を開きます。<g2>ダウンロード開始</g2>をクリックします。"
   },
+  "70949fe6f15631f5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
+   "text": "<g1>表示</g1> — カテゴリの表示/非表示、リストの並べ替え（<g2>ファイルを整理</g2>）、<g3>ダーク モードのサポート</g3>、<g4>常にダーク</g4>、<g5>描画方法</g5>（Windows: OpenGL または Direct3D）、および<g6>言語</g6>。"
+  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "コンピューターに保存されるもの"
@@ -4617,6 +4637,10 @@
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
    "text": "MDMが時間内に起動しなかった"
+  },
+  "76ce76c1e1586496": {
+   "source": "The window freezes or draws wrongly",
+   "text": "ウィンドウがフリーズしたり、正しく描画されなかったりする場合"
   },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
@@ -4897,6 +4921,10 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 以降が必要です。"
+  },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>オプション → プロキシ / SOCKS → ネットワークアダプター</g1>は、MDMの接続を1つのアダプター（通常はVPNのもの）に保持します（<g2>オプション</g2>）。LinuxとmacOSでは、トレントエンジンはすべてのソケットをそれにバインドします。ピア、トラッカー、DHT、およびそのリスニングポートです。UPnPとローカルピア検出は、アダプター経由ではなくローカルネットワークと通信するため、その場合はオフになります。アダプターがなくなるとエンジンは停止し、戻るとアダプター経由で再び開始します。"
   },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
@@ -6706,6 +6734,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>カテゴリ</g1> — ファイルの種類（圧縮、ドキュメント、音楽、プログラム、ビデオ、または一般）から選択されます。各カテゴリには独自のフォルダがあります。その横の<g2>+</g2>で新しいカテゴリを作成します。"
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>ネットワークアダプター</g1> — <g2>任意 (システムが選択)</g2>がデフォルトです。アダプター（通常はVPNのもの）を選択すると、MDMが開くすべての接続がそれを通して行われるか、まったく行われません。これにはダウンロード、FTP、選択したDNS、MDM自身のダウンロード、更新チェックが含まれます。これはキルスイッチとして機能します。アダプターが切断されたり、VPNがオフになったりすると、通常の接続からは何も送信されません。実行中のダウンロードは「…が接続されていません」と表示されて停止し、アダプターが戻ると再開します。リストの下の行には、アダプターのアドレス、または接続されていないことが表示されます。"
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "<g1>検索</g1>をクリックします。最初の一致が選択されます。"
@@ -7237,6 +7269,10 @@
   "bb9e801a8f102292": {
    "source": "App",
    "text": "アプリ"
+  },
+  "bbb4a37acc8f6a42": {
+   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
+   "text": "ウィンドウはOpenGL（eframeのglow）で描画されます。Windowsでは、次回の起動時から、表示 → 描画方法でDirect3D 12（eframeのwgpu、Direct3D 12バックエンドのみ）を選択できます。<x1/>選択した方が起動できない場合はもう一方にフォールバックするため、ウィンドウは常に開きます。"
   },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
@@ -8248,7 +8284,7 @@
   },
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "eguiのウィンドウは固定されたピクセル座標に描画され、ダイアログごとに1つの即時ビューポートが追加されます。<x1/>は状態（ダウンロード、キュー、設定、リストの選択）を保持し、メニュー、ツールバー、キー、IPCコマンドをアクションに変換します。各ダイアログは独自のモジュールであり、<x2/>（開いている、閉じている、値で完了）を返します。Windows専用の呼び出しは<x3/>に限定され、LinuxおよびmacOSの対応する呼び出しは<x4/>に限定されます（セッションの開始、ブラウザのホスト、サウンド、フォルダに表示、クラッシュハンドラ）。その他のファイルはすべて安全でポータブルなRustです。フォントはシステムから取得されます。WindowsのFontsフォルダ、macOSのシステムフォント、Linuxのfontconfig（<x5/>）です。ファイル名の前のアイコンも同様です（<x6/>）。Windowsシェルのシステムイメージリスト、macOS Finder（NSWorkspace）、Linuxデスクトップのアイコンテーマ（<x7/>、shared-mime-infoおよびIcon Theme Specification）です。各タイプは、ピクセルサイズごとにバックグラウンドスレッドで一度検索されます。システムのアイコンが準備できるまで、またシステムにアイコンがない場合は、Tangoのアイコン（バンドルされている）が代わりに使用されます。"
+   "text": "eguiのウィンドウは固定されたピクセル座標に描画され、ダイアログごとに1つの即時ビューポートがあります。<x1/>は状態（ダウンロード、キュー、設定、リストの選択）を保持し、メニュー、ツールバー、キー、IPCコマンドをアクションに変換します。各ダイアログは独自のモジュールであり、<x2/>（開いている、閉じている、値で完了）を返します。Windows専用の呼び出しは<x3/>に限定され、LinuxおよびmacOSの対応する呼び出しは<x4/>に限定されます（セッションの開始、ブラウザのホスト、サウンド、フォルダに表示、クラッシュハンドラ）。その他のファイルはすべて安全でポータブルなRustです。フォントはシステムから取得されます。WindowsのFontsフォルダ、macOSのシステムフォント、Linuxのfontconfig（<x5/>）です。ファイル名の前のアイコンも同様です（<x6/>）。Windowsシェルのシステムイメージリスト、macOS Finder（NSWorkspace）、Linuxデスクトップのアイコンテーマ（<x7/>、shared-mime-infoおよびIcon Theme Specification）です。各タイプは、ピクセルサイズごとにバックグラウンドスレッドで一度検索されます。システムのアイコンが準備できるまで、またシステムにアイコンがない場合は、Tangoのアイコン（バンドルされている）が代わりに使用されます。"
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8965,6 +9001,10 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "IDM から Mister Download Manager にダウンロードを移行できますか？"
+  },
+  "eccd08c375bd5161": {
+   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
+   "text": "WindowsでOpenGLが起動できない場合、MDMはDirect3D、次にMicrosoftのソフトウェアレンダラーを試行するため、ウィンドウは開きます（リモートデスクトップ、グラフィックドライバーのない仮想マシンなど）。"
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",

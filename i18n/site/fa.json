@@ -1050,6 +1050,10 @@
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانیه</g1><g2></g2>"
   },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "در Windows، موتور تورنت هنوز نمی‌تواند به یک آداپتور متصل شود. بنابراین، تورنت‌ها در حالی که یک آداپتور انتخاب شده است، شروع نمی‌شوند (\"تورنت‌ها هنوز نمی‌توانند از طریق یک آداپتور شبکه انتخاب شده در Windows عبور کنند\")، به جای اینکه از آن عبور کنند. نام ردیاب‌ها همچنان توسط DNS سیستم جستجو می‌شوند."
+  },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "افزونه مرورگر همراه برنامه ارائه می‌شود و به صورت یک بارگیری جداگانه برای <g1>Chrome، Edge، Brave، Opera و Vivaldi</g1> و <g2>Firefox</g2> در دسترس است. لیست‌های فروشگاهی در راه هستند. هر فایل از منبع عمومی توسط GitHub Actions ساخته شده و با کد هش SHA-256 آن لیست شده است."
@@ -2138,6 +2142,10 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "اتصالات به خود این رایانه (<x1/>) متصل نیستند. یک پروکسی در این رایانه دانلودها را حمل می‌کند، و اینکه کجا آنها را ارسال می‌کند به خود پروکسی بستگی دارد."
   },
+  "354fca97a75c4b55": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "اگر Direct3D در رایانه شما شروع نشود (عدم وجود درایور Direct3D 12، برخی ماشین‌های مجازی)، MDM با OpenGL ترسیم می‌کند و <g1>نما → ترسیم با</g1> این را نشان می‌دهد. انتخاب مجدد <g2>Direct3D</g2> در شروع بعدی دوباره آن را امتحان می‌کند."
+  },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "انتخاب زبان در اولین اجرا"
@@ -2585,6 +2593,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "بیشتر در <g1>اتصالات و سرعت</g1>."
+  },
+  "40a17209f38d66d2": {
+   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
+   "text": "MDM پنجره‌های خود را با OpenGL ترسیم می‌کند. در Windows، OpenGL برخی از درایورهای گرافیکی می‌تواند یک پنجره را برای چند ثانیه ثابت نگه دارد یا آن را اشتباه ترسیم کند. برای ترسیم با Direct3D 12 به جای آن، از شروع بعدی، <g1>نما → ترسیم با → Direct3D</g1> را انتخاب کنید؛ <g2>نما → ترسیم با → OpenGL</g2> به حالت قبل بازمی‌گردد."
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -3574,6 +3586,10 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "یک گالری را در پوشه‌ای به نام آن بارگیری می‌کند. به <g1>خط فرمان و اتوماسیون</g1> مراجعه کنید."
   },
+  "5d132ac4f8b0c1aa": {
+   "source": "A freeze or crash report says which one was drawing.",
+   "text": "گزارش فریز یا خرابی نشان می‌دهد که کدام یک در حال ترسیم بوده است."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "گزینه <g1>Help → Report a problem</g1> را انتخاب کنید. این گزینه فرم گزارش اشکال را در GitHub با نسخه MDM شما، سیستم و نسخه آن، نحوه نصب MDM و زبان رابط کاربری آن که از قبل پر شده است، باز می‌کند. آنچه اتفاق افتاده، آنچه انتظار داشتید و مراحلی که باعث وقوع آن می‌شوند را شرح دهید. برای یک بارگیری، اگر می‌توانید آدرس را به اشتراک بگذارید، آن را و دلیل نشان داده شده در زیر <g2>Status</g2> را ذکر کنید."
@@ -4390,6 +4406,10 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM به جای اینکه مرورگر فایل را دانلود کند، <g1>اطلاعات فایل بارگیری</g1> را باز می‌کند. روی <g2>شروع دانلود</g2> کلیک کنید."
   },
+  "70949fe6f15631f5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
+   "text": "<g1>نما</g1> — نمایش یا پنهان کردن دسته‌بندی‌ها، مرتب‌سازی لیست (<g2>مرتب‌سازی فایل‌ها</g2>)، <g3>پشتیبانی از حالت تاریک</g3>، <g4>همیشه تیره</g4>، <g5>ترسیم با</g5> (Windows: OpenGL یا Direct3D) و <g6>زبان</g6>."
+  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "چه چیزی روی رایانه شما باقی می‌ماند"
@@ -4617,6 +4637,10 @@
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
    "text": "MDM به موقع شروع به کار نکرد"
+  },
+  "76ce76c1e1586496": {
+   "source": "The window freezes or draws wrongly",
+   "text": "پنجره ثابت می‌ماند یا اشتباه ترسیم می‌شود"
   },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
@@ -4897,6 +4921,10 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 یا جدیدتر لازم است."
+  },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>گزینه‌ها → پروکسی / SOCKS → آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). در Linux و macOS، موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان، ردیاب‌ها، DHT و پورت گوش دادن آن. UPnP و کشف همتایان محلی در این حالت خاموش می‌شوند، زیرا آنها به جای عبور از آداپتور، با شبکه محلی صحبت می‌کنند. اگر آداپتور از بین برود، موتور متوقف می‌شود و زمانی که آداپتور بازگردد، دوباره از طریق آن شروع به کار می‌کند."
   },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
@@ -6706,6 +6734,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>دسته</g1> — از نوع فایل (فشرده، اسناد، موسیقی، برنامه‌ها، ویدئو یا عمومی) انتخاب می‌شود. هر دسته پوشه مخصوص به خود را دارد. <g2>+</g2> کنار آن یک دسته جدید ایجاد می‌کند."
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN شما، را انتخاب کنید تا هر اتصالی که MDM باز می‌کند از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع می‌شوند. خط زیر لیست، آدرس کارت شبکه را نشان می‌دهد، یا اینکه متصل نیست."
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "روی <g1>یافتن</g1> کلیک کنید. اولین مورد منطبق انتخاب می‌شود."
@@ -7237,6 +7269,10 @@
   "bb9e801a8f102292": {
    "source": "App",
    "text": "برنامه"
+  },
+  "bbb4a37acc8f6a42": {
+   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
+   "text": "پنجره‌ها با OpenGL (glow از eframe) ترسیم می‌شوند. در Windows، نما → ترسیم با به جای آن Direct3D 12 (wgpu از eframe، فقط با بک‌اند Direct3D 12 آن) را از شروع بعدی انتخاب می‌کند. <x1/> در صورت عدم امکان شروع گزینه انتخاب شده، به دیگری بازمی‌گردد، بنابراین پنجره‌ها همیشه باز می‌شوند."
   },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
@@ -8248,7 +8284,7 @@
   },
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "یک پنجره egui که در مختصات پیکسلی ثابت نقاشی شده است، به علاوه یک درگاه دید فوری برای هر گفتگو. <x1/> وضعیت را نگه می‌دارد (دانلودها، صف‌ها، تنظیمات، انتخاب لیست) و دستورات منو، نوار ابزار، کلید و IPC را به اقدامات تبدیل می‌کند. هر گفتگو ماژول خاص خود را دارد و یک <x2/> (باز، بسته، انجام شده با یک مقدار) را برمی‌گرداند. فراخوانی‌های فقط Windows به <x3/> و معادل‌های Linux و macOS آن‌ها به <x4/> محدود می‌شوند (شروع با جلسه، میزبان مرورگرها، صداها، نمایش در پوشه، کنترل‌کننده خرابی)؛ هر فایل دیگری Rust ایمن و قابل حمل است. فونت‌ها از سیستم می‌آیند: پوشه Fonts Windows، فونت‌های سیستمی macOS، fontconfig در Linux (<x5/>). آیکون‌های قبل از نام فایل‌ها نیز همینطور هستند (<x6/>): لیست‌های تصویری سیستمی پوسته Windows، Finder macOS (NSWorkspace)، تم آیکون دسکتاپ Linux (<x7/>، shared-mime-info و Icon Theme Specification). هر نوع یک بار در هر اندازه پیکسل، در یک رشته پس‌زمینه جستجو می‌شود. آیکون‌های Tango (بسته‌بندی شده) تا زمانی که آیکون سیستم آماده شود و هر جا که سیستم آیکونی ندارد، جایگزین می‌شوند."
+   "text": "یک پنجره egui که در مختصات پیکسلی ثابت ترسیم شده است، به علاوه یک درگاه دید فوری برای هر گفتگو. <x1/> وضعیت (دانلودها، صف‌ها، تنظیمات، انتخاب لیست) را نگه می‌دارد و دستورات منو، نوار ابزار، کلید و IPC را به اقدامات تبدیل می‌کند. هر گفتگو ماژول خاص خود را دارد و یک <x2/> (باز، بسته، انجام شده با یک مقدار) را برمی‌گرداند. فراخوانی‌های فقط Windows به <x3/> و معادل‌های Linux و macOS آنها به <x4/> (شروع با جلسه، میزبان مرورگرها، صداها، نمایش در پوشه، کنترل‌کننده خرابی) محدود می‌شوند؛ هر فایل دیگر Rust ایمن و قابل حمل است. فونت‌ها از سیستم می‌آیند: پوشه Fonts Windows، فونت‌های سیستمی macOS، fontconfig در Linux (<x5/>). آیکون‌های قبل از نام فایل‌ها نیز همینطور هستند (<x6/>): لیست‌های تصویری سیستمی پوسته Windows، Finder در macOS (NSWorkspace)، تم آیکون دسکتاپ Linux (<x7/>، shared-mime-info و Icon Theme Specification). هر نوع یک بار در هر اندازه پیکسل، در یک رشته پس‌زمینه جستجو می‌شود. آیکون‌های Tango (بسته‌بندی شده) تا زمانی که آیکون سیستم آماده شود و هر جا که سیستم آیکونی ندارد، جایگزین می‌شوند."
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8965,6 +9001,10 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "آیا می‌توانم بارگیری‌هایم را از IDM به Mister Download Manager منتقل کنم؟"
+  },
+  "eccd08c375bd5161": {
+   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
+   "text": "در Windows، اگر OpenGL شروع نشود، MDM Direct3D را امتحان می‌کند، سپس رندر نرم‌افزاری مایکروسافت را، بنابراین پنجره همچنان باز می‌شود (Remote Desktop، یک ماشین مجازی بدون درایور گرافیکی)."
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",

@@ -102,6 +102,9 @@ pub struct Settings {
     /// View → Always dark (#60): dark whatever the system says (a desktop that reports no
     /// preference, or a dark MDM on a light desktop).
     pub always_dark: bool,
+    /// View → Draw with (#89): OpenGL or Direct3D (Windows only), used from the next start.
+    /// None: MDM's default (`renderer::DEFAULT`), which may change.
+    pub renderer: Option<crate::renderer::Api>,
     /// Scheduler → Download limits: "Download no more than `limits_mb` MBytes every
     /// `limits_hours` hours" (IDM defaults 200 / 5), with a warning before stopping.
     pub limits_on: bool,
@@ -335,6 +338,7 @@ impl Default for Settings {
             view: None,
             dark_mode_support: true,
             always_dark: false,
+            renderer: None,
             limits_on: false,
             limits_mb: 200,
             limits_hours: 5,

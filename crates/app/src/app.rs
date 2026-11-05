@@ -101,6 +101,9 @@ enum Cmd {
     ToggleDarkMode,
     /// View → Always dark (#60).
     ToggleAlwaysDark,
+    /// View → Draw with → OpenGL / Direct3D (#89), from the next start.
+    #[cfg(windows)]
+    DrawWith(crate::renderer::Api),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -248,10 +251,17 @@ enum Popup {
     Node(Option<View>),
 }
 
-/// Hidden to the tray, the window's memory is given back this long after it hid (its last frames
-/// done), then again this often while it stays hidden (the clock's ticks page some back in).
-const TRIM_AFTER_HIDE: Duration = Duration::from_secs(2);
-const TRIM_EVERY_HIDDEN: Duration = Duration::from_secs(600);
+/// Hidden to the tray, the window's memory is given back 2 s after it hid (its last frames done),
+/// again 2 minutes after it hid (the clock's ticks page some back in, about 5 MB in the first
+/// minute, and the process takes 4 MB more once, about 2 minutes after start), then every
+/// 10 minutes while it stays hidden. `done` is how many times it was given back since hiding.
+fn next_trim(done: u32) -> Duration {
+    match done {
+        0 => Duration::from_secs(2),
+        1 => Duration::from_secs(118),
+        _ => Duration::from_secs(600),
+    }
+}
 
 /// Hand the memory the process isn't using now back to the system (#72).
 fn trim_memory() {
@@ -347,6 +357,8 @@ pub struct App {
     /// Link grabber (#37): links from the browser, Tasks → Import, drops and pastes, in
     /// packages to tick before adding.
     grabber: Option<crate::grabber::Grabber>,
+    /// When `follow_assistive_technology` last asked (#131).
+    assistive_checked: Option<Instant>,
     /// Archives extracted when their download completes (#37).
     extracts: crate::extractq::Extracts,
     /// Add category / Properties from the Categories tree.
@@ -434,8 +446,10 @@ pub struct App {
     tray: Option<crate::tray::Tray>,
     tray_limiter: Option<bool>,
     hidden: bool,
-    /// Hidden to the tray: when to hand the window's memory back to the system next (#72).
+    /// Hidden to the tray: when to hand the window's memory back to the system next (#72), and
+    /// how many times it was since the window hid.
     trim_when_hidden: Option<Instant>,
+    trims_since_hidden: u32,
     exiting: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
     /// yet) and when.
@@ -795,6 +809,7 @@ impl App {
             category_dlg: None,
             category_for_file_info: false,
             grabber: None,
+            assistive_checked: None,
             extracts: Default::default(),
             queue_pick: None,
             drop_target: None,
@@ -849,6 +864,7 @@ impl App {
             tray_limiter: None,
             hidden: false,
             trim_when_hidden: None,
+            trims_since_hidden: 0,
             exiting: false,
             confirm_delete: None,
             confirm_queue_delete: None,
@@ -1719,10 +1735,20 @@ impl App {
                     p.show_tab(tab);
                 }
             }
-            // A menu of the menu bar open (menu:0 is Tasks), for screenshots.
+            // A menu of the menu bar open (menu:0 is Tasks), for screenshots; menu:3:draw opens
+            // View with its Draw with submenu (#89).
             "menu" => {
                 self.popup = None;
-                self.open_menu = Some(tab.parse().unwrap_or(0));
+                let (index, sub) = tab.split_once(':').unwrap_or((tab, ""));
+                let index = index.parse().unwrap_or(0);
+                self.open_menu = Some(index);
+                let at = self
+                    .menu_entries(index)
+                    .iter()
+                    .position(|e| matches!(e, MenuEntry::Sub("Draw with", ..)));
+                if let (Some(at), "draw") = (at, sub) {
+                    chrome::open_sub_at(ctx, &format!("menu-{index}"), at);
+                }
             }
             // A finished archive's right-click menu (Extract, #37), for screenshots.
             "context" => {
@@ -2347,9 +2373,15 @@ impl App {
         }
         ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
         self.hidden = true;
-        // Hidden, the window's memory sits unused until it shows again: give it back to the
-        // system (#72). Windows pages it back in from RAM when it's touched again.
-        self.trim_when_hidden = Some(Instant::now() + TRIM_AFTER_HIDE);
+        self.start_trimming();
+    }
+
+    /// Hidden, the window's memory sits unused until it shows again: give it back to the system
+    /// (#72), on the schedule of `next_trim`. Windows pages it back in from RAM when it's touched
+    /// again. Both ways into the tray (closing the window, and Minimize when it goes there).
+    fn start_trimming(&mut self) {
+        self.trims_since_hidden = 0;
+        self.trim_when_hidden = Some(Instant::now() + next_trim(0));
     }
 
     /// The window back from the tray (or from minimized), in front.
@@ -2472,6 +2504,7 @@ impl App {
             tracing::info!("minimized to the notification area");
             ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
             self.hidden = true;
+            self.start_trimming();
         }
         // Hidden, the window gets no paint messages: keep the clock (queues, scheduler,
         // download limits) running.
@@ -2479,8 +2512,30 @@ impl App {
             ctx.request_repaint_after(Duration::from_secs(1));
             if self.trim_when_hidden.is_some_and(|t| Instant::now() >= t) {
                 trim_memory();
-                self.trim_when_hidden = Some(Instant::now() + TRIM_EVERY_HIDDEN);
+                self.trims_since_hidden += 1;
+                self.trim_when_hidden = Some(Instant::now() + next_trim(self.trims_since_hidden));
             }
+        }
+    }
+
+    /// While an assistive technology is listening (a screen reader running, #131), every window
+    /// builds its accessibility tree with each frame, so the first time one is read it answers
+    /// with its contents rather than an empty window (egui keeps the last tree for that). Asked
+    /// once a second; never turned off here (the platform says when nobody listens any more).
+    fn follow_assistive_technology(&mut self, ctx: &egui::Context) {
+        if self
+            .assistive_checked
+            .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
+        {
+            return;
+        }
+        self.assistive_checked = Some(Instant::now());
+        #[cfg(windows)]
+        let listening = crate::win32::assistive_technology_listening();
+        #[cfg(not(windows))]
+        let listening = crate::unix::assistive_technology_listening();
+        if listening {
+            ctx.enable_accesskit();
         }
     }
 
@@ -3923,6 +3978,16 @@ impl App {
                 self.theme_checked = None;
                 self.dirty = true;
             }
+            #[cfg(windows)]
+            Cmd::DrawWith(api) => {
+                // Chosen again after it failed here: its next start is tried.
+                if api == crate::renderer::Api::Direct3D {
+                    crate::renderer::forget_failure();
+                }
+                tracing::info!("draw with {api:?} from the next start");
+                self.settings.renderer = Some(api);
+                self.dirty = true;
+            }
             Cmd::Open => {
                 if let Some(id) = target {
                     self.open_item(id);
@@ -4332,7 +4397,8 @@ impl App {
         let deletable = picked.iter().any(|i| i.live.is_none());
         let any_running = self.items.iter().any(|i| i.live.is_some());
         let off = |label| I(label, Cmd::None, false, false);
-        match index {
+        #[allow(unused_mut)]
+        let mut menu = match index {
             0 => vec![
                 I("&Add new download", Cmd::AddUrl, true, false),
                 I("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
@@ -4531,7 +4597,46 @@ impl App {
                 I("&About Mister Download Manager", Cmd::About, true, false),
                 I("Tell a &friend", Cmd::TellFriend, true, false),
             ],
+        };
+        // View → Draw with (MDM's, #89), after Always dark. Windows only: Linux and macOS draw
+        // with OpenGL only (renderer.rs).
+        #[cfg(windows)]
+        if let Some(at) = menu
+            .iter()
+            .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
+        {
+            menu.insert(at + 1, self.draw_with_menu());
         }
+        menu
+    }
+
+    /// View → Draw with (#89): OpenGL or Direct3D, used from the next start; a greyed line says
+    /// when what draws now isn't the choice.
+    #[cfg(windows)]
+    fn draw_with_menu(&self) -> MenuEntry<Cmd> {
+        use crate::renderer::{self, Api};
+        use MenuEntry::{Item as I, Radio, Sep, Sub};
+        let off = |label| I(label, Cmd::None, false, false);
+        let chosen = self.settings.renderer.unwrap_or(renderer::DEFAULT);
+        let (gl, d3d) = (chosen == Api::OpenGl, chosen == Api::Direct3D);
+        let mut items = vec![
+            // i18n: View → Draw with: a graphics system's name, usually kept as is
+            Radio("OpenGL", Cmd::DrawWith(Api::OpenGl), true, gl),
+            // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+            Radio("Direct3D", Cmd::DrawWith(Api::Direct3D), true, d3d),
+        ];
+        if renderer::active().is_some_and(|a| a != chosen) {
+            items.push(Sep);
+            items.push(if chosen == Api::Direct3D && renderer::direct3d_failed() {
+                // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+                off("Direct3D didn't start here: OpenGL draws")
+            } else {
+                // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+                off("Applies the next time MDM starts")
+            });
+        }
+        // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+        Sub("Draw with", true, items)
     }
 
     /// Start Queue / Stop Queue drop-downs (and the Downloads menu's submenus).
@@ -6905,6 +7010,7 @@ impl eframe::App for App {
         crate::settings::share_dns(self.settings.dns());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
+        self.follow_assistive_technology(&ctx);
         self.network_adapter_tick(&ctx);
         self.debrid_tick();
         dialogs::publish_main_rect(&ctx);
@@ -6978,6 +7084,7 @@ impl eframe::App for App {
             .show(ui, |ui| self.paint(ui));
         self.dialogs(&ctx);
         crate::crash::frame_end();
+        crate::renderer::frame_done();
     }
 }
 
@@ -7174,5 +7281,25 @@ mod referrer_tests {
         );
         let folder = "https://drive.google.com/drive/folders/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu";
         assert_eq!(drive_file_behind_player(&cmd(folder, None)), None);
+    }
+}
+
+#[cfg(test)]
+mod trim_tests {
+    use super::next_trim;
+    use std::time::Duration;
+
+    /// The tray gives memory back 2 s after hiding, 2 minutes after hiding, then every
+    /// 10 minutes (#72).
+    #[test]
+    fn hidden_memory_is_given_back_at_2_s_2_min_then_every_10_min() {
+        let mut at = Duration::ZERO;
+        let times: Vec<u64> = (0..4)
+            .map(|done| {
+                at += next_trim(done);
+                at.as_secs()
+            })
+            .collect();
+        assert_eq!(times, [2, 120, 720, 1320]);
     }
 }

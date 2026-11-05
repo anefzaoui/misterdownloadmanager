@@ -170,6 +170,9 @@ pub fn text(input: &Input, home: Option<&Path>) -> String {
         let _ = writeln!(s, "System: {} ({})", ss.os_version, ss.arch);
         let _ = writeln!(s, "Language: {}", ss.language);
         let _ = writeln!(s, "Theme: {}", if ss.dark { "dark" } else { "light" });
+        if !ss.renderer.is_empty() {
+            let _ = writeln!(s, "Drawing with: {}", ss.renderer);
+        }
         let _ = writeln!(s, "Program: {}", ss.exe);
         if let Ok(now) = chrono::DateTime::parse_from_rfc3339(&input.time) {
             let up = now.timestamp() - ss.started;

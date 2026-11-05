@@ -33,6 +33,7 @@ mod properties;
 mod queue;
 mod quota;
 mod regional;
+mod renderer;
 mod rss;
 mod rssdlg;
 mod scheduler;
@@ -151,6 +152,7 @@ pub fn quiet(builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
 }
 
 fn main() -> std::process::ExitCode {
+    renderer::mark_start();
     // PAC's myIpAddress from the routing table, not a UDP socket (a firewall prompt, #35).
     #[cfg(windows)]
     mdm_engine::net::set_source_lookup(win32::source_address);
@@ -286,24 +288,26 @@ fn app() -> eframe::Result {
     if offscreen() {
         viewport = viewport.with_position(offscreen_at());
     }
-    let opts = eframe::NativeOptions {
-        viewport,
+    // OpenGL or Direct3D (View → Draw with, #89), the other one when it can't start.
+    let plan = renderer::plan(
+        loaded.settings.renderer,
+        renderer::overridden(&args).as_deref(),
+        renderer::failed_before().is_some(),
+    );
+    let options = || eframe::NativeOptions {
+        viewport: viewport.clone(),
         // Linux: X11 (XWayland) over Wayland when both are there, so menus open where clicked.
         #[cfg(target_os = "linux")]
         event_loop_builder: unix::prefer_x11(),
         ..Default::default()
     };
-    let result = eframe::run_native(
-        "misterdownloadmanager",
-        opts,
-        Box::new(move |cc| {
-            if let Some(z) = zoom {
-                cc.egui_ctx.set_zoom_factor(z);
-            }
-            let _ = window.set(cc.egui_ctx.clone());
-            Ok(Box::new(app::App::new(cc, handle, commands, loaded)))
-        }),
-    );
+    let result = renderer::run("misterdownloadmanager", &plan, options, move |cc| {
+        if let Some(z) = zoom {
+            cc.egui_ctx.set_zoom_factor(z);
+        }
+        let _ = window.set(cc.egui_ctx.clone());
+        app::App::new(cc, handle, commands, loaded)
+    });
     crash::clean_exit();
     result
 }

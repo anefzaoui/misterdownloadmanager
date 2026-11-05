@@ -54,6 +54,12 @@ regex = "1.13.1"
 
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
+# Windows can draw with Direct3D 12 instead of OpenGL (#89, renderer.rs): eframe's wgpu renderer
+# with wgpu's Direct3D 12 backend only (no Vulkan, no GL: OpenGL stays eframe's glow).
+eframe = { workspace = true, features = ["wgpu_no_default_features"] }
+# Cargo.lock keeps gpu-allocator (wgpu-hal's) on wgpu-hal's windows 0.62: its range allows 0.61 too,
+# which win32job uses, and wgpu-hal doesn't build with that one.
+wgpu = { version = "30.0", default-features = false, features = ["dx12", "wgsl"] }
 # Drag the downloaded file out of Download complete (OLE drag and drop).
 drag = "2.1.1"
 raw-window-handle = "0.6"

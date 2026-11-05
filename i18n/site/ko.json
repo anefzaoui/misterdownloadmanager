@@ -1050,6 +1050,10 @@
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5초</g1><g2></g2>"
   },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Windows에서는 토렌트 엔진이 아직 어댑터에 바인딩할 수 없습니다. 따라서 어댑터를 우회하는 대신, 어댑터가 선택되어 있는 동안에는 토렌트가 시작되지 않습니다(\"Windows에서는 토렌트가 선택된 네트워크 어댑터를 통해 아직 작동할 수 없습니다\"). 트래커 이름은 여전히 시스템의 DNS에 의해 조회됩니다."
+  },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "브라우저 확장 프로그램은 앱과 함께 제공되며 <g1>Chrome, Edge, Brave, Opera, Vivaldi</g1> 및 <g2>Firefox</g2>용으로 별도 다운로드도 가능합니다. 스토어 등록은 진행 중입니다. 모든 파일은 GitHub Actions를 통해 공개 소스에서 빌드되며 SHA-256 체크섬과 함께 나열됩니다."
@@ -2138,6 +2142,10 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "이 컴퓨터 자체(<x1/>)로의 연결은 바인딩되지 않습니다. 이 컴퓨터의 프록시는 다운로드를 전달하며, 어디로 보낼지는 프록시에 달려 있습니다."
   },
+  "354fca97a75c4b55": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "컴퓨터에서 Direct3D를 시작할 수 없는 경우(Direct3D 12 드라이버 없음, 일부 가상 머신), MDM은 OpenGL로 그리고 <g1>보기 → 다음으로 그리기</g1>에 그렇게 표시됩니다. <g2>Direct3D</g2>를 다시 선택하면 다음 시작 시 다시 시도합니다."
+  },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "첫 시작 시 언어 선택"
@@ -2585,6 +2593,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "<g1>연결 및 속도</g1>에서 더 자세히 알아보십시오."
+  },
+  "40a17209f38d66d2": {
+   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
+   "text": "MDM은 OpenGL로 창을 그립니다. Windows에서 일부 그래픽 드라이버의 OpenGL은 창을 몇 초 동안 멈추게 하거나 잘못 그릴 수 있습니다. 다음 시작부터 대신 Direct3D 12로 그리려면 <g1>보기 → 다음으로 그리기 → Direct3D</g1>를 선택하세요. <g2>보기 → 다음으로 그리기 → OpenGL</g2>은 되돌아갑니다."
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -3574,6 +3586,10 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "갤러리 이름으로 된 폴더에 갤러리를 다운로드합니다. <g1>명령줄 및 자동화</g1>를 참조하세요."
   },
+  "5d132ac4f8b0c1aa": {
+   "source": "A freeze or crash report says which one was drawing.",
+   "text": "멈춤 또는 충돌 보고서에는 어떤 것이 그려지고 있었는지 표시됩니다."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>도움말 → 문제 보고</g1>를 선택하세요. GitHub에 버그 보고서 양식이 열리며, MDM 버전, 시스템 및 해당 버전, MDM 설치 방법 및 인터페이스 언어가 이미 채워져 있습니다. 발생한 일, 예상했던 일, 그리고 발생하게 된 단계를 설명하세요. 다운로드의 경우, 공유할 수 있다면 주소를 포함하고, <g2>상태</g2> 아래에 표시된 이유를 포함하세요."
@@ -4390,6 +4406,10 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM은 브라우저가 파일을 다운로드하는 대신 <g1>파일 정보 다운로드</g1>를 엽니다. <g2>다운로드 시작</g2>을 클릭합니다."
   },
+  "70949fe6f15631f5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
+   "text": "<g1>보기</g1> — 카테고리 표시 또는 숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>다음으로 그리기</g5>(Windows: OpenGL 또는 Direct3D) 및 <g6>언어</g6>."
+  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "사용자 컴퓨터에 저장되는 정보"
@@ -4617,6 +4637,10 @@
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
    "text": "MDM이 제때 시작되지 않았습니다"
+  },
+  "76ce76c1e1586496": {
+   "source": "The window freezes or draws wrongly",
+   "text": "창이 멈추거나 잘못 그려집니다"
   },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
@@ -4897,6 +4921,10 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 이상이 필요합니다."
+  },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>옵션 → 프록시/Socks → 네트워크 어댑터</g1>는 MDM의 연결을 하나의 어댑터, 일반적으로 VPN의 어댑터에 고정합니다(<g2>옵션</g2>). Linux 및 macOS에서는 토렌트 엔진이 모든 소켓을 해당 어댑터에 바인딩합니다: 피어, 트래커, DHT 및 수신 포트. UPnP 및 로컬 피어 검색은 어댑터를 통하는 대신 로컬 네트워크와 통신하므로 꺼집니다. 어댑터가 사라지면 엔진이 중지되고, 어댑터가 다시 연결되면 어댑터를 통해 다시 시작됩니다."
   },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
@@ -6706,6 +6734,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>범주</g1> — 파일 유형(압축됨, 문서, 음악, 프로그램, 비디오 또는 일반)에서 선택됩니다. 각 범주에는 자체 폴더가 있습니다. 옆의 <g2>+</g2>는 새 범주를 만듭니다."
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>네트워크 어댑터</g1> — <g2>모두 (시스템이 선택)</g2>가 기본값입니다. 어댑터(일반적으로 VPN 어댑터)를 선택하면 MDM이 여는 모든 연결이 해당 어댑터를 통해 나가거나, 아니면 전혀 나가지 않습니다. 여기에는 다운로드, FTP, 선택한 DNS, MDM 자체 다운로드 및 업데이트 확인이 포함됩니다. 이는 킬 스위치 역할을 합니다. 어댑터 연결이 끊어지거나 VPN이 꺼지면 일반 연결을 통해 아무것도 나가지 않습니다. 실행 중인 다운로드는 \"… 연결되지 않음\"으로 중지되고 어댑터가 다시 연결되면 다시 시작됩니다. 목록 아래 줄에는 어댑터 주소가 표시되거나 연결되지 않았음이 표시됩니다."
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "<g1>찾기</g1>를 클릭합니다. 첫 번째 일치 항목이 선택됩니다."
@@ -7237,6 +7269,10 @@
   "bb9e801a8f102292": {
    "source": "App",
    "text": "앱"
+  },
+  "bbb4a37acc8f6a42": {
+   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
+   "text": "창은 OpenGL(eframe의 glow)로 그려집니다. Windows에서는 보기 → 다음으로 그리기에서 다음 시작부터 Direct3D 12(eframe의 wgpu, Direct3D 12 백엔드만 사용)를 대신 선택합니다. <x1/>은 선택한 것이 시작할 수 없을 때 다른 것으로 대체되므로 창은 항상 열립니다."
   },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
@@ -8248,7 +8284,7 @@
   },
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료)를 반환합니다. Windows 전용 호출은 <x3/>에, Linux 및 macOS 해당 호출은 <x4/>에 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다: Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>). 파일 이름 앞의 아이콘도 마찬가지입니다(<x6/>): Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x7/>, shared-mime-info 및 아이콘 테마 사양). 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango의 아이콘(번들)은 시스템 아이콘이 준비될 때까지, 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
+   "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉각적인 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>로 제한되고 Linux 및 macOS의 해당 호출은 <x4/>로 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다. Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)입니다. 파일 이름 앞의 아이콘도 마찬가지입니다(<x6/>). Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x7/>, shared-mime-info 및 아이콘 테마 사양)입니다. 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango의 아이콘(번들로 제공됨)은 시스템 아이콘이 준비될 때까지 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8965,6 +9001,10 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "IDM에서 Mister Download Manager로 다운로드 목록을 옮길 수 있습니까?"
+  },
+  "eccd08c375bd5161": {
+   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
+   "text": "Windows에서 OpenGL을 시작할 수 없는 경우, MDM은 Direct3D를 시도한 다음 Microsoft의 소프트웨어 렌더러를 시도하여 창이 여전히 열립니다(원격 데스크톱, 그래픽 드라이버가 없는 가상 머신)."
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",

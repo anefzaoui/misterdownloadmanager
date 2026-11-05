@@ -28,6 +28,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Every torrent connection goes out from the adapter's address, with the same kill switch as
   downloads: peers, trackers, the DHT and the listening port. When the adapter disconnects,
   torrents stop, nothing goes out another way, and they start again when it is back.
+- **Windows: draw with Direct3D** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
+  **View → Draw with** chooses between OpenGL, as before and still the default, and Direct3D 12,
+  from the next start. Direct3D may avoid the stalls some graphics drivers' OpenGL has
+  ([#82](https://github.com/anefzaoui/misterdownloadmanager/issues/82)). When the chosen one
+  can't start, MDM draws with the other, so its window always opens: Direct3D falls back to
+  OpenGL (and the menu says so), and OpenGL to Direct3D or Microsoft's software renderer (Remote
+  Desktop, virtual machines without a graphics driver). A start with Direct3D that ends before
+  its first window is drawn is remembered the same way. Freeze and crash reports say what was
+  drawing. Linux and macOS keep OpenGL.
 - **The extension lists the media a page has loaded**
   ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
   window has **Media on this page**: the HLS and DASH streams the page's players loaded (each
@@ -317,6 +326,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Less memory in the notification area, also after Minimize**
+  ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)): a window minimized to the
+  notification area (on by default) now gives its memory back too, as a closed one did; and both
+  give it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation
+  have brought some back (then every 10 minutes, as before).
+- **Screen readers see a window's contents the first time they read it**
+  ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131)): a window read for the
+  first time (Link grabber, Options, About...) showed only its title bar until it was drawn
+  again. It now answers with what it shows at once, as soon as a screen reader is running.
 - **A magnet link could wait minutes for its file list** ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92)):
   in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest
   of the session once a computer it asked was gone, so a magnet its trackers didn't serve never

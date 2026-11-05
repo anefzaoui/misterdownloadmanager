@@ -4269,6 +4269,10 @@ menu	Add category	വിഭാഗം ചേർക്കുക
 #, machine
 menu	Add trackers...	ട്രാക്കറുകൾ ചേർക്കുക...
 #. menu command in the main window
+#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+#, machine
+menu	Applies the next time MDM starts	അടുത്ത തവണ MDM ആരംഭിക്കുമ്പോൾ ബാധകമാകും
+#. menu command in the main window
 #, machine
 menu	Arrange files	ഫയലുകൾ ക്രമീകരിക്കുക
 #. menu command in the main window
@@ -4359,10 +4363,22 @@ menu	Delete	ഇല്ലാതാക്കുക
 #, machine
 menu	Delete from queue	ക്യൂവിൽ നിന്ന് ഇല്ലാതാക്കുക
 #. menu command in the main window
+#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+#, machine
+menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Direct3D didn't start here: OpenGL draws	Direct3D ഇവിടെ ആരംഭിച്ചില്ല: OpenGL വരയ്ക്കുന്നു
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Download &video from a page...	ഒരു പേജിൽ നിന്ന് &വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക...
+#. menu command in the main window
+#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#, machine
+menu	Draw with	ഇതുപയോഗിച്ച് വരയ്ക്കുക
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -4429,6 +4445,10 @@ menu	Open folder	ഫോൾഡർ തുറക്കുക
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Open with...	ഇതുകൊണ്ട് തുറക്കുക...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name, usually kept as is
+#, machine
+menu	OpenGL	OpenGL
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

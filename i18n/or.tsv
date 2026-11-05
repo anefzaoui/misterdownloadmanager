@@ -4269,6 +4269,10 @@ menu	Add category	ବର୍ଗ ଯୋଗ କରନ୍ତୁ
 #, machine
 menu	Add trackers...	ଟ୍ରାକର୍ ଯୋଡନ୍ତୁ...
 #. menu command in the main window
+#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+#, machine
+menu	Applies the next time MDM starts	MDM ପରବର୍ତ୍ତୀ ଥର ଆରମ୍ଭ ହେଲେ ପ୍ରଯୁଜ୍ୟ ହେବ
+#. menu command in the main window
 #, machine
 menu	Arrange files	ଫାଇଲଗୁଡ଼ିକୁ ସଜାନ୍ତୁ
 #. menu command in the main window
@@ -4359,10 +4363,22 @@ menu	Delete	ଡିଲିଟ୍ କରନ୍ତୁ
 #, machine
 menu	Delete from queue	କ୍ୟୁରୁ ଡିଲିଟ୍ କରନ୍ତୁ
 #. menu command in the main window
+#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+#, machine
+menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Direct3D didn't start here: OpenGL draws	Direct3D ଏଠାରେ ଆରମ୍ଭ ହେଲା ନାହିଁ: OpenGL ଡ୍ର କରେ
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Download &video from a page...	ଏକ ପୃଷ୍ଠାରୁ ଭିଡିଓ ଡାଉନଲୋଡ୍ କରନ୍ତୁ(&v)...
+#. menu command in the main window
+#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#, machine
+menu	Draw with	ଏହା ସହିତ ଡ୍ର କରନ୍ତୁ
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -4429,6 +4445,10 @@ menu	Open folder	ଫୋଲ୍ଡର୍ ଖୋଲନ୍ତୁ
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Open with...	ଏହା ସହିତ ଖୋଲନ୍ତୁ...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name, usually kept as is
+#, machine
+menu	OpenGL	OpenGL
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
