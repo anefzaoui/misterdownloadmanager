@@ -27,6 +27,8 @@
   }
 }
 * { box-sizing: border-box; }
+/* The hidden attribute wins over a class's display ("How to fix it" showed while connected). */
+[hidden] { display: none !important; }
 body {
   margin: 0;
   width: 300px;
@@ -62,3 +64,18 @@ button.row { width: 100%; text-align: start; margin-top: 6px; overflow: hidden; 
 .actions button { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .note { color: var(--muted); margin: 10px 0 0; font-size: 12px; }
 footer { display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; border-top: 1px solid var(--edge); padding-top: 6px; color: var(--muted); font-size: 12px; }
+/* The media the tab loaded (#38): one row each, its type, name, what is known, and Download. */
+.media { margin-top: 12px; border-top: 1px solid var(--edge); padding-top: 8px; }
+.media h2 { margin: 0 0 6px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.media ul { list-style: none; margin: 0; padding: 0; max-height: 228px; overflow-y: auto; }
+.media li { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--edge); }
+.media li:last-child { border-bottom: 0; }
+.tag { flex: none; min-width: 38px; padding: 1px 4px; border: 1px solid var(--edge); border-radius: 3px; background: var(--field); font-size: 10px; font-weight: 600; text-align: center; letter-spacing: .02em; }
+.what { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.what .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.what .meta { color: var(--muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.media li button { flex: none; padding: 3px 10px; }
+.media li button:disabled { cursor: default; color: var(--muted); filter: none; }
+.drm { flex: none; color: var(--bad); font-size: 11px; font-weight: 600; }
+.media .note { margin-top: 6px; }
+.media .note.bad { color: var(--bad); }

@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The extension lists the media a page has loaded**
+  ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
+  window has **Media on this page**: the HLS and DASH streams the page's players loaded (each
+  once, with its qualities and length) and the video and sound files it played, with their size.
+  **Download** sends a stream to the Download video window and a file to the list, with the
+  page's cookies, the page as the referrer and the browser's User-Agent, so a stream a page won't
+  give up can still be saved. Copy-protected (DRM) streams are listed as **Protected** and never
+  sent. Nothing new to allow: the extension already watched the tab's responses.
 - **Link grabber, and archives extracted when they are downloaded**
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)). The window that took
   the browser's "Download all links", Tasks → Import and dropped lists grew into Link grabber

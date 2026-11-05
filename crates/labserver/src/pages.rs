@@ -58,7 +58,8 @@ fn video_tag(id: &str, src: &str, (w, h): (u32, u32), muted_loop: bool) -> Strin
 }
 
 /// `/page?link=PATH&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
-/// hls=1&dash=1&csp=strict`: a web page with what the browser extension acts on (see `HELP`).
+/// hls=1&dash=1&drm=1&csp=strict`: a web page with what the browser extension acts on (see
+/// `HELP`).
 pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     let pairs = pairs(q);
     let m: HashMap<&str, &str> = pairs
@@ -71,13 +72,16 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     let (muted_loop, iframe, shadow) = (flag("muted_loop"), flag("iframe"), flag("shadow"));
     let several = num("several", 0).min(16);
     let csp = m.get("csp") == Some(&"strict");
-    let stream = if flag("hls") {
-        Some("/hls/master.m3u8")
-    } else if flag("dash") {
-        Some("/dash/manifest.mpd")
-    } else {
-        None
-    };
+    // A player for each stream asked for, in this order.
+    let streams: Vec<&str> = [
+        ("hls", "/hls/master.m3u8"),
+        ("dash", "/dash/manifest.mpd"),
+        ("drm", "/dash/protected.mpd"),
+    ]
+    .into_iter()
+    .filter(|(k, _)| flag(k))
+    .map(|(_, m)| m)
+    .collect();
     // `link` may come again: one link each, in order.
     let links: Vec<&str> = pairs
         .iter()
@@ -99,7 +103,7 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
         None if muted_loop
             || iframe
             || shadow
-            || (link.is_none() && audio.is_none() && several == 0 && stream.is_none()) =>
+            || (link.is_none() && audio.is_none() && several == 0 && streams.is_empty()) =>
         {
             Some(DEFAULT_VIDEO)
         }
@@ -153,16 +157,22 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     if let Some(src) = audio {
         body += &format!("<audio id=audio src=\"{}\" controls></audio>", esc(src));
     }
-    if let Some(manifest) = stream {
+    for (k, manifest) in streams.iter().enumerate() {
+        let id = if k == 0 {
+            "player".to_owned()
+        } else {
+            format!("player{}", k + 1)
+        };
         body += &format!(
-            "<video id=player width={} height={} controls></video>\
-             <script src=/assets/stream.js data-manifest=\"{manifest}\"></script>",
+            "<video id={id} width={} height={} controls></video>\
+             <script src=/assets/stream.js data-manifest=\"{manifest}\" data-player={id}>\
+             </script>",
             size.0, size.1
         );
     }
     let mut resp = html(body);
     if csp {
-        let media = if stream.is_some() {
+        let media = if !streams.is_empty() {
             "'self' blob:"
         } else {
             "'self'"
@@ -171,7 +181,7 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
             "default-src 'none'; style-src 'self'; img-src 'self'; media-src {media}; \
              script-src 'self'"
         );
-        if stream.is_some() {
+        if !streams.is_empty() {
             policy += "; connect-src 'self'";
         }
         if iframe {
