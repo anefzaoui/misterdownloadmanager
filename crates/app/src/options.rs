@@ -46,6 +46,104 @@ enum Sub {
     /// File types → "Don't start downloading automatically from the following addresses" →
     /// Edit list...: one address pattern per line.
     Addresses(String),
+    /// Connection → DNS → Settings...: how the DNS is asked, its servers, a test.
+    Dns(DnsEdit),
+}
+
+/// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
+struct DnsEdit {
+    mode: u8,
+    provider: String,
+    servers: String,
+    tls_name: String,
+    doh_url: String,
+    nextdns_id: String,
+    fallback: bool,
+    /// The Test button's answer (shared with its thread): None while it runs.
+    test: Option<TestSlot>,
+}
+
+/// A test's answer line and whether it worked, filled in by its thread.
+type TestSlot = std::sync::Arc<std::sync::Mutex<Option<(String, bool)>>>;
+
+impl DnsEdit {
+    fn from(s: &Settings) -> Self {
+        DnsEdit {
+            mode: if s.dns_mode == 0 { 3 } else { s.dns_mode },
+            provider: s.dns_provider.clone(),
+            servers: s.dns_servers.clone(),
+            tls_name: s.dns_tls_name.clone(),
+            doh_url: s.dns_doh_url.clone(),
+            nextdns_id: s.dns_nextdns_id.clone(),
+            fallback: s.dns_fallback,
+            test: None,
+        }
+    }
+
+    fn choice(&self) -> Result<mdm_engine::DnsChoice, String> {
+        settings::dns_choice(
+            self.mode,
+            &self.provider,
+            &self.servers,
+            &self.tls_name,
+            &self.doh_url,
+            &self.nextdns_id,
+            self.fallback,
+        )
+    }
+
+    fn save(self, s: &mut Settings) {
+        s.dns_mode = self.mode;
+        s.dns_provider = self.provider;
+        s.dns_servers = self.servers.trim().to_owned();
+        s.dns_tls_name = self.tls_name.trim().to_owned();
+        s.dns_doh_url = self.doh_url.trim().to_owned();
+        s.dns_nextdns_id = self.nextdns_id.trim().to_lowercase();
+        s.dns_fallback = self.fallback;
+    }
+}
+
+/// Connection → DNS's list: the system's, the services by name, the user's own.
+fn dns_names() -> Vec<String> {
+    let mut out = vec![
+        // i18n: Options → Connection → DNS: the operating system's own DNS (the default)
+        crate::i18n::t("The system's DNS").to_owned(),
+    ];
+    out.extend(mdm_engine::dns::PRESETS.iter().map(|p| p.name.to_owned()));
+    // i18n: Options → Connection → DNS: a DNS server the user types in
+    out.push(crate::i18n::t("Another DNS...").to_owned());
+    out
+}
+
+fn dns_index(s: &Settings) -> usize {
+    if s.dns_mode == 0 {
+        return 0;
+    }
+    let presets = mdm_engine::dns::PRESETS;
+    presets
+        .iter()
+        .position(|p| p.id == s.dns_provider)
+        .map_or(presets.len() + 1, |i| i + 1)
+}
+
+fn set_dns_index(s: &mut Settings, i: usize) {
+    let presets = mdm_engine::dns::PRESETS;
+    if i == 0 {
+        s.dns_mode = 0;
+        return;
+    }
+    s.dns_provider = presets
+        .get(i - 1)
+        .map_or("custom".to_owned(), |p| p.id.to_owned());
+    if s.dns_mode == 0 {
+        s.dns_mode = 3;
+    }
+    // A service that isn't offered this way (NextDNS plain) moves to DNS over HTTPS.
+    if let (Some(p), Some(m)) = (presets.get(i - 1), settings::dns_mode(s.dns_mode))
+        && !p.offers(m)
+    {
+        s.dns_mode = 3;
+    }
 }
 
 pub struct OptionsDialog {
@@ -993,6 +1091,47 @@ impl OptionsDialog {
             "Show warning before stopping downloads",
             on,
         );
+        // DNS (#36): who answers the names; the details in Settings....
+        // i18n: label before the choice of DNS (the service that turns names into addresses)
+        text(
+            &p,
+            o.x + 21.0,
+            o.y + 421.0,
+            crate::i18n::t("DNS:"),
+            LIGHT_TEXT(),
+        );
+        let names = dns_names();
+        let labels: Vec<&str> = names.iter().map(String::as_str).collect();
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 70.0, 406.0, 241.0, 21.0),
+            &labels,
+            dns_index(&self.s),
+            true,
+            "opt-dns",
+        ) {
+            set_dns_index(&mut self.s, i);
+            if i > 0 {
+                self.sub = Some(Sub::Dns(DnsEdit::from(&self.s)));
+            }
+        }
+        let kind = if self.s.dns_mode == 0 {
+            ButtonKind::Disabled
+        } else {
+            ButtonKind::Normal
+        };
+        // i18n: button: opens the DNS's details (how it's asked, its servers, a test)
+        if winui::button_light(
+            ui,
+            r(o, 319.0, 406.0, 73.0, 21.0),
+            "Settings...",
+            kind,
+            false,
+        )
+        .clicked()
+        {
+            self.sub = Some(Sub::Dns(DnsEdit::from(&self.s)));
+        }
     }
 
     fn proxy(&mut self, ui: &mut Ui, o: Pos2) {
@@ -1736,6 +1875,23 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
+            Sub::Dns(mut e) => {
+                let out = window(
+                    ctx,
+                    "opt-dns",
+                    // i18n: window title: the settings of the DNS chosen in Options → Connection
+                    "DNS settings",
+                    [400.0, 292.0],
+                    false,
+                    LIGHT_BG(),
+                    |ui, o| dns_dialog(ui, o, &mut e),
+                );
+                match out {
+                    Outcome::Open => self.sub = Some(Sub::Dns(e)),
+                    Outcome::Done(()) => e.save(&mut self.s),
+                    Outcome::Closed => {}
+                }
+            }
             Sub::Addresses(mut list) => {
                 let out = window(
                     ctx,
@@ -1932,6 +2088,207 @@ fn display_dir(dir: &std::path::Path) -> String {
 }
 
 /// OK / Cancel at (x, y), OK only when `valid`.
+/// Connection → DNS → Settings...: how it's asked, its servers, the fallback, a test.
+fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
+    use mdm_engine::dns::{Mode, Preset};
+    let p = ui.painter().clone();
+    let preset = Preset::by_id(&e.provider);
+    // i18n: Options → DNS settings: heading over the ways of asking the DNS
+    text(
+        &p,
+        o.x + 14.0,
+        o.y + 22.0,
+        crate::i18n::t("Ask it with:"),
+        LIGHT_TEXT(),
+    );
+    let modes = [
+        (1u8, Mode::Plain, "plain DNS"),
+        (2, Mode::Tls, "DNS over TLS"),
+        (3, Mode::Https, "DNS over HTTPS"),
+    ];
+    let mut clicked = Vec::new();
+    for (row, (n, m, caption)) in modes.iter().enumerate() {
+        let offered = preset.is_none_or(|p| p.offers(*m));
+        let r = winui::radio_light(
+            ui,
+            o + vec2(24.0, 32.0 + 20.0 * row as f32),
+            e.mode == *n,
+            caption,
+            offered,
+        );
+        if r.clicked() && offered {
+            e.mode = *n;
+        }
+        clicked.push(r);
+    }
+    if let Some(i) = winui::radio_keys(ui, &clicked) {
+        let (n, m, _) = modes[i];
+        if preset.is_none_or(|p| p.offers(m)) {
+            e.mode = n;
+        }
+    }
+    let field = |ui: &mut Ui, y: f32, label: &str, value: &mut String, enabled: bool| {
+        winui::text_right(
+            &p,
+            o.x + 130.0,
+            o.y + y + 14.0,
+            crate::i18n::t(label),
+            LIGHT_TEXT(),
+        );
+        winui::edit_light(ui, r(o, 138.0, y, 248.0, 21.0), value, enabled, false);
+    };
+    let mode = settings::dns_mode(e.mode).unwrap_or(Mode::Https);
+    match preset {
+        // A service: its servers as they are, NextDNS's configuration ID to type.
+        Some(pr) => {
+            let shown = match mode {
+                Mode::Plain => pr.plain.join(", "),
+                Mode::Tls => pr.tls_name.to_owned(),
+                Mode::Https => pr.doh.to_owned(),
+            };
+            // i18n: Options → DNS settings: label before the chosen service's server (an address)
+            winui::text_right(
+                &p,
+                o.x + 130.0,
+                o.y + 112.0,
+                crate::i18n::t("Server:"),
+                LIGHT_TEXT(),
+            );
+            let (rect, cut) = winui::label_into(
+                &p,
+                o.x + 138.0,
+                o.y + 112.0,
+                &shown,
+                LIGHT_DISABLED(),
+                o.x + 386.0,
+                o.x + 138.0,
+            );
+            if cut {
+                winui::full_on_hover(ui, rect, "dns-server", &shown);
+            }
+            if pr.id == "nextdns" {
+                // i18n: Options → DNS settings: NextDNS's own configuration ID (optional)
+                field(
+                    ui,
+                    122.0,
+                    "Configuration ID:",
+                    &mut e.nextdns_id,
+                    mode != Mode::Plain,
+                );
+            }
+        }
+        // The user's own DNS.
+        None => match mode {
+            // i18n: Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+            Mode::Plain => field(ui, 98.0, "Servers:", &mut e.servers, true),
+            Mode::Tls => {
+                field(ui, 98.0, "Servers:", &mut e.servers, true);
+                // i18n: Options → DNS over TLS: label before the name the server's certificate shows
+                field(ui, 124.0, "Certificate name:", &mut e.tls_name, true);
+            }
+            Mode::Https => {
+                // i18n: Options → DNS over HTTPS: label before the server's https:// address
+                field(ui, 98.0, "Address:", &mut e.doh_url, true);
+                // i18n: Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+                field(ui, 124.0, "IP addresses (optional):", &mut e.servers, true);
+            }
+        },
+    }
+    winui::checkbox_light(
+        ui,
+        o + vec2(14.0, 158.0),
+        &mut e.fallback,
+        // i18n: Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+        "If it can't be reached, use the system's DNS",
+        true,
+    );
+    winui::paragraph(
+        &p,
+        o.x + 14.0,
+        o.y + 192.0,
+        // i18n: Options → DNS settings: what the DNS choice covers and what it doesn't
+        crate::i18n::t(
+            "Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.",
+        ),
+        LIGHT_TEXT(),
+        o.x + 386.0,
+        14.0,
+    );
+    let choice = e.choice();
+    // Test: asks github.com through the choice, without falling back, on a thread of its own.
+    let running = e.test.as_ref().is_some_and(|t| t.lock().unwrap().is_none());
+    let kind = if choice.is_ok() && !running {
+        ButtonKind::Normal
+    } else {
+        ButtonKind::Disabled
+    };
+    // i18n: button: asks the chosen DNS for an address, to see it works
+    if winui::button_light(ui, r(o, 14.0, 258.0, 73.0, 21.0), "Test", kind, false).clicked()
+        && let Ok(c) = &choice
+    {
+        let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
+        e.test = Some(slot.clone());
+        let (c, ctx) = (c.clone(), ui.ctx().clone());
+        std::thread::spawn(move || {
+            let result = tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .map_err(|e| e.to_string())
+                .and_then(|rt| {
+                    rt.block_on(mdm_engine::dns::test(&c, "github.com", &[]))
+                        .map_err(|e| e.to_string())
+                });
+            let line = match result {
+                Ok((took, ips)) => (
+                    crate::i18n::fmt(
+                        // i18n: Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+                        crate::i18n::t("Answered in {ms} ms: {ip}"),
+                        &[
+                            ("ms", &took.as_millis().to_string()),
+                            (
+                                "ip",
+                                &ips.first().map(|i| i.to_string()).unwrap_or_default(),
+                            ),
+                        ],
+                    ),
+                    true,
+                ),
+                Err(why) => (why, false),
+            };
+            *slot.lock().unwrap() = Some(line);
+            ctx.request_repaint();
+        });
+    }
+    let status = match (&choice, &e.test) {
+        (Err(why), _) => Some((why.clone(), false)),
+        (Ok(_), Some(t)) => Some(t.lock().unwrap().clone().unwrap_or_else(|| {
+            // i18n: Options → DNS settings: the test is running
+            (crate::i18n::t("Asking...").to_owned(), true)
+        })),
+        _ => None,
+    };
+    if let Some((line, ok)) = status {
+        let color = if ok {
+            LIGHT_TEXT()
+        } else {
+            egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+        };
+        let (rect, cut) = winui::label_into(
+            &p,
+            o.x + 95.0,
+            o.y + 273.0,
+            &line,
+            color,
+            o.x + 230.0,
+            o.x + 95.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "dns-test", &line);
+        }
+    }
+    ok_cancel(ui, o, 238.0, 258.0, choice.is_ok())
+}
+
 fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
     let kind = if valid {
         ButtonKind::Default

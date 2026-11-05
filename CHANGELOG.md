@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Choose the DNS** ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36)):
+  Options → Connection → DNS picks who turns names into addresses for downloads, FTP, MDM's own
+  downloads and the update check. The system's (the default), Cloudflare, Google, Quad9, AdGuard,
+  NextDNS (with your configuration ID) or your own, asked over HTTPS (the default), TLS, or
+  plain over TCP. **Test** shows how long it takes to answer. When it can't be reached, the
+  download stops with a message naming it, unless you allow falling back to the system's DNS;
+  your hosts file and local names stay with the system's. The command line's `get` takes
+  `--dns`. Video pages and torrent trackers still use the system's DNS.
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the

@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Choose the DNS: Cloudflare, Google, Quad9, AdGuard, NextDNS or your own, over HTTPS, TLS or
+  plain, with a Test button and no silent fallback
+  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - ✅ Video downloads: subtitles, beside the video or inside it
   ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
@@ -92,8 +95,6 @@ Everything below ships together, in one release.
 
 - 📋 Bind downloads to a network adapter (VPN), with a kill switch
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
-- 📋 Custom DNS, and DNS over HTTPS or TLS
-  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - 📋 Downloads follow a browser's VPN or proxy extension
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 

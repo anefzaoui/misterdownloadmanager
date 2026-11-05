@@ -2562,6 +2562,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>التنزيلات</g1>: مثبت Windows، ملف مضغوط محمول وملف مضغوط عادي، إضافة المتصفح بمفردها (ملف مضغوط لمتصفحات Chromium، <x2/> لـ Firefox، دائما إصدار التطبيق)، و<g3>إصدارات macOS وLinux للتجربة</g3>: <x4/> عالمي وAppImage، <x5/>، <x6/> و<x7/>، معلمة بـ <x8/> لأننا لم نختبرها. هناك، يربط MDM نفسه بـ Chrome، Edge، Brave، Vivaldi وFirefox، ولديه أيقونة في علبة النظام، ويتبع مظهر النظام الفاتح أو الداكن ويستخدم خطوط النظام وffmpeg. أخبرنا كيف تعمل معك."
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS عبر HTTPS</g1> (الافتراضي) أو <g2>DNS عبر TLS</g2>: مشفر، بحيث لا يرى أحد في الطريق أو يغير الأسماء التي تبحث عنها."
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>بدء التنزيل في</g1> — وقت، ثم إما:"
@@ -2726,6 +2730,10 @@
    "source": "The programs, to unpack anywhere",
    "text": "البرامج، لفك الضغط في أي مكان"
   },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — أي DNS يحول أسماء الخوادم إلى عناوين لتنزيلات MDM، وتنزيلاته الخاصة (المساعدات، التحديثات) وFTP. <g2>DNS الخاص بالنظام</g2> هو الافتراضي (في Windows 11 يمكن أن يكون مشفرا بالفعل، في إعدادات الشبكة الخاصة بـ Windows). أو اختر <g3>Cloudflare</g3>، <g4>Google</g4>، <g5>Quad9</g5>، <g6>AdGuard</g6> أو <g7>NextDNS</g7>، أو <g8>خادم DNS آخر...</g8> لكتابة خادمك الخاص؛ <g9>الإعدادات...</g9> تختار كيفية طلبه:"
+  },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
    "text": "انقر نقرا مزدوجا على التورنت في القائمة لفتح نافذة تقدمه. بالإضافة إلى الحالة المعتادة، تحتوي نافذة التورنت على خمس علامات تبويب:"
@@ -2765,6 +2773,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "مجاني ومفتوح المصدر. قم بتثبيته، انقر على رابط، وشاهد كل اتصال يعمل."
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "تبقى الأسماء في ملف المضيفين الخاص بك، والأسماء المحلية (كلمات مفردة، <x1/>، <x2/>، <x3/>، <x4/>، <x5/>)، مع DNS الخاص بالنظام. لا تزال صفحات الفيديو (yt-dlp) ومتتبعات التورنت تستخدم DNS الخاص بالنظام. مع وكيل، يبحث الوكيل عن أسماء المواقع التي يصل إليها نيابة عنك."
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -3622,6 +3634,10 @@
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>لا يكسر حماية النسخ.</g1> لا يزيل MDM أو يتحايل على إدارة الحقوق الرقمية (DRM)، وليس المقصود منه ذلك. يبقى المحتوى المحمي محميا."
   },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>اختبار</g1> يطلبه لـ github.com ويظهر المدة التي استغرقها."
+  },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
    "text": "النقر بزر الفأرة الأيمن: تنزيل باستخدام Mister Download Manager"
@@ -3721,6 +3737,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "أنظمة وملفات أخرى"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>Plain DNS</g1>: غير مشفر. يطلبه MDM عبر TCP، وليس UDP أبدا، لذلك لا يحتاج أبدا إلى استثناء جدار الحماية."
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4269,6 +4289,10 @@
   "79e494c172e7a660": {
    "source": "Troubleshooting",
    "text": "استكشاف الأخطاء وإصلاحها"
+  },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "لـ DNS الخاص بك: عناوين IP للخوادم، الاسم الذي تظهره شهادتها (TLS)، أو عنوان <x1/> (HTTPS، مع عناوين IP الخاصة به إذا كنت تعرفها). يتطلب NextDNS معرف التكوين الخاص بك."
   },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
@@ -5261,10 +5285,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — يعمل من مجلد أو ذاكرة USB"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "تنزيل ملف بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، مع إمكانية تسميته (<x5/>)."
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -7010,6 +7030,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "توجد جميع الإصدارات في صفحة <g1>الإصدارات</g1>. بالنسبة لنظام Windows، توجد ثلاثة ملفات:"
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>إذا تعذر الوصول إليه، فاستخدم DNS الخاص بالنظام</g1>: معطل افتراضيا، لذلك فإن DNS الذي لا يستجيب يوقف التنزيل برسالة تسميه بدلا من إظهار عمليات البحث الخاصة بك بهدوء لـ DNS الخاص بالنظام. الاسم الذي يقول DNS إنه غير موجود لا يتم الرجوع إليه أبدا (هذا سيلغي DNS التصفية)."
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "استئناف تنزيل متوقف — مساعدة Mister Download Manager"
@@ -7169,6 +7193,10 @@
   "cbc1f1134f6a8b39": {
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "إذا كنت تريد تصميم <g1>Internet Download Manager (IDM)</g1> بدون سعره، فإن البديل المجاني هو <g2>Mister Download Manager (MDM)</g2>: مدير تنزيلات مجاني ومفتوح المصدر لأنظمة Windows 10 و 11، مع إصدارات تجريبية لأنظمة macOS و Linux. يبدو ويعمل مثل IDM، ويستورد قائمة تنزيلات IDM الخاصة بك، وقد قام بتنزيل ملف بحجم 1 جيجابايت أسرع بـ 5.4 مرة من IDM 6.42 في <g3>اختبارنا المنشور</g3>، كما يقوم بتنزيل التورنت وروابط المغناطيس ومقاطع الفيديو أيضا."
+  },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "هذا هو الجزء الوحيد في MDM الذي ينتظر الاتصالات من الخارج. التنزيلات، واختيار MDM لخادم DNS (الخيارات ← الاتصال ← DNS)، وتحديثاته، ومساعداته تتصل بالخارج فقط، لذا لا تحتاج أبدا إلى استثناء في جدار الحماية؛ أما إضافة المتصفح وواجهة برمجة التطبيقات للأتمتة فتتصل بـ MDM على هذا الكمبيوتر فقط (127.0.0.1)."
   },
   "cc126dc832a278c1": {
    "source": "Yes",
@@ -7817,6 +7845,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "استئناف تنزيل متوقف"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "تنزيل ملف بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، اختياريا مسمى (<x5/>). <x6/> يختار DNS: <x7/> (الافتراضي)؛ خدمة وكيفية طلبها، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ عناوين خوادم DNS، <x13/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
