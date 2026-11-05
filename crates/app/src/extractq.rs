@@ -149,6 +149,13 @@ impl Extracts {
         });
     }
 
+    /// Is download `id`'s archive (one of its volumes) being extracted now?
+    pub fn extracting(&self, id: u64) -> bool {
+        self.running
+            .as_ref()
+            .is_some_and(|r| r.job.ids.contains(&id))
+    }
+
     /// Stop extracting the archive of any of `ids` (they are being deleted), and forget the
     /// ones queued.
     pub fn forget(&mut self, ids: &[u64]) {

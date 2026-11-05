@@ -1014,7 +1014,12 @@ impl App {
                 it.file_name.clone(),
                 String::new(),
                 it.size.map_or(String::new(), model::size_list),
-                it.status_text(),
+                if self.extracts.extracting(it.id) {
+                    // i18n: a download's status: its archive is being extracted (#37)
+                    crate::i18n::t("Extracting...").to_owned()
+                } else {
+                    it.status_text()
+                },
                 it.time_left(),
                 if it.live.is_some() {
                     model::rate(it.rate())
@@ -1519,6 +1524,30 @@ impl App {
                     && let Some(p) = self.progress.iter_mut().find(|p| p.id == id)
                 {
                     p.show_tab(tab);
+                }
+            }
+            // A menu of the menu bar open (menu:0 is Tasks), for screenshots.
+            "menu" => {
+                self.popup = None;
+                self.open_menu = Some(tab.parse().unwrap_or(0));
+            }
+            // A finished archive's right-click menu (Extract, #37), for screenshots.
+            "context" => {
+                let archive = self
+                    .items
+                    .iter()
+                    .rev()
+                    .find(|i| {
+                        i.status == Status::Complete
+                            && crate::extractq::archive_name(&i.file_name)
+                            && mdm_extract::volume_key(&i.file_name).is_none_or(|v| v.is_first())
+                    })
+                    .or(self.items.last())
+                    .map(|i| i.id);
+                self.open_menu = None;
+                if let Some(id) = archive {
+                    self.selection.set(id);
+                    self.open_popup(Popup::Item(Some(id)), egui::pos2(360.0, 220.0));
                 }
             }
             // Link grabber with a page's links, looked up (the docs' screenshots, #37).
