@@ -128,6 +128,10 @@ Everything below ships together, in one release.
 
 ### Being built
 
+- 🔄 Support MDM: a way to support its creator on [GitHub Sponsors](https://github.com/sponsors/anefzaoui),
+  asked for only (**Help → Support MDM**, a line in About, the website, the README, the
+  extension's popup and GitHub's Sponsor button); MDM stays free, nothing changes or unlocks
+
 ### Bugs being looked into
 
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
