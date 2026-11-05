@@ -198,10 +198,6 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
-  "04ec5358d75ceff7": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "웹 페이지의 비디오에 마우스를 가져가면 작은 <g1>비디오 다운로드</g1> 버튼이 가장자리에 나타납니다. 이 버튼을 클릭하면 MDM의 <g2>페이지에서 비디오 다운로드</g2> 창이 열리고 다운로드할 수 있는 품질을 검색합니다. 클릭한 비디오를 가져옵니다. 자체 파일을 재생할 때, 또는 플레이어가 로드한 스트림(HLS 또는 DASH), 그렇지 않으면 페이지를 가져옵니다. 임베디드 플레이어도 작동하며, 사이트 로그인 정보, 플레이어를 임베드하는 페이지 및 브라우저의 User-Agent가 함께 전달되므로, 회원 전용 비디오 또는 임베드된 사이트에서만 재생되는 비디오도 다운로드할 수 있습니다. 사운드 플레이어에도 버튼이 나타납니다."
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "명령줄에서"
@@ -1038,6 +1034,10 @@
    "source": "Link grabber and archives",
    "text": "링크 그래버 및 압축 파일"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>옵션 → 프록시/Socks → 네트워크 어댑터</g1>는 MDM의 연결을 하나의 어댑터(일반적으로 VPN의 어댑터)에 고정합니다(<g2>옵션</g2>). 토렌트 엔진은 모든 소켓을 이 어댑터에 바인딩합니다: 피어(TCP 및 SOCKS 프록시를 통해), HTTP 및 UDP 트래커, DHT 및 수신 포트. Linux 및 macOS에서는 어댑터 자체를 바인딩합니다. Windows에서는 어댑터의 주소(IPv4 주소가 있는 경우)를 바인딩하며, Windows는 해당 소스 주소를 가진 어댑터를 통해서만 패킷을 보냅니다. UPnP 및 로컬 피어 검색은 어댑터를 통하는 대신 로컬 네트워크와 통신하므로 이 경우 꺼집니다."
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>영원히 무료입니다.</g1> 만료되는 평가판, 라이선스 키, 광고가 없습니다. GNU GPL은 무료를 보장합니다."
@@ -1049,10 +1049,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5초</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windows에서는 토렌트 엔진이 아직 어댑터에 바인딩할 수 없습니다. 따라서 어댑터를 우회하는 대신, 어댑터가 선택되어 있는 동안에는 토렌트가 시작되지 않습니다(\"Windows에서는 토렌트가 선택된 네트워크 어댑터를 통해 아직 작동할 수 없습니다\"). 트래커 이름은 여전히 시스템의 DNS에 의해 조회됩니다."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2142,10 +2138,6 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "이 컴퓨터 자체(<x1/>)로의 연결은 바인딩되지 않습니다. 이 컴퓨터의 프록시는 다운로드를 전달하며, 어디로 보낼지는 프록시에 달려 있습니다."
   },
-  "3549f28b5c3a4fb8": {
-   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
-   "text": "DRM으로 보호된 비디오(대부분의 유료 스트리밍 서비스)는 다운로드할 수 없으며, MDM은 시도하지 않습니다."
-  },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "첫 시작 시 언어 선택"
@@ -2513,6 +2505,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "MDM을 먼저 시작할 필요가 없습니다. 브라우저가 다운로드를 넘겨주고 MDM이 실행 중이 아니면, 도우미가 MDM을 시작하고 다운로드를 전달합니다."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "이것은 킬 스위치 역할을 합니다. 어댑터가 연결 해제되면 실행 중인 토렌트는 \"… 연결되지 않았습니다. 다시 연결되면 계속됩니다\"라는 메시지와 함께 중지되고, 어댑터가 다시 연결되면 어댑터를 통해 다시 시작됩니다. MDM이 이를 감지하기 전까지(1초 이내) 엔진의 소켓은 사라진 주소에 계속 바인딩되어 있으므로 다른 방법으로는 아무것도 나갈 수 없습니다. 어댑터가 연결되지 않은 동안 추가된 토렌트는 시작되지 않으며 그 이유를 알려줍니다. 트래커 이름은 여전히 시스템의 DNS에 의해 조회됩니다."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4902,10 +4898,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 이상이 필요합니다."
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>옵션 → 프록시/Socks → 네트워크 어댑터</g1>는 MDM의 연결을 하나의 어댑터, 일반적으로 VPN의 어댑터에 고정합니다(<g2>옵션</g2>). Linux 및 macOS에서는 토렌트 엔진이 모든 소켓을 해당 어댑터에 바인딩합니다: 피어, 트래커, DHT 및 수신 포트. UPnP 및 로컬 피어 검색은 어댑터를 통하는 대신 로컬 네트워크와 통신하므로 꺼집니다. 어댑터가 사라지면 엔진이 중지되고, 어댑터가 다시 연결되면 어댑터를 통해 다시 시작됩니다."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>품질</g1>은 모든 비디오에 적용됩니다: <g2>최고 품질</g2>, <g3>최대</g3> 높이 (해당 높이의 각 비디오 또는 그 아래에서 가장 가까운 비디오), <g4>오디오만, 원본</g4>, <g5>오디오만 MP3</g5>, <g6>오디오만 OPUS</g6> 또는 <g7>오디오만 FLAC</g7>. ffmpeg가 없으면 사운드가 포함된 품질만 제공되며 MP3, Opus 또는 FLAC는 제공되지 않습니다."
@@ -5589,6 +5581,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB를 1.0초에</g1> <g2>IDM: 5.5초</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>네트워크 어댑터</g1> — <g2>모두 (시스템이 선택)</g2>가 기본값입니다. 어댑터(일반적으로 VPN 어댑터)를 선택하면 MDM이 여는 모든 연결이 해당 어댑터를 통해 이루어지거나, 아니면 전혀 이루어지지 않습니다. 여기에는 다운로드, FTP, 토렌트, 선택한 DNS, MDM 자체 다운로드 및 업데이트 확인이 포함됩니다. 이는 킬 스위치 역할을 합니다. 어댑터 연결이 끊기거나 VPN이 꺼지면 일반 연결을 통해 아무것도 나가지 않습니다. 실행 중인 다운로드는 \"… 연결되지 않음\" 메시지와 함께 중지되고 어댑터가 다시 연결되면 다시 시작됩니다. 목록 아래 줄에는 어댑터 주소 또는 연결되지 않았음이 표시됩니다."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -6710,10 +6706,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>범주</g1> — 파일 유형(압축됨, 문서, 음악, 프로그램, 비디오 또는 일반)에서 선택됩니다. 각 범주에는 자체 폴더가 있습니다. 옆의 <g2>+</g2>는 새 범주를 만듭니다."
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>네트워크 어댑터</g1> — <g2>모두 (시스템이 선택)</g2>가 기본값입니다. 어댑터(일반적으로 VPN 어댑터)를 선택하면 MDM이 여는 모든 연결이 해당 어댑터를 통해 나가거나, 아니면 전혀 나가지 않습니다. 여기에는 다운로드, FTP, 선택한 DNS, MDM 자체 다운로드 및 업데이트 확인이 포함됩니다. 이는 킬 스위치 역할을 합니다. 어댑터 연결이 끊어지거나 VPN이 꺼지면 일반 연결을 통해 아무것도 나가지 않습니다. 실행 중인 다운로드는 \"… 연결되지 않음\"으로 중지되고 어댑터가 다시 연결되면 다시 시작됩니다. 목록 아래 줄에는 어댑터 주소가 표시되거나 연결되지 않았음이 표시됩니다."
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "<g1>찾기</g1>를 클릭합니다. 첫 번째 일치 항목이 선택됩니다."
@@ -7725,10 +7717,6 @@
   "c942b256735064e3": {
    "source": "The plain programs, for any distribution.",
    "text": "모든 배포판용 일반 프로그램입니다."
-  },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM은 토렌트를 읽고 해당 파일을 폴더 트리로 표시합니다. <x1/> 파일은 즉시 읽힙니다. 마그넷 링크는 먼저 다른 피어로부터 파일 목록을 가져와야 하므로 1~2분 정도 걸릴 수 있습니다."
   },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",

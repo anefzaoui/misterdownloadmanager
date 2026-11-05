@@ -198,10 +198,6 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
-  "04ec5358d75ceff7": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "Наведіть курсор на відео на веб-сторінці, і на його краю з'явиться невелика кнопка <g1>Завантажити відео</g1>. Натисніть її, і відкриється вікно <g2>Завантажити відео зі сторінки</g2> MDM, яке шукає доступні якості для завантаження. Воно перехоплює відео, на яке ви натиснули: його власний файл, якщо воно відтворює його, або потік, завантажений плеєром (HLS або DASH), інакше сторінку. Вбудовані плеєри також працюють, і ваші дані для входу на сайт, сторінка, яка вбудовує плеєр, і User-Agent вашого браузера передаються разом з ним, тому відео для учасників або ті, що відтворюються лише на сайті, який їх вбудовує, можуть бути завантажені. Кнопка також з'являється на аудіоплеєрах."
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "У командному рядку"
@@ -1038,6 +1034,10 @@
    "source": "Link grabber and archives",
    "text": "Захоплення посилань та архіви"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>Параметри → Проксі / Socks → Мережевий адаптер</g1> прив'язує з'єднання MDM до одного адаптера, зазвичай VPN (<g2>Параметри</g2>). Торрент-рушій прив'язує до нього кожен сокет: піри (TCP і через SOCKS-проксі), HTTP- та UDP-трекери, DHT і порт для прослуховування. У Linux і macOS він прив'язує сам адаптер. У Windows він прив'язує адресу адаптера (його IPv4-адресу, якщо вона є), і Windows надсилає пакет лише через адаптер, який має його вихідну адресу. UPnP і локальне виявлення пірів тоді вимкнені, оскільки вони спілкуються з локальною мережею, а не через адаптер."
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>Він безкоштовний назавжди.</g1> Жодної пробної версії, яка закінчується, жодного ліцензійного ключа, жодної реклами. GNU GPL гарантує, що він залишається безкоштовним."
@@ -1049,10 +1049,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 с</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "У Windows торрент-рушій ще не може прив’язуватися до адаптера. Тому торренти не запускаються, поки вибрано адаптер (\"торренти ще не можуть проходити через вибраний мережевий адаптер у Windows\"), замість того, щоб обходити його. Імена трекерів все ще шукаються за допомогою системного DNS."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2142,10 +2138,6 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "З'єднання з цим комп'ютером (<x1/>) не прив'язуються. Проксі-сервер на цьому комп'ютері здійснює завантаження, і куди він їх надсилає, залежить від нього."
   },
-  "3549f28b5c3a4fb8": {
-   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
-   "text": "Відео, захищені DRM (більшість платних потокових сервісів), не можуть бути завантажені, і MDM не намагається цього робити."
-  },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "Вибір мови при першому запуску"
@@ -2513,6 +2505,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "Вам не потрібно спочатку запускати MDM. Коли браузер передає завантаження, а MDM не запущено, помічник запускає його та передає завантаження."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "Це працює як аварійний вимикач. Коли адаптер відключається, запущені торренти зупиняються з повідомленням «… не підключено; продовжить роботу, коли підключиться», і знову запускаються через адаптер, коли він підключений. Доки MDM не помітить (протягом секунди), сокети рушія все ще прив'язані до адреси, яка зникла, тому ніщо не може вийти іншим шляхом. Торрент, доданий, коли адаптер не підключений, не запускається і повідомляє причину. Імена трекерів все ще шукаються системним DNS."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4902,10 +4898,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Потрібен Firefox 140 або новішої версії."
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "У <g1>Параметри → Проксі / Socks → Мережевий адаптер</g1> MDM прив’язує свої з’єднання до одного адаптера, зазвичай VPN (<g2>Параметри</g2>). У Linux та macOS торрент-рушій прив’язує до нього кожен сокет: піри, трекери, DHT та його порт для прослуховування. UPnP та виявлення локальних пірів вимикаються, оскільки вони спілкуються з локальною мережею, а не через адаптер. Якщо адаптер зникає, рушій зупиняється і знову запускається через адаптер, коли той повертається."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Якість</g1> застосовується до кожного відео: <g2>Найкраща якість</g2>, <g3>До</g3> певної висоти (кожне відео цієї висоти або найближчої нижчої), <g4>Лише аудіо, оригінал</g4>, <g5>Лише аудіо MP3</g5>, <g6>Лише аудіо OPUS</g6> або <g7>Лише аудіо FLAC</g7>. Без ffmpeg пропонуються лише якості, які мають власний звук, і немає MP3, Opus або FLAC."
@@ -5589,6 +5581,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 ГіБ за 1,0 с</g1> <g2>IDM: 5,5 с</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Мережевий адаптер</g1> — <g2>Будь-який (система вибирає)</g2> є типовим. Виберіть адаптер, зазвичай ваш VPN, і кожне з’єднання, яке відкриває MDM, проходить через нього, або не проходить взагалі. Це стосується завантажень, FTP, торрентів, вибраного вами DNS, власних завантажень MDM та перевірки оновлень. Це працює як аварійний вимикач: коли адаптер відключається або VPN вимикається, нічого не проходить через ваше звичайне з’єднання. Завантаження, що виконуються, зупиняються з повідомленням «… не підключено» і відновлюються, коли адаптер знову підключено. Рядок під списком показує адресу адаптера або те, що він не підключений."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -6710,10 +6706,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Категорія</g1> — обирається за типом файлу (Стиснуті, Документи, Музика, Програми, Відео або Загальні). Кожна категорія має власну папку. <g2>+</g2> поруч створює нову категорію."
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Мережевий адаптер</g1> — <g2>Будь-який (система вибирає)</g2> є типовим. Виберіть адаптер, зазвичай ваш VPN, і кожне з'єднання, яке відкриває MDM, проходить через нього або не проходить взагалі. Це стосується завантажень, FTP, обраного вами DNS, власних завантажень MDM та перевірки оновлень. Це працює як аварійний вимикач: коли адаптер відключається або VPN вимикається, нічого не проходить через ваше звичайне з'єднання. Завантаження, що виконуються, зупиняються з повідомленням «… не підключено» і відновлюються, коли адаптер знову підключається. Рядок під списком показує адресу адаптера або те, що він не підключений."
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "Натисніть <g1>Знайти</g1>. Буде вибрано перший збіг."
@@ -7725,10 +7717,6 @@
   "c942b256735064e3": {
    "source": "The plain programs, for any distribution.",
    "text": "Звичайні програми для будь-якого дистрибутива."
-  },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM зчитує торрент і показує його файли у вигляді дерева папок. Файл <x1/> зчитується одразу. Magnet-посилання спочатку має отримати список файлів від інших пірів, що може зайняти хвилину-дві."
   },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",

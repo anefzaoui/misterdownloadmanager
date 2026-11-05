@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Torrents through the chosen network adapter on Windows**
+  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
+  Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
+  Every torrent connection goes out from the adapter's address, with the same kill switch as
+  downloads: peers, trackers, the DHT and the listening port. When the adapter disconnects,
+  torrents stop, nothing goes out another way, and they start again when it is back.
 - **The extension lists the media a page has loaded**
   ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
   window has **Media on this page**: the HLS and DASH streams the page's players loaded (each

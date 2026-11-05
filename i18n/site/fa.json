@@ -198,10 +198,6 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
-  "04ec5358d75ceff7": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "روی یک ویدئو در یک صفحه وب اشاره کنید و یک دکمه کوچک <g1>دانلود ویدیو</g1> در لبه آن ظاهر می‌شود. روی آن کلیک کنید و پنجره <g2>بارگیری ویدئو از یک صفحه</g2> MDM باز می‌شود و کیفیت‌هایی را که می‌تواند دانلود کند جستجو می‌کند. ویدئویی را که روی آن کلیک کردید می‌گیرد: فایل خودش را وقتی یکی را پخش می‌کند، یا استریمی که پخش‌کننده بارگذاری کرده است (HLS یا DASH)، در غیر این صورت صفحه را. پخش‌کننده‌های جاسازی شده نیز کار می‌کنند، و ورود شما به سایت، صفحه‌ای که پخش‌کننده را جاسازی می‌کند و User-Agent مرورگر شما با آن می‌رود، بنابراین ویدئوهای اعضا، یا آن‌هایی که فقط در سایتی که آن‌ها را جاسازی می‌کند پخش می‌شوند، قابل دانلود هستند. پخش‌کننده‌های صدا نیز دکمه را دریافت می‌کنند."
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "در خط فرمان"
@@ -1038,6 +1034,10 @@
    "source": "Link grabber and archives",
    "text": "دریافت‌کننده پیوند و بایگانی‌ها"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>گزینه‌ها ← پروکسی / SOCKS ← آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا آداپتور VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان (TCP، و از طریق پروکسی SOCKS)، ردیاب‌های HTTP و UDP، DHT و پورت گوش دادن. در Linux و macOS، خود آداپتور را متصل می‌کند. در Windows، آدرس آداپتور را (آدرس IPv4 آن را در صورت وجود) متصل می‌کند، و Windows یک بسته را فقط از طریق آداپتوری ارسال می‌کند که آدرس مبدأ آن را دارد. UPnP و کشف همتایان محلی در این صورت خاموش می‌شوند، زیرا آنها به جای از طریق آداپتور، با شبکه محلی ارتباط برقرار می‌کنند."
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>برای همیشه رایگان است.</g1> بدون دوره آزمایشی که منقضی شود، بدون کلید مجوز، بدون تبلیغات. GNU GPL تضمین می‌کند که رایگان باقی می‌ماند."
@@ -1049,10 +1049,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانیه</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "در Windows، موتور تورنت هنوز نمی‌تواند به یک آداپتور متصل شود. بنابراین، تورنت‌ها در حالی که یک آداپتور انتخاب شده است، شروع نمی‌شوند (\"تورنت‌ها هنوز نمی‌توانند از طریق یک آداپتور شبکه انتخاب شده در Windows عبور کنند\")، به جای اینکه از آن عبور کنند. نام ردیاب‌ها همچنان توسط DNS سیستم جستجو می‌شوند."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2142,10 +2138,6 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "اتصالات به خود این رایانه (<x1/>) متصل نیستند. یک پروکسی در این رایانه دانلودها را حمل می‌کند، و اینکه کجا آنها را ارسال می‌کند به خود پروکسی بستگی دارد."
   },
-  "3549f28b5c3a4fb8": {
-   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
-   "text": "ویدئوهای محافظت شده با DRM (اکثر سرویس‌های پخش پولی) قابل دانلود نیستند و MDM تلاشی برای این کار نمی‌کند."
-  },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "انتخاب زبان در اولین اجرا"
@@ -2513,6 +2505,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "نیازی نیست ابتدا MDM را اجرا کنید. هنگامی که مرورگر یک دانلود را تحویل می‌دهد و MDM در حال اجرا نیست، کمک‌کننده آن را شروع کرده و دانلود را منتقل می‌کند."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "این به عنوان یک سوئیچ قطع عمل می‌کند. وقتی آداپتور قطع می‌شود، تورنت‌های در حال اجرا با پیام «… متصل نیست؛ وقتی دوباره متصل شود ادامه می‌یابد» متوقف می‌شوند، و وقتی آداپتور دوباره متصل شود، از طریق آن شروع به کار می‌کنند. تا زمانی که MDM متوجه شود (در عرض یک ثانیه)، سوکت‌های موتور همچنان به آدرسی متصل هستند که از بین رفته است، بنابراین هیچ چیز نمی‌تواند از راه دیگری خارج شود. تورنتی که در حالی که آداپتور متصل نیست اضافه شود، شروع نمی‌شود و دلیل آن را می‌گوید. نام ردیاب‌ها همچنان توسط DNS سیستم جستجو می‌شوند."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4902,10 +4898,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 یا جدیدتر لازم است."
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>گزینه‌ها → پروکسی / SOCKS → آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). در Linux و macOS، موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان، ردیاب‌ها، DHT و پورت گوش دادن آن. UPnP و کشف همتایان محلی در این حالت خاموش می‌شوند، زیرا آنها به جای عبور از آداپتور، با شبکه محلی صحبت می‌کنند. اگر آداپتور از بین برود، موتور متوقف می‌شود و زمانی که آداپتور بازگردد، دوباره از طریق آن شروع به کار می‌کند."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>کیفیت</g1> برای هر ویدئو اعمال می‌شود: <g2>بهترین کیفیت</g2>، <g3>تا</g3> یک ارتفاع (هر ویدئو با آن ارتفاع یا نزدیک‌ترین ارتفاع پایین‌تر)، <g4>فقط صدا، اصلی</g4>، <g5>فقط صدا MP3</g5>، <g6>فقط صدا OPUS</g6> یا <g7>فقط صدا FLAC</g7>. بدون ffmpeg، فقط کیفیت‌هایی ارائه می‌شوند که همراه با صدای خود هستند و MP3، Opus یا FLAC ارائه نمی‌شوند."
@@ -5589,6 +5581,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 گیبی‌بایت در 1.0 ثانیه</g1> <g2>IDM: 5.5 ثانیه</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN خود را انتخاب کنید تا هر اتصالی که MDM باز می‌کند، از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، تورنت‌ها، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود، یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع به کار می‌کنند. خط زیر لیست، آدرس کارت شبکه را نشان می‌دهد، یا اینکه متصل نیست."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -6710,10 +6706,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>دسته</g1> — از نوع فایل (فشرده، اسناد، موسیقی، برنامه‌ها، ویدئو یا عمومی) انتخاب می‌شود. هر دسته پوشه مخصوص به خود را دارد. <g2>+</g2> کنار آن یک دسته جدید ایجاد می‌کند."
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN شما، را انتخاب کنید تا هر اتصالی که MDM باز می‌کند از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع می‌شوند. خط زیر لیست، آدرس کارت شبکه را نشان می‌دهد، یا اینکه متصل نیست."
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "روی <g1>یافتن</g1> کلیک کنید. اولین مورد منطبق انتخاب می‌شود."
@@ -7725,10 +7717,6 @@
   "c942b256735064e3": {
    "source": "The plain programs, for any distribution.",
    "text": "برنامه‌های ساده، برای هر توزیع."
-  },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM تورنت را می‌خواند و فایل‌های آن را به صورت یک درخت پوشه نمایش می‌دهد. یک فایل <x1/> بلافاصله خوانده می‌شود. یک پیوند مگنت ابتدا باید فهرست فایل‌ها را از سایر همتایان دریافت کند که ممکن است یک یا دو دقیقه طول بکشد."
   },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
