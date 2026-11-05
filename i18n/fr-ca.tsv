@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Audio seulement, original
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Audio seulement, {type} original
 #. text in the Scheduler window
 #, machine
 	August	Août
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Premier fichier :
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC conserve le son exactement, mais il ne peut pas ajouter de qualité que le son du site n’a pas : le fichier est seulement plus gros.
 #. text in categories.rs
 #, machine
 	Folder:	Dossier :
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Dans une file d’attente
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Dans les catégories : le menu de la catégorie sélectionnée
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1203,17 +1214,17 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	La liste s’est arrêtée après {n} vidéos : {error}
+	Listing stopped after {n} videos: {error}	La liste s’est arrêtée après {n} vidéos : {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Liste des vidéos : {n}
+	Listing the videos: {n}	Liste des vidéos : {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Liste des vidéos : {n} sur {total}
+	Listing the videos: {n} of {total}	Liste des vidéos : {n} sur {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Monter/descendre d’une page
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Se déplacer entre les catégories et la liste de téléchargements
 #. text in the Scheduler window
 #, machine
 	Move down	Descendre
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	L'adresse doit être une adresse http(s) ou ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Les meilleures qualités et le format MP3 nécessitent ffmpeg (environ 80 Mo).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Les meilleures qualités, MP3, Opus et FLAC, nécessitent ffmpeg (environ 80 Mo).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Les meilleures qualités et le format MP3 nécessitent ffmpeg : installez-le avec le gestionnaire de paquets de votre système (ou Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Les meilleures qualités, MP3, Opus et FLAC, nécessitent ffmpeg : installez-le avec le gestionnaire de paquets de votre système (ou Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Attendez la liste ou arrêtez de l’afficher
+	Wait for the list, or stop listing	Attendez la liste ou arrêtez de lister
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3051,11 +3065,11 @@
 #. in Download video, a playlist's title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-	{title}: {count} video	{title} : {count} vidéo
+	{title}: {count} video	{title} : {count} vidéo
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title} : {listed} sur {total} vidéo listée
+	{title}: {listed} of {total} video listed	{title} : {listed} sur {total} vidéo listée
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Maj+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Maj+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Maj+Haut / Maj+Bas
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

@@ -276,7 +276,11 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
-	Audio only, original	Audio saja, asli
+	Audio only, original	Hanya audio, asli
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Audio saja, {type} asli
 #. text in the Scheduler window
 #, machine
 	August	Agustus
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	File pertama:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC mempertahankan suara persis seperti aslinya, tetapi tidak dapat menambahkan kualitas yang tidak dimiliki suara situs: ukuran file hanya akan lebih besar.
 #. text in categories.rs
 #, machine
 	Folder:	Folder:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Dalam antrean
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Dalam kategori: menu kategori yang dipilih
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1208,12 +1219,12 @@
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Mendaftar video: {n}
+	Listing the videos: {n}	Mencantumkan video: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Mendaftar video: {n} dari {total}
+	Listing the videos: {n} of {total}	Mencantumkan video: {n} dari {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Pindahkan halaman ke atas/bawah
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Pindah antara kategori dan daftar unduhan
 #. text in the Scheduler window
 #, machine
 	Move down	Pindahkan ke bawah
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Hanya {n} video pertama yang terdaftar.
+	Only the first {n} videos are listed.	Hanya {n} video pertama yang tercantum.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Hanya saat saya menggunakan komputer
@@ -2166,7 +2180,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	Berhenti mendaftar
+	Stop listing	Hentikan pencantuman
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Hentikan antrean unduhan utama
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Alamat harus berupa alamat http(s) atau ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Kualitas terbaik dan MP3 memerlukan ffmpeg (sekitar 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Kualitas terbaik, MP3, Opus, dan FLAC memerlukan ffmpeg (sekitar 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Kualitas terbaik dan MP3 memerlukan ffmpeg: instal dengan manajer paket sistem Anda (atau Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Kualitas terbaik, MP3, Opus, dan FLAC memerlukan ffmpeg: instal dengan manajer paket sistem Anda (atau Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Tunggu daftar, atau berhenti mendaftar
+	Wait for the list, or stop listing	Tunggu daftar, atau hentikan pencantuman
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {listed} dari {total} video terdaftar
+	{title}: {listed} of {total} video listed	{title}: {listed} dari {total} video tercantum
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Atas / Shift+Bawah
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	{n}個のダウンロードをリストに追加しますか? 各動画は独自の行になります。
+	Add {n} downloads to the list? Each video gets its own row.	{n} 個のダウンロードをリストに追加しますか? 各動画は個別の行になります。
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	音声のみ、オリジナル
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	音声のみ、オリジナル {type}
 #. text in the Scheduler window
 #, machine
 	August	8 月
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	最初のファイル:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC は音声を正確に保持しますが、サイトの音声にない品質を追加することはできません。ファイルが大きくなるだけです。
 #. text in categories.rs
 #, machine
 	Folder:	フォルダー:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	キュー内
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	カテゴリ内: 選択したカテゴリのメニュー
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1203,7 +1214,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n}個の動画をリストした後にリストが停止しました: {error}
+	Listing stopped after {n} videos: {error}	{n} 個の動画をリストした後に停止しました: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -1213,7 +1224,7 @@
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	動画をリスト中: {total}個中{n}個
+	Listing the videos: {n} of {total}	動画をリスト中: {total} 個中 {n} 個
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ページを上下に移動
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	カテゴリとダウンロード リスト間を移動する
 #. text in the Scheduler window
 #, machine
 	Move down	下に移動
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	最初の{n}個の動画のみがリストされています。
+	Only the first {n} videos are listed.	最初の {n} 個の動画のみがリストされています。
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	コンピューターを使用している間のみ
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	アドレスは http(s) または ftp(s) である必要があります
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	最高品質と MP3 には ffmpeg (約 80 MB) が必要です。
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最高の品質 (MP3、Opus、FLAC) には ffmpeg (約 80 MB) が必要です。
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	最高品質と MP3 には ffmpeg が必要です。システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最高の品質 (MP3、Opus、FLAC) には ffmpeg が必要です。システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2682,7 +2696,7 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
-	Up to {height}p	{height}pまで
+	Up to {height}p	{height}p まで
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -3027,7 +3041,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{total}個中{n}個を選択済み
+	{n} of {total} chosen	{total} 個中 {n} 個を選択済み
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3051,11 +3065,11 @@
 #. in Download video, a playlist's title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-	{title}: {count} video	{title}: {count}個の動画
+	{title}: {count} video	{title}: {count} 個の動画
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {total}個中{listed}個の動画をリスト済み
+	{title}: {listed} of {total} video listed	{title}: {total} 個中 {listed} 個の動画をリスト済み
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / メニュー
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+上 / Shift+下
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

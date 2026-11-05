@@ -7,7 +7,9 @@ keys beside it. On a Mac, **⌘** (Command) takes the place of **Ctrl**: **⌘N*
 
 Everything can be done from the keyboard, and MDM works with screen readers (such as
 Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is
-and its state, and the download list reads each download's name, status and size.
+and its state, and the download list reads each download's name, status and size. The
+**Categories** pane reads as a tree (each category with its count, open or shut, selected or
+not), and the menu bar and every right-click menu as menus whose items can be run from there.
 
 ## Adding and finding
 
@@ -25,7 +27,7 @@ and its state, and the download list reads each download's name, status and size
 | **Enter** | Open the selected download (a double-click follows right-click → **On Double click**) |
 | **Alt+Enter** | **Properties** of the selected download |
 | **Ctrl+M** or **F2** | Move or rename the selected download |
-| **Shift+F10** | Open the selected download's menu |
+| **Shift+F10** or the **Menu** key | Open the selected download's menu |
 | **Delete** | Delete the selected downloads (asks first) |
 | **Shift+Delete** | Delete the selected downloads and their files (asks first) |
 
@@ -60,6 +62,9 @@ a branch, and **Home** / **End** go to the first / last node.
 | **Enter**, or an item's underlined letter | Run the highlighted item |
 | **Esc** | Close a menu or dialog (an open drop-down list first) |
 | **Enter** | In **Download File Info**: **Start Download** |
+| **Tab** | Move between the **Categories** pane and the download list |
+| **Up** / **Down**, **Left** / **Right** | In the **Categories** pane: the next category; close or open a branch |
+| **Shift+F10** or the **Menu** key | In the **Categories** pane: the selected category's menu (**Properties**, **Add category**, **Delete**) |
 
 ## In dialogs
 

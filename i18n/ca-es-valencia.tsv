@@ -124,7 +124,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Afegir moltes baixades
+	Add many downloads	Afegeix moltes baixades
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Voleu afegir {n} baixades a la llista? Cada vídeo tindrà la seua pròpia fila.
+	Add {n} downloads to the list? Each video gets its own row.	Vols afegir {n} baixades a la llista? Cada vídeo tindrà la seua pròpia fila.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Només àudio, original
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Només àudio, {type} original
 #. text in the Scheduler window
 #, machine
 	August	Agost
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Primer fitxer:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC manté el so exactament, però no pot afegir qualitat que el so del lloc no tinga: el fitxer només és més gran.
 #. text in categories.rs
 #, machine
 	Folder:	Carpeta:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	En una cua
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	En les categories: el menú de la categoria seleccionada
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1198,12 +1209,12 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Llistar la resta
+	List the rest	Llista la resta
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	La llista s'ha detingut després de {n} vídeos: {error}
+	Listing stopped after {n} videos: {error}	La llista s'ha aturat després de {n} vídeos: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -1221,7 +1232,7 @@
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
-	Load more	Carregar més
+	Load more	Carrega'n més
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Moure una pàgina amunt/avall
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Moure's entre les categories i la llista de descàrregues
 #. text in the Scheduler window
 #, machine
 	Move down	Moure avall
@@ -2163,6 +2177,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Atura la descàrrega a les
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	Atura la llista
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Atura la cua de descàrrega principal
@@ -2252,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	L'adreça ha de ser una adreça http(s) o ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Les millors qualitats i MP3 necessiten ffmpeg (uns 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Les millors qualitats, MP3, Opus i FLAC necessiten ffmpeg (uns 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Les millors qualitats i MP3 necessiten ffmpeg: instal·leu-lo amb el gestor de paquets del vostre sistema (o Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Les millors qualitats, MP3, Opus i FLAC necessiten ffmpeg: instal·leu-lo amb el gestor de paquets del vostre sistema (o Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2801,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Espereu la llista o detingueu el llistat
+	Wait for the list, or stop listing	Espera la llista o atura-la
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3310,7 +3328,15 @@ key	Shift+F10	Majús+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Majús+F10 / Menú
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Majús+Amunt / Majús+Avall
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tabulació
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	ಆಡಿಯೊ ಮಾತ್ರ, ಮೂಲ
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ಆಡಿಯೋ ಮಾತ್ರ, ಮೂಲ {type}
 #. text in the Scheduler window
 #, machine
 	August	ಆಗಸ್ಟ್
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	ಮೊದಲ ಫೈಲ್:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ಧ್ವನಿಯನ್ನು ನಿಖರವಾಗಿ ಇರಿಸುತ್ತದೆ, ಆದರೆ ಸೈಟ್‌ನ ಧ್ವನಿಯಲ್ಲಿ ಇಲ್ಲದ ಗುಣಮಟ್ಟವನ್ನು ಸೇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ: ಫೈಲ್ ದೊಡ್ಡದಾಗಿರುತ್ತದೆ ಅಷ್ಟೇ.
 #. text in categories.rs
 #, machine
 	Folder:	ಫೋಲ್ಡರ್:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ಕ್ಯೂನಲ್ಲಿ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	ವರ್ಗಗಳಲ್ಲಿ: ಆಯ್ದ ವರ್ಗದ ಮೆನು
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ಪುಟವನ್ನು ಮೇಲಕ್ಕೆ/ಕೆಳಕ್ಕೆ ಸರಿಸಿ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	ವರ್ಗಗಳು ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಪಟ್ಟಿಯ ನಡುವೆ ಸರಿಸಿ
 #. text in the Scheduler window
 #, machine
 	Move down	ಕೆಳಗೆ ಸರಿಸಿ
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	ವಿಳಾಸವು http(s) ಅಥವಾ ftp(s) ವಿಳಾಸವಾಗಿರಬೇಕು
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ಉತ್ತಮ ಗುಣಮಟ್ಟಗಳು ಮತ್ತು MP3 ಗೆ ffmpeg (ಸುಮಾರು 80 MB) ಅಗತ್ಯವಿದೆ.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ಉತ್ತಮ ಗುಣಮಟ್ಟಗಳು, MP3, Opus ಮತ್ತು FLAC ಗೆ ffmpeg (ಸುಮಾರು 80 MB) ಅಗತ್ಯವಿದೆ.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ಉತ್ತಮ ಗುಣಮಟ್ಟಗಳು ಮತ್ತು MP3 ಗೆ ffmpeg ಅಗತ್ಯವಿದೆ: ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಪ್ಯಾಕೇಜ್ ಮ್ಯಾನೇಜರ್ (ಅಥವಾ Homebrew) ನೊಂದಿಗೆ ಅದನ್ನು ಸ್ಥಾಪಿಸಿ.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ಉತ್ತಮ ಗುಣಮಟ್ಟಗಳು, MP3, Opus ಮತ್ತು FLAC ಗೆ ffmpeg ಅಗತ್ಯವಿದೆ: ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಪ್ಯಾಕೇಜ್ ಮ್ಯಾನೇಜರ್ (ಅಥವಾ Homebrew) ನೊಂದಿಗೆ ಅದನ್ನು ಸ್ಥಾಪಿಸಿ.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	ಪಟ್ಟಿ ಮಾಡುವಿಕೆಗಾಗಿ ನಿರೀಕ್ಷಿಸಿ, ಅಥವಾ ಪಟ್ಟಿ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸಿ
+	Wait for the list, or stop listing	ಪಟ್ಟಿಗಾಗಿ ನಿರೀಕ್ಷಿಸಿ, ಅಥವಾ ಪಟ್ಟಿ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸಿ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / ಮೆನು
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+ಮೇಲೆ / Shift+ಕೆಳಗೆ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

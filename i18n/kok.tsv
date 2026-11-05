@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	यादींत {n} डाउनलोड जोडचे? दरेक विडयो खातीर एक वळ मेळटा.
+	Add {n} downloads to the list? Each video gets its own row.	यादींत {n} डाउनलोड जोडचे? दरेक विड्योक ताची स्वताची वळ मेळटा.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -276,7 +276,11 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
-	Audio only, original	फकत ऑडिओ, मूळ
+	Audio only, original	फक्त ऑडिओ, मूळ
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	फकत ऑडिओ, मूळ {type}
 #. text in the Scheduler window
 #, machine
 	August	ऑगस्ट
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	पयली फायल:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC आवाजाक तसोच दवरता, पूण तो सायटीच्या आवाजांत नाशिल्ली गुणवत्ता जोडपाक शकना: फायल फकत व्हडली आसता.
 #. text in categories.rs
 #, machine
 	Folder:	फोल्डर:
@@ -961,7 +969,7 @@
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
-	from a playlist (yt-dlp)	एका प्लेलिस्टांतल्यान (yt-dlp)
+	from a playlist (yt-dlp)	प्लेलिस्टांतल्यान (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	एका टॉरेंट फायली वयल्यान
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	एका रांकेत
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	श्रेणींनीत: निवडिल्ले श्रेणीचें मेनू
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1203,17 +1214,17 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n} विडियों उपरांत यादी थांबली: {error}
+	Listing stopped after {n} videos: {error}	{n} विड्यो उपरांत यादी थांबली: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	विडियोंची यादी करता: {n}
+	Listing the videos: {n}	विड्योची यादी करता: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	विडियोंची यादी करता: {total} पैकी {n}
+	Listing the videos: {n} of {total}	विड्योची यादी करता: {total} पैकी {n}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	एक पान वयर/सकयल व्हर
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	श्रेणीं आनी डाउनलोड वळेरी भितर सरकचें
 #. text in the Scheduler window
 #, machine
 	Move down	सकयल व्हर
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	फकत पयले {n} विडयो यादींत आसात.
+	Only the first {n} videos are listed.	फक्त पयले {n} विड्यो यादींत आसात.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	फकत हांव संगणक वापरतना
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	पतो http(s) वा ftp(s) पतो आसूंक जाय
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	उत्तम गुणवत्ता आनी MP3 खातीर ffmpeg (सुमार 80 MB) जाय पडटा.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	उत्तम गुणवत्ता, MP3, Opus आनी FLAC हांकां ffmpeg (सुमार 80 MB) जाय पडटा.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणवत्ता आनी MP3 खातीर ffmpeg जाय पडटा: तें तुमच्या सिस्टमाच्या पॅकेज मॅनेजरा वरवीं (वा Homebrew) स्थापीत करात.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणवत्ता, MP3, Opus आनी FLAC हांकां ffmpeg जाय पडटा: तुमच्या सिस्टिमच्या पॅकेज मॅनेजरा वरवीं (वा Homebrew) तें स्थापीत करात.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2513,7 +2527,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
-	This list has no videos	हे यादींत विडयो नात
+	This list has no videos	हे यादींत विड्यो नात
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2798,7 +2812,7 @@
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
-	Videos	विडियो
+	Videos	विड्यो
 #. text in the Options window
 #, machine
 	Virus checking settings	व्हायरस तपासणी सेटींग
@@ -3051,11 +3065,11 @@
 #. in Download video, a playlist's title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-	{title}: {count} video	{title}: {count} विडयो
+	{title}: {count} video	{title}: {count} विड्यो
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {total} पैकी {listed} विडयो यादींत आसात
+	{title}: {listed} of {total} video listed	{title}: {total} विड्यो पैकी {listed} यादींत आसात
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / मेनू
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+वयर / Shift+सकयल
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	टॅब
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

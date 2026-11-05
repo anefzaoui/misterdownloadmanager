@@ -124,7 +124,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Achka urmachiykunata yapay
+	Add many downloads	Achka uraykachiykunata yapay
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Listaman {n} urmachiykunata yapayta munankichu? Sapa videopaq huk sapaq churaq kanqa.
+	Add {n} downloads to the list? Each video gets its own row.	{n} uraykachiykunata listaman yapayta munankichu? Sapa videopaq huk sapaq siq'i kanqa.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -276,7 +276,11 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
-	Audio only, original	Uyarina sapallan, sapaq
+	Audio only, original	Uyarina sapalla, qallariy
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Uyarina sapallan, sapan {type}
 #. text in the Scheduler window
 #, machine
 	August	Chakra yapuy killa
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Ñawpaq willakuy:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLACqa uyarinata chiqapta waqaychan, ichaqa mana astawan allinyayta atinchu mayt'u mana kaqtin: willañiqiqa aswan hatunlla.
 #. text in categories.rs
 #, machine
 	Folder:	Karpita:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Huk siq'ipi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Sapaqchasqakunapi: akllasqa sapaqchasqap menuynin
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1198,12 +1209,12 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Waqtanta qillqay
+	List the rest	Pusapata qhipanta qillqay
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Qillqayqa {n} videokunata qhipaman sayarirqa: {error}
+	Listing stopped after {n} videos: {error}	Qillqayqa {n} videokunapa qhipanta sayarirqa: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Huk p'anqata wichayman / urayman kuyuchiy
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Sapaqchasqakunapura chaymanta uraykachina listapura kuyuy
 #. text in the Scheduler window
 #, machine
 	Move down	Urayman kuyuchiy
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Ñawpaq {n} videokunallan qillqasqa kanku.
+	Only the first {n} videos are listed.	Ñawpaq {n} videokunallam qillqasqa kachkan.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Ñuqa llamk'achisqay pacha sapallanpi
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Kay direccionqa huk http(s) icha ftp(s) direccion kanan tiyan
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Aswan allin kaykuna, MP3 ima, ffmpeg-ta munanku (80 MB hina).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Aswan allin k'apak kaykuna, MP3, Opus, FLACpas ffmpegta munanku (yaqa 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Aswan allin kaykuna, MP3 ima, ffmpeg-ta munanku: chayta churay sistimaykip pakiti kamachiqninwan (utaq Homebrewwan).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Aswan allin k'apak kaykuna, MP3, Opus, FLACpas ffmpegta munanku: chayta churay qillqana kamachiqniykiwan (utaq Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2513,7 +2527,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
-	This list has no videos	Kay listapiqa manan videokuna kanchu
+	This list has no videos	Kay listapiqa manam kanchu videokuna
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {listed} {total}manta video qillqasqa
+	{title}: {listed} of {total} video listed	{title}: {listed} {total} videokunamanta qillqasqa
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

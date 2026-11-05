@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Len zvuk, pôvodný
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Len zvuk, pôvodný {type}
 #. text in the Scheduler window
 #, machine
 	August	August
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Prvý súbor:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC zachováva zvuk presne, ale nemôže pridať kvalitu, ktorú zvuk stránky nemá: súbor je len väčší.
 #. text in categories.rs
 #, machine
 	Folder:	Priečinok:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Vo fronte
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	V kategóriách: ponuka vybratej kategórie
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Posunúť stranu hore/dole
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Presun medzi kategóriami a zoznamom stiahnutých súborov
 #. text in the Scheduler window
 #, machine
 	Move down	Presunúť nadol
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Adresa musí byť adresa http(s) alebo ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Najlepšie kvality a MP3 vyžadujú ffmpeg (približne 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Najlepšie kvality, MP3, Opus a FLAC, vyžadujú ffmpeg (približne 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Najlepšie kvality a MP3 vyžadujú ffmpeg: nainštalujte ho pomocou správcu balíkov vášho systému (alebo Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Najlepšie kvality, MP3, Opus a FLAC, vyžadujú ffmpeg: nainštalujte ho pomocou správcu balíkov vášho systému (alebo Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3027,7 +3041,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} z {total} vybraných
+	{n} of {total} chosen	{n} z {total} vybratých
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {listed} z {total} videa uvedených
+	{title}: {listed} of {total} video listed	{title}: {listed} z {total} videí uvedených
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Ponuka
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+hore / Shift+dole
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

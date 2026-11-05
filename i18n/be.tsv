@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Толькі аўдыя, арыгінал
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Толькі аўдыя, арыгінальны {type}
 #. text in the Scheduler window
 #, machine
 	August	Жнівень
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Першы файл:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC дакладна захоўвае гук, але не можа дадаць якасці, якой няма ў гуку сайта: файл будзе толькі большы.
 #. text in categories.rs
 #, machine
 	Folder:	Папка:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	У чарзе
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	У катэгорыях: меню выбранай катэгорыі
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1198,22 +1209,22 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Пералічыць астатняе
+	List the rest	Спіс астатняга
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Пералік спынены пасля {n} відэа: {error}
+	Listing stopped after {n} videos: {error}	Спіс спынены пасля {n} відэа: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Пералік відэа: {n}
+	Listing the videos: {n}	Спіс відэа: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Пералік відэа: {n} з {total}
+	Listing the videos: {n} of {total}	Спіс відэа: {n} з {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Перамясціць старонку ўверх/уніз
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Перамяшчэнне паміж катэгорыямі і спісам спамповак
 #. text in the Scheduler window
 #, machine
 	Move down	Перамясціць уніз
@@ -2166,7 +2180,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	Спыніць пералік
+	Stop listing	Спыніць спіс
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Спыніць асноўную чаргу загрузак
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Адрас павінен быць http(s) або ftp(s) адрасам
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Найлепшыя якасці і MP3 патрабуюць ffmpeg (каля 80 МБ).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Для найлепшай якасці, MP3, Opus і FLAC патрэбен ffmpeg (каля 80 МБ).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Найлепшыя якасці і MP3 патрабуюць ffmpeg: усталюйце яго з дапамогай мэнэджара пакетаў вашай сістэмы (ці Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Для найлепшай якасці, MP3, Opus і FLAC патрэбен ffmpeg: усталюйце яго з дапамогай мэнэджара пакетаў вашай сістэмы (ці Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Дачакайцеся спісу або спыніце пералік
+	Wait for the list, or stop listing	Дачакайцеся спісу або спыніце спіс
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Меню
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Уверх / Shift+Уніз
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

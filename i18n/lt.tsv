@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Tik garsas, originalas
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Tik garsas, originalus {type}
 #. text in the Scheduler window
 #, machine
 	August	Rugpjūtis
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Pirmas failas:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC išlaiko tikslų garsą, bet negali pagerinti kokybės, kurios svetainės garsas neturi: failas bus tik didesnis.
 #. text in categories.rs
 #, machine
 	Folder:	Aplankas:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Eilėje
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Kategorijose: pasirinktos kategorijos meniu
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Perkelti puslapį aukštyn / žemyn
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Perkelti tarp kategorijų ir atsisiuntimų sąrašo
 #. text in the Scheduler window
 #, machine
 	Move down	Perkelti žemyn
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Išvardyti tik pirmieji {n} vaizdo įrašai.
+	Only the first {n} videos are listed.	Nurodyti tik pirmieji {n} vaizdo įrašai.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Tik kai naudojuosi kompiuteriu
@@ -2166,7 +2180,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	Stabdyti sąrašą
+	Stop listing	Stabdyti sąrašo sudarymą
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stabdyti pagrindinę atsisiuntimų eilę
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Adresas turi būti http(s) arba ftp(s) adresas
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Geriausioms kokybėms ir MP3 reikia „ffmpeg“ (apie 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Geriausioms kokybėms, MP3, Opus ir FLAC, reikalingas ffmpeg (apie 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Geriausioms kokybėms ir MP3 reikia „ffmpeg“: įdiekite jį naudodami sistemos paketų tvarkyklę (arba „Homebrew“).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Geriausioms kokybėms, MP3, Opus ir FLAC, reikalingas ffmpeg: įdiekite jį naudodami sistemos paketų tvarkyklę (arba Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Palaukite sąrašo arba sustabdykite sąrašą
+	Wait for the list, or stop listing	Palaukite sąrašo arba sustabdykite sąrašo sudarymą
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3027,7 +3041,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} iš {total} pasirinkta
+	{n} of {total} chosen	Pasirinkta {n} iš {total}
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {listed} iš {total} vaizdo įrašų išvardyta
+	{title}: {listed} of {total} video listed	{title}: {listed} iš {total} vaizdo įrašų nurodyta
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Meniu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Aukštyn / Shift+Žemyn
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

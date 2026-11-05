@@ -178,10 +178,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Бесплатно и с открытым исходным кодом. Знакомый интерфейс, более быстрый движок, встроенные торренты и видео."
   },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (около 80 МБ) объединяет видео и звук, когда сайт хранит их по отдельности (что большинство сайтов делает для более высокого качества), и преобразует звук в MP3. Нажмите <g2>Установить ffmpeg</g2>, когда MDM предложит это. MDM проверяет его по контрольным суммам, опубликованным в его релизе."
-  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -438,10 +434,6 @@
    "source": "A long-running all-rounder with a full BitTorrent client, and apps for four systems",
    "text": "Давно существующий универсальный менеджер с полноценным BitTorrent-клиентом и приложениями для четырех систем"
   },
-  "0ad83f97ac4b45d0": {
-   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, or <g5>Audio only MP3</g5>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3.",
-   "text": "<g1>Качество</g1> применяется ко всем видео: <g2>Лучшее качество</g2>, <g3>До</g3> определённой высоты (каждое видео с этой высотой или ближайшей меньшей), <g4>Только аудио, оригинал</g4> или <g5>Только аудио MP3</g5>. Без ffmpeg предлагаются только те варианты качества, которые включают звук, и нет MP3."
-  },
   "0adf8a7aa0d57784": {
    "source": "The list keeps each download's full folder path. If Windows gives the USB stick a different drive letter on another computer, check <g1>Options → Save to</g1>, and expect downloads saved under the old letter to be missing until the letter matches again. When MDM is about to save into a folder that doesn't exist, it asks whether to create it.",
    "text": "Список сохраняет полный путь к папке каждой загрузки. Если Windows присваивает USB-накопителю другую букву диска на другом компьютере, проверьте <g1>Параметры → Сохранить в</g1> и ожидайте, что загрузки, сохраненные под старой буквой, будут отсутствовать, пока буква снова не совпадет. Когда MDM собирается сохранить файл в несуществующую папку, он спрашивает, нужно ли её создать."
@@ -629,6 +621,10 @@
   "10b8609f61290221": {
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Контрольные суммы SHA-256</g1><g2>для каждого файла</g2>"
+  },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "В macOS VPN, который переподключается, может получить новый интерфейс (<x1/> вместо <x2/>): выберите его снова."
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -850,6 +846,10 @@
    "source": "Find a download in a long list",
    "text": "Найти загрузку в длинном списке"
   },
+  "16cc6550e7f6316d": {
+   "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
+   "text": "На панели <g1>Категории</g1>: меню выбранной категории (<g2>Свойства</g2>, <g3>Добавить категорию</g3>, <g4>Удалить</g4>)"
+  },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
    "text": "<g1>Темный режим имеет те же размеры и расположение, что и дневной режим</g1>: строка меню, панель инструментов, панели, строки списка и выделение, кнопки и таблица окна прогресса имеют одинаковые размеры в обоих режимах. Меняются только цвета."
@@ -897,6 +897,10 @@
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
    "text": "Страницы будущего веб-сайта (еще не опубликованы)"
+  },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "Выберите один. Без ffmpeg будут перечислены только те качества, которые поставляются со своим звуком, и не будет MP3, Opus или FLAC (их создает ffmpeg)."
   },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
@@ -981,6 +985,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 с</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "В Windows торрент-движок пока не может привязываться к адаптеру. Поэтому торренты не запускаются, пока выбран адаптер («торренты пока не могут проходить через выбранный сетевой адаптер в Windows»), вместо того чтобы обходить его. Имена трекеров по-прежнему ищутся через системный DNS."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1758,10 +1766,6 @@
    "source": "The server",
    "text": "Сервер"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "Выберите один вариант. Без ffmpeg будут перечислены только те качества, которые поставляются со звуком, и не будет MP3 (его создает ffmpeg)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "Отправлять загрузки из браузера в MDM →"
@@ -1990,6 +1994,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Бесплатный менеджер загрузок с открытым исходным кодом для Windows, с экспериментальными сборками для macOS и Linux. Знакомый интерфейс IDM, в 5 раз быстрее по нашим тестам: все соединения одновременно, безопасное возобновление после сбоя, торренты, видео с веб-страниц, интеграция с браузером, 86 языков."
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "Соединения с этим компьютером (<x1/>) не привязаны. Прокси на этом компьютере осуществляет загрузки, и куда он их отправляет, зависит от него."
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "Видео, защищенные DRM (большинство платных потоковых сервисов), не могут быть загружены, и MDM не пытается это сделать."
@@ -2109,6 +2117,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "Удалить выбранные загрузки (с запросом)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Настройки прокси / Socks в MDM предназначены для загрузок из интернета и по FTP. Торренты также могут использовать SOCKS5: установите <x1/> прокси в <g2>Параметры → Прокси / Socks</g2> и включите <g3>Использовать прокси</g3> в настройках торрента. Прокси охватывает только соединения с пирами и веб-трекерами, поэтому при его использовании MDM отключает DHT, обнаружение локальных пиров, входящие соединения и UDP-трекеры; он вообще не открывает UDP-сокет в сеть. Если прокси исчезает из Прокси / Socks, когда этот переключатель включен, торренты не запускаются, а не обходят его."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2402,6 +2414,10 @@
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "Вы нажали <g1>Применить</g1> после установки времени?"
   },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "Системный DNS запрашивает имена своим собственным способом, и Windows может запрашивать через каждый адаптер. Чтобы сохранить имена также внутри адаптера, выберите DNS в разделе <g1>Подключение</g1> → <g2>DNS</g2>: MDM затем запрашивает его через адаптер."
+  },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "Подробнее в <g1>Соединения и скорость</g1>."
@@ -2453,6 +2469,10 @@
   "41cec323989a52f8": {
    "source": "Crash reports",
    "text": "Отчеты о сбоях"
+  },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (около 80 МБ) объединяет видео и звук, когда сайт хранит их по отдельности (так делают большинство сайтов для более высокого качества), и преобразует звук в файл MP3, Opus или FLAC. Нажмите <g2>Установить ffmpeg</g2>, когда MDM предложит это. MDM проверяет его по контрольным суммам, опубликованным в его релизе."
   },
   "42096c4007ec5640": {
    "source": "Then choose:",
@@ -2521,6 +2541,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447cc2a2f0918427": {
+   "source": "Tab",
+   "text": "Tab"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -2722,10 +2746,6 @@
    "source": "Confirm deletion of downloads",
    "text": "Подтверждение удаления загрузок"
   },
-  "4b7e8b3e36d31dfb": {
-   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p).",
-   "text": "Загрузить видео из плейлиста или канала одно за другим в папку, названную по имени списка внутри <x1/>. <x2/> — это одно качество для всех, как для <x3/> (по умолчанию лучшее для каждого видео; <x4/> = до 720p)."
-  },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
    "text": "Можно ли загружать видео с Netflix или других платных стриминговых сервисов? — Mister Download Manager"
@@ -2849,10 +2869,6 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Все языки, предлагаемые Windows 11, выбираются по флагу при первом запуске или в любое время в меню Вид → Язык. Арабский, иврит, персидский, урду и уйгурский языки отображаются справа налево."
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "Всё можно сделать с клавиатуры, и MDM работает со скринридерами (такими как Narrator и NVDA в Windows): его окна, диалоги и меню сообщают им, что представляет собой каждый элемент управления и его состояние, а список загрузок читает название, статус и размер каждой загрузки."
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3125,6 +3141,10 @@
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "Переключитесь за пять минут"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Дождитесь списка. Он показывает каждое разрешение с его размером, сначала лучшее, затем только звук: – <g1>Только аудио, оригинал</g1>: собственный файл сайта, неконвертированный (M4A или WebM с Opus внутри, как его предоставляет сайт). Лучший звук в самом маленьком файле. – <g2>Только аудио MP3</g2> с лучшим переменным битрейтом (VBR) и 320, 256, 192 и 128 кбит/с, для плееров, которые поддерживают только MP3. – <g3>Только аудио OPUS</g3>: <x4/> файл. Если звук сайта уже в формате Opus (обычно это так на YouTube), он просто перемещается в этот файл без конвертации, поэтому ничего не теряется. – <g5>Только аудио FLAC</g5>: <x6/> файл без потерь, для библиотеки или программы, которой нужен FLAC. Он не может добавить качество: звук сайта уже сжат с потерями, и FLAC сохраняет его точно таким, каким он был, в файле, который в несколько раз больше. Окно сообщит об этом, когда вы его выберете."
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -3666,10 +3686,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>Свойства</g1> — изменить имя, типы файлов и папку. Категории «Общие» и «Торренты» меняют только свою папку. Переименованная категория сохраняет свою папку; встроенная категория сохраняет свое имя на вашем языке, пока вы ее не переименуете."
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager против IDM 6.42</g1><g2>Проверено в октябре 2026 · источники ниже</g2>"
@@ -3681,6 +3697,10 @@
   "672ffa07db0bd6d7": {
    "source": "Reinstall MDM to restore its files.",
    "text": "Переустановите MDM, чтобы восстановить его файлы."
+  },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "Чтобы маршрутизировать <g1>весь</g1> трафик через другую сеть, используйте VPN для всего компьютера."
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -4046,10 +4066,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM можно управлять без его окна тремя способами:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Настройки Прокси / Socks в MDM предназначены для загрузок из интернета и FTP. Торренты также могут использовать SOCKS5: установите <x1/> прокси в <g2>Параметры → Прокси / Socks</g2> и включите <g3>Использовать прокси</g3> в Настройках торрента. Прокси охватывает только соединения с пирами и веб-трекерами, поэтому при его использовании MDM отключает DHT, обнаружение локальных пиров, входящие соединения и UDP-трекеры. Если прокси исчезает из Прокси / Socks, пока этот переключатель включён, торренты не запускаются, а не обходят его."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Окно хода загрузки видео"
@@ -4129,6 +4145,10 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 с</g1><g3></g3>"
+  },
+  "72f3284ff6dd83fc": {
+   "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
+   "text": "<g1>Вверх</g1> / <g2>Вниз</g2>, <g3>Влево</g3> / <g4>Вправо</g4>"
   },
   "72f381013a320442": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
@@ -4234,6 +4254,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>Вид → Поддержка темного режима</g1> и <g2>Вид → Язык</g2>."
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "Сетевой адаптер"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>Устранение неполадок</g2></g1> — что проверять, когда загрузка не удается, браузер не передает загрузку или расписание не запускается."
@@ -4273,6 +4297,10 @@
   "7795e2b94936333b": {
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "ваше имя пользователя, которое отображается как <x1/> в путях к папкам."
+  },
+  "77a30c9b7d2a6105": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
+   "text": "Все действия можно выполнять с клавиатуры, и MDM работает со скринридерами (такими как Narrator и NVDA в Windows): его окна, диалоги и меню сообщают им, что представляет собой каждый элемент управления и его состояние, а список загрузок читает название, статус и размер каждой загрузки. Панель <g1>Категории</g1> читается как дерево (каждая категория с ее количеством, открыта или закрыта, выбрана или нет), а строка меню и каждое контекстное меню — как меню, пункты которых можно запускать оттуда."
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -4509,6 +4537,14 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Требуется Firefox 140 или новее."
+  },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Параметры → Прокси / Socks → Сетевой адаптер</g1> привязывает соединения MDM к одному адаптеру, обычно VPN (<g2>Параметры</g2>). В Linux и macOS торрент-движок привязывает к нему все сокеты: пиры, трекеры, DHT и его порт для прослушивания. UPnP и обнаружение локальных пиров при этом отключаются, так как они взаимодействуют с локальной сетью, а не через адаптер. Если адаптер исчезает, движок останавливается и снова запускается через адаптер, когда тот возвращается."
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>Качество</g1> применяется ко всем видео: <g2>Лучшее качество</g2>, <g3>До</g3> определённой высоты (каждое видео этой высоты или ближайшее ниже), <g4>Только аудио, оригинал</g4>, <g5>Только аудио MP3</g5>, <g6>Только аудио OPUS</g6> или <g7>Только аудио FLAC</g7>. Без ffmpeg предлагаются только те качества, которые идут со звуком, и нет MP3, Opus или FLAC."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -4765,10 +4801,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "В установленное время очередь запустится сама. Утром завершённые файлы будут находиться в категориях <g1>Завершено</g1>."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Чтобы маршрутизировать <g1>всё</g1> через другую сеть, используйте VPN для всего компьютера. MDM не может привязать торренты к одному сетевому адаптеру в Windows."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5286,6 +5318,10 @@
    "source": "Keep some speed for everything else →",
    "text": "Сохранить некоторую скорость для всего остального →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "Загрузить файл, используя до 8 соединений (<x1/>, от 1 до 128), с отображением прогресса. <x2/> приостанавливает загрузку; <x3/> продолжает. <x4/> проверяет готовый файл: шестнадцатеричный MD5, SHA-1, SHA-256, SHA-512 или CRC32, с возможностью указания имени (<x5/>). <x6/> выбирает DNS: <x7/> (по умолчанию); сервис и способ запроса к нему, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреса DNS-серверов, <x13/>; или адрес DNS-over-HTTPS. Он никогда не возвращается к системному DNS. <x14/> отправляет каждое соединение через один сетевой адаптер, по его имени (<x15/>, <x16/>) или одному из его адресов; если он не подключен, ничего не отправляется, и загрузка завершается с ошибкой."
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Программа Mister Download Manager («MDM», «программа») и веб-сайт misterdownloadmanager.com («сайт») созданы Ahmed Nefzaoui и участниками проекта («мы»). Используя программу или сайт, вы принимаете настоящие условия. Если вы не согласны, пожалуйста, не используйте их."
@@ -5305,6 +5341,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> выбирает все."
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Пока не привязаны к адаптеру, поэтому они не запускаются, пока выбран один:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5441,10 +5481,6 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "Что могут видеть другие люди"
-  },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "Дождитесь списка. Он показывает каждое разрешение с его размером, сначала лучшее, затем <g1>Только аудио</g1> в собственном формате сайта (M4A или WebM, как предоставляет сайт), затем <g2>Только аудио MP3</g2> с лучшим переменным битрейтом (VBR) и с битрейтом 320, 256, 192 и 128 кбит/с."
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -5649,6 +5685,10 @@
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "Сравнение скорости загрузки: IDM 6.42 и Mister Download Manager"
+  },
+  "9e30a9dbdaf7e2cf": {
+   "source": "<g1>Shift+F10</g1> or the <g2>Menu</g2> key",
+   "text": "<g1>Shift+F10</g1> или клавиша <g2>Меню</g2>"
   },
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
@@ -5950,6 +5990,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "Как это работает: Windows привязывает собственный адрес адаптера. Затем Windows отправляет эти пакеты только через этот адаптер (его модель сильного хоста). Linux привязывает само устройство (Linux 5.7 или новее), а macOS привязывает интерфейс. Адрес типа, которого нет у адаптера (IPv6 на VPN только для IPv4), отклоняется, а не отправляется в обход."
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1> или просто <g2>Alt</g2>"
@@ -6057,6 +6101,10 @@
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "Перехват загрузок из браузера"
+  },
+  "a9efaabb8e76e3a1": {
+   "source": "Move between the <g1>Categories</g1> pane and the download list",
+   "text": "Перемещение между панелью <g1>Категории</g1> и списком загрузок"
   },
   "a9f05b8a13e881a4": {
    "source": "<g1>Mac and Linux too.</g1> As experimental builds, if you use more than Windows.",
@@ -6194,6 +6242,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Категория</g1> — выбирается по типу файла (Сжатые, Документы, Музыка, Программы, Видео или Общие). Каждая категория имеет свою папку. <g2>+</g2> рядом с ней создает новую категорию."
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Сетевой адаптер</g1> — по умолчанию <g2>Любой (система выбирает)</g2>. Выберите адаптер, обычно это адаптер вашего VPN, и все соединения, открываемые MDM, будут проходить через него или не будут проходить вовсе. Это касается загрузок, FTP, выбранного вами DNS, собственных загрузок MDM и проверки обновлений. Это работает как аварийный выключатель: когда адаптер отключается или VPN выключается, ничего не выходит через ваше обычное соединение. Запущенные загрузки останавливаются с сообщением «… не подключен» и возобновляются, когда адаптер снова доступен. Строка под списком показывает адрес адаптера или то, что он не подключен."
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "Нажмите <g1>Найти</g1>. Будет выбрано первое совпадение."
@@ -6217,10 +6269,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM загружает то, на что вы ему указываете, так же, как это делает веб-браузер, только быстрее и с большим контролем. Он создан для повседневных загрузок: программного обеспечения и обновлений, документов, ваших собственных файлов из облачного хранилища, видео и музыки, которые вам разрешено сохранять, образов Linux и других торрентов, распространяемых их создателями, а также всего остального, что вы имеете право загружать."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "Загрузить видео; <x1/> принимает селектор качества из <x2/> (<x3/> = лучший отдельный файл; <x4/>, <x5/>, <x6/> или <x7/> = звук в формате MP3 с указанным битрейтом, <x8/> с лучшим переменным битрейтом; для MP3 требуется ffmpeg). <x9/> сохраняет субтитры рядом: коды языков из <x10/> (<x11/>), или <x12/> для всех, предоставленных загрузчиком; <x13/> использует автоматические субтитры сайта вместо этого; <x14/> встраивает их в видео (требуется ffmpeg, MP4 или MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6938,6 +6986,10 @@
    "source": "From the clipboard",
    "text": "Из буфера обмена"
   },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "торренты в Windows;"
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -7081,6 +7133,10 @@
   "c6a2b86a33c71c9e": {
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
    "text": "Платная лицензия после 30-дневного пробного периода<g1><g2>1</g2></g1>"
+  },
+  "c6e9110f9e7fa8a3": {
+   "source": "In the <g1>Categories</g1> pane: the next category; close or open a branch",
+   "text": "На панели <g1>Категории</g1>: следующая категория; закрыть или открыть ветвь"
   },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
@@ -7473,6 +7529,10 @@
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 или 11</g1>, 64-бит; около 100 МБ дискового пространства."
+  },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "Выбор только звука (<g1>Только аудио</g1>, MP3, Opus, FLAC) не содержит субтитров."
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -7930,6 +7990,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>Старая версия MDM?</g1> Обновите MDM: новое расширение может иметь идентификатор, который старая вспомогательная программа не знает."
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(неявный TLS; <x1/> с TLS работает нормально)."
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "Запущенная очередь начинает загрузки в порядке списка, по несколько за раз (по умолчанию четыре). Если одна из них завершается с ошибкой, она перемещается в конец очереди и повторяется через 30 секунд. Очередь останавливается, когда не остается ничего для загрузки."
@@ -7937,10 +8001,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Возобновить прерванную загрузку"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Загрузить файл, используя до 8 соединений (<x1/>, от 1 до 128), с отображением прогресса. <x2/> приостанавливает загрузку; <x3/> продолжает. <x4/> проверяет готовый файл: шестнадцатеричный MD5, SHA-1, SHA-256, SHA-512 или CRC32, с возможностью указания имени (<x5/>). <x6/> выбирает DNS: <x7/> (по умолчанию); сервис и способ запроса, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреса DNS-серверов, <x13/>; или адрес DNS-over-HTTPS. Он никогда не возвращается к системному DNS."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8274,10 +8334,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Чтобы навсегда оставить загрузки с сайта в браузере, используйте <g1>Никогда не перехватывать загрузки с</g1> кнопки на панели инструментов или добавьте сайт в <g2>Не начинать загрузку автоматически со следующих сайтов</g2>. Чтобы оставить тип файла в браузере, удалите его из списка типов файлов."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "Выбор только звука (<g1>Только аудио</g1>, MP3) не имеет субтитров."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Откройте «Настройки» Windows → «Приложения», найдите Mister Download Manager и выберите «Удалить». Программа удаления спросит, нужно ли также удалить список загрузок и настройки. Загруженные вами файлы никогда не затрагиваются. Для портативной версии просто удалите её папку."
@@ -8518,9 +8574,17 @@
    "source": "Installer",
    "text": "Установщик"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "видеостраницы (yt-dlp не может быть привязан к адаптеру);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Если видео не загружается, см. <g1>Загрузка видео</g1>."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Загрузить видео; <x1/> принимает селектор качества из <x2/> (<x3/> = лучший отдельный файл; <x4/> = только звук в том виде, в каком он есть на сайте, без конвертации; <x5/>, <x6/>, <x7/> или <x8/> = звук в формате MP3 с указанным битрейтом, <x9/> с лучшим переменным битрейтом; <x10/> = в формате Opus; <x11/> = в формате FLAC, без потерь, но не лучше, чем звук на сайте; для конвертации нужен ffmpeg). <x12/> сохраняет субтитры рядом: коды языков из <x13/> (<x14/>), или <x15/> для всех, которые предоставил загрузчик; <x16/> вместо этого использует автоматические субтитры сайта; <x17/> встраивает их в видео (нужен ffmpeg, MP4 или MKV)."
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
@@ -8685,6 +8749,10 @@
   "f7a4f8dcbb4812c2": {
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "В Chrome, Edge и Brave вы можете ограничить расширение определенными сайтами (щелкните правой кнопкой мыши кнопку расширения на панели инструментов → <g1>Может читать и изменять данные сайта</g1>). На сайте, который оно не может читать, расширение не может передать ваш вход в систему, поэтому оно оставляет загрузку браузеру. Выберите <g2>На всех сайтах</g2>, чтобы MDM мог перехватывать загрузки везде."
+  },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "Загружает видео из плейлиста или канала одно за другим в папку, названную по имени списка, внутри <x1/>. <x2/> — это одно качество для всех, как для <x3/> (по умолчанию лучшее качество каждого видео; <x4/> = до 720p; <x5/> = оригинальный звук; <x6/>, <x7/>, <x8/> как для <x9/>)."
   },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",

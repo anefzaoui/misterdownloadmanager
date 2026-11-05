@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Добавить {n} загрузок в список? Каждое видео будет в отдельной строке.
+	Add {n} downloads to the list? Each video gets its own row.	Добавить {n} загрузок в список? Каждое видео получит отдельную строку.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Только аудио, оригинал
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Только аудио, исходный {type}
 #. text in the Scheduler window
 #, machine
 	August	Август
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Первый файл:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC сохраняет звук в точности, но не может улучшить качество, которого нет в исходном звуке сайта: файл будет только больше.
 #. text in categories.rs
 #, machine
 	Folder:	Папка:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	В очереди
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	В категориях: меню выбранной категории
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1198,22 +1209,22 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Перечислить остальное
+	List the rest	Показать остальное
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Перечисление остановлено после {n} видео: {error}
+	Listing stopped after {n} videos: {error}	Список остановлен после {n} видео: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Перечисление видео: {n}
+	Listing the videos: {n}	Список видео: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Перечисление видео: {n} из {total}
+	Listing the videos: {n} of {total}	Список видео: {n} из {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Переместить страницу вверх/вниз
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Перемещение между категориями и списком загрузок
 #. text in the Scheduler window
 #, machine
 	Move down	Переместить вниз
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Адрес должен быть http(s) или ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Для лучшего качества и MP3 требуется ffmpeg (около 80 МБ).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Для наилучшего качества, MP3, Opus и FLAC требуется ffmpeg (около 80 МБ).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Для лучшего качества и MP3 требуется ffmpeg: установите его с помощью системного менеджера пакетов (или Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Для наилучшего качества, MP3, Opus и FLAC требуется ffmpeg: установите его с помощью системного менеджера пакетов (или Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2513,7 +2527,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
-	This list has no videos	Этот список не содержит видео
+	This list has no videos	В этом списке нет видео
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: перечислено {listed} из {total} видео
+	{title}: {listed} of {total} video listed	{title}: {listed} из {total} видео перечислено
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Меню
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Вверх / Shift+Вниз
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

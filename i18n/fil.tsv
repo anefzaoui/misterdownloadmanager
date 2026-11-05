@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Audio lang, orihinal
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Audio lang, orihinal na {type}
 #. text in the Scheduler window
 #, machine
 	August	Agosto
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Unang file:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Pinapanatili ng FLAC ang tunog nang eksakto, ngunit hindi ito makapagdaragdag ng kalidad na wala sa tunog ng site: mas malaki lang ang file.
 #. text in categories.rs
 #, machine
 	Folder:	Folder:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Sa isang queue
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Sa mga kategorya: ang menu ng napiling kategorya
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Ilipat ang isang pahina pataas / pababa
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Lumipat sa pagitan ng mga kategorya at listahan ng download
 #. text in the Scheduler window
 #, machine
 	Move down	Ilipat pababa
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Ang address ay dapat na http(s) o ftp(s) na address
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Ang pinakamahusay na kalidad at MP3 ay nangangailangan ng ffmpeg (humigit-kumulang 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Ang pinakamahusay na kalidad, MP3, Opus at FLAC ay nangangailangan ng ffmpeg (mga 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Ang pinakamahusay na kalidad at MP3 ay nangangailangan ng ffmpeg: i-install ito gamit ang package manager ng iyong system (o Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Ang pinakamahusay na kalidad, MP3, Opus at FLAC ay nangangailangan ng ffmpeg: i-install ito gamit ang package manager ng iyong system (o Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Pataas / Shift+Pababa
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

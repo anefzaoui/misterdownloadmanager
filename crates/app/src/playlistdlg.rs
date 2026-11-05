@@ -88,6 +88,19 @@ fn picks(merge: bool) -> Vec<Pick> {
                 ext: "mp3",
             });
         }
+        // Opus (YouTube's own moved into an .opus file) and FLAC, as a single video offers
+        // them (#70).
+        use mdm_tools::resolve::{FLAC, OPUS};
+        for (label, selector, ext) in [
+            (format!("{AUDIO_ONLY} OPUS"), OPUS, "opus"),
+            (format!("{AUDIO_ONLY} FLAC"), FLAC, "flac"),
+        ] {
+            out.push(Pick {
+                label: crate::videodlg::choice_label(&label),
+                selector: selector.into(),
+                ext,
+            });
+        }
     }
     out
 }
@@ -586,8 +599,11 @@ mod tests {
         );
         assert!(m.iter().any(|p| p.selector == "mp3:320" && p.ext == "mp3"));
         assert!(m.iter().any(|p| p.selector == "ba"));
+        assert!(m.iter().any(|p| p.selector == "opus:" && p.ext == "opus"));
+        assert!(m.iter().any(|p| p.selector == "flac:" && p.ext == "flac"));
         let plain = picks(false);
         assert_eq!(plain[DEFAULT_PICK].selector, "b[height<=1080]");
         assert!(!plain.iter().any(|p| p.selector.starts_with("mp3:")));
+        assert!(!plain.iter().any(|p| p.ext == "opus" || p.ext == "flac"));
     }
 }

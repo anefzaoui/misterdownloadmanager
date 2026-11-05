@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Ororongo anake, taketake
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Ororongo anake, {type} taketake
 #. text in the Scheduler window
 #, machine
 	August	Ākuhata
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Kōnae tuatahi:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Ka mau tonu a FLAC i te oro, engari e kore e taea te tāpiri kounga kāore i te oro o te pae: ka nui noa atu te kōnae.
 #. text in categories.rs
 #, machine
 	Folder:	Kōpaki:
@@ -961,7 +969,7 @@
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
-	from a playlist (yt-dlp)	mai i te rārangipūoro (yt-dlp)
+	from a playlist (yt-dlp)	mai i tētahi rārangipūoro (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	mai i tētahi kōnae torrent
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	I roto i te rārangi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	I ngā kāwai: te tahua o te kāwai kua tohua
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1208,12 +1219,12 @@
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Te rārangi i ngā ataata: {n}
+	Listing the videos: {n}	E rārangi ana i ngā ataata: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Te rārangi i ngā ataata: {n} o {total}
+	Listing the videos: {n} of {total}	E rārangi ana i ngā ataata: {n} o {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Nuku i tētahi whārangi ki runga / ki raro
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Nuku i waenga i ngā kāwai me te rārangi tikiake
 #. text in the Scheduler window
 #, machine
 	Move down	Nuku ki raro
@@ -2166,7 +2180,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	Kāti te rārangi
+	Stop listing	Kati te rārangi
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Kati te rārangi tikiake matua
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Me he wāhitau http(s), ftp(s) rānei te wāhitau
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Ko ngā kounga pai rawa atu me te MP3 e hiahia ana ki te ffmpeg (tata ki te 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Ko ngā kounga pai rawa atu, ko MP3, Opus me FLAC, me ffmpeg (tata ki te 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Ko ngā kounga pai rawa atu me te MP3 e hiahia ana ki te ffmpeg: tāuta mā te kaiwhakahaere pūhera o tō pūnaha (rānei Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Ko ngā kounga pai rawa atu, ko MP3, Opus me FLAC, me ffmpeg: tāutahia mā te kaiwhakahaere pūmanawa o tō pūnaha (Homebrew rānei).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2798,7 +2812,7 @@
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
-	Videos	Ngā Ataata
+	Videos	Ngā ataata
 #. text in the Options window
 #, machine
 	Virus checking settings	Ngā tautuhinga tirotiro huaketo
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Tahua
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Whakarunga / Shift+Whakararo
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Ripa
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

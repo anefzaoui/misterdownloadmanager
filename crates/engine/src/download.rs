@@ -1,4 +1,4 @@
-//! One download: probe, parallel connections driven by the planner, positional writes, progress.
+﻿//! One download: probe, parallel connections driven by the planner, positional writes, progress.
 //!
 //! The first connection is also the probe: a plain `GET` (no Range, as IDM does — D-007) that
 //! keeps streaming from byte 0 while further connections split the file (notes/ENGINE.md §1).
@@ -1935,18 +1935,33 @@ async fn segmented(
     save_state(&ctx, &mut saved, &path, &mut synced, true).await?;
     let interval = ctx.opts.save_interval;
     let result = {
-        // Runs until a save fails; resolves to that error.
+        // Saves until told to stop or a save fails (resolving to that error). It stops only
+        // between saves: a save's blocking write can't be cancelled, so dropping the saver
+        // mid-save would leave that write running after the download has returned, writing a
+        // stale state file next to a finished or already resumed download (#106).
+        let stop = CancellationToken::new();
         let saver = async {
             loop {
-                tokio::time::sleep(interval).await;
+                tokio::select! {
+                    () = tokio::time::sleep(interval) => {}
+                    () = stop.cancelled() => return None,
+                }
                 if let Err(e) = save_state(&ctx, &mut saved, &path, &mut synced, false).await {
-                    return e;
+                    return Some(e);
                 }
             }
         };
+        let supervisor = supervise(ctx.clone(), first);
+        tokio::pin!(saver, supervisor);
         tokio::select! {
-            r = supervise(ctx.clone(), first) => r,
-            e = saver => Err(e),
+            r = &mut supervisor => {
+                // The connections stopped: let a save under way finish. Its error, if any, is
+                // the final save's to report (it writes the same file, forced, just below).
+                stop.cancel();
+                let _ = saver.await;
+                r
+            }
+            e = &mut saver => Err(e.expect("the saver only stops when told to")),
         }
     };
     match &result {

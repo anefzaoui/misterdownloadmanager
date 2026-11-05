@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Тізімге {n} жүктеу қосу керек пе? Әр бейнеге жеке жол беріледі.
+	Add {n} downloads to the list? Each video gets its own row.	Тізімге {n} жүктеу қосу керек пе? Әр бейне жеке жолға орналастырылады.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Тек аудио, түпнұсқа
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Тек аудио, түпнұсқа {type}
 #. text in the Scheduler window
 #, machine
 	August	Тамыз
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Бірінші файл:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC дыбысты дәл сақтайды, бірақ сайт дыбысында жоқ сапаны қоса алмайды: файл тек үлкенірек болады.
 #. text in categories.rs
 #, machine
 	Folder:	Қалта:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Кезекте
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Санаттарда: таңдалған санат мәзірі
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1203,17 +1214,17 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n} бейнеден кейін тізімдеу тоқтатылды: {error}
+	Listing stopped after {n} videos: {error}	Тізімдеу {n} бейнеден кейін тоқтатылды: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Бейнелер тізімі: {n}
+	Listing the videos: {n}	Бейнелерді тізімдеу: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Бейнелер тізімі: {total} ішінен {n}
+	Listing the videos: {n} of {total}	Бейнелерді тізімдеу: {n} / {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Бетті жоғары/төмен жылжыту
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Санаттар мен жүктеу тізімі арасында жылжу
 #. text in the Scheduler window
 #, machine
 	Move down	Төмен жылжыту
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Тек алғашқы {n} бейне тізімделген.
+	Only the first {n} videos are listed.	Алғашқы {n} бейне ғана тізімделген.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Тек мен компьютерді пайдаланған кезде
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Мекенжай http(s) немесе ftp(s) мекенжайы болуы керек
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Ең жақсы сапалар мен MP3 үшін ffmpeg (шамамен 80 МБ) қажет.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Ең жақсы сапалар, MP3, Opus және FLAC үшін ffmpeg қажет (шамамен 80 МБ).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Ең жақсы сапалар мен MP3 үшін ffmpeg қажет: оны жүйеңіздің пакеттік менеджерімен (немесе Homebrew) орнатыңыз.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Ең жақсы сапалар, MP3, Opus және FLAC үшін ffmpeg қажет: оны жүйеңіздің пакеттік менеджерімен (немесе Homebrew) орнатыңыз.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Мәзір
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Жоғары / Shift+Төмен
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

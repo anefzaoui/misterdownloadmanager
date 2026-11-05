@@ -124,7 +124,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	ਕਈ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ
+	Add many downloads	ਕਈ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	{n} ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੀਏ? ਹਰੇਕ ਵੀਡੀਓ ਨੂੰ ਆਪਣੀ ਕਤਾਰ ਮਿਲੇਗੀ।
+	Add {n} downloads to the list? Each video gets its own row.	{n} ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੀਏ? ਹਰੇਕ ਵੀਡੀਓ ਨੂੰ ਆਪਣੀ ਕਤਾਰ ਮਿਲੇਗੀ।
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	ਸਿਰਫ਼ ਆਡੀਓ, ਮੂਲ
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ਸਿਰਫ਼ ਆਡੀਓ, ਅਸਲੀ {type}
 #. text in the Scheduler window
 #, machine
 	August	ਅਗਸਤ
@@ -293,7 +297,7 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 #, machine
-	Best quality	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ
+	Best quality	ਵਧੀਆ ਕੁਆਲਿਟੀ
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	ਪਹਿਲੀ ਫਾਈਲ:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ਆਵਾਜ਼ ਨੂੰ ਬਿਲਕੁਲ ਉਵੇਂ ਹੀ ਰੱਖਦਾ ਹੈ, ਪਰ ਇਹ ਉਹ ਗੁਣਵੱਤਾ ਨਹੀਂ ਜੋੜ ਸਕਦਾ ਜੋ ਸਾਈਟ ਦੀ ਆਵਾਜ਼ ਵਿੱਚ ਨਹੀਂ ਹੈ: ਫਾਈਲ ਸਿਰਫ਼ ਵੱਡੀ ਹੁੰਦੀ ਹੈ।
 #. text in categories.rs
 #, machine
 	Folder:	ਫੋਲਡਰ:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ਇੱਕ ਕਤਾਰ ਵਿੱਚ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	ਸ਼੍ਰੇਣੀਆਂ ਵਿੱਚ: ਚੁਣੀ ਗਈ ਸ਼੍ਰੇਣੀ ਦਾ ਮੀਨੂ
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1203,17 +1214,17 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n} ਵੀਡੀਓਜ਼ ਤੋਂ ਬਾਅਦ ਸੂਚੀਬੱਧ ਕਰਨਾ ਬੰਦ ਹੋ ਗਿਆ: {error}
+	Listing stopped after {n} videos: {error}	{n} ਵੀਡੀਓ ਤੋਂ ਬਾਅਦ ਸੂਚੀਬੱਧ ਕਰਨਾ ਬੰਦ ਹੋ ਗਿਆ: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	ਵੀਡੀਓਜ਼ ਸੂਚੀਬੱਧ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ: {n}
+	Listing the videos: {n}	ਵੀਡੀਓ ਸੂਚੀਬੱਧ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	ਵੀਡੀਓਜ਼ ਸੂਚੀਬੱਧ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ: {total} ਵਿੱਚੋਂ {n}
+	Listing the videos: {n} of {total}	ਵੀਡੀਓ ਸੂਚੀਬੱਧ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ: {total} ਵਿੱਚੋਂ {n}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ਇੱਕ ਪੰਨਾ ਉੱਪਰ/ਹੇਠਾਂ ਭੇਜੋ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	ਸ਼੍ਰੇਣੀਆਂ ਅਤੇ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿਚਕਾਰ ਜਾਓ
 #. text in the Scheduler window
 #, machine
 	Move down	ਹੇਠਾਂ ਲੈ ਜਾਓ
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	ਸਿਰਫ਼ ਪਹਿਲੇ {n} ਵੀਡੀਓਜ਼ ਸੂਚੀਬੱਧ ਕੀਤੇ ਗਏ ਹਨ।
+	Only the first {n} videos are listed.	ਸਿਰਫ਼ ਪਹਿਲੇ {n} ਵੀਡੀਓ ਸੂਚੀਬੱਧ ਹਨ।
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ਸਿਰਫ਼ ਜਦੋਂ ਮੈਂ ਕੰਪਿਊਟਰ ਦੀ ਵਰਤੋਂ ਕਰ ਰਿਹਾ ਹੋਵਾਂ
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	ਪਤਾ ਇੱਕ http(s) ਜਾਂ ftp(s) ਪਤਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ ਅਤੇ MP3 ਲਈ ffmpeg (ਲਗਭਗ 80 MB) ਦੀ ਲੋੜ ਹੈ।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg (ਲਗਭਗ 80 MB) ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ ਅਤੇ MP3 ਲਈ ffmpeg ਦੀ ਲੋੜ ਹੈ: ਇਸਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਦੇ ਪੈਕੇਜ ਮੈਨੇਜਰ (ਜਾਂ Homebrew) ਨਾਲ ਸਥਾਪਤ ਕਰੋ।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ: ਇਸਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਦੇ ਪੈਕੇਜ ਮੈਨੇਜਰ (ਜਾਂ Homebrew) ਨਾਲ ਸਥਾਪਤ ਕਰੋ।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2798,14 +2812,14 @@
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
-	Videos	ਵੀਡੀਓਜ਼
+	Videos	ਵੀਡੀਓ
 #. text in the Options window
 #, machine
 	Virus checking settings	ਵਾਇਰਸ ਜਾਂਚ ਸੈਟਿੰਗਾਂ
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	ਸੂਚੀ ਦੀ ਉਡੀਕ ਕਰੋ, ਜਾਂ ਸੂਚੀਬੱਧ ਕਰਨਾ ਬੰਦ ਕਰੋ
+	Wait for the list, or stop listing	ਸੂਚੀ ਲਈ ਉਡੀਕ ਕਰੋ, ਜਾਂ ਸੂਚੀਬੱਧ ਕਰਨਾ ਬੰਦ ਕਰੋ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / ਮੀਨੂ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+ਉੱਪਰ / Shift+ਹੇਠਾਂ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	ਟੈਬ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

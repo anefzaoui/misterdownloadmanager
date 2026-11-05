@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Nur Audio, Original
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Nur Audio, Original {type}
 #. text in the Scheduler window
 #, machine
 	August	August
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Erste Datei:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC behält den Ton exakt bei, kann aber keine Qualität hinzufügen, die der Ton der Website nicht hat: Die Datei wird nur größer.
 #. text in categories.rs
 #, machine
 	Folder:	Ordner:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	In einer Warteschlange
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	In den Kategorien: Menü der ausgewählten Kategorie
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1208,12 +1219,12 @@
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Videos werden aufgelistet: {n}
+	Listing the videos: {n}	Videos auflisten: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Videos werden aufgelistet: {n} von {total}
+	Listing the videos: {n} of {total}	Videos auflisten: {n} von {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Eine Seite nach oben/unten verschieben
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Zwischen den Kategorien und der Downloadliste wechseln
 #. text in the Scheduler window
 #, machine
 	Move down	Nach unten verschieben
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Die Adresse muss eine HTTP(S)- oder FTP(S)-Adresse sein
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Die besten Qualitäten und MP3 benötigen ffmpeg (ca. 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Die besten Qualitäten, MP3, Opus und FLAC, benötigen ffmpeg (ca. 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Die besten Qualitäten und MP3 benötigen ffmpeg: Installieren Sie es mit dem Paketmanager Ihres Systems (oder Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Die besten Qualitäten, MP3, Opus und FLAC, benötigen ffmpeg: Installieren Sie es mit dem Paketmanager Ihres Systems (oder Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Warten Sie auf die Liste oder beenden Sie die Auflistung
+	Wait for the list, or stop listing	Auf die Liste warten oder Auflistung beenden
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {listed} von {total} Videos aufgelistet
+	{title}: {listed} of {total} video listed	{title}: {listed} von {total} Video aufgelistet
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Umschalt+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Umschalt+F10 / Menü
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Umschalt+Auf / Umschalt+Ab
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

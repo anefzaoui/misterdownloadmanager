@@ -40,7 +40,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **Playlists and channels** ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69)):
   Download video from a page lists a playlist's or a channel's videos, with their lengths, all
   ticked, with Select all and Select none. One quality applies to all of them (the best, up to a
-  height, the original sound or MP3). Each video gets its own download, in a folder named after
+  height, the original sound, MP3, Opus or FLAC). Each video gets its own download, in a folder named after
   the list, and Download Now starts the main queue, which runs as many at once as its settings
   say. A playlist is listed as its videos come in; the listing can be stopped and taken up again
   (List the rest), and one the site breaks off says after how many videos and why. A channel is
@@ -69,6 +69,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   limit what all torrents together send, and a torrent's progress window can limit its own, kept
   with it. Its General tab now counts what it sent and how long it shared over all its runs, so
   the share ratio no longer starts again at 0 after a pause or a restart.
+- **More audio choices for a video** ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70)):
+  under the MP3 ones, **Audio only OPUS** (YouTube's Opus is only moved into an `.opus` file, not
+  converted) and **Audio only FLAC** (lossless, with an honest note in the window: it can't add
+  quality the site's lossy sound doesn't have, the file is only bigger). The site's own sound is
+  now named **Audio only, original**. The command line's `video-get` takes `-f opus:` and
+  `-f flac:`.
 - **A file-type icon before every file name**: the download list, Download File Info, Properties,
   Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
   audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
@@ -156,6 +162,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Torrents behind a proxy open no UDP socket toward the network**: UDP trackers were already
+  left out there; now their client stays on this computer too.
+- **Developers: tests no longer make Windows Firewall ask about them.** The torrent tests and
+  test tools listen on 127.0.0.1 only (a new setting of the torrent engine, its listen address),
+  so each new build of a test no longer opens sockets on every address.
 - **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
   closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
   **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to
@@ -216,6 +227,20 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Screen readers can reach the Categories pane and the menus** ([#113](https://github.com/anefzaoui/misterdownloadmanager/issues/113)):
+  the pane reads as a tree (each category named with its count, open or shut, selected), the menu
+  bar and every right-click menu as menus whose items can be run, and **Shift+F10** or the
+  **Menu** key opens the selected category's menu. A menu opened from the keyboard no longer stays
+  invisible until the mouse moves.
+- **A download's progress file could be written again just after it stopped**
+  ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)). MDM saves a
+  download's progress every few seconds, in a file beside it. A download paused or finished
+  during one of those saves could stop before the save was done. That save then wrote an old
+  progress file a moment later. A download now stops only once its save is done.
+- **A download could fail as it finished, with "part file still in use"**
+  ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116)). It happened when the
+  last bytes arrived during a progress save, which still held the file. It has the same cause
+  and fix as the one above.
 - **A video download could fail in MDM while yt-dlp went on and finished it**
   ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)). A line yt-dlp printed in
   the system's code page rather than UTF-8 (a title in Turkish or Russian on some Windows) ended

@@ -206,6 +206,9 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 	Audio only, original	Audio only, original
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+	Audio only, original {type}	Audio only, original {type}
 #. text in the Scheduler window
 	August	August
 #. text in the Options window
@@ -672,6 +675,9 @@
 	First day of the week:	First day of the week:
 #. text in the Batch download window
 	First file:	First file:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.
 #. text in categories.rs
 	Folder:	Folder:
 #. text in the Batch download window
@@ -783,6 +789,8 @@
 	Import downloads	Import downloads
 #. value in a column's filter list in the download list
 	In a queue	In a queue
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	In the categories: the selected category's menu	In the categories: the selected category's menu
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 	in the list	in the list
@@ -986,6 +994,8 @@
 	Move	Move
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move a page up / down	Move a page up / down
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	Move between the categories and the download list	Move between the categories and the download list
 #. text in the Scheduler window
 	Move down	Move down
 #. text in a dialog box
@@ -1632,10 +1642,10 @@
 #. text in a download's Properties window
 	The address must be an http(s) or ftp(s) address	The address must be an http(s) or ftp(s) address
 #. text in the Download video window
-	The best qualities and MP3 need ffmpeg (about 80 MB).	The best qualities and MP3 need ffmpeg (about 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 	The browsers can find Mister Download Manager	The browsers can find Mister Download Manager
@@ -2410,7 +2420,13 @@ key	Shift+Delete	Shift+Delete
 key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Type a name	Type a name

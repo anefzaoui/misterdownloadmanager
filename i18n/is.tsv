@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Aðeins hljóð, upprunalegt
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Aðeins hljóð, upprunalegt {type}
 #. text in the Scheduler window
 #, machine
 	August	Ágúst
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Fyrsta skrá:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC heldur hljóðinu nákvæmlega, en getur ekki bætt við gæðum sem hljóð vefsíðunnar hefur ekki: skráin verður bara stærri.
 #. text in categories.rs
 #, machine
 	Folder:	Mappa:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Í biðröð
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Í flokkunum: valmynd valins flokks
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1203,7 +1214,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Skráning stöðvuð eftir {n} myndbönd: {error}
+	Listing stopped after {n} videos: {error}	Skráning stöðvaðist eftir {n} myndbönd: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Færa síðu upp/niður
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Færa á milli flokka og niðurhalsskráningar
 #. text in the Scheduler window
 #, machine
 	Move down	Færa niður
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Slóðin verður að vera http(s) eða ftp(s) slóð
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Bestu gæðin og MP3 þurfa ffmpeg (um 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Bestu gæðin, MP3, Opus og FLAC þurfa ffmpeg (um 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Bestu gæðin og MP3 þurfa ffmpeg: settu það upp með pakkastjóra kerfisins þíns (eða Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Bestu gæðin, MP3, Opus og FLAC þurfa ffmpeg: settu það upp með pakkastjóra kerfisins (eða Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Valmynd
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

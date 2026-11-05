@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	শুধুমাত্র অডিও, আসল
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	শুধুমাত্র অডিও, আসল {type}
 #. text in the Scheduler window
 #, machine
 	August	আগস্ট
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	প্রথম ফাইল:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC শব্দকে হুবহু রাখে, কিন্তু সাইটের শব্দের যে গুণমান নেই তা যোগ করতে পারে না: ফাইলটি কেবল বড় হয়।
 #. text in categories.rs
 #, machine
 	Folder:	ফোল্ডার:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	একটি সারিতে
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	ক্যাটাগরিগুলিতে: নির্বাচিত ক্যাটাগরির মেনু
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1203,7 +1214,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n}টি ভিডিওর পর তালিকাভুক্ত করা বন্ধ হয়েছে: {error}
+	Listing stopped after {n} videos: {error}	{n}টি ভিডিওর পর তালিকাভুক্তি বন্ধ হয়েছে: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	পৃষ্ঠা উপরে/নিচে সরান
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	ক্যাটাগরি এবং ডাউনলোড তালিকার মধ্যে সরান
 #. text in the Scheduler window
 #, machine
 	Move down	নিচে সরান
@@ -2166,7 +2180,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	তালিকাভুক্ত করা বন্ধ করুন
+	Stop listing	তালিকাভুক্তি বন্ধ করুন
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	প্রধান ডাউনলোড কিউ বন্ধ করুন
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	ঠিকানাটি একটি http(s) বা ftp(s) ঠিকানা হতে হবে
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	সেরা গুণমান এবং MP3-এর জন্য ffmpeg (প্রায় 80 MB) প্রয়োজন।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	সেরা গুণমান, MP3, Opus এবং FLAC-এর জন্য ffmpeg (প্রায় 80 MB) প্রয়োজন।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	সেরা গুণমান এবং MP3-এর জন্য ffmpeg প্রয়োজন: আপনার সিস্টেমের প্যাকেজ ম্যানেজার (বা Homebrew) দিয়ে এটি ইনস্টল করুন।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	সেরা গুণমান, MP3, Opus এবং FLAC-এর জন্য ffmpeg প্রয়োজন: আপনার সিস্টেমের প্যাকেজ ম্যানেজার (বা Homebrew) দিয়ে এটি ইনস্টল করুন।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	তালিকার জন্য অপেক্ষা করুন, অথবা তালিকাভুক্ত করা বন্ধ করুন
+	Wait for the list, or stop listing	তালিকার জন্য অপেক্ষা করুন, অথবা তালিকাভুক্তি বন্ধ করুন
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3027,7 +3041,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{total}টির মধ্যে {n}টি বেছে নেওয়া হয়েছে
+	{n} of {total} chosen	{total}টির মধ্যে {n}টি নির্বাচিত
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {total}টির মধ্যে {listed}টি ভিডিও তালিকাভুক্ত হয়েছে
+	{title}: {listed} of {total} video listed	{title}: {total}টির মধ্যে {listed}টি ভিডিও তালিকাভুক্ত হয়েছে
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / মেনু
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

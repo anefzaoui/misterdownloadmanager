@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	তালিকাখনত {n}টা ডাউনল’ড যোগ কৰিবনে? প্ৰতিটো ভিডিঅ’ই নিজৰ শাৰী পাব।
+	Add {n} downloads to the list? Each video gets its own row.	{n}টা ডাউনল’ড তালিকাত যোগ কৰিবনে? প্ৰতিটো ভিডিঅ’ই নিজৰ শাৰী পাব।
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	কেৱল অডিঅ’, মূল
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	কেৱল অডিঅ’, মূল {type}
 #. text in the Scheduler window
 #, machine
 	August	আগষ্ট
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	প্ৰথম ফাইল:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC-এ শব্দটো একেবাৰে ৰাখে, কিন্তু ই ছাইটৰ শব্দত নথকা মান যোগ কৰিব নোৱাৰে: ফাইলটো কেৱল ডাঙৰ হয়।
 #. text in categories.rs
 #, machine
 	Folder:	ফ’ল্ডাৰ:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	এটা শাৰীত
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	শ্ৰেণীবোৰত: নিৰ্বাচিত শ্ৰেণীৰ মেনু
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	এটা পৃষ্ঠা ওপৰলৈ/তললৈ লৈ যাওক
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	শ্ৰেণীবোৰ আৰু ডাউনলোড তালিকাৰ মাজত স্থানান্তৰ কৰক
 #. text in the Scheduler window
 #, machine
 	Move down	তললৈ স্থানান্তৰ কৰক
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	ঠিকনাটো এটা http(s) বা ftp(s) ঠিকনা হ'ব লাগিব
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	শ্ৰেষ্ঠ গুণগত মান আৰু MP3-ৰ বাবে ffmpeg (প্ৰায় 80 MB) প্ৰয়োজন হয়।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	শ্ৰেষ্ঠ গুণগত মান, MP3, Opus আৰু FLAC-ৰ বাবে ffmpeg (প্ৰায় 80 MB) প্ৰয়োজন।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	শ্ৰেষ্ঠ গুণগত মান আৰু MP3-ৰ বাবে ffmpeg প্ৰয়োজন হয়: ইয়াক আপোনাৰ ছিষ্টেমৰ পেকেজ মেনেজাৰ (বা Homebrew) ব্যৱহাৰ কৰি ইনষ্টল কৰক।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	শ্ৰেষ্ঠ গুণগত মান, MP3, Opus আৰু FLAC-ৰ বাবে ffmpeg প্ৰয়োজন: ইয়াক আপোনাৰ চিষ্টেমৰ পেকেজ মেনেজাৰ (বা Homebrew) ব্যৱহাৰ কৰি ইনষ্টল কৰক।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2805,7 +2819,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	তালিকাখনৰ বাবে অপেক্ষা কৰক, অথবা তালিকাভুক্ত কৰা বন্ধ কৰক
+	Wait for the list, or stop listing	তালিকাখনৰ বাবে অপেক্ষা কৰক, বা তালিকাভুক্ত কৰা বন্ধ কৰক
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / মেনু
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

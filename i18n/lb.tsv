@@ -124,7 +124,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Vill Erofluede bäifügen
+	Add many downloads	Vill Erofluedunge bäifügen
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Sollen {n} Eroflueden op d'Lëscht bäigefüügt ginn? All Video kritt seng eege Zeil.
+	Add {n} downloads to the list? Each video gets its own row.	Sollen {n} Erofluedungen op d'Lëscht gesat ginn? All Video kritt seng eege Zeil.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Nëmmen Audio, Original
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Nëmmen Audio, Original {type}
 #. text in the Scheduler window
 #, machine
 	August	August
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Éischte Fichier:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC behält den Toun exakt, mee et kann keng Qualitéit dobäisetzen, déi den Toun vun der Säit net huet: d'Fichier ass just méi grouss.
 #. text in categories.rs
 #, machine
 	Folder:	Dossier:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	An enger Schlaang
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	An de Kategorien: de Menü vun der gewielter Kategorie
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Säit erop / erof réckelen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Tëscht de Kategorien an der Downloadlëscht réckelen
 #. text in the Scheduler window
 #, machine
 	Move down	No ënne réckelen
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	D'Adress muss eng http(s)- oder ftp(s)-Adress sinn
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Déi bescht Qualitéiten an MP3 brauche ffmpeg (ongeféier 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Déi bescht Qualitéiten, MP3, Opus a FLAC brauchen ffmpeg (ongeféier 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Déi bescht Qualitéiten an MP3 brauche ffmpeg: installéiert et mat Ärem System sengem Package Manager (oder Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Déi bescht Qualitéiten, MP3, Opus a FLAC brauchen ffmpeg: installéiert et mat Ärem System sengem Package Manager (oder Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2682,7 +2696,7 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
-	Up to {height}p	Bis zu {height}p
+	Up to {height}p	Bis {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {listed} vun {total} Video opgelëscht
+	{title}: {listed} of {total} video listed	{title}: {listed} vun {total} Videoen opgelëscht
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menü
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

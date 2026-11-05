@@ -124,7 +124,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Koʻp yuklamalarni qoʻshish
+	Add many downloads	Koʻplab yuklamalarni qoʻshish
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	Faqat audio, asl nusxasi
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Faqat audio, asl {type}
 #. text in the Scheduler window
 #, machine
 	August	Avgust
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Birinchi fayl:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC tovushni aniq saqlaydi, lekin u sayt tovushida boʻlmagan sifatni qoʻsha olmaydi: fayl faqat kattaroq boʻladi.
 #. text in categories.rs
 #, machine
 	Folder:	Jild:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Navbatda
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Turkumlarda: tanlangan turkum menyusi
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1213,7 +1224,7 @@
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Videolarni roʻyxatlash: {total} tadan {n} tasi
+	Listing the videos: {n} of {total}	Videolarni roʻyxatlash: {n} tadan {total} tasi
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Sahifani yuqoriga/pastga siljitish
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Turkumlar va yuklab olish roʻyxati oʻrtasida harakatlanish
 #. text in the Scheduler window
 #, machine
 	Move down	Pastga siljitish
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Faqat dastlabki {n} ta video roʻyxatga kiritilgan.
+	Only the first {n} videos are listed.	Faqat dastlabki {n} ta video roʻyxatga olingan.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Faqat men kompyuterdan foydalanayotganimda
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	Manzil http(s) yoki ftp(s) manzili boʻlishi kerak
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Eng yaxshi sifatlar va MP3 uchun ffmpeg (taxminan 80 MB) kerak.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Eng yaxshi sifatlar, MP3, Opus va FLAC uchun ffmpeg (taxminan 80 MB) kerak boʻladi.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Eng yaxshi sifatlar va MP3 uchun ffmpeg kerak: uni tizimingizning paket menejeri (yoki Homebrew) bilan oʻrnating.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Eng yaxshi sifatlar, MP3, Opus va FLAC uchun ffmpeg kerak boʻladi: uni tizimingizning paket menejeri (yoki Homebrew) orqali oʻrnating.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3027,7 +3041,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{total} tadan {n} tasi tanlandi
+	{n} of {total} chosen	{total} tadan {n} tasi tanlangan
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3051,11 +3065,11 @@
 #. in Download video, a playlist's title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-	{title}: {count} video	{title}: {count} ta video
+	{title}: {count} video	{title}: {count} video
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {total} tadan {listed} ta video roʻyxatga kiritildi
+	{title}: {listed} of {total} video listed	{title}: {total} videodan {listed} tasi roʻyxatga olingan
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menyu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Yuqoriga / Shift+Pastga
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

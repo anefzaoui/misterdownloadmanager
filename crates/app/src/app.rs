@@ -1479,10 +1479,14 @@ impl App {
                 }
             }
             // Download video from a page with a sample video's subtitles (#68).
+            // `video-subs:flac`: with that choice picked (screenshots of the lower choices).
             "video-subs" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
                     v.show_sample();
+                    if !tab.is_empty() {
+                        v.pick(tab);
+                    }
                 }
             }
             "existing-files" => {
@@ -4225,7 +4229,7 @@ impl App {
 
         // Menu bar and its popups.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let clicked = ui.input(|x| x.pointer.any_released());
+            let clicked = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
             self.open_menu = if self.open_menu == Some(i) && clicked {
                 None
             } else {

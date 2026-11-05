@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	صرف آڈیو، اصل
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	صرف آڈیو، اصل {type}
 #. text in the Scheduler window
 #, machine
 	August	اگست
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	پہلی فائل:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC آواز کو بالکل ویسا ہی رکھتا ہے، لیکن یہ ایسی کوالٹی شامل نہیں کر سکتا جو سائٹ کی آواز میں نہ ہو: فائل صرف بڑی ہوتی ہے۔
 #. text in categories.rs
 #, machine
 	Folder:	فولڈر:
@@ -961,7 +969,7 @@
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
-	from a playlist (yt-dlp)	ایک پلے لسٹ سے (yt-dlp)
+	from a playlist (yt-dlp)	پلے لسٹ سے (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ایک ٹورنٹ فائل سے
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ایک قطار میں
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	زمروں میں: منتخب زمرے کا مینو
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	صفحہ اوپر/نیچے منتقل کریں
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	زمروں اور ڈاؤن لوڈ کی فہرست کے درمیان منتقل کریں
 #. text in the Scheduler window
 #, machine
 	Move down	نیچے منتقل کریں
@@ -1598,7 +1612,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	صرف پہلی {n} ویڈیوز کی فہرست بنائی گئی ہے۔
+	Only the first {n} videos are listed.	صرف پہلی {n} ویڈیوز کی فہرست دی گئی ہے۔
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	صرف جب میں کمپیوٹر استعمال کر رہا ہوں
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	پتہ ایک http(s) یا ftp(s) پتہ ہونا چاہیے
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	بہترین کوالٹیز اور MP3 کو ffmpeg (تقریبا 80 MB) درکار ہے۔
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	بہترین کوالٹی، MP3، Opus اور FLAC کو ffmpeg (تقریبا 80 MB) کی ضرورت ہوتی ہے۔
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	بہترین کوالٹیز اور MP3 کو ffmpeg درکار ہے: اسے اپنے سسٹم کے پیکیج مینیجر (یا Homebrew) کے ساتھ انسٹال کریں۔
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	بہترین کوالٹی، MP3، Opus اور FLAC کو ffmpeg کی ضرورت ہوتی ہے: اسے اپنے سسٹم کے پیکیج مینیجر (یا Homebrew) کے ساتھ انسٹال کریں۔
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2513,7 +2527,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
-	This list has no videos	اس فہرست میں کوئی ویڈیو نہیں ہے۔
+	This list has no videos	اس فہرست میں کوئی ویڈیو نہیں ہے
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -3055,7 +3069,7 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {total} میں سے {listed} ویڈیو کی فہرست بنائی گئی
+	{title}: {listed} of {total} video listed	{title}: {total} میں سے {listed} ویڈیو کی فہرست دی گئی
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / مینو
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+اوپر / Shift+نیچے
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

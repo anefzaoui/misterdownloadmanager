@@ -159,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	{n} डाउनलोडहरू सूचीमा थप्ने हो? प्रत्येक भिडियोको आफ्नै पङ्क्ति हुन्छ।
+	Add {n} downloads to the list? Each video gets its own row.	सूचीमा {n} डाउनलोडहरू थप्ने हो? प्रत्येक भिडियोको आफ्नै पङ्क्ति हुन्छ।
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -277,6 +277,10 @@
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
 	Audio only, original	अडियो मात्र, मौलिक
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	अडियो मात्र, मौलिक {type}
 #. text in the Scheduler window
 #, machine
 	August	अगस्ट
@@ -924,6 +928,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	पहिलो फाइल:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ले आवाजलाई ठ्याक्कै राख्छ, तर यसले साइटको आवाजमा नभएको गुणस्तर थप्न सक्दैन: फाइल मात्र ठूलो हुन्छ।
 #. text in categories.rs
 #, machine
 	Folder:	फोल्डर:
@@ -1079,6 +1087,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	एक लाममा
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	श्रेणीहरूमा: चयन गरिएको श्रेणीको मेनु
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1357,6 +1368,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	पृष्ठ माथि/तल सार्नुहोस्
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	श्रेणीहरू र डाउनलोड सूची बीच सार्नुहोस्
 #. text in the Scheduler window
 #, machine
 	Move down	तल सार्नुहोस्
@@ -2256,11 +2270,11 @@
 	The address must be an http(s) or ftp(s) address	ठेगाना http(s) वा ftp(s) ठेगाना हुनुपर्छ
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	उत्कृष्ट गुणस्तर र MP3 लाई ffmpeg (लगभग 80 MB) चाहिन्छ।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	उत्तम गुणस्तर, MP3, Opus र FLAC लाई ffmpeg (लगभग 80 MB) चाहिन्छ।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	उत्कृष्ट गुणस्तर र MP3 लाई ffmpeg चाहिन्छ: यसलाई आफ्नो प्रणालीको प्याकेज प्रबन्धक (वा Homebrew) मार्फत स्थापना गर्नुहोस्।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणस्तर, MP3, Opus र FLAC लाई ffmpeg चाहिन्छ: यसलाई आफ्नो प्रणालीको प्याकेज प्रबन्धक (वा Homebrew) मार्फत स्थापना गर्नुहोस्।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3027,7 +3041,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{total} मध्ये {n} छनौट गरियो
+	{n} of {total} chosen	{total} मध्ये {n} छनोट गरियो
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3314,7 +3328,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / मेनु
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+माथि / Shift+तल
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
