@@ -31,7 +31,7 @@ use axum::extract::{ConnectInfo, Path, RawQuery, Request, State};
 use axum::http::{HeaderMap, HeaderValue, Method, StatusCode, header};
 use axum::middleware::Next;
 use axum::response::{Html, IntoResponse, Response};
-use axum::routing::{any, get};
+use axum::routing::{any, get, post};
 use axum::{Json, Router};
 use bytes::Bytes;
 use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, utf8_percent_encode};
@@ -42,7 +42,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{Faults, every, has_cookie, parse_flag};
-use crate::{drive, pages, streams};
+use crate::{debrid, drive, pages, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -65,6 +65,10 @@ pub struct LogEntry {
     /// The `Cookie` header, to check credentials don't follow cross-host redirects.
     #[serde(default)]
     pub cookie: Option<String>,
+    /// The `Authorization` header, never in full: its scheme and first 4 characters ("Bearer
+    /// good…"), to check a service token reaches its API only (#44).
+    #[serde(default)]
+    pub authorization: Option<String>,
     /// The `Referer` header.
     #[serde(default)]
     pub referer: Option<String>,
@@ -163,6 +167,8 @@ impl Shared {
             if_range: header_str(headers, header::IF_RANGE),
             user_agent: header_str(headers, header::USER_AGENT),
             cookie: header_str(headers, header::COOKIE),
+            authorization: header_str(headers, header::AUTHORIZATION)
+                .map(|a| a.chars().take(11).collect::<String>() + "…"),
             referer: header_str(headers, header::REFERER),
             req_content_type: header_str(headers, header::CONTENT_TYPE),
             req_body_len: has_body.then_some(body.len() as u64),
@@ -236,6 +242,17 @@ impl LabServer {
             .route("/redirect", get(redirect))
             .route("/hop", get(hop))
             .route("/_log", get(get_log).delete(clear_log))
+            // A fake Real-Debrid (#44, `debrid`).
+            .route("/rd/rest/1.0/user", get(debrid::user))
+            .route("/rd/rest/1.0/hosts/domains", get(debrid::domains))
+            .route("/rd/rest/1.0/unrestrict/link", post(debrid::unrestrict))
+            .route("/rd/rest/1.0/disable_access_token", get(debrid::disable))
+            .route("/rd/oauth/v2/device/code", get(debrid::device_code))
+            .route(
+                "/rd/oauth/v2/device/credentials",
+                get(debrid::device_credentials),
+            )
+            .route("/rd/oauth/v2/token", post(debrid::token))
             .merge(simple)
             // Every other address: the fake Google Drive's, by the Host header (`drive`).
             .fallback(drive::handle)
@@ -306,6 +323,8 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
 GET /redirect?to=URL[&ttl_ms=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms
+/rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
+                                              a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
 GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]   a page that sends the browser on to URL (meta refresh or Refresh header)
 
 PAGES  for the browser extension's tests (tools/extension/e2e.mjs); styles and scripts are files

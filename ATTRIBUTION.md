@@ -3,7 +3,7 @@
 | Asset | Author | Licence | Where |
 |---|---|---|---|
 | Lucide icons v1.63.0 (toolbar, dialog glyphs) | Lucide Icons and Contributors | ISC — `crates/app/assets/icons/lucide/LICENSE` | `crates/app/assets/icons/lucide/` |
-| Material Icon Theme v5.40.0, 48 of its file icons (the icon before a file's name: the download list, Download File Info, Properties, a torrent's files, the Scheduler's files) | Material Extensions (Philipp Kief and contributors), <https://github.com/material-extensions/vscode-material-icon-theme> | MIT — `crates/app/assets/icons/material/LICENSE` | `crates/app/assets/icons/material/` (chosen and fetched by `tools/icons/material.py`; release and commit in `VERSION`) |
+| Tango Icon Theme 0.8.90, 23 of its icons (the icon before a file's or folder's name where the system has none of its own, and until the system's is ready: every window that names a file) | The Tango Desktop Project (Ulisse Perusin, Steven Garrity, Lapo Calamandrei, Ryan Collier, Rodney Dawes, Andreas Nilsson, Tuomas Kuosmanen, Garrett LeSage, Jakub Steiner), <http://tango.freedesktop.org> | Public domain — crates/app/assets/icons/tango/README.txt | crates/app/assets/icons/tango/ |
 | flag-icons 7.6.0 (language flags: picker, View → Language, README) | Panayiotis Lipiridis and contributors, <https://github.com/lipis/flag-icons> | MIT — `crates/app/assets/flags/LICENSE` | `crates/app/assets/flags/` |
 | Patrick Hand (the README's hand-drawn pictures, as outlines; not in the app) | Patrick Wagesreiter | SIL Open Font License 1.1 — `tools/readme/node_modules/@fontsource/patrick-hand/LICENSE` | `docs/images/races-*.svg` |
 | *Big Buck Bunny* (the film in the README's pictures of the download button over a video; not in the app) | Blender Foundation, <https://peach.blender.org> | Creative Commons Attribution 3.0 | `docs/images/video-button-*.png` |
@@ -17,6 +17,7 @@ The README's block icons (`docs/images/icons/`: arrow, globe, gift, magnet) were
 with OpenAI's GPT-5 Image Mini by `tools/readme/icons.py`, given the app icon as the style to follow.
 
 System resources used at run time and **not** bundled: Windows fonts (Segoe UI, Tahoma,
-Arial) and the Windows shell's file-type icons.
+Arial) and each system's own file-type icons (the Windows shell's, macOS Finder's, the Linux
+desktop's icon theme).
 
 MDM contains no artwork, text or code from Internet Download Manager (see the README).

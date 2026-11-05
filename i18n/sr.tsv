@@ -108,6 +108,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Сакриј детаље
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Услуга дебридовања (Real-Debrid) преузима везу хоста датотеке са вашим плаћеним налогом и даје MDM-у директну везу. Користите само свој налог: дељење налога или његових веза крши услове услуге и може довести до суспензије. Преузимања која је прегледач већ започео остају таква каква јесу.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -131,9 +135,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	Прихватај долазне везе
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	Налог
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	Налози
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Додај преузимање (Додај URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	Додај налог
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Додај групно преузимање
@@ -186,6 +202,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	Додати {n} преузимања на листу? Сваки видео добија свој ред.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	Додај...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -294,6 +315,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Тражење датотеке од вршњака. Магнетне везе могу потрајати минут или два.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	Питање услуге...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -536,6 +562,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Копирај
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	Копирај кôд
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -569,6 +599,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Дан, месец, година
+#. page title in the Options window
+#, machine
+	Debrid service accounts	Налози услуге дебридовања
 #. text in the Scheduler window
 #, machine
 	December	Децембар
@@ -676,6 +709,10 @@
 #. text in a download's progress window
 #, machine
 	Done	Завршено
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Доле
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Преузми
@@ -722,6 +759,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	Статус преузимања
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	Преузми подржане везе хоста датотека преко ових налога
 #. window title in the Download video window
 #, machine
 	Download video from a page	Преузми видео са странице
@@ -893,6 +934,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	Постављен очекивани контролни збир ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Експериментално: направљено на основу јавне API документације Real-Debrid-а, још увек није потврђено са стварним налогом.
 #. message or event log entry in the main window
 #, machine
 	Export	Извези
@@ -967,6 +1012,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Пронађи датотеку
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	Пронађи мој токен
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1016,6 +1065,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Пе
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	бесплатан налог: везе захтевају премијум
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1653,6 +1706,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Не сада? Преузмите их касније из Задаци → Преузми видео са странице.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	ова услуга не подржава овог хоста датотека
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Не користи се: делови датотеке се пишу поред датотеке
@@ -1747,6 +1804,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Отвори следећу датотеку када заврши:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	Отвори страницу
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1772,6 +1833,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Опције по завршетку
+#. text in the Options window
+#, machine
+	Or paste your API token:	Или налепите свој API токен:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Адреса странице
@@ -1830,6 +1894,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Порт:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	премијум
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	премијум, преостало {days} дана
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2099,6 +2171,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	Сервери:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	Услуга
+#. text in the Options window
+#, machine
+	Service:	Услуга:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2186,6 +2265,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Искључи рачунар
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	Пријави се у прегледачу
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	Пријављени сте као {user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	одјављени сте: пријавите се поново
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Назив сајта/Веза за преузимање/Родитељска веб страница/Реферер
@@ -2295,6 +2386,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Покрећем...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	Стање
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2428,6 +2523,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Клипборд је заузет: покушајте поново.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	кôд је истекао: пријавите се поново
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2833,6 +2932,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Унесите назив реда
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Унесите овај кôд на {page} и дозволите MDM; чекамо вас (кôд истиче за {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2851,6 +2955,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	непознато
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Горе
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2905,6 +3013,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	Користи прокси (Опције → Прокси / SOCKS, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	Користи токен
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Да ли да их користите за овај торeнт? Оно што се подудара биће задржано, остало замењено.
@@ -3203,6 +3315,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} тражи да успорите; MDM ће покушати поново за минут
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} тражи да прво дозволите овај рачунар: погледајте његову е-пошту
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} тренутно не може да дође до овог хоста датотека; MDM ће покушати поново касније
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} не одговара; покушајте поново касније
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} одбија ову везу (VPN или адреса сервера?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} неће дати ову датотеку
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: пријавите се поново (Опције → Налози)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: налог је закључан или није активиран
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: датотека је нестала или није доступна на хосту датотека
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: ова датотека је заштићена лозинком
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: ово захтева премијум налог
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: превише преузимања одједном преко вашег налога; MDM ће покушати поново
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: ваше ограничење за овог хоста датотека је тренутно искоришћено
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

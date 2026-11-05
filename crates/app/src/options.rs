@@ -48,6 +48,8 @@ enum Sub {
     Addresses(String),
     /// Connection → DNS → Settings...: how the DNS is asked, its servers, a test.
     Dns(DnsEdit),
+    /// Accounts → Add...: the service, a pasted token, and the sign-in running (#44).
+    Account(AccountEdit),
 }
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
@@ -164,6 +166,8 @@ pub struct OptionsDialog {
     /// The exceptions' and site logins' lists: scroll and selection.
     exc_rows: winui::RowList,
     login_rows: winui::RowList,
+    /// Accounts' list (#44).
+    account_rows: winui::RowList,
     /// The Sounds list's scroll and selection.
     sound_rows: winui::RowList,
     sub: Option<Sub>,
@@ -213,6 +217,7 @@ impl OptionsDialog {
             category: 0,
             exc_rows: Default::default(),
             login_rows: Default::default(),
+            account_rows: Default::default(),
             sound_rows: Default::default(),
             sub: None,
             cat_edit: None,
@@ -233,8 +238,8 @@ impl OptionsDialog {
             false,
             LIGHT_BG(),
             |ui, o| {
-                // Ctrl+Tab through the pages in the tabs' order (there is no page 7).
-                const ORDER: [usize; 9] = [0, 1, 2, 3, 4, 5, 6, 8, 9];
+                // Ctrl+Tab through the pages in the tabs' order.
+                const ORDER: [usize; 10] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
                 let at = ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
                 let by_key = winui::tab_keys(ui, ORDER.len(), at).map(|i| ORDER[i]);
                 if let Some(p) = tabs(ui, o, self.page).or(by_key) {
@@ -248,6 +253,7 @@ impl OptionsDialog {
                     4 => self.connection(ui, o),
                     5 => self.proxy(ui, o),
                     6 => self.logins(ui, o),
+                    7 => self.accounts(ui, o),
                     8 => self.sounds(ui, o),
                     _ => self.regional(ui, o),
                 }
@@ -1503,6 +1509,151 @@ impl OptionsDialog {
         }
     }
 
+    /// Accounts (#44, ours): debrid service accounts that download file-host links. The list is
+    /// asked in its order; a link goes through the first account whose service takes its host.
+    fn accounts(&mut self, ui: &mut Ui, o: Pos2) {
+        header(
+            ui,
+            o,
+            Icon::PageLogins,
+            "Debrid service accounts",
+            true,
+            117.0,
+            63.0,
+            399.0,
+        );
+        let rows: Vec<Vec<String>> = self
+            .s
+            .debrid_accounts
+            .iter()
+            .map(|a| {
+                vec![
+                    a.service.name().to_owned(),
+                    a.user.clone(),
+                    if a.account().is_none() {
+                        // i18n: Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+                        crate::i18n::t("signed out: sign in again").to_owned()
+                    } else {
+                        a.state.clone()
+                    },
+                ]
+            })
+            .collect();
+        let (_, del_key) = report(
+            ui,
+            o,
+            r(o, 21.0, 93.0, 383.0, 176.0),
+            &[
+                // i18n: column title: the debrid service (Real-Debrid…)
+                (crate::i18n::mark("Service"), 110.0),
+                // i18n: column title: the account's name at the service
+                (crate::i18n::mark("Account"), 205.0),
+                // i18n: column title: the account's state (premium, days left)
+                (crate::i18n::mark("State"), 387.0),
+            ],
+            &rows,
+            &mut self.account_rows,
+            false,
+            "opt-accounts",
+        );
+        let sel = self.account_rows.selected.filter(|i| *i < rows.len());
+        // i18n: button: add a debrid service account (opens the sign-in)
+        let add = winui::button_light(
+            ui,
+            r(o, 21.0, 277.0, 90.0, 21.0),
+            "Add...",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked();
+        let kind = |on: bool| {
+            if on {
+                ButtonKind::Normal
+            } else {
+                ButtonKind::Disabled
+            }
+        };
+        let remove = winui::button_light(
+            ui,
+            r(o, 117.0, 277.0, 90.0, 21.0),
+            "Remove",
+            kind(sel.is_some()),
+            false,
+        )
+        .clicked()
+            || del_key;
+        // i18n: button (short): move the account up the list (accounts are asked in the list's order)
+        let up = winui::button_light(
+            ui,
+            r(o, 213.0, 277.0, 90.0, 21.0),
+            "Up",
+            kind(sel.is_some_and(|i| i > 0)),
+            false,
+        )
+        .clicked();
+        // i18n: button (short): move the account down the list
+        let down = winui::button_light(
+            ui,
+            r(o, 309.0, 277.0, 95.0, 21.0),
+            "Down",
+            kind(sel.is_some_and(|i| i + 1 < rows.len())),
+            false,
+        )
+        .clicked();
+        if add {
+            self.sub = Some(Sub::Account(AccountEdit::default()));
+        }
+        if let Some(i) = sel {
+            let list = &mut self.s.debrid_accounts;
+            if remove {
+                list.remove(i);
+                self.account_rows.selected = None;
+            } else if up && i > 0 {
+                list.swap(i, i - 1);
+                self.account_rows.selected = Some(i - 1);
+            } else if down && i + 1 < list.len() {
+                list.swap(i, i + 1);
+                self.account_rows.selected = Some(i + 1);
+            }
+        }
+        // Experimental until the service is confirmed with a real account (#44).
+        let p = ui.painter().clone();
+        let note = crate::i18n::t(
+            // i18n: Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+            "Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.",
+        );
+        winui::paragraph(
+            &p,
+            o.x + 21.0,
+            o.y + 308.0,
+            note,
+            egui::Color32::from_rgb(0x9D, 0x5D, 0x00),
+            o.x + 404.0,
+            14.0,
+        );
+        winui::checkbox_light(
+            ui,
+            o + vec2(21.0, 354.0),
+            &mut self.s.debrid_on,
+            // i18n: Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+            "Download supported file-host links through these accounts",
+            true,
+        );
+        let p = ui.painter().clone();
+        winui::paragraph(
+            &p,
+            o.x + 21.0,
+            o.y + 388.0,
+            // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
+            crate::i18n::t(
+                "A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
+            ),
+            LIGHT_TEXT(),
+            o.x + 404.0,
+            14.0,
+        );
+    }
+
     fn logins(&mut self, ui: &mut Ui, o: Pos2) {
         header(
             ui,
@@ -2087,6 +2238,37 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
+            Sub::Account(mut e) => {
+                let out = window(
+                    ctx,
+                    "opt-account",
+                    // i18n: window title: adding a debrid service account (Real-Debrid…)
+                    "Add an account",
+                    [420.0, 300.0],
+                    false,
+                    LIGHT_BG(),
+                    |ui, o| account_dialog(ui, o, &mut e),
+                );
+                match out {
+                    Outcome::Open => self.sub = Some(Sub::Account(e)),
+                    Outcome::Done(account) => {
+                        let mut account = account;
+                        account.id = self
+                            .s
+                            .debrid_accounts
+                            .iter()
+                            .map(|a| a.id)
+                            .max()
+                            .unwrap_or(0)
+                            + 1;
+                        self.s.debrid_accounts.push(account);
+                    }
+                    Outcome::Closed => e
+                        .signin
+                        .stop
+                        .store(true, std::sync::atomic::Ordering::Relaxed),
+                }
+            }
             Sub::Addresses(mut list) => {
                 let out = window(
                     ctx,
@@ -2486,6 +2668,211 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
     ok_cancel(ui, o, 238.0, 278.0, choice.is_ok())
 }
 
+/// Accounts → Add...: the service, a token typed in, and the sign-in on its thread (#44).
+#[derive(Default)]
+struct AccountEdit {
+    service: mdm_debrid::ServiceKind,
+    token: String,
+    signin: crate::debrid::SignIn,
+}
+
+/// Accounts → Add...: sign in by code in the browser (the service's device flow), or paste the
+/// API token; the account is checked before it is kept.
+fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings::DebridAccount> {
+    use crate::debrid::SignInState as S;
+    let p = ui.painter().clone();
+    let ctx = ui.ctx().clone();
+    let state = e.signin.get();
+    let busy = matches!(state, S::Starting | S::Waiting { .. } | S::Checking);
+    // i18n: Options → Add an account: label before the choice of debrid service
+    text(
+        &p,
+        o.x + 14.0,
+        o.y + 26.0,
+        crate::i18n::t("Service:"),
+        LIGHT_TEXT(),
+    );
+    let services = [e.service.name()];
+    winui::combo_light(
+        ui,
+        r(o, 90.0, 12.0, 200.0, 21.0),
+        &services,
+        0,
+        !busy,
+        "opt-account-service",
+    );
+    let kind = |on: bool| {
+        if on {
+            ButtonKind::Normal
+        } else {
+            ButtonKind::Disabled
+        }
+    };
+    // i18n: button: sign in to the debrid service in the browser, by typing a code there
+    if winui::button_light(
+        ui,
+        r(o, 14.0, 44.0, 220.0, 23.0),
+        "Sign in in the browser",
+        kind(!busy),
+        false,
+    )
+    .clicked()
+    {
+        e.signin
+            .stop
+            .store(false, std::sync::atomic::Ordering::Relaxed);
+        e.signin.by_code(e.service, &ctx);
+    }
+    if let S::Waiting { code, page, until } = &state {
+        // The code, large, to type at the service's page.
+        p.text(
+            o + vec2(14.0, 78.0),
+            egui::Align2::LEFT_TOP,
+            code,
+            egui::FontId::monospace(22.0),
+            LIGHT_TEXT(),
+        );
+        // i18n: button: copy the sign-in code
+        if winui::button_light(
+            ui,
+            r(o, 200.0, 80.0, 90.0, 21.0),
+            "Copy code",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked()
+        {
+            ctx.copy_text(code.clone());
+        }
+        // i18n: button: open the service's page where the code is typed
+        if winui::button_light(
+            ui,
+            r(o, 296.0, 80.0, 110.0, 21.0),
+            "Open the page",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked()
+        {
+            open_page(page);
+        }
+        let left = until
+            .saturating_duration_since(std::time::Instant::now())
+            .as_secs();
+        winui::paragraph(
+            &p,
+            o.x + 14.0,
+            o.y + 120.0,
+            &crate::i18n::fmt(
+                // i18n: Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+                crate::i18n::t(
+                    "Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).",
+                ),
+                &[
+                    ("page", &crate::i18n::ltr(page)),
+                    ("time", &format!("{}:{:02}", left / 60, left % 60)),
+                ],
+            ),
+            LIGHT_TEXT(),
+            o.x + 406.0,
+            14.0,
+        );
+        ctx.request_repaint_after(std::time::Duration::from_secs(1));
+    }
+    // i18n: Options → Add an account: label before the field for the service's API token (the other way to sign in)
+    text(
+        &p,
+        o.x + 14.0,
+        o.y + 178.0,
+        crate::i18n::t("Or paste your API token:"),
+        LIGHT_TEXT(),
+    );
+    winui::password_light(ui, r(o, 14.0, 186.0, 280.0, 21.0), &mut e.token, !busy);
+    // i18n: button: sign in with the token typed in
+    if winui::button_light(
+        ui,
+        r(o, 300.0, 186.0, 106.0, 21.0),
+        "Use the token",
+        kind(!busy && !e.token.trim().is_empty()),
+        false,
+    )
+    .clicked()
+    {
+        e.signin.by_token(e.service, e.token.clone(), &ctx);
+    }
+    // i18n: button: open the service's page that shows the user's API token
+    if winui::button_light(
+        ui,
+        r(o, 14.0, 212.0, 160.0, 21.0),
+        "Find my token",
+        ButtonKind::Normal,
+        false,
+    )
+    .clicked()
+    {
+        open_page(e.service.token_page());
+    }
+    let (line, ok) = match &state {
+        // i18n: Options → Add an account: the sign-in is starting or being checked
+        S::Starting | S::Checking => (crate::i18n::t("Asking the service...").to_owned(), true),
+        S::Done { user, state, .. } => (
+            crate::i18n::fmt(
+                // i18n: Options → Add an account: signed in; {user} the account's name, {state} premium or not
+                crate::i18n::t("Signed in as {user} ({state})"),
+                &[("user", &crate::i18n::ltr(user)), ("state", state)],
+            ),
+            true,
+        ),
+        S::Failed(why) => (why.clone(), false),
+        _ => (String::new(), true),
+    };
+    let color = if ok {
+        LIGHT_TEXT()
+    } else {
+        egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+    };
+    let (rect, cut) = winui::label_into(
+        &p,
+        o.x + 14.0,
+        o.y + 252.0,
+        &line,
+        color,
+        o.x + 406.0,
+        o.x + 14.0,
+    );
+    if cut {
+        winui::full_on_hover(ui, rect, "opt-account-state", &line);
+    }
+    let done = matches!(state, S::Done { .. });
+    match ok_cancel(ui, o, 252.0, 266.0, done) {
+        Outcome::Done(()) => match state {
+            S::Done {
+                user,
+                state,
+                credential,
+            } => Outcome::Done(settings::DebridAccount {
+                id: 0,
+                service: e.service,
+                enabled: true,
+                user,
+                state,
+                secret: credential,
+            }),
+            _ => Outcome::Open,
+        },
+        Outcome::Closed => Outcome::Closed,
+        Outcome::Open => Outcome::Open,
+    }
+}
+
+/// Open a service's web page in the browser; never in an off-screen test run (MDM_OFFSCREEN),
+/// whose clicks come from scripts, not from a person at the browser.
+fn open_page(url: &str) {
+    if !crate::offscreen() {
+        let _ = open::that_detached(url);
+    }
+}
+
 fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
     let kind = if valid {
         ButtonKind::Default
@@ -2567,15 +2954,18 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     ];
     // IDM's Dial Up / VPN tab is gone (D-021: no modem support; it did nothing); ours, Regional
     // (how dates and times are written), shares the row.
-    const P: [(usize, &str, f32, f32, f32); 4] = [
+    // Accounts (#44, debrid services) takes the place Dial Up / VPN left in this row.
+    const P: [(usize, &str, f32, f32, f32); 5] = [
         // i18n: tab title
-        (5, crate::i18n::mark("Proxy / Socks"), 8.0, 118.0, 30.0),
+        (5, crate::i18n::mark("Proxy / Socks"), 8.0, 104.0, 20.0),
         // i18n: tab title: user names and passwords for sites
-        (6, crate::i18n::mark("Sites Logins"), 118.0, 226.0, 142.0),
+        (6, crate::i18n::mark("Sites Logins"), 104.0, 192.0, 116.0),
+        // i18n: tab title: the user's debrid service accounts (Real-Debrid…)
+        (7, crate::i18n::mark("Accounts"), 192.0, 265.0, 204.0),
         // i18n: tab title: sound settings
-        (8, crate::i18n::mark("Sounds"), 226.0, 316.0, 253.0),
+        (8, crate::i18n::mark("Sounds"), 265.0, 336.0, 279.0),
         // i18n: tab title: how dates and times are written (date order, 12- or 24-hour clock)
-        (9, crate::i18n::mark("Regional"), 316.0, 419.0, 343.0),
+        (9, crate::i18n::mark("Regional"), 336.0, 419.0, 350.0),
     ];
     let p = ui.painter().clone();
     let border = winui::HEADER_LINE();
@@ -2620,7 +3010,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             winui::keep_keys(ui, &resp, true, false, false);
             if resp.has_focus() {
                 // Left / Right (mirrored in RTL), Home / End through the pages in order.
-                const ORDER: [usize; 9] = [0, 1, 2, 3, 4, 5, 6, 8, 9];
+                const ORDER: [usize; 10] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
                 let at = ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
                 let fwd = if winui::rtl() { -1 } else { 1 };
                 let to = if winui::take_key(ui, egui::Key::ArrowRight) {

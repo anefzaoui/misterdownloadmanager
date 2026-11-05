@@ -108,6 +108,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< விவரங்களை மறை
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ஒரு டீப்ரிட் சேவை (ரியல்-டீப்ரிட்) உங்கள் சொந்த கட்டணக் கணக்குடன் ஒரு கோப்பு ஹோஸ்டின் இணைப்பைப் பதிவிறக்கி, MDM-க்கு நேரடி இணைப்பை வழங்குகிறது. உங்கள் சொந்த கணக்கை மட்டுமே பயன்படுத்தவும்: ஒரு கணக்கைப் பகிர்வது அல்லது அதன் இணைப்புகள் சேவைகளின் விதிமுறைகளை மீறுகிறது மற்றும் அதை இடைநிறுத்தலாம். உலாவி ஏற்கனவே தொடங்கிய பதிவிறக்கங்கள் அப்படியே இருக்கும்.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -131,9 +135,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	உள்வரும் இணைப்புகளை ஏற்கவும்
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	கணக்கு
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	கணக்குகள்
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	பதிவிறக்கத்தைச் சேர் (URL சேர்)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	ஒரு கணக்கைச் சேர்
 #. text in the tray icon's menu
 #, machine
 	Add batch download	தொகுப்புப் பதிவிறக்கத்தைச் சேர்
@@ -186,6 +202,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	பட்டியலில் {n} பதிவிறக்கங்களைச் சேர்க்கவா? ஒவ்வொரு வீடியோவிற்கும் அதன் சொந்த வரிசை கிடைக்கும்.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	சேர்...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -294,6 +315,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	கோப்புப் பட்டியலுக்காக பியர்களைக் கேட்கிறது. மேக்னட் இணைப்புகள் ஒன்று அல்லது இரண்டு நிமிடங்கள் ஆகலாம்.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	சேவையைக் கேட்கிறது...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -536,6 +562,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	நகலெடு
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	குறியீட்டை நகலெடு
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -569,6 +599,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	நாள், மாதம், வருடம்
+#. page title in the Options window
+#, machine
+	Debrid service accounts	டீப்ரிட் சேவை கணக்குகள்
 #. text in the Scheduler window
 #, machine
 	December	டிசம்பர்
@@ -676,6 +709,10 @@
 #. text in a download's progress window
 #, machine
 	Done	முடிந்தது
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	கீழே
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	பதிவிறக்கு
@@ -722,6 +759,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	பதிவிறக்க நிலை
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	இந்தக் கணக்குகள் மூலம் ஆதரிக்கப்படும் கோப்பு ஹோஸ்ட் இணைப்புகளைப் பதிவிறக்கு
 #. window title in the Download video window
 #, machine
 	Download video from a page	ஒரு பக்கத்திலிருந்து வீடியோவைப் பதிவிறக்கு
@@ -893,6 +934,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	எதிர்பார்க்கப்படும் செக்சம் அமைக்கப்பட்டது ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	சோதனை: ரியல்-டீப்ரிட்டின் பொது API ஆவணத்திலிருந்து உருவாக்கப்பட்டது, உண்மையான கணக்குடன் இன்னும் உறுதிப்படுத்தப்படவில்லை.
 #. message or event log entry in the main window
 #, machine
 	Export	ஏற்றுமதி
@@ -967,6 +1012,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	கோப்பைக் கண்டறி
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	எனது டோக்கனைக் கண்டுபிடி
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1016,6 +1065,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	வெ
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	இலவச கணக்கு: இணைப்புகளுக்கு பிரீமியம் தேவை
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1653,6 +1706,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	இப்போது வேண்டாமா? பின்னர் பணிகளில் இருந்து → ஒரு பக்கத்திலிருந்து வீடியோவைப் பதிவிறக்கு என்பதைப் பயன்படுத்திப் பெறவும்.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	இந்த சேவை ஆதரிக்கவில்லை
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	பயன்படுத்தப்படவில்லை: கோப்பு பாகங்கள் கோப்புக்கு அடுத்ததாக எழுதப்படுகின்றன
@@ -1747,6 +1804,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	முடிந்ததும் பின்வரும் கோப்பைத் திறக்கவும்:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	பக்கத்தைத் திற
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1772,6 +1833,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	முடிந்ததும் விருப்பங்கள்
+#. text in the Options window
+#, machine
+	Or paste your API token:	அல்லது உங்கள் API டோக்கனை ஒட்டவும்:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	பக்க முகவரி
@@ -1830,6 +1894,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	போர்ட்:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	பிரீமியம்
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	பிரீமியம், {days} நாட்கள் மீதமுள்ளன
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2099,6 +2171,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	சர்வர்கள்:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	சேவை
+#. text in the Options window
+#, machine
+	Service:	சேவை:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2186,6 +2265,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	மூடு
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	உலாவியில் உள்நுழைக
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	{user} ஆக உள்நுழைந்துள்ளீர்கள் ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	வெளியேறியது: மீண்டும் உள்நுழையவும்
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	தளப் பெயர்/பதிவிறக்க இணைப்பு/பெற்றோர் வலைப்பக்கம்/பரிந்துரையாளர்
@@ -2295,6 +2386,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	தொடங்குகிறது...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	நிலை
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2428,6 +2523,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	கிளிப்போர்டு பிஸியாக உள்ளது: மீண்டும் முயற்சிக்கவும்.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	குறியீடு காலாவதியானது: மீண்டும் உள்நுழையவும்
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2833,6 +2932,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	வரிசையின் பெயரைத் தட்டச்சு செய்க
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} இல் இந்த குறியீட்டை உள்ளிட்டு MDM-ஐ அனுமதிக்கவும்; உங்களுக்காக காத்திருக்கிறது (குறியீடு {time} இல் காலாவதியாகிறது).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2851,6 +2955,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	அறியப்படாதது
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	மேலே
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2905,6 +3013,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	ப்ராக்ஸியைப் பயன்படுத்தவும் (விருப்பத்தேர்வுகள் → ப்ராக்ஸி / சாக்ஸ், SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	டோக்கனைப் பயன்படுத்து
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	இந்த டொரண்டிற்கு அவற்றைப் பயன்படுத்தவா? பொருந்துவது வைக்கப்படும், மீதமுள்ளவை மாற்றப்படும்.
@@ -3203,6 +3315,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} மெதுவாகச் செல்லச் சொல்கிறது; MDM ஒரு நிமிடத்தில் மீண்டும் முயற்சிக்கும்
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} முதலில் இந்த கணினியை அனுமதிக்கச் சொல்கிறது: அதன் மின்னஞ்சலைப் பார்க்கவும்
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} இந்த கோப்பு ஹோஸ்டை இப்போதைக்கு அடைய முடியவில்லை; MDM பின்னர் மீண்டும் முயற்சிக்கும்
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} பதிலளிக்கவில்லை; பின்னர் மீண்டும் முயற்சிக்கவும்
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} இந்த இணைப்பை மறுக்கிறது (ஒரு VPN அல்லது சர்வர் முகவரியா?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} இந்த கோப்பை வழங்காது
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: மீண்டும் உள்நுழையவும் (விருப்பங்கள் → கணக்குகள்)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: கணக்கு பூட்டப்பட்டுள்ளது அல்லது செயல்படுத்தப்படவில்லை
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: கோப்பு ஹோஸ்டில் கோப்பு இல்லை அல்லது கிடைக்கவில்லை
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: இந்த கோப்பு கடவுச்சொல் பாதுகாக்கப்பட்டது
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: இதற்கு ஒரு பிரீமியம் கணக்கு தேவை
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: உங்கள் கணக்கு மூலம் ஒரே நேரத்தில் பல பதிவிறக்கங்கள்; MDM மீண்டும் முயற்சிக்கும்
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: இந்த கோப்பு ஹோஸ்ட்டிற்கான உங்கள் வரம்பு இப்போதைக்கு தீர்ந்துவிட்டது
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

@@ -91,6 +91,10 @@ pub struct Options {
     /// Options → Proxy / Socks → Network adapter (#35): the adapter every connection goes
     /// through, or none at all.
     pub route: crate::net::Route,
+    /// A service account that unlocks this download's link first (#44, `crate::unlock`): asked
+    /// before the first request and when the direct link dies. Not in the resume state (like
+    /// the headers): whoever resumes gives it again.
+    pub unlocker: Option<Arc<dyn crate::unlock::Unlocker>>,
     /// Options → Proxy / Socks.
     pub proxy: Proxy,
     /// A limit shared by every download using the same limiter (a global speed cap), on top
@@ -193,6 +197,7 @@ impl Default for Options {
             hosts: Vec::new(),
             dns: Default::default(),
             route: Default::default(),
+            unlocker: None,
             proxy: Proxy::None,
             global: None,
             checksum: None,
@@ -327,7 +332,9 @@ impl Error {
     /// The address no longer serves this file (or refuses us): retrying won't help.
     fn link_dead(&self) -> bool {
         matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 416))
-            || matches!(self, Error::GotWebPage | Error::LinkExpired | Error::Refused(_))
+            || matches!(self, Error::GotWebPage | Error::LinkExpired)
+            // A site's refusal; a service's, unless waiting helps (#44).
+            || matches!(self, Error::Refused(r) if !matches!(r, Refusal::Service { fault, .. } if fault.retry_wait().is_some()))
             // Login refused; no such file (or no permission); a name the server won't take.
             || matches!(self, Error::FtpReply { code: 530 | 532 | 550 | 553, .. })
     }
@@ -364,6 +371,7 @@ impl Error {
             // Too many sessions; no data connection; transfer aborted; file busy; local error.
             Error::FtpReply { code, .. } => matches!(code, 421 | 425 | 426 | 450 | 451),
             Error::Net { kind, .. } => *kind != NetKind::Tls,
+            Error::Refused(Refusal::Service { fault, .. }) => fault.retry_wait().is_some(),
             _ => false,
         }
     }
@@ -721,6 +729,8 @@ pub struct KeptAnswer {
     headers: HeaderMap,
     took: Duration,
     at: std::time::Instant,
+    /// The service's direct link it was asked at (#44), with its connection cap and name.
+    unlocked: Option<crate::unlock::Unlocked>,
 }
 
 impl std::fmt::Debug for KeptAnswer {
@@ -756,10 +766,17 @@ pub async fn probe_kept(
         ));
     }
     let as_get = AsGet::default();
-    let client = client(opts, &url, &as_get)?;
+    // Through a service account (#44): its direct link is looked at instead, without the host's
+    // cookies or logins.
+    let unlocked = unlock_origin(opts, &url, None, &CancellationToken::new()).await?;
+    let (target, headers) = match &unlocked {
+        Some(u) => (u.url.clone(), HeaderMap::new()),
+        None => (url.clone(), headers),
+    };
+    let client = client(opts, &target, &as_get)?;
     let (resp, headers, took) = get(
         &client,
-        url.clone(),
+        target,
         headers,
         opts.post.as_ref(),
         &opts.user_agent,
@@ -776,10 +793,10 @@ pub async fn probe_kept(
         _ => (resp.content_length(), false),
     };
     let cd = header_text(resp.headers(), header::CONTENT_DISPOSITION);
-    let file_name = naming::file_name(cd.as_deref(), &final_url);
+    let file_name = name_for(cd.as_deref(), &final_url, unlocked.as_ref());
     let info = ProbeInfo {
         final_url,
-        size,
+        size: size.or(unlocked.as_ref().and_then(|u| u.size)),
         file_name,
     };
     let kept = from_zero.then(|| KeptAnswer {
@@ -790,8 +807,56 @@ pub async fn probe_kept(
         headers,
         took,
         at: std::time::Instant::now(),
+        unlocked,
     });
     Ok((info, kept))
+}
+
+/// A client for requests to `url`'s server that aren't downloads (a debrid service's API, #44):
+/// the same proxy, DNS and network adapter as `opts`' downloads.
+pub fn http_client(opts: &Options, url: &Url) -> Result<Client, Error> {
+    client(opts, url, &AsGet::default())
+}
+
+/// The file's name: the server's (Content-Disposition), else the service's (#44), else the
+/// address's.
+fn name_for(cd: Option<&str>, url: &Url, unlocked: Option<&crate::unlock::Unlocked>) -> String {
+    match (cd, unlocked.and_then(|u| u.file_name.as_deref())) {
+        (None, Some(name)) if !name.trim().is_empty() => naming::sanitize(name),
+        _ => naming::file_name(cd, url),
+    }
+}
+
+/// `opts.unlocker`'s direct link for `url` (#44), noted in the event log (never the link
+/// itself): None without an unlocker, for a form's POST, or when the service declines the host.
+async fn unlock_origin(
+    opts: &Options,
+    url: &Url,
+    shared: Option<&Shared>,
+    cancel: &CancellationToken,
+) -> Result<Option<crate::unlock::Unlocked>, Error> {
+    let Some(u) = &opts.unlocker else {
+        return Ok(None);
+    };
+    if opts.post.is_some() || !matches!(url.scheme(), "http" | "https") {
+        return Ok(None);
+    }
+    let note = |s: String| {
+        if let Some(sh) = shared {
+            sh.event(s);
+        }
+    };
+    match u.unlock(url, &note, cancel).await {
+        Ok(Some(x)) => {
+            note(crate::unlock::note_unlocked(u.name(), &x));
+            Ok(Some(x))
+        }
+        Ok(None) => Ok(None),
+        Err(fault) => Err(Error::Refused(Refusal::Service {
+            service: u.name().to_owned(),
+            fault,
+        })),
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -1133,6 +1198,7 @@ impl Ctx {
             &self.opts.user_agent,
             self.size,
             &self.cancel,
+            self.opts.unlocker.as_ref(),
         )
         .await
         .filter(|(u, _)| *u != self.target.lock().unwrap().url) else {
@@ -1335,12 +1401,14 @@ async fn run_fresh(
     cancel: CancellationToken,
     kept: Option<KeptAnswer>,
 ) -> Result<Outcome, Error> {
+    let mut opts = opts;
     shared.limiter.set(opts.speed_limit);
     let (shared, cancel) = (&shared, &cancel);
     shared.conn(0, |_| {});
     // Probe on connection 0: a plain GET (or the form's POST) whose body becomes the segment
     // starting at 0; or the look's answer kept for it (#28), not asked for again.
     let kept = kept.filter(|k| k.url == req.url && k.at.elapsed() < KEEP_ANSWER_FOR);
+    let mut unlocked = kept.as_ref().and_then(|k| k.unlocked.clone());
     let (as_get, client0, (resp, headers), ttfb) = match kept {
         Some(k) => {
             shared.event(
@@ -1349,13 +1417,29 @@ async fn run_fresh(
             (k.as_get, k.client, (k.resp, k.headers), k.took)
         }
         None => {
+            // Through a service account (#44): its direct link, without the host's cookies
+            // or logins. The host's link stays the download's origin, asked again (through the
+            // service) when the direct link dies.
+            unlocked = unlock_origin(&opts, &req.url, Some(shared), cancel).await?;
+            let (target, asked) = match &unlocked {
+                Some(u) => (u.url.clone(), HeaderMap::new()),
+                None => (req.url.clone(), req.headers.clone()),
+            };
             let as_get = AsGet::default();
-            let client0 = client(&opts, &req.url, &as_get)?;
+            let client0 = client(&opts, &target, &as_get)?;
             let (answer, ttfb) =
-                first_get(&client0, &req.url, &req.headers, &opts, shared, cancel).await?;
+                first_get(&client0, &target, &asked, &opts, shared, cancel).await?;
             (as_get, client0, answer, ttfb)
         }
     };
+    // The service's own cap on connections to its link (Real-Debrid's "chunks").
+    if let Some(cap) = unlocked
+        .as_ref()
+        .and_then(|u| u.max_connections)
+        .filter(|c| *c >= 1)
+    {
+        opts.max_connections = opts.max_connections.min(cap);
+    }
     let preempt_after = (ttfb * PREEMPT_TTFB).max(PREEMPT_MIN);
     let size = match resp.status() {
         StatusCode::OK => resp.content_length(),
@@ -1419,7 +1503,7 @@ async fn run_fresh(
         .map(str::to_owned);
     let (dest, _reservation, file) = open_destination(&req.dest, size, &opts, || {
         let cd = header_text(resp.headers(), header::CONTENT_DISPOSITION);
-        naming::file_name(cd.as_deref(), &final_url)
+        name_for(cd.as_deref(), &final_url, unlocked.as_ref())
     })
     .await?;
     downloading(shared, &dest, size, ranges);
@@ -1707,7 +1791,14 @@ async fn run_resume(
         let post = opts.post.as_ref();
         let agent = &opts.user_agent;
         refresh_final_url(
-            &client, &saved.url, &headers, post, agent, saved.size, &cancel,
+            &client,
+            &saved.url,
+            &headers,
+            post,
+            agent,
+            saved.size,
+            &cancel,
+            opts.unlocker.as_ref(),
         )
         .await
     } else {
@@ -1822,6 +1913,7 @@ async fn run_resume(
 /// leads now, if that is still the same file: a ranged answer with the saved size; with the
 /// headers to go on with there. None keeps the stored address (no redirect any more, a different
 /// file, or the site is unreachable).
+#[allow(clippy::too_many_arguments)]
 async fn refresh_final_url(
     client: &Client,
     origin: &Url,
@@ -1830,12 +1922,20 @@ async fn refresh_final_url(
     agent: &str,
     size: u64,
     cancel: &CancellationToken,
+    unlocker: Option<&Arc<dyn crate::unlock::Unlocker>>,
 ) -> Option<(Url, HeaderMap)> {
-    let mut asked = headers.clone();
+    // Through a service account (#44): the service gives today's direct link (the host's link
+    // itself leads to its web page); the host's cookies and logins stay with the host.
+    let unlocked = match unlocker.filter(|_| post.is_none()) {
+        Some(u) => u.unlock(origin, &|_| {}, cancel).await.ok().flatten(),
+        None => None,
+    };
+    let (target, mut asked) = match &unlocked {
+        Some(u) => (u.url.clone(), HeaderMap::new()),
+        None => (origin.clone(), headers.clone()),
+    };
     asked.insert(header::RANGE, HeaderValue::from_static("bytes=0-0"));
-    let (resp, mut headers, _) = get(client, origin.clone(), asked, post, agent, cancel)
-        .await
-        .ok()?;
+    let (resp, mut headers, _) = get(client, target, asked, post, agent, cancel).await.ok()?;
     headers.remove(header::RANGE);
     if resp.status() != StatusCode::PARTIAL_CONTENT {
         return None;

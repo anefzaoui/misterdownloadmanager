@@ -166,6 +166,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager に関する回答：無料か、安全か、IDMとの比較、ブラウザー、ビデオ、トレント、速度、MacとLinuxなど。"
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>すべてのトレントのアップロードを次の値に制限する:</g1> — デフォルトではオフです。ダウンロード中および共有中に、すべてのトレントが他のピアに送信する合計量を制限します。トレント自身のアップロード制限は、その進行状況ウィンドウで、この制限に加えて適用されます。"
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "メインのダウンロードキューを開始します。<x1/>。"
@@ -185,6 +189,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
+  },
+  "04917582aad4754c": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1>（約80 MB）は、多くのサイトが高品質のために動画と音声を別々に保存している場合、それらを結合し、音声をMP3に変換します。MDMが提供する際に<g2>ffmpeg をインストール</g2>をクリックしてください。MDMは、公開されているチェックサムと照合して確認します。"
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -469,6 +477,10 @@
   "0b00b090c6e18701": {
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "IDM で、<g1>タスク → エクスポート → IDM エクスポート ファイルへ</g1> を選択し、リストを保存します。"
+  },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>これらのアカウントでサポートされているファイル ホスト リンクをダウンロードする</g1>で、この機能をオン/オフできます。"
   },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
@@ -882,6 +894,10 @@
    "source": "Download Mister Download Manager",
    "text": "Mister Download Managerをダウンロード"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM は、サービスを通じてダウンロードするリンクと、アカウントのトークンのみをサービスに送信します。それ以外は送信しません。"
+  },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDMを実行したままにします。メインウィンドウを閉じても問題ありません。MDMはトレイで実行を続けます。<g1>タスク → 終了</g1>は使用しないでください。"
@@ -1186,6 +1202,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "セットアップで実行する項目を選択します： - <g1>ブラウザ統合を設定する（Chrome、Edge、Brave、Firefox）</g1> - <g2>.torrentファイルとマグネットリンクをMister Download Managerで開く</g2> - <g3>Windows起動時にMister Download Managerを起動する</g3> - <g4>デスクトップショートカットを作成する</g4>（チェックしない限りオフ）"
   },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "アカウントを追加する"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM は、数百ものサイトを読み込む無料プログラム gallery-dl を使用して、ギャラリー (Wikimedia Commons のカテゴリ、Flickr のアルバム、DeviantArt のギャラリー、Imgur のアルバムなど) の画像をダウンロードします。"
@@ -1254,6 +1274,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDMは、リンクの元となったウェブページ（MDMがそれを知っている場合）と、ダウンロードの<g1>ファイルのプロパティ</g1>を開きます。"
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "リストにはホストのリンクが保持されます。直接リンクは表示もコピーもされません。サービスが共有を禁止しているためです。それはダウンロードの再開データにのみ存在し、期限切れになると MDM はサービスに新しいものを要求します。"
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "進行状況ウィンドウの<g1>再開機能</g1>を確認してください。<g2>いいえ</g2>は、サーバーがファイルを分割して送信できないことを意味します。MDMはその場合、1つの接続を使用し、停止したダウンロードは最初からやり直す必要があります。そのようなサーバーの場合、ダウンロードを停止しないようにし、サーバーが接続を切断する可能性があるため、非常に低い速度制限を避けてください。"
@@ -1265,6 +1289,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "ページの読み込みのリダイレクトがどこで始まりどこで終わったか（メモリに2分間）を記録するため、MDMはクリックしたアドレスを取得し、リダイレクト先だけではありません。"
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM はホストやリンクのリストを同梱していません。サービスがどのホストをサポートしているかを伝えます。"
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1449,6 +1477,10 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "MDMが接続されているにもかかわらず、ダウンロードがブラウザーに残る"
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。..."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -1730,6 +1762,10 @@
    "source": "Changed",
    "text": "変更点"
   },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "URL を追加、クリップボード、ブラウザーの<g1>Mister Download Manager でダウンロード</g1>リンクメニュー、およびバッチダウンロードは、サービスがリンクのホストをサポートしている場合、アカウントを通じて処理されます。"
+  },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
    "text": "ブラウザで、ファイルへのリンクを右クリックし、<g1>リンクをコピー</g1>を選択します。"
@@ -1797,6 +1833,10 @@
   "2d6f7386c4547cc8": {
    "source": "The server",
    "text": "サーバー"
+  },
+  "2d7508c5d79aed56": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
+   "text": "いずれかを選択してください。ffmpegがない場合、音声が付属している品質のみがリストに表示され、MP3は表示されません（MP3はffmpegが作成します）。"
   },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
@@ -2206,6 +2246,10 @@
    "source": "Windows, the portable or plain zip",
    "text": "Windows、ポータブルまたはプレーンなzip"
   },
+  "39aae84ac9399153": {
+   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
+   "text": "<g1>Mister Download Manager でマグネットリンクと .torrent ファイルを開く</g1> — これにより、Windows はブラウザでマグネットリンクを、エクスプローラーで <x2/> ファイルを MDM で開きます。これは Windows アカウントのみに適用されます。Windows の<g3>プログラムから開く</g3>で選択したプログラムが優先されます。セットアップでこれをオンにすることもできます。"
+  },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
    "text": "動画ページの場合、MDMは初回使用時にyt-dlp（および、結合された品質が必要な場合はffmpeg）をダウンロードします。"
@@ -2522,6 +2566,10 @@
    "source": "The download list →",
    "text": "ダウンロードリスト →"
   },
+  "427727d08d8b3a51": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
+   "text": "トレントは、MDMがピアを要求するトラッカーの名前を付けます。MDMは、自分のコンピューターやローカルネットワーク上のトラッカー（<x1/>、<x2/>、<x3/>など）に連絡しないため、トレントがMDMに、それが存在するネットワークにリクエストを送信させることはできません。"
+  },
   "4285db6a822d0753": {
    "source": "<g1><g2>Yes</g2></g1><g3>MIT</g3>",
    "text": "<g1><g2>はい</g2></g1><g3>MIT</g3>"
@@ -2606,6 +2654,10 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "{date}の暫定結果です。完全な再実行が進行中であり、完了次第これらの数値は置き換えられます。"
   },
+  "44c0ee7163ab2934": {
+   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
+   "text": "<g1>実験的:</g1> Real-Debridの公開APIドキュメントに基づいて構築されており、実際の口座での確認はまだです。お使いの口座で何か問題が発生した場合は、<g2>問題を報告してください</g2>（トークンを貼り付けないでください）。"
+  },
   "44e6a85b74a3eb0a": {
    "source": "Prism",
    "text": "Prism"
@@ -2629,6 +2681,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "ページからの動画"
+  },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "ブラウザーがすでに開始していたダウンロード（MDM がブラウザーから引き継いだもの）は、そのままダウンロードされます。ホストはすでにファイルを送信しているためです。"
   },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
@@ -2698,6 +2754,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "MDMにはアドウェア、スパイウェア、抱き合わせ販売、トラッキングは一切含まれていません。ソースコードはすべて公開されており、誰でもその動作を確認できます。すべてのリリースはGitHubのサーバーでそのコードからビルドされ、ビルドプロセスも検査可能です。動画用に取得できるヘルパープログラムは、実行前に検証されます。yt-dlpは開発者の署名キーに対して、ffmpegは公開されているチェックサムに対して検証されます。MDMは、このサイトまたはプロジェクトのGitHubリリースからのみダウンロードしてください。"
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "サインイン情報の保存場所"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "オプションの接続設定 →"
@@ -2733,6 +2793,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10および11 · 64ビット</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>デブリット サービス アカウント</g2></g1> — Real-Debrid: ご自身のアカウントでファイルホストのリンクを利用できます。"
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -2925,6 +2989,10 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Windows 11が提供するすべての表示言語に対応しており、初回起動時に旗のアイコンで選択するか、「表示」→「言語」でいつでも変更できます。アラビア語、ヘブライ語、ペルシア語、ウルドゥー語、ウイグル語は右から左に表示されます。"
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "すべての操作はキーボードから実行でき、MDMはスクリーンリーダー（WindowsのナレーターやNVDAなど）に対応しています。ウィンドウ、ダイアログ、メニューは、各コントロールとその状態をスクリーンリーダーに伝え、ダウンロードリストは各ダウンロードの名前、ステータス、サイズを読み上げます。"
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3138,6 +3206,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "デブリット サービス アカウント — Mister Download Manager ヘルプ"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "当社のベンチマーク：同じPCでIDM 6.42（ライセンス版）とMDMを交互に実行し、同じローカルテストサーバーに対してテスト。中央値、Mann-Whitney p &lt; 0.001 · <g1>チャート、レポート、生データ</g1>"
@@ -3341,6 +3413,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "拡張機能は読み込まれて有効になっていますか？ブラウザの拡張機能ページで<g1>Mister Download Manager</g1>を探してください。Firefoxでは、一時的なアドオンは再起動後に消えます。<g2>ブラウザ連携</g2>を参照してください。"
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux および macOS</g1>: MDM の設定で、あなただけが読み取れるデータフォルダー (0700) に保存されており、システムのキーチェーンにはまだ保存されていません。キーチェーンへの保存は計画中です。"
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3770,6 +3846,14 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>プロパティ</g1> — 名前、ファイルの種類、フォルダーを変更します。「一般」と「トレント」はフォルダーのみを変更します。名前を変更したカテゴリはフォルダーを保持します。組み込みのカテゴリは、名前を変更するまでお使いの言語で名前を保持します。"
   },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Shift+F10"
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM は、トークンをイベントログ、クラッシュレポート、自動化 API、コマンドラインの出力に書き込むことはありません。"
+  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager 対 IDM 6.42</g1><g2>2026年10月確認 · 参照元は下記</g2>"
@@ -4162,6 +4246,10 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDMは、ウィンドウを表示せずに次の3つの方法で操作できます。"
   },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5を使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにします。プロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア検出、受信接続、UDPトラッカーをオフにします。そのスイッチがオンの間にプロキシがプロキシ / SOCKSからなくなると、トレントはそれを回避するのではなく、開始されません。"
+  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "動画の進捗ウィンドウ"
@@ -4249,6 +4337,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>上</g1> / <g2>下</g2>、<g3>左</g3> / <g4>右</g4>"
+  },
+  "72f381013a320442": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
+   "text": "<g1>ブラウザのリクエストからプロキシ/SOCKS を使用する…</g1> — 既定でオンになっています。<g2>プロキシ/SOCKS なし</g2>の場合、ブラウザと同様に、MDM は Windows のプロキシ設定を使用します。"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4569,6 +4661,10 @@
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
    "text": "Apple Silicon"
+  },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid は現在動作しています。AllDebrid と Premiumize は今後対応予定です。"
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -4902,9 +4998,17 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "開始時刻になるとキューは自動的に開始されます。朝には、完了したファイルはカテゴリの<g1>完了</g1>の下にあります。"
   },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "<g1>すべて</g1>を別のネットワーク経由でルーティングするには、コンピューター全体でVPNを使用してください。MDMは、Windowsでトレントを1つのネットワークアダプターに結び付けることはできません。"
+  },
   "846220c931fb3c98": {
    "source": "A <x1/> file's web address works too: paste it into <g2>Add URL</g2> or <g3>Torrent</g3>, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and <g4>Add torrent</g4> shows what it holds. The browser hands <x5/> downloads over when <x6/> is in <g7>Options → File types</g7>, or when you choose <g8>Download with Mister Download Manager</g8> on the link. A command line with <x9/> (silent) saves the <x10/> file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a <x11/> file.",
    "text": "<x1/>ファイルのウェブアドレスも使えます。<g2>URL を追加</g2>または<g3>トレント</g3>に貼り付けるか、ブラウザにダウンロードを渡させます。MDMは、ブラウザが送信した場合はブラウザのCookieと共にファイルをフェッチし、<g4>トレントを追加</g4>にその内容が表示されます。ブラウザは、<g7>オプション → ファイルの種類</g7>に<x6/>がある場合、またはリンクで<g8>Mister Download Manager でダウンロード</g8>を選択した場合に<x5/>ダウンロードを渡します。<x9/>（サイレント）付きのコマンドラインは、他のファイルと同様に<x10/>ファイル自体を保存します。MDMは最大10MBまでフェッチします。それより大きいものは<x11/>ファイルではありません。"
+  },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "デブリットサービスアカウント（Real-Debrid）：<g1>追加...</g1>をクリックすると、ブラウザでコードまたはAPIトークンを使ってサインインできます。サービスがサポートするホストからのリンクは、そのサービス経由でダウンロードされます。リストの順序は、アカウントが要求される順序です。<g2>デブリット サービス アカウント</g2>を参照してください。"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -4982,6 +5086,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "<g1>ブラウザー統合</g1>を参照してください。"
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "サービスが提供できないリンクは、リストにその理由が表示されます。再度サインイン、プレミアムが必要、ホストがダウンしている（MDM は後で再試行します）、ファイルが削除されているなどです。"
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "チュートリアル: ブラウザーからのダウンロードをキャッチする →"
@@ -4997,6 +5105,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "クラッシュレポート — Mister Download Manager ヘルプ"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "アカウント"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5269,6 +5381,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "2つの接続を許可するサーバー。MDMはそれを学習し、2つに制限します。IDMは480を開きました。"
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM はアカウントを確認し、その名前とプレミアムかどうかを表示します。<g1>OK</g1>をクリックすると保存されます。"
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -5562,6 +5678,10 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "セットアップでMDMをインストールし、<g1>ブラウザー統合をセットアップする（Chrome、Edge、Brave、Firefox）</g1>にチェックを入れたままにします。これによりヘルパーが登録されます。（ポータブル版ではこれができません。<g2>ポータブルモード</g2>を参照してください。）"
   },
+  "9752e164b9235433": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
+   "text": "その権限と理由：<g1>ダウンロード</g1>はダウンロードを表示して引き渡すため。<g2>クッキー</g2>はサインインしたダウンロードがMDMで機能するため。<g3>ネイティブメッセージング</g3>はMDMと通信するため。<g4>コンテキストメニュー</g4>は右クリック項目用。<g5>ストレージ</g5>は設定用。<g6>ウェブ要求</g6>は送信されたフォームと読み込まれたビデオストリームを見るため（何も変更しません）。<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザ）は、ブラウザが開くファイル（PDFなど）を代わりにダウンロードさせるため、MDMが処理するタイプの場合。Firefoxでは、<g8>webRequestBlocking</g8>がそれを行います。<g9>スクリプト</g9>は、要求時にページのリンクを読み取るため、および拡張機能がインストールされたときに既に開いているページにビデオボタンを追加するため。すべてのサイトへのアクセスは、ダウンロードとビデオがどのサイトからでも来る可能性があるためです。"
+  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "クリックしたアドレスと、リダイレクトによって到達したアドレスの両方がチェックされるため、除外したサイトは、別のサーバーに送信された場合でも除外されたままになります。それ以外のすべてはブラウザーに残されます。オプションの変更は1分以内にブラウザーに反映されます。再起動する必要はありません。"
@@ -5593,6 +5713,10 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "他の人が見ることができるもの"
+  },
+  "9806786dcda7c9ff": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
+   "text": "リストが表示されるまでお待ちください。各解像度がサイズとともに表示され、最適なものが最初に表示されます。次に、サイト独自の形式（サイトが提供するM4AまたはWebM）の<g1>音声のみ</g1>、そして最適な可変ビットレート（VBR）および320、256、192、128 kbpsの<g2>音声のみ MP3</g2>が表示されます。"
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -6006,6 +6130,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "MDMが実行されている状態で<x1/>を実行してください。"
   },
+  "a4263adda2169cf6": {
+   "source": "Playlists and mixes",
+   "text": "プレイリストとミックス"
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "トレントは、MDMがピアを要求するトラッカーの名前です。MDMは、お使いのコンピューターやローカルネットワーク（<x1/>、<x2/>、<x3/>など）上のトラッカーには接続しないため、トレントによってMDMがそのネットワークにリクエストを送信することはありません。<g4>トラッカーの追加...</g4>も同じルールに従います。そのようなアドレスは拒否され、その理由が通知されます。これは、決して要求されないアドレスを保持するよりも良いからです。"
@@ -6398,6 +6526,10 @@
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM は、ウェブブラウザと同じように、指定されたものをダウンロードします。ただし、より高速で、より詳細な制御が可能です。ソフトウェアやアップデート、ドキュメント、クラウドストレージからの自分のファイル、保存が許可されている動画や音楽、作成者が共有する Linux イメージやその他のトレントなど、ダウンロードする権利があるものすべてを日常的にダウンロードするために作られています。"
   },
+  "adfb560dd47a90fc": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "動画をダウンロードします。<x1/>は<x2/>から品質セレクターを受け取ります（<x3/> = 最良の単一ファイル、<x4/>、<x5/>、<x6/>、または<x7/> = そのビットレートのMP3形式の音声、<x8/> = 最良の可変ビットレートの音声。MP3にはffmpegが必要です）。<x9/>は字幕をその横に保存します。<x10/>からの言語コード（<x11/>）、またはアップローダーが提供したすべての字幕には<x12/>を使用します。<x13/>は代わりにサイトの自動キャプションを使用します。<x14/>はそれらを動画に埋め込みます（ffmpeg、MP4またはMKVが必要です）。"
+  },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
    "text": "再びオフにします。APIがない場合でも、アシスタントはMDMの<g1>コマンドライン</g1>と同じようにダウンロードを追加できます。"
@@ -6725,6 +6857,10 @@
   "b6a64bab432ffff1": {
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "Intelプロセッサを搭載したMac（このMacについてに<g1>プロセッサ</g1>と表示）の場合も同様です。"
+  },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "ご自身のアカウントのみを使用してください。アカウントやそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。"
   },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
@@ -7094,6 +7230,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "ヘルプ → 更新プログラムの確認の<g1>今すぐ更新</g1>：MDMは新しいバージョンをダウンロードし、チェックし、配置して再起動します（Windowsのセットアップ、ポータブル、プレーンなzip、Mac、LinuxのAppImage、.tar.gz; .debまたは.rpmはシステムのインストーラーで開きます）。MDMのリリースキーで署名されたチェックサムリストに記載されているファイルのみをインストールします。このチェックサムリストはすべてのリリースに含まれるようになりました（<x2/>）。この方法での最初の更新は0.2.1から次のバージョンになります。"
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。MDM でアカウントを設定すると、サービスがサポートするホストからのリンクはサービスを通じてロック解除され、MDM によって他のファイルと同様にダウンロードされます。すべての接続、一時停止、再開が可能です。"
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "動画上のダウンロード ボタン"
@@ -7117,6 +7257,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "邪魔にならないように表示されます。ビデオにポインターを合わせている間のみ表示され（またはプレーヤーがキーボードのフォーカスを持っている場合、<g1>Tab</g1>でボタンに移動します）、ポインターが静止するとフェードアウトし、小さなビデオや短いミュートされたループ（アニメーション画像、背景）は表示されません。フルスクリーンでは、プレーヤーが許可すればビデオに追従します。コピー保護されたビデオ（DRM）では、ビデオを保存できないと表示されます。"
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "デブリット サービス アカウント"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7306,6 +7450,10 @@
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
   },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "あなたのアカウント、あなたのルール"
+  },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
    "text": "拡張機能を一度設定すれば、Chrome、Edge、BraveでクリックしたダウンロードリンクはすべてMDMに送られます。（Firefoxも動作しますが、まだサポートはテスト中です。）"
@@ -7433,6 +7581,10 @@
   "cb14776e505e0089": {
    "source": "Can I download without the browser extension?",
    "text": "ブラウザ拡張機能なしでダウンロードできますか？"
+  },
+  "cb390e5dc0af4469": {
+   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>.",
+   "text": "<g1>ファイル</g1> — 各ファイル、そのサイズ、完了した割合。チェックを外したファイルは<g2>スキップ済み</g2>と表示されます。"
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -7601,6 +7753,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "チェックした曜日に<g1>毎日</g1>。"
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: MDM の設定で、Windows アカウント用に封印されています (DPAPI)。別のアカウントやコンピューターの設定のコピーでは読み取れません。そこで再度サインインしてください。"
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -7886,6 +8042,10 @@
    "source": "Benchmark scenario",
    "text": "ベンチマーク シナリオ"
   },
+  "d830def677dfb3f0": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
+   "text": "eguiのウィンドウは固定されたピクセル座標に描画され、ダイアログごとに1つの即時ビューポートが追加されます。<x1/>は状態（ダウンロード、キュー、設定、リストの選択）を保持し、メニュー、ツールバー、キー、IPCコマンドをアクションに変換します。各ダイアログは独自のモジュールであり、<x2/>（開いている、閉じている、値で完了）を返します。Windows専用の呼び出しは<x3/>に限定され、LinuxおよびmacOSの対応する呼び出しは<x4/>に限定されます（セッションの開始、ブラウザのホスト、サウンド、フォルダに表示、クラッシュハンドラ）。その他のファイルはすべて安全でポータブルなRustです。フォントはシステムから取得されます。WindowsのFontsフォルダ、macOSのシステムフォント、Linuxのfontconfig（<x5/>）です。ファイル名の前のアイコンも同様です（<x6/>）。Windowsシェルのシステムイメージリスト、macOS Finder（NSWorkspace）、Linuxデスクトップのアイコンテーマ（<x7/>、shared-mime-infoおよびIcon Theme Specification）です。各タイプは、ピクセルサイズごとにバックグラウンドスレッドで一度検索されます。システムのアイコンが準備できるまで、またシステムにアイコンがない場合は、Tangoのアイコン（バンドルされている）が代わりに使用されます。"
+  },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
    "text": "<g1>ワーキングセット</g1>（「詳細」タブで列を追加）は、他のプログラムと共有されるメモリを追加します。MDMはグラフィックカードでウィンドウを描画するため、グラフィックドライバーのメモリもここにカウントされ、合計で約85MBになります。"
@@ -8046,6 +8206,10 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "HTTP、BitTorrent、マグネット、ed2kに対応し、REST APIも備え、ほぼどこでも動作"
   },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "サービスを選択し、次のいずれかを実行します: - <g1>ブラウザーでサインイン</g1>: MDM がコードを表示し、サービスのページを開きます。そこにコードを入力し、MDM を許可します。ダイアログが自動的に認識します。 - または、<g2>API トークン</g2>を貼り付けます（<g3>トークンを検索</g3>をクリックすると、トークンが表示されるサービスのページが開きます）。その後、<g4>トークンを使用</g4>をクリックします。"
+  },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
    "text": "Flatpak または Snap としてインストールされたブラウザーは、サンドボックス内で実行されるため、外部のプログラムを起動できない場合があります。そのため、MDM に到達できない可能性があります。Flatpak ブラウザー（Zen の <x1/> など）は MDM のヘルパーを起動できないため、MDM はそれらを <g2>Mister Download Manager をブラウザーに追加する</g2> に表示しません。ブラウザー統合を使用するには、ディストリビューションのパッケージ（またはブラウザーメーカー独自の <x3/>、<x4/>、tarball、AppImage）からブラウザーをインストールしてください。"
@@ -8157,6 +8321,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "中断したダウンロードを再開する"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止、<x3/>で再開します。<x4/>は完了したファイルをチェックします。オプションで名前を指定して（<x5/>）Hex MD5、SHA-1、SHA-256、SHA-512、またはCRC32をチェックします。<x6/>はDNSを選択します。<x7/>（デフォルト）、サービスと問い合わせ方法（<x8/>、<x9/>、<x10/>、<x11/>、<x12/>）、DNSサーバーのアドレス（<x13/>）、またはDNS-over-HTTPSアドレスです。システムのDNSには決してフォールバックしません。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8313,6 +8481,10 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>クライアント。</g1> IDMとMDMはどちらもデフォルト設定（8接続）で、同じ文書化されたコマンドライン<x2/>を介してダウンロードを実行します。両方ともIDMの一時フォルダーがあるドライブに保存するため、クロスドライブコピーのコストはかかりません。"
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "リストの順序は、アカウントが要求される順序です。リンクは、そのホストをサポートする最初のサービスのアカウントを通じて処理されます。<g1>上へ</g1>と<g2>下へ</g2>で順序を変更できます。"
   },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
@@ -8489,6 +8661,10 @@
   "ea4c6fc1b359b676": {
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "サイトのダウンロードを永続的にブラウザーに残すには、ツールバーボタンの<g1>決してダウンロードを取得しない</g1>を使用するか、サイトを<g2>以下のサイトからの自動ダウンロードを開始しない</g2>に追加します。ファイルの種類をブラウザーに残すには、ファイルの種類リストから削除します。"
+  },
+  "ea5082456c0a9e2c": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
+   "text": "音声のみの選択（<g1>音声のみ</g1>、MP3）には字幕はありません。"
   },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
@@ -8725,6 +8901,10 @@
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
    "text": "プレイリストやチャンネルの動画を、リストに表示されている順に1行ずつ表示します。場所、長さ、タイトル、アドレスが含まれます。"
+  },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "リンクの処理について"
   },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
@@ -9001,6 +9181,10 @@
   "f9de9c27524eaf61": {
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "いいえ。MDMは、著作権保護（DRM）を破るようには設計されていません。保護された動画は保護されたままです。<g1>MDMが何のために作られたか</g1>も参照してください。"
+  },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "オプション → アカウント → 追加..."
   },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",

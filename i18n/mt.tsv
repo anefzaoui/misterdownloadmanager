@@ -108,6 +108,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Aħbi d-dettalji
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Servizz ta' debrid (Real-Debrid) iniżżel link ta' host tal-fajls bil-kont imħallas tiegħek u jagħti lil MDM link dirett. Uża l-kont tiegħek biss: il-qsim ta' kont jew il-links tiegħu jikser it-termini tas-servizzi u jista' jwassal biex jiġi sospiż. It-tniżżil li diġà beda l-browser jibqa' kif inhu.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -131,9 +135,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	Aċċetta konnessjonijiet deħlin
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	Kont
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	Kontijiet
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Żid download (Żid URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	Żid kont
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Żid download tal-lott
@@ -186,6 +202,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	Żid {n} downloads mal-lista? Kull vidjo jieħu r-ringiela tiegħu.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	Żid...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -294,6 +315,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Qed nitolbu lill-peers għal-lista tal-fajls. Il-links tal-magnet jistgħu jieħdu minuta jew tnejn.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	Qed nistaqsi lis-servizz...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -536,6 +562,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Ikkopja
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	Ikkopja l-kodiċi
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -569,6 +599,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Jum, xahar, sena
+#. page title in the Options window
+#, machine
+	Debrid service accounts	Kontijiet tas-servizz ta' debrid
 #. text in the Scheduler window
 #, machine
 	December	Diċembru
@@ -676,6 +709,10 @@
 #. text in a download's progress window
 #, machine
 	Done	Lest
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Isfel
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Niżżel
@@ -722,6 +759,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	Status tat-tniżżil
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	Niżżel links ta' file-host appoġġjati permezz ta' dawn il-kontijiet
 #. window title in the Download video window
 #, machine
 	Download video from a page	Niżżel vidjo minn paġna
@@ -893,6 +934,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	Checksum mistenni ssettjat ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Sperimentali: mibni mid-dokumentazzjoni pubblika tal-API ta' Real-Debrid, għadu mhux ikkonfermat b'kont reali.
 #. message or event log entry in the main window
 #, machine
 	Export	Esportazzjoni
@@ -967,6 +1012,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Sib fajl
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	Sib it-token tiegħi
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1016,6 +1065,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Ġm
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	kont b'xejn: il-links jeħtieġu premium
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1653,6 +1706,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Mhux issa? Iġibhom aktar tard minn Kompiti → Niżżel vidjo minn paġna.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	mhux appoġġjat minn dan is-servizz
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Mhux użat: il-partijiet tal-fajl jinkitbu ħdejn il-fajl
@@ -1747,6 +1804,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Iftaħ il-fajl li ġej meta jitlesta:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	Iftaħ il-paġna
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1772,6 +1833,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Għażliet mat-tlestija
+#. text in the Options window
+#, machine
+	Or paste your API token:	Jew waħħal it-token tal-API tiegħek:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Indirizz tal-paġna
@@ -1830,6 +1894,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Port:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	premium
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	premium, fadal {days} jum/jiem
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2099,6 +2171,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	Servers:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	Servizz
+#. text in the Options window
+#, machine
+	Service:	Servizz:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2186,6 +2265,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Itfi
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	Idħol fil-browser
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	Idħolt bħala {user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	ħriġt: idħol mill-ġdid
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Isem is-sit/Link tat-tniżżil/Paġna web prinċipali/Referer
@@ -2295,6 +2386,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Qed jibda...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	Stat
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2428,6 +2523,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Il-clipboard huwa okkupat: erġa' pprova.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	il-kodiċi skada: idħol mill-ġdid
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2833,6 +2932,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Ikteb l-isem tal-kju
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Ittajpja dan il-kodiċi fuq {page} u ħalli lil MDM; qed nistenna għalik (il-kodiċi jiskadi fi {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2851,6 +2955,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	mhux magħruf
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Fuq
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2905,6 +3013,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	Uża l-proxy (Għażliet → Proxy / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	Uża t-token
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Tużahom għal dan it-torrent? Dak li jaqbel miegħu jinżamm, il-bqija jinbidel.
@@ -3203,6 +3315,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} jitlob biex innaqqsu r-ritmu; MDM jerġa' jipprova f'minuta
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} jitlobek biex l-ewwel tippermetti dan il-kompjuter: ara l-email tiegħu
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} ma jistax jilħaq dan il-file host bħalissa; MDM jerġa' jipprova aktar tard
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} mhux qed iwieġeb; erġa' pprova aktar tard
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} jirrifjuta din il-konnessjoni (indirizz VPN jew server?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} mhux se jagħti dan il-fajl
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: idħol mill-ġdid (Għażliet → Kontijiet)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: il-kont huwa msakkar jew mhux attivat
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: il-fajl mar jew mhux disponibbli fuq il-file host
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: dan il-fajl huwa protett bil-password
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: dan jeħtieġ kont premium
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: wisq downloads f'daqqa permezz tal-kont tiegħek; MDM jerġa' jipprova
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: il-limitu tiegħek għal dan il-host tal-fajls intuża għalissa
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

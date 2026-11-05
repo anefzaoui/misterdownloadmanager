@@ -4,6 +4,60 @@
 use mdm_ipc::capture::host_matches;
 use serde::{Deserialize, Serialize};
 
+/// A debrid service account (#44), as Options → Accounts keeps it.
+#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct DebridAccount {
+    /// Stable, for the order and for errors that name the account.
+    pub id: u64,
+    pub service: mdm_debrid::ServiceKind,
+    pub enabled: bool,
+    /// The account's name at the service, and its state as last read ("premium, 143 days").
+    pub user: String,
+    pub state: String,
+    /// The credential's JSON (`mdm_debrid::Credential`), sealed on disk (`sealed`). Never
+    /// shown, logged or sent anywhere but the service.
+    #[serde(with = "sealed")]
+    pub secret: String,
+}
+
+impl Default for DebridAccount {
+    fn default() -> Self {
+        DebridAccount {
+            id: 0,
+            service: Default::default(),
+            enabled: true,
+            user: String::new(),
+            state: String::new(),
+            secret: String::new(),
+        }
+    }
+}
+
+/// Never the secret, even in a debug dump.
+impl std::fmt::Debug for DebridAccount {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("DebridAccount")
+            .field("id", &self.id)
+            .field("service", &self.service)
+            .field("user", &self.user)
+            .finish_non_exhaustive()
+    }
+}
+
+impl DebridAccount {
+    /// For `mdm_debrid`: None when its secret can't be read (signed out, or sealed for another
+    /// Windows account).
+    pub fn account(&self) -> Option<mdm_debrid::Account> {
+        let credential = serde_json::from_str(&self.secret).ok()?;
+        Some(mdm_debrid::Account {
+            id: self.id,
+            service: self.service,
+            credential,
+        })
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Settings {
@@ -125,6 +179,8 @@ pub struct Settings {
     pub proxy_host: String,
     pub proxy_port: String,
     pub proxy_user: String,
+    /// Sealed on disk like Sites Logins' passwords (`sealed`); a plain one from before still reads.
+    #[serde(with = "sealed")]
     pub proxy_pass: String,
     pub proxy_http: bool,
     pub proxy_https: bool,
@@ -155,6 +211,10 @@ pub struct Settings {
     /// Windows account (`sealed_logins`).
     #[serde(with = "sealed_logins")]
     pub site_logins: Vec<(String, String, String)>,
+    /// Options → Accounts (#44): debrid service accounts, in the order they are asked.
+    pub debrid_accounts: Vec<DebridAccount>,
+    /// "Download supported file-host links through these accounts".
+    pub debrid_on: bool,
     /// Sounds: download complete, download failed, queue started, queue stopped/finished.
     pub sounds: [(bool, String); 4],
     /// The local automation API (beyond IDM): status queries over the command channel. Off by
@@ -318,6 +378,8 @@ impl Default for Settings {
             net_adapter: String::new(),
             ftp_passive: true,
             site_logins: Vec::new(),
+            debrid_accounts: Vec::new(),
+            debrid_on: true,
             sounds: Default::default(),
             automation_api: false,
             torrent_keep_sharing: false,
@@ -944,8 +1006,7 @@ mod tests {
 mod sealed_logins {
     use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-    #[cfg(windows)]
-    const SEALED: &str = "dpapi:";
+    use super::sealed::{open, seal};
 
     pub fn serialize<S: Serializer>(
         v: &[(String, String, String)],
@@ -965,8 +1026,28 @@ mod sealed_logins {
             .map(|(site, user, pw)| (site, user, open(&pw)))
             .collect())
     }
+}
 
-    fn seal(pw: &str) -> String {
+/// One secret on disk (the proxy's password, a debrid account's credential, #44): sealed as
+/// `sealed_logins`' passwords are. Windows: DPAPI, for this account on this computer. Linux and
+/// macOS: as it is, in the data folder only its owner may read (mdm_ipc::private_dir; the system
+/// keychains are planned, #44's last phase). A secret that can't be opened (the file copied to
+/// another account) reads as none: sign in again.
+pub(crate) mod sealed {
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    #[cfg(windows)]
+    const SEALED: &str = "dpapi:";
+
+    pub fn serialize<S: Serializer>(v: &str, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(&seal(v))
+    }
+
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<String, D::Error> {
+        Ok(open(&String::deserialize(d)?))
+    }
+
+    pub(crate) fn seal(pw: &str) -> String {
         #[cfg(windows)]
         if !pw.is_empty()
             && let Some(sealed) = crate::win32::protect(pw)
@@ -980,7 +1061,7 @@ mod sealed_logins {
         pw.to_owned()
     }
 
-    fn open(stored: &str) -> String {
+    pub(crate) fn open(stored: &str) -> String {
         #[cfg(windows)]
         if let Some(b64) = stored.strip_prefix(SEALED) {
             use base64::Engine as _;
@@ -995,6 +1076,40 @@ mod sealed_logins {
 
     #[cfg(test)]
     mod tests {
+        #[test]
+        fn the_proxy_password_and_debrid_secrets_are_sealed_on_disk() {
+            let s = crate::settings::Settings {
+                proxy_pass: "proxy-s3cret".into(),
+                debrid_accounts: vec![crate::settings::DebridAccount {
+                    id: 1,
+                    user: "me".into(),
+                    secret: r#"{"kind":"token","token":"rd-s3cret"}"#.into(),
+                    ..Default::default()
+                }],
+                ..Default::default()
+            };
+            let json = serde_json::to_string(&s).unwrap();
+            if cfg!(windows) {
+                assert!(!json.contains("proxy-s3cret") && !json.contains("rd-s3cret"));
+            }
+            let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
+            assert_eq!(back.proxy_pass, "proxy-s3cret");
+            assert!(back.debrid_accounts[0].account().is_some());
+            // Never in a debug dump either.
+            assert!(!format!("{:?}", back.debrid_accounts).contains("rd-s3cret"));
+            // A plain password from before still reads; a secret sealed elsewhere reads as none
+            // (signed out).
+            let old: crate::settings::Settings =
+                serde_json::from_value(serde_json::json!({ "proxy_pass": "plain" })).unwrap();
+            assert_eq!(old.proxy_pass, "plain");
+            if cfg!(windows) {
+                let foreign =
+                    serde_json::json!({ "debrid_accounts": [{ "id": 2, "secret": "dpapi:AAAA" }] });
+                let s: crate::settings::Settings = serde_json::from_value(foreign).unwrap();
+                assert!(s.debrid_accounts[0].account().is_none());
+            }
+        }
+
         #[test]
         fn passwords_are_sealed_on_disk_and_read_back() {
             let s = crate::settings::Settings {

@@ -251,6 +251,15 @@ impl VideoDialog {
         }
     }
 
+    /// A listed playlist, as [`crate::playlistdlg::PlaylistView::sample`] makes it, its quality
+    /// the one at position `pick` (`/show video-playlist:7`).
+    pub fn show_sample_list(&mut self, pick: &str) {
+        self.page = "https://video.example/playlist".into();
+        self.looked_up = self.page.clone();
+        self.auto_look = false;
+        self.list = Some(crate::playlistdlg::PlaylistView::sample(pick));
+    }
+
     /// The sample's choice whose label starts with `prefix` (any case), chosen and scrolled into
     /// view (`/show video-subs:flac`: a screenshot of a choice below the list's first rows).
     pub fn pick(&mut self, prefix: &str) {
@@ -637,11 +646,22 @@ impl VideoDialog {
                 choices.len(),
                 17.0,
                 &mut self.rows,
-                |_, clip, i, row, look| {
+                |ui, clip, i, row, look| {
                     let c = &choices[i];
-                    // A format ("1080p mp4, 60 fps") reads left to right; its size at the trailing edge.
+                    // The icon of the file this choice gives, then the format ("1080p mp4, 60
+                    // fps", left to right); its size at the trailing edge.
+                    let file = format!("video.{}", c.ext);
+                    let kind = crate::fileicons::Kind::File(&file);
+                    crate::fileicons::paint_at(
+                        ui,
+                        clip,
+                        kind,
+                        pos2(row.left() + 4.0, row.top()),
+                        16.0,
+                    );
                     let label = choice_label(&c.label);
-                    text(clip, row.left() + 6.0, row.top() + 12.0, &label, look.ink);
+                    let x = row.left() + 4.0 + crate::fileicons::INDENT;
+                    text(clip, x, row.top() + 12.0, &label, look.ink);
                     let size = c
                         .size
                         // i18n: the video's file size is not known

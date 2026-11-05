@@ -108,6 +108,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< 詳細を非表示
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	デブリットサービス (Real-Debrid) は、ご自身の有料アカウントでファイルホストのリンクをダウンロードし、MDM に直接リンクを提供します。ご自身のアカウントのみを使用してください。アカウントまたはそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。ブラウザーが既に開始したダウンロードはそのまま残ります。
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -131,9 +135,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	受信接続を許可する
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	アカウント
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	アカウント
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ダウンロードを追加する (URL を追加する)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	アカウントの追加
 #. text in the tray icon's menu
 #, machine
 	Add batch download	バッチ ダウンロードを追加
@@ -186,6 +202,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	{n} 個のダウンロードをリストに追加しますか? 各動画は個別の行になります。
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	追加...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -294,6 +315,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ピアにファイル リストを要求しています。マグネット リンクには 1、2 分かかる場合があります。
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	サービスに問い合わせ中...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -536,6 +562,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	コピー
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	コードをコピー
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -569,6 +599,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	日、月、年
+#. page title in the Options window
+#, machine
+	Debrid service accounts	デブリットサービスアカウント
 #. text in the Scheduler window
 #, machine
 	December	12 月
@@ -676,6 +709,10 @@
 #. text in a download's progress window
 #, machine
 	Done	完了
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	下へ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	ダウンロード
@@ -722,6 +759,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	ダウンロードの状態
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	これらのアカウントでサポートされているファイルホストのリンクをダウンロードする
 #. window title in the Download video window
 #, machine
 	Download video from a page	ページからビデオをダウンロード
@@ -893,6 +934,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	予期されるチェックサムが設定されました ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	実験的: Real-Debrid の公開 API ドキュメントに基づいて構築されており、実際のアカウントではまだ確認されていません。
 #. message or event log entry in the main window
 #, machine
 	Export	エクスポート
@@ -967,6 +1012,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ファイルの検索
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	トークンを探す
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1016,6 +1065,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	金
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	無料アカウント: リンクにはプレミアムが必要です
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1653,6 +1706,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	今はしませんか？ 後で [タスク] → [ページから動画をダウンロード] から取得できます。
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	このサービスではサポートされていません
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	未使用: ファイルのパーツはファイルの隣に書き込まれます
@@ -1747,6 +1804,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	完了したら次のファイルを開く:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	ページを開く
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1772,6 +1833,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	完了時のオプション
+#. text in the Options window
+#, machine
+	Or paste your API token:	または、API トークンを貼り付けます:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ページ アドレス
@@ -1830,6 +1894,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	ポート:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	プレミアム
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	プレミアム、残り {days} 日
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2099,6 +2171,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	サーバー:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	サービス
+#. text in the Options window
+#, machine
+	Service:	サービス:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2186,6 +2265,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	シャットダウン
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	ブラウザーでサインイン
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	{user} としてサインイン済み ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	サインアウト済み: もう一度サインインしてください
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	サイト名/ダウンロードリンク/親ウェブページ/リファラー
@@ -2295,6 +2386,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	開始しています...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	状態
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2428,6 +2523,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	クリップボードがビジー状態です: もう一度お試しください。
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	コードの有効期限が切れました: もう一度サインインしてください
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2833,6 +2932,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	キューの名前を入力してください
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} でこのコードを入力し、MDM を許可してください。お待ちしています (コードの有効期限は {time} です)。
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2851,6 +2955,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	不明
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	上へ
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2905,6 +3013,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	プロキシを使用する ([オプション] → [プロキシ / SOCKS]、SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	トークンを使用
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	このトレントにこれらを使用しますか? 一致するものは保持され、残りは置き換えられます。
@@ -3203,6 +3315,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} が速度を落とすように要求しています。MDM は 1 分後に再試行します
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} がまずこのコンピューターを許可するように要求しています: メールを確認してください
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} は現在このファイルホストに到達できません。MDM は後で再試行します
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} が応答していません。後でもう一度試してください
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} がこのコンピューターのアドレスを拒否しています (VPN またはサーバーアドレスですか?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} はこのファイルを提供しません
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: もう一度サインインしてください (オプション → アカウント)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: アカウントがロックされているか、アクティブ化されていません
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: ファイルがファイルホストから削除されたか、利用できません
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: このファイルはパスワードで保護されています
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: これにはプレミアムアカウントが必要です
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: アカウントを介した同時ダウンロードが多すぎます。MDM は再試行します
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: このファイルホストの制限は現在使い果たされています
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

@@ -108,6 +108,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Piilota tiedot
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid-palvelu (Real-Debrid) lataa tiedostopalvelimen linkin omalla maksullisella tililläsi ja antaa MDM:lle suoran linkin. Käytä vain omaa tiliäsi: tilin tai sen linkkien jakaminen rikkoo palvelun ehtoja ja voi johtaa tilin jäädyttämiseen. Selaimen jo aloittamat lataukset pysyvät ennallaan.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -131,9 +135,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	Hyväksy saapuvat yhteydet
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	Tili
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	Tilit
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Lisää lataus (Lisää URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	Lisää tili
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Lisää erälataus
@@ -186,6 +202,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	Lisätäänkö luetteloon {n} latausta? Jokainen video saa oman rivinsä.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	Lisää...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -294,6 +315,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Pyydetään tiedostoluetteloa vertaisilta. Magnet-linkit voivat kestää minuutin tai kaksi.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	Kysytään palvelulta...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -536,6 +562,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Kopioi
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	Kopioi koodi
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -569,6 +599,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Päivä, kuukausi, vuosi
+#. page title in the Options window
+#, machine
+	Debrid service accounts	Debrid-palvelutilit
 #. text in the Scheduler window
 #, machine
 	December	Joulukuu
@@ -676,6 +709,10 @@
 #. text in a download's progress window
 #, machine
 	Done	Valmis
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Alas
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Lataa
@@ -722,6 +759,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	Latauksen tila
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	Lataa tuettujen tiedostopalvelimien linkit näiden tilien kautta
 #. window title in the Download video window
 #, machine
 	Download video from a page	Lataa video sivulta
@@ -893,6 +934,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	Odotettu tarkistussumma asetettu ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Kokeellinen: rakennettu Real-Debridin julkisen API-dokumentaation pohjalta, ei vielä vahvistettu oikealla tilillä.
 #. message or event log entry in the main window
 #, machine
 	Export	Vie
@@ -967,6 +1012,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Etsi tiedosto
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	Etsi tunnukseni
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1016,6 +1065,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Pe
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	ilmainen tili: linkit vaativat premium-jäsenyyden
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1653,6 +1706,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Ei nyt? Hae ne myöhemmin kohdasta Tehtävät → Lataa video sivulta.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	tämä palvelu ei tue tätä tiedostopalvelinta
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Ei käytössä: tiedoston osat kirjoitetaan tiedoston viereen
@@ -1747,6 +1804,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Avaa seuraava tiedosto, kun valmis:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	Avaa sivu
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1772,6 +1833,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Valmistumisen asetukset
+#. text in the Options window
+#, machine
+	Or paste your API token:	Tai liitä API-tunnuksesi:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Sivun osoite
@@ -1830,6 +1894,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Portti:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	premium
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	premium, {days} päivää jäljellä
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2099,6 +2171,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	Palvelimet:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	Palvelu
+#. text in the Options window
+#, machine
+	Service:	Palvelu:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2186,6 +2265,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Sammuta
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	Kirjaudu sisään selaimessa
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	Kirjautunut sisään nimellä {user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	kirjautunut ulos: kirjaudu sisään uudelleen
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Sivuston nimi/Latauslinkki/Ylätason verkkosivu/Viittaaja
@@ -2295,6 +2386,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Käynnistetään...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	Tila
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2428,6 +2523,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Leikepöytä on varattu: yritä uudelleen.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	koodi vanheni: kirjaudu sisään uudelleen
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2833,6 +2932,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Kirjoita jonon nimi
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Kirjoita tämä koodi osoitteeseen {page} ja salli MDM; odotetaan sinua (koodi vanhenee {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2851,6 +2955,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	tuntematon
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Ylös
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2905,6 +3013,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	Käytä välityspalvelinta (Asetukset → Välityspalvelin / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	Käytä tunnusta
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Käytetäänkö niitä tähän torrentiin? Yhteensopivat säilytetään, loput korvataan.
@@ -3203,6 +3315,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} pyytää hidastamaan; MDM yrittää uudelleen minuutin kuluttua
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} pyytää sinua sallimaan tämän tietokoneen ensin: katso sen sähköposti
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} ei tavoita tätä tiedostopalvelinta juuri nyt; MDM yrittää uudelleen myöhemmin
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} ei vastaa; yritä uudelleen myöhemmin
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} kieltäytyy tästä yhteydestä (VPN- tai palvelinosoite?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} ei anna tätä tiedostoa
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: kirjaudu sisään uudelleen (Asetukset → Tilit)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: tili on lukittu tai aktivoimaton
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: tiedosto on poistettu tai ei saatavilla tiedostopalvelimella
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: tämä tiedosto on salasanasuojattu
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: tämä vaatii premium-tilin
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: liian monta latausta kerralla tilisi kautta; MDM yrittää uudelleen
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: tämän tiedostopalvelun rajasi on käytetty loppuun toistaiseksi
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

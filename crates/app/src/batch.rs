@@ -352,14 +352,7 @@ impl Batch {
             text(&p, o.x + 11.0, base, label, LIGHT_TEXT());
             // The shared read-only field (it was a hand-drawn Windows 7 sunken box): the address
             // can be selected and copied, and screen readers read it.
-            winui::readonly_field(
-                ui,
-                rc,
-                &value,
-                LIGHT_BG(),
-                true,
-                ("batch-preview", y as i32),
-            );
+            winui::readonly_file(ui, rc, &value, ("batch-preview", y as i32));
         }
         text(&p, o.x + 23.0, o.y + 317.0, "...", LIGHT_TEXT());
         if urls.len() > 2 {

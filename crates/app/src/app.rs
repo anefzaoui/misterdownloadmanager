@@ -374,6 +374,10 @@ pub struct App {
     /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
     /// the downloads stopped because it changed, to start again when it allows.
     netwatch: crate::netwatch::NetWatch,
+    /// Options → Accounts (#44): the debrid accounts downloads go through, and what they were
+    /// set up from (so they are set up again only when that changes).
+    debrid: mdm_debrid::Debrid,
+    debrid_from: u64,
     route: mdm_engine::Route,
     adapter_paused: Vec<u64>,
     find: Option<crate::find::Find>,
@@ -562,11 +566,11 @@ fn seconds_now() -> u32 {
     chrono::Local::now().num_seconds_from_midnight()
 }
 
-/// The shell icon for a file name's extension.
+/// The icon for a file name's extension (empty: none).
 fn file_icon(name: &str) -> IconKey {
     match name.rsplit_once('.') {
         Some((_, ext)) if !ext.is_empty() => IconKey::Ext(ext.to_ascii_lowercase()),
-        _ => IconKey::Ext("unknown".into()),
+        _ => IconKey::Ext(String::new()),
     }
 }
 
@@ -789,6 +793,8 @@ impl App {
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             netwatch: Default::default(),
+            debrid: Default::default(),
+            debrid_from: 0,
             route: mdm_engine::Route::Any,
             adapter_paused: Vec::new(),
             find: None,
@@ -822,7 +828,7 @@ impl App {
             theme_checked: None,
             caption_set: false,
             list,
-            icons: ShellIcons::default(),
+            icons: ShellIcons,
             open_menu: None,
             alt_down: false,
             alt_alone: false,
@@ -1312,6 +1318,60 @@ impl App {
     /// everything running stops (its connections were held to the route before, or to none;
     /// sockets that are bound can't leak, this is so they don't wait for a timeout) and the
     /// torrent session with it; what was stopped so starts again once the route lets it.
+    /// Each frame (#44): the debrid accounts set up again when they, or MDM's network settings
+    /// (the API calls take the same proxy, DNS and adapter), changed; then the services' host
+    /// lists read, off the window's thread. No account: no request at all.
+    fn debrid_tick(&mut self) {
+        use std::hash::{Hash, Hasher};
+        let mut h = std::collections::hash_map::DefaultHasher::new();
+        for a in self.settings.debrid_accounts.iter().filter(|a| a.enabled) {
+            (a.id, a.service, &a.secret).hash(&mut h);
+        }
+        format!("{:?}", crate::settings::own_net().proxy).hash(&mut h);
+        self.settings.dns().hash(&mut h);
+        self.route.hash(&mut h);
+        let from = h.finish();
+        if from == self.debrid_from {
+            return;
+        }
+        self.debrid_from = from;
+        let accounts: Vec<mdm_debrid::Account> = self
+            .settings
+            .debrid_accounts
+            .iter()
+            .filter(|a| a.enabled)
+            .filter_map(crate::settings::DebridAccount::account)
+            .collect();
+        let Ok(http) = crate::debrid::http() else {
+            return;
+        };
+        let any = !accounts.is_empty();
+        self.debrid.set_accounts(accounts, http);
+        if any {
+            let debrid = self.debrid.clone();
+            self.rt.spawn(async move {
+                if let Err(e) = debrid.refresh_hosts().await {
+                    tracing::warn!("debrid host lists: {e:?}");
+                }
+            });
+        }
+    }
+
+    /// The unlocker for a download of `url` (#44): through the first account whose service takes
+    /// its host, unless turned off, or the browser had already started this download itself (it
+    /// came with the browser's own size or type, `ipc::Command`): that answer is the file already.
+    fn debrid_for(
+        &self,
+        url: &url::Url,
+        context: &ipc::Command,
+    ) -> Option<std::sync::Arc<dyn mdm_engine::Unlocker>> {
+        let browser_started = context.size.is_some() || context.mime.is_some();
+        if !self.settings.debrid_on || browser_started {
+            return None;
+        }
+        self.debrid.unlocker_for(url)
+    }
+
     fn network_adapter_tick(&mut self, ctx: &egui::Context) {
         let route = self.netwatch.route(&self.settings.net_adapter, ctx);
         crate::settings::share_route(route.clone());
@@ -1576,8 +1636,20 @@ impl App {
                     }
                 }
             }
+            // A sample playlist (#69), its quality by its place in the list: `video-playlist:7`.
+            "video-playlist" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.show_sample_list(tab);
+                }
+            }
             "existing-files" => {
-                let dir = self.downloads.join("Big Buck Bunny");
+                // In General's folder (a test's own, set in its data folder), not the system's
+                // Downloads, whose path names the user.
+                let dir = self
+                    .settings
+                    .category_dir(Category::General, &self.downloads)
+                    .join("Big Buck Bunny");
                 self.shown_existing = Some(crate::dialogs::ExistingFiles::new(&[
                     dir.join("big_buck_bunny_1080p.mkv"),
                     dir.join("subtitles.srt"),
@@ -1612,6 +1684,7 @@ impl App {
                     "connection" => 4,
                     "proxy" => 5,
                     "logins" => 6,
+                    "accounts" => 7,
                     "sounds" => 8,
                     "regional" => 9,
                     _ => 0,
@@ -1812,6 +1885,8 @@ impl App {
             proxy: self.settings.proxy_for(context),
             dns: self.settings.dns(),
             route: self.route.clone(),
+            // Through a debrid account when one takes this host (#44).
+            unlocker: self.debrid_for(url, context),
             global: Some(self.global.clone()),
             host_limits: Some(self.host_limits.clone()),
             ignore_mtime: self.settings.ignore_mtime,
@@ -6337,7 +6412,7 @@ impl App {
         }
         let mut keep = Vec::new();
         for mut c in std::mem::take(&mut self.complete) {
-            match c.show(ctx, &mut self.icons) {
+            match c.show(ctx) {
                 Outcome::Open => keep.push(c),
                 Outcome::Done(()) | Outcome::Closed => {
                     if c.dont_show {
@@ -6367,6 +6442,7 @@ impl eframe::App for App {
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
         self.network_adapter_tick(&ctx);
+        self.debrid_tick();
         dialogs::publish_main_rect(&ctx);
         while let Ok(inc) = self.commands.try_recv() {
             match inc.reply {

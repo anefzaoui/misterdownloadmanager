@@ -5,9 +5,7 @@
 //! spec y is shifted by `MENU_H` = 20. Main-window spec "baseline" is origin + ascent (the row
 //! under the glyphs); `winui::text_font` takes the last ink row, i.e. spec baseline − 1.
 
-use std::collections::HashMap;
-
-use egui::{Color32, Pos2, Rect, Stroke, TextureHandle, Ui, pos2, vec2};
+use egui::{Color32, Pos2, Rect, Stroke, Ui, pos2, vec2};
 
 use crate::icons::Icon;
 use crate::scrollbar;
@@ -62,8 +60,6 @@ pub enum IconKey {
     Ext(String),
     /// 32 × 32 (Download File Info).
     ExtLarge(String),
-    /// Windows' 32 × 32 "open folder" (Download complete).
-    FolderOpenLarge,
     /// A FamFamFam Silk icon (CC BY 2.5, assets/icons/silk/), by name.
     Silk(&'static str),
 }
@@ -97,44 +93,12 @@ fn silk(name: &str) -> Option<egui::ImageSource<'static>> {
     )
 }
 
-/// Windows shell icons as egui textures, loaded once (None elsewhere or on failure).
+/// The small icons drawn by key: Silk's (the Categories tree, the Scheduler's queues) and the
+/// file types', which fileicons.rs draws (the system's own).
 #[derive(Default)]
-pub struct ShellIcons {
-    map: HashMap<IconKey, Option<TextureHandle>>,
-}
+pub struct ShellIcons;
 
 impl ShellIcons {
-    pub fn get(&mut self, ctx: &egui::Context, key: IconKey) -> Option<egui::TextureId> {
-        self.map
-            .entry(key.clone())
-            .or_insert_with(|| {
-                #[cfg(windows)]
-                {
-                    // File types are drawn from the app's own icons (fileicons.rs), the same on
-                    // every system; Windows' shell gives only Download complete's open folder.
-                    let rgba = match &key {
-                        IconKey::FolderOpenLarge => crate::win32::folder_open_icon_large(),
-                        IconKey::Ext(_) | IconKey::ExtLarge(_) | IconKey::Silk(_) => None,
-                    }?;
-                    let side = if matches!(key, IconKey::ExtLarge(_) | IconKey::FolderOpenLarge) {
-                        32
-                    } else {
-                        16
-                    };
-                    let img = egui::ColorImage::from_rgba_unmultiplied([side, side], &rgba);
-                    let name = format!("shell-icon-{:?}", std::ptr::addr_of!(rgba));
-                    Some(ctx.load_texture(name, img, egui::TextureOptions::NEAREST))
-                }
-                #[cfg(not(windows))]
-                {
-                    let _ = ctx;
-                    None
-                }
-            })
-            .as_ref()
-            .map(|t| t.id())
-    }
-
     /// Paint the icon for `key` with its top-left at English point `min` (16 × 16, the large ones
     /// 32): placed where that is on screen, not mirrored. A generic page if unavailable.
     pub fn paint(&mut self, ui: &Ui, key: IconKey, min: Pos2) {
@@ -144,38 +108,27 @@ impl ShellIcons {
     /// `paint` through `painter`, so the icon keeps to its clip (a list scrolled sideways must
     /// not draw its icons over the pane beside it).
     pub fn paint_in(&mut self, ui: &Ui, painter: &egui::Painter, key: IconKey, min: Pos2) {
-        let side = if matches!(key, IconKey::ExtLarge(_) | IconKey::FolderOpenLarge) {
+        let side = if matches!(key, IconKey::ExtLarge(_)) {
             32.0
         } else {
             16.0
         };
         let rc = winui::rect(Rect::from_min_size(min, vec2(side, side)));
-        let min = rc.min;
         match &key {
             IconKey::Silk(name) => {
                 if let Some(src) = silk(name) {
                     paint_image(ui, painter, src, rc);
                 }
-                return;
             }
             IconKey::Ext(e) | IconKey::ExtLarge(e) => {
-                // The key holds the extension alone ("unknown" when there is none).
-                let name = format!("x.{e}");
+                // The key holds the extension alone (empty when there is none).
+                let name = if e.is_empty() {
+                    "file".to_string()
+                } else {
+                    format!("x.{e}")
+                };
                 crate::fileicons::paint(ui, painter, crate::fileicons::Kind::File(&name), rc);
-                return;
             }
-            IconKey::FolderOpenLarge => {}
-        }
-        match self.get(ui.ctx(), key) {
-            Some(id) => {
-                painter.image(
-                    id,
-                    rc,
-                    Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)),
-                    Color32::WHITE,
-                );
-            }
-            None => generic_page(painter, min),
         }
     }
 }
@@ -191,30 +144,6 @@ pub fn paint_image(ui: &Ui, painter: &egui::Painter, src: egui::ImageSource<'sta
             Color32::WHITE,
         );
     }
-}
-
-/// IDM's generic page: 12 × 16 at +2, #787673 outline, #fafafa fill, folded corner.
-fn generic_page(p: &egui::Painter, min: Pos2) {
-    let (x, y) = (min.x + 2.0, min.y);
-    fill(p, x, y, x + 11.0, y + 15.0, rgb(0x78, 0x76, 0x73));
-    fill(
-        p,
-        x + 1.0,
-        y + 1.0,
-        x + 10.0,
-        y + 14.0,
-        rgb(0xfa, 0xfa, 0xfa),
-    );
-    fill(p, x + 8.0, y, x + 11.0, y + 3.0, WINDOW_BG());
-    fill(p, x + 8.0, y + 1.0, x + 8.0, y + 3.0, rgb(0x78, 0x76, 0x73));
-    fill(
-        p,
-        x + 8.0,
-        y + 3.0,
-        x + 11.0,
-        y + 3.0,
-        rgb(0x78, 0x76, 0x73),
-    );
 }
 
 // ---- menu bar --------------------------------------------------------------------------------

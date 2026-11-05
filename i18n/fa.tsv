@@ -108,6 +108,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< مخفی کردن جزئیات
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	یک سرویس debrid (Real-Debrid) پیوند یک میزبان فایل را با حساب پولی شما دانلود می‌کند و یک پیوند مستقیم به MDM می‌دهد. فقط از حساب خود استفاده کنید: اشتراک‌گذاری یک حساب یا پیوندهای آن، شرایط خدمات را نقض می‌کند و ممکن است باعث تعلیق آن شود. دانلودهایی که مرورگر قبلا شروع کرده است، به همان صورت باقی می‌مانند.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -131,9 +135,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	پذیرش اتصالات ورودی
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	حساب
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	حساب‌ها
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	افزودن دانلود (افزودن URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	افزودن یک حساب
 #. text in the tray icon's menu
 #, machine
 	Add batch download	افزودن دانلود دسته‌ای
@@ -186,6 +202,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	آیا {n} دانلود به لیست اضافه شود؟ هر ویدیو ردیف مخصوص به خود را خواهد داشت.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	افزودن...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -294,6 +315,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	در حال درخواست لیست فایل از همتایان. لینک‌های مگنت ممکن است یک یا دو دقیقه طول بکشند.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	درخواست از سرویس...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -536,6 +562,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	کپی
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	کپی کردن کد
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -569,6 +599,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	روز، ماه، سال
+#. page title in the Options window
+#, machine
+	Debrid service accounts	حساب‌های سرویس debrid
 #. text in the Scheduler window
 #, machine
 	December	دسامبر
@@ -676,6 +709,10 @@
 #. text in a download's progress window
 #, machine
 	Done	انجام شد
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	پایین
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	بارگیری
@@ -722,6 +759,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	وضعیت بارگیری
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	پیوندهای میزبان فایل پشتیبانی‌شده را از طریق این حساب‌ها دانلود کنید
 #. window title in the Download video window
 #, machine
 	Download video from a page	بارگیری ویدئو از یک صفحه
@@ -893,6 +934,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	چک‌سام مورد انتظار تنظیم شد ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	آزمایشی: از مستندات API عمومی Real-Debrid ساخته شده است، هنوز با یک حساب واقعی تأیید نشده است.
 #. message or event log entry in the main window
 #, machine
 	Export	صادر کردن
@@ -967,6 +1012,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	یافتن فایل
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	یافتن رمز من
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1016,6 +1065,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	جمعه
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	حساب رایگان: پیوندها به اشتراک ویژه نیاز دارند
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1653,6 +1706,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	فعلا نه؟ بعدا آن‌ها را از وظایف ← دانلود ویدیو از یک صفحه دریافت کنید.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	توسط این سرویس پشتیبانی نمی‌شود
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	استفاده نشده: بخش‌های فایل در کنار فایل نوشته می‌شوند
@@ -1747,6 +1804,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	پس از اتمام، فایل زیر را باز کن:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	باز کردن صفحه
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1772,6 +1833,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	گزینه‌ها پس از تکمیل
+#. text in the Options window
+#, machine
+	Or paste your API token:	یا رمز API خود را جای‌گذاری کنید:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	نشانی صفحه
@@ -1830,6 +1894,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	پورت:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	اشتراک ویژه
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	اشتراک ویژه، {days} روز باقی مانده
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2099,6 +2171,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	سرورها:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	سرویس
+#. text in the Options window
+#, machine
+	Service:	سرویس:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2186,6 +2265,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	خاموش کردن
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	ورود به سیستم در مرورگر
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	با نام {user} ({state}) وارد شدید
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	خروج از سیستم: دوباره وارد شوید
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	نام سایت/لینک دانلود/صفحه وب والد/ارجاع‌دهنده
@@ -2295,6 +2386,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	در حال شروع...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	وضعیت
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2428,6 +2523,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	کلیپ‌بورد مشغول است: دوباره امتحان کنید.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	کد منقضی شد: دوباره وارد شوید
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2833,6 +2932,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	نام صف را تایپ کنید
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	این کد را در {page} تایپ کنید و به MDM اجازه دهید؛ منتظر شما هستیم (کد در {time} منقضی می‌شود).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2851,6 +2955,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	ناشناخته
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	بالا
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2905,6 +3013,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	استفاده از پراکسی (گزینه‌ها ← پراکسی / ساکس، SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	استفاده از رمز
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	از آن‌ها برای این تورنت استفاده شود؟ آنچه مطابقت دارد حفظ می‌شود، بقیه جایگزین می‌شوند.
@@ -3203,6 +3315,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} درخواست کاهش سرعت دارد؛ MDM در یک دقیقه دوباره تلاش خواهد کرد
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} از شما می‌خواهد ابتدا این رایانه را مجاز کنید: ایمیل آن را ببینید
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} در حال حاضر نمی‌تواند به این میزبان فایل دسترسی پیدا کند؛ MDM بعدا دوباره تلاش خواهد کرد
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} پاسخ نمی‌دهد؛ بعدا دوباره امتحان کنید
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} این اتصال را رد می‌کند (آدرس VPN یا سرور؟)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} این فایل را نمی‌دهد
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: دوباره وارد شوید (گزینه‌ها ← حساب‌ها)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: حساب قفل شده یا فعال نشده است
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: فایل از میزبان فایل حذف شده یا در دسترس نیست
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: این فایل محافظت‌شده با رمز عبور است
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: این به یک حساب ویژه نیاز دارد
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: دانلودهای همزمان زیادی از طریق حساب شما؛ MDM دوباره تلاش خواهد کرد
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: محدودیت شما برای این میزبان فایل در حال حاضر استفاده شده است
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

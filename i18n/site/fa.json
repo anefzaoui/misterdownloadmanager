@@ -5866,10 +5866,6 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
    "text": "MDM حاوی هیچ‌گونه ابزار تبلیغاتی، جاسوسی، پیشنهادهای بسته‌بندی‌شده یا ردیابی نیست. تمام کد منبع آن عمومی است، بنابراین هر کسی می‌تواند بررسی کند که چه کاری انجام می‌دهد، و هر نسخه از آن کد توسط سرورهای GitHub ساخته می‌شود، جایی که ساختار آن قابل بازرسی است."
   },
-  "a02445ca780f3ef8": {
-   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "یک پنجره egui که در مختصات پیکسلی ثابت نقاشی شده، به‌علاوه یک درگاه دید فوری برای هر گفتگو. <x1/> وضعیت (دانلودها، صف‌ها، تنظیمات، انتخاب لیست) را نگه می‌دارد و دستورات منو، نوار ابزار، کلید و IPC را به اقدامات تبدیل می‌کند. هر گفتگو ماژول خاص خود را دارد و یک <x2/> (باز، بسته، انجام شده با یک مقدار) برمی‌گرداند. فراخوانی‌های فقط برای Windows به <x3/> و معادل‌های Linux و macOS آن‌ها به <x4/> (شروع با جلسه، میزبان مرورگرها، صداها، نمایش در پوشه، کنترل‌کننده خرابی) محدود می‌شوند؛ هر فایل دیگر Rust ایمن و قابل حمل است. فونت‌ها از سیستم می‌آیند: پوشه Fonts در Windows، فونت‌های سیستمی macOS، fontconfig در Linux (<x5/>)."
-  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "ترجمه‌ای که طولانی‌تر از انگلیسی باشد، در جایی که جا نمی‌شود با <g1>...</g1> به پایان می‌رسد؛ برای خواندن کامل آن، روی آن اشاره کنید."
@@ -7886,6 +7882,10 @@
    "source": "Benchmark scenario",
    "text": "سناریوی بنچمارک"
   },
+  "d830def677dfb3f0": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
+   "text": "یک پنجره egui که در مختصات پیکسلی ثابت نقاشی شده است، به علاوه یک درگاه دید فوری برای هر گفتگو. <x1/> وضعیت را نگه می‌دارد (دانلودها، صف‌ها، تنظیمات، انتخاب لیست) و دستورات منو، نوار ابزار، کلید و IPC را به اقدامات تبدیل می‌کند. هر گفتگو ماژول خاص خود را دارد و یک <x2/> (باز، بسته، انجام شده با یک مقدار) را برمی‌گرداند. فراخوانی‌های فقط Windows به <x3/> و معادل‌های Linux و macOS آن‌ها به <x4/> محدود می‌شوند (شروع با جلسه، میزبان مرورگرها، صداها، نمایش در پوشه، کنترل‌کننده خرابی)؛ هر فایل دیگری Rust ایمن و قابل حمل است. فونت‌ها از سیستم می‌آیند: پوشه Fonts Windows، فونت‌های سیستمی macOS، fontconfig در Linux (<x5/>). آیکون‌های قبل از نام فایل‌ها نیز همینطور هستند (<x6/>): لیست‌های تصویری سیستمی پوسته Windows، Finder macOS (NSWorkspace)، تم آیکون دسکتاپ Linux (<x7/>، shared-mime-info و Icon Theme Specification). هر نوع یک بار در هر اندازه پیکسل، در یک رشته پس‌زمینه جستجو می‌شود. آیکون‌های Tango (بسته‌بندی شده) تا زمانی که آیکون سیستم آماده شود و هر جا که سیستم آیکونی ندارد، جایگزین می‌شوند."
+  },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
    "text": "<g1>مجموعه کاری</g1> (برگه Details، ستون را اضافه کنید) حافظه مشترک با برنامه‌های دیگر را نیز شامل می‌شود. MDM پنجره‌های خود را با کارت گرافیک ترسیم می‌کند، بنابراین حافظه درایور گرافیک نیز در اینجا حساب می‌شود، در مجموع حدود 85 مگابایت."
@@ -9229,6 +9229,118 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "آدرس‌های دانلود یا نام فایل‌های شما؛"
+  },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>دانلود لینک‌های میزبان فایل پشتیبانی‌شده از طریق این حساب‌ها</g1> همه این موارد را روشن و خاموش می‌کند."
+  },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM فقط لینک‌هایی را که از طریق آن دانلود می‌کنید و رمز حساب شما را به سرویس ارسال می‌کند. هیچ چیز دیگری."
+  },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "حساب خود را اضافه کنید"
+  },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "لیست لینک میزبان را نگه می‌دارد. لینک مستقیم هرگز نشان داده یا کپی نمی‌شود: سرویس‌ها اشتراک‌گذاری آن را ممنوع کرده‌اند. این لینک فقط در داده‌های ازسرگیری دانلود وجود دارد، و وقتی منقضی شود MDM از سرویس یک لینک جدید درخواست می‌کند."
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM هیچ لیستی از میزبان‌ها یا لینک‌ها را ارائه نمی‌دهد؛ سرویس می‌گوید که کدام میزبان‌ها را پشتیبانی می‌کند."
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "سرویس دی‌برید، مانند Real-Debrid، یک حساب پولی است که فایل‌ها را از میزبان‌های فایل روی سرورهای خودش دانلود می‌کند. این سرویس یک لینک مستقیم و ساده را بدون..."
+  },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "افزودن URL، کلیپ‌بورد، منوی لینک <g1>دانلود با Mister Download Manager</g1> مرورگر، و دانلودهای دسته‌ای از طریق حساب انجام می‌شوند، زمانی که سرویس آن میزبان لینک را پشتیبانی کند."
+  },
+  "44c0ee7163ab2934": {
+   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
+   "text": "<g1>تجربی:</g1> بر اساس مستندات API عمومی Real-Debrid ساخته شده و هنوز با یک حساب واقعی تأیید نشده است. اگر چیزی با حساب شما کار نمی‌کند، لطفا <g2>یک مشکل را گزارش کنید</g2> (هرگز توکن خود را در آن قرار ندهید)."
+  },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "دانلودی که مرورگر قبلا شروع کرده بود (MDM آن را از مرورگر تحویل گرفته بود) همان‌طور که هست دانلود می‌شود: میزبان قبلا فایل را ارسال می‌کند."
+  },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "محل نگهداری اطلاعات ورود"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>حساب‌های سرویس دی‌برید</g2></g1> — Real-Debrid: لینک‌های فایل‌هاست از طریق حساب کاربری خودتان."
+  },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "حساب‌های سرویس دی‌برید — راهنمای Mister Download Manager"
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux و macOS</g1>: در تنظیمات MDM، در یک پوشه داده که فقط شما می‌توانید آن را بخوانید (0700)، هنوز در Keychain سیستم نیست. نگهداری آن در Keychain برنامه‌ریزی شده است."
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM هرگز رمز را در گزارش رویداد، گزارش‌های خرابی، API اتوماسیون یا خروجی خط فرمان نمی‌نویسد."
+  },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid اکنون کار می‌کند. AllDebrid و Premiumize در مراحل بعدی خواهند آمد."
+  },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "حساب سرویس دی‌برید شما (Real-Debrid): <g1>افزودن...</g1> با کد در مرورگر یا با توکن API شما وارد می‌شود؛ سپس یک لینک از میزبانی که سرویس پشتیبانی می‌کند از طریق آن دانلود می‌شود. ترتیب لیست، ترتیب درخواست حساب‌ها است. به <g2>حساب‌های سرویس دی‌برید</g2> مراجعه کنید."
+  },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "لینکی که سرویس نمی‌تواند ارائه دهد، دلیل آن را در لیست می‌گوید: دوباره وارد شوید، نیاز به حساب پریمیوم، میزبان از کار افتاده است (MDM بعدا دوباره تلاش می‌کند)، فایل حذف شده است، و غیره."
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "حساب‌ها"
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM حساب را بررسی می‌کند و نام آن و اینکه آیا پریمیوم است را نشان می‌دهد. <g1>تأیید</g1> آن را نگه می‌دارد."
+  },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "فقط از حساب خودتان استفاده کنید. اشتراک‌گذاری یک حساب یا لینک‌های آن، شرایط سرویس‌ها را نقض می‌کند و می‌تواند منجر به تعلیق حساب شود."
+  },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "سرویس دی‌برید، مانند Real-Debrid، یک حساب پولی است که فایل‌ها را از میزبان‌های فایل روی سرورهای خودش دانلود می‌کند. این سرویس یک لینک مستقیم و ساده را بدون انتظار، محدودیت سرعت و کپچاهای میزبان برمی‌گرداند. با حساب شما در MDM، لینکی از میزبانی که سرویس شما پشتیبانی می‌کند، از طریق سرویس باز می‌شود، سپس توسط MDM مانند هر فایل دیگری دانلود می‌شود: با تمام اتصالات، قابلیت توقف و ازسرگیری."
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "حساب‌های سرویس دی‌برید"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "حساب شما، قوانین شما"
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: برای حساب Windows شما (DPAPI) مهر و موم شده است، در تنظیمات MDM. یک کپی از تنظیمات در حساب یا رایانه دیگر نمی‌تواند آن را بخواند: در آنجا دوباره وارد شوید."
+  },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "سرویس را انتخاب کنید، سپس یکی از این دو کار را انجام دهید: - <g1>ورود به مرورگر</g1>: MDM یک کد را نشان می‌دهد و صفحه سرویس را باز می‌کند. کد را در آنجا وارد کنید و به MDM اجازه دهید. کادر گفتگو خودش متوجه می‌شود. - یا <g2>رمز API</g2> خود را جای‌گذاری کنید (<g3>یافتن رمز من</g3> صفحه سرویس را که آن را نشان می‌دهد باز می‌کند)، سپس <g4>استفاده از رمز</g4> را بزنید."
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "ترتیب لیست، ترتیب درخواست از حساب‌ها است: یک لینک از طریق اولین حسابی که سرویس آن میزبان را پشتیبانی می‌کند، عبور می‌کند. <g1>بالا</g1> و <g2>پایین</g2> آن را تغییر می‌دهند."
+  },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "چه اتفاقی برای یک لینک می‌افتد"
+  },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "گزینه‌ها → حساب‌ها → افزودن..."
   }
  }
 }

@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} נבחר|{n} נבחרו|{n} נבחרו
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} סרטון וידאו|{title}: {count} סרטוני וידאו|{title}: {count} סרטוני וידאו
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: מוצג {listed} מתוך {total} סרטון וידאו|{title}: מוצגים {listed} מתוך {total} סרטוני וידאו|{title}: מוצגים {listed} מתוך {total} סרטוני וידאו
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -89,6 +98,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< הסתר פרטים
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	שירות Debrid (Real-Debrid) מוריד קישור של מארח קבצים באמצעות החשבון בתשלום שלך ומספק ל-MDM קישור ישיר. השתמש רק בחשבון שלך: שיתוף חשבון או קישוריו מפר את תנאי השירות ועלול להוביל להשעייתו. הורדות שהדפדפן כבר התחיל יישארו כפי שהן.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -112,9 +125,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	קבל חיבורים נכנסים
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	חשבון
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	חשבונות
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	הוסף הורדה (הוסף URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	הוספת חשבון
 #. text in the tray icon's menu
 #, machine
 	Add batch download	הוסף הורדת אצווה
@@ -167,6 +192,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	להוסיף {n} הורדות לרשימה? כל סרטון יקבל שורה משלו.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	הוסף...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -275,6 +305,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	מבקש עמיתים עבור רשימת הקבצים. קישורי מגנט עשויים להימשך דקה או שתיים.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	שואל את השירות...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -517,6 +552,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	העתק
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	העתק קוד
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -550,6 +589,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	יום, חודש, שנה
+#. page title in the Options window
+#, machine
+	Debrid service accounts	חשבונות שירות Debrid
 #. text in the Scheduler window
 #, machine
 	December	דצמבר
@@ -657,6 +699,10 @@
 #. text in a download's progress window
 #, machine
 	Done	בוצע
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	למטה
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	הורד
@@ -703,6 +749,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	מצב הורדה
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	הורד קישורי מארחי קבצים נתמכים דרך חשבונות אלה
 #. window title in the Download video window
 #, machine
 	Download video from a page	הורדת וידאו מדף
@@ -874,6 +924,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	סכום בדיקה צפוי הוגדר ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ניסיוני: נבנה מתיעוד ה-API הציבורי של Real-Debrid, טרם אושר עם חשבון אמיתי.
 #. message or event log entry in the main window
 #, machine
 	Export	ייצוא
@@ -948,6 +1002,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	מצא קובץ
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	מצא את האסימון שלי
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -997,6 +1055,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	ו׳
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	חשבון חינמי: קישורים דורשים פרימיום
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1634,6 +1696,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	לא עכשיו? קבל אותם מאוחר יותר מתוך משימות ← הורד וידאו מדף.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	לא נתמך על ידי שירות זה
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	לא בשימוש: חלקי קובץ נכתבים ליד הקובץ
@@ -1728,6 +1794,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	פתח את הקובץ הבא לאחר השלמה:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	פתח את הדף
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1753,6 +1823,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	אפשרויות בסיום
+#. text in the Options window
+#, machine
+	Or paste your API token:	או הדבק את אסימון ה-API שלך:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	כתובת דף
@@ -1811,6 +1884,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	יציאה:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	פרימיום
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	פרימיום, נותרו {days} ימים
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2080,6 +2161,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	שרתים:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	שירות
+#. text in the Options window
+#, machine
+	Service:	שירות:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2167,6 +2255,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	כיבוי
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	התחבר בדפדפן
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	מחובר כ-{user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	התנתק: התחבר שוב
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	שם אתר/קישור הורדה/דף אינטרנט הורה/מפנה
@@ -2276,6 +2376,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	מפעיל...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	מצב
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2409,6 +2513,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	הלוח תפוס: נסה שוב.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	הקוד פג תוקף: התחבר שוב
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2814,6 +2922,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	הקלד את שם התור
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	הקלד קוד זה ב-{page} ואפשר ל-MDM; ממתין לך (הקוד יפוג בעוד {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2832,6 +2945,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	לא ידוע
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	למעלה
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2886,6 +3003,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	השתמש בפרוקסי (אפשרויות ← פרוקסי / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	השתמש באסימון
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	האם להשתמש בהם עבור טורנט זה? מה שמתאים לו נשמר, השאר מוחלף.
@@ -3184,6 +3305,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} מבקש להאט; MDM ינסה שוב בעוד דקה
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} מבקש שתאשר מחשב זה תחילה: ראה את הדוא"ל שלו
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} לא יכול להגיע למארח קבצים זה כרגע; MDM ינסה שוב מאוחר יותר
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} אינו מגיב; נסה שוב מאוחר יותר
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} מסרב לחיבור זה (כתובת VPN או שרת?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} לא יספק קובץ זה
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: התחבר שוב (אפשרויות ← חשבונות)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: החשבון נעול או לא הופעל
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: הקובץ נעלם או אינו זמין במארח הקבצים
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: קובץ זה מוגן באמצעות סיסמה
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: נדרש חשבון פרימיום
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: יותר מדי הורדות בו-זמנית דרך החשבון שלך; MDM ינסה שוב
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: המגבלה שלך עבור מארח קבצים זה נוצלה לעת עתה
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
