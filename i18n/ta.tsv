@@ -162,7 +162,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	இலவச நீட்டிப்பைச் சேர்க்கவும்: உங்கள் உலாவியில் பதிவிறக்கும் கோப்புகள் இங்கே வரும், மேலும் வீடியோக்களுக்கு ஒரு பதிவிறக்க பொத்தான் கிடைக்கும்.
-#. message or event log entry in the main window; button in the Link grabber window
+#. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	வரிசையில் சேர்
@@ -281,6 +281,10 @@
 #. tab title: extracting downloaded archives, and Link grabber
 #, machine
 	Archives	காப்பகங்கள்
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	காப்பகங்கள் மற்றும் இணைப்பு கிராப்பர்
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -326,7 +330,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	அவை அனுப்பப்பட்டவாறே {names} ஐ மீண்டும் கொண்டு வரவா: அவற்றின் பெயர்கள், கோப்பு வகைகள் மற்றும் கோப்புறைகள்? உங்கள் சொந்த வகைகளான பொது மற்றும் டோரண்ட்கள் அப்படியே இருக்கும். ஏற்கனவே பொதுவானவற்றிற்கு மாற்றப்பட்ட பதிவிறக்கங்கள் அங்கேயே இருக்கும்.
-#. button in the Link grabber window; button in the Options window
+#. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	உலாவுக
@@ -350,7 +354,7 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	இணைப்பு கிராப்பர் மூலம்
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ரத்துசெய்
@@ -403,7 +407,7 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	கடைசியாகத் தேர்ந்தெடுக்கப்பட்டதில் "{category}" வகையின் கோப்புறையை மாற்றவும்
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
 	Check all	அனைத்தையும் சரிபார்க்கவும்
@@ -890,7 +894,7 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	பதிவிறக்கம் முடிந்ததும் காப்பகங்களைப் பிரித்தெடுக்கவும்
-#. checkbox in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
 	Extract when done	முடிந்ததும் பிரித்தெடுக்கவும்
@@ -1098,7 +1102,7 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	அறிவிப்புப் பகுதிக்கு மறை
-#. checkbox in the Link grabber window; checkbox in the Options window
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
 	Hide web pages	வலைப்பக்கங்களை மறை
@@ -1744,6 +1748,7 @@
 #, machine
 	Password	கடவுச்சொல்
 #. text in the Link grabber window; text in the Options window
+#. Link grabber: the package's archives' password (a label before its box)
 #, machine
 	Password:	கடவுச்சொல்:
 #. text in the Add torrent window
@@ -1988,6 +1993,7 @@
 #, machine
 	Save To:	சேமிக்க வேண்டிய இடம்:
 #. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
 #, machine
 	Save to:	இதில் சேமிக்க:
 #. text in a download's progress window
@@ -2223,7 +2229,7 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	வேகக் கட்டுப்படுத்தி அமைப்புகள்
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
 	Start	தொடங்கு
@@ -2810,7 +2816,7 @@
 #. text in a download's Properties window
 #, machine
 	Type:	வகை:
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	அனைத்தையும் தேர்வுநீக்கு

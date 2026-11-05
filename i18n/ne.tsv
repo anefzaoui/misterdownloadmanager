@@ -162,7 +162,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	नि:शुल्क एक्सटेन्सन थप्नुहोस्: तपाईंले आफ्नो ब्राउजरमा डाउनलोड गर्नुभएका फाइलहरू यहाँ आउँछन्, र भिडियोहरूमा डाउनलोड बटन आउँछ।
-#. message or event log entry in the main window; button in the Link grabber window
+#. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	कतारमा थप्नुहोस्
@@ -281,6 +281,10 @@
 #. tab title: extracting downloaded archives, and Link grabber
 #, machine
 	Archives	आर्काइभहरू
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	अभिलेख र लिङ्क ग्राबर
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -326,7 +330,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	के {names} लाई तिनीहरू पठाइएका बेलाको जस्तै तिनीहरूको नाम, फाइल प्रकार र फोल्डरहरू सहित फिर्ता ल्याउने हो? तपाईंका आफ्नै वर्गहरू, सामान्य र टोरेन्टहरू जस्ताका त्यस्तै रहन्छन्। सामान्यमा सारिएका डाउनलोडहरू त्यहीँ रहन्छन्।
-#. button in the Link grabber window; button in the Options window
+#. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ब्राउज गर्नुहोस्
@@ -350,7 +354,7 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	लिङ्क ग्राबरद्वारा
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	रद्द गर्नुहोस्
@@ -403,7 +407,7 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	अन्तिम चयन गरिएकोमा "{category}" श्रेणीका लागि फोल्डर परिवर्तन गर्नुहोस्
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
 	Check all	सबै जाँच गर्नुहोस्
@@ -890,7 +894,7 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	आर्काइभहरू डाउनलोड पूरा भएपछि निकाल्नुहोस्
-#. checkbox in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
 	Extract when done	पूरा भएपछि निकाल्नुहोस्
@@ -1098,7 +1102,7 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	सूचना क्षेत्रमा लुकाउनुहोस्
-#. checkbox in the Link grabber window; checkbox in the Options window
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
 	Hide web pages	वेब पृष्ठहरू लुकाउनुहोस्
@@ -1744,6 +1748,7 @@
 #, machine
 	Password	पासवर्ड
 #. text in the Link grabber window; text in the Options window
+#. Link grabber: the package's archives' password (a label before its box)
 #, machine
 	Password:	पासवर्ड:
 #. text in the Add torrent window
@@ -1988,6 +1993,7 @@
 #, machine
 	Save To:	यसमा बचत गर्नुहोस्:
 #. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
 #, machine
 	Save to:	यसमा बचत गर्नुहोस्:
 #. text in a download's progress window
@@ -2223,7 +2229,7 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	गति सीमितकर्ता सेटिङहरू
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
 	Start	सुरु गर्नुहोस्
@@ -2810,7 +2816,7 @@
 #. text in a download's Properties window
 #, machine
 	Type:	प्रकार:
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	सबै अनचेक गर्नुहोस्

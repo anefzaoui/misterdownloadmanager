@@ -1588,7 +1588,7 @@ impl OptionsDialog {
     fn archives(&mut self, ui: &mut Ui, o: Pos2) {
         let p = ui.painter().clone();
         // i18n: Options page title: extracting downloaded archives, and Link grabber
-        let title = "Archives and Link grabber";
+        let title = crate::i18n::mark("Archives and Link grabber");
         let w = winui::text_width_font(&p, winui::tahoma_bold(), title);
         header(
             ui,

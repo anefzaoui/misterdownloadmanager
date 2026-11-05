@@ -540,9 +540,9 @@ impl Grabber {
             296.0,
             &[
                 // i18n: Link grabber button (IDM's): tick every link
-                ("Check all", ButtonKind::Normal),
+                (crate::i18n::mark("Check all"), ButtonKind::Normal),
                 // i18n: Link grabber button (IDM's): untick every link
-                ("Uncheck all", ButtonKind::Normal),
+                (crate::i18n::mark("Uncheck all"), ButtonKind::Normal),
             ],
         );
         if picks[0].clicked() {
@@ -570,10 +570,10 @@ impl Grabber {
             BUTTONS_Y,
             &[
                 // i18n: Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
-                ("Add to queue", kind(false)),
+                (crate::i18n::mark("Add to queue"), kind(false)),
                 // i18n: Link grabber button: download the ticked links now
-                ("Start", kind(true)),
-                ("Cancel", ButtonKind::Normal),
+                (crate::i18n::mark("Start"), kind(true)),
+                (crate::i18n::mark("Cancel"), ButtonKind::Normal),
             ],
         );
         let (later, start, cancel) = (row[0].clicked(), row[1].clicked(), row[2].clicked());
@@ -997,7 +997,7 @@ impl Grabber {
         // Row 3: what becomes of its archives.
         let was = *extract;
         // i18n: Link grabber check box: extract the package's archives once they are downloaded
-        let extract_label = "Extract when done";
+        let extract_label = crate::i18n::mark("Extract when done");
         winui::checkbox_light(ui, o + vec2(21.0, 411.0), extract, extract_label, enabled);
         let extract_now = *extract;
         let next = 21.0 + 18.0 + wide(crate::i18n::t(extract_label)) + 24.0;

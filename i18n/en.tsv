@@ -123,7 +123,7 @@
 	Add the extension	Add the extension
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Add the free extension: files you download in your browser come here, and videos get a Download button.
-#. message or event log entry in the main window; button in the Link grabber window
+#. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 	Add to queue	Add to queue
 #. text in a dialog box
@@ -211,6 +211,9 @@
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
 	Archives	Archives
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+	Archives and Link grabber	Archives and Link grabber
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?
@@ -243,7 +246,7 @@
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.
 #. text in the Options window
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.
-#. button in the Link grabber window; button in the Options window
+#. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 	Browse	Browse
 #. button in categories.rs; button in the Options window
@@ -260,7 +263,7 @@
 	by batch download	by batch download
 #. message or event log entry in the main window
 	by Link grabber	by Link grabber
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
@@ -298,7 +301,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Change folder for "{category}" category on last selected	Change folder for "{category}" category on last selected
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 	Check all	Check all
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -652,7 +655,7 @@
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 	Extract archives when their download completes	Extract archives when their download completes
-#. checkbox in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 	Extract when done	Extract when done
 #. text in extracting archives (a download's log, the Archive password window)
@@ -802,7 +805,7 @@
 #. text in a download's progress window; text in standard windows
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 	Hide to the notification area	Hide to the notification area
-#. checkbox in the Link grabber window; checkbox in the Options window
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 	Hide web pages	Hide web pages
 #. text in the Options window
@@ -1265,6 +1268,7 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	Password
 #. text in the Link grabber window; text in the Options window
+#. Link grabber: the package's archives' password (a label before its box)
 	Password:	Password:
 #. text in the Add torrent window
 	Paste a magnet link or choose a .torrent file, then Look up.	Paste a magnet link or choose a .torrent file, then Look up.
@@ -1444,6 +1448,7 @@
 #. text in a download's progress window; text in a download's Properties window
 	Save To:	Save To:
 #. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
 	Save to:	Save to:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
@@ -1612,7 +1617,7 @@
 	Speed Limiter	Speed Limiter
 #. window title in a dialog box
 	Speed Limiter settings	Speed Limiter settings
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 	Start	Start
 #. button in a dialog box
@@ -2037,7 +2042,7 @@
 	Type what to find, and tick at least one place to look	Type what to find, and tick at least one place to look
 #. text in a download's Properties window
 	Type:	Type:
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 	Uncheck all	Uncheck all
 #. item in the Categories tree in the main window

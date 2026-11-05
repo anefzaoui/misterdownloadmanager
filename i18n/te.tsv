@@ -162,7 +162,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ఉచిత ఎక్స్‌టెన్షన్‌ను జోడించండి: మీ బ్రౌజర్‌లో మీరు డౌన్‌లోడ్ చేసే ఫైల్‌లు ఇక్కడికి వస్తాయి, మరియు వీడియోలకు డౌన్‌లోడ్ బటన్ వస్తుంది.
-#. message or event log entry in the main window; button in the Link grabber window
+#. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	క్యూకి జోడించు
@@ -281,6 +281,10 @@
 #. tab title: extracting downloaded archives, and Link grabber
 #, machine
 	Archives	ఆర్కైవ్‌లు
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	ఆర్కైవ్‌లు మరియు లింక్ గ్రాబర్‌
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -326,7 +330,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names}ను అవి షిప్ చేసిన విధంగా తిరిగి తీసుకురావాలా: వాటి పేర్లు, ఫైల్ రకాలు మరియు ఫోల్డర్‌లు? మీ స్వంత వర్గాలు, జనరల్ మరియు టోరెంట్‌లు ఉన్నవి ఉన్నట్లుగానే ఉంటాయి. ఇప్పటికే జనరల్‌కు తరలించబడిన డౌన్‌లోడ్‌లు అక్కడే ఉంటాయి.
-#. button in the Link grabber window; button in the Options window
+#. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	బ్రౌజ్ చేయండి
@@ -350,7 +354,7 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	లింక్ గ్రాబర్ ద్వారా
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	రద్దు చేయి
@@ -403,7 +407,7 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	చివరిగా ఎంచుకున్న దానిపై "{category}" వర్గం కోసం ఫోల్డర్‌ను మార్చండి
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
 	Check all	అన్నింటినీ తనిఖీ చేయండి
@@ -890,7 +894,7 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	డౌన్‌లోడ్ పూర్తయినప్పుడు ఆర్కైవ్‌లను సంగ్రహించండి
-#. checkbox in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
 	Extract when done	పూర్తయినప్పుడు సంగ్రహించు
@@ -1098,7 +1102,7 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	నోటిఫికేషన్ ప్రాంతానికి దాచు
-#. checkbox in the Link grabber window; checkbox in the Options window
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
 	Hide web pages	వెబ్ పేజీలను దాచు
@@ -1744,6 +1748,7 @@
 #, machine
 	Password	పాస్‌వర్డ్
 #. text in the Link grabber window; text in the Options window
+#. Link grabber: the package's archives' password (a label before its box)
 #, machine
 	Password:	పాస్‌వర్డ్:
 #. text in the Add torrent window
@@ -1988,6 +1993,7 @@
 #, machine
 	Save To:	ఇందులోకి సేవ్ చేయి:
 #. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
 #, machine
 	Save to:	దీనికి సేవ్ చేయి:
 #. text in a download's progress window
@@ -2223,7 +2229,7 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	స్పీడ్ లిమిటర్ సెట్టింగ్‌లు
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
 	Start	ప్రారంభించు
@@ -2810,7 +2816,7 @@
 #. text in a download's Properties window
 #, machine
 	Type:	రకం:
-#. button in the Link grabber window
+#. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	అన్నింటినీ ఎంపిక తీసివేయి
