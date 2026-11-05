@@ -221,6 +221,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   downloading." They now stay for as long as the torrent is shared.
 - **"Hide tab" was cut in longer languages** (German "Registerkarte au..."): the button grows to
   fit its label where there is room, through a shared helper other buttons can use.
+- **A download's progress file could be written again just after it stopped**
+  ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)). MDM saves a
+  download's progress every few seconds, in a file beside it. A download paused or finished
+  during one of those saves could stop before the save was done. That save then wrote an old
+  progress file a moment later. A download now stops only once its save is done.
 - **A video download could fail in MDM while yt-dlp went on and finished it**
   ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)). A line yt-dlp printed in
   the system's code page rather than UTF-8 (a title in Turkish or Russian on some Windows) ended
