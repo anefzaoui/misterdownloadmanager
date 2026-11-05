@@ -1810,6 +1810,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>共有比率が次の値で共有を停止する</g1> — 完了したトレントは、ダウンロードした量の何倍かを送信し終えると共有を停止します（2.00: 2倍）。デフォルトではオフです。"
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "アプリを右クリック → 開く（まだ公証されていません）"
@@ -5414,6 +5418,10 @@
    "source": "Select the first / last download",
    "text": "最初の/最後のダウンロードを選択"
   },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "トレントが完了した後も、共有されている間はタブが残ります。"
+  },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>すべてのファイルとインストール手順</g1><g2>GitHubのすべてのリリース</g2>"
@@ -8378,6 +8386,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "上部にある<g1>Windows の言語</g1>は、Windowsの表示言語に従います。WindowsがMDMにない言語を使用している場合、MDMは英語を表示します。"
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "これらのいずれかによって停止されたトレントは、イベントログにその旨が記載され、MDMの起動時に再度共有されることはありません。再度共有するには、制限を上げるかオフにしてください。 - <g1>すべてのトレントのアップロードを次の値に制限する</g1> — デフォルトではオフです。ダウンロード中および共有中に、すべてのトレントが他のピアに送信する合計量を制限します。トレント自身のアップロード制限は、その進捗ウィンドウで適用され、この制限に加えて適用されます。 - <g2>magnetリンクと.torrentファイルをMister Download Managerで開く</g2> — これにより、Windowsはブラウザのmagnetリンクとエクスプローラーの<x3/>ファイルをMDMで開きます。これはあなたのWindowsアカウントのみに適用され、Windowsの<g4>プログラムから開く</g4>で選択したプログラムが優先されます。セットアップ時にこれを有効にすることができます。"
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "オプション"
@@ -8769,6 +8781,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "MDM がページを検索する間、お待ちください。品質のリストが、最高のものが最初に、最後に<g1>音声のみ</g1>が表示されます。サイトにあるままの音声、次に ffmpeg（次のステップ）を使用して、最高の可変ビットレートまたは 320、256、192、128 kbps の MP3 として提供されます。"
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>共有後に共有を停止する … 分</g1> — または、すべての実行を通じてその時間共有された後に停止します。デフォルトではオフです。"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

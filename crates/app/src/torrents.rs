@@ -36,6 +36,45 @@ pub struct TorrentSpec {
     pub upload_limit: Option<u64>,
 }
 
+/// Torrent settings' seeding limits (`Settings::sharing_limits`).
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct SharingLimits {
+    /// Stop at this share ratio (sent ÷ what is there).
+    pub ratio: Option<f64>,
+    /// Stop after this many seconds of sharing once finished.
+    pub secs: Option<u64>,
+}
+
+/// Which seeding limit a finished torrent reached.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Reached {
+    /// The share ratio it reached.
+    Ratio(f64),
+    /// The seconds it shared.
+    Time(u64),
+}
+
+/// Whether `spec`, with `done` bytes there, has reached a seeding limit (the ratio first).
+pub fn sharing_limit_reached(
+    spec: &TorrentSpec,
+    done: u64,
+    limits: SharingLimits,
+) -> Option<Reached> {
+    let ratio = spec.uploaded as f64 / done.max(1) as f64;
+    if let Some(r) = limits.ratio
+        && done > 0
+        && ratio >= r
+    {
+        return Some(Reached::Ratio(ratio));
+    }
+    if let Some(s) = limits.secs
+        && spec.seeded_secs >= s
+    {
+        return Some(Reached::Time(spec.seeded_secs));
+    }
+    None
+}
+
 /// Adds up what each torrent sent, run after run: librqbit's count starts at 0 again each time
 /// a torrent resumes (and is 0 while it is paused), so a smaller count than the last one seen
 /// is all new.
@@ -599,39 +638,41 @@ impl Run {
     }
 
     pub fn details(&self) -> Details {
-        let Some(t) = self.session() else {
-            return Details {
+        self.session()
+            .and_then(|t| details_of(&t, &self.hash))
+            .unwrap_or(Details {
                 files: Vec::new(),
                 piece_length: 0,
                 peers: Vec::new(),
                 trackers: Vec::new(),
                 pieces: Vec::new(),
                 stats: None,
-            };
-        };
-        let stats = t.stats(&self.hash).ok();
-        let done = stats
-            .as_ref()
-            .map(|s| s.file_done.clone())
-            .unwrap_or_default();
-        let (entries, chosen, piece_length) = t.files(&self.hash).unwrap_or_default();
-        Details {
-            files: entries
-                .into_iter()
-                .enumerate()
-                .filter(|(_, f)| !f.padding)
-                .map(|(i, f)| {
-                    let on = chosen.as_ref().is_none_or(|c| c.contains(&i));
-                    (f, on, done.get(i).copied().unwrap_or(0))
-                })
-                .collect(),
-            piece_length,
-            peers: t.peers(&self.hash),
-            trackers: t.trackers(&self.hash),
-            pieces: t.pieces(&self.hash),
-            stats,
-        }
+            })
     }
+}
+
+/// What the progress window's torrent tabs show for `hash`, from the session: a `Run`'s
+/// torrent, or a finished one still shared without a `Run` (None: not in the session).
+pub fn details_of(t: &Torrents, hash: &str) -> Option<Details> {
+    let stats = t.stats(hash).ok()?;
+    let done = stats.file_done.clone();
+    let (entries, chosen, piece_length) = t.files(hash).unwrap_or_default();
+    Some(Details {
+        files: entries
+            .into_iter()
+            .enumerate()
+            .filter(|(_, f)| !f.padding)
+            .map(|(i, f)| {
+                let on = chosen.as_ref().is_none_or(|c| c.contains(&i));
+                (f, on, done.get(i).copied().unwrap_or(0))
+            })
+            .collect(),
+        piece_length,
+        peers: t.peers(hash),
+        trackers: t.trackers(hash),
+        pieces: t.pieces(hash),
+        stats: Some(stats),
+    })
 }
 
 /// A magnet link for a torrent (what the list shows as its address).
@@ -675,6 +716,53 @@ mod tests {
         assert_eq!(a.sent("other", 30), 30);
         a.keep(&HashSet::from(["other".to_owned()]));
         assert_eq!(a.sent("h", 90), 90);
+    }
+
+    /// #39: a finished torrent stops being shared at the share ratio or after the time set,
+    /// whichever comes first; with both off, never.
+    #[test]
+    fn seeding_limits_are_reached() {
+        let spec = |uploaded, seeded_secs| TorrentSpec {
+            hash: "h".into(),
+            files: None,
+            folder: "f".into(),
+            uploaded,
+            seeded_secs,
+            upload_limit: None,
+        };
+        let off = SharingLimits::default();
+        let ratio2 = SharingLimits {
+            ratio: Some(2.0),
+            secs: None,
+        };
+        let hour = SharingLimits {
+            ratio: None,
+            secs: Some(3600),
+        };
+        let both = SharingLimits {
+            ratio: Some(2.0),
+            secs: Some(3600),
+        };
+        assert_eq!(sharing_limit_reached(&spec(10_000, 99_999), 100, off), None);
+        assert_eq!(sharing_limit_reached(&spec(199, 0), 100, ratio2), None);
+        assert_eq!(
+            sharing_limit_reached(&spec(200, 0), 100, ratio2),
+            Some(Reached::Ratio(2.0))
+        );
+        assert_eq!(sharing_limit_reached(&spec(0, 3599), 100, hour), None);
+        assert_eq!(
+            sharing_limit_reached(&spec(0, 3600), 100, hour),
+            Some(Reached::Time(3600))
+        );
+        assert_eq!(
+            sharing_limit_reached(&spec(250, 4000), 100, both),
+            Some(Reached::Ratio(2.5))
+        );
+        assert_eq!(
+            sharing_limit_reached(&spec(500, 0), 0, ratio2),
+            None,
+            "nothing there yet"
+        );
     }
 
     #[test]

@@ -1048,7 +1048,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	범주 숨기기(&C)
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	탭 숨기기
 #. text in a download's progress window; text in standard windows
@@ -1318,6 +1318,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	알림 영역으로 최소화
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	분
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -2018,6 +2022,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	공유 중
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} 동안 공유한 후 공유가 중지되었습니다.
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	공유가 중지되었습니다. 공유 비율이 {ratio}에 도달했습니다.
 #. text in the download list
 #, machine
 	Show	표시
@@ -2193,6 +2206,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	기본 다운로드 큐 중지
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	다음 시간 동안 공유한 후 공유 중지:
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	다음 공유 비율에서 공유 중지:
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine

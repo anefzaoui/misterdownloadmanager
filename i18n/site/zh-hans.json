@@ -1810,6 +1810,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>共享率达到以下比率后停止共享</g1> — 完成的 torrent 在发送的数据量达到其自身数据量的指定倍数（2.00：两倍）后停止共享。默认关闭。"
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "右键点击应用 → 打开（尚未公证）"
@@ -5414,6 +5418,10 @@
    "source": "Select the first / last download",
    "text": "选择第一个/最后一个下载"
   },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "只要 torrent 仍在共享，其选项卡就会在下载完成后保留。"
+  },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>所有文件和安装步骤</g1><g2>GitHub 上的所有发布</g2>"
@@ -8378,6 +8386,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "顶部的<g1>Windows 语言</g1>会跟随 Windows 的显示语言。当 Windows 使用 MDM 不支持的语言时，MDM 会显示英文。"
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "因上述任一原因停止的 torrent 会在其事件日志中显示，并且在 MDM 启动时不会再次共享。提高或关闭限制以再次共享。 - <g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和共享时向其他对等点发送的总数据量。torrent 进度窗口中的上传限制会在此基础上生效。 - <g2>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g2> — 然后 Windows 会在浏览器中用 MDM 打开磁力链接，并在资源管理器中用 MDM 打开 <x3/> 文件。这仅适用于您的 Windows 账户；您在 Windows 的<g4>打开方式</g4>中选择的程序仍会优先。安装程序可以为您开启此功能。"
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "选项"
@@ -8769,6 +8781,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "请等待 MDM 查找页面。质量列表将出现，最佳质量在前，<g1>仅音频</g1>在最后：网站提供的原始音频，然后，通过 ffmpeg（下一步），以最佳可变比特率或 320、256、192 或 128 kbps 的 MP3 格式。"
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>共享时间达到以下时长后停止共享</g1> — 或者在所有运行中共享达到指定时长后停止。默认关闭。"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

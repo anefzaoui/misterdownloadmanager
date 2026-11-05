@@ -1810,6 +1810,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>Остановить раздачу при коэффициенте раздачи</g1> — завершённый торрент перестаёт раздаваться, как только он отправил в столько раз больше, чем получил (2.00: в два раза). По умолчанию отключено."
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "щёлкните правой кнопкой мыши по приложению → Открыть (пока не нотариально заверено)"
@@ -5414,6 +5418,10 @@
    "source": "Select the first / last download",
    "text": "Выбрать первую / последнюю загрузку"
   },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "Вкладки остаются после завершения торрента, пока он раздаётся."
+  },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>Все файлы и шаги установки</g1><g2>Все выпуски на GitHub</g2>"
@@ -8378,6 +8386,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "<g1>Язык Windows</g1>, расположенный вверху, соответствует языку отображения Windows. Если Windows использует язык, которого нет в MDM, MDM отображает английский."
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "Торрент, остановленный одним из этих способов, сообщает об этом в своём журнале событий и не раздаётся снова при запуске MDM. Увеличьте или отключите лимит, чтобы снова его раздавать. - <g1>Ограничить отдачу для всех торрентов до</g1> — по умолчанию отключено. Ограничивает общий объём данных, которые все ваши торренты вместе отправляют другим пирам, пока они загружают и пока они раздают. Собственный лимит отдачи торрента, в его окне прогресса, применяется сверх этого. - <g2>Открывать magnet-ссылки и .torrent-файлы с помощью Mister Download Manager</g2> — тогда Windows открывает magnet-ссылки в вашем браузере и <x3/> файлы в Проводнике с помощью MDM. Это только для вашей учётной записи Windows; программа, которую вы выбрали в <g4>Открыть с помощью</g4> Windows, остаётся первой. Установка может включить это для вас."
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "Параметры"
@@ -8769,6 +8781,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "Подождите, пока MDM загрузит страницу. Появится список качеств, лучшие — в начале, а в конце — <g1>Только аудио</g1>: звук в том виде, в каком он есть на сайте, затем, с помощью ffmpeg (следующий шаг), в формате MP3 с наилучшим переменным битрейтом или 320, 256, 192 или 128 кбит/с."
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>Остановить раздачу после раздачи в течение … минут</g1> — или как только он раздавался столько времени за все свои запуски. По умолчанию отключено."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

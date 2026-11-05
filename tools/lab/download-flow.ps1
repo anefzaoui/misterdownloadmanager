@@ -42,7 +42,8 @@ function Wait-New([string]$like, [int]$sec) {
   }
   throw "no window like '$like' within $sec s"
 }
-function Shot($h, $name) { Start-Sleep -Milliseconds 700; & "$PSScriptRoot\capwin.ps1" -Title ([DF]::Title($h)) -Out (Join-Path $OutDir $name) }
+# By a title pattern, not the title read now: the progress window's title changes every second.
+function Shot([string]$like, $name) { Start-Sleep -Milliseconds 700; & "$PSScriptRoot\capwin.ps1" -Pid $idmPid -Title $like -Out (Join-Path $OutDir $name) }
 function Press($h, [string]$caption) {
   foreach ($c in @($caption, "&$caption")) {
     $b = [DF]::FindWindowEx($h, [IntPtr]::Zero, "Button", $c)
@@ -58,13 +59,13 @@ try {
   Start-Sleep -Milliseconds 800
   & "C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "http://127.0.0.1:$Port/gen/$Size/$file" /p $dl /f $file
   $info = Wait-New "Download File Info*" 20
-  Shot $info "file-info.png"
+  Shot "Download File Info*" "file-info.png"
   Press $info "Start Download"
   $prog = Wait-New "*$file*" 20
   Start-Sleep -Seconds 3
-  Shot $prog "progress.png"
+  Shot "*$file*" "progress.png"
   $done = Wait-New "Download complete*" 600
-  Shot $done "complete.png"
+  Shot "Download complete*" "complete.png"
   [DF]::PostMessage($done, 0x111, [IntPtr]2, [IntPtr]::Zero) | Out-Null   # IDCANCEL = Close
 } finally {
   Stop-Process $srv.Id -ErrorAction SilentlyContinue

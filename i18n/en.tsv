@@ -763,7 +763,7 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Hide &categories	Hide &categories
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 	Hide tab	Hide tab
 #. text in a download's progress window; text in standard windows
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
@@ -958,6 +958,9 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 	Minimize to the notification area	Minimize to the notification area
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+	minutes	minutes
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 	Missing	Missing
@@ -1462,6 +1465,13 @@
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 	Sharing	Sharing
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+	Sharing stopped after sharing for {time}	Sharing stopped after sharing for {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+	Sharing stopped: the share ratio reached {ratio}	Sharing stopped: the share ratio reached {ratio}
 #. text in the download list
 	Show	Show
 #. message or event log entry in the main window
@@ -1586,6 +1596,12 @@
 	Stop listing	Stop listing
 #. text in the tray icon's menu
 	Stop main download queue	Stop main download queue
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+	Stop sharing after sharing for	Stop sharing after sharing for
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+	Stop sharing at a share ratio of	Stop sharing at a share ratio of
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 	Stop the torrent engine when no torrent is running	Stop the torrent engine when no torrent is running

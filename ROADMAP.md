@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
+  tabs while it is shared ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ A paused or finished download no longer leaves its progress file to be written again a moment
   later ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)), and a download
   finishing during a save no longer fails ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116))
@@ -89,8 +91,7 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents, the rest: seeding limits, more torrent actions, and RSS feeds with auto-download
-  rules
+- 🔄 Torrents, the rest: more torrent actions, and RSS feeds with auto-download rules
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 
 ### Bugs being looked into

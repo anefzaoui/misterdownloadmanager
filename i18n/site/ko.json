@@ -1810,6 +1810,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e8a1b97e1a4cc22": {
+   "source": "<g1>Stop sharing at a share ratio of</g1> — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.",
+   "text": "<g1>다음 공유 비율에서 공유 중지:</g1> — 완료된 토렌트는 보낸 데이터 양이 가진 데이터 양의 특정 배수(예: 2.00은 두 배)가 되면 공유를 중지합니다. 기본적으로 꺼져 있습니다."
+  },
   "2e8e42ecb2f887f8": {
    "source": "right-click the app → Open (not notarized yet)",
    "text": "앱을 마우스 오른쪽 버튼으로 클릭 → 열기 (아직 공증되지 않음)"
@@ -5414,6 +5418,10 @@
    "source": "Select the first / last download",
    "text": "첫 번째/마지막 다운로드 선택"
   },
+  "96762962430d58e1": {
+   "source": "The tabs stay once the torrent has finished, for as long as it is shared.",
+   "text": "토렌트가 완료되면 공유되는 동안 탭은 유지됩니다."
+  },
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>모든 파일 및 설치 단계</g1><g2>GitHub의 모든 릴리스</g2>"
@@ -8378,6 +8386,10 @@
    "source": "<g1>Windows' language</g1>, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.",
    "text": "맨 위에 있는 <g1>Windows 언어</g1>는 Windows의 표시 언어를 따릅니다. Windows가 MDM에 없는 언어를 사용하는 경우 MDM은 영어를 표시합니다."
   },
+  "ec8dbbc2dc38cd32": {
+   "source": "A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again. - <g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it. - <g2>Open magnet links and .torrent files with Mister Download Manager</g2> — Windows then opens magnet links in your browser and <x3/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g4>Open with</g4> stays first. The setup can turn it on for you.",
+   "text": "이러한 설정 중 하나로 중지된 토렌트는 이벤트 로그에 표시되며, MDM이 시작될 때 다시 공유되지 않습니다. 다시 공유하려면 제한을 높이거나 끄십시오. - <g1>모든 토렌트의 업로드 제한</g1> — 기본적으로 꺼져 있습니다. 모든 토렌트가 다운로드 중이거나 공유 중일 때 다른 피어에게 보내는 총량을 제한합니다. 토렌트 자체의 진행 창에 있는 업로드 제한은 이 제한 위에 적용됩니다. - <g2>마그넷 링크 및 .torrent 파일을 Mister Download Manager로 열기</g2> — 그러면 Windows는 브라우저에서 마그넷 링크를, 탐색기에서 <x3/> 파일을 MDM으로 엽니다. 이 설정은 사용자 Windows 계정에만 적용됩니다. Windows의 <g4>다른 이름으로 열기</g4>에서 선택한 프로그램이 우선합니다. 설치 프로그램에서 이 기능을 켤 수 있습니다."
+  },
   "ec99486fc82e0b86": {
    "source": "Options",
    "text": "옵션"
@@ -8769,6 +8781,10 @@
   "f7f35f6dda096e0a": {
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "MDM이 페이지를 찾는 동안 기다려 주세요. 품질 목록이 가장 좋은 것부터 나타나며, 맨 끝에는 <g1>오디오만</g1> 있습니다. 사이트에서 제공하는 오디오, 그리고 ffmpeg(다음 단계)을 사용하여 최고 가변 비트레이트 또는 320, 256, 192, 128kbps MP3로 변환된 오디오가 표시됩니다."
+  },
+  "f8092cd791a22a18": {
+   "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
+   "text": "<g1>다음 시간 동안 공유한 후 공유 중지: …분</g1> — 또는 모든 실행에서 해당 시간 동안 공유된 후 중지됩니다. 기본적으로 꺼져 있습니다."
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
