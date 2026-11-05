@@ -146,7 +146,8 @@ const FAILED: &str = "direct3d-failed.txt";
 /// Direct3D failed here (before this start, or in it) and wasn't chosen again since.
 static DIRECT3D_FAILED: AtomicBool = AtomicBool::new(false);
 
-/// For View → Draw with's note.
+/// For View → Draw with's note (Windows: the menu is there only).
+#[cfg(windows)]
 pub fn direct3d_failed() -> bool {
     DIRECT3D_FAILED.load(Ordering::Relaxed)
 }
@@ -192,6 +193,7 @@ fn remember_failure(why: &str) {
 }
 
 /// Direct3D chosen again (View → Draw with): its next start is tried.
+#[cfg(windows)]
 pub fn forget_failure() {
     DIRECT3D_FAILED.store(false, Ordering::Relaxed);
     for name in [FAILED, STARTING] {
@@ -234,6 +236,7 @@ fn since_start() -> u128 {
 /// What draws now (set once the window started), for View → Draw with.
 static ACTIVE: OnceLock<Api> = OnceLock::new();
 
+#[cfg(windows)]
 pub fn active() -> Option<Api> {
     ACTIVE.get().copied()
 }
