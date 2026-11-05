@@ -25,6 +25,8 @@ Everything below ships together, in one release.
   IP blocklist ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40))
 - ✅ Torrents: a speed limit per torrent, remembered limits, and the global cap covering torrents
   too ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
+- ✅ Torrents: upload limits (all torrents, and each one), and a share ratio that survives pauses
+  and restarts ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Google Drive: public files download by their share links
   ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)); folders come later
 - ✅ Video downloads: Stop ends yt-dlp and everything it started
@@ -70,8 +72,8 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents, the rest: upload limits, a share ratio that survives restarts, seeding limits, more
-  torrent actions, and RSS feeds with auto-download rules
+- 🔄 Torrents, the rest: seeding limits, more torrent actions, and RSS feeds with auto-download
+  rules
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 
 ### Bugs being looked into

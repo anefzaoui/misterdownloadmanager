@@ -110,6 +110,11 @@ pub struct Progress {
     /// A limit change to report to the app (`Action::Limit`), and whether to remember it.
     pending_limit: Option<(Option<u64>, bool)>,
     remember: bool,
+    /// A torrent's own upload limit on the Speed Limiter tab: on, and its KBytes/sec box.
+    up_on: bool,
+    up_kb: String,
+    /// An upload limit change to report (`Action::UploadLimit`).
+    pending_upload: Option<Option<u64>>,
     show_complete: bool,
     /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
     pub keep_sharing: bool,
@@ -130,6 +135,8 @@ pub enum Action {
     /// Set this download's speed limit (bytes/s, None = off).
     /// This download's limit (None: unlimited); `true`: remember it for the file.
     Limit(Option<u64>, bool),
+    /// A torrent's own upload limit (bytes/s, None: off), kept with it (`TorrentSpec`).
+    UploadLimit(Option<u64>),
     /// Close the dialog, keep downloading.
     Close,
 }
@@ -147,6 +154,9 @@ impl Progress {
             limit_init: false,
             pending_limit: None,
             remember: false,
+            up_on: false,
+            up_kb: "50".into(),
+            pending_upload: None,
             show_complete,
             keep_sharing: false,
             hang_up: false,
@@ -241,6 +251,14 @@ impl Progress {
         let action = match (action, self.pending_limit.take()) {
             (Action::None, Some((limit, remember))) => Action::Limit(limit, remember),
             (a, _) => a,
+        };
+        // An upload change waits a frame when a download one goes first (one action a frame).
+        let action = match action {
+            Action::None => self
+                .pending_upload
+                .take()
+                .map_or(Action::None, Action::UploadLimit),
+            a => a,
         };
         if matches!(action, Action::Close | Action::Cancel) {
             crate::dialogs::forget_place(ctx, key);
@@ -391,6 +409,10 @@ impl Progress {
     fn limiter_page(&mut self, ui: &mut Ui, o: Pos2, item: &Item) -> bool {
         let p = ui.painter().clone();
         if !self.limit_init {
+            if let Some(rate) = item.torrent.as_ref().and_then(|t| t.upload_limit) {
+                self.up_on = true;
+                self.up_kb = (rate / 1024).max(1).to_string();
+            }
             if let Some(rate) = item.live.as_ref().and_then(|l| l.dl.speed_limit()) {
                 self.limiter = true;
                 self.limit_kb = (rate / 1024).max(1).to_string();
@@ -417,24 +439,31 @@ impl Progress {
         };
         text(&p, o.x + 136.0, o.y + 51.0, &rate, winui::TEXT());
         let was_on = self.limiter;
-        winui::checkbox(
+        // A torrent's upload limit takes the right half (x 290): the download side's captions
+        // stop before it.
+        let torrent = item.torrent.is_some();
+        winui::checkbox_until(
             ui,
             o + vec2(33.0, 64.0),
             &mut self.limiter,
             "Use Speed Limiter",
             true,
+            torrent.then_some(286.0),
         );
         let label = if self.limiter {
             winui::TEXT()
         } else {
             DISABLED
         };
-        text(
+        winui::fit(
+            ui,
             &p,
             o.x + 33.0,
             o.y + 92.0,
             crate::i18n::t("Maximum download speed:"),
             label,
+            o.x + if torrent { 284.0 } else { 525.0 },
+            ("limit-label", self.id),
         );
         let rate_box = winui::edit_right(
             ui,
@@ -504,7 +533,58 @@ impl Progress {
             crate::i18n::t("on download stop/resume"),
             winui::TEXT(),
         );
+        if item.torrent.is_some() {
+            self.upload_limit(ui, &p, o);
+        }
         hide_tab(ui, o)
+    }
+
+    /// A torrent's own upload limit, right of the download one (#39): kept with the torrent,
+    /// so it applies again whenever it runs or shares.
+    fn upload_limit(&mut self, ui: &mut Ui, p: &egui::Painter, o: Pos2) {
+        let was_on = self.up_on;
+        winui::checkbox_until(
+            ui,
+            o + vec2(290.0, 64.0),
+            &mut self.up_on,
+            // i18n: a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
+            "Limit uploading",
+            true,
+            Some(525.0),
+        );
+        let label = if self.up_on { winui::TEXT() } else { DISABLED };
+        winui::fit(
+            ui,
+            p,
+            o.x + 290.0,
+            o.y + 92.0,
+            // i18n: a torrent's progress window, Speed Limiter tab: label above the upload speed box
+            crate::i18n::t("Maximum upload speed:"),
+            label,
+            o.x + 525.0,
+            ("upload-label", self.id),
+        );
+        let rate_box = winui::edit_right(
+            ui,
+            r(o, 290.0, 100.0, 77.0, 23.0),
+            &mut self.up_kb,
+            self.up_on,
+        );
+        self.up_kb.retain(|c| c.is_ascii_digit());
+        let typed = rate_box.lost_focus()
+            || (rate_box.has_focus() && winui::enter_pressed(ui))
+            || winui::value_set_by_assistive(&rate_box);
+        text(
+            p,
+            o.x + 375.0,
+            o.y + 113.0,
+            crate::i18n::t("KBytes/sec"),
+            label,
+        );
+        let kb: u64 = self.up_kb.parse().unwrap_or(0);
+        if (was_on != self.up_on || (self.up_on && typed)) && !(self.up_on && kb == 0) {
+            self.pending_upload = Some(self.up_on.then_some(kb * 1024));
+        }
     }
 
     /// Options on completion → "Show download complete dialog" for this file.
@@ -918,9 +998,17 @@ impl Progress {
             TTab::General => {
                 let st = d.stats.as_ref();
                 let have = pieces.iter().filter(|b| **b).count();
-                let ratio = st.filter(|s| s.done > 0).map_or("0.00".into(), |s| {
-                    format!("{:.2}", s.uploaded as f64 / s.done as f64)
-                });
+                // What it sent in all its runs (#39; librqbit counts only this one), against what
+                // it has: the same after a pause or a restart.
+                let spec = item.torrent.as_ref();
+                let sent = spec.map_or(0, |t| t.uploaded);
+                let done = st.map_or(item.downloaded, |s| s.done);
+                let ratio = if done > 0 {
+                    format!("{:.2}", sent as f64 / done as f64)
+                } else {
+                    "0.00".into()
+                };
+                let shared = spec.map_or(0, |t| t.seeded_secs);
                 let hash = item
                     .torrent
                     .as_ref()
@@ -961,10 +1049,15 @@ impl Progress {
                     vec![
                         // i18n: how much was sent to other peers
                         t("Sent"),
-                        st.map_or(String::new(), |s| model::size(s.uploaded)),
+                        model::size(sent),
                     ],
                     // i18n: sent divided by received
                     vec![t("Share ratio"), ratio],
+                    vec![
+                        // i18n: a torrent's General tab: how long it has been shared once finished, in all
+                        t("Shared for"),
+                        model::time(shared as f64),
+                    ],
                     // i18n: label before the folder the torrent is saved in
                     vec![t("Saved in"), folder],
                     vec![

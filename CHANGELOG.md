@@ -32,6 +32,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   `--dns`. Video pages and torrent trackers still use the system's DNS.
 - **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
   drop-down list's choice by its text, and open or close the list.
+- **Torrents: upload limits, and a share ratio that lasts**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Torrent settings can
+  limit what all torrents together send, and a torrent's progress window can limit its own, kept
+  with it. Its General tab now counts what it sent and how long it shared over all its runs, so
+  the share ratio no longer starts again at 0 after a pause or a restart.
 - **A file-type icon before every file name**: the download list, Download File Info, Properties,
   Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
   audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
