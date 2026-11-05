@@ -65,6 +65,36 @@ pub(crate) fn find_own_window(title: &str) -> Option<HWND> {
     (!f.found.is_null()).then_some(f.found)
 }
 
+/// Off-screen test runs (MDM_OFFSCREEN=1): every top-level window of ours gets WS_EX_NOACTIVATE,
+/// so Windows never makes it the foreground window, whatever asks (a click, a dialog coming to
+/// the front, an accessibility client): the user's keystrokes stay in their own window while
+/// tests run. UI Automation still works on them (Select, Invoke, Toggle need no activation).
+/// Cheap: only our own windows are touched, once each.
+pub fn keep_from_foreground() {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetWindowThreadProcessId, IsWindowVisible, WS_EX_NOACTIVATE,
+    };
+    unsafe extern "system" fn cb(hwnd: HWND, lparam: LPARAM) -> windows_sys::core::BOOL {
+        let pid = lparam as u32;
+        let mut owner = 0u32;
+        // SAFETY: plain queries and a style change on a window of this process.
+        unsafe {
+            GetWindowThreadProcessId(hwnd, &mut owner);
+            if owner == pid && IsWindowVisible(hwnd) != 0 {
+                let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
+                if ex & WS_EX_NOACTIVATE == 0 {
+                    SetWindowLongPtrW(hwnd, GWL_EXSTYLE, (ex | WS_EX_NOACTIVATE) as isize);
+                }
+            }
+        }
+        1
+    }
+    // SAFETY: the callback only reads its pid from lparam.
+    unsafe {
+        EnumWindows(Some(cb), GetCurrentProcessId() as LPARAM);
+    }
+}
+
 /// Give our window titled `title` IDM's modal-dialog frame (WS_EX_DLGMODALFRAME, no sizing
 /// frame: 3 px borders, 26 px caption) and resize it so the client stays `client` points, at
 /// `scale` pixels per point (the display's scaling times any zoom), with the frame measured for

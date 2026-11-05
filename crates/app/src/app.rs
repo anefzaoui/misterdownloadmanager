@@ -5555,6 +5555,13 @@ impl eframe::App for App {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         // The freeze watchdog times every frame (crash.rs).
         crate::crash::frame_begin();
+        // Off-screen test runs: no window of ours may become the foreground one (win32.rs). Linux
+        // and macOS need no such pass: their off-screen windows open inactive (main.rs `quiet`)
+        // and nothing raises them then (dialogs::raise).
+        #[cfg(windows)]
+        if crate::offscreen() {
+            crate::win32::keep_from_foreground();
+        }
         crate::settings::share_proxy(self.settings.proxy());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
