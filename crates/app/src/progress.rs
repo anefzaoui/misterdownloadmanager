@@ -11,6 +11,81 @@ use crate::model::{self, Item, Status, size3};
 // from the right in a right-to-left interface), `text` starts at an English pen.
 use crate::winui::{self, ButtonKind, fill_l as fill, px_l as px, r, text};
 
+use crate::winui::caption::CaptionButton;
+
+/// The drawn title bar's height (#63): Windows only, where the frame is ours
+/// (win32::progress_frame); Linux and macOS keep the system's decorations, which take no buttons
+/// of ours (Wayland even places them itself), so the hide button sits in the tab row there.
+const TITLE_H: f32 = if cfg!(windows) {
+    crate::winui::caption::CAPTION_H
+} else {
+    0.0
+};
+
+/// The frame applied to a progress window (Windows): its client size, pixels per point × 1000
+/// and its system menu's "Hide to the notification area" (translated, when there is one).
+type Framed = ([f32; 2], u32, Option<String>);
+
+/// The title bar's buttons, from the window's end: Close, Maximize (greyed: a fixed size, as
+/// IDM's), Minimize, and with a tray our "hide to the notification area". None where the system
+/// draws the title bar.
+fn caption_buttons(tray: bool) -> Vec<(CaptionButton, bool)> {
+    if !cfg!(windows) {
+        return Vec::new();
+    }
+    let mut b = vec![
+        (CaptionButton::Close, true),
+        (CaptionButton::Maximize, false),
+        (CaptionButton::Minimize, true),
+    ];
+    if tray {
+        b.push((CaptionButton::ToTray, true));
+    }
+    b
+}
+
+/// The title bar where it's ours (Windows), `width` points wide at `o`; the button pressed. Where
+/// its buttons and icon are goes to the window's hit test (win32::set_caption_hits), in client
+/// pixels, each frame (`hwnd`: the window, once its frame is applied).
+fn draw_caption(
+    ui: &mut Ui,
+    o: Pos2,
+    width: f32,
+    title: &str,
+    buttons: &[(CaptionButton, bool)],
+    hwnd: Option<isize>,
+) -> Option<CaptionButton> {
+    if !cfg!(windows) {
+        return None;
+    }
+    let rect = egui::Rect::from_min_size(o, vec2(width, TITLE_H));
+    let bar = crate::winui::caption::title_bar(ui, rect, title, buttons);
+    #[cfg(windows)]
+    if let Some(hwnd) = hwnd {
+        let ppp = ui.ctx().pixels_per_point();
+        let px = |r: egui::Rect| {
+            let (a, b) = ((r.min - o) * ppp, (r.max - o) * ppp);
+            [
+                a.x.round() as i32,
+                a.y.round() as i32,
+                b.x.round() as i32,
+                b.y.round() as i32,
+            ]
+        };
+        crate::win32::set_caption_hits(
+            hwnd,
+            crate::win32::CaptionHits {
+                strip_h: (TITLE_H * ppp).round() as i32,
+                icon: px(bar.icon),
+                buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
+            },
+        );
+    }
+    #[cfg(not(windows))]
+    let _ = hwnd;
+    bar.pressed
+}
+
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
@@ -118,6 +193,13 @@ pub struct Progress {
     show_complete: bool,
     /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
     pub keep_sharing: bool,
+    /// Hidden in the notification area (#63): not shown, its tab and choices kept for when it
+    /// comes back (the tray's "Downloads in progress", or the download double-clicked).
+    pub hidden: bool,
+    /// A tray shows MDM's icon, so the window can be hidden there (set by the app each frame).
+    pub tray: bool,
+    /// Options → General → "Minimize to the notification area": Minimize hides it there too.
+    pub minimize_to_tray: bool,
     /// Options on completion, used when "Show download complete dialog" is off.
     hang_up: bool,
     exit: bool,
@@ -139,6 +221,8 @@ pub enum Action {
     UploadLimit(Option<u64>),
     /// Close the dialog, keep downloading.
     Close,
+    /// Hide the dialog in the notification area, keep downloading (#63).
+    Hide,
 }
 
 impl Progress {
@@ -159,6 +243,9 @@ impl Progress {
             pending_upload: None,
             show_complete,
             keep_sharing: false,
+            hidden: false,
+            tray: false,
+            minimize_to_tray: false,
             hang_up: false,
             exit: false,
             turn_off_on: false,
@@ -180,11 +267,15 @@ impl Progress {
             (frac * 100.0).floor() as u32,
             crate::i18n::isolate(&item.file_name)
         );
-        let client = if self.details {
+        let body = if self.details {
             [548.0, 412.0 + torrent_drop(item)]
         } else {
             [548.0, 241.0]
         };
+        // Windows: the title bar is ours (#63), drawn in the client above IDM's layout, so the
+        // hide button sits in it, left of Minimize, as in IDM. Elsewhere the system draws it.
+        let client = [body[0], body[1] + TITLE_H];
+        let buttons = caption_buttons(self.tray);
         let key = egui::Id::unique(("progress-pos", self.id));
         let title_now = title.clone();
         // Hidden until dialogs::keep_theme has given it its theme.
@@ -192,16 +283,21 @@ impl Progress {
             .with_visible(false)
             .with_title(title)
             .with_inner_size(client)
-            // IDM's progress window has the sizing-frame caption (31 px) but 2 px borders and a
-            // fixed size. On Windows the sizing frame is asked for and win32::thin_frame trims
-            // its borders and disables resizing; elsewhere the window is simply not resizable
-            // (its contents are laid out for one size: Show/Hide details switches between two).
+            // IDM's progress window has 2 px borders and a fixed size. On Windows the sizing
+            // frame is asked for and win32::progress_frame trims its borders, disables resizing
+            // and gives the caption to the client, which draws it; elsewhere the window is simply
+            // not resizable (its contents are laid out for one size: Show/Hide details switches
+            // between two).
             .with_resizable(cfg!(windows))
             .with_icon(crate::app_icon())
             .with_maximize_button(false);
         if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0]) {
             builder = builder.with_position(p);
         }
+        // Minimize hides it in the notification area when asked (and a tray can bring it back).
+        let minimize_hides = self.tray && self.minimize_to_tray;
+        // The window, once its frame is applied (Windows: its caption parts go to its hit test).
+        let hwnd = ctx.data(|d| d.get_temp::<isize>(key.with("hwnd")));
         let action = ctx.show_viewport_immediate(
             ViewportId::from_hash_of(("progress", self.id)),
             builder,
@@ -209,13 +305,35 @@ impl Progress {
                 if ui.ctx().input(|i| i.viewport().close_requested()) {
                     return Action::Close;
                 }
+                if minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true)) {
+                    return Action::Hide;
+                }
                 let action = egui::CentralPanel::no_frame()
                     .frame(egui::Frame::new().fill(winui::BG()))
                     .show(ui, |ui| {
                         let o = ui.max_rect().min;
                         // The client area, laid out from the right in a right-to-left interface.
                         let _surface = winui::Surface::enter(o.x, o.x + client[0]);
-                        self.body(ui, o, item, snap, frac)
+                        let caption = draw_caption(ui, o, client[0], &title_now, &buttons, hwnd);
+                        let action = self.body(ui, o + vec2(0.0, TITLE_H), item, snap, frac);
+                        // The system menu's "Hide to the notification area" (Alt+Space).
+                        #[cfg(windows)]
+                        if let Some(h) = hwnd
+                            && crate::win32::take_hide_asked(h)
+                        {
+                            return Action::Hide;
+                        }
+                        match caption {
+                            Some(CaptionButton::Close) => Action::Close,
+                            Some(CaptionButton::ToTray) => Action::Hide,
+                            Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
+                            Some(CaptionButton::Minimize) => {
+                                ui.ctx()
+                                    .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                                action
+                            }
+                            _ => action,
+                        }
                     })
                     .inner;
                 // Escape hides the window (the download goes on), as the × does.
@@ -226,20 +344,32 @@ impl Progress {
                 }
             },
         );
-        // Apply IDM's thin frame once, and again whenever the client size changes (details).
+        // Apply the frame while the window is still hidden, and again whenever the client size
+        // (details), the scale (another display) or the system menu's item changes.
         #[cfg(windows)]
         {
-            let applied = key.with("framed");
             let scale = ctx.input_for(ViewportId::from_hash_of(("progress", self.id)), |i| {
                 i.pixels_per_point
             });
-            if ctx.data(|d| d.get_temp::<[f32; 2]>(applied)) != Some(client)
-                && crate::win32::thin_frame(&title_now, client, scale)
+            let hide = buttons
+                .iter()
+                .any(|(b, _)| *b == CaptionButton::ToTray)
+                .then(|| crate::i18n::t("Hide to the notification area").to_owned());
+            let want: Framed = (client, (scale * 1000.0).round() as u32, hide);
+            if ctx
+                .data(|d| d.get_temp::<Framed>(key.with("framed")))
+                .as_ref()
+                != Some(&want)
+                && let Some(h) =
+                    crate::win32::thin_frame(&title_now, client, scale, want.2.as_deref())
             {
-                ctx.data_mut(|d| d.insert_temp(applied, client));
+                ctx.data_mut(|d| {
+                    d.insert_temp(key.with("framed"), want);
+                    d.insert_temp(key.with("hwnd"), h);
+                });
             }
         }
-        let closing = matches!(action, Action::Close | Action::Cancel);
+        let closing = matches!(action, Action::Close | Action::Cancel | Action::Hide);
         crate::dialogs::keep_theme(
             ctx,
             ViewportId::from_hash_of(("progress", self.id)),
@@ -262,7 +392,17 @@ impl Progress {
         };
         if matches!(action, Action::Close | Action::Cancel) {
             crate::dialogs::forget_place(ctx, key);
-            ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
+        }
+        // Gone (hidden keeps its place): the next window gets its thin frame again.
+        if closing {
+            #[cfg(windows)]
+            if let Some(h) = hwnd {
+                crate::win32::forget_caption(h);
+            }
+            ctx.data_mut(|d| {
+                d.remove::<Framed>(key.with("framed"));
+                d.remove::<isize>(key.with("hwnd"));
+            });
         }
         action
     }
@@ -276,7 +416,7 @@ impl Progress {
         frac: f64,
     ) -> Action {
         let p = ui.painter().clone();
-        self.tabs(ui, o);
+        let hide = self.tabs(ui, o);
         match self.tab {
             Tab::Status => status_page(ui, o, item, snap, frac),
             Tab::Limiter => {
@@ -294,7 +434,7 @@ impl Progress {
         // The progress bar: IDM's green on the shared, themed track.
         winui::meter(&p, r(o, 17.0, 180.0, 513.0, 16.0), frac as f32);
 
-        let mut action = Action::None;
+        let mut action = if hide { Action::Hide } else { Action::None };
         let details_label = if self.details {
             crate::i18n::mark("<< Hide details")
         } else {
@@ -375,8 +515,9 @@ impl Progress {
         action
     }
 
-    /// Classic 3-D tabs over a raised page frame (spec "Tab strip").
-    fn tabs(&mut self, ui: &mut Ui, o: Pos2) {
+    /// Classic 3-D tabs over a raised page frame (spec "Tab strip"); with a tray, the "hide to
+    /// the notification area" button at the row's end. True when that button is pressed.
+    fn tabs(&mut self, ui: &mut Ui, o: Pos2) -> bool {
         // The shared tab strip (the torrent tabs' too): one look in both themes, one Tab stop with
         // the arrows, sized to the translated labels. It had two of its own (classic 3-D in dark).
         let tabs = [
@@ -389,7 +530,11 @@ impl Progress {
         ];
         let p = ui.painter().clone();
         let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
-        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, 525.0, 2.0, 8.0)
+        // The hide button sits here where the system draws the title bar (Linux, macOS; on
+        // Windows it's in ours); the tabs end before it (long translations shorten first).
+        let tab_button = self.tray && !cfg!(windows);
+        let right = if tab_button { 500.0 } else { 525.0 };
+        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, right, 2.0, 8.0)
             .into_iter()
             .zip(tabs.iter())
             .map(|((x0, x1, _), (_, label))| winui::LightTab {
@@ -403,6 +548,17 @@ impl Progress {
         if let Some(i) = winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0), &light, current) {
             self.tab = tabs[i].0;
         }
+        // MDM's (#63): IDM puts this in its title bar, which here is the system's own (it takes
+        // no buttons of ours), so it sits at the tab row's end, over the page's corner.
+        tab_button
+            && winui::to_tray_button(
+                ui,
+                r(o, 507.0, 6.0, 22.0, 20.0),
+                "progress-hide",
+                // i18n: tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+                crate::i18n::mark("Hide to the notification area"),
+            )
+            .clicked()
     }
 
     /// The Speed Limiter tab, live for this download. Returns true when "Hide tab" is pressed.

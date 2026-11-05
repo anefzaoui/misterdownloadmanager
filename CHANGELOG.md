@@ -22,6 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Hide to the notification area** ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63)):
+  a download's progress window has a button that hides it in the tray while the download goes
+  on: on Windows in its title bar, left of Minimize (the progress window draws its own Windows 11
+  title bar now, keeping the system's snapping, shaking, menu and shadow), and in its Alt+Space
+  menu; on Linux and macOS at the end of its tab row. The tray menu's new **Downloads in
+  progress** lists the running downloads to bring one's window back (double-clicking it in the
+  list does too). With
+  **Options → General → Minimize to the notification area** (on by default), Minimize hides the
+  main window and progress windows there as well. Only where a tray shows MDM's icon.
 - **Choose the DNS** ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36)):
   Options → Connection → DNS picks who turns names into addresses for downloads, FTP, MDM's own
   downloads and the update check. The system's (the default), Cloudflare, Google, Quad9, AdGuard,

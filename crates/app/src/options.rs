@@ -331,7 +331,7 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
-        let checks: [(f32, &mut bool, &str); 5] = [
+        let checks: [(f32, &mut bool, &str); 6] = [
             (
                 94.0,
                 &mut s.launch_on_startup,
@@ -359,21 +359,32 @@ impl OptionsDialog {
                 &mut s.confirm_delete,
                 crate::i18n::mark("Confirm before deleting downloads"),
             ),
+            // MDM's (#63): Minimize hides the main window and progress windows in the tray too.
+            // The browsers' group starts a row lower again, its list a row shorter (it scrolls).
+            (
+                191.0,
+                &mut s.minimize_to_tray,
+                // i18n: checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+                crate::i18n::mark("Minimize to the notification area"),
+            ),
         ];
+        // Greyed where no tray shows MDM's icon (some Linux desktops): nothing could bring the
+        // window back from there.
+        let tray = crate::tray::available();
         for (i, (y, v, label)) in checks.into_iter().enumerate() {
             // Portable: nothing is written to the registry, so no start with Windows. Manifest 2
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
             // shown as IDM has it, greyed (D-021).
-            let enabled = !(portable && i == 0) && i != 2;
+            let enabled = !(portable && i == 0) && i != 2 && (i != 5 || tray);
             winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
         }
         group(
             ui,
             o,
             16.0,
-            196.0,
+            215.0,
             392.0,
-            198.0,
+            179.0,
             "Capture downloads from the following browsers:",
         );
         // Check list: one row per browser in the shared row list (Space ticks the selected
@@ -384,7 +395,7 @@ impl OptionsDialog {
         let ev = winui::row_list(
             ui,
             "browsers",
-            r(o, 30.0, 206.0, 362.0, 116.0),
+            r(o, 30.0, 225.0, 362.0, 97.0),
             browsers.len(),
             17.0,
             &mut self.browser_rows,
