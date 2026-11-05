@@ -185,6 +185,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	{n} 個のダウンロードをリストに追加しますか? 各動画は個別の行になります。
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	追加...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -528,6 +533,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	コピー
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	コードをコピー
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -671,6 +680,10 @@
 #. text in a download's progress window
 #, machine
 	Done	完了
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	下へ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	ダウンロード
@@ -717,6 +730,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	ダウンロードの状態
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	これらのアカウントでサポートされているファイルホストのリンクをダウンロードする
 #. window title in the Download video window
 #, machine
 	Download video from a page	ページからビデオをダウンロード
@@ -962,6 +979,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ファイルの検索
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	トークンを探す
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1738,6 +1759,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	完了したら次のファイルを開く:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	ページを開く
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -2185,6 +2210,10 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	シャットダウン
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	ブラウザーでサインイン
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -2427,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最高の品質 (MP3、Opus、FLAC) には ffmpeg が必要です。システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ブラウザーのプロキシ (VPN またはプロキシ拡張機能) は、その拡張機能のみが持つログインを要求します。VPN 独自のアプリを使用するか、[オプション] → [プロキシ / SOCKS] でネットワーク アダプターを選択してください
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2854,6 +2887,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	不明
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	上へ
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -2908,6 +2945,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	プロキシを使用する ([オプション] → [プロキシ / SOCKS]、SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	トークンを使用
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	このトレントにこれらを使用しますか? 一致するものは保持され、残りは置き換えられます。

@@ -178,6 +178,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "إذا كانت بعض ملفات التورنت موجودة بالفعل في المجلد، يسألك MDM قبل استخدامها. <g1>نعم</g1> يبقيها للتورنت: يتحقق MDM منها، ويحتفظ بما يتطابق مع التورنت ويحمل الباقي، وهذه هي الطريقة التي تستكمل بها تحميلا بدأ في مكان آخر أو تشارك ملفات لديك بالفعل. <g2>لا</g2> (الخيار الافتراضي) يعود، حتى تتمكن من اختيار مجلد آخر ولا يتم الكتابة فوق أي من ملفاتك."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "في Firefox، يرى MDM الوكيل الذي استخدمه طلب المتصفح الخاص بالملف، بما في ذلك الوكلاء الذين يختارهم امتداد VPN لكل طلب. في Chrome وEdge وBrave وOpera وVivaldi، يرى إعدادات وكيل المتصفح."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "يرفض MDM التورنت الذي يحتوي على أسماء ملفات لا يستطيع نظامك كتابتها بأمان، ويذكر الاسم، ولا يكتب شيئا."
@@ -249,6 +253,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> لتوزيعات Debian و Ubuntu، <g2>.rpm</g2> لتوزيعة Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "عندما لا يستخدم المتصفح وكيلا، ويتم اختيار <g1>لا يوجد وكيل/SOCKS</g1>، يستخدم MDM إعدادات وكيل Windows، كما تفعل المتصفحات."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -469,6 +477,10 @@
   "0b00b090c6e18701": {
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "في IDM، اختر <g1>المهام → تصدير → إلى ملف تصدير IDM</g1> واحفظ قائمتك."
+  },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>تنزيل روابط مضيف الملف المدعومة من خلال هذه الحسابات</g1> يقوم بتشغيلها وإيقافها."
   },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
@@ -882,6 +894,10 @@
    "source": "Download Mister Download Manager",
    "text": "تنزيل Mister Download Manager"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "يرسل MDM إلى الخدمة فقط الروابط التي تقوم بتنزيلها من خلالها، ورمز حسابك. لا شيء آخر."
+  },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "اترك MDM يعمل. إغلاق النافذة الرئيسية لا بأس به: يستمر MDM في العمل في علبة النظام. لا تستخدم <g1>المهام ← إنهاء</g1>."
@@ -965,6 +981,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "إجابات مختصرة على أكثر الأسئلة شيوعا، مع رابط للدليل الكامل لكل منها."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "أذوناتها، ولماذا: <g1>التنزيلات</g1> لرؤية التنزيلات وتسليمها؛ <g2>ملفات تعريف الارتباط</g2> لكي تعمل التنزيلات التي تم تسجيل الدخول إليها في MDM؛ <g3>nativeMessaging</g3> للتحدث مع MDM؛ <g4>contextMenus</g4> لعناصر النقر بزر الماوس الأيمن؛ <g5>storage</g5> لإعداداتها؛ <g6>webRequest</g6> لرؤية النماذج المرسلة وتدفقات الفيديو المحملة (لا تغير شيئا)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome و Edge ومتصفحات Chromium الأخرى) لتنزيل الملفات التي سيفتحها المتصفح (ملف PDF) بدلا من ذلك، لأنواع الملفات التي يأخذها MDM؛ في Firefox، تقوم <g8>webRequestBlocking</g8> بذلك؛ <g9>scripting</g9> لقراءة روابط الصفحة عندما تطلب ذلك، ولإضافة زر الفيديو إلى الصفحات المفتوحة بالفعل عند تثبيت الإضافة؛ <g10>proxy</g10> لقراءة الوكيل الذي يستخدمه المتصفح، بحيث تمر التنزيلات المأخوذة من متصفح خلف VPN أو إضافة وكيل من خلاله أيضا (لا تغير وكيل المتصفح أبدا)؛ الوصول إلى جميع المواقع لأن التنزيلات ومقاطع الفيديو يمكن أن تأتي من أي موقع."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1178,6 +1198,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "اختر ما يجب أن يفعله الإعداد: - <g1>إعداد دمج المتصفح (Chrome، Edge، Brave، Firefox)</g1> - <g2>فتح ملفات .torrent وروابط المغناطيس باستخدام Mister Download Manager</g2> - <g3>بدء Mister Download Manager عند بدء تشغيل Windows</g3> - <g4>إنشاء اختصار على سطح المكتب</g4> (متوقف ما لم تحدده)"
   },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "أضف حسابك"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "يقوم MDM بتنزيل صور المعرض (فئة ويكيميديا كومنز، ألبوم فليكر، معرض ديفينت آرت، ألبوم إيمجر والعديد غيرها) باستخدام gallery-dl..."
@@ -1246,6 +1270,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "يفتح MDM صفحة الويب التي جاء منها الرابط (عندما يعرفها)، و<g1>خصائص الملف</g1> الخاصة بالتنزيل."
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "تحتفظ القائمة برابط المضيف. لا يتم عرض الرابط المباشر أو نسخه أبدا: تمنع الخدمات مشاركته. يعيش فقط في بيانات استئناف التنزيل، وعندما تنتهي صلاحيته يطلب MDM من الخدمة رابطا جديدا."
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "انظر إلى <g1>إمكانية الاستئناف</g1> في نافذة التقدم. تعني <g2>لا</g2> أن الخادم لا يستطيع إرسال ملف على أجزاء. يستخدم MDM حينها اتصالا واحدا، ويجب أن يبدأ التنزيل الذي يتوقف من جديد. بالنسبة لمثل هذه الخوادم، تجنب إيقاف التنزيل، وتجنب تحديد سرعة منخفضة جدا، مما قد يتسبب في قطع الخادم للاتصال."
@@ -1257,6 +1285,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "يقوم بتدوين مكان بدء وانتهاء عمليات إعادة توجيه تحميل الصفحة (في الذاكرة، لمدة دقيقتين)، حتى يحصل MDM على العنوان الذي نقرت عليه، وليس فقط إلى أين أدى."
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "لا يشحن MDM أي قائمة بالمضيفين أو الروابط؛ تحدد الخدمة المضيفين الذين تدعمهم."
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1441,6 +1473,10 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "تبقى التنزيلات مع المتصفح على الرغم من اتصال MDM"
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "خدمة Debrid، مثل Real-Debrid، هي حساب مدفوع يقوم بتنزيل الملفات من مضيفي الملفات على خوادمه الخاصة. يقوم بإرجاع رابط مباشر عادي، بدون..."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -1721,6 +1757,10 @@
   "2c532cfa46f94b69": {
    "source": "Changed",
    "text": "تغير"
+  },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "إضافة URL، الحافظة، قائمة روابط المتصفح <g1>تنزيل باستخدام Mister Download Manager</g1>، والتنزيلات الدفعية تمر عبر الحساب عندما تدعم خدمته مضيف الرابط."
   },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
@@ -2606,6 +2646,10 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "نتائج أولية من {date}. إعادة تشغيل كاملة جارية؛ سيتم استبدال هذه الأرقام عند الانتهاء."
   },
+  "44c0ee7163ab2934": {
+   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
+   "text": "<g1>تجريبي:</g1> تم بناؤه من وثائق واجهة برمجة تطبيقات Real-Debrid العامة، ولم يتم تأكيده بعد بحساب حقيقي. إذا لم يعمل شيء مع حسابك، يرجى <g2>فتح مشكلة</g2> (لا تلصق رمزك المميز فيها أبدا)."
+  },
   "44e6a85b74a3eb0a": {
    "source": "Prism",
    "text": "Prism"
@@ -2629,6 +2673,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "الفيديو من الصفحات"
+  },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "يتم تنزيل التنزيل الذي بدأه المتصفح بالفعل (تولى MDM إدارته من المتصفح) كما هو: المضيف يرسل الملف بالفعل."
   },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
@@ -2694,6 +2742,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "لا يحتوي MDM على برامج إعلانية أو برامج تجسس أو عروض مجمعة أو تتبع. كود المصدر الخاص به بالكامل عام، لذا يمكن لأي شخص التحقق مما يفعله، ويتم بناء كل إصدار من هذا الكود بواسطة خوادم GitHub، حيث يمكن فحص البناء. يتم التحقق من البرامج المساعدة التي يمكنها جلبها لمقاطع الفيديو قبل تشغيلها: yt-dlp مقابل مفتاح توقيع المطورين، و ffmpeg مقابل مجاميع التحقق المنشورة. قم بتنزيل MDM فقط من هذا الموقع أو إصدارات المشروع على GitHub."
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "أين يتم الاحتفاظ بتسجيل الدخول"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "إعدادات الاتصال في الخيارات →"
@@ -2729,6 +2781,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10 و 11 · 64 بت</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>حسابات خدمة Debrid</g2></g1> — Real-Debrid: روابط استضافة الملفات عبر حسابك الخاص."
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -2917,6 +2973,10 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "كل لغة عرض يوفرها Windows 11، يتم اختيارها بالعلم عند التشغيل الأول أو في أي وقت من عرض → اللغة. يتم عرض اللغات العربية والعبرية والفارسية والأردية والأويغورية من اليمين إلى اليسار."
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "يمكن إنجاز كل شيء من لوحة المفاتيح، ويعمل MDM مع قارئات الشاشة (مثل Narrator و NVDA على Windows): تخبر نوافذه ومربعات الحوار والقوائم الخاصة به قارئات الشاشة عن كل عنصر تحكم وحالته، وتقرأ قائمة التنزيلات اسم كل تنزيل وحالته وحجمه."
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3130,6 +3190,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "حسابات خدمة Debrid — مساعدة Mister Download Manager"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "معيارنا: IDM 6.42 (نسخة مرخصة) و MDM على نفس الكمبيوتر، مقابل نفس خادم الاختبار المحلي، في تشغيلات متناوبة؛ القيم الوسيطة، Mann-Whitney p &lt; 0.001 · <g1>الرسوم البيانية والتقرير والبيانات الخام</g1>"
@@ -3333,6 +3397,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "هل الإضافة محملة ومفعلة؟ ابحث عن <g1>Mister Download Manager</g1> في صفحة إضافات المتصفح. في Firefox، تختفي الإضافة المؤقتة بعد إعادة التشغيل. انظر <g2>دمج المتصفح</g2>."
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux و macOS</g1>: في إعدادات MDM، في مجلد بيانات لا يمكنك قراءته إلا أنت (0700)، وليس بعد في سلسلة مفاتيح النظام. من المخطط الاحتفاظ به في سلسلة المفاتيح."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3758,6 +3826,14 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>خصائص</g1> — لتغيير اسمها وأنواع ملفاتها ومجلدها. الفئتان عام والتورنت تغيران مجلديهما فقط. الفئة التي أعيد تسميتها تحتفظ بمجلدها؛ والفئة المضمنة تحتفظ باسمها بلغتك حتى تعيد تسميتها."
   },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "إظهار قائمة السياق"
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "لا يكتب MDM الرمز المميز أبدا إلى سجل الأحداث الخاص به، أو تقارير الأعطال، أو واجهة برمجة تطبيقات الأتمتة، أو مخرجات سطر الأوامر."
+  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager مقابل IDM 6.42</g1><g2>تم التحقق في أكتوبر 2026 · المصادر أدناه</g2>"
@@ -3821,6 +3897,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "تنزيلات قائمة الانتظار لوقت لاحق ←"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>استخدام وكيل/SOCKS من طلب المتصفح…</g1> — مفعل افتراضيا. أي تنزيل يأخذه MDM من المتصفح يمر عبر الوكيل الذي استخدمه المتصفح لذلك. هذا هو الوكيل الذي يحدده امتداد VPN أو الوكيل، أو الوكيل اليدوي الخاص بالمتصفح، أو نص التكوين التلقائي للوكيل الخاص به. بدون ذلك، سيغادر التنزيل من عنوانك الخاص، وسيفشل المحتوى المحدود ببلد VPN، أو بعنوانه. يقرأ امتداد المتصفح هذا الوكيل ويسلمه إلى MDM مع كل تنزيل."
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4145,6 +4225,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "يمكن تشغيل MDM بدون نافذته بثلاث طرق:"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "إعدادات الوكيل / SOCKS في MDM مخصصة لتنزيلات الويب و FTP. يمكن للتورنت استخدام SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات بالأقران والمتتبعات عبر الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف الأقران المحليين، والاتصالات الواردة، ومتتبعات UDP. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوزها."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4558,6 +4642,10 @@
    "source": "Apple Silicon",
    "text": "معالجات Apple Silicon"
   },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid يعمل الآن. AllDebrid و Premiumize سيأتيان لاحقا."
+  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -4890,6 +4978,14 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "في وقت البدء، تبدأ قائمة الانتظار من تلقاء نفسها. في الصباح، تكون الملفات المكتملة تحت <g1>مكتمل</g1> في الفئات."
   },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "لتوجيه <g1>كل شيء</g1> عبر شبكة أخرى، استخدم VPN لجهاز الكمبيوتر بأكمله. لا يستطيع MDM ربط التورنت بمحول شبكة واحد على Windows."
+  },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "حساب خدمة Debrid الخاص بك (Real-Debrid): <g1>إضافة...</g1> تسجل الدخول باستخدام رمز في المتصفح أو باستخدام رمز API الخاص بك؛ ثم يتم تنزيل رابط من مضيف تدعمه الخدمة من خلاله. ترتيب القائمة هو ترتيب طلب الحسابات. انظر <g2>حسابات خدمة Debrid</g2>."
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "التورنت وأمنك"
@@ -4966,6 +5062,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "انظر <g1>تكامل المتصفح</g1>."
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "الرابط الذي لا تستطيع الخدمة تقديمه يوضح السبب في القائمة: سجل الدخول مرة أخرى، يلزم حساب مميز، المضيف معطل (يحاول MDM مرة أخرى لاحقا)، الملف مفقود، وهكذا."
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "شرح: التقاط التنزيلات من متصفحك →"
@@ -4981,6 +5081,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "تقارير الأعطال — مساعدة Mister Download Manager"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "الحسابات"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5253,6 +5357,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "خادم يسمح باتصالين. يتعلم MDM ذلك ويلتزم باثنين؛ بينما فتح IDM 480 اتصالا."
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "يتحقق MDM من الحساب ويعرض اسمه وما إذا كان مميزا. <g1>موافق</g1> يحتفظ به."
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -5902,6 +6010,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>سطر الأوامر والأتمتة</g2></g1> — مفاتيح سطر الأوامر الخاصة بـ IDM، أداة <x3/>، وواجهة برمجة تطبيقات الأتمتة التي يمكن للبرامج الأخرى استخدامها."
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "عندما يستخدم المتصفح وكيلا لهذا التنزيل (يتم تعيينه بواسطة VPN أو إضافة وكيل، أو في إعداداته)، فإن الإضافة تمرر <g1>عنوان الوكيل</g1>، أو <g2>برنامج نصي لتكوين الوكيل التلقائي</g2>، بحيث يقوم MDM بالتنزيل عبر نفس الوكيل. لا تقرأ أو تمرر بيانات تسجيل الدخول للوكيل أبدا. تلاحظ فقط أن الوكيل طلب واحدا، حتى يتمكن MDM من إخبارك بأنه لا يمكنه استخدام هذا الوكيل."
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "الرئيسية"
@@ -5993,6 +6105,10 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "شغل <x1/> مع تشغيل MDM."
+  },
+  "a4263adda2169cf6": {
+   "source": "Playlists and mixes",
+   "text": "قوائم التشغيل والمزيجات"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6710,6 +6826,10 @@
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "نفس الشيء، لأجهزة Mac المزودة بمعالج Intel (حول هذا الـ Mac يعرض <g1>المعالج</g1>)."
   },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "استخدم حسابك الخاص فقط. مشاركة حساب أو روابطه يخرق شروط الخدمات ويمكن أن يؤدي إلى تعليق الحساب."
+  },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
    "text": "لعمل نسخة احتياطية من قائمتك، أغلق MDM (<g1>المهام ← إنهاء</g1>) وانسخ <x2/>."
@@ -7074,6 +7194,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "<g1>تحديث الآن</g1> في تعليمات ← التحقق من وجود تحديثات: يقوم MDM بتنزيل الإصدار الجديد، والتحقق منه، ووضعه في مكانه وإعادة التشغيل، على Windows (الإعداد، المحمول، والملف المضغوط العادي)، Mac و Linux (AppImage, .tar.gz؛ يفتح .deb أو .rpm في مثبت النظام). يقوم بتثبيت الملفات المدرجة فقط في قائمة المجموع الاختباري الموقعة بمفتاح إصدار MDM، والتي يحملها كل إصدار الآن (<x2/>). سيكون التحديث الأول بهذه الطريقة من 0.2.1 إلى الإصدار التالي."
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "خدمة Debrid، مثل Real-Debrid، هي حساب مدفوع يقوم بتنزيل الملفات من مضيفي الملفات على خوادمه الخاصة. يقوم بإرجاع رابط مباشر عادي، بدون انتظار المضيف وقيود السرعة ورموز التحقق. باستخدام حسابك في MDM، يتم فتح رابط من مضيف تدعمه خدمتك من خلال الخدمة، ثم يقوم MDM بتنزيله كأي ملف: بجميع اتصالاته، وإيقافه مؤقتا واستئنافه."
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "زر التنزيل فوق مقاطع الفيديو"
@@ -7097,6 +7221,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "يبقى بعيدا عن الطريق: يظهر فقط أثناء الإشارة إلى فيديو (أو عندما يكون للمشغل تركيز لوحة المفاتيح؛ ثم ينتقل <g1>Tab</g1> إلى الزر)، يتلاشى عندما يستقر المؤشر، ويستبعد مقاطع الفيديو الصغيرة والحلقات القصيرة الصامتة (الصور المتحركة، الخلفيات). في وضع ملء الشاشة يتبع الفيديو عندما يسمح المشغل بذلك. على فيديو محمي بحقوق الطبع والنشر (DRM) يقول إن الفيديو لا يمكن حفظه."
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "حسابات خدمة Debrid"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7285,6 +7413,10 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "حسابك، قواعدك"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -7581,6 +7713,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "<g1>يوميا</g1>، في الأيام التي تحددها."
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: محكم لحساب Windows الخاص بك (DPAPI)، في إعدادات MDM. لا يمكن لنسخة من الإعدادات على حساب أو كمبيوتر آخر قراءتها: سجل الدخول مرة أخرى هناك."
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -7974,6 +8110,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لبرنامج IDM، ويأتي مع misterdownloadmanager-cli لتنزيل الملفات من الطرفية، ولديه واجهة برمجة تطبيقات (API) محلية مؤمنة برمز مميز للتحكم الآلي، يمكنها عرض التنزيلات وإيقافها مؤقتا وبدئها وإزالتها. تكون واجهة برمجة التطبيقات هذه غير نشطة حتى تقوم بتشغيلها. انظر سطر الأوامر والأتمتة."
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "لا يمكن مشاركة الوكيل الذي يطلب تسجيل دخول يمنحه امتداد VPN لنفسه: لا يوجد برنامج آخر لديه هذا التسجيل. يتوقف التنزيل حينها ويذكر ذلك، بدلا من المضي قدما بدون الوكيل. استخدم تطبيق VPN الخاص بك، أو اختر محوله ضمن <g1>محول الشبكة</g1>."
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "يجد خادم النسخة المحمولة MDM الخاص بها بنفسه، من مجلدها الخاص."
@@ -8021,6 +8161,10 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "يعمل في كل مكان تقريبا، مع HTTP وBitTorrent والروابط المغناطيسية وed2k، وواجهة برمجة تطبيقات REST"
+  },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "اختر الخدمة، ثم إما: - <g1>تسجيل الدخول في المتصفح</g1>: يعرض MDM رمزا ويفتح صفحة الخدمة. اكتب الرمز هناك واسمح لـ MDM. يلاحظ مربع الحوار ذلك تلقائيا. - أو الصق <g2>رمز API</g2> الخاص بك (<g3>البحث عن الرمز المميز الخاص بي</g3> يفتح صفحة الخدمة التي تعرضه)، ثم <g4>استخدام الرمز المميز</g4>."
   },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
@@ -8133,6 +8277,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "استئناف تنزيل متوقف"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "تنزيل ملف بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، اختياريا مسمى (<x5/>). <x6/> يختار DNS: <x7/> (الافتراضي)؛ خدمة وكيفية طلبها، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ عناوين خوادم DNS، <x13/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8289,6 +8437,10 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>العملاء.</g1> IDM و MDM، كلاهما بالإعدادات الافتراضية (8 اتصالات)، وقد تم إعطاء كل منهما التنزيل عبر نفس سطر الأوامر الموثق: <x2/>. كلاهما يحفظ على محرك الأقراص الذي يحتوي على المجلد المؤقت لـ IDM، لذلك لا يدفع أي منهما تكلفة نسخ عبر محركات الأقراص."
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "ترتيب القائمة هو ترتيب طلب الحسابات: يمر الرابط عبر الحساب الأول الذي تدعم خدمته مضيفه. <g1>لأعلى</g1> و <g2>لأسفل</g2> يغيرانه."
   },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
@@ -8702,6 +8854,10 @@
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
    "text": "مقاطع فيديو قائمة تشغيل أو قناة، كل مقطع في سطر منفصل كما هي مدرجة: مكانها، مدتها، عنوانها، وعنوانها الإلكتروني."
   },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "ماذا يحدث للرابط"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "تحديد الكل"
@@ -8978,6 +9134,10 @@
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "لا. لا يكسر MDM حماية النسخ (DRM)، وهذا مقصود. تبقى الفيديوهات المحمية محمية. انظر أيضا <g1>ما هو الغرض من MDM</g1>."
   },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "الخيارات → الحسابات → إضافة..."
+  },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1.0×</g1><g2>أسرع</g2>"
@@ -9205,118 +9365,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "عناوين التنزيل أو أسماء الملفات الخاصة بك؛"
-  },
-  "0b0116419017071b": {
-   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
-   "text": "<g1>تنزيل روابط مضيف الملف المدعومة من خلال هذه الحسابات</g1> يقوم بتشغيلها وإيقافها."
-  },
-  "16e51d663458d0c2": {
-   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
-   "text": "يرسل MDM إلى الخدمة فقط الروابط التي تقوم بتنزيلها من خلالها، ورمز حسابك. لا شيء آخر."
-  },
-  "1ddd137e20fb9434": {
-   "source": "Add your account",
-   "text": "أضف حسابك"
-  },
-  "1fc4673dc3cdd511": {
-   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
-   "text": "تحتفظ القائمة برابط المضيف. لا يتم عرض الرابط المباشر أو نسخه أبدا: تمنع الخدمات مشاركته. يعيش فقط في بيانات استئناف التنزيل، وعندما تنتهي صلاحيته يطلب MDM من الخدمة رابطا جديدا."
-  },
-  "2062fec7c828d892": {
-   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
-   "text": "لا يشحن MDM أي قائمة بالمضيفين أو الروابط؛ تحدد الخدمة المضيفين الذين تدعمهم."
-  },
-  "254858789074bb69": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
-   "text": "خدمة Debrid، مثل Real-Debrid، هي حساب مدفوع يقوم بتنزيل الملفات من مضيفي الملفات على خوادمه الخاصة. يقوم بإرجاع رابط مباشر عادي، بدون..."
-  },
-  "2c6c86430d025b2e": {
-   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
-   "text": "إضافة URL، الحافظة، قائمة روابط المتصفح <g1>تنزيل باستخدام Mister Download Manager</g1>، والتنزيلات الدفعية تمر عبر الحساب عندما تدعم خدمته مضيف الرابط."
-  },
-  "44c0ee7163ab2934": {
-   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
-   "text": "<g1>تجريبي:</g1> تم بناؤه من وثائق واجهة برمجة تطبيقات Real-Debrid العامة، ولم يتم تأكيده بعد بحساب حقيقي. إذا لم يعمل شيء مع حسابك، يرجى <g2>فتح مشكلة</g2> (لا تلصق رمزك المميز فيها أبدا)."
-  },
-  "45bc5ceaa76685a9": {
-   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
-   "text": "يتم تنزيل التنزيل الذي بدأه المتصفح بالفعل (تولى MDM إدارته من المتصفح) كما هو: المضيف يرسل الملف بالفعل."
-  },
-  "47c3467a6b20a446": {
-   "source": "Where the sign-in is kept",
-   "text": "أين يتم الاحتفاظ بتسجيل الدخول"
-  },
-  "496e926e46524176": {
-   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
-   "text": "<g1><g2>حسابات خدمة Debrid</g2></g1> — Real-Debrid: روابط استضافة الملفات عبر حسابك الخاص."
-  },
-  "55217534c366257f": {
-   "source": "Debrid service accounts — Mister Download Manager help",
-   "text": "حسابات خدمة Debrid — مساعدة Mister Download Manager"
-  },
-  "5bc4b6e9ef830d3c": {
-   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
-   "text": "<g1>Linux و macOS</g1>: في إعدادات MDM، في مجلد بيانات لا يمكنك قراءته إلا أنت (0700)، وليس بعد في سلسلة مفاتيح النظام. من المخطط الاحتفاظ به في سلسلة المفاتيح."
-  },
-  "670bb10cde757ad1": {
-   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
-   "text": "لا يكتب MDM الرمز المميز أبدا إلى سجل الأحداث الخاص به، أو تقارير الأعطال، أو واجهة برمجة تطبيقات الأتمتة، أو مخرجات سطر الأوامر."
-  },
-  "7c840c91cbf164f3": {
-   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
-   "text": "Real-Debrid يعمل الآن. AllDebrid و Premiumize سيأتيان لاحقا."
-  },
-  "8477274e64c2a9d3": {
-   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
-   "text": "حساب خدمة Debrid الخاص بك (Real-Debrid): <g1>إضافة...</g1> تسجل الدخول باستخدام رمز في المتصفح أو باستخدام رمز API الخاص بك؛ ثم يتم تنزيل رابط من مضيف تدعمه الخدمة من خلاله. ترتيب القائمة هو ترتيب طلب الحسابات. انظر <g2>حسابات خدمة Debrid</g2>."
-  },
-  "86e57342ae9eaa60": {
-   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
-   "text": "الرابط الذي لا تستطيع الخدمة تقديمه يوضح السبب في القائمة: سجل الدخول مرة أخرى، يلزم حساب مميز، المضيف معطل (يحاول MDM مرة أخرى لاحقا)، الملف مفقود، وهكذا."
-  },
-  "876df42999b76ac6": {
-   "source": "Accounts",
-   "text": "الحسابات"
-  },
-  "8f7481f4372a14d6": {
-   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
-   "text": "يتحقق MDM من الحساب ويعرض اسمه وما إذا كان مميزا. <g1>موافق</g1> يحتفظ به."
-  },
-  "b6c6533af9e6a7eb": {
-   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
-   "text": "استخدم حسابك الخاص فقط. مشاركة حساب أو روابطه يخرق شروط الخدمات ويمكن أن يؤدي إلى تعليق الحساب."
-  },
-  "c174d7018b6d1a5b": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
-   "text": "خدمة Debrid، مثل Real-Debrid، هي حساب مدفوع يقوم بتنزيل الملفات من مضيفي الملفات على خوادمه الخاصة. يقوم بإرجاع رابط مباشر عادي، بدون انتظار المضيف وقيود السرعة ورموز التحقق. باستخدام حسابك في MDM، يتم فتح رابط من مضيف تدعمه خدمتك من خلال الخدمة، ثم يقوم MDM بتنزيله كأي ملف: بجميع اتصالاته، وإيقافه مؤقتا واستئنافه."
-  },
-  "c1d77bb835bb6ef4": {
-   "source": "Debrid service accounts",
-   "text": "حسابات خدمة Debrid"
-  },
-  "c79d3d545a5bebd2": {
-   "source": "Your account, your rules",
-   "text": "حسابك، قواعدك"
-  },
-  "d0352efdbc9db51b": {
-   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
-   "text": "<g1>Windows</g1>: محكم لحساب Windows الخاص بك (DPAPI)، في إعدادات MDM. لا يمكن لنسخة من الإعدادات على حساب أو كمبيوتر آخر قراءتها: سجل الدخول مرة أخرى هناك."
-  },
-  "dd915e88440c78b0": {
-   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
-   "text": "اختر الخدمة، ثم إما: - <g1>تسجيل الدخول في المتصفح</g1>: يعرض MDM رمزا ويفتح صفحة الخدمة. اكتب الرمز هناك واسمح لـ MDM. يلاحظ مربع الحوار ذلك تلقائيا. - أو الصق <g2>رمز API</g2> الخاص بك (<g3>البحث عن الرمز المميز الخاص بي</g3> يفتح صفحة الخدمة التي تعرضه)، ثم <g4>استخدام الرمز المميز</g4>."
-  },
-  "e52b31d58add8742": {
-   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
-   "text": "ترتيب القائمة هو ترتيب طلب الحسابات: يمر الرابط عبر الحساب الأول الذي تدعم خدمته مضيفه. <g1>لأعلى</g1> و <g2>لأسفل</g2> يغيرانه."
-  },
-  "f1693c50a75a5859": {
-   "source": "What happens to a link",
-   "text": "ماذا يحدث للرابط"
-  },
-  "f9fc95028964f92c": {
-   "source": "Options → Accounts → Add...",
-   "text": "الخيارات → الحسابات → إضافة..."
   }
  }
 }

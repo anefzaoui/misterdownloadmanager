@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} נבחר|{n} נבחרו|{n} נבחרו
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} סרטון וידאו|{title}: {count} סרטוני וידאו|{title}: {count} סרטוני וידאו
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: מוצג {listed} מתוך {total} סרטון וידאו|{title}: מוצגים {listed} מתוך {total} סרטוני וידאו|{title}: מוצגים {listed} מתוך {total} סרטוני וידאו
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -2447,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	האיכויות הטובות ביותר, MP3, Opus ו-FLAC, דורשות את ffmpeg: התקן אותו באמצעות מנהל החבילות של המערכת שלך (או Homebrew).
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ה-proxy של הדפדפן (הרחבת VPN או proxy) מבקש פרטי כניסה שיש רק להרחבה זו: השתמש באפליקציה של ה-VPN, או בחר את מתאם הרשת שלה באפשרויות ← Proxy / Socks
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

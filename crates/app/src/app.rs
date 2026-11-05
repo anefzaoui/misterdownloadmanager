@@ -1784,7 +1784,7 @@ impl App {
         let ua = self.settings.user_agent.trim();
         let opts = Options {
             max_connections: self.settings.connections_for(url),
-            proxy: self.settings.proxy(),
+            proxy: self.settings.proxy_for(context),
             dns: self.settings.dns(),
             route: self.route.clone(),
             // Through a debrid account when one takes this host (#44).
@@ -1853,6 +1853,16 @@ impl App {
         }) else {
             return;
         };
+        // The browser's proxy needs its VPN extension's own login (#42): said, never bypassed.
+        if let Some(why) = self.settings.browser_proxy_refused(&context) {
+            if let Some(item) = self.item(id) {
+                item.status = Status::Error;
+                item.error = Some(why);
+                item.last_try = Some(model::now_stamp());
+            }
+            self.dirty = true;
+            return;
+        }
         let RequestParts { headers, mut opts } = self.request_parts(&url, login.as_ref(), &context);
         // Download File Info's open answer for it, if it has one (#28); used once.
         let kept = self.kept_answers.remove(&id);

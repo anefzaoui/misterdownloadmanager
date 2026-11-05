@@ -178,6 +178,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Si certains des fichiers du torrent sont déjà dans le dossier, MDM demande avant de les utiliser. <g1>Oui</g1> les garde pour le torrent : MDM les vérifie, garde ce qui correspond au torrent et télécharge le reste. C'est ainsi que vous pouvez reprendre un téléchargement commencé ailleurs ou partager des fichiers que vous avez déjà. <g2>Non</g2> (par défaut) annule l'opération, ce qui vous permet de choisir un autre dossier et d'éviter que vos fichiers ne soient écrasés."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Dans Firefox, MDM voit le proxy que la propre requête du navigateur pour le fichier a utilisé, y compris ceux qu'une extension VPN choisit pour chaque requête. Dans Chrome, Edge, Brave, Opera et Vivaldi, il voit les paramètres de proxy du navigateur."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM refuse un torrent dont les noms de fichiers ne peuvent pas être écrits en toute sécurité par votre système, indique quel nom pose problème et n'écrit rien."
@@ -249,6 +253,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> pour Debian et Ubuntu, <g2>.rpm</g2> pour Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Lorsque le navigateur n'a utilisé aucun proxy, et que <g1>Aucun proxy/SOCKS</g1> est choisi, MDM utilise les paramètres de proxy de Windows, comme le font les navigateurs."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -469,6 +477,10 @@
   "0b00b090c6e18701": {
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "Dans IDM, choisissez <g1>Tâches → Exporter → Vers le fichier d’exportation IDM</g1> et enregistrez votre liste."
+  },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>Télécharger les liens d’hébergeurs de fichiers pris en charge via ces comptes</g1> active et désactive tout."
   },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
@@ -882,6 +894,10 @@
    "source": "Download Mister Download Manager",
    "text": "Télécharger Mister Download Manager"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM n'envoie au service que les liens que vous téléchargez via celui-ci, et le jeton de votre compte. Rien d'autre."
+  },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "Laissez MDM en cours d’exécution. Fermer la fenêtre principale ne pose pas de problème : MDM continue de fonctionner dans la barre d’état système. N’utilisez pas <g1>Tâches → Quitter</g1>."
@@ -965,6 +981,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Des réponses courtes aux questions les plus fréquentes, avec un lien vers le guide complet."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Ses autorisations, et pourquoi : <g1>downloads</g1> pour voir et transférer les téléchargements ; <g2>cookies</g2> pour que les téléchargements nécessitant une connexion fonctionnent dans MDM ; <g3>nativeMessaging</g3> pour communiquer avec MDM ; <g4>contextMenus</g4> pour les éléments du menu contextuel ; <g5>storage</g5> pour ses paramètres ; <g6>webRequest</g6> pour voir les formulaires soumis et les flux vidéo chargés (elle ne change rien) ; <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge et autres navigateurs Chromium) pour que les fichiers que le navigateur ouvrirait (un PDF) soient téléchargés à la place, pour les types pris en charge par MDM ; dans Firefox, <g8>webRequestBlocking</g8> fait cela ; <g9>scripting</g9> pour lire les liens d'une page lorsque vous le demandez, et pour ajouter le bouton vidéo aux pages déjà ouvertes lors de l'installation de l'extension ; <g10>proxy</g10> pour lire le proxy utilisé par le navigateur, afin que les téléchargements effectués depuis un navigateur derrière un VPN ou une extension de proxy passent également par celui-ci (elle ne modifie jamais le proxy du navigateur) ; accès à tous les sites car les téléchargements et les vidéos peuvent provenir de n'importe quel site."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1178,6 +1198,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "Choisissez ce que le programme d'installation doit faire : - <g1>Configurer l'intégration au navigateur (Chrome, Edge, Brave, Firefox)</g1> - <g2>Ouvrir les fichiers .torrent et les liens magnet avec Mister Download Manager</g2> - <g3>Démarrer Mister Download Manager au démarrage de Windows</g3> - <g4>Créer un raccourci sur le bureau</g4> (désactivé sauf si vous le cochez)"
   },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "Ajouter votre compte"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM télécharge les images d'une galerie (une catégorie Wikimedia Commons, un album Flickr, une galerie DeviantArt, un album Imgur et bien d'autres) avec gallery-dl…"
@@ -1246,6 +1270,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDM ouvre la page web d’où provient le lien (quand il la connaît), et les <g1>Propriétés du fichier</g1> du téléchargement."
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "La liste conserve le lien de l'hébergeur. Le lien direct n'est jamais affiché ni copié : les services interdisent son partage. Il ne vit que dans les données de reprise du téléchargement, et lorsqu'il expire, MDM demande un nouveau lien au service."
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "Regardez la <g1>Capacité de reprise</g1> dans la fenêtre de progression. <g2>Non</g2> signifie que le serveur ne peut pas envoyer un fichier par parties. MDM utilise alors une seule connexion, et un téléchargement qui s’arrête doit recommencer. Pour de tels serveurs, évitez d’arrêter le téléchargement, et évitez une limite de vitesse très basse, ce qui peut faire que le serveur coupe la connexion."
@@ -1257,6 +1285,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "Il note où les redirections de chargement de page ont commencé et se sont terminées (en mémoire, pendant deux minutes), afin que MDM obtienne l'adresse sur laquelle vous avez cliqué, et pas seulement là où elle a mené."
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM ne fournit aucune liste d'hébergeurs ou de liens ; le service indique les hébergeurs qu'il prend en charge."
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1441,6 +1473,10 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "Les téléchargements restent avec le navigateur bien que MDM soit connecté"
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "Un service de débridage, tel que Real-Debrid, est un compte payant qui télécharge des fichiers depuis des hébergeurs de fichiers sur ses propres serveurs. Il renvoie un lien direct simple, sans..."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -1721,6 +1757,10 @@
   "2c532cfa46f94b69": {
    "source": "Changed",
    "text": "Modifié"
+  },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "Ajouter une URL, le presse-papiers, le menu de lien du navigateur <g1>Télécharger avec Mister Download Manager</g1>, et les téléchargements par lots passent par le compte lorsque son service prend en charge l'hébergeur du lien."
   },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
@@ -2606,6 +2646,10 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "Résultats préliminaires du {date}. Un nouveau test complet est en cours ; ces chiffres seront remplacés à la fin."
   },
+  "44c0ee7163ab2934": {
+   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
+   "text": "<g1>Expérimental :</g1> basé sur la documentation publique de l'API de Real-Debrid, pas encore confirmé avec un compte réel. Si quelque chose ne fonctionne pas avec votre compte, veuillez <g2>ouvrir une tâche</g2> (ne jamais y coller votre jeton)."
+  },
   "44e6a85b74a3eb0a": {
    "source": "Prism",
    "text": "Prism"
@@ -2629,6 +2673,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "Vidéo des pages"
+  },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "Un téléchargement que le navigateur avait déjà commencé (MDM l'a repris du navigateur) est téléchargé tel quel : l'hébergeur envoie déjà le fichier."
   },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
@@ -2694,6 +2742,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "MDM ne contient aucun logiciel publicitaire, espion, offre groupée ou suivi. L'intégralité de son code source est publique, afin que chacun puisse vérifier ce qu'il fait, et chaque version est compilée à partir de ce code par les serveurs de GitHub, où la compilation peut être inspectée. Les programmes auxiliaires qu'il peut récupérer pour les vidéos sont vérifiés avant leur exécution : yt-dlp par rapport à la clé de signature de ses développeurs, ffmpeg par rapport à ses sommes de contrôle publiées. Téléchargez MDM uniquement depuis ce site ou les versions GitHub du projet."
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "Où la connexion est conservée"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "Paramètres de connexion dans Options →"
@@ -2729,6 +2781,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10 et 11 · 64 bits</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>Comptes de service de débridage</g2></g1> — Real-Debrid : liens d'hébergeurs de fichiers via votre propre compte."
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -2917,6 +2973,10 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Toutes les langues d'affichage proposées par Windows 11, choisies par drapeau au premier démarrage ou à tout moment dans Affichage → Langue. L'arabe, l'hébreu, le persan, l'ourdou et l'ouïghour sont affichés de droite à gauche."
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "Tout peut être fait au clavier, et MDM fonctionne avec les lecteurs d'écran (tels que Narrateur et NVDA sous Windows) : ses fenêtres, dialogues et menus leur indiquent la fonction et l'état de chaque contrôle, et la liste des téléchargements lit le nom, le statut et la taille de chaque téléchargement."
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3130,6 +3190,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "Comptes de service de débridage — Aide de Mister Download Manager"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "Notre référence : IDM 6.42 (copie sous licence) et MDM sur le même PC, contre le même serveur de test local, en exécutions alternées ; médianes, Mann-Whitney p &lt; 0.001 · <g1>graphiques, rapport et données brutes</g1>"
@@ -3333,6 +3397,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "L'extension est-elle chargée et activée ? Cherchez <g1>Mister Download Manager</g1> sur la page des extensions du navigateur. Dans Firefox, un module complémentaire temporaire disparaît après un redémarrage. Voir <g2>Intégration au navigateur</g2>."
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux et macOS</g1> : dans les paramètres de MDM, dans un dossier de données que vous seul pouvez lire (0700), pas encore dans le trousseau du système. La conservation dans le trousseau est prévue."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3758,6 +3826,14 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>Propriétés</g1> — modifiez son nom, ses types de fichiers et son dossier. Général et Torrents ne changent que leur dossier. Une catégorie renommée conserve son dossier ; une catégorie intégrée conserve son nom dans votre langue jusqu'à ce que vous la renommiez."
   },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Maj+F10"
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM n'écrit jamais le jeton dans son journal d'événements, les rapports de crash, l'API d'automatisation ou la sortie de la ligne de commande."
+  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Vérifié en octobre 2026 · sources ci-dessous</g2>"
@@ -3821,6 +3897,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "Mettre les téléchargements en file d’attente pour plus tard →"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Utiliser le proxy/SOCKS d'une requête du navigateur…</g1> — activé par défaut. Un téléchargement que MDM prend du navigateur passe par le proxy que le navigateur a utilisé pour celui-ci. C'est celui qu'une extension VPN ou proxy a défini, le proxy manuel du navigateur, ou son script de configuration automatique de proxy. Sans cela, le téléchargement partirait de votre propre adresse, et le contenu limité au pays du VPN, ou à son adresse, échouerait. L'extension de navigateur lit ce proxy et le transmet à MDM avec chaque téléchargement."
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4145,6 +4225,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM peut être piloté sans sa fenêtre de trois manières :"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Les paramètres Proxy / Socks de MDM sont pour les téléchargements web et FTP. Les torrents peuvent également utiliser un SOCKS5 : définissez un proxy <x1/> dans <g2>Options → Proxy / Socks</g2> et activez <g3>Utiliser le proxy</g3> dans les Paramètres du torrent. Le proxy ne couvre que les connexions aux pairs et aux traqueurs web, donc avec lui MDM désactive le DHT, la découverte de pairs locaux, les connexions entrantes et les traqueurs UDP. Si le proxy disparaît de Proxy / Socks alors que cette option est activée, les torrents ne démarrent pas plutôt que de le contourner."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4558,6 +4642,10 @@
    "source": "Apple Silicon",
    "text": "Apple Silicon"
   },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid fonctionne maintenant. AllDebrid et Premiumize suivront."
+  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -4890,6 +4978,14 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "À l’heure de début, la file d’attente démarre d’elle-même. Le matin, les fichiers terminés se trouvent sous <g1>Terminé</g1> dans les catégories."
   },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "Pour acheminer <g1>tout</g1> via un autre réseau, utilisez un VPN pour l’ensemble de l’ordinateur. MDM ne peut pas lier les torrents à une seule carte réseau sous Windows."
+  },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "Votre compte de service de débridage (Real-Debrid) : <g1>Ajouter...</g1> vous connecte par code dans le navigateur ou avec votre jeton API ; un lien d'un hébergeur pris en charge par le service est alors téléchargé par son intermédiaire. L'ordre de la liste est l'ordre dans lequel les comptes sont sollicités. Voir <g2>Comptes de service de débridage</g2>."
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "Les torrents et votre sécurité"
@@ -4966,6 +5062,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "Voir <g1>Intégration du navigateur</g1>."
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "Un lien que le service ne peut pas fournir indique la raison dans la liste : se reconnecter, premium requis, l'hébergeur est en panne (MDM réessaie plus tard), le fichier a disparu, etc."
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "Tutoriel : capturer les téléchargements de votre navigateur →"
@@ -4981,6 +5081,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "Rapports d’erreur — Aide de Mister Download Manager"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "Comptes"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5253,6 +5357,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "Un serveur qui autorise deux connexions. MDM l'apprend et s'y tient ; IDM en a ouvert 480."
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM vérifie le compte et affiche son nom ainsi que son statut premium. <g1>OK</g1> le conserve."
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -5902,6 +6010,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Ligne de commande et automatisation</g2></g1> — les commutateurs de ligne de commande d'IDM, l'outil <x3/>, et l'API d'automatisation que d'autres programmes peuvent utiliser."
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Quand le navigateur utilise un proxy pour ce téléchargement (défini par un VPN ou une extension de proxy, ou dans ses paramètres), l'extension transmet <g1>l'adresse du proxy</g1>, ou son <g2>script de configuration automatique de proxy</g2>, afin que MDM télécharge via le même proxy. Elle ne lit ni ne transmet jamais les identifiants du proxy. Elle note seulement qu'un proxy en a demandé un, afin que MDM puisse vous informer qu'il ne peut pas utiliser ce proxy."
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "Accueil"
@@ -5993,6 +6105,10 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "Exécutez <x1/> avec MDM en cours d'exécution."
+  },
+  "a4263adda2169cf6": {
+   "source": "Playlists and mixes",
+   "text": "Listes de lecture et mixages"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6710,6 +6826,10 @@
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "Idem, pour un Mac avec un processeur Intel (À propos de ce Mac affiche un <g1>Processeur</g1>)."
   },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "N'utilisez que votre propre compte. Partager un compte ou ses liens enfreint les conditions des services et peut entraîner la suspension du compte."
+  },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
    "text": "Pour sauvegarder votre liste, quittez MDM (<g1>Tâches → Quitter</g1>) et copiez <x2/>."
@@ -7074,6 +7194,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "<g1>Mettre à jour maintenant</g1> dans Aide → Rechercher les mises à jour : MDM télécharge la nouvelle version, la vérifie, la met en place et redémarre, sous Windows (installation, portable et zip simple), Mac et Linux (AppImage, .tar.gz ; un .deb ou .rpm s'ouvre dans l'installateur du système). Il installe uniquement les fichiers listés dans une liste de sommes de contrôle signée par la clé de publication de MDM, que chaque version contient désormais (<x2/>). La première mise à jour de cette manière se fera de la version 0.2.1 à la version suivante."
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Un service de débridage, tel que Real-Debrid, est un compte payant qui télécharge des fichiers depuis des hébergeurs de fichiers sur ses propres serveurs. Il renvoie un lien direct simple, sans les attentes, les limitations de vitesse et les captchas de l'hébergeur. Avec votre compte dans MDM, un lien d'un hébergeur pris en charge par votre service est débloqué via le service, puis téléchargé par MDM comme n'importe quel fichier : toutes ses connexions, sa pause et sa reprise."
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "Le bouton de téléchargement sur les vidéos"
@@ -7097,6 +7221,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "Il reste discret : il ne s’affiche que lorsque vous pointez une vidéo (ou que le lecteur a le focus du clavier ; <g1>Tab</g1> déplace alors le focus vers le bouton), s’estompe lorsque le pointeur est au repos, et exclut les petites vidéos et les courtes boucles muettes (images animées, arrière-plans). En plein écran, il suit la vidéo lorsque le lecteur le permet. Sur une vidéo protégée par copie (DRM), il indique que la vidéo ne peut pas être enregistrée."
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "Comptes de service de débridage"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7285,6 +7413,10 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Maj+Tab</g2>"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "Votre compte, vos règles"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -7581,6 +7713,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "<g1>Quotidien</g1>, les jours que vous cochez."
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1> : scellé pour votre compte Windows (DPAPI), dans les paramètres de MDM. Une copie des paramètres sur un autre compte ou ordinateur ne peut pas le lire : reconnectez-vous là-bas."
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -7974,6 +8110,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Oui. MDM accepte les commutateurs de ligne de commande familiers d'IDM, est livré avec misterdownloadmanager-cli pour les téléchargements depuis un terminal, et dispose d'une API d'automatisation locale, protégée par un jeton, qui peut lister, mettre en pause, démarrer et supprimer des téléchargements. L'API est désactivée tant que vous ne l'activez pas. Voir Ligne de commande et automatisation."
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Un proxy qui demande un identifiant que l'extension VPN se donne ne peut pas être partagé : aucun autre programme n'a cet identifiant. Le téléchargement s'arrête alors et l'indique, plutôt que de se faire sans le proxy. Utilisez l'application propre au VPN, ou choisissez son adaptateur sous <g1>Adaptateur réseau</g1>."
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "Le serveur d'une copie portable trouve le MDM de la copie portable tout seul, à partir de son propre dossier."
@@ -8021,6 +8161,10 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "Fonctionne presque partout, avec HTTP, BitTorrent, magnet et ed2k, et une API REST"
+  },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "Choisissez le service, puis : - <g1>Se connecter dans le navigateur</g1> : MDM affiche un code et ouvre la page du service. Saisissez le code et autorisez MDM. La boîte de dialogue le détecte automatiquement. - ou collez votre <g2>jeton API</g2> (<g3>Rechercher mon jeton</g3> ouvre la page du service qui l'affiche), puis <g4>Utiliser le jeton</g4>."
   },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
@@ -8133,6 +8277,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Reprendre un téléchargement interrompu"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "Télécharge un fichier avec jusqu'à 8 connexions (<x1/>, de 1 à 128), en affichant la progression. <x2/> le met en pause ; <x3/> continue. <x4/> vérifie le fichier terminé : MD5 hex, SHA-1, SHA-256, SHA-512 ou CRC32, avec un nom facultatif (<x5/>). <x6/> choisit le DNS : <x7/> (par défaut) ; un service et comment le demander, <x8/>, <x9/>, <x10/>, <x11/>, <x12/> ; les adresses des serveurs DNS, <x13/> ; ou une adresse DNS-over-HTTPS. Il ne revient jamais au DNS du système."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8289,6 +8437,10 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>Clients.</g1> IDM et MDM, tous deux avec les paramètres par défaut (8 connexions), chacun recevant le téléchargement via la même ligne de commande documentée : <x2/>. Les deux enregistrent sur le lecteur qui contient le dossier temporaire d'IDM, donc aucun ne paie une copie inter-lecteur."
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "L'ordre de la liste est l'ordre dans lequel les comptes sont sollicités : un lien passe par le premier compte dont le service prend en charge son hébergeur. <g1>Monter</g1> et <g2>Descendre</g2> le modifient."
   },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
@@ -8702,6 +8854,10 @@
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
    "text": "Les vidéos d'une liste de lecture ou d'une chaîne, une par ligne, telles qu'elles sont listées : leur position, durée, titre et adresse."
   },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "Ce qui arrive à un lien"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8978,6 +9134,10 @@
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "Non. MDM ne contourne pas les protections anti-copie (DRM), c'est une décision de conception. Les vidéos protégées restent protégées. Voir aussi <g1>à quoi MDM est destiné</g1>."
   },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "Options → Comptes → Ajouter..."
+  },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1,0×</g1><g2>plus rapide</g2>"
@@ -9205,118 +9365,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "vos adresses de téléchargement ou noms de fichiers ;"
-  },
-  "0b0116419017071b": {
-   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
-   "text": "<g1>Télécharger les liens d’hébergeurs de fichiers pris en charge via ces comptes</g1> active et désactive tout."
-  },
-  "16e51d663458d0c2": {
-   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
-   "text": "MDM n'envoie au service que les liens que vous téléchargez via celui-ci, et le jeton de votre compte. Rien d'autre."
-  },
-  "1ddd137e20fb9434": {
-   "source": "Add your account",
-   "text": "Ajouter votre compte"
-  },
-  "1fc4673dc3cdd511": {
-   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
-   "text": "La liste conserve le lien de l'hébergeur. Le lien direct n'est jamais affiché ni copié : les services interdisent son partage. Il ne vit que dans les données de reprise du téléchargement, et lorsqu'il expire, MDM demande un nouveau lien au service."
-  },
-  "2062fec7c828d892": {
-   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
-   "text": "MDM ne fournit aucune liste d'hébergeurs ou de liens ; le service indique les hébergeurs qu'il prend en charge."
-  },
-  "254858789074bb69": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
-   "text": "Un service de débridage, tel que Real-Debrid, est un compte payant qui télécharge des fichiers depuis des hébergeurs de fichiers sur ses propres serveurs. Il renvoie un lien direct simple, sans..."
-  },
-  "2c6c86430d025b2e": {
-   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
-   "text": "Ajouter une URL, le presse-papiers, le menu de lien du navigateur <g1>Télécharger avec Mister Download Manager</g1>, et les téléchargements par lots passent par le compte lorsque son service prend en charge l'hébergeur du lien."
-  },
-  "44c0ee7163ab2934": {
-   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
-   "text": "<g1>Expérimental :</g1> basé sur la documentation publique de l'API de Real-Debrid, pas encore confirmé avec un compte réel. Si quelque chose ne fonctionne pas avec votre compte, veuillez <g2>ouvrir une tâche</g2> (ne jamais y coller votre jeton)."
-  },
-  "45bc5ceaa76685a9": {
-   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
-   "text": "Un téléchargement que le navigateur avait déjà commencé (MDM l'a repris du navigateur) est téléchargé tel quel : l'hébergeur envoie déjà le fichier."
-  },
-  "47c3467a6b20a446": {
-   "source": "Where the sign-in is kept",
-   "text": "Où la connexion est conservée"
-  },
-  "496e926e46524176": {
-   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
-   "text": "<g1><g2>Comptes de service de débridage</g2></g1> — Real-Debrid : liens d'hébergeurs de fichiers via votre propre compte."
-  },
-  "55217534c366257f": {
-   "source": "Debrid service accounts — Mister Download Manager help",
-   "text": "Comptes de service de débridage — Aide de Mister Download Manager"
-  },
-  "5bc4b6e9ef830d3c": {
-   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
-   "text": "<g1>Linux et macOS</g1> : dans les paramètres de MDM, dans un dossier de données que vous seul pouvez lire (0700), pas encore dans le trousseau du système. La conservation dans le trousseau est prévue."
-  },
-  "670bb10cde757ad1": {
-   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
-   "text": "MDM n'écrit jamais le jeton dans son journal d'événements, les rapports de crash, l'API d'automatisation ou la sortie de la ligne de commande."
-  },
-  "7c840c91cbf164f3": {
-   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
-   "text": "Real-Debrid fonctionne maintenant. AllDebrid et Premiumize suivront."
-  },
-  "8477274e64c2a9d3": {
-   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
-   "text": "Votre compte de service de débridage (Real-Debrid) : <g1>Ajouter...</g1> vous connecte par code dans le navigateur ou avec votre jeton API ; un lien d'un hébergeur pris en charge par le service est alors téléchargé par son intermédiaire. L'ordre de la liste est l'ordre dans lequel les comptes sont sollicités. Voir <g2>Comptes de service de débridage</g2>."
-  },
-  "86e57342ae9eaa60": {
-   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
-   "text": "Un lien que le service ne peut pas fournir indique la raison dans la liste : se reconnecter, premium requis, l'hébergeur est en panne (MDM réessaie plus tard), le fichier a disparu, etc."
-  },
-  "876df42999b76ac6": {
-   "source": "Accounts",
-   "text": "Comptes"
-  },
-  "8f7481f4372a14d6": {
-   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
-   "text": "MDM vérifie le compte et affiche son nom ainsi que son statut premium. <g1>OK</g1> le conserve."
-  },
-  "b6c6533af9e6a7eb": {
-   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
-   "text": "N'utilisez que votre propre compte. Partager un compte ou ses liens enfreint les conditions des services et peut entraîner la suspension du compte."
-  },
-  "c174d7018b6d1a5b": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
-   "text": "Un service de débridage, tel que Real-Debrid, est un compte payant qui télécharge des fichiers depuis des hébergeurs de fichiers sur ses propres serveurs. Il renvoie un lien direct simple, sans les attentes, les limitations de vitesse et les captchas de l'hébergeur. Avec votre compte dans MDM, un lien d'un hébergeur pris en charge par votre service est débloqué via le service, puis téléchargé par MDM comme n'importe quel fichier : toutes ses connexions, sa pause et sa reprise."
-  },
-  "c1d77bb835bb6ef4": {
-   "source": "Debrid service accounts",
-   "text": "Comptes de service de débridage"
-  },
-  "c79d3d545a5bebd2": {
-   "source": "Your account, your rules",
-   "text": "Votre compte, vos règles"
-  },
-  "d0352efdbc9db51b": {
-   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
-   "text": "<g1>Windows</g1> : scellé pour votre compte Windows (DPAPI), dans les paramètres de MDM. Une copie des paramètres sur un autre compte ou ordinateur ne peut pas le lire : reconnectez-vous là-bas."
-  },
-  "dd915e88440c78b0": {
-   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
-   "text": "Choisissez le service, puis : - <g1>Se connecter dans le navigateur</g1> : MDM affiche un code et ouvre la page du service. Saisissez le code et autorisez MDM. La boîte de dialogue le détecte automatiquement. - ou collez votre <g2>jeton API</g2> (<g3>Rechercher mon jeton</g3> ouvre la page du service qui l'affiche), puis <g4>Utiliser le jeton</g4>."
-  },
-  "e52b31d58add8742": {
-   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
-   "text": "L'ordre de la liste est l'ordre dans lequel les comptes sont sollicités : un lien passe par le premier compte dont le service prend en charge son hébergeur. <g1>Monter</g1> et <g2>Descendre</g2> le modifient."
-  },
-  "f1693c50a75a5859": {
-   "source": "What happens to a link",
-   "text": "Ce qui arrive à un lien"
-  },
-  "f9fc95028964f92c": {
-   "source": "Options → Accounts → Add...",
-   "text": "Options → Comptes → Ajouter..."
   }
  }
 }

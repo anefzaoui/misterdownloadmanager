@@ -1850,6 +1850,10 @@
 #, machine
 	Port:	Θύρα:
 #. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	Προνομιακό
+#. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	premium, απομένουν {days} ημέρες
@@ -2452,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Οι καλύτερες ποιότητες, MP3, Opus και FLAC, χρειάζονται το ffmpeg: εγκαταστήστε το με τον διαχειριστή πακέτων του συστήματός σας (ή το Homebrew).
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	το διακομιστή μεσολάβησης του προγράμματος περιήγησης (μια επέκταση VPN ή διακομιστή μεσολάβησης) ζητά σύνδεση που έχει μόνο αυτή η επέκταση: χρησιμοποιήστε την εφαρμογή του VPN ή επιλέξτε τον προσαρμογέα δικτύου του στις Επιλογές → Διακομιστής μεσολάβησης/Socks
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

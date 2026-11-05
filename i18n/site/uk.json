@@ -178,6 +178,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Якщо деякі файли торрента вже є в папці, MDM запитує, перш ніж їх використовувати. <g1>Так</g1> залишає їх для торрента: MDM перевіряє їх, зберігає те, що відповідає торренту, і завантажує решту. Так можна продовжити завантаження, розпочате в іншому місці, або поділитися файлами, які у вас вже є. <g2>Ні</g2> (за замовчуванням) повертає назад, щоб ви могли вибрати іншу папку, і нічого з вашого не буде перезаписано."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "У Firefox MDM бачить проксі, який використовував власний запит браузера для файлу, включаючи ті, які розширення VPN вибирає для кожного запиту. У Chrome, Edge, Brave, Opera та Vivaldi він бачить налаштування проксі браузера."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM відхиляє торрент з іменами файлів, які ваша система не може безпечно записати, вказує, яке ім’я, і нічого не записує."
@@ -249,6 +253,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> для Debian та Ubuntu, <g2>.rpm</g2> для Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Коли браузер не використовував проксі, і вибрано <g1>Без проксі/SOCKS</g1>, MDM використовує налаштування проксі Windows, як це роблять браузери."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -469,6 +477,10 @@
   "0b00b090c6e18701": {
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "В IDM оберіть <g1>Завдання → Експорт → До IDM експортувати файл</g1> та збережіть свій список."
+  },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>Завантажувати підтримувані посилання файлових хостів через ці облікові записи</g1> вмикає та вимикає все це."
   },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
@@ -882,6 +894,10 @@
    "source": "Download Mister Download Manager",
    "text": "Завантажити Mister Download Manager"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM надсилає службі лише посилання, які ви завантажуєте через неї, та токен вашого облікового запису. Нічого іншого."
+  },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "Залиште MDM працювати. Закриття головного вікна — це нормально: MDM продовжує працювати в треї. Не використовуйте <g1>Завдання → Вихід</g1>."
@@ -965,6 +981,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Короткі відповіді на найпоширеніші запитання, кожна з яких містить посилання на повний посібник."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Його дозволи та причини: <g1>downloads</g1> для перегляду та передачі завантажень; <g2>cookies</g2>, щоб завантаження з авторизацією працювали в MDM; <g3>nativeMessaging</g3> для зв'язку з MDM; <g4>contextMenus</g4> для елементів контекстного меню; <g5>storage</g5> для його налаштувань; <g6>webRequest</g6> для перегляду надісланих форм та завантажених відеопотоків (нічого не змінює); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge та інші браузери на базі Chromium) для завантаження файлів, які браузер відкрив би (PDF), замість цього, для типів, які підтримує MDM; у Firefox <g8>webRequestBlocking</g8> робить це; <g9>scripting</g9> для читання посилань сторінки за вашим запитом та для додавання кнопки відео до вже відкритих сторінок при встановленні розширення; <g10>proxy</g10> для читання того, який проксі використовує браузер, щоб завантаження, отримані з браузера за VPN або проксі-розширенням, також проходили через нього (ніколи не змінює проксі браузера); доступ до всіх сайтів, оскільки завантаження та відео можуть надходити з будь-якого сайту."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1178,6 +1198,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "Виберіть, що має зробити інсталятор: - <g1>Налаштувати інтеграцію з браузером (Chrome, Edge, Brave, Firefox)</g1> - <g2>Відкривати файли .torrent та магнітні посилання за допомогою Mister Download Manager</g2> - <g3>Запускати Mister Download Manager при запуску Windows</g3> - <g4>Створити ярлик на робочому столі</g4> (вимкнено, якщо ви не позначите)"
   },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "Додати обліковий запис"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM завантажує зображення з галереї (категорії Wikimedia Commons, альбому Flickr, галереї DeviantArt, альбому Imgur та багатьох інших) за допомогою gallery-dl…"
@@ -1246,6 +1270,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDM відкриває вебсторінку, з якої походить посилання (якщо воно відоме), та <g1>Властивості файлу</g1> завантаження."
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "Список зберігає посилання хоста. Пряме посилання ніколи не відображається та не копіюється: служби забороняють його поширення. Воно існує лише в даних відновлення завантаження, і коли термін його дії закінчується, MDM запитує у служби нове."
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "Подивіться на <g1>Можливість відновлення</g1> у вікні прогресу. <g2>Ні</g2> означає, що сервер не може надсилати файл частинами. Тоді MDM використовує одне з'єднання, і завантаження, яке зупиняється, доводиться починати спочатку. Для таких серверів уникайте зупинки завантаження та дуже низького обмеження швидкості, що може призвести до розриву з'єднання сервером."
@@ -1257,6 +1285,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "Воно зберігає, де почалися та закінчилися перенаправлення завантажень сторінок (у пам'яті, протягом двох хвилин), щоб MDM отримував адресу, на яку ви натиснули, а не лише ту, куди вона вела."
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM не постачає жодного списку хостів чи посилань; служба вказує, які хости вона підтримує."
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1441,6 +1473,10 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "Завантаження залишаються в браузері, хоча MDM підключений"
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "Служба дебридингу, як-от Real-Debrid, — це платний обліковий запис, який завантажує файли з файлових хостів на власні сервери. Вона надає пряме посилання, без..."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -1721,6 +1757,10 @@
   "2c532cfa46f94b69": {
    "source": "Changed",
    "text": "Змінено"
+  },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "Додати URL-адресу, буфер обміну, меню посилань браузера <g1>Завантажити за допомогою Mister Download Manager</g1> та пакетні завантаження проходять через обліковий запис, якщо його служба підтримує хост посилання."
   },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
@@ -2606,6 +2646,10 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "Попередні результати від {date}. Повне повторне виконання триває; ці цифри будуть замінені після його завершення."
   },
+  "44c0ee7163ab2934": {
+   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
+   "text": "<g1>Експериментально:</g1> створено на основі публічної документації API Real-Debrid, ще не підтверджено реальним обліковим записом. Якщо щось не працює з вашим обліковим записом, будь ласка, <g2>створіть звернення</g2> (ніколи не вставляйте туди свій токен)."
+  },
   "44e6a85b74a3eb0a": {
    "source": "Prism",
    "text": "Prism"
@@ -2629,6 +2673,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "Відео зі сторінок"
+  },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "Завантаження, яке браузер вже розпочав (MDM перехопив його з браузера), завантажується як є: хост вже надсилає файл."
   },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
@@ -2694,6 +2742,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "MDM не містить рекламного, шпигунського ПЗ, прихованих пропозицій чи відстеження. Весь його вихідний код є публічним, тому кожен може перевірити, що він робить, а кожен випуск створюється з цього коду серверами GitHub, де збірку можна перевірити. Допоміжні програми, які він може завантажувати для відео, перевіряються перед запуском: yt-dlp – за ключем підпису його розробників, ffmpeg – за опублікованими контрольними сумами. Завантажуйте MDM лише з цього сайту або з релізів проєкту на GitHub."
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "Де зберігається вхід"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "Налаштування підключення в Параметрах →"
@@ -2729,6 +2781,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10 та 11 · 64-біт</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>Облікові записи служби дебридингу</g2></g1> — Real-Debrid: посилання файлообмінників через ваш власний обліковий запис."
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -2917,6 +2973,10 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Усі мови інтерфейсу, які пропонує Windows 11, можна вибрати за прапорцем під час першого запуску або в будь-який час у меню Вигляд → Мова. Арабська, іврит, перська, урду та уйгурська мови відображаються справа наліво."
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "Усе можна зробити з клавіатури, і MDM працює з програмами для читання з екрана (такими як Narrator і NVDA у Windows): його вікна, діалогові вікна та меню повідомляють їм, що собою являє кожен елемент керування та його стан, а список завантажень читає назву, статус і розмір кожного завантаження."
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3130,6 +3190,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "Облікові записи служби дебридингу — Довідка Mister Download Manager"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "Наш тест: IDM 6.42 (ліцензійна копія) та MDM на одному ПК, проти того ж локального тестового сервера, в чергуванні запусків; медіани, Манн-Вітні p &lt; 0.001 · <g1>графіки, звіт та вихідні дані</g1>"
@@ -3333,6 +3397,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "Чи завантажено та ввімкнено розширення? Знайдіть <g1>Mister Download Manager</g1> на сторінці розширень браузера. У Firefox тимчасове доповнення зникає після перезапуску. Дивіться <g2>Інтеграція з браузером</g2>."
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux та macOS</g1>: у налаштуваннях MDM, у папці даних, яку можете читати лише ви (0700), ще не в системному сховищі ключів. Зберігання в сховищі ключів планується."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3758,6 +3826,14 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>Властивості</g1> — змінити назву, типи файлів та теку. Категорії \"Загальні\" та \"Торренти\" змінюють лише свою теку. Перейменована категорія зберігає свою теку; вбудована зберігає свою назву вашою мовою, доки ви її не перейменуєте."
   },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Shift+F10"
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM ніколи не записує токен у свій журнал подій, звіти про збої, API автоматизації або вивід командного рядка."
+  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager проти IDM 6.42</g1><g2>Перевірено Жовтень 2026 · джерела нижче</g2>"
@@ -3821,6 +3897,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "Поставити завантаження в чергу на потім →"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Використовувати проксі/SOCKS із запиту браузера…</g1> — увімкнено за замовчуванням. Завантаження, яке MDM отримує з браузера, проходить через проксі, який браузер використовував для нього. Це той, який встановило розширення VPN або проксі, власний ручний проксі браузера або його скрипт автоматичної конфігурації проксі. Без цього завантаження відбувалося б з вашої власної адреси, і контент, обмежений країною VPN або її адресою, не завантажився б. Розширення браузера зчитує цей проксі та передає його MDM з кожним завантаженням."
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4145,6 +4225,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM можна керувати без його вікна трьома способами:"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Налаштування Проксі / Socks MDM призначені для завантажень з вебу та FTP. Торренти також можуть використовувати SOCKS5: встановіть <x1/> проксі в <g2>Параметри → Проксі / Socks</g2> та увімкніть <g3>Використовувати проксі</g3> в Налаштуваннях торрентів. Проксі охоплює лише підключення до пірів та веб-трекерів, тому з ним MDM вимикає DHT, локальне виявлення пірів, вхідні підключення та UDP-трекери. Якщо проксі зник з Проксі / Socks, коли цей перемикач увімкнено, торренти не запускаються, а не обходять його."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4558,6 +4642,10 @@
    "source": "Apple Silicon",
    "text": "Apple Silicon"
   },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid працює зараз. AllDebrid та Premiumize будуть наступними."
+  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -4890,6 +4978,14 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "У встановлений час черга запускається сама. Вранці завершені файли знаходяться в розділі <g1>Завершено</g1> в категоріях."
   },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "Щоб маршрутизувати <g1>все</g1> через іншу мережу, використовуйте VPN для всього комп'ютера. MDM не може прив'язати торренти до одного мережевого адаптера в Windows."
+  },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "Ваш обліковий запис служби дебридингу (Real-Debrid): <g1>Додати...</g1> вхід за кодом у браузері або за допомогою вашого токена API; посилання з хоста, який підтримує служба, завантажується через нього. Порядок у списку — це порядок запиту облікових записів. Дивіться <g2>Облікові записи служби дебридингу</g2>."
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "Торренти та ваша безпека"
@@ -4966,6 +5062,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "Дивіться <g1>Інтеграція з браузером</g1>."
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "Посилання, яке служба не може надати, вказує причину в списку: увійдіть знову, потрібен преміум, хост не працює (MDM спробує пізніше), файл зник тощо."
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "Посібник: перехоплення завантажень з вашого браузера →"
@@ -4981,6 +5081,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "Звіти про збої — довідка Mister Download Manager"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "Облікові записи"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5253,6 +5357,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "Сервер, що дозволяє два з’єднання. MDM дізнається про це і дотримується двох; IDM відкрив 480."
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM перевіряє обліковий запис і показує його назву та чи є він преміум. <g1>OK</g1> зберігає його."
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -5902,6 +6010,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Командний рядок та автоматизація</g2></g1> — параметри командного рядка IDM, інструмент <x3/> та API автоматизації, який можуть використовувати інші програми."
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Коли браузер використовує проксі для завантаження (встановлений VPN або розширенням проксі, або в його налаштуваннях), розширення передає <g1>адресу проксі</g1> або його <g2>скрипт автоматичної конфігурації проксі</g2>, щоб MDM завантажував через той самий проксі. Воно ніколи не читає і не передає логін проксі. Воно лише зазначає, що проксі вимагав його, щоб MDM міг повідомити вам, що він не може використовувати цей проксі."
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "Головна"
@@ -5993,6 +6105,10 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "Запустіть <x1/>, коли MDM запущено."
+  },
+  "a4263adda2169cf6": {
+   "source": "Playlists and mixes",
+   "text": "Списки відтворення та мікси"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6710,6 +6826,10 @@
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "Те саме для Mac із процесором Intel (Про цей Mac показує <g1>Процесор</g1>)."
   },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "Використовуйте лише власний обліковий запис. Спільне використання облікового запису або його посилань порушує умови надання послуг і може призвести до призупинення дії облікового запису."
+  },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
    "text": "Щоб створити резервну копію списку, вийдіть з MDM (<g1>Завдання → Вихід</g1>) і скопіюйте <x2/>."
@@ -7074,6 +7194,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "<g1>Оновити зараз</g1> у Довідка → Перевірити наявність оновлень: MDM завантажує нову версію, перевіряє її, встановлює та перезапускає на Windows (інсталятор, портативна та звичайний zip), Mac та Linux (AppImage, .tar.gz; .deb або .rpm відкривається в системному інсталяторі). Встановлюються лише файли, перелічені у списку контрольних сум, підписаному ключем випуску MDM, який тепер має кожен випуск (<x2/>). Перше оновлення таким чином буде з 0.2.1 до наступної версії."
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Служба дебридингу, як-от Real-Debrid, — це платний обліковий запис, який завантажує файли з файлових хостів на власні сервери. Вона надає пряме посилання без очікування, обмежень швидкості та капч хоста. З вашим обліковим записом у MDM посилання з хоста, який підтримує ваша служба, розблоковується через службу, а потім завантажується MDM як будь-який файл: з усіма його з'єднаннями, паузою та відновленням."
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "Кнопка завантаження над відео"
@@ -7097,6 +7221,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "Вона не заважає: з'являється лише тоді, коли ви наводите курсор на відео (або плеєр має фокус клавіатури; <g1>Tab</g1> потім переміщується до кнопки), зникає, коли курсор зупиняється, і пропускає невеликі відео та короткі зациклені беззвучні фрагменти (анімовані зображення, фони). У повноекранному режимі вона слідує за відео, якщо плеєр це дозволяє. На відео із захистом від копіювання (DRM) вона повідомляє, що відео не може бути збережено."
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "Облікові записи служби дебридингу"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7285,6 +7413,10 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "Ваш обліковий запис, ваші правила"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -7581,6 +7713,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "<g1>Щоденно</g1>, у вибрані вами дні."
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: запечатано для вашого облікового запису Windows (DPAPI) у налаштуваннях MDM. Копія налаштувань на іншому обліковому записі або комп'ютері не може його прочитати: увійдіть там знову."
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -7974,6 +8110,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Так. MDM підтримує звичні параметри командного рядка IDM, постачається з misterdownloadmanager-cli для завантажень з терміналу та має локальний, захищений токеном API автоматизації, який може перераховувати, призупиняти, запускати та видаляти завантаження. API вимкнено, доки ви його не ввімкнете. Дивіться Командний рядок та автоматизація."
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Проксі, який вимагає логін, що розширення VPN надає собі, не може бути спільним: жодна інша програма не має цього логіна. Завантаження тоді зупиняється і повідомляє про це, замість того, щоб йти без проксі. Використовуйте власний додаток VPN або виберіть його адаптер у розділі <g1>Мережевий адаптер</g1>."
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "Сервер портативної копії сам знаходить MDM портативної копії у своїй папці."
@@ -8021,6 +8161,10 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "Працює майже скрізь, з HTTP, BitTorrent, магнітними та ed2k посиланнями, а також REST API"
+  },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "Виберіть службу, потім: - <g1>Увійти в браузері</g1>: MDM показує код і відкриває сторінку служби. Введіть код там і дозвольте MDM. Діалогове вікно помітить це самостійно. - або вставте свій <g2>токен API</g2> (<g3>Знайти мій токен</g3> відкриває сторінку служби, яка його показує), потім <g4>Використати токен</g4>."
   },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
@@ -8133,6 +8277,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Продовжити перерване завантаження"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "Завантажити файл із до 8 з’єднаннями (<x1/>, від 1 до 128), показуючи прогрес. <x2/> призупиняє його; <x3/> продовжує. <x4/> перевіряє готовий файл: шістнадцятковий MD5, SHA-1, SHA-256, SHA-512 або CRC32, за бажанням названий (<x5/>). <x6/> вибирає DNS: <x7/> (за замовчуванням); службу та спосіб запиту, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреси DNS-серверів, <x13/>; або адресу DNS-over-HTTPS. Він ніколи не повертається до системного DNS."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8289,6 +8437,10 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>Клієнти.</g1> IDM та MDM, обидва з налаштуваннями за замовчуванням (8 з’єднань), кожному надано завантаження через той самий документований командний рядок: <x2/>. Обидва зберігають на диск, де знаходиться тимчасова папка IDM, тому жоден не витрачає час на копіювання між дисками."
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "Порядок у списку — це порядок запитів до облікових записів: посилання проходить через перший обліковий запис, служба якого підтримує його хост. <g1>Вгору</g1> та <g2>Вниз</g2> змінюють його."
   },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
@@ -8702,6 +8854,10 @@
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
    "text": "Відео зі списку відтворення або каналу, по одному в рядку, як вони вказані: їхнє місце, тривалість, назва та адреса."
   },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "Що відбувається з посиланням"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8978,6 +9134,10 @@
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "Ні. MDM за задумом не зламує захист від копіювання (DRM). Захищені відео залишаються захищеними. Дивіться також <g1>для чого створено MDM</g1>."
   },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "Параметри → Облікові записи → Додати..."
+  },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1.0×</g1><g2>швидше</g2>"
@@ -9205,118 +9365,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "ваші адреси завантажень або імена файлів;"
-  },
-  "0b0116419017071b": {
-   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
-   "text": "<g1>Завантажувати підтримувані посилання файлових хостів через ці облікові записи</g1> вмикає та вимикає все це."
-  },
-  "16e51d663458d0c2": {
-   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
-   "text": "MDM надсилає службі лише посилання, які ви завантажуєте через неї, та токен вашого облікового запису. Нічого іншого."
-  },
-  "1ddd137e20fb9434": {
-   "source": "Add your account",
-   "text": "Додати обліковий запис"
-  },
-  "1fc4673dc3cdd511": {
-   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
-   "text": "Список зберігає посилання хоста. Пряме посилання ніколи не відображається та не копіюється: служби забороняють його поширення. Воно існує лише в даних відновлення завантаження, і коли термін його дії закінчується, MDM запитує у служби нове."
-  },
-  "2062fec7c828d892": {
-   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
-   "text": "MDM не постачає жодного списку хостів чи посилань; служба вказує, які хости вона підтримує."
-  },
-  "254858789074bb69": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
-   "text": "Служба дебридингу, як-от Real-Debrid, — це платний обліковий запис, який завантажує файли з файлових хостів на власні сервери. Вона надає пряме посилання, без..."
-  },
-  "2c6c86430d025b2e": {
-   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
-   "text": "Додати URL-адресу, буфер обміну, меню посилань браузера <g1>Завантажити за допомогою Mister Download Manager</g1> та пакетні завантаження проходять через обліковий запис, якщо його служба підтримує хост посилання."
-  },
-  "44c0ee7163ab2934": {
-   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
-   "text": "<g1>Експериментально:</g1> створено на основі публічної документації API Real-Debrid, ще не підтверджено реальним обліковим записом. Якщо щось не працює з вашим обліковим записом, будь ласка, <g2>створіть звернення</g2> (ніколи не вставляйте туди свій токен)."
-  },
-  "45bc5ceaa76685a9": {
-   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
-   "text": "Завантаження, яке браузер вже розпочав (MDM перехопив його з браузера), завантажується як є: хост вже надсилає файл."
-  },
-  "47c3467a6b20a446": {
-   "source": "Where the sign-in is kept",
-   "text": "Де зберігається вхід"
-  },
-  "496e926e46524176": {
-   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
-   "text": "<g1><g2>Облікові записи служби дебридингу</g2></g1> — Real-Debrid: посилання файлообмінників через ваш власний обліковий запис."
-  },
-  "55217534c366257f": {
-   "source": "Debrid service accounts — Mister Download Manager help",
-   "text": "Облікові записи служби дебридингу — Довідка Mister Download Manager"
-  },
-  "5bc4b6e9ef830d3c": {
-   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
-   "text": "<g1>Linux та macOS</g1>: у налаштуваннях MDM, у папці даних, яку можете читати лише ви (0700), ще не в системному сховищі ключів. Зберігання в сховищі ключів планується."
-  },
-  "670bb10cde757ad1": {
-   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
-   "text": "MDM ніколи не записує токен у свій журнал подій, звіти про збої, API автоматизації або вивід командного рядка."
-  },
-  "7c840c91cbf164f3": {
-   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
-   "text": "Real-Debrid працює зараз. AllDebrid та Premiumize будуть наступними."
-  },
-  "8477274e64c2a9d3": {
-   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
-   "text": "Ваш обліковий запис служби дебридингу (Real-Debrid): <g1>Додати...</g1> вхід за кодом у браузері або за допомогою вашого токена API; посилання з хоста, який підтримує служба, завантажується через нього. Порядок у списку — це порядок запиту облікових записів. Дивіться <g2>Облікові записи служби дебридингу</g2>."
-  },
-  "86e57342ae9eaa60": {
-   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
-   "text": "Посилання, яке служба не може надати, вказує причину в списку: увійдіть знову, потрібен преміум, хост не працює (MDM спробує пізніше), файл зник тощо."
-  },
-  "876df42999b76ac6": {
-   "source": "Accounts",
-   "text": "Облікові записи"
-  },
-  "8f7481f4372a14d6": {
-   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
-   "text": "MDM перевіряє обліковий запис і показує його назву та чи є він преміум. <g1>OK</g1> зберігає його."
-  },
-  "b6c6533af9e6a7eb": {
-   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
-   "text": "Використовуйте лише власний обліковий запис. Спільне використання облікового запису або його посилань порушує умови надання послуг і може призвести до призупинення дії облікового запису."
-  },
-  "c174d7018b6d1a5b": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
-   "text": "Служба дебридингу, як-от Real-Debrid, — це платний обліковий запис, який завантажує файли з файлових хостів на власні сервери. Вона надає пряме посилання без очікування, обмежень швидкості та капч хоста. З вашим обліковим записом у MDM посилання з хоста, який підтримує ваша служба, розблоковується через службу, а потім завантажується MDM як будь-який файл: з усіма його з'єднаннями, паузою та відновленням."
-  },
-  "c1d77bb835bb6ef4": {
-   "source": "Debrid service accounts",
-   "text": "Облікові записи служби дебридингу"
-  },
-  "c79d3d545a5bebd2": {
-   "source": "Your account, your rules",
-   "text": "Ваш обліковий запис, ваші правила"
-  },
-  "d0352efdbc9db51b": {
-   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
-   "text": "<g1>Windows</g1>: запечатано для вашого облікового запису Windows (DPAPI) у налаштуваннях MDM. Копія налаштувань на іншому обліковому записі або комп'ютері не може його прочитати: увійдіть там знову."
-  },
-  "dd915e88440c78b0": {
-   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
-   "text": "Виберіть службу, потім: - <g1>Увійти в браузері</g1>: MDM показує код і відкриває сторінку служби. Введіть код там і дозвольте MDM. Діалогове вікно помітить це самостійно. - або вставте свій <g2>токен API</g2> (<g3>Знайти мій токен</g3> відкриває сторінку служби, яка його показує), потім <g4>Використати токен</g4>."
-  },
-  "e52b31d58add8742": {
-   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
-   "text": "Порядок у списку — це порядок запитів до облікових записів: посилання проходить через перший обліковий запис, служба якого підтримує його хост. <g1>Вгору</g1> та <g2>Вниз</g2> змінюють його."
-  },
-  "f1693c50a75a5859": {
-   "source": "What happens to a link",
-   "text": "Що відбувається з посиланням"
-  },
-  "f9fc95028964f92c": {
-   "source": "Options → Accounts → Add...",
-   "text": "Параметри → Облікові записи → Додати..."
   }
  }
 }

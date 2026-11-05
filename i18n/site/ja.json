@@ -178,6 +178,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "トレントのファイルの一部がすでにフォルダーにある場合、MDMはそれらを使用する前に確認します。<g1>はい</g1>を選択すると、それらはトレントのために保持されます。MDMはそれらをチェックし、トレントと一致するものを保持し、残りをダウンロードします。これは、他の場所で開始したダウンロードを続行したり、すでに持っているファイルを共有したりする方法です。<g2>いいえ</g2>（デフォルト）を選択すると、元に戻り、別のフォルダーを選択できるため、既存のファイルが上書きされることはありません。"
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Firefoxでは、MDMはブラウザ自身のファイルリクエストが使用したプロキシ（VPN拡張機能が各リクエストに選択するものを含む）を認識します。Chrome、Edge、Brave、Opera、Vivaldiでは、ブラウザのプロキシ設定を認識します。"
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDMは、システムが安全に書き込めないファイル名を持つトレントを拒否し、どのファイル名であるかを伝え、何も書き込みません。"
@@ -249,6 +253,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "DebianとUbuntu向け<g1>.deb</g1>、Fedora向け<g2>.rpm</g2>"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "ブラウザがプロキシを使用せず、<g1>プロキシ/SOCKS なし</g1>が選択されている場合、MDMはブラウザと同様にWindowsのプロキシ設定を使用します。"
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -469,6 +477,10 @@
   "0b00b090c6e18701": {
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "IDM で、<g1>タスク → エクスポート → IDM エクスポート ファイルへ</g1> を選択し、リストを保存します。"
+  },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>これらのアカウントでサポートされているファイル ホスト リンクをダウンロードする</g1>で、この機能をオン/オフできます。"
   },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
@@ -882,6 +894,10 @@
    "source": "Download Mister Download Manager",
    "text": "Mister Download Managerをダウンロード"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM は、サービスを通じてダウンロードするリンクと、アカウントのトークンのみをサービスに送信します。それ以外は送信しません。"
+  },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDMを実行したままにします。メインウィンドウを閉じても問題ありません。MDMはトレイで実行を続けます。<g1>タスク → 終了</g1>は使用しないでください。"
@@ -965,6 +981,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "よくある質問への短い回答と、完全なガイドへのリンクです。"
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "その権限と理由：ダウンロードを表示してMDMに渡すための<g1>downloads</g1>；MDMでサインインしたダウンロードが機能するための<g2>cookies</g2>；MDMと通信するための<g3>nativeMessaging</g3>；右クリック項目用の<g4>contextMenus</g4>；設定用の<g5>storage</g5>；送信されたフォームと読み込まれたビデオストリームを見るための<g6>webRequest</g6>（何も変更しません）；ブラウザが開くファイル（PDFなど）をMDMが処理するタイプの場合に代わりにダウンロードさせるための<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザ）；Firefoxでは<g8>webRequestBlocking</g8>がそれを行います；要求されたときにページのリンクを読み取り、拡張機能がインストールされたときにすでに開いているページにビデオボタンを追加するための<g9>scripting</g9>；ブラウザが使用するプロキシを読み取り、VPNまたはプロキシ拡張機能の背後にあるブラウザからのダウンロードもそれを通るようにするための<g10>proxy</g10>（ブラウザのプロキシを変更することはありません）；ダウンロードやビデオはどのサイトからでも来る可能性があるため、すべてのサイトへのアクセス。"
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1178,6 +1198,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "セットアップで実行する項目を選択します： - <g1>ブラウザ統合を設定する（Chrome、Edge、Brave、Firefox）</g1> - <g2>.torrentファイルとマグネットリンクをMister Download Managerで開く</g2> - <g3>Windows起動時にMister Download Managerを起動する</g3> - <g4>デスクトップショートカットを作成する</g4>（チェックしない限りオフ）"
   },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "アカウントを追加する"
+  },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
    "text": "MDM は、数百ものサイトを読み込む無料プログラム gallery-dl を使用して、ギャラリー (Wikimedia Commons のカテゴリ、Flickr のアルバム、DeviantArt のギャラリー、Imgur のアルバムなど) の画像をダウンロードします。"
@@ -1246,6 +1270,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDMは、リンクの元となったウェブページ（MDMがそれを知っている場合）と、ダウンロードの<g1>ファイルのプロパティ</g1>を開きます。"
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "リストにはホストのリンクが保持されます。直接リンクは表示もコピーもされません。サービスが共有を禁止しているためです。それはダウンロードの再開データにのみ存在し、期限切れになると MDM はサービスに新しいものを要求します。"
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "進行状況ウィンドウの<g1>再開機能</g1>を確認してください。<g2>いいえ</g2>は、サーバーがファイルを分割して送信できないことを意味します。MDMはその場合、1つの接続を使用し、停止したダウンロードは最初からやり直す必要があります。そのようなサーバーの場合、ダウンロードを停止しないようにし、サーバーが接続を切断する可能性があるため、非常に低い速度制限を避けてください。"
@@ -1257,6 +1285,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "ページの読み込みのリダイレクトがどこで始まりどこで終わったか（メモリに2分間）を記録するため、MDMはクリックしたアドレスを取得し、リダイレクト先だけではありません。"
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM はホストやリンクのリストを同梱していません。サービスがどのホストをサポートしているかを伝えます。"
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1441,6 +1473,10 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "MDMが接続されているにもかかわらず、ダウンロードがブラウザーに残る"
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。..."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -1721,6 +1757,10 @@
   "2c532cfa46f94b69": {
    "source": "Changed",
    "text": "変更点"
+  },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "URL を追加、クリップボード、ブラウザーの<g1>Mister Download Manager でダウンロード</g1>リンクメニュー、およびバッチダウンロードは、サービスがリンクのホストをサポートしている場合、アカウントを通じて処理されます。"
   },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
@@ -2606,6 +2646,10 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "{date}の暫定結果です。完全な再実行が進行中であり、完了次第これらの数値は置き換えられます。"
   },
+  "44c0ee7163ab2934": {
+   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
+   "text": "<g1>実験的:</g1> Real-Debridの公開APIドキュメントに基づいて構築されており、実際の口座での確認はまだです。お使いの口座で何か問題が発生した場合は、<g2>問題を報告してください</g2>（トークンを貼り付けないでください）。"
+  },
   "44e6a85b74a3eb0a": {
    "source": "Prism",
    "text": "Prism"
@@ -2629,6 +2673,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "ページからの動画"
+  },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "ブラウザーがすでに開始していたダウンロード（MDM がブラウザーから引き継いだもの）は、そのままダウンロードされます。ホストはすでにファイルを送信しているためです。"
   },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
@@ -2694,6 +2742,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "MDMにはアドウェア、スパイウェア、抱き合わせ販売、トラッキングは一切含まれていません。ソースコードはすべて公開されており、誰でもその動作を確認できます。すべてのリリースはGitHubのサーバーでそのコードからビルドされ、ビルドプロセスも検査可能です。動画用に取得できるヘルパープログラムは、実行前に検証されます。yt-dlpは開発者の署名キーに対して、ffmpegは公開されているチェックサムに対して検証されます。MDMは、このサイトまたはプロジェクトのGitHubリリースからのみダウンロードしてください。"
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "サインイン情報の保存場所"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "オプションの接続設定 →"
@@ -2729,6 +2781,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10および11 · 64ビット</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>デブリット サービス アカウント</g2></g1> — Real-Debrid: ご自身のアカウントでファイルホストのリンクを利用できます。"
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -2917,6 +2973,10 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Windows 11が提供するすべての表示言語に対応しており、初回起動時に旗のアイコンで選択するか、「表示」→「言語」でいつでも変更できます。アラビア語、ヘブライ語、ペルシア語、ウルドゥー語、ウイグル語は右から左に表示されます。"
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "すべての操作はキーボードから実行でき、MDMはスクリーンリーダー（WindowsのナレーターやNVDAなど）に対応しています。ウィンドウ、ダイアログ、メニューは、各コントロールとその状態をスクリーンリーダーに伝え、ダウンロードリストは各ダウンロードの名前、ステータス、サイズを読み上げます。"
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3130,6 +3190,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "デブリット サービス アカウント — Mister Download Manager ヘルプ"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "当社のベンチマーク：同じPCでIDM 6.42（ライセンス版）とMDMを交互に実行し、同じローカルテストサーバーに対してテスト。中央値、Mann-Whitney p &lt; 0.001 · <g1>チャート、レポート、生データ</g1>"
@@ -3333,6 +3397,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "拡張機能は読み込まれて有効になっていますか？ブラウザの拡張機能ページで<g1>Mister Download Manager</g1>を探してください。Firefoxでは、一時的なアドオンは再起動後に消えます。<g2>ブラウザ連携</g2>を参照してください。"
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux および macOS</g1>: MDM の設定で、あなただけが読み取れるデータフォルダー (0700) に保存されており、システムのキーチェーンにはまだ保存されていません。キーチェーンへの保存は計画中です。"
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3758,6 +3826,14 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>プロパティ</g1> — 名前、ファイルの種類、フォルダーを変更します。「一般」と「トレント」はフォルダーのみを変更します。名前を変更したカテゴリはフォルダーを保持します。組み込みのカテゴリは、名前を変更するまでお使いの言語で名前を保持します。"
   },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Shift+F10"
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM は、トークンをイベントログ、クラッシュレポート、自動化 API、コマンドラインの出力に書き込むことはありません。"
+  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager 対 IDM 6.42</g1><g2>2026年10月確認 · 参照元は下記</g2>"
@@ -3821,6 +3897,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "ダウンロードをキューに入れて後で実行する →"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>ブラウザのリクエストからのプロキシ/SOCKSを使用…</g1> — デフォルトでオン。MDMがブラウザから取得するダウンロードは、ブラウザがそのために使用したプロキシを経由します。これは、VPNまたはプロキシ拡張機能が設定したもの、ブラウザ自身の手動プロキシ、またはそのプロキシ自動設定スクリプトです。これがないと、ダウンロードはユーザー自身のIPアドレスから行われ、VPNの国またはそのIPアドレスに限定されたコンテンツは失敗します。ブラウザ拡張機能はそのプロキシを読み取り、各ダウンロードとともにMDMに渡します。"
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4145,6 +4225,10 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDMは、ウィンドウを表示せずに次の3つの方法で操作できます。"
+  },
+  "70ea8a9bf5e19416": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5を使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにします。プロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア検出、受信接続、UDPトラッカーをオフにします。そのスイッチがオンの間にプロキシがプロキシ / SOCKSからなくなると、トレントはそれを回避するのではなく、開始されません。"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4558,6 +4642,10 @@
    "source": "Apple Silicon",
    "text": "Apple Silicon"
   },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid は現在動作しています。AllDebrid と Premiumize は今後対応予定です。"
+  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -4890,6 +4978,14 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "開始時刻になるとキューは自動的に開始されます。朝には、完了したファイルはカテゴリの<g1>完了</g1>の下にあります。"
   },
+  "84334f5c25448dd7": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
+   "text": "<g1>すべて</g1>を別のネットワーク経由でルーティングするには、コンピューター全体でVPNを使用してください。MDMは、Windowsでトレントを1つのネットワークアダプターに結び付けることはできません。"
+  },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "デブリットサービスアカウント（Real-Debrid）：<g1>追加...</g1>をクリックすると、ブラウザでコードまたはAPIトークンを使ってサインインできます。サービスがサポートするホストからのリンクは、そのサービス経由でダウンロードされます。リストの順序は、アカウントが要求される順序です。<g2>デブリット サービス アカウント</g2>を参照してください。"
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "トレントとセキュリティ"
@@ -4966,6 +5062,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "<g1>ブラウザー統合</g1>を参照してください。"
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "サービスが提供できないリンクは、リストにその理由が表示されます。再度サインイン、プレミアムが必要、ホストがダウンしている（MDM は後で再試行します）、ファイルが削除されているなどです。"
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "チュートリアル: ブラウザーからのダウンロードをキャッチする →"
@@ -4981,6 +5081,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "クラッシュレポート — Mister Download Manager ヘルプ"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "アカウント"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5253,6 +5357,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "2つの接続を許可するサーバー。MDMはそれを学習し、2つに制限します。IDMは480を開きました。"
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM はアカウントを確認し、その名前とプレミアムかどうかを表示します。<g1>OK</g1>をクリックすると保存されます。"
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -5902,6 +6010,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>コマンドラインと自動化</g2></g1> — IDMのコマンドラインスイッチ、<x3/> ツール、および他のプログラムが使用できる自動化API。"
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "ブラウザがそのダウンロードにプロキシを使用している場合（VPNまたはプロキシ拡張機能、あるいはブラウザの設定で設定されている場合）、拡張機能は<g1>プロキシのアドレス</g1>、または<g2>プロキシ自動設定スクリプト</g2>を渡すため、MDMは同じプロキシを介してダウンロードします。プロキシのログイン情報を読み取ったり渡したりすることは決してありません。プロキシがログイン情報を要求したことのみを記録し、MDMがそのプロキシを使用できないことを通知できるようにします。"
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "ホーム"
@@ -5993,6 +6105,10 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "MDMが実行されている状態で<x1/>を実行してください。"
+  },
+  "a4263adda2169cf6": {
+   "source": "Playlists and mixes",
+   "text": "プレイリストとミックス"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6710,6 +6826,10 @@
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "Intelプロセッサを搭載したMac（このMacについてに<g1>プロセッサ</g1>と表示）の場合も同様です。"
   },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "ご自身のアカウントのみを使用してください。アカウントやそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。"
+  },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
    "text": "リストをバックアップするには、MDMを終了し(<g1>タスク → 終了</g1>)、<x2/>をコピーします。"
@@ -7074,6 +7194,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "ヘルプ → 更新プログラムの確認の<g1>今すぐ更新</g1>：MDMは新しいバージョンをダウンロードし、チェックし、配置して再起動します（Windowsのセットアップ、ポータブル、プレーンなzip、Mac、LinuxのAppImage、.tar.gz; .debまたは.rpmはシステムのインストーラーで開きます）。MDMのリリースキーで署名されたチェックサムリストに記載されているファイルのみをインストールします。このチェックサムリストはすべてのリリースに含まれるようになりました（<x2/>）。この方法での最初の更新は0.2.1から次のバージョンになります。"
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。MDM でアカウントを設定すると、サービスがサポートするホストからのリンクはサービスを通じてロック解除され、MDM によって他のファイルと同様にダウンロードされます。すべての接続、一時停止、再開が可能です。"
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "動画上のダウンロード ボタン"
@@ -7097,6 +7221,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "邪魔にならないように表示されます。ビデオにポインターを合わせている間のみ表示され（またはプレーヤーがキーボードのフォーカスを持っている場合、<g1>Tab</g1>でボタンに移動します）、ポインターが静止するとフェードアウトし、小さなビデオや短いミュートされたループ（アニメーション画像、背景）は表示されません。フルスクリーンでは、プレーヤーが許可すればビデオに追従します。コピー保護されたビデオ（DRM）では、ビデオを保存できないと表示されます。"
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "デブリット サービス アカウント"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7285,6 +7413,10 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "あなたのアカウント、あなたのルール"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -7581,6 +7713,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "チェックした曜日に<g1>毎日</g1>。"
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: MDM の設定で、Windows アカウント用に封印されています (DPAPI)。別のアカウントやコンピューターの設定のコピーでは読み取れません。そこで再度サインインしてください。"
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -7974,6 +8110,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "はい。MDMはIDMでおなじみのコマンドラインスイッチに対応しており、ターミナルからダウンロードするためのmisterdownloadmanager-cliが付属しています。また、ダウンロードのリスト表示、一時停止、開始、削除ができる、トークンで保護されたローカルの自動化APIも備えています。このAPIは、有効にするまでオフになっています。コマンドラインと自動化をご覧ください。"
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "VPN拡張機能が自身に与えるログインを要求するプロキシは共有できません。他のプログラムはそのログインを持たないためです。その場合、ダウンロードはプロキシなしで進行するのではなく、停止してその旨を伝えます。VPN自身のアプリを使用するか、<g1>ネットワークアダプター</g1>でそのアダプターを選択してください。"
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "ポータブル版のサーバーは、自身のフォルダーからポータブル版のMDMを自動的に見つけます。"
@@ -8021,6 +8161,10 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "HTTP、BitTorrent、マグネット、ed2kに対応し、REST APIも備え、ほぼどこでも動作"
+  },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "サービスを選択し、次のいずれかを実行します: - <g1>ブラウザーでサインイン</g1>: MDM がコードを表示し、サービスのページを開きます。そこにコードを入力し、MDM を許可します。ダイアログが自動的に認識します。 - または、<g2>API トークン</g2>を貼り付けます（<g3>トークンを検索</g3>をクリックすると、トークンが表示されるサービスのページが開きます）。その後、<g4>トークンを使用</g4>をクリックします。"
   },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
@@ -8133,6 +8277,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "中断したダウンロードを再開する"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止、<x3/>で再開します。<x4/>は完了したファイルをチェックします。オプションで名前を指定して（<x5/>）Hex MD5、SHA-1、SHA-256、SHA-512、またはCRC32をチェックします。<x6/>はDNSを選択します。<x7/>（デフォルト）、サービスと問い合わせ方法（<x8/>、<x9/>、<x10/>、<x11/>、<x12/>）、DNSサーバーのアドレス（<x13/>）、またはDNS-over-HTTPSアドレスです。システムのDNSには決してフォールバックしません。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8289,6 +8437,10 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>クライアント。</g1> IDMとMDMはどちらもデフォルト設定（8接続）で、同じ文書化されたコマンドライン<x2/>を介してダウンロードを実行します。両方ともIDMの一時フォルダーがあるドライブに保存するため、クロスドライブコピーのコストはかかりません。"
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "リストの順序は、アカウントが要求される順序です。リンクは、そのホストをサポートする最初のサービスのアカウントを通じて処理されます。<g1>上へ</g1>と<g2>下へ</g2>で順序を変更できます。"
   },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
@@ -8702,6 +8854,10 @@
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
    "text": "プレイリストやチャンネルの動画を、リストに表示されている順に1行ずつ表示します。場所、長さ、タイトル、アドレスが含まれます。"
   },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "リンクの処理について"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8978,6 +9134,10 @@
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "いいえ。MDMは、著作権保護（DRM）を破るようには設計されていません。保護された動画は保護されたままです。<g1>MDMが何のために作られたか</g1>も参照してください。"
   },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "オプション → アカウント → 追加..."
+  },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",
    "text": "<g1>1.0倍</g1><g2>速い</g2>"
@@ -9205,118 +9365,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "ダウンロードアドレスまたはファイル名。"
-  },
-  "0b0116419017071b": {
-   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
-   "text": "<g1>これらのアカウントでサポートされているファイル ホスト リンクをダウンロードする</g1>で、この機能をオン/オフできます。"
-  },
-  "16e51d663458d0c2": {
-   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
-   "text": "MDM は、サービスを通じてダウンロードするリンクと、アカウントのトークンのみをサービスに送信します。それ以外は送信しません。"
-  },
-  "1ddd137e20fb9434": {
-   "source": "Add your account",
-   "text": "アカウントを追加する"
-  },
-  "1fc4673dc3cdd511": {
-   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
-   "text": "リストにはホストのリンクが保持されます。直接リンクは表示もコピーもされません。サービスが共有を禁止しているためです。それはダウンロードの再開データにのみ存在し、期限切れになると MDM はサービスに新しいものを要求します。"
-  },
-  "2062fec7c828d892": {
-   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
-   "text": "MDM はホストやリンクのリストを同梱していません。サービスがどのホストをサポートしているかを伝えます。"
-  },
-  "254858789074bb69": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
-   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。..."
-  },
-  "2c6c86430d025b2e": {
-   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
-   "text": "URL を追加、クリップボード、ブラウザーの<g1>Mister Download Manager でダウンロード</g1>リンクメニュー、およびバッチダウンロードは、サービスがリンクのホストをサポートしている場合、アカウントを通じて処理されます。"
-  },
-  "44c0ee7163ab2934": {
-   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
-   "text": "<g1>実験的:</g1> Real-Debridの公開APIドキュメントに基づいて構築されており、実際の口座での確認はまだです。お使いの口座で何か問題が発生した場合は、<g2>問題を報告してください</g2>（トークンを貼り付けないでください）。"
-  },
-  "45bc5ceaa76685a9": {
-   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
-   "text": "ブラウザーがすでに開始していたダウンロード（MDM がブラウザーから引き継いだもの）は、そのままダウンロードされます。ホストはすでにファイルを送信しているためです。"
-  },
-  "47c3467a6b20a446": {
-   "source": "Where the sign-in is kept",
-   "text": "サインイン情報の保存場所"
-  },
-  "496e926e46524176": {
-   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
-   "text": "<g1><g2>デブリット サービス アカウント</g2></g1> — Real-Debrid: ご自身のアカウントでファイルホストのリンクを利用できます。"
-  },
-  "55217534c366257f": {
-   "source": "Debrid service accounts — Mister Download Manager help",
-   "text": "デブリット サービス アカウント — Mister Download Manager ヘルプ"
-  },
-  "5bc4b6e9ef830d3c": {
-   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
-   "text": "<g1>Linux および macOS</g1>: MDM の設定で、あなただけが読み取れるデータフォルダー (0700) に保存されており、システムのキーチェーンにはまだ保存されていません。キーチェーンへの保存は計画中です。"
-  },
-  "670bb10cde757ad1": {
-   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
-   "text": "MDM は、トークンをイベントログ、クラッシュレポート、自動化 API、コマンドラインの出力に書き込むことはありません。"
-  },
-  "7c840c91cbf164f3": {
-   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
-   "text": "Real-Debrid は現在動作しています。AllDebrid と Premiumize は今後対応予定です。"
-  },
-  "8477274e64c2a9d3": {
-   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
-   "text": "デブリットサービスアカウント（Real-Debrid）：<g1>追加...</g1>をクリックすると、ブラウザでコードまたはAPIトークンを使ってサインインできます。サービスがサポートするホストからのリンクは、そのサービス経由でダウンロードされます。リストの順序は、アカウントが要求される順序です。<g2>デブリット サービス アカウント</g2>を参照してください。"
-  },
-  "86e57342ae9eaa60": {
-   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
-   "text": "サービスが提供できないリンクは、リストにその理由が表示されます。再度サインイン、プレミアムが必要、ホストがダウンしている（MDM は後で再試行します）、ファイルが削除されているなどです。"
-  },
-  "876df42999b76ac6": {
-   "source": "Accounts",
-   "text": "アカウント"
-  },
-  "8f7481f4372a14d6": {
-   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
-   "text": "MDM はアカウントを確認し、その名前とプレミアムかどうかを表示します。<g1>OK</g1>をクリックすると保存されます。"
-  },
-  "b6c6533af9e6a7eb": {
-   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
-   "text": "ご自身のアカウントのみを使用してください。アカウントやそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。"
-  },
-  "c174d7018b6d1a5b": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
-   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。MDM でアカウントを設定すると、サービスがサポートするホストからのリンクはサービスを通じてロック解除され、MDM によって他のファイルと同様にダウンロードされます。すべての接続、一時停止、再開が可能です。"
-  },
-  "c1d77bb835bb6ef4": {
-   "source": "Debrid service accounts",
-   "text": "デブリット サービス アカウント"
-  },
-  "c79d3d545a5bebd2": {
-   "source": "Your account, your rules",
-   "text": "あなたのアカウント、あなたのルール"
-  },
-  "d0352efdbc9db51b": {
-   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
-   "text": "<g1>Windows</g1>: MDM の設定で、Windows アカウント用に封印されています (DPAPI)。別のアカウントやコンピューターの設定のコピーでは読み取れません。そこで再度サインインしてください。"
-  },
-  "dd915e88440c78b0": {
-   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
-   "text": "サービスを選択し、次のいずれかを実行します: - <g1>ブラウザーでサインイン</g1>: MDM がコードを表示し、サービスのページを開きます。そこにコードを入力し、MDM を許可します。ダイアログが自動的に認識します。 - または、<g2>API トークン</g2>を貼り付けます（<g3>トークンを検索</g3>をクリックすると、トークンが表示されるサービスのページが開きます）。その後、<g4>トークンを使用</g4>をクリックします。"
-  },
-  "e52b31d58add8742": {
-   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
-   "text": "リストの順序は、アカウントが要求される順序です。リンクは、そのホストをサポートする最初のサービスのアカウントを通じて処理されます。<g1>上へ</g1>と<g2>下へ</g2>で順序を変更できます。"
-  },
-  "f1693c50a75a5859": {
-   "source": "What happens to a link",
-   "text": "リンクの処理について"
-  },
-  "f9fc95028964f92c": {
-   "source": "Options → Accounts → Add...",
-   "text": "オプション → アカウント → 追加..."
   }
  }
 }
