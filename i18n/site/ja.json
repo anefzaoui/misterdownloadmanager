@@ -170,6 +170,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "トレントのファイルの一部がすでにフォルダーにある場合、MDMはそれらを使用する前に確認します。<g1>はい</g1>を選択すると、それらはトレントのために保持されます。MDMはそれらをチェックし、トレントと一致するものを保持し、残りをダウンロードします。これは、他の場所で開始したダウンロードを続行したり、すでに持っているファイルを共有したりする方法です。<g2>いいえ</g2>（デフォルト）を選択すると、元に戻り、別のフォルダーを選択できるため、既存のファイルが上書きされることはありません。"
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Firefoxでは、MDMはブラウザ自身のファイルリクエストが使用したプロキシ（VPN拡張機能が各リクエストに選択するものを含む）を認識します。Chrome、Edge、Brave、Opera、Vivaldiでは、ブラウザのプロキシ設定を認識します。"
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDMは、システムが安全に書き込めないファイル名を持つトレントを拒否し、どのファイル名であるかを伝え、何も書き込みません。"
@@ -237,6 +241,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "DebianとUbuntu向け<g1>.deb</g1>、Fedora向け<g2>.rpm</g2>"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "ブラウザがプロキシを使用せず、<g1>プロキシ/SOCKS なし</g1>が選択されている場合、MDMはブラウザと同様にWindowsのプロキシ設定を使用します。"
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -937,6 +945,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "よくある質問への短い回答と、完全なガイドへのリンクです。"
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "その権限と理由：ダウンロードを表示してMDMに渡すための<g1>downloads</g1>；MDMでサインインしたダウンロードが機能するための<g2>cookies</g2>；MDMと通信するための<g3>nativeMessaging</g3>；右クリック項目用の<g4>contextMenus</g4>；設定用の<g5>storage</g5>；送信されたフォームと読み込まれたビデオストリームを見るための<g6>webRequest</g6>（何も変更しません）；ブラウザが開くファイル（PDFなど）をMDMが処理するタイプの場合に代わりにダウンロードさせるための<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザ）；Firefoxでは<g8>webRequestBlocking</g8>がそれを行います；要求されたときにページのリンクを読み取り、拡張機能がインストールされたときにすでに開いているページにビデオボタンを追加するための<g9>scripting</g9>；ブラウザが使用するプロキシを読み取り、VPNまたはプロキシ拡張機能の背後にあるブラウザからのダウンロードもそれを通るようにするための<g10>proxy</g10>（ブラウザのプロキシを変更することはありません）；ダウンロードやビデオはどのサイトからでも来る可能性があるため、すべてのサイトへのアクセス。"
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -3702,6 +3714,10 @@
    "source": "Queue downloads for later →",
    "text": "ダウンロードをキューに入れて後で実行する →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>ブラウザのリクエストからのプロキシ/SOCKSを使用…</g1> — デフォルトでオン。MDMがブラウザから取得するダウンロードは、ブラウザがそのために使用したプロキシを経由します。これは、VPNまたはプロキシ拡張機能が設定したもの、ブラウザ自身の手動プロキシ、またはそのプロキシ自動設定スクリプトです。これがないと、ダウンロードはユーザー自身のIPアドレスから行われ、VPNの国またはそのIPアドレスに限定されたコンテンツは失敗します。ブラウザ拡張機能はそのプロキシを読み取り、各ダウンロードとともにMDMに渡します。"
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "はい。<g1>オプション → プロキシ / SOCKS</g1>で、HTTPおよびSOCKSプロキシ、およびプロキシ自動設定（PAC）スクリプトに対応しています。<g2>オプション</g2>を参照してください。"
@@ -4109,10 +4125,6 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 秒</g1><g3></g3>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>ブラウザのリクエストからプロキシ/SOCKS を使用する…</g1> — 既定でオンになっています。<g2>プロキシ/SOCKS なし</g2>の場合、ブラウザと同様に、MDM は Windows のプロキシ設定を使用します。"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5378,10 +5390,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "セットアップでMDMをインストールし、<g1>ブラウザー統合をセットアップする（Chrome、Edge、Brave、Firefox）</g1>にチェックを入れたままにします。これによりヘルパーが登録されます。（ポータブル版ではこれができません。<g2>ポータブルモード</g2>を参照してください。）"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "その権限と理由：<g1>ダウンロード</g1>はダウンロードを表示して引き渡すため。<g2>クッキー</g2>はサインインしたダウンロードがMDMで機能するため。<g3>ネイティブメッセージング</g3>はMDMと通信するため。<g4>コンテキストメニュー</g4>は右クリック項目用。<g5>ストレージ</g5>は設定用。<g6>ウェブ要求</g6>は送信されたフォームと読み込まれたビデオストリームを見るため（何も変更しません）。<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザ）は、ブラウザが開くファイル（PDFなど）を代わりにダウンロードさせるため、MDMが処理するタイプの場合。Firefoxでは、<g8>webRequestBlocking</g8>がそれを行います。<g9>スクリプト</g9>は、要求時にページのリンクを読み取るため、および拡張機能がインストールされたときに既に開いているページにビデオボタンを追加するため。すべてのサイトへのアクセスは、ダウンロードとビデオがどのサイトからでも来る可能性があるためです。"
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "クリックしたアドレスと、リダイレクトによって到達したアドレスの両方がチェックされるため、除外したサイトは、別のサーバーに送信された場合でも除外されたままになります。それ以外のすべてはブラウザーに残されます。オプションの変更は1分以内にブラウザーに反映されます。再起動する必要はありません。"
@@ -5725,6 +5733,10 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>コマンドラインと自動化</g2></g1> — IDMのコマンドラインスイッチ、<x3/> ツール、および他のプログラムが使用できる自動化API。"
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "ブラウザがそのダウンロードにプロキシを使用している場合（VPNまたはプロキシ拡張機能、あるいはブラウザの設定で設定されている場合）、拡張機能は<g1>プロキシのアドレス</g1>、または<g2>プロキシ自動設定スクリプト</g2>を渡すため、MDMは同じプロキシを介してダウンロードします。プロキシのログイン情報を読み取ったり渡したりすることは決してありません。プロキシがログイン情報を要求したことのみを記録し、MDMがそのプロキシを使用できないことを通知できるようにします。"
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -7745,6 +7757,10 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "はい。MDMはIDMでおなじみのコマンドラインスイッチに対応しており、ターミナルからダウンロードするためのmisterdownloadmanager-cliが付属しています。また、ダウンロードのリスト表示、一時停止、開始、削除ができる、トークンで保護されたローカルの自動化APIも備えています。このAPIは、有効にするまでオフになっています。コマンドラインと自動化をご覧ください。"
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "VPN拡張機能が自身に与えるログインを要求するプロキシは共有できません。他のプログラムはそのログインを持たないためです。その場合、ダウンロードはプロキシなしで進行するのではなく、停止してその旨を伝えます。VPN自身のアプリを使用するか、<g1>ネットワークアダプター</g1>でそのアダプターを選択してください。"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",

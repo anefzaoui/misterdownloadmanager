@@ -170,6 +170,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Якщо деякі файли торрента вже є в папці, MDM запитує, перш ніж їх використовувати. <g1>Так</g1> залишає їх для торрента: MDM перевіряє їх, зберігає те, що відповідає торренту, і завантажує решту. Так можна продовжити завантаження, розпочате в іншому місці, або поділитися файлами, які у вас вже є. <g2>Ні</g2> (за замовчуванням) повертає назад, щоб ви могли вибрати іншу папку, і нічого з вашого не буде перезаписано."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "У Firefox MDM бачить проксі, який використовував власний запит браузера для файлу, включаючи ті, які розширення VPN вибирає для кожного запиту. У Chrome, Edge, Brave, Opera та Vivaldi він бачить налаштування проксі браузера."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM відхиляє торрент з іменами файлів, які ваша система не може безпечно записати, вказує, яке ім’я, і нічого не записує."
@@ -237,6 +241,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> для Debian та Ubuntu, <g2>.rpm</g2> для Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Коли браузер не використовував проксі, і вибрано <g1>Без проксі/SOCKS</g1>, MDM використовує налаштування проксі Windows, як це роблять браузери."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -937,6 +945,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Короткі відповіді на найпоширеніші запитання, кожна з яких містить посилання на повний посібник."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Його дозволи та причини: <g1>downloads</g1> для перегляду та передачі завантажень; <g2>cookies</g2>, щоб завантаження з авторизацією працювали в MDM; <g3>nativeMessaging</g3> для зв'язку з MDM; <g4>contextMenus</g4> для елементів контекстного меню; <g5>storage</g5> для його налаштувань; <g6>webRequest</g6> для перегляду надісланих форм та завантажених відеопотоків (нічого не змінює); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge та інші браузери на базі Chromium) для завантаження файлів, які браузер відкрив би (PDF), замість цього, для типів, які підтримує MDM; у Firefox <g8>webRequestBlocking</g8> робить це; <g9>scripting</g9> для читання посилань сторінки за вашим запитом та для додавання кнопки відео до вже відкритих сторінок при встановленні розширення; <g10>proxy</g10> для читання того, який проксі використовує браузер, щоб завантаження, отримані з браузера за VPN або проксі-розширенням, також проходили через нього (ніколи не змінює проксі браузера); доступ до всіх сайтів, оскільки завантаження та відео можуть надходити з будь-якого сайту."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -3702,6 +3714,10 @@
    "source": "Queue downloads for later →",
    "text": "Поставити завантаження в чергу на потім →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Використовувати проксі/SOCKS із запиту браузера…</g1> — увімкнено за замовчуванням. Завантаження, яке MDM отримує з браузера, проходить через проксі, який браузер використовував для нього. Це той, який встановило розширення VPN або проксі, власний ручний проксі браузера або його скрипт автоматичної конфігурації проксі. Без цього завантаження відбувалося б з вашої власної адреси, і контент, обмежений країною VPN або її адресою, не завантажився б. Розширення браузера зчитує цей проксі та передає його MDM з кожним завантаженням."
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "Так: проксі-сервери HTTP та SOCKS, а також скрипти автоматичної конфігурації проксі (PAC) у <g1>Параметри → Проксі / Socks</g1>. Дивіться <g2>Параметри</g2>."
@@ -4109,10 +4125,6 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 с</g1><g3></g3>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>Використовувати проксі/socks із запиту браузера…</g1> — увімкнено типово. З <g2>Без проксі/SOCKS</g2> це змушує MDM використовувати налаштування проксі Windows, як це роблять браузери."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5378,10 +5390,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Встановіть MDM за допомогою інсталятора та залиште позначеним <g1>Налаштувати інтеграцію з браузером (Chrome, Edge, Brave, Firefox)</g1>. Це реєструє допоміжну програму. (Портативна версія цього не може зробити; дивіться <g2>Портативний режим</g2>.)"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "Його дозволи та причини: <g1>downloads</g1> для перегляду та передачі завантажень; <g2>cookies</g2>, щоб завантаження з авторизацією працювали в MDM; <g3>nativeMessaging</g3> для зв'язку з MDM; <g4>contextMenus</g4> для елементів контекстного меню; <g5>storage</g5> для його налаштувань; <g6>webRequest</g6> для перегляду надісланих форм та завантажених відеопотоків (нічого не змінює); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge та інші браузери на базі Chromium), щоб файли, які браузер відкрив би (PDF), завантажувалися замість цього, для типів, які приймає MDM; у Firefox це робить <g8>webRequestBlocking</g8>; <g9>scripting</g9> для читання посилань сторінки, коли ви просите, та для додавання кнопки відео до вже відкритих сторінок при встановленні розширення; доступ до всіх сайтів, оскільки завантаження та відео можуть надходити з будь-якого сайту."
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "Перевіряються як адреса, на яку ви натиснули, так і та, на яку привели її перенаправлення, тому виключений вами сайт залишається виключеним, навіть якщо він перенаправляє вас на інший сервер. Все інше залишається з браузером. Зміни в Параметрах досягають браузера протягом хвилини; перезапускати його не потрібно."
@@ -5725,6 +5733,10 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Командний рядок та автоматизація</g2></g1> — параметри командного рядка IDM, інструмент <x3/> та API автоматизації, який можуть використовувати інші програми."
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Коли браузер використовує проксі для завантаження (встановлений VPN або розширенням проксі, або в його налаштуваннях), розширення передає <g1>адресу проксі</g1> або його <g2>скрипт автоматичної конфігурації проксі</g2>, щоб MDM завантажував через той самий проксі. Воно ніколи не читає і не передає логін проксі. Воно лише зазначає, що проксі вимагав його, щоб MDM міг повідомити вам, що він не може використовувати цей проксі."
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -7745,6 +7757,10 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Так. MDM підтримує звичні параметри командного рядка IDM, постачається з misterdownloadmanager-cli для завантажень з терміналу та має локальний, захищений токеном API автоматизації, який може перераховувати, призупиняти, запускати та видаляти завантаження. API вимкнено, доки ви його не ввімкнете. Дивіться Командний рядок та автоматизація."
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Проксі, який вимагає логін, що розширення VPN надає собі, не може бути спільним: жодна інша програма не має цього логіна. Завантаження тоді зупиняється і повідомляє про це, замість того, щоб йти без проксі. Використовуйте власний додаток VPN або виберіть його адаптер у розділі <g1>Мережевий адаптер</g1>."
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",

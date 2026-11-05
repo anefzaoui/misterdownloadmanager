@@ -170,6 +170,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "যদি টরেন্টের কিছু ফাইল আগে থেকেই ফোল্ডারে থাকে, তাহলে MDM সেগুলো ব্যবহার করার আগে জিজ্ঞাসা করে। <g1>হ্যাঁ</g1> চাপলে টরেন্টের জন্য ফাইলগুলো রাখা হয়: MDM সেগুলো পরীক্ষা করে, টরেন্টের সাথে যা মেলে তা রাখে এবং বাকিটা ডাউনলোড করে। এভাবে আপনি অন্য কোথাও শুরু করা ডাউনলোড চালিয়ে যেতে পারেন বা আপনার কাছে থাকা ফাইলগুলো শেয়ার করতে পারেন। <g2>না</g2> (ডিফল্ট) চাপলে ফিরে যাওয়া হয়, যাতে আপনি অন্য একটি ফোল্ডার বেছে নিতে পারেন এবং আপনার কোনো ফাইল ওভাররাইট না হয়।"
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Firefox-এ, MDM ব্রাউজারের নিজস্ব ফাইল অনুরোধের জন্য ব্যবহৃত প্রক্সি দেখতে পায়, যার মধ্যে VPN এক্সটেনশন প্রতিটি অনুরোধের জন্য যে প্রক্সি বেছে নেয় তাও অন্তর্ভুক্ত। Chrome, Edge, Brave, Opera এবং Vivaldi-তে এটি ব্রাউজারের প্রক্সি সেটিংস দেখতে পায়।"
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM এমন টরেন্ট গ্রহণ করে না যার ফাইলের নাম আপনার সিস্টেম নিরাপদে লিখতে পারে না। এটি কোন নামটির সমস্যা তা জানিয়ে দেয় এবং কিছু লেখে না।"
@@ -237,6 +241,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "ডেবিয়ান ও উবুন্টুর জন্য <g1>.deb</g1>, ফেডোরার জন্য <g2>.rpm</g2>"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "যখন ব্রাউজার কোনো প্রক্সি ব্যবহার করেনি, এবং <g1>কোনো প্রক্সি/SOCKS নেই</g1> নির্বাচন করা হয়, তখন MDM Windows-এর প্রক্সি সেটিংস ব্যবহার করে, যেমন ব্রাউজারগুলি করে থাকে।"
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -937,6 +945,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "মানুষের সবচেয়ে বেশি জিজ্ঞাসিত প্রশ্নগুলির সংক্ষিপ্ত উত্তর, প্রতিটি সম্পূর্ণ নির্দেশিকার লিঙ্কের সাথে।"
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "এর অনুমতিসমূহ, এবং কেন: ডাউনলোডগুলি দেখতে এবং হস্তান্তর করতে <g1>downloads</g1>; MDM-এ সাইন-ইন করা ডাউনলোডগুলি কাজ করার জন্য <g2>cookies</g2>; MDM-এর সাথে কথা বলার জন্য <g3>nativeMessaging</g3>; রাইট-ক্লিক আইটেমগুলির জন্য <g4>contextMenus</g4>; এর সেটিংসের জন্য <g5>storage</g5>; জমা দেওয়া ফর্ম এবং লোড করা ভিডিও স্ট্রিমগুলি দেখতে <g6>webRequest</g6> (এটি কিছুই পরিবর্তন করে না); ব্রাউজার যে ফাইলগুলি খুলবে (একটি PDF) সেগুলিকে MDM যে প্রকারগুলি গ্রহণ করে সেগুলির জন্য ডাউনলোড করার জন্য <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge এবং অন্যান্য Chromium ব্রাউজার); Firefox-এ, <g8>webRequestBlocking</g8> এটি করে; আপনি যখন অনুরোধ করেন তখন একটি পৃষ্ঠার লিঙ্কগুলি পড়ার জন্য এবং এক্সটেনশন ইনস্টল করার সময় ইতিমধ্যে খোলা পৃষ্ঠাগুলিতে ভিডিও বোতাম যোগ করার জন্য <g9>scripting</g9>; ব্রাউজার কোন প্রক্সি ব্যবহার করে তা পড়ার জন্য <g10>proxy</g10>, যাতে একটি VPN বা প্রক্সি এক্সটেনশনের পিছনে থাকা ব্রাউজার থেকে নেওয়া ডাউনলোডগুলিও এর মাধ্যমে যায় (এটি কখনোই ব্রাউজারের প্রক্সি পরিবর্তন করে না); সমস্ত সাইটে অ্যাক্সেস কারণ ডাউনলোড এবং ভিডিও যেকোনো সাইট থেকে আসতে পারে।"
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -3702,6 +3714,10 @@
    "source": "Queue downloads for later →",
    "text": "পরে ডাউনলোডের জন্য সারি করুন →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>ব্রাউজারের অনুরোধ থেকে প্রক্সি/SOCKS ব্যবহার করুন…</g1> — এটি ডিফল্টভাবে চালু থাকে। MDM ব্রাউজার থেকে যে ডাউনলোড নেয়, সেটি ব্রাউজার যে প্রক্সি ব্যবহার করেছিল তার মাধ্যমে যায়। এটি একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা সেট করা প্রক্সি হতে পারে, ব্রাউজারের নিজস্ব ম্যানুয়াল প্রক্সি, অথবা এর প্রক্সি অটো-কনফিগ স্ক্রিপ্ট। এটি ছাড়া, ডাউনলোড আপনার নিজের ঠিকানা থেকে শুরু হবে, এবং VPN-এর দেশ বা এর ঠিকানায় সীমাবদ্ধ বিষয়বস্তু ডাউনলোড ব্যর্থ হবে। ব্রাউজার এক্সটেনশন সেই প্রক্সি পড়ে এবং প্রতিটি ডাউনলোডের সাথে MDM-কে তা দেয়।"
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "হ্যাঁ: HTTP এবং SOCKS প্রক্সি, এবং প্রক্সি অটো-কনফিগ (PAC) স্ক্রিপ্ট, <g1>বিকল্প → প্রক্সি / SOCKS</g1>-এ। <g2>বিকল্প</g2> দেখুন।"
@@ -4109,10 +4125,6 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 সে</g1><g3></g3>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>একটি ব্রাউজারের অনুরোধ থেকে প্রক্সি/SOCKS ব্যবহার করুন…</g1> — ডিফল্টরূপে চালু থাকে। <g2>কোনো প্রক্সি/SOCKS নেই</g2> বিকল্পের সাথে, এটি MDM-কে Windows-এর প্রক্সি সেটিংস ব্যবহার করতে বাধ্য করে, যেমন ব্রাউজারগুলি করে।"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5378,10 +5390,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "সেটআপ দিয়ে MDM ইনস্টল করুন এবং <g1>ব্রাউজার ইন্টিগ্রেশন সেট আপ করুন (Chrome, Edge, Brave, Firefox)</g1> টিক দেওয়া রাখুন। এটি সাহায্যকারীকে রেজিস্টার করে। (পোর্টেবল কপি এটি করতে পারে না; <g2>পোর্টেবল মোড</g2> দেখুন।)"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "এর অনুমতিগুলি, এবং কেন: <g1>downloads</g1> ডাউনলোডগুলি দেখতে এবং হস্তান্তর করতে; <g2>cookies</g2> যাতে সাইন-ইন করা ডাউনলোডগুলি MDM-এ কাজ করে; <g3>nativeMessaging</g3> MDM-এর সাথে কথা বলতে; <g4>contextMenus</g4> রাইট-ক্লিক আইটেমগুলির জন্য; <g5>storage</g5> এর সেটিংসের জন্য; <g6>webRequest</g6> জমা দেওয়া ফর্ম এবং লোড করা ভিডিও স্ট্রিমগুলি দেখতে (এটি কিছুই পরিবর্তন করে না); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge এবং অন্যান্য Chromium ব্রাউজার) ব্রাউজার যে ফাইলগুলি খুলবে (একটি PDF) সেগুলিকে MDM যে প্রকারগুলি নেয় সেগুলির জন্য ডাউনলোড করার পরিবর্তে; Firefox-এ, <g8>webRequestBlocking</g8> এটি করে; <g9>scripting</g9> আপনি যখন জিজ্ঞাসা করেন তখন একটি পৃষ্ঠার লিঙ্কগুলি পড়তে এবং এক্সটেনশন ইনস্টল করার সময় ইতিমধ্যে খোলা পৃষ্ঠাগুলিতে ভিডিও বোতামটি যুক্ত করতে; সমস্ত সাইটে অ্যাক্সেস কারণ ডাউনলোড এবং ভিডিও যেকোনো সাইট থেকে আসতে পারে।"
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "আপনি যে ঠিকানায় ক্লিক করেছেন এবং যে ঠিকানায় এর পুনঃনির্দেশগুলি নিয়ে গেছে, উভয়ই পরীক্ষা করা হয়, তাই আপনি যে সাইটটি বাদ দিয়েছেন সেটি বাদ থাকে, এমনকি যখন এটি আপনাকে অন্য সার্ভারে পাঠায় তখনও। বাকি সবকিছু ব্রাউজারের সাথে থাকে। বিকল্পগুলিতে পরিবর্তনগুলি এক মিনিটের মধ্যে ব্রাউজারে পৌঁছে যায়; আপনাকে এটি পুনরায় চালু করতে হবে না।"
@@ -5725,6 +5733,10 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>কমান্ড লাইন এবং অটোমেশন</g2></g1> — IDM-এর কমান্ড-লাইন সুইচ, <x3/> টুল এবং অন্যান্য প্রোগ্রাম ব্যবহার করতে পারে এমন অটোমেশন API।"
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "যখন ব্রাউজার সেই ডাউনলোডের জন্য একটি প্রক্সি ব্যবহার করে (একটি VPN বা প্রক্সি এক্সটেনশন দ্বারা, অথবা এর সেটিংসে সেট করা), তখন এক্সটেনশনটি <g1>প্রক্সির ঠিকানা</g1>, অথবা এর <g2>প্রক্সি অটো-কনফিগ স্ক্রিপ্ট</g2> পাস করে, যাতে MDM একই প্রক্সির মাধ্যমে ডাউনলোড করে। এটি কখনোই প্রক্সির লগইন পড়ে না বা পাস করে না। এটি শুধুমাত্র নোট করে যে একটি প্রক্সি একটির জন্য অনুরোধ করেছে, যাতে MDM আপনাকে বলতে পারে যে এটি সেই প্রক্সি ব্যবহার করতে পারবে না।"
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -7745,6 +7757,10 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "হ্যাঁ। MDM, IDM-এর পরিচিত কমান্ড-লাইন সুইচগুলি গ্রহণ করে, টার্মিনাল থেকে ডাউনলোডের জন্য misterdownloadmanager-cli সহ আসে এবং একটি স্থানীয়, টোকেন-সুরক্ষিত অটোমেশন API আছে যা ডাউনলোডগুলি তালিকাভুক্ত করতে, থামাতে, শুরু করতে এবং সরাতে পারে। আপনি চালু না করা পর্যন্ত API বন্ধ থাকে। কমান্ড লাইন এবং অটোমেশন দেখুন।"
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "একটি প্রক্সি যা VPN এক্সটেনশন নিজেই লগইন দেয়, তা শেয়ার করা যায় না: অন্য কোনো প্রোগ্রামের কাছে সেই লগইন নেই। সেক্ষেত্রে ডাউনলোড বন্ধ হয়ে যায় এবং তা জানিয়ে দেয়, প্রক্সি ছাড়া ডাউনলোড হয় না। VPN-এর নিজস্ব অ্যাপ ব্যবহার করুন, অথবা <g1>নেটওয়ার্ক অ্যাডাপ্টার</g1>-এর অধীনে এর অ্যাডাপ্টারটি বেছে নিন।"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",

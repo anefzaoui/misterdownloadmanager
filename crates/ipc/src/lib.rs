@@ -48,6 +48,15 @@ pub struct Command {
     pub post_type: Option<String>,
     /// From a private (incognito) window: the download is never written to the saved list.
     pub private: bool,
+    /// From the browser (#42): the proxy it uses for this address ("http://host:port",
+    /// "https://…", "socks5h://…", "socks4://…"), set by a VPN or proxy extension or its
+    /// settings; or its proxy auto-config script's text. The app downloads through the same
+    /// one (Options → Proxy / Socks → "Use proxy/socks from a browser's request").
+    pub proxy: Option<String>,
+    pub proxy_pac: Option<String>,
+    /// That proxy asked the browser for a login, which the extension that set it answers with
+    /// its own: no other program can have it.
+    pub proxy_login: bool,
     /// Automation API (off by default, beyond IDM): `"list"` asks for every download as JSON.
     pub query: Option<String>,
     /// Automation API: turn it on or off.

@@ -170,6 +170,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Si certains des fichiers du torrent sont déjà dans le dossier, MDM demande avant de les utiliser. <g1>Oui</g1> les garde pour le torrent : MDM les vérifie, garde ce qui correspond au torrent et télécharge le reste. C'est ainsi que vous pouvez reprendre un téléchargement commencé ailleurs ou partager des fichiers que vous avez déjà. <g2>Non</g2> (par défaut) annule l'opération, ce qui vous permet de choisir un autre dossier et d'éviter que vos fichiers ne soient écrasés."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Dans Firefox, MDM voit le proxy que la propre requête du navigateur pour le fichier a utilisé, y compris ceux qu'une extension VPN choisit pour chaque requête. Dans Chrome, Edge, Brave, Opera et Vivaldi, il voit les paramètres de proxy du navigateur."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM refuse un torrent dont les noms de fichiers ne peuvent pas être écrits en toute sécurité par votre système, indique quel nom pose problème et n'écrit rien."
@@ -237,6 +241,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> pour Debian et Ubuntu, <g2>.rpm</g2> pour Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Lorsque le navigateur n'a utilisé aucun proxy, et que <g1>Aucun proxy/SOCKS</g1> est choisi, MDM utilise les paramètres de proxy de Windows, comme le font les navigateurs."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -937,6 +945,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Des réponses courtes aux questions les plus fréquentes, avec un lien vers le guide complet."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Ses autorisations, et pourquoi : <g1>downloads</g1> pour voir et transférer les téléchargements ; <g2>cookies</g2> pour que les téléchargements nécessitant une connexion fonctionnent dans MDM ; <g3>nativeMessaging</g3> pour communiquer avec MDM ; <g4>contextMenus</g4> pour les éléments du menu contextuel ; <g5>storage</g5> pour ses paramètres ; <g6>webRequest</g6> pour voir les formulaires soumis et les flux vidéo chargés (elle ne change rien) ; <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge et autres navigateurs Chromium) pour que les fichiers que le navigateur ouvrirait (un PDF) soient téléchargés à la place, pour les types pris en charge par MDM ; dans Firefox, <g8>webRequestBlocking</g8> fait cela ; <g9>scripting</g9> pour lire les liens d'une page lorsque vous le demandez, et pour ajouter le bouton vidéo aux pages déjà ouvertes lors de l'installation de l'extension ; <g10>proxy</g10> pour lire le proxy utilisé par le navigateur, afin que les téléchargements effectués depuis un navigateur derrière un VPN ou une extension de proxy passent également par celui-ci (elle ne modifie jamais le proxy du navigateur) ; accès à tous les sites car les téléchargements et les vidéos peuvent provenir de n'importe quel site."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -3702,6 +3714,10 @@
    "source": "Queue downloads for later →",
    "text": "Mettre les téléchargements en file d’attente pour plus tard →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Utiliser le proxy/SOCKS d'une requête du navigateur…</g1> — activé par défaut. Un téléchargement que MDM prend du navigateur passe par le proxy que le navigateur a utilisé pour celui-ci. C'est celui qu'une extension VPN ou proxy a défini, le proxy manuel du navigateur, ou son script de configuration automatique de proxy. Sans cela, le téléchargement partirait de votre propre adresse, et le contenu limité au pays du VPN, ou à son adresse, échouerait. L'extension de navigateur lit ce proxy et le transmet à MDM avec chaque téléchargement."
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "Oui : proxys HTTP et SOCKS, et scripts de configuration automatique de proxy (PAC), dans <g1>Options → Proxy / Socks</g1>. Voir <g2>Options</g2>."
@@ -4109,10 +4125,6 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1,0 s</g1><g3></g3>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>Utiliser le proxy/socks d’une requête de navigateur…</g1> — activé par défaut. Avec <g2>Aucun proxy/SOCKS</g2>, cela fait que MDM utilise les paramètres de proxy de Windows, comme le font les navigateurs."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5378,10 +5390,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Installez MDM avec le programme d’installation et laissez la case <g1>Configurer l’intégration au navigateur (Chrome, Edge, Brave, Firefox)</g1> cochée. Cela enregistre le programme d’aide. (La version portable ne peut pas le faire ; voir <g2>Mode portable</g2>.)"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "Ses autorisations, et pourquoi : <g1>downloads</g1> pour voir et transférer les téléchargements ; <g2>cookies</g2> pour que les téléchargements connectés fonctionnent dans MDM ; <g3>nativeMessaging</g3> pour communiquer avec MDM ; <g4>contextMenus</g4> pour les éléments du menu contextuel ; <g5>storage</g5> pour ses paramètres ; <g6>webRequest</g6> pour voir les formulaires soumis et les flux vidéo chargés (il ne change rien) ; <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge et autres navigateurs Chromium) pour que les fichiers que le navigateur ouvrirait (un PDF) soient téléchargés à la place, pour les types que MDM prend en charge ; dans Firefox, <g8>webRequestBlocking</g8> fait cela ; <g9>scripting</g9> pour lire les liens d'une page lorsque vous le demandez, et pour ajouter le bouton vidéo aux pages déjà ouvertes lors de l'installation de l'extension ; accès à tous les sites car les téléchargements et les vidéos peuvent provenir de n'importe quel site."
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "L’adresse sur laquelle vous avez cliqué et celle vers laquelle ses redirections ont mené sont toutes deux vérifiées, de sorte qu’un site que vous avez exclu reste exclu même s’il vous envoie vers un autre serveur. Tout le reste reste avec le navigateur. Les modifications dans les Options atteignent le navigateur en moins d’une minute ; vous n’avez pas besoin de le redémarrer."
@@ -5725,6 +5733,10 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Ligne de commande et automatisation</g2></g1> — les commutateurs de ligne de commande d'IDM, l'outil <x3/>, et l'API d'automatisation que d'autres programmes peuvent utiliser."
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Quand le navigateur utilise un proxy pour ce téléchargement (défini par un VPN ou une extension de proxy, ou dans ses paramètres), l'extension transmet <g1>l'adresse du proxy</g1>, ou son <g2>script de configuration automatique de proxy</g2>, afin que MDM télécharge via le même proxy. Elle ne lit ni ne transmet jamais les identifiants du proxy. Elle note seulement qu'un proxy en a demandé un, afin que MDM puisse vous informer qu'il ne peut pas utiliser ce proxy."
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -7745,6 +7757,10 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Oui. MDM accepte les commutateurs de ligne de commande familiers d'IDM, est livré avec misterdownloadmanager-cli pour les téléchargements depuis un terminal, et dispose d'une API d'automatisation locale, protégée par un jeton, qui peut lister, mettre en pause, démarrer et supprimer des téléchargements. L'API est désactivée tant que vous ne l'activez pas. Voir Ligne de commande et automatisation."
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Un proxy qui demande un identifiant que l'extension VPN se donne ne peut pas être partagé : aucun autre programme n'a cet identifiant. Le téléchargement s'arrête alors et l'indique, plutôt que de se faire sans le proxy. Utilisez l'application propre au VPN, ou choisissez son adaptateur sous <g1>Adaptateur réseau</g1>."
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",

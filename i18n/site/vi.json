@@ -170,6 +170,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Nếu một số tệp của torrent đã có trong thư mục, MDM sẽ hỏi trước khi sử dụng chúng. <g1>Có</g1> để giữ chúng cho torrent: MDM kiểm tra, giữ lại những gì khớp với torrent và tải xuống phần còn lại, đây là cách bạn tiếp tục tải xuống đã bắt đầu ở nơi khác hoặc chia sẻ các tệp bạn đã có. <g2>Không</g2> (mặc định) sẽ quay lại, để bạn có thể chọn một thư mục khác và không có gì của bạn bị ghi đè."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Trong Firefox, MDM thấy proxy mà yêu cầu của trình duyệt cho tệp đã sử dụng, bao gồm cả những proxy mà tiện ích mở rộng VPN chọn cho mỗi yêu cầu. Trong Chrome, Edge, Brave, Opera và Vivaldi, nó thấy cài đặt proxy của trình duyệt."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM từ chối torrent có tên tệp mà hệ thống của bạn không thể ghi an toàn, cho biết tên nào, và không ghi gì cả."
@@ -237,6 +241,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> cho Debian và Ubuntu, <g2>.rpm</g2> cho Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Khi trình duyệt không sử dụng proxy và <g1>Không có proxy/socks</g1> được chọn, MDM sẽ sử dụng cài đặt proxy của Windows, giống như các trình duyệt khác."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -937,6 +945,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Những câu trả lời ngắn gọn cho các câu hỏi phổ biến nhất, mỗi câu có liên kết đến hướng dẫn đầy đủ."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Các quyền của tiện ích mở rộng và lý do: <g1>downloads</g1> để xem và chuyển các lượt tải xuống; <g2>cookies</g2> để các lượt tải xuống đã đăng nhập hoạt động trong MDM; <g3>nativeMessaging</g3> để giao tiếp với MDM; <g4>contextMenus</g4> cho các mục nhấp chuột phải; <g5>storage</g5> cho cài đặt của nó; <g6>webRequest</g6> để xem các biểu mẫu đã gửi và các luồng video đã tải (nó không thay đổi gì); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge và các trình duyệt Chromium khác) để tải xuống các tệp mà trình duyệt sẽ mở (một tệp PDF) thay vì mở, đối với các loại mà MDM hỗ trợ; trong Firefox, <g8>webRequestBlocking</g8> thực hiện điều đó; <g9>scripting</g9> để đọc các liên kết của một trang khi bạn yêu cầu và để thêm nút video vào các trang đã mở khi tiện ích mở rộng được cài đặt; <g10>proxy</g10> để đọc proxy mà trình duyệt đang sử dụng, để các lượt tải xuống từ trình duyệt đằng sau VPN hoặc tiện ích mở rộng proxy cũng đi qua đó (nó không bao giờ thay đổi proxy của trình duyệt); quyền truy cập vào tất cả các trang web vì các lượt tải xuống và video có thể đến từ bất kỳ trang web nào."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -3702,6 +3714,10 @@
    "source": "Queue downloads for later →",
    "text": "Xếp hàng đợi các lượt tải xuống để thực hiện sau →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Sử dụng proxy/socks từ yêu cầu của trình duyệt…</g1> — bật theo mặc định. Một lượt tải xuống mà MDM lấy từ trình duyệt sẽ đi qua proxy mà trình duyệt đã sử dụng cho nó. Đó là proxy mà tiện ích VPN hoặc proxy đã đặt, proxy thủ công của trình duyệt hoặc tập lệnh cấu hình proxy tự động của nó. Nếu không có nó, lượt tải xuống sẽ xuất phát từ địa chỉ của bạn và nội dung bị giới hạn ở quốc gia của VPN hoặc địa chỉ của nó sẽ không thành công. Tiện ích mở rộng của trình duyệt đọc proxy đó và chuyển nó cho MDM với mỗi lượt tải xuống."
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "Có: proxy HTTP và SOCKS, và các tập lệnh cấu hình proxy tự động (PAC), trong <g1>Tùy chọn → Proxy / Socks</g1>. Xem <g2>Tùy chọn</g2>."
@@ -4109,10 +4125,6 @@
   "72eeb67b1fb2c1c3": {
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1,0 giây</g1><g3></g3>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>Sử dụng proxy/socks từ yêu cầu của trình duyệt…</g1> — bật theo mặc định. Với <g2>Không có proxy/socks</g2>, nó khiến MDM sử dụng cài đặt proxy của Windows, giống như các trình duyệt."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5378,10 +5390,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Cài đặt MDM bằng trình cài đặt và giữ nguyên tùy chọn <g1>Thiết lập tích hợp trình duyệt (Chrome, Edge, Brave, Firefox)</g1>. Thao tác này sẽ đăng ký trình hỗ trợ. (Bản sao di động không thể làm điều này; xem <g2>Chế độ di động</g2>.)"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "Các quyền của nó và lý do: <g1>downloads</g1> để xem và chuyển giao các lượt tải xuống; <g2>cookies</g2> để các lượt tải xuống đã đăng nhập hoạt động trong MDM; <g3>nativeMessaging</g3> để giao tiếp với MDM; <g4>contextMenus</g4> cho các mục nhấp chuột phải; <g5>storage</g5> cho các cài đặt của nó; <g6>webRequest</g6> để xem các biểu mẫu đã gửi và các luồng video đã tải (nó không thay đổi gì); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge và các trình duyệt Chromium khác) để các tệp mà trình duyệt sẽ mở (một PDF) được tải xuống thay thế, cho các loại mà MDM xử lý; trong Firefox, <g8>webRequestBlocking</g8> thực hiện điều đó; <g9>scripting</g9> để đọc các liên kết của trang khi bạn yêu cầu, và để thêm nút video vào các trang đã mở khi tiện ích mở rộng được cài đặt; quyền truy cập vào tất cả các trang web vì các lượt tải xuống và video có thể đến từ bất kỳ trang web nào."
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "Cả địa chỉ bạn đã nhấp và địa chỉ mà các chuyển hướng của nó dẫn đến đều được kiểm tra, vì vậy một trang web bạn đã loại trừ vẫn bị loại trừ ngay cả khi nó gửi bạn đến một máy chủ khác. Mọi thứ khác vẫn ở lại với trình duyệt. Các thay đổi trong Tùy chọn sẽ đến trình duyệt trong vòng một phút; bạn không cần phải khởi động lại nó."
@@ -5725,6 +5733,10 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Dòng lệnh và tự động hóa</g2></g1> — các công tắc dòng lệnh của IDM, công cụ <x3/> và API tự động hóa mà các chương trình khác có thể sử dụng."
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Khi trình duyệt dùng proxy cho lượt tải đó (do VPN hoặc tiện ích mở rộng proxy đặt, hoặc trong cài đặt của trình duyệt), tiện ích mở rộng sẽ chuyển <g1>địa chỉ của proxy</g1> hoặc <g2>tập lệnh cấu hình proxy tự động</g2> của nó, để MDM tải xuống qua cùng proxy đó. Nó không bao giờ đọc hoặc chuyển thông tin đăng nhập của proxy. Nó chỉ ghi nhận rằng một proxy đã yêu cầu một cái, để MDM có thể cho bạn biết rằng nó không thể sử dụng proxy đó."
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -7745,6 +7757,10 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Có. MDM chấp nhận các tùy chọn dòng lệnh quen thuộc của IDM, đi kèm với misterdownloadmanager-cli để tải xuống từ terminal, và có một API tự động hóa cục bộ, được bảo vệ bằng token, có thể liệt kê, tạm dừng, bắt đầu và xóa các lượt tải xuống. API này tắt cho đến khi bạn bật nó lên. Xem Dòng lệnh và tự động hóa."
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Một proxy yêu cầu thông tin đăng nhập mà tiện ích mở rộng VPN tự cung cấp không thể chia sẻ: không có chương trình nào khác có thông tin đăng nhập đó. Lượt tải xuống sau đó sẽ dừng và thông báo như vậy, thay vì tiếp tục mà không có proxy. Hãy sử dụng ứng dụng VPN của riêng bạn hoặc chọn bộ điều hợp của nó trong <g1>Bộ điều hợp mạng</g1>."
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
