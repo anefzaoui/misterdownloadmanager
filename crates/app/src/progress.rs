@@ -872,7 +872,7 @@ impl Progress {
         let pieces = d.as_ref().map(|d| d.pieces.as_slice()).unwrap_or(&[]);
         piece_bar(p, o, pieces);
         let Some(d) = &d else {
-            table(ui, p, o, "t-none", &[(25.0, "")], &[], &[]);
+            table(ui, p, o, "t-none", &[(25.0, "")], &[], &[], false);
             text(
                 p,
                 o.x + 25.0,
@@ -912,6 +912,7 @@ impl Progress {
                     ],
                     &[330.0, 425.0],
                     &rows,
+                    true,
                 );
             }
             TTab::Peers => {
@@ -944,6 +945,7 @@ impl Progress {
                     ],
                     &[185.0, 335.0, 420.0],
                     &rows,
+                    false,
                 );
             }
             TTab::Trackers => {
@@ -956,7 +958,7 @@ impl Progress {
                 };
                 // i18n: column title: a server that lists the peers
                 let head = [(25.0, crate::i18n::mark("Tracker"))];
-                table(ui, p, o, "t-trackers", &head, &[], &rows);
+                table(ui, p, o, "t-trackers", &head, &[], &rows, false);
             }
             TTab::Pieces => {
                 let have = pieces.iter().filter(|b| **b).count();
@@ -969,7 +971,16 @@ impl Progress {
                         ("size", &model::size(u64::from(d.piece_length))),
                     ],
                 );
-                table(ui, p, o, "t-pieces", &[(25.0, head.as_str())], &[], &[]);
+                table(
+                    ui,
+                    p,
+                    o,
+                    "t-pieces",
+                    &[(25.0, head.as_str())],
+                    &[],
+                    &[],
+                    false,
+                );
                 piece_legend(p, o);
                 piece_grid(p, o, pieces);
             }
@@ -1060,6 +1071,7 @@ impl Progress {
                     ],
                     &[125.0],
                     &rows,
+                    false,
                 );
             }
         }
@@ -1185,6 +1197,7 @@ fn piece_grid(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
 
 /// A table in the connections table's frame: headers at x, column lines at `seps`, rows of
 /// text cut to their column (whole on hover), scrolled by the wheel.
+#[allow(clippy::too_many_arguments)]
 fn table(
     ui: &mut Ui,
     p: &egui::Painter,
@@ -1193,6 +1206,7 @@ fn table(
     heads: &[(f32, &str)],
     seps: &[f32],
     rows: &[Vec<String>],
+    icons: bool,
 ) {
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
     winui::solid(p, outer, winui::FIELD_EDGE());
@@ -1234,7 +1248,18 @@ fn table(
     for (k, row) in rows.iter().skip(first).take(visible + 1).enumerate() {
         let top = o.y + 299.0 + 17.0 * k as f32;
         for (c, cell) in row.iter().enumerate() {
-            let x = heads.get(c).map_or(o.x + 25.0, |h| o.x + h.0);
+            let mut x = heads.get(c).map_or(o.x + 25.0, |h| o.x + h.0);
+            // A table of files (the Files tab): each name after its type's icon.
+            if icons && c == 0 {
+                crate::fileicons::paint_at(
+                    ui,
+                    &clip,
+                    crate::fileicons::Kind::File(cell),
+                    egui::pos2(x - 4.0, top),
+                    16.0,
+                );
+                x += crate::fileicons::INDENT - 4.0;
+            }
             let (rect, cut) =
                 winui::text_fit(&clip, x, top + 12.0, cell, winui::TEXT(), right_of(c));
             // Cells hold info hashes, folders, trackers, peers: copyable (whole on hover).

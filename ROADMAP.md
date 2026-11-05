@@ -54,6 +54,9 @@ Everything below ships together, in one release.
   ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), and dragging the file out
   of Download complete works in every language
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
+- ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
+  a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
+  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with

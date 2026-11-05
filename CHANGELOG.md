@@ -27,6 +27,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   limit what all torrents together send, and a torrent's progress window can limit its own, kept
   with it. Its General tab now counts what it sent and how long it shared over all its runs, so
   the share ratio no longer starts again at 0 after a pause or a restart.
+- **A file-type icon before every file name**: the download list, Download File Info, Properties,
+  Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
+  audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
+  system (exe, msi, dmg, pkg, deb, rpm, AppImage, apk, iso…) each have their own, from Material
+  Icon Theme (MIT), the same on Windows, macOS and Linux; a .torrent shows MDM's magnet. Windows'
+  own icons were used before, on Windows only.
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the
@@ -160,6 +166,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Lists read as blank items to screen readers** ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)):
+  the rows of Download video's qualities, Add torrent's files, the language picker, Options
+  (browsers, sounds, the file-type and site lists), the Scheduler and Import now have their names
+  (a format and its size, a file's name and size), their check boxes theirs, ticked or not, and
+  their selected row; Download video's list is called Quality, Add torrent's Files and the
+  sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
+  choice at once: it used to wait for the next mouse move.
 - **Torrents: speed limits now work as they do for other downloads**
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
   torrent's progress window changed every torrent's limit, a remembered limit was ignored, the

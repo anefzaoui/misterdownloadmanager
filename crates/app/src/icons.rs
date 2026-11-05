@@ -225,14 +225,19 @@ impl Icon {
     }
 
     pub fn image(self, enabled: bool) -> Image<'static> {
+        Image::new(self.source(enabled))
+    }
+
+    /// The icon as an image source (fileicons.rs shows Add Torrent's magnet for a .torrent).
+    pub fn source(self, enabled: bool) -> ImageSource<'static> {
         let uri = format!(
             "bytes://mdm/toolbar/{}-{}.svg",
             self.name(),
             if enabled { "on" } else { "off" }
         );
-        Image::new(ImageSource::Bytes {
+        ImageSource::Bytes {
             uri: uri.into(),
             bytes: self.svg(enabled).into_bytes().into(),
-        })
+        }
     }
 }
