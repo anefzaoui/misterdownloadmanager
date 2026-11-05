@@ -388,6 +388,10 @@ mod direct3d {
             required_limits: wgpu::Limits {
                 // As eframe asks: windows as large as 4K and more.
                 max_texture_dimension_2d: 8192,
+                // Direct3D 12 keeps one descriptor heap this large, in the graphics card's memory
+                // and a copy in MDM's: wgpu's default (a million, 32 MB each) is for games. egui
+                // uses one per texture (icons, fonts, file icons): a few hundred.
+                max_non_sampler_bindings: 65_536,
                 ..wgpu::Limits::default()
             },
             // Small memory blocks: a download manager's windows need little, and it often sits

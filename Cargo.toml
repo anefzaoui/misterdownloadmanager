@@ -265,11 +265,12 @@ opt-level = 3
 [profile.dev.package."*"]
 debug = "line-tables-only"
 
-# storytold's egui fork (as storytold/craft-libs, D-003) plus two MDM commits on anefzaoui/egui
-# (branch mdm-accesskit-windows): every window created hidden gets an AccessKit adapter, so
-# screen readers read the dialogs and menus; and a dialog opened while the main window is
-# minimized no longer panics (emilk/egui#8470). craft-libs can take the same commits to share
-# one egui again.
+# storytold's egui fork (as storytold/craft-libs, D-003) plus MDM's commits on anefzaoui/egui
+# (branch mdm-wgpu, on mdm-accesskit-windows): every window created hidden gets an AccessKit
+# adapter, with OpenGL (glow) and with Direct3D (wgpu, #89), so screen readers read the dialogs
+# and menus; a dialog opened while the main window is minimized no longer panics
+# (emilk/egui#8470); and a window's first accessibility request is answered with its last tree
+# (#131). craft-libs can take the same commits to share one egui again.
 [patch.crates-io]
 # librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), and a
 # magnet lookup's progress counted (#92), until upstream has them (ikatson/rqbit); every crate

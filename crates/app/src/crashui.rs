@@ -92,10 +92,14 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
         viewport: builder.clone(),
         ..Default::default()
     };
-    // What the app draws with (renderer.rs), the other way when it can't start. OpenGL when the
-    // app's Direct3D failed or is still starting (this report may be about it); only the app's
-    // own start is watched.
-    let mut plan = crate::renderer::plan(settings.renderer, None, crate::renderer::suspect());
+    // What the app draws with (renderer.rs, MDM_RENDERER too), the other way when it can't
+    // start. OpenGL when the app's Direct3D failed or is still starting (this report may be about
+    // it); only the app's own start is watched.
+    let mut plan = crate::renderer::plan(
+        settings.renderer,
+        crate::renderer::overridden(&[]).as_deref(),
+        crate::renderer::suspect(),
+    );
     plan.watched = false;
     let data = m.data.clone();
     crate::renderer::run("misterdownloadmanager-crash", &plan, options, move |cc| {

@@ -4355,7 +4355,8 @@ impl App {
         let deletable = picked.iter().any(|i| i.live.is_none());
         let any_running = self.items.iter().any(|i| i.live.is_some());
         let off = |label| I(label, Cmd::None, false, false);
-        match index {
+        #[allow(unused_mut)]
+        let mut menu = match index {
             0 => vec![
                 I("&Add new download", Cmd::AddUrl, true, false),
                 I("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
@@ -4484,56 +4485,43 @@ impl App {
                 Sep,
                 I("&Options", Cmd::Options, true, false),
             ],
-            3 => {
-                #[allow(unused_mut)]
-                let mut view = vec![
-                    I(
-                        if self.show_categories {
-                            crate::i18n::mark("Hide &categories")
-                        } else {
-                            crate::i18n::mark("Show &categories")
-                        },
-                        Cmd::ToggleCategories,
-                        true,
-                        false,
-                    ),
-                    self.arrange_menu(),
-                    // i18n: noun: the toolbar (submenu of View with its settings)
-                    Sub("Toolbar", false, vec![]),
-                    Sub("&Tray icon", false, vec![]),
-                    off("C&ustomize URL List..."),
-                    I(
-                        "Dark Mode support",
-                        Cmd::ToggleDarkMode,
-                        true,
-                        self.settings.dark_mode_support,
-                    ),
-                    // MDM's (#60): dark whatever the system says (a desktop that reports nothing).
-                    I(
-                        // i18n: View menu: a check item; dark mode on, whatever the system's setting
-                        "Always dark",
-                        Cmd::ToggleAlwaysDark,
-                        true,
-                        self.settings.always_dark,
-                    ),
-                    // i18n: noun: the list's font (submenu)
-                    Sub("Font", false, vec![]),
-                    Sep,
-                    // IDM's place for it; a window rather than IDM's submenu, which 86 languages
-                    // would make taller than the screen (langpick.rs).
-                    I("&Language...", Cmd::ChooseLanguage, true, false),
-                ];
-                // MDM's (#89), after Always dark. Windows only: Linux and macOS draw with OpenGL
-                // only (renderer.rs).
-                #[cfg(windows)]
-                if let Some(at) = view
-                    .iter()
-                    .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
-                {
-                    view.insert(at + 1, self.draw_with_menu());
-                }
-                view
-            }
+            3 => vec![
+                I(
+                    if self.show_categories {
+                        crate::i18n::mark("Hide &categories")
+                    } else {
+                        crate::i18n::mark("Show &categories")
+                    },
+                    Cmd::ToggleCategories,
+                    true,
+                    false,
+                ),
+                self.arrange_menu(),
+                // i18n: noun: the toolbar (submenu of View with its settings)
+                Sub("Toolbar", false, vec![]),
+                Sub("&Tray icon", false, vec![]),
+                off("C&ustomize URL List..."),
+                I(
+                    "Dark Mode support",
+                    Cmd::ToggleDarkMode,
+                    true,
+                    self.settings.dark_mode_support,
+                ),
+                // MDM's (#60): dark whatever the system says (a desktop that reports nothing).
+                I(
+                    // i18n: View menu: a check item; dark mode on, whatever the system's setting
+                    "Always dark",
+                    Cmd::ToggleAlwaysDark,
+                    true,
+                    self.settings.always_dark,
+                ),
+                // i18n: noun: the list's font (submenu)
+                Sub("Font", false, vec![]),
+                Sep,
+                // IDM's place for it; a window rather than IDM's submenu, which 86 languages
+                // would make taller than the screen (langpick.rs).
+                I("&Language...", Cmd::ChooseLanguage, true, false),
+            ],
             // IDM's Help menu, ours (D-020): pages of the user guide (docs/); "Video downloads" stands
             // where IDM has "Grabber Help"; "Report a problem" where "Contact IDM Support";
             // Keyboard shortcuts added; no Tip of the Day.
@@ -4567,7 +4555,17 @@ impl App {
                 I("&About Mister Download Manager", Cmd::About, true, false),
                 I("Tell a &friend", Cmd::TellFriend, true, false),
             ],
+        };
+        // View → Draw with (MDM's, #89), after Always dark. Windows only: Linux and macOS draw
+        // with OpenGL only (renderer.rs).
+        #[cfg(windows)]
+        if let Some(at) = menu
+            .iter()
+            .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
+        {
+            menu.insert(at + 1, self.draw_with_menu());
         }
+        menu
     }
 
     /// View → Draw with (#89): OpenGL or Direct3D, used from the next start; a greyed line says
