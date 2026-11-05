@@ -1511,7 +1511,12 @@ impl App {
                 }
             }
             "existing-files" => {
-                let dir = self.downloads.join("Big Buck Bunny");
+                // In General's folder (a test's own, set in its data folder), not the system's
+                // Downloads, whose path names the user.
+                let dir = self
+                    .settings
+                    .category_dir(Category::General, &self.downloads)
+                    .join("Big Buck Bunny");
                 self.shown_existing = Some(crate::dialogs::ExistingFiles::new(&[
                     dir.join("big_buck_bunny_1080p.mkv"),
                     dir.join("subtitles.srt"),
