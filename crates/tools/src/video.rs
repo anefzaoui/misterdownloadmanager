@@ -358,7 +358,9 @@ fn supervise(
                     .into_iter()
                     .filter(|h| !dead.contains(h))
                     .collect();
-                if !gone.is_empty() {
+                // On the page's own servers (no moving any more), an unreachable one is the end:
+                // another look-up would go to it again (live 2026-11-05).
+                if !gone.is_empty() && reroute {
                     for h in &gone {
                         note(
                             progress,
