@@ -332,8 +332,9 @@ async function firefox(bin, profile, dl, page, ready) {
     ].join("\n"),
   );
   const proc = spawn(bin, ["-headless", "-no-remote", "-profile", profile, "--remote-debugging-port", String(port), "--width=1280", "--height=900"], {
-    // Headless even where its launcher restarts it without the flag.
-    env: { ...process.env, MOZ_HEADLESS: "1" },
+    // Headless even where its launcher restarts it without the flag. System access (this test
+    // profile only, its protocol on 127.0.0.1): to open the extension's own pages in a tab.
+    env: { ...process.env, MOZ_HEADLESS: "1", MOZ_REMOTE_ALLOW_SYSTEM_ACCESS: "1" },
     stdio: "ignore",
     windowsHide: true,
   });
@@ -412,9 +413,22 @@ async function firefox(bin, profile, dl, page, ready) {
       return c.result && c.result.value ? JSON.parse(c.result.value) : null;
     };
     // Another tab at `url` (the extension's own pages too): its `evaluate` and `close`.
+    // A web page can't be sent to an extension's page: the browser's own window (its chrome
+    // scope, MOZ_REMOTE_ALLOW_SYSTEM_ACCESS) opens that tab instead.
     const tab = async (url) => {
-      const { context: c } = await bidi.send("browsingContext.create", { type: "tab", background: true });
-      await bidi.send("browsingContext.navigate", { context: c, url, wait: "complete" });
+      let c;
+      if (url.startsWith("moz-extension:")) {
+        const { contexts: windows } = await bidi.send("browsingContext.getTree", { "moz:scope": "chrome" });
+        const open = `gBrowser.addTab(${JSON.stringify(url)}, { triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal() }) && "opened"`;
+        await bidi.send("script.evaluate", { expression: open, target: { context: windows[0].context }, awaitPromise: false, "moz:scope": "chrome" });
+        c = await until("the extension's page in a tab", 10000, async () => {
+          const { contexts: tabs } = await bidi.send("browsingContext.getTree", {});
+          return (tabs.find((x) => x.url === url) || {}).context;
+        });
+      } else {
+        c = (await bidi.send("browsingContext.create", { type: "tab", background: true })).context;
+        await bidi.send("browsingContext.navigate", { context: c, url, wait: "complete" });
+      }
       const ev = async (expression) => {
         const json = `(async () => JSON.stringify(await (${expression})))()`;
         const r = await bidi.send("script.evaluate", { expression: json, target: { context: c }, awaitPromise: true, userActivation: true });
