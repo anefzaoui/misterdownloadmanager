@@ -155,7 +155,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Huk debrid qhatu (Real-Debrid) huk willañiqita qhatun qillqasqa willayniykiwan, chaymanta MDMman huk chiqan t'inkita qun. Sapallayki willayniykita llamk'achiy: huk willayta rakinaykiqa chay qhatup kamachiykunata p'akiyta atin, chaymanta hark'asqa kanman. Ñawpaqtaña qallarisqa willañiqikunaqa manan hukmanyanqachu.
+	A debrid service (Real-Debrid, AllDebrid, Premiumize) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Huk debrid qillqay (Real-Debrid, AllDebrid, Premiumize) huk willañiqita qhawan huk willañiqiq qhawaqninmanta, qanpa pagasqa qillqayniykiwan, chaymanta MDMman huk chiqan t'inkita qun. Qanpa qillqayniykita sapallayki llamk'achiy: huk qillqayta utaq t'inkisninkunata rakinakuyqa chay llamk'aykunapa kamachikuykunata p'akin, chaymanta hark'asqa kanman. Ñawpaqtaña qhawaqpa qallarisqan willañiqikunaqa manan hukmanyanqachu.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1072,9 +1072,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Suyasqa checksum churana ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Yachaychay: Real-Debridpa lliw runapaq API qillqasqanmanta ruwasqa, manaraqmi huk chiqan willaywan allichasqachu.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Yachayllaraq: kay ruwaykunaqa mana allinta ruwasqa kanchu, manaraqmi cheqaq cuentaswan allinta qhawasqachu.
 #. message or event log entry in the main window
 #, machine
 	Export	Hawaman apachiy
@@ -2096,6 +2096,7 @@
 #, machine
 	Options on completion	Tukusqa kaptin akllanakuna
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Utqaylla API tokenniykita k'askachiy:
 #. text in the Link grabber window
@@ -2123,6 +2124,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Uraykachana p'anqaq qosqan checksum nisqata k'askachiy
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	API llaviykita k’askachiy (servicioq cuenta p’anqanmanta):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

@@ -29,7 +29,7 @@ Everything below ships together, in one release.
   later ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)), and a download
   finishing during a save no longer fails ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116))
 - ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
-- ✅ Real-Debrid (experimental): file-host links downloaded through your own account (Options → Accounts)
+- ✅ Debrid accounts (experimental): Real-Debrid, AllDebrid and Premiumize; file-host links downloaded through your own account (Options → Accounts)
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
@@ -123,10 +123,10 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize
 - 📋 A link grabber with packages, and auto-extract of archives
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
-- 📋 Debrid services, the rest: AllDebrid and Premiumize, torrents through the service, the system
+- 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
+  File Info, the command line using the accounts, torrents through the service, the system
   keychains for the sign-ins
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 

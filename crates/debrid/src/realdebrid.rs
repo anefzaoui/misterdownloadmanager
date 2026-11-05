@@ -134,13 +134,18 @@ pub(crate) fn fault(status: u16, body: &[u8], retry_after: Option<u64>) -> Fault
 
 /// The account: name, premium or not.
 pub(crate) async fn user(http: &Http, token: &str) -> Result<User, Fault> {
-    let url = http.rd.rest.join("user").expect("relative");
+    let url = http.services.rd.rest.join("user").expect("relative");
     http.json(http.get(&url).bearer_auth(token), fault).await
 }
 
 /// The domains Real-Debrid supports (no sign-in needed).
 pub(crate) async fn domains(http: &Http) -> Result<Vec<String>, Fault> {
-    let url = http.rd.rest.join("hosts/domains").expect("relative");
+    let url = http
+        .services
+        .rd
+        .rest
+        .join("hosts/domains")
+        .expect("relative");
     http.json(http.get(&url), fault).await
 }
 
@@ -150,7 +155,12 @@ pub(crate) async fn unrestrict(
     token: &str,
     link: &Url,
 ) -> Result<Unrestricted, Fault> {
-    let url = http.rd.rest.join("unrestrict/link").expect("relative");
+    let url = http
+        .services
+        .rd
+        .rest
+        .join("unrestrict/link")
+        .expect("relative");
     let form = [("link", link.as_str()), ("remote", "0")];
     http.json(http.post_form(&url, &form).bearer_auth(token), fault)
         .await
@@ -158,7 +168,12 @@ pub(crate) async fn unrestrict(
 
 /// Sign-in by code, step 1: the code the user types at Real-Debrid.
 pub async fn device_code(http: &Http) -> Result<DeviceCode, Fault> {
-    let mut url = http.rd.oauth.join("device/code").expect("relative");
+    let mut url = http
+        .services
+        .rd
+        .oauth
+        .join("device/code")
+        .expect("relative");
     url.query_pairs_mut()
         .append_pair("client_id", OPEN_SOURCE_CLIENT_ID)
         .append_pair("new_credentials", "yes");
@@ -171,7 +186,12 @@ pub(crate) async fn device_credentials(
     http: &Http,
     device_code: &str,
 ) -> Result<Option<DeviceCredentials>, Fault> {
-    let mut url = http.rd.oauth.join("device/credentials").expect("relative");
+    let mut url = http
+        .services
+        .rd
+        .oauth
+        .join("device/credentials")
+        .expect("relative");
     url.query_pairs_mut()
         .append_pair("client_id", OPEN_SOURCE_CLIENT_ID)
         .append_pair("code", device_code);
@@ -195,7 +215,7 @@ pub(crate) async fn token(
     client_secret: &str,
     code: &str,
 ) -> Result<Token, Fault> {
-    let url = http.rd.oauth.join("token").expect("relative");
+    let url = http.services.rd.oauth.join("token").expect("relative");
     let form = [
         ("client_id", client_id),
         ("client_secret", client_secret),

@@ -5,25 +5,24 @@
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
-use mdm_debrid::realdebrid::{DeviceCode, Endpoints};
-use mdm_debrid::{AccountInfo, Credential, Fault, Http, ServiceKind};
+use mdm_debrid::{AccountInfo, Credential, Fault, Http, ServiceKind, Services};
 
-/// Where Real-Debrid answers. Debug builds only: MDM_DEBRID_LAB=http://127.0.0.1:PORT/ points
-/// at the lab server's fake (labserver `debrid`), for tests by hand.
-pub fn endpoints() -> Endpoints {
+/// Where the services answer. Debug builds only: MDM_DEBRID_LAB=http://127.0.0.1:PORT/ points
+/// at the lab server's fakes (labserver `debrid`), for tests by hand.
+pub fn services() -> Services {
     #[cfg(debug_assertions)]
     if let Some(base) = std::env::var("MDM_DEBRID_LAB")
         .ok()
         .and_then(|b| url::Url::parse(&b).ok())
     {
-        return Endpoints::at(&base);
+        return Services::at(&base);
     }
-    Endpoints::default()
+    Services::default()
 }
 
 /// A client for the services, through MDM's own network settings (proxy, DNS, adapter).
 pub fn http() -> Result<Arc<Http>, String> {
-    Http::new(&crate::settings::own_net(), endpoints()).map(Arc::new)
+    Http::new(&crate::settings::own_net(), services()).map(Arc::new)
 }
 
 /// "premium, 143 days left", "free account": what Options shows for an account.
@@ -92,21 +91,21 @@ impl SignIn {
         ctx.request_repaint();
     }
 
-    /// Sign in by code (the service's device flow), in the browser.
+    /// Sign in by code (Real-Debrid's device flow, AllDebrid's PIN), in the browser.
     pub fn by_code(&self, service: ServiceKind, ctx: &egui::Context) {
         let (me, ctx) = (self.clone(), ctx.clone());
         me.set(SignInState::Starting, &ctx);
         std::thread::spawn(move || {
             let run = async {
                 let http = http()?;
-                let code: DeviceCode = mdm_debrid::signin::start(&http)
+                let code = mdm_debrid::signin::start(&http, service)
                     .await
                     .map_err(|f| fault_text(service, &f))?;
                 let until = Instant::now() + Duration::from_secs(code.expires_in);
                 me.set(
                     SignInState::Waiting {
-                        code: code.user_code.clone(),
-                        page: code.verification_url.clone(),
+                        code: code.shown.clone(),
+                        page: code.page.clone(),
                         until,
                     },
                     &ctx,
@@ -114,7 +113,7 @@ impl SignIn {
                 // The page opens in the browser, except in off-screen test runs and against the
                 // lab's fake service (whose page is the real one's address).
                 if !crate::offscreen() && std::env::var_os("MDM_DEBRID_LAB").is_none() {
-                    let _ = open::that_detached(&code.verification_url);
+                    let _ = open::that_detached(&code.page);
                 }
                 loop {
                     if me.stop.load(std::sync::atomic::Ordering::Relaxed) {

@@ -46,9 +46,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   then downloaded with all of MDM's connections, pause and resume, from Add URL, the browser's
   link menu and batch downloads. When the direct link expires, MDM asks the
   service for a new one. The direct link is never shown or copied, and the sign-in is sealed for
-  your Windows account. AllDebrid and Premiumize come next. See
+  your Windows account. See
   [Debrid service accounts](docs/debrid.md). Experimental: built from Real-Debrid's public API
   documentation, not yet confirmed with a real account.
+- **AllDebrid and Premiumize accounts, experimental**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): Options → Accounts now
+  takes all three services. AllDebrid signs in by a PIN in the browser or with an API key, and
+  MDM waits while it prepares a slow link. Premiumize signs in with its API key. Each service is
+  asked well under its request limit. Experimental like Real-Debrid: built from the services'
+  public API documentation, not yet confirmed with a real paid account.
 - The proxy's password in Options → Proxy / Socks is now sealed on disk too on Windows, like
   Sites Logins' passwords.
 - **Image galleries** ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58)): a
