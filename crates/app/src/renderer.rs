@@ -254,10 +254,11 @@ pub fn run<A: eframe::App + 'static>(
     let mut result = Ok(());
     let mut instead: Option<String> = None;
     for (n, &attempt) in plan.attempts.iter().enumerate() {
-        if n == 0 && plan.watched {
-            if let Some(f) = file(STARTING) {
-                let _ = std::fs::write(f, "");
-            }
+        if n == 0
+            && plan.watched
+            && let Some(f) = file(STARTING)
+        {
+            let _ = std::fs::write(f, "");
         }
         let mut opts = options();
         configure(&mut opts, attempt);
