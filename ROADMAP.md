@@ -13,6 +13,10 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Link grabber: links in packages, looked up for name and size; archives (zip, 7z, rar
+  through 7-Zip, tar) extracted when they are downloaded
+  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)); collecting copied links
+  comes later
 - ✅ Less memory in the notification area: under 10 MB there, and the language list's fonts let
   go when it closes ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Video downloads: subtitles, beside the video or inside it
@@ -93,8 +97,6 @@ Everything below ships together, in one release.
 
 - 📋 Hide a download's progress window to the tray
   ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
-- 📋 A link grabber with packages, and auto-extract of archives
-  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 

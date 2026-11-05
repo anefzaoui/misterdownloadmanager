@@ -269,6 +269,10 @@ pub struct Item {
     /// Content-Disposition), as a browser does (#28). Cleared once the file is made.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub name_from_url: bool,
+    /// The Link grabber package it came in (#37): its archives are extracted together once
+    /// every volume is there.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub package: Option<PackageTag>,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The engine's last view of this download (segments, connections).
@@ -284,6 +288,21 @@ pub struct Item {
     /// #68), in the interface language; memory only.
     #[serde(skip)]
     pub notices: Vec<String>,
+}
+
+/// A Link grabber package, as each of its downloads keeps it (#37).
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PackageTag {
+    /// The same for every download of the package.
+    pub id: u64,
+    pub name: String,
+    /// Extract its archives when they are all downloaded.
+    pub extract: bool,
+    /// Then move them to the Recycle Bin (the Trash).
+    pub delete_after: bool,
+    /// The archives' password, typed in Link grabber: memory only, never written to disk.
+    #[serde(skip)]
+    pub password: Option<String>,
 }
 
 /// What runs a download: the engine (a file), yt-dlp (a video from a page), or librqbit (a
@@ -498,6 +517,7 @@ impl Item {
             torrent: None,
             log: Vec::new(),
             name_from_url: false,
+            package: None,
             live: None,
             snap: None,
             login: None,

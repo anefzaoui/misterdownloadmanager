@@ -3232,6 +3232,33 @@ pub fn check_box_mixed(p: &Painter, rc: Rect, state: State) {
     );
 }
 
+/// A row's check box ([`row_check`] at English `glyph`) shown partly ticked: a folder or a
+/// package with only some of its files chosen.
+pub fn row_check_mixed(p: &Painter, glyph: Pos2) {
+    check_box_mixed(
+        p,
+        rect(Rect::from_min_size(glyph, vec2(13.0, 13.0))),
+        State::Normal,
+    );
+}
+
+/// A tree row's expander at English point `at`: ▸ when closed (pointing into the row: ◂ in
+/// RTL), ▾ when open (Add torrent's folders, Link grabber's packages).
+pub fn tree_expander(p: &Painter, at: Pos2, open: bool) {
+    let c = MUTED();
+    let pts = if open {
+        vec![at, pos2(at.x + 8.0, at.y), pos2(at.x + 4.0, at.y + 5.0)]
+    } else {
+        vec![
+            pos2(at.x + 2.0, at.y - 1.0),
+            pos2(at.x + 7.0, at.y + 3.5),
+            pos2(at.x + 2.0, at.y + 8.0),
+        ]
+    };
+    let pts = pts.into_iter().map(|q| pos2(mx(q.x), q.y)).collect();
+    p.add(egui::Shape::convex_polygon(pts, c, Stroke::NONE));
+}
+
 /// A checked Windows 11 check box's or radio's accent in `state`: lighter under the pointer,
 /// lighter still while pressed, grey when disabled.
 fn fluent_accent(state: State) -> Color32 {

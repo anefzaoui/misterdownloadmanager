@@ -86,7 +86,7 @@ window offers them when you first need them. More in [Videos](video.md).
 From top to bottom:
 
 - **Menu bar.**
-  - **Tasks** — add downloads, torrents, batch downloads and videos; show the drop target; import and export the list; exit.
+  - **Tasks** — add downloads, torrents, batch downloads and videos; Link grabber; show the drop target; import and export the list; exit.
   - **File** — the selected download: **Stop Download**, **Remove**, **Download Now**, **Redownload**.
   - **Downloads** — **Pause All**, **Stop All**, **Delete All Completed**, **Find**, the **Scheduler**, queues, the **Speed Limiter** and **Options**.
   - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark** and **Language**.

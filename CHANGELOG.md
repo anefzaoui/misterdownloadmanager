@@ -22,6 +22,23 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Link grabber, and archives extracted when they are downloaded**
+  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)). The window that took
+  the browser's "Download all links", Tasks → Import and dropped lists grew into Link grabber
+  (also Tasks → Link grabber..., where pasted links go). Links come in packages: a split
+  archive's volumes together, the other links of a page together, the rest in "Various files".
+  Each link is looked up for its name, size and whether the server has it (Offline links come
+  unticked), and each package has its folder, an archive password, "Extract when done" and
+  "Delete archives after extracting". **Start** or **Add to queue** (IDM's import, unchanged:
+  an `.ef2` file still brings each download's referrer and cookies).
+  MDM extracts ZIP (AES and Deflate64 too), 7Z (encrypted and split `.7z.001` too), TAR, TAR.GZ,
+  TAR.XZ, GZ and XZ itself, and RAR through 7-Zip when it is installed: when a package says so,
+  for any download with **Options → Archives → Extract archives when their download completes**
+  (off by default), or with right-click → **Extract**. A split archive is extracted once its last
+  volume is in. Extracted files are marked as downloaded from the internet, as the archive is;
+  names that would leave the folder, links, and archives that would fill the disk are refused;
+  an existing file is never overwritten. The archive goes to the Recycle Bin (the Trash) only
+  when you ask. Options has a new **Archives** page.
 - **A file-type icon before every file name**: the download list, Download File Info, Properties,
   Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
   audio, pictures, archives, documents, subtitles, code, and the programs and installers of every

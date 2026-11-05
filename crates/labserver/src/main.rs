@@ -19,6 +19,9 @@ struct Args {
     /// Also append every log entry as a JSON line to this file.
     #[arg(long)]
     log_file: Option<std::path::PathBuf>,
+    /// Serve the real files of this folder at /files/NAME (archives for the link grabber's tests).
+    #[arg(long)]
+    files: Option<std::path::PathBuf>,
     /// Also serve the same generated files over FTP on this address (ftp://ADDR/gen/8M/a.bin).
     #[arg(long)]
     ftp: Option<SocketAddr>,
@@ -58,6 +61,7 @@ async fn main() -> anyhow::Result<()> {
         bind: args.bind,
         faults,
         on_log: Some(on_log),
+        files: args.files.clone(),
     })
     .await?;
     eprintln!(

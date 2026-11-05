@@ -10,6 +10,10 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Extracted {n} file to {folder}|Extracted {n} files to {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -27,10 +31,19 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} downloading|{n} downloading
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file|{n} files	{n} file|{n} files
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
@@ -69,6 +82,9 @@
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+	a volume of it is missing	a volume of it is missing
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	About Mister Download Manager
 #. checkbox in the Add torrent window
@@ -98,7 +114,8 @@
 	Add the extension	Add the extension
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Add the free extension: files you download in your browser come here, and videos get a Download button.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 	Add to queue	Add to queue
 #. text in a dialog box
 	Add to queue:	Add to queue:
@@ -140,6 +157,9 @@
 	Allow more than {n} connections	Allow more than {n} connections
 #. text in errors.rs
 	already being downloaded: {path}	already being downloaded: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+	Already in the list	Already in the list
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 	Already reported as issue #{number}: {title}	Already reported as issue #{number}: {title}
@@ -153,6 +173,9 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 	Always dark	Always dark
+#. text in the Options window
+#. Options → Archives: where extracted files go
+	Always into a folder named after it	Always into a folder named after it
 #. checkbox in a dialog box
 	Always turn on Speed Limiter on Mister Download Manager startup	Always turn on Speed Limiter on Mister Download Manager startup
 #. text in regional.rs; text in the Scheduler window
@@ -160,6 +183,14 @@
 	AM	AM
 #. text in the Scheduler window
 	April	April
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+	Archive password	Archive password
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+	Archives	Archives
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?
@@ -184,7 +215,7 @@
 	Block the addresses in this list (P2P or eMule format):	Block the addresses in this list (P2P or eMule format):
 #. text in helpers.rs
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 	Browse	Browse
 #. button in categories.rs; button in the Options window
@@ -194,11 +225,14 @@
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.
 #. page title in the Options window
 	Browser/System Integration	Browser/System Integration
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+	Busy, try later	Busy, try later
 #. message or event log entry in the main window
 	by batch download	by batch download
 #. message or event log entry in the main window
-	by import	by import
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	by Link grabber
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
@@ -233,6 +267,9 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Change folder for "{category}" category on last selected	Change folder for "{category}" category on last selected
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+	Check all	Check all
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Check for updates	Check for updates
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -256,7 +293,7 @@
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 	Checking {name} ({n} of {total})...	Checking {name} ({n} of {total})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 	Checking...	Checking...
 #. text in langpick.rs
@@ -315,6 +352,10 @@
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 	Copy report	Copy report
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+	Couldn't extract {name}: {why}	Couldn't extract {name}: {why}
 #. window title in a dialog box
 	Create folder	Create folder
 #. text in the Options window
@@ -353,6 +394,9 @@
 #. message or event log entry in the main window; button in the Options window
 #. verb: delete the item
 	Delete	Delete
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+	Delete archives after extracting	Delete archives after extracting
 #. message or event log entry in the main window
 	Delete category	Delete category
 #. message or event log entry in the main window; text in the Scheduler window
@@ -483,6 +527,9 @@
 	Dropped links	Dropped links
 #. window title in a dialog box
 	Duplicate download link	Duplicate download link
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+	Each file's category folder	Each file's category folder
 #. button in the Options window
 #. verb: edit the item
 	Edit	Edit
@@ -543,6 +590,18 @@
 	Extend the availability of Manifest 2 Chrome extensions	Extend the availability of Manifest 2 Chrome extensions
 #. text in categories.rs
 	Extensions separated by spaces, for example MP4 MKV R0*	Extensions separated by spaces, for example MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+	Extract	Extract
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+	Extract archives when their download completes	Extract archives when their download completes
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+	Extract when done	Extract when done
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+	Extracting the archive...	Extracting the archive...
 #. text in the Scheduler window
 	February	February
 #. text in the Add torrent window
@@ -680,6 +739,9 @@
 	Hide &categories	Hide &categories
 #. button in a download's progress window
 	Hide tab	Hide tab
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+	Hide web pages	Hide web pages
 #. text in the Options window
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -701,13 +763,8 @@
 	Ignore file modification time changes when resuming a download	Ignore file modification time changes when resuming a download
 #. message or event log entry in the main window
 	Import	Import
-#. window title in transfer.rs
-	Import downloads	Import downloads
 #. value in a column's filter list in the download list
 	In a queue	In a queue
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-	in the list	in the list
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 	Increase	Increase
@@ -723,11 +780,33 @@
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Install yt-dlp
+#. text in the Options window
+#. Options → Archives: where extracted files go
+	Into a folder named after it, when it holds several things	Into a folder named after it, when it holds several things
 #. text in a dialog box
 	Invalid address	Invalid address
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+	it holds too many files or folders	it holds too many files or folders
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+	it is damaged, or not the archive its name says	it is damaged, or not the archive its name says
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+	it is not an archive MDM extracts	it is not an archive MDM extracts
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+	it needs a password	it needs a password
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 	It tells the computers on your network which torrents you have.	It tells the computers on your network which torrents you have.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+	it was stopped	it was stopped
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	it would write {size}, more than the {limit} there is room or reason for	it would write {size}, more than the {limit} there is room or reason for
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.
@@ -777,8 +856,15 @@
 	Licenses and credits	Licenses and credits
 #. checkbox in a dialog box
 	Limit all downloads together to	Limit all downloads together to
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+	Link grabber	Link grabber
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+	Links	Links
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 	Links from the browser	Links from the browser
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
@@ -787,6 +873,9 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 	Login	Login
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+	Look links up when they arrive (name, size, online)	Look links up when they arrive (name, size, online)
 #. text in the Add torrent window; button in the Download video window
 	Look up	Look up
 #. tooltip (why a control is greyed) in the Download video window
@@ -896,11 +985,15 @@
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 	N.	N.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 	Name	Name
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 	Name:	Name:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+	Needs a login	Needs a login
 #. text in errors.rs
 	network error	network error
 #. text in the Options window
@@ -1007,7 +1100,10 @@
 	Off: a finished torrent stops, like any download.	Off: a finished torrent stops, like any download.
 #. text in the Options window
 	Offer to download links copied to the clipboard	Offer to download links copied to the clipboard
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+	Offline ({status})	Offline ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 	OK	OK
 #. text in a download's progress window
 	on download stop/resume	on download stop/resume
@@ -1019,6 +1115,9 @@
 	One address per line; * stands for any text: example.com/private/*	One address per line; * stands for any text: example.com/private/*
 #. option (radio button) in the Scheduler window
 	One-time downloading	One-time downloading
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+	Online	Online
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 	Only a finished download, or one not started yet, can be moved	Only a finished download, or one not started yet, can be moved
@@ -1063,17 +1162,26 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 	Options on completion	Options on completion
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+	Package	Package
 #. text in the Download video window
 	Page address	Page address
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	Password
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 	Password:	Password:
 #. text in the Add torrent window
 	Paste a magnet link or choose a .torrent file, then Look up.	Paste a magnet link or choose a .torrent file, then Look up.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+	Paste links here (Ctrl+V), or send a page's links from the browser.	Paste links here (Ctrl+V), or send a page's links from the browser.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 	Paste the checksum the download's page gives	Paste the checksum the download's page gives
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+	Pasted	Pasted
 #. text in a download's progress window
 #. verb: pause the download
 	Pause	Pause
@@ -1142,6 +1250,14 @@
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	Queues
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+	RAR archives are extracted by 7-Zip ({path}).	RAR archives are extracted by 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR archives need 7-Zip (7-zip.org), which isn't installed.
+#. text in extracting archives (a download's log, the Archive password window)
+	RAR archives need 7-Zip, which isn't installed	RAR archives need 7-Zip, which isn't installed
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 	Reading the crash data…	Reading the crash data…
@@ -1224,6 +1340,8 @@
 	Save To...	Save To...
 #. text in a download's progress window; text in a download's Properties window
 	Save To:	Save To:
+#. text in the Link grabber window
+	Save to:	Save to:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 	Saved in	Saved in
@@ -1241,13 +1359,13 @@
 #. text in a dialog box
 #. title of the folder picker
 	Select a folder	Select a folder
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 	Select all	Select all
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Select all downloads	Select all downloads
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Select every download up to this one	Select every download up to this one
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 	Select none	Select none
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Select or unselect one more download	Select or unselect one more download
@@ -1343,7 +1461,7 @@
 	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.
 #. text in helpers.rs
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 	Size	Size
@@ -1372,11 +1490,18 @@
 	Sounds	Sounds
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Source code	Source code
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+	Source: {source}	Source: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 	Speed Limiter	Speed Limiter
 #. window title in a dialog box
 	Speed Limiter settings	Speed Limiter settings
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+	Start	Start
 #. button in a dialog box
 	Start Download	Start Download
 #. text in the Scheduler window; checkbox in the Scheduler window
@@ -1403,7 +1528,7 @@
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 	Starting...	Starting...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 	Status	Status
@@ -1428,6 +1553,9 @@
 	Stopped	Stopped
 #. text in a download's progress window
 	Stops when the download finishes	Stops when the download finishes
+#. text in the Options window
+#. Options → Archives: where extracted files go
+	Straight into the archive's folder	Straight into the archive's folder
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 	Su	Su
@@ -1448,6 +1576,9 @@
 	Sunday	Sunday
 #. message or event log entry in the main window
 	Synchronization queue	Synchronization queue
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Tell a friend	Tell a friend
 #. group box title in the Options window
@@ -1469,6 +1600,16 @@
 	the .torrent file kept for it is gone	the .torrent file kept for it is gone
 #. text in a download's Properties window
 	The address must be an http(s) or ftp(s) address	The address must be an http(s) or ftp(s) address
+#. text in extracting archives (a download's log, the Archive password window)
+	The archive could not be moved to the Recycle Bin: it was kept	The archive could not be moved to the Recycle Bin: it was kept
+#. text in extracting archives (a download's log, the Archive password window)
+	The archive could not be moved to the Trash: it was kept	The archive could not be moved to the Trash: it was kept
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+	The archive was moved to the Recycle Bin	The archive was moved to the Recycle Bin
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+	The archive was moved to the Trash	The archive was moved to the Trash
 #. text in the Download video window
 	The best qualities and MP3 need ffmpeg (about 80 MB).	The best qualities and MP3 need ffmpeg (about 80 MB).
 #. text in the Download video window
@@ -1563,6 +1704,9 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	The list could not be saved: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+	the password is wrong	the password is wrong
 #. text in errors.rs
 	the path is too long for Windows: {path}	the path is too long for Windows: {path}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1617,6 +1761,12 @@
 	The update is open in your system's package installer.	The update is open in your system's package installer.
 #. text in a download's Properties window
 	The web page from which this file was obtained:	The web page from which this file was obtained:
+#. text in the Options window
+#. Options → Archives check box
+	Then move the archives to the Recycle Bin	Then move the archives to the Recycle Bin
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+	Then move the archives to the Trash	Then move the archives to the Trash
 #. text in categories.rs
 	There is already a category with this name	There is already a category with this name
 #. text in the Scheduler window
@@ -1750,6 +1900,9 @@
 	Type what to find, and tick at least one place to look	Type what to find, and tick at least one place to look
 #. text in a download's Properties window
 	Type:	Type:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+	Uncheck all	Uncheck all
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 	Unfinished	Unfinished
@@ -1813,6 +1966,9 @@
 	UserName	UserName
 #. text in a download's progress window
 	Value	Value
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+	Various files	Various files
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 	Verify	Verify
@@ -1834,6 +1990,10 @@
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
 	Virus checking settings	Virus checking settings
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+	volume {n} of it is missing	volume {n} of it is missing
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -1847,10 +2007,11 @@
 #. value in a column's filter list in the download list
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 	Web	Web
-#. text in transfer.rs
-	Web addresses found in {file}:	Web addresses found in {file}:
 #. text in the Scheduler window
 	Wednesday	Wednesday
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+	What an archive holds goes:	What an archive holds goes:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 	What were you doing when it happened? (optional)	What were you doing when it happened? (optional)
@@ -1872,6 +2033,10 @@
 	With it, incoming connections, the DHT and local peers are off.	With it, incoming connections, the DHT and local peers are off.
 #. group box title in the Options window
 	Write dates and times	Write dates and times
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+	Wrong password for {name}. Type it again:	Wrong password for {name}. Type it again:
 #. text in the main window (menus, toolbar, Categories pane)
 	x	x
 #. text in the Options window
@@ -1906,6 +2071,9 @@
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 	yt-dlp: finds the video	yt-dlp: finds the video
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{algorithm} checksum	{algorithm} checksum
@@ -1976,11 +2144,15 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 	{name} could not be downloaded: {error}	{name} could not be downloaded: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+	{name} is protected by a password:	{name} is protected by a password:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 	{n} (auto)	{n} (auto)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 	{n} of {total} selected	{n} of {total} selected
 #. text in errors.rs
@@ -2229,6 +2401,11 @@ menu	&Keyboard shortcuts	&Keyboard shortcuts
 #. the trailing ... means it opens a window: keep it
 menu	&Language...	&Language...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&Link grabber...	&Link grabber...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Options	&Options
 #. menu command in standard windows
@@ -2356,6 +2533,9 @@ menu	Download &video from a page...	Download &video from a page...
 menu	E&xport	E&xport
 #. menu command in the main window
 menu	Edit queue	Edit queue
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+menu	Extract	Extract
 #. menu command in the main window
 menu	Find (Ctrl-F)	Find (Ctrl-F)
 #. menu command in the main window

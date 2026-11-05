@@ -78,7 +78,13 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     } else {
         None
     };
-    let link = m.get("link");
+    // `link` may come again: one link each, in order.
+    let links: Vec<&str> = pairs
+        .iter()
+        .filter(|(k, _)| k == "link")
+        .map(|(_, v)| v.as_str())
+        .collect();
+    let link = links.first();
     let audio = m.get("audio").map(|a| {
         if parse_flag(a) == Some(true) {
             DEFAULT_AUDIO
@@ -101,8 +107,15 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     };
 
     let mut body = head("labserver page");
-    if let Some(link) = link {
-        body += &format!("<p><a id=link href=\"{}\">download</a></p>", esc(link));
+    for (k, link) in links.iter().enumerate() {
+        let id = if k == 0 {
+            "link".to_owned()
+        } else {
+            format!("link{}", k + 1)
+        };
+        let name = link.rsplit('/').next().unwrap_or("download");
+        let text = if k == 0 { "download" } else { name };
+        body += &format!("<p><a id={id} href=\"{}\">{}</a></p>", esc(link), esc(text));
     }
     if let Some(src) = video {
         if iframe {

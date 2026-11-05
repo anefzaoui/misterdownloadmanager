@@ -409,8 +409,9 @@ Copyright (c) 2026 Ahmed Nefzaoui. Mister Download Manager is free software unde
 Built on [egui](https://github.com/emilk/egui) through
 [storytold's forks](https://github.com/storytold/egui) and
 [storytold/craft-libs](https://github.com/storytold/craft-libs) (MIT OR Apache-2.0),
-[librqbit](https://github.com/ikatson/rqbit) (Apache-2.0) and
-[yt-dlp](https://github.com/yt-dlp/yt-dlp) (Unlicense, run as a separate program). Flags from
+[librqbit](https://github.com/ikatson/rqbit) (Apache-2.0),
+[zip](https://github.com/zip-rs/zip2) (MIT) and [sevenz-rust2](https://github.com/hasenbanck/sevenz-rust2)
+(Apache-2.0), and [yt-dlp](https://github.com/yt-dlp/yt-dlp) (Unlicense, run as a separate program). Flags from
 [flag-icons](https://github.com/lipis/flag-icons) (MIT); pictures drawn with
 [rough.js](https://roughjs.com/) (MIT) in [Patrick Hand](https://fonts.google.com/specimen/Patrick+Hand)
 (SIL OFL) and [Vega-Lite](https://vega.github.io/vega-lite/) (BSD-3). Bundled icons and artwork

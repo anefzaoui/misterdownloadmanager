@@ -661,7 +661,7 @@ impl TorrentDialog {
                     if ar.clicked() {
                         flip_open = Some(n);
                     }
-                    expander(clip, pos2(x + 4.0, top + 5.0), open[n]);
+                    winui::tree_expander(clip, pos2(x + 4.0, top + 5.0), open[n]);
                 }
                 let state = tri_state(node, chosen);
                 let glyph = pos2(x + 16.0, top + 2.0);
@@ -672,7 +672,7 @@ impl TorrentDialog {
                     toggle = Some(n);
                 }
                 if state == Tri::Some {
-                    mixed_mark(clip, glyph);
+                    winui::row_check_mixed(clip, glyph);
                 }
                 let size_w = winui::text_width(clip, &size);
                 // The file's type icon (a folder's for a folder), then its name.
@@ -1167,33 +1167,6 @@ fn visible_rows(tree: &[Node], open: &[bool]) -> Vec<usize> {
         }
     }
     out
-}
-
-/// A tree expander at English point `at`: ▸ when closed (pointing into the row: ◂ in RTL), ▾
-/// when open.
-fn expander(p: &egui::Painter, at: Pos2, open: bool) {
-    let c = winui::MUTED();
-    let pts = if open {
-        vec![at, pos2(at.x + 8.0, at.y), pos2(at.x + 4.0, at.y + 5.0)]
-    } else {
-        vec![
-            pos2(at.x + 2.0, at.y - 1.0),
-            pos2(at.x + 7.0, at.y + 3.5),
-            pos2(at.x + 2.0, at.y + 8.0),
-        ]
-    };
-    let pts = pts.into_iter().map(|q| pos2(winui::mx(q.x), q.y)).collect();
-    p.add(egui::Shape::convex_polygon(pts, c, Stroke::NONE));
-}
-
-/// The "some chosen" state over the row's check box: the shared partly-ticked box.
-fn mixed_mark(p: &egui::Painter, glyph: Pos2) {
-    // `glyph` is English, as the check box's.
-    winui::check_box_mixed(
-        p,
-        winui::rect(Rect::from_min_size(glyph, vec2(13.0, 13.0))),
-        winui::State::Normal,
-    );
 }
 
 #[cfg(test)]

@@ -134,6 +134,10 @@ enum Cmd {
     RefreshAddress,
     /// Right-click → Verify checksum… (beyond IDM).
     VerifyChecksum,
+    /// Right-click → Extract (beyond IDM, #37): a finished archive, into its folder.
+    Extract,
+    /// Tasks → Link grabber… (#37): the window, empty (links pasted in) or as it is.
+    LinkGrabber,
     /// Downloads → Find (Ctrl-F) / Find Next (F3).
     Find,
     FindNext,
@@ -319,8 +323,11 @@ pub struct App {
     drops: crate::droptarget::Drops,
     /// The queue selection panel after Download Later / a batch: the downloads waiting for it.
     queue_pick: Option<(Vec<u64>, dialogs::QueuePick)>,
-    /// Tasks → Import: the addresses found, to check before adding.
-    import: Option<crate::transfer::ImportDialog>,
+    /// Link grabber (#37): links from the browser, Tasks → Import, drops and pastes, in
+    /// packages to tick before adding.
+    grabber: Option<crate::grabber::Grabber>,
+    /// Archives extracted when their download completes (#37).
+    extracts: crate::extractq::Extracts,
     /// Add category / Properties from the Categories tree.
     category_dlg: Option<crate::categories::CategoryDialog>,
     /// The category dialog was opened by Download File Info's "+" (its result is picked there).
@@ -473,7 +480,7 @@ fn sent_referrer(url: &url::Url, referrer: &str) -> Option<String> {
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: win32 / unix `mark_downloaded`), as browsers mark theirs. Only http(s) addresses
 /// (an FTP address may carry its login).
-fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
+pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
     let web = matches!(url.scheme(), "http" | "https");
     let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
     mdm_engine::FileHook::new(move |path: &std::path::Path| {
@@ -738,7 +745,8 @@ impl App {
             options: None,
             category_dlg: None,
             category_for_file_info: false,
-            import: None,
+            grabber: None,
+            extracts: Default::default(),
             queue_pick: None,
             drop_target: None,
             drops: Default::default(),
@@ -1372,6 +1380,13 @@ impl App {
                     p.show_tab(tab);
                 }
             }
+            // Link grabber with a page's links, looked up (the docs' screenshots, #37).
+            "grabber" => {
+                self.show_import(Vec::new(), String::new());
+                if let Some(g) = &mut self.grabber {
+                    g.sample();
+                }
+            }
             "options" => {
                 let page = match tab {
                     "types" => 1,
@@ -1380,6 +1395,7 @@ impl App {
                     "connection" => 4,
                     "proxy" => 5,
                     "logins" => 6,
+                    "archives" => 7,
                     "sounds" => 8,
                     "regional" => 9,
                     _ => 0,
@@ -1713,6 +1729,7 @@ impl App {
     /// so Delete can be pressed again.
     fn remove_downloads(&mut self, ids: &[u64], files: bool) {
         let before = self.shown_ids();
+        self.extracts.forget(ids);
         for id in ids {
             self.remove_download(*id, files);
         }
@@ -2956,6 +2973,14 @@ impl App {
                     self.properties(id);
                 }
             }
+            Cmd::Extract => {
+                // Every chosen archive (a split one once, from whichever volume).
+                for id in self.targets(target) {
+                    if let Some(i) = self.items.iter().find(|i| i.id == id) {
+                        self.extracts.offer(i, &self.items, &self.settings, true);
+                    }
+                }
+            }
             Cmd::VerifyChecksum => {
                 if let Some(id) = target
                     && !self.checksums.iter().any(|c| c.id == id)
@@ -3122,6 +3147,10 @@ impl App {
             Cmd::ShowMain => self.show_window(ctx),
             Cmd::Export { ef2 } => self.export(ef2),
             Cmd::Import { ef2 } => self.import(ef2),
+            Cmd::LinkGrabber => {
+                self.show_import(Vec::new(), String::new());
+                dialogs::raise(ctx, dialogs::dialog_viewport("grabber"));
+            }
             Cmd::Redownload => {
                 if let Some(id) = target
                     && self.can_redownload(id)
@@ -3209,10 +3238,15 @@ impl App {
         }
         for id in &finished {
             self.failures.remove(id);
+            // Its archive, when it is to be extracted and its last volume is in (#37).
+            self.extracts.finished(*id, &self.items, &self.settings);
             // Finished files leave download queues (synchronization queues keep them).
             for q in self.queues.iter_mut().filter(|q| !q.sync) {
                 q.items.retain(|x| x != id);
             }
+        }
+        if self.extracts.poll(&mut self.items, ctx) {
+            self.dirty = true;
         }
         self.tick_queues();
         // A download started early behind Download File Info stays quiet until the dialog's
@@ -3331,6 +3365,8 @@ impl App {
                     true,
                     false,
                 ),
+                // i18n: Tasks menu: open Link grabber (links in packages, to tick before adding)
+                I("&Link grabber...", Cmd::LinkGrabber, true, false),
                 Sep,
                 I(
                     "Show &drop target",
@@ -3639,6 +3675,12 @@ impl App {
         let open = self.settings.double_click_open;
         let movable = it.is_some_and(|i| !live && (done || i.downloaded == 0));
         let redo = it.is_some_and(|i| self.can_redownload(i.id));
+        let extractable = chosen.iter().any(|i| {
+            i.status == Status::Complete
+                && i.torrent.is_none()
+                && i.video.is_none()
+                && crate::extractq::archive_name(&i.file_name)
+        });
         vec![
             // i18n: verb: opens the downloaded file
             I("Open", Cmd::Open, done, false),
@@ -3660,6 +3702,8 @@ impl App {
                 false,
             ),
             I("Verify checksum...", Cmd::VerifyChecksum, sel, false),
+            // i18n: verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+            I("Extract", Cmd::Extract, extractable, false),
             Sep,
             // i18n: verb: removes the download from the list
             I("Remove", Cmd::Remove, any_idle, false),
@@ -4844,51 +4888,119 @@ impl App {
         self.show_import(found, file);
     }
 
-    /// The checked addresses go to the list and the main queue, not started (IDM's import).
-    /// Addresses to check before adding (Import, dropped links): into the Import window open
-    /// already (several dropped lists, a list and links), else a new one; those in the list
-    /// already are marked and unticked (imported twice, they were doubled).
+    /// Links to tick before adding (the browser's page links, Import, dropped links): into Link
+    /// grabber open already (several dropped lists, a list and links), else a new one; those in
+    /// the list already go unticked under "Already in the list" (imported twice, they were
+    /// doubled).
     fn show_import(&mut self, found: Vec<crate::transfer::Imported>, source: String) {
         let known: std::collections::HashSet<String> =
             self.items.iter().map(|i| i.url.to_string()).collect();
-        let dialog = self
-            .import
-            .get_or_insert_with(crate::transfer::ImportDialog::default);
-        dialog.add(found, source, |u| {
-            url::Url::parse(u).is_ok_and(|u| known.contains(u.as_str()))
+        let (downloads, s) = (&self.downloads, &self.settings);
+        let grabber = self.grabber.get_or_insert_with(|| {
+            crate::grabber::Grabber::new(
+                downloads.clone(),
+                s.category_dirs.clone(),
+                s.grabber_hide_pages,
+                s.extract_delete,
+            )
         });
+        grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
-    fn add_imported(&mut self, found: Vec<crate::transfer::Imported>) {
-        for d in found {
-            let Ok(url) = url::Url::parse(&d.url) else {
-                continue;
+    /// Link grabber's ticked links: each package's to its folder, tagged with the package (its
+    /// archives are extracted when all are in), into the main queue; started too on Start (else
+    /// only queued, as IDM's import).
+    fn add_grabbed(&mut self, start: bool, packages: Vec<crate::grabber::Picked>) {
+        // Package numbers after those in the list.
+        let last = self
+            .items
+            .iter()
+            .filter_map(|i| i.package.as_ref().map(|p| p.id))
+            .max()
+            .unwrap_or(0);
+        let mut added = Vec::new();
+        for (id, pk) in (last + 1..).zip(packages) {
+            let tag = crate::model::PackageTag {
+                id,
+                name: pk.name.clone(),
+                extract: pk.extract,
+                delete_after: pk.delete,
+                password: pk.password.clone(),
             };
-            let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
-            let category = Category::of(&name);
-            let dir = self.settings.category_dir(category, &self.downloads);
-            let dest = mdm_engine::naming::destination(&dir, &name);
-            let context = ipc::Command {
-                referer: d.referer,
-                cookies: d.cookies,
-                user_agent: d.user_agent,
-                private: d.private,
-                ..Default::default()
-            };
-            let id = self.push_item(
-                url,
-                dest,
-                category,
-                String::new(),
-                None,
-                None,
-                context,
-                crate::i18n::mark("by import"),
-            );
-            self.name_guessed(id, true);
-            self.queues[0].items.push(id);
+            for (d, name, size) in pk.links {
+                let Ok(url) = url::Url::parse(&d.url) else {
+                    continue;
+                };
+                let category = Category::of(&name);
+                let dir = if pk.folder.as_os_str().is_empty() {
+                    self.settings.category_dir(category, &self.downloads)
+                } else {
+                    pk.folder.clone()
+                };
+                let dest = mdm_engine::naming::destination(&dir, &name);
+                let context = ipc::Command {
+                    referer: d.referer,
+                    cookies: d.cookies,
+                    user_agent: d.user_agent,
+                    private: d.private,
+                    ..Default::default()
+                };
+                let id = self.push_item(
+                    url,
+                    dest,
+                    category,
+                    String::new(),
+                    size,
+                    None,
+                    context,
+                    crate::i18n::mark("by Link grabber"),
+                );
+                if let Some(i) = self.items.iter_mut().find(|i| i.id == id) {
+                    i.package = Some(tag.clone());
+                }
+                // A name the server didn't give (none looked up) may still change.
+                if size.is_none() {
+                    self.name_guessed(id, true);
+                }
+                self.queues[0].items.push(id);
+                added.push(id);
+            }
         }
         self.dirty = true;
+        // Start runs the main queue (its files at once, as Options → Queue sets).
+        if start && !added.is_empty() {
+            self.start_queue(0);
+        }
+    }
+
+    /// Link grabber's look-ups (Options → Archives → "Check links"): the next links, each
+    /// with its own request (the page's referer and cookies), on the runtime.
+    fn grabber_checks(&mut self, ctx: &egui::Context) {
+        if !self.settings.grabber_check {
+            return;
+        }
+        let Some(g) = &self.grabber else { return };
+        for (i, url, d) in g.to_check() {
+            let context = ipc::Command {
+                referer: d.referer.clone(),
+                cookies: d.cookies.clone(),
+                user_agent: d.user_agent.clone(),
+                ..Default::default()
+            };
+            let parts = self.request_parts(&url, None, &context);
+            let slot: std::sync::Arc<std::sync::Mutex<Option<_>>> = Default::default();
+            let (out, ctx) = (slot.clone(), ctx.clone());
+            self.rt.spawn(async move {
+                let res = mdm_engine::probe(url, parts.headers, &parts.opts)
+                    .await
+                    .map_err(|e| crate::grabber::state_of(&e));
+                *out.lock().unwrap() = Some(res);
+                ctx.request_repaint();
+            });
+            if let Some(g) = &mut self.grabber {
+                g.checking(i, slot);
+            }
+        }
     }
 
     /// Can this download be fetched again from the start? A file download that isn't running
@@ -5167,14 +5279,22 @@ impl App {
                 }
             }
         }
-        if let Some(d) = &mut self.import {
+        self.grabber_checks(ctx);
+        if let Some(d) = &mut self.grabber {
             match d.show(ctx) {
                 Outcome::Open => {}
-                Outcome::Closed => self.import = None,
-                Outcome::Done(found) => {
-                    self.import = None;
-                    self.add_imported(found);
+                Outcome::Closed => self.grabber = None,
+                Outcome::Done((start, packages)) => {
+                    self.grabber = None;
+                    self.add_grabbed(start, packages);
                 }
+            }
+        }
+        if let Some(d) = &mut self.extracts.ask {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.extracts.answer(None),
+                Outcome::Done(pw) => self.extracts.answer(pw),
             }
         }
         if let Some(d) = &mut self.category_dlg {
@@ -5735,6 +5855,8 @@ impl App {
 
 impl Drop for App {
     fn drop(&mut self) {
+        // An archive being extracted stops; its staging folder goes with it.
+        self.extracts.stop();
         self.keep_unseen();
         // What the saver has in hand first, then the last state, written here and now.
         self.saver.flush();
