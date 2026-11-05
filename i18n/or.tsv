@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ଚୟନ କରାଯାଇଛି|{n} ଚୟନ କରାଯାଇଛି
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} ଭିଡିଓ|{title}: {count} ଭିଡିଓ
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {total} ଭିଡିଓ ମଧ୍ୟରୁ {listed} ତାଲିକାଭୁକ୍ତ|{title}: {total} ଭିଡିଓ ମଧ୍ୟରୁ {listed} ତାଲିକାଭୁକ୍ତ
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -121,6 +130,10 @@
 #. text in categories.rs
 #, machine
 	Add category	ବର୍ଗ ଯୋଡ଼ନ୍ତୁ
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	ଅନେକ ଡାଉନଲୋଡ୍ ଯୋଡ଼ନ୍ତୁ
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -151,6 +164,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	ଟରେଣ୍ଟ୍ ଯୋଡ଼ନ୍ତୁ
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	ତାଲିକାରେ {n} ଡାଉନଲୋଡ୍ ଯୋଡ଼ିବେ କି? ପ୍ରତ୍ୟେକ ଭିଡିଓର ନିଜସ୍ୱ ଧାଡ଼ି ରହିବ।
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -264,6 +282,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	କେବଳ ଅଡିଓ {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	କେବଳ ଅଡିଓ, ମୂଳ
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -281,6 +303,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ବ୍ୟାଚ୍ ଡାଉନଲୋଡ୍
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	ସର୍ବୋତ୍ତମ ଗୁଣବତ୍ତା
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -975,6 +1001,10 @@
 #, machine
 	from a page (yt-dlp)	ଏକ ପୃଷ୍ଠାରୁ (yt-dlp)
 #. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	ଏକ ପ୍ଲେଲିଷ୍ଟରୁ (yt-dlp)
+#. message or event log entry in the main window
 #, machine
 	from a torrent file	ଏକ ଟୋରେଣ୍ଟ୍ ଫାଇଲ୍ ରୁ
 #. text in the Batch download window
@@ -1236,10 +1266,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ବ୍ରାଉଜର୍‌ରୁ ଲିଙ୍କ୍‌ଗୁଡ଼ିକ
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	ବାକି ତାଲିକାଭୁକ୍ତ କରନ୍ତୁ
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	{n} ଭିଡିଓ ପରେ ତାଲିକାଭୁକ୍ତ କରିବା ବନ୍ଦ ହେଲା: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	ଭିଡିଓଗୁଡ଼ିକୁ ତାଲିକାଭୁକ୍ତ କରାଯାଉଛି: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	ଭିଡିଓଗୁଡ଼ିକୁ ତାଲିକାଭୁକ୍ତ କରାଯାଉଛି: {total} ରୁ {n}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	ଠିକଣା ତାଲିକା
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	ଅଧିକ ଲୋଡ୍ କରନ୍ତୁ
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1619,6 +1672,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	କେବଳ MP4 ଏବଂ MKV ଭିଡିଓଗୁଡ଼ିକ ଉପଶୀର୍ଷକ ଧାରଣ କରିପାରିବେ
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	କେବଳ ପ୍ରଥମ {n} ଭିଡିଓ ତାଲିକାଭୁକ୍ତ ହୋଇଛି।
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	କେବଳ ମୁଁ କମ୍ପ୍ୟୁଟର ବ୍ୟବହାର କରୁଥିବାବେଳେ
@@ -1765,6 +1823,7 @@
 	Put them into the video	ସେଗୁଡ଼ିକୁ ଭିଡିଓରେ ରଖନ୍ତୁ
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	ଗୁଣବତ୍ତା
 #. text in the Scheduler window
@@ -1923,7 +1982,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ଏକ ଫୋଲ୍ଡର୍‍ ବାଛନ୍ତୁ
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ସବୁ ଚୟନ କରନ୍ତୁ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1932,7 +1992,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ଏହି ପର୍ଯ୍ୟନ୍ତ ପ୍ରତ୍ୟେକ ଡାଉନଲୋଡ୍ ଚୟନ କରନ୍ତୁ
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	କିଛି ଚୟନ କରନ୍ତୁ ନାହିଁ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2194,6 +2255,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ଏହି ସମୟରେ ଡାଉନଲୋଡ୍ ବନ୍ଦ କରନ୍ତୁ
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	ତାଲିକାଭୁକ୍ତ କରିବା ବନ୍ଦ କରନ୍ତୁ
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ମୁଖ୍ୟ ଡାଉନଲୋଡ୍ କ୍ୟୁ ବନ୍ଦ କରନ୍ତୁ
@@ -2545,6 +2610,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ଏହା ସ୍ଥାପିତ କପି, ପୋର୍ଟେବଲ୍ ନୁହେଁ
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	ଏହି ତାଲିକାରେ କୌଣସି ଭିଡିଓ ନାହିଁ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2710,6 +2779,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	ଅଜ୍ଞାତ
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	{height}p ପର୍ଯ୍ୟନ୍ତ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2818,9 +2891,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	ଭିଡିଓ ପୃଷ୍ଠାଗୁଡ଼ିକ ଏହାକୁ ବର୍ତ୍ତମାନ ସୁଦ୍ଧା ବ୍ୟବହାର କରିପାରିବେ ନାହିଁ।
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	ଭିଡିଓଗୁଡ଼ିକ
 #. text in the Options window
 #, machine
 	Virus checking settings	ଭାଇରସ୍ ଯାଞ୍ଚ ସେଟିଙ୍ଗ୍‌ଗୁଡ଼ିକ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	ତାଲିକା ପାଇଁ ଅପେକ୍ଷା କରନ୍ତୁ, କିମ୍ବା ତାଲିକାଭୁକ୍ତ କରିବା ବନ୍ଦ କରନ୍ତୁ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3038,6 +3119,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ସ୍ୱୟଂଚାଳିତ)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{total} ରୁ {n} ଚୟନ କରାଯାଇଛି
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine

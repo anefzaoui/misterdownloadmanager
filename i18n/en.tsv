@@ -34,6 +34,13 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} video|{title}: {count} videos
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 	"{what}" isn't an IP address.	"{what}" isn't an IP address.
@@ -92,6 +99,9 @@
 	Add browser...	Add browser...
 #. text in categories.rs
 	Add category	Add category
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+	Add many downloads	Add many downloads
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 	Add Mister Download Manager to your browser	Add Mister Download Manager to your browser
@@ -113,6 +123,10 @@
 	Add to queue:	Add to queue:
 #. message or event log entry in the main window; window title in the Add torrent window
 	Add torrent	Add torrent
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+	Add {n} downloads to the list? Each video gets its own row.	Add {n} downloads to the list? Each video gets its own row.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 	Added {source}	Added {source}
@@ -196,6 +210,9 @@
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 	Audio only {type}	Audio only {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+	Audio only, original	Audio only, original
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 	Audio only, original {type}	Audio only, original {type}
@@ -208,6 +225,9 @@
 	Automatically start downloading the following file types:	Automatically start downloading the following file types:
 #. window title in the Batch download window
 	Batch download	Batch download
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+	Best quality	Best quality
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 	Block the addresses in this list (P2P or eMule format):	Block the addresses in this list (P2P or eMule format):
@@ -709,6 +729,9 @@
 #. message or event log entry in the main window
 	from a page (yt-dlp)	from a page (yt-dlp)
 #. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+	from a playlist (yt-dlp)	from a playlist (yt-dlp)
+#. message or event log entry in the main window
 	from a torrent file	from a torrent file
 #. text in the Batch download window
 #. why Batch download's OK is greyed
@@ -897,9 +920,27 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: a page in the browser
 	Links from the browser	Links from the browser
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+	List the rest	List the rest
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+	Listing stopped after {n} videos: {error}	Listing stopped after {n} videos: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+	Listing the videos: {n}	Listing the videos: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+	Listing the videos: {n} of {total}	Listing the videos: {n} of {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 	Lists of addresses	Lists of addresses
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+	Load more	Load more
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1169,6 +1210,10 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 	Only MP4 and MKV videos can hold subtitles	Only MP4 and MKV videos can hold subtitles
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+	Only the first {n} videos are listed.	Only the first {n} videos are listed.
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
 #. button in a dialog box; text in a dialog box; button in a download's Properties window
@@ -1275,6 +1320,7 @@
 	Put them into the video	Put them into the video
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 	Quality	Quality
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
@@ -1391,13 +1437,15 @@
 #. text in a dialog box
 #. title of the folder picker
 	Select a folder	Select a folder
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 	Select all	Select all
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Select all downloads	Select all downloads
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Select every download up to this one	Select every download up to this one
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 	Select none	Select none
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Select or unselect one more download	Select or unselect one more download
@@ -1585,6 +1633,9 @@
 	Stop	Stop
 #. text in the Scheduler window; checkbox in the Scheduler window
 	Stop download at	Stop download at
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+	Stop listing	Stop listing
 #. text in the tray icon's menu
 	Stop main download queue	Stop main download queue
 #. text in the Add torrent window
@@ -1839,6 +1890,9 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+	This list has no videos	This list has no videos
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg
@@ -1959,6 +2013,9 @@
 #. text in a dialog box; text in a download's progress window
 #. the reason a download failed is not known
 	unknown	unknown
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+	Up to {height}p	Up to {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 	Update now	Update now
@@ -2036,8 +2093,14 @@
 #. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 	Video pages can't use it yet.	Video pages can't use it yet.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+	Videos	Videos
 #. text in the Options window
 	Virus checking settings	Virus checking settings
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+	Wait for the list, or stop listing	Wait for the list, or stop listing
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2200,6 +2263,10 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 	{n} (auto)	{n} (auto)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+	{n} of {total} chosen	{n} of {total} chosen
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 	{n} of {total} selected	{n} of {total} selected

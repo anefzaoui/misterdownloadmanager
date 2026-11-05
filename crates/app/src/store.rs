@@ -97,12 +97,14 @@ fn load_from(p: &Path, empty: Loaded) -> Loaded {
                     i.status = Status::Stopped;
                 }
                 // Live progress isn't written to this file; the engine's resume state is the
-                // record of what is on disk.
-                if i.status != Status::Complete {
+                // record of what is on disk. A video's download is yt-dlp's, which keeps no such
+                // state: not looked for (a playlist's thousands cost a second at start, #69).
+                if i.status != Status::Complete && i.video.is_none() {
                     // Started under the former codename: rename its files so it resumes.
                     mdm_engine::state::migrate_legacy(&i.dest);
                 }
                 if i.status != Status::Complete
+                    && i.video.is_none()
                     && let Ok(st) = ResumeState::load(&state_path(&i.dest))
                 {
                     i.downloaded = st.downloaded();
@@ -389,6 +391,54 @@ mod tests {
             .flatten()
             .any(|e| e.file_name().to_string_lossy().contains(".corrupt-"));
         assert!(kept, "damaged file kept aside");
+    }
+
+    /// #69: a playlist of thousands, one download each: the list is encoded (on the window's
+    /// thread, at most once a second) and read back quickly. Measured, printed with
+    /// `--nocapture`; the bound is loose for debug builds.
+    #[test]
+    fn a_list_of_thousands_saves_and_loads_quickly() {
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("downloads.json");
+        let layout = crate::list::ListState::default().layout();
+        let items: Vec<Item> = (1..=6000u64)
+            .map(|id| {
+                let url =
+                    url::Url::parse(&format!("https://www.youtube.com/watch?v=v{id:010}")).unwrap();
+                let dest = dir
+                    .path()
+                    .join("A long playlist")
+                    .join(format!("Video number {id} of a long playlist.mp4"));
+                let mut i = Item::new(id, url, dest, crate::model::Category::Video);
+                i.note("Added from a playlist (yt-dlp)");
+                i.video = Some(crate::model::VideoSpec {
+                    selector: "bv*[height<=1080]+ba/b[height<=1080]".into(),
+                    subs: Default::default(),
+                });
+                i
+            })
+            .collect();
+        let t = std::time::Instant::now();
+        let json = encode(&p, 6001, &items, &layout, &Settings::default(), &[]).unwrap();
+        let encoded = t.elapsed();
+        write(&p, &json).unwrap();
+        let written = t.elapsed() - encoded;
+        let t = std::time::Instant::now();
+        assert!(parse_bytes(&json).is_some());
+        let parsed = t.elapsed();
+        let t = std::time::Instant::now();
+        let _ = std::fs::read(&p).unwrap();
+        let first_read = t.elapsed();
+        let t = std::time::Instant::now();
+        let back = load_from(&p, empty());
+        let loaded = t.elapsed();
+        println!("first read of the new file (an antivirus may scan it): {first_read:?}");
+        assert_eq!(back.items.len(), 6000);
+        println!(
+            "6000 downloads: {} KB, encoded in {encoded:?}, written in {written:?}; parsed in {parsed:?}, loaded (parse and checks) in {loaded:?}",
+            json.len() / 1024
+        );
+        assert!(encoded < Duration::from_secs(3), "{encoded:?}");
     }
 
     fn save_n(p: &Path, n: u64) {

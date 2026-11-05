@@ -48,6 +48,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   list does too). With
   **Options → General → Minimize to the notification area** (on by default), Minimize hides the
   main window and progress windows there as well. Only where a tray shows MDM's icon.
+- **Playlists and channels** ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69)):
+  Download video from a page lists a playlist's or a channel's videos, with their lengths, all
+  ticked, with Select all and Select none. One quality applies to all of them (the best, up to a
+  height, the original sound, MP3, Opus or FLAC). Each video gets its own download, in a folder named after
+  the list, and Download Now starts the main queue, which runs as many at once as its settings
+  say. A playlist is listed as its videos come in; the listing can be stopped and taken up again
+  (List the rest), and one the site breaks off says after how many videos and why. A channel is
+  listed 50 videos at a time, with Load more. Lists of thousands stay quick, and adding more than
+  500 downloads asks first. On the command line: `playlist-info` and `playlist-get`.
 - **Choose the DNS** ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36)):
   Options → Connection → DNS picks who turns names into addresses for downloads, FTP, MDM's own
   downloads and the update check. The system's (the default), Cloudflare, Google, Quad9, AdGuard,
