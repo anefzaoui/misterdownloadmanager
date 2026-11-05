@@ -7065,7 +7065,7 @@ fn sharing_stopped_note(why: crate::torrents::Reached) -> String {
         crate::torrents::Reached::Ratio(r) => crate::i18n::fmt(
             // i18n: event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
             crate::i18n::t("Sharing stopped: the share ratio reached {ratio}"),
-            &[("ratio", &format!("{r:.2}"))],
+            &[("ratio", &crate::i18n::decimal(r, 2))],
         ),
         crate::torrents::Reached::Time(s) => crate::i18n::fmt(
             // i18n: event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
