@@ -403,6 +403,12 @@ a free download manager. [Star it on GitHub](https://github.com/anefzaoui/mister
   </picture>
 </a>
 
+## Support MDM
+
+MDM is free and always will be. If it saves you time, you can support its creator on
+[GitHub Sponsors](https://github.com/sponsors/anefzaoui). It's optional: nothing in the app
+changes or unlocks, and there is no paid edition.
+
 ## Licence and credits
 
 Copyright (c) 2026 Ahmed Nefzaoui. Mister Download Manager is free software under the
