@@ -34,7 +34,7 @@ $srv = Start-Process -PassThru -WindowStyle Hidden "$root\target\release\labserv
 $env:MDM_DATA_DIR = "$work\data"
 try {
   Start-Sleep -Milliseconds 800
-  Start-Process $exe
+  $app = Start-Process -PassThru $exe
   Start-Sleep 3
   & "$PSScriptRoot\to-vscode-monitor.ps1" -Title "Mister Download Manager" -DX 185 -DY 570 -Width 929 -Height 465 | Out-Null
   $files = @(
@@ -55,7 +55,7 @@ try {
   # The progress dialog of the ISO: double-click its row (last row).
   & "$PSScriptRoot\probe-own.ps1" -X 300 -Y 259 -Double -NoEscape
   Start-Sleep 2
-  & "$PSScriptRoot\capwin.ps1" -Title "*ubuntu-26.04*" -Out "$root\$OutDir\progress-dark.png"
+  & "$PSScriptRoot\capwin.ps1" -Pid $app.Id -Title "*ubuntu-26.04*" -Out "$root\$OutDir\progress-dark.png"
   Close-Titled "*ubuntu-26.04*"
   # Light mode: View → Dark Mode support.
   & "$PSScriptRoot\probe-own.ps1" -X 190 -Y 40 -HoverX 210 -HoverY 174 -HoverClick -NoEscape
@@ -63,7 +63,7 @@ try {
   & "$PSScriptRoot\cap-own.ps1" -Out "$root\$OutDir\main-light.png"
   & "$PSScriptRoot\probe-own.ps1" -X 300 -Y 259 -Double -NoEscape
   Start-Sleep 2
-  & "$PSScriptRoot\capwin.ps1" -Title "*ubuntu-26.04*" -Out "$root\$OutDir\progress-light.png"
+  & "$PSScriptRoot\capwin.ps1" -Pid $app.Id -Title "*ubuntu-26.04*" -Out "$root\$OutDir\progress-light.png"
 } finally {
   Get-Process misterdownloadmanager -ErrorAction SilentlyContinue | Stop-Process
   Stop-Process $srv.Id -ErrorAction SilentlyContinue
