@@ -219,13 +219,26 @@ impl Icon {
         }
     }
 
-    /// The SVG for this icon, enabled (gradient) or disabled (flat grey, as IDM).
-    fn svg(self, enabled: bool) -> String {
-        let (a, b) = if enabled {
-            self.gradient()
-        } else {
-            ("#9f9f9f", "#9a9a9a")
-        };
+    /// The ink's two stops, top-left to bottom-right: enabled, its gradient, one colour or
+    /// the accent as the theme's icon style says; disabled, the theme's flat grey (as IDM).
+    fn stops(self, enabled: bool) -> (String, String) {
+        use crate::palette::{IconStyle, to_hex};
+        let c = crate::theme::colors();
+        if !enabled {
+            return (to_hex(c.icon_disabled), to_hex(c.icon_disabled_end));
+        }
+        match crate::theme::current().icons {
+            IconStyle::Color => {
+                let (a, b) = self.gradient();
+                (a.to_owned(), b.to_owned())
+            }
+            IconStyle::Mono => (to_hex(c.text), to_hex(c.text)),
+            IconStyle::Accent => (to_hex(c.accent), to_hex(c.accent)),
+        }
+    }
+
+    /// The SVG for this icon, inked from `a` to `b`.
+    fn svg(self, a: &str, b: &str) -> String {
         format!(
             r#"<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#g)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="2" y1="2" x2="22" y2="22"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient></defs>{}</svg>"#,
             self.body()
@@ -238,14 +251,18 @@ impl Icon {
 
     /// The icon as an image source (fileicons.rs shows Add Torrent's magnet for a .torrent).
     pub fn source(self, enabled: bool) -> ImageSource<'static> {
+        let (a, b) = self.stops(enabled);
+        // Keyed by its ink too: another theme's icon is another texture.
         let uri = format!(
-            "bytes://mdm/toolbar/{}-{}.svg",
+            "bytes://mdm/toolbar/{}-{}-{}{}.svg",
             self.name(),
-            if enabled { "on" } else { "off" }
+            if enabled { "on" } else { "off" },
+            a.trim_start_matches('#'),
+            b.trim_start_matches('#'),
         );
         ImageSource::Bytes {
             uri: uri.into(),
-            bytes: self.svg(enabled).into_bytes().into(),
+            bytes: self.svg(&a, &b).into_bytes().into(),
         }
     }
 }

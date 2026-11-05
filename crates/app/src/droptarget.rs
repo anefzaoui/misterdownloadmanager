@@ -116,15 +116,12 @@ impl DropTarget {
             let (fill, edge) = if over {
                 (
                     // Something dragged over it: the shared highlight and accent, in the mode.
-                    crate::winui::highlight_fill(crate::winui::State::Hot, crate::theme::dark())
+                    crate::winui::highlight_fill(crate::winui::State::Hot, crate::theme::colors())
                         .unwrap_or(crate::winui::BG()),
                     crate::winui::accent(),
                 )
             } else {
-                (
-                    crate::winui::BG(),
-                    egui::Color32::from_rgb(0x8d, 0x8d, 0x8d),
-                )
+                (crate::winui::BG(), crate::theme::colors().drop_edge)
             };
             p.rect_filled(rect, 0.0, fill);
             p.rect_stroke(

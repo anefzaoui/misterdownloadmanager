@@ -227,7 +227,7 @@ fn dialog_window<T>(
         let framed = key.with("framed");
         let scale = ctx.input_for(ViewportId::from_hash_of(id), |i| i.pixels_per_point);
         if ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(client)
-            && crate::win32::dialog_frame(title, client, !crate::theme::dark(), scale)
+            && crate::win32::dialog_frame(title, client, !crate::theme::dark_surface(), scale)
         {
             ctx.data_mut(|d| d.insert_temp(framed, client));
         }
@@ -237,8 +237,8 @@ fn dialog_window<T>(
         ViewportId::from_hash_of(id),
         key,
         title,
-        // Every dialog follows the mode (the light dialogs too).
-        crate::theme::dark(),
+        // Every dialog follows the mode (the light dialogs too), its caption the theme's surface.
+        crate::theme::dark_surface(),
         matches!(out, Outcome::Open),
     );
     // A question takes the focus once it is shown (not while hidden for its theme).

@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Themes, the groundwork: every colour and size the controls are drawn with comes from one
+  theme, and theme files can change them; the classic look is unchanged
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Less memory in the notification area after Minimize too, and again 2 minutes after hiding
   ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
@@ -165,7 +168,9 @@ Everything below ships together, in one release.
 
 - 📋 Direct3D as the default on Windows, once the comparison with OpenGL is in
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
-- 📋 Themes: colours, accent, pywal and Base16, with the layout kept
-  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- 🔄 Themes: colours, sizes and icons, pywal and Base16, with the layout kept
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): every colour and size
+  now comes from the theme (the classic look unchanged); next, a picker with more built-in
+  themes, then pywal and Base16, then a help page for making your own
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))

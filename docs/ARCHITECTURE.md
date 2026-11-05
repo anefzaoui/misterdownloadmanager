@@ -62,7 +62,14 @@ toolbar, key and IPC commands into actions. Each dialog is its own module and re
 `Outcome` (open, closed, done with a value). Windows-only calls are confined to `win32.rs` and
 their Linux and macOS counterparts to `unix.rs` (starting with the session, the browsers' host,
 sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system:
-Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). So do the icons
+Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`).
+
+Every colour and size a control is drawn with comes from the active theme (#45): `palette.rs`
+declares its roles (`"button.hot"`, `"list.row"`…) with the classic look's values, the shared
+painters (`winui.rs`, `chrome.rs`, `list.rs`, `scrollbar.rs`) read them through
+`theme::colors()` and `theme::metrics()` and decide each control's states from them, and
+`themefile.rs` reads theme files (TOML or JSON in the data folder's `themes`) that change any of
+them. Where a window puts its controls stays its layout. So do the icons
 before file names (`fileicons.rs`): the Windows shell's system image lists, macOS Finder's
 (NSWorkspace), the Linux desktop's icon theme (`xdgicons.rs`, shared-mime-info and the Icon
 Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's

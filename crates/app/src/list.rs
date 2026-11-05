@@ -12,31 +12,35 @@ use crate::theme::themed;
 // first column at the right in a right-to-left interface).
 use crate::winui::{self, fill_l as fill, text_font};
 
-pub const HEADER_H: f32 = 24.0;
-pub const ROW_H: f32 = 17.0;
-
-const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
-    Color32::from_rgb(r, g, b)
+/// The column headers' height (the theme's size; 24 in the classic look).
+pub fn header_h() -> f32 {
+    crate::theme::metrics().list_header
 }
+/// A row's height (the theme's size; 17 in the classic look).
+pub fn row_h() -> f32 {
+    crate::theme::metrics().list_row
+}
+
+// The active theme's colours (crate::palette, #45).
 themed! {
     /// The list's border (it was #828790 in dark too): the lists' and tables' one edge.
-    FRAME = rgb(0x5a, 0x5a, 0x5a), rgb(0x82, 0x87, 0x90);
+    FRAME => list_frame;
     /// Inner ring and row background.
-    BG = rgb(0x39, 0x39, 0x39), rgb(0xff, 0xff, 0xff);
-    HEADER_BG = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff); // = winui::LIST_HEADER
-    HEADER_SEP = rgb(0x63, 0x63, 0x63), rgb(0xe5, 0xe5, 0xe5);
+    BG => list;
+    HEADER_BG => header;
+    HEADER_SEP => header_sep;
     /// Sort indicator (an addition: IDM's header shows none).
-    SORTED_BG = rgb(0x26, 0x26, 0x26), rgb(0xf0, 0xf0, 0xf0);
-    SORT_ARROW = rgb(0xc8, 0xc8, 0xc8), rgb(0x60, 0x60, 0x60);
+    SORTED_BG => sorted;
+    SORT_ARROW => sort_arrow;
     /// Light: the one grid colour, 1 px lines (light-main.md).
-    GRID_H = rgb(0x55, 0x55, 0x55), rgb(0xf0, 0xf0, 0xf0);
-    GRID_V_RIGHT = rgb(0x55, 0x55, 0x55), rgb(0xf0, 0xf0, 0xf0);
+    GRID_H => list_grid;
+    GRID_V_RIGHT => list_grid;
     /// Selected row (list focused): Windows' accent, as every list's (one blue across MDM), with
     /// white text and a dotted focus outline in its inverse, #ff9933.
-    SELECTED = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
-    TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
+    SELECTED => selection;
+    TEXT => text;
     /// A filtered column's funnel.
-    FILTER_ON = rgb(0x60, 0xcd, 0xff), rgb(0x00, 0x78, 0xd4);
+    FILTER_ON => accent;
 }
 
 /// Columns, by their fixed data slot in [`Row::cells`]: IDM's eight, then the user's additions:
@@ -73,9 +77,6 @@ pub const DEFAULT_WIDTHS: [f32; COLS] = [
 /// Default display order: Source first, then IDM's, with Added after Last Try Date.
 const DEFAULT_ORDER: [usize; COLS] = [SOURCE, 0, 1, 2, 3, 4, 5, 6, ADDED, 7];
 
-/// The chips' colours (white text on both).
-const WEB_CHIP: Color32 = rgb(0x2e, 0x9d, 0x52);
-const TORRENT_CHIP: Color32 = rgb(0x7e, 0x4f, 0xd0);
 const MIN_WIDTH: f32 = 16.0;
 /// How far from a separator a press grabs it for resizing.
 const GRIP: f32 = 4.0;
@@ -336,9 +337,9 @@ fn keyboard(
     if !st.focused {
         return false;
     }
-    let page = ((client_h - ROW_H) / ROW_H).floor().max(1.0) as isize;
+    let page = ((client_h - row_h()) / row_h()).floor().max(1.0) as isize;
     // The first row in view (the list scrolls by whole rows).
-    let top = (st.scroll / ROW_H).round() as isize;
+    let top = (st.scroll / row_h()).round() as isize;
     let last = n as isize - 1;
     let cur = focus.map(|s| s as isize);
     let (to, mods) = ui.input(|i| {
@@ -480,14 +481,14 @@ pub fn show(
     // content overflows the room the other one leaves.
     let content_w: f32 = st.shown().iter().map(|c| st.widths[*c]).sum();
     let (client_w, client_h) = (cr - cl + 1.0, cb - ct + 1.0);
-    let rows_h = rows.len() as f32 * ROW_H;
+    let rows_h = rows.len() as f32 * row_h();
     let menu_key = keyboard(ui, st, rows, focus, client_h, &mut out);
     let (mut need_v, mut need_h) = (false, false);
     for _ in 0..2 {
         // An empty list has nothing to scroll to (its empty state is centred in the view).
         need_h =
             !rows.is_empty() && content_w > client_w - if need_v { scrollbar::THICK } else { 0.0 };
-        need_v = rows_h > client_h - HEADER_H - if need_h { scrollbar::THICK } else { 0.0 };
+        need_v = rows_h > client_h - header_h() - if need_h { scrollbar::THICK } else { 0.0 };
     }
     // Inclusive right edge of the header and rows, and bottom of the rows.
     let rr = cr - if need_v { scrollbar::THICK } else { 0.0 };
@@ -507,7 +508,7 @@ pub fn show(
     };
 
     // ---- header interaction ----------------------------------------------------------------
-    let header = Rect::from_min_max(pos2(cl, ct), pos2(rr + 1.0, ct + HEADER_H));
+    let header = Rect::from_min_max(pos2(cl, ct), pos2(rr + 1.0, ct + header_h()));
     let hresp = ui.interact(
         screen(header),
         egui::Id::unique("list-header"),
@@ -593,7 +594,10 @@ pub fn show(
     if let Some((col, at, _)) = funnel_click {
         st.filter_open = match st.filter_open {
             Some((c, _)) if c == col => None,
-            _ => Some((col, pos2(at.x.min(outer.right() - FILTER_W), ct + HEADER_H))),
+            _ => Some((
+                col,
+                pos2(at.x.min(outer.right() - FILTER_W), ct + header_h()),
+            )),
         };
         st.filter_hscroll = st.hscroll;
     }
@@ -619,7 +623,7 @@ pub fn show(
     let cols = spans(st);
     let p_all = p.clone();
     let p = p.with_clip_rect(screen(header));
-    fill(&p, cl, ct, rr, ct + HEADER_H - 1.0, HEADER_BG());
+    fill(&p, cl, ct, rr, ct + header_h() - 1.0, HEADER_BG());
     for (c, x0, x1) in &cols {
         let hovered = hresp
             .hover_pos()
@@ -632,7 +636,7 @@ pub fn show(
             (true, false) => winui::State::Hot,
             (true, true) => winui::State::Pressed,
         };
-        let tint = winui::subtle_fill(state, crate::theme::dark());
+        let tint = winui::subtle_fill(state, crate::theme::colors());
         // The sorted column: highlighted header and a chevron at its right edge (▲ ascending,
         // ▼ descending).
         if let Some((sc, asc)) = st.sort
@@ -643,21 +647,21 @@ pub fn show(
                 *x0,
                 ct,
                 x1 - 1.0,
-                ct + HEADER_H - 1.0,
+                ct + header_h() - 1.0,
                 tint.unwrap_or(SORTED_BG()),
             );
             // At the cell's right edge, vertically centred in the header.
             let cx = x1 - 9.0;
-            let mid = ct + (HEADER_H / 2.0).floor() - 2.0;
+            let mid = ct + (header_h() / 2.0).floor() - 2.0;
             for i in 0..4 {
                 let y = mid + if asc { i as f32 } else { 3.0 - i as f32 };
                 let half = i as f32;
                 fill(&p, cx - half, y, cx + half, y, SORT_ARROW());
             }
         } else if let Some(t) = tint {
-            fill(&p, *x0, ct, x1 - 1.0, ct + HEADER_H - 1.0, t);
+            fill(&p, *x0, ct, x1 - 1.0, ct + header_h() - 1.0, t);
         }
-        fill(&p, *x1, ct, *x1, ct + HEADER_H - 1.0, HEADER_SEP());
+        fill(&p, *x1, ct, *x1, ct + header_h() - 1.0, HEADER_SEP());
         let mut arrow_room = if st.sort.is_some_and(|(sc, _)| sc == *c) {
             14.0
         } else {
@@ -679,7 +683,7 @@ pub fn show(
                 SORT_ARROW().gamma_multiply(0.45)
             };
             if !roomy {
-                p.rect_filled(screen(fr), 2.0, HEADER_BG());
+                p.rect_filled(screen(fr), crate::theme::metrics().part_radius, HEADER_BG());
             }
             funnel(&p, fr, color);
             if roomy {
@@ -700,13 +704,16 @@ pub fn show(
                 hresp.clone().on_hover_text_at_pointer(tip);
             }
         }
-        let clip = p.with_clip_rect(screen(Rect::from_x_y_ranges(*x0..=*x1, ct..=ct + HEADER_H)));
+        let clip = p.with_clip_rect(screen(Rect::from_x_y_ranges(
+            *x0..=*x1,
+            ct..=ct + header_h(),
+        )));
         text_font(&clip, font.clone(), x0 + 6.0, ct + 15.0, &label, TEXT());
     }
 
     // ---- body ------------------------------------------------------------------------------
     let p = p_all;
-    let body_top = ct + HEADER_H;
+    let body_top = ct + header_h();
     let body = Rect::from_min_max(pos2(cl, body_top), pos2(rr + 1.0, rb + 1.0));
     out.body = Some(body);
     let resp = ui.interact(
@@ -730,39 +737,39 @@ pub fn show(
     }
     let bp = p.with_clip_rect(screen(body));
     // Fully visible rows; the list scrolls by whole rows until the last one is fully shown.
-    let page_rows = (body.height() / ROW_H).floor().max(1.0);
-    let max_scroll = (rows.len() as f32 - page_rows).max(0.0) * ROW_H;
+    let page_rows = (body.height() / row_h()).floor().max(1.0);
+    let max_scroll = (rows.len() as f32 - page_rows).max(0.0) * row_h();
     if resp.hovered() {
-        st.scroll += winui::wheel_rows(ui, ROW_H, page_rows) * ROW_H;
+        st.scroll += winui::wheel_rows(ui, row_h(), page_rows) * row_h();
         st.hscroll -= ui.input(|i| i.smooth_scroll_delta.x);
     }
     if let Some(row) = st.scroll_to.take() {
-        let top = row as f32 * ROW_H;
+        let top = row as f32 * row_h();
         if top < st.scroll {
             st.scroll = top;
-        } else if top + ROW_H > st.scroll + page_rows * ROW_H {
-            st.scroll = top + ROW_H - page_rows * ROW_H;
+        } else if top + row_h() > st.scroll + page_rows * row_h() {
+            st.scroll = top + row_h() - page_rows * row_h();
         }
     }
     st.scroll = st.scroll.clamp(0.0, max_scroll);
     st.hscroll = st.hscroll.clamp(0.0, (content_w - row_w).max(0.0)).round();
-    let shown_scroll = (st.scroll / ROW_H).round() * ROW_H;
-    let first = (shown_scroll / ROW_H).floor() as usize;
+    let shown_scroll = (st.scroll / row_h()).round() * row_h();
+    let first = (shown_scroll / row_h()).floor() as usize;
     let offset = 0.0;
-    let visible = (body.height() / ROW_H).ceil() as usize + 1;
+    let visible = (body.height() / row_h()).ceil() as usize + 1;
     let last_right = cols.last().map_or(cl, |s| s.2);
     let mut cut_under_pointer = None;
     let keys_in_use = winui::keyboard_in_use(ui.ctx());
     for k in 0..visible {
         let idx = first + k;
-        let top = body_top + k as f32 * ROW_H - offset;
+        let top = body_top + k as f32 * row_h() - offset;
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
             // A screen reader's row: the name, then Status and Size, selected or not.
             let ppp = ui.ctx().pixels_per_point();
             let bounds = screen(Rect::from_min_size(
                 pos2(cl, top),
-                egui::vec2(rr - cl, ROW_H),
+                egui::vec2(rr - cl, row_h()),
             ));
             let spoken = [0usize, 3, 2]
                 .iter()
@@ -789,18 +796,22 @@ pub fn show(
             if sel || has_focus {
                 // The row above its grid line; the focused row has a dotted outline (every other
                 // pixel), in the fill's inverse on a selected row. Both modes alike.
-                let (right, bottom) = (last_right - 1.0, top + ROW_H - 2.0);
+                let (right, bottom) = (last_right - 1.0, top + row_h() - 2.0);
                 if sel {
                     fill(&bp, cl, top, right, bottom, SELECTED());
                 }
                 if has_focus {
-                    let dot = if sel { rgb(0xff, 0x99, 0x33) } else { TEXT() };
+                    let dot = if sel {
+                        crate::theme::colors().selection_focus
+                    } else {
+                        TEXT()
+                    };
                     dotted(&bp, cl, top, right, bottom, dot);
                 }
             } else if picked {
                 // Unfocused (Find, Properties, a menu has the keys): still shown, in the inactive
                 // selection grey, as Explorer shows it, so what a command acts on stays visible.
-                let bottom = top + ROW_H - 2.0;
+                let bottom = top + row_h() - 2.0;
                 fill(
                     &bp,
                     cl,
@@ -826,7 +837,7 @@ pub fn show(
                         pos2(x0 + 2.0, top),
                     );
                 }
-                let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + ROW_H));
+                let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + row_h()));
                 if *c == SOURCE {
                     let cut = chip(
                         &bp.with_clip_rect(screen(cell.intersect(body))),
@@ -868,7 +879,7 @@ pub fn show(
                 // A failed download's Status and Description (the reason) in the error colour.
                 let failed = row.status_group == "Error" && (*c == 3 || *c == 7);
                 let ink = if sel {
-                    Color32::WHITE
+                    winui::SELECTION_TEXT()
                 } else if failed {
                     winui::ERROR()
                 } else {
@@ -879,7 +890,7 @@ pub fn show(
         }
         // The grid line is the item's own last row (top + 16), so icons are not clipped; in
         // both modes (dark changes only colours).
-        let gy = top + ROW_H - 1.0;
+        let gy = top + row_h() - 1.0;
         // An empty list has no grid (the empty state stands alone).
         if !rows.is_empty() {
             fill(&bp, cl, gy, rr, gy, GRID_H());
@@ -899,16 +910,12 @@ pub fn show(
     // 2 px mark shows where it will land.
     if let (Some(HeaderDrag::Move { col, grab }), Some(pp)) = (st.drag, pointer) {
         let w = st.widths[col];
-        let ghost = Rect::from_min_size(pos2(pp.x - grab, ct), egui::vec2(w, HEADER_H));
+        let ghost = Rect::from_min_size(pos2(pp.x - grab, ct), egui::vec2(w, header_h()));
         let top = ui.ctx().layer_painter(egui::LayerId::new(
             egui::Order::Tooltip,
             egui::Id::unique("col-ghost"),
         ));
-        top.rect_filled(
-            screen(ghost),
-            0.0,
-            Color32::from_rgba_unmultiplied(0x60, 0x60, 0x60, 160),
-        );
+        top.rect_filled(screen(ghost), 0.0, crate::theme::colors().drag_ghost);
         text_font(
             &top,
             font.clone(),
@@ -923,7 +930,7 @@ pub fn show(
             mark - 1.0,
             ct,
             mark,
-            ct + HEADER_H - 1.0,
+            ct + header_h() - 1.0,
             winui::accent(),
         );
     }
@@ -936,7 +943,7 @@ pub fn show(
             pos2(rr + 1.0, ct),
             pos2(cr + 1.0, rb + 1.0),
         ));
-        let mut pos_rows = shown_scroll / ROW_H;
+        let mut pos_rows = shown_scroll / row_h();
         if scrollbar::bar(
             ui,
             egui::Id::unique("list-vbar"),
@@ -947,7 +954,7 @@ pub fn show(
             1.0,
             &mut pos_rows,
         ) {
-            st.scroll = pos_rows.round() * ROW_H;
+            st.scroll = pos_rows.round() * row_h();
             ui.ctx().request_repaint();
         }
     }
@@ -981,7 +988,7 @@ pub fn show(
         if !body.contains(pos) || pos.x > last_right {
             return None;
         }
-        let idx = ((pos.y - body_top + shown_scroll) / ROW_H).floor() as usize;
+        let idx = ((pos.y - body_top + shown_scroll) / row_h()).floor() as usize;
         (idx < rows.len()).then_some(idx)
     };
     let mods = ui.input(|i| i.modifiers);
@@ -1021,7 +1028,7 @@ pub fn show(
         let at = focus.map_or(body.left_top() + egui::vec2(20.0, 4.0), |f| {
             pos2(
                 cl + 20.0,
-                (body_top + (f as f32 + 1.0) * ROW_H - shown_scroll)
+                (body_top + (f as f32 + 1.0) * row_h() - shown_scroll)
                     .clamp(body.top(), body.bottom()),
             )
         });
@@ -1045,7 +1052,7 @@ pub fn show(
     if let Some((start, add)) = st.marquee {
         if let Some(pp) = pointer {
             let dt = ui.input(|i| i.stable_dt).min(0.1);
-            let step = 30.0 * ROW_H * dt;
+            let step = 30.0 * row_h() * dt;
             if pp.y < body.top() {
                 st.scroll = (st.scroll - step).max(0.0);
                 ui.ctx().request_repaint();
@@ -1058,8 +1065,8 @@ pub fn show(
             let (x0, x1) = (start.x.min(now.x), start.x.max(now.x));
             let touches_columns = x0 <= last_right + st.hscroll && x1 >= cl + st.hscroll;
             let picked: Vec<usize> = if touches_columns {
-                let first = (y0.max(0.0) / ROW_H).floor() as usize;
-                let last = (y1.max(0.0) / ROW_H).floor() as usize;
+                let first = (y0.max(0.0) / row_h()).floor() as usize;
+                let last = (y1.max(0.0) / row_h()).floor() as usize;
                 (first..=last.min(rows.len().saturating_sub(1)))
                     .filter(|i| *i < rows.len())
                     .collect()
@@ -1073,15 +1080,11 @@ pub fn show(
             );
             let bp = p.with_clip_rect(winui::rect(body));
             let screen = winui::rect(screen);
-            bp.rect_filled(
-                screen,
-                0.0,
-                Color32::from_rgba_unmultiplied(0x33, 0x99, 0xff, 0x40),
-            );
+            bp.rect_filled(screen, 0.0, crate::theme::colors().marquee);
             bp.rect_stroke(
                 screen,
                 0.0,
-                egui::Stroke::new(1.0, rgb(0x33, 0x99, 0xff)),
+                egui::Stroke::new(1.0, crate::theme::colors().marquee_border),
                 egui::StrokeKind::Inside,
             );
         }
@@ -1152,24 +1155,27 @@ fn chip(
         return false;
     }
     let fill = if label == "Torrent" {
-        TORRENT_CHIP
+        crate::theme::colors().chip_torrent
     } else {
-        WEB_CHIP
+        crate::theme::colors().chip_web
     };
     // The cell holds the English key (filters match on it); the chip shows it translated.
     let full = crate::i18n::t(label);
     // Room: the pill starts 5 px in, pads its text 6 px each side, and ends 3 px before the cell.
     let label = &winui::ellipsize(p, font, full, (x1 - x0 - 5.0 - 12.0 - 3.0).max(0.0));
     let w = winui::text_width_font(p, font.clone(), label).round();
-    let pill = Rect::from_min_size(pos2(x0 + 5.0, top + 2.0), egui::vec2(w + 12.0, ROW_H - 4.0));
-    p.rect_filled(winui::rect(pill), (ROW_H - 4.0) / 2.0, fill);
+    let pill = Rect::from_min_size(
+        pos2(x0 + 5.0, top + 2.0),
+        egui::vec2(w + 12.0, row_h() - 4.0),
+    );
+    p.rect_filled(winui::rect(pill), (row_h() - 4.0) / 2.0, fill);
     text_font(
         p,
         font.clone(),
         pill.left() + 6.0,
         top + 12.0,
         label,
-        Color32::WHITE,
+        crate::theme::colors().chip_text,
     );
     label != full
 }
@@ -1179,7 +1185,7 @@ fn funnel_rect(st: &ListState, col: usize, x0: f32, x1: f32, ct: f32) -> Rect {
     let sorted = st.sort.is_some_and(|(sc, _)| sc == col);
     let right = x1 - if sorted { 18.0 } else { 4.0 };
     let left = (right - 12.0).max(x0 + 2.0);
-    Rect::from_min_max(pos2(left, ct + 6.0), pos2(right, ct + HEADER_H - 6.0))
+    Rect::from_min_max(pos2(left, ct + 6.0), pos2(right, ct + header_h() - 6.0))
 }
 
 /// A small funnel: a triangle over a stem, in English rect `rc`.
@@ -1221,7 +1227,7 @@ fn filter_box(ui: &mut Ui, st: &mut ListState) {
     // on its own funnel, whose click toggles it; so does the list scrolling sideways (it
     // stayed where the column was).
     let on_funnel =
-        |pp: Pos2| pp.y <= at.y && pp.y >= at.y - HEADER_H && (pp.x - at.x).abs() <= 24.0;
+        |pp: Pos2| pp.y <= at.y && pp.y >= at.y - header_h() && (pp.x - at.x).abs() <= 24.0;
     if ui.input(|i| i.pointer.any_pressed())
         && ui
             .ctx()

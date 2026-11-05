@@ -679,6 +679,8 @@ impl App {
         commands: std::sync::mpsc::Receiver<ipc::Incoming>,
         loaded: store::Loaded,
     ) -> Self {
+        // The look (#45): the chosen theme before anything is drawn.
+        crate::theme::select(&loaded.settings.theme);
         crate::theme::apply(&cc.egui_ctx);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -7059,7 +7061,7 @@ impl eframe::App for App {
                 #[cfg(windows)]
                 {
                     self.caption_set =
-                        crate::win32::caption_dark(crate::MAIN_TITLE, crate::theme::dark());
+                        crate::win32::caption_dark(crate::MAIN_TITLE, crate::theme::dark_surface());
                 }
                 #[cfg(not(windows))]
                 {

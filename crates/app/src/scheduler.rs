@@ -1216,11 +1216,11 @@ fn field(p: &egui::Painter, x: f32, base: f32, s: &str, selected: bool, enabled:
         pos2(x + w + 1.0, base + 3.0),
     ));
     if selected && enabled {
-        p.rect_filled(rc, 0.0, winui::SELECTION);
+        p.rect_filled(rc, 0.0, winui::SELECTION());
     }
     let c = match (enabled, selected) {
         (false, _) => LIGHT_DISABLED(),
-        (true, true) => Color32::WHITE,
+        (true, true) => winui::SELECTION_TEXT(),
         (true, false) => LIGHT_TEXT(),
     };
     text(p, x, base, s, c);
@@ -1662,8 +1662,10 @@ fn date_picker(
     winui::tint_part(
         &p,
         drop.shrink(1.0),
-        winui::State::of(&drop_resp, true).open_if(open),
-        crate::theme::dark(),
+        winui::subtle_fill(
+            winui::State::of(&drop_resp, true).open_if(open),
+            crate::theme::colors(),
+        ),
         |p| winui::chevron_light(p, chevron, true),
     );
     if drop_resp.clicked() {
@@ -1820,9 +1822,9 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
                     winui::pointer_only(),
                 );
                 if let Some(c) =
-                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::dark())
+                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::colors())
                 {
-                    p.rect_filled(winui::rect(b), 2.0, c);
+                    p.rect_filled(winui::rect(b), crate::theme::metrics().part_radius, c);
                 }
                 text(&p, b.left() + 4.0, b.top() + 12.0, glyph, LIGHT_TEXT());
                 if r.clicked() {
@@ -1861,17 +1863,17 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
                 let chosen = day == date;
                 let mark = winui::rect(cell.shrink(1.0));
                 if chosen {
-                    p.rect_filled(mark, 3.0, winui::SELECTION);
+                    p.rect_filled(mark, winui::control_radius(), winui::SELECTION());
                 } else if let Some(c) =
-                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::dark())
+                    winui::highlight_fill(winui::State::of(&r, true), crate::theme::colors())
                 {
-                    p.rect_filled(mark, 3.0, c);
+                    p.rect_filled(mark, winui::control_radius(), c);
                 }
                 if day == today && !chosen {
                     p.rect_stroke(
                         mark,
                         3.0,
-                        egui::Stroke::new(1.0, winui::SELECTION),
+                        egui::Stroke::new(1.0, winui::SELECTION()),
                         egui::StrokeKind::Inside,
                     );
                 }
@@ -1879,7 +1881,7 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
                     winui::focus_ring(&p, mark);
                 }
                 let c = if chosen {
-                    Color32::WHITE
+                    winui::SELECTION_TEXT()
                 } else if day.month() != month.month() {
                     winui::TEXT_DISABLED()
                 } else {

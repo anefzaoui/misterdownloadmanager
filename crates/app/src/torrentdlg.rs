@@ -25,12 +25,8 @@ type Slot = Arc<Mutex<Option<Result<Meta, String>>>>;
 
 crate::theme::themed! {
     // The lists' header colour (winui::LIST_HEADER).
-    LIST_HEAD = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff);
-    LIST_LINE = rgb(0x4a, 0x4a, 0x4a), rgb(0xe5, 0xe5, 0xe5);
-}
-
-const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
-    Color32::from_rgb(r, g, b)
+    LIST_HEAD => header;
+    LIST_LINE => table_line;
 }
 
 /// What Download Now / Later adds.

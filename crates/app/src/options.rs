@@ -1498,7 +1498,7 @@ impl OptionsDialog {
         let color = if ok {
             LIGHT_TEXT()
         } else {
-            egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+            crate::theme::colors().error_strong
         };
         // Up to two lines, each cut with "..." (whole on hover) when a translation is longer.
         for (row, part) in line.lines().take(2).enumerate() {
@@ -1635,7 +1635,7 @@ impl OptionsDialog {
             o.x + 21.0,
             o.y + 308.0,
             note,
-            egui::Color32::from_rgb(0x9D, 0x5D, 0x00),
+            crate::theme::colors().warning,
             o.x + 404.0,
             14.0,
         );
@@ -2794,7 +2794,7 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
         let color = if ok {
             LIGHT_TEXT()
         } else {
-            egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+            crate::theme::colors().error_strong
         };
         let (rect, cut) = winui::label_into(
             &p,
@@ -2882,7 +2882,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
             o + vec2(14.0, 78.0),
             egui::Align2::LEFT_TOP,
             code,
-            egui::FontId::monospace(22.0),
+            egui::FontId::monospace(crate::theme::metrics().font_code),
             LIGHT_TEXT(),
         );
         // i18n: button: copy the sign-in code
@@ -2982,7 +2982,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
     let color = if ok {
         LIGHT_TEXT()
     } else {
-        egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+        crate::theme::colors().error_strong
     };
     let (rect, cut) = winui::label_into(
         &p,

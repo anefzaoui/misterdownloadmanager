@@ -250,6 +250,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Themes, the groundwork** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)):
+  every colour and size MDM's controls are drawn with (corner radii, borders, font sizes, the
+  list's row height, the icons' ink) now comes from one theme, by role. The classic look is that
+  theme, unchanged pixel for pixel. Theme files (TOML or JSON in the data folder's `themes`
+  folder) can already change any role; choosing one in the app, more built-in themes, pywal and
+  Base16 come next.
 - **Developers: two engine tests no longer fail now and then**
   ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123)): the pause-and-resume
   and event-log tests no longer depend on how fast the machine is. The lab server can hold a

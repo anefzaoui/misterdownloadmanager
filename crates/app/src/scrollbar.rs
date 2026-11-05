@@ -19,17 +19,18 @@ enum Part {
 pub const THICK: f32 = 17.0;
 use crate::theme::themed;
 
+// The active theme's colours (crate::palette, #45).
 themed! {
     /// Light values from the light progress dialog's table (light-dialogs.md): track #f0f0f0,
     /// thumb #858585; corner not captured [?].
-    TRACK = Color32::from_gray(0x17), Color32::from_gray(0xf0);
-    pub CORNER = Color32::from_gray(0x38), Color32::from_gray(0xf0);
-    INK_C = Color32::from_gray(0x95), Color32::from_gray(0x85);
+    TRACK => scroll_track;
+    pub CORNER => scroll_corner;
+    INK_C => scroll_thumb;
     /// A pressed arrow or thumb (a dragged thumb too): brighter on the dark track, darker on
     /// the light one, as Windows 11's bars answer a press.
-    INK_PRESSED = Color32::from_gray(0xc8), Color32::from_gray(0x5c);
+    INK_PRESSED => scroll_thumb_pressed;
     /// The arrow or thumb under the pointer: between rest and pressed.
-    INK_HOT = Color32::from_gray(0xb0), Color32::from_gray(0x70);
+    INK_HOT => scroll_thumb_hot;
 }
 
 /// Measured glyphs over the #17 track, columns = across the bar from v 5 (up/down) or rows =

@@ -8,37 +8,48 @@ use egui::{
 };
 use unicode_segmentation::UnicodeSegmentation;
 
-const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
-    Color32::from_rgb(r, g, b)
-}
-
+// Every colour comes from the active theme (crate::palette, #45): these names are its roles.
 crate::theme::themed! {
     /// Dialog background (light: light-dialogs.md).
-    pub BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
-    pub TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
+    pub BG => window;
+    pub TEXT => text;
     /// A group box's frame (it was #dcdcdc in dark too: brighter than the separators in it).
-    pub GROUP_LINE = rgb(0x50, 0x50, 0x50), rgb(0xdc, 0xdc, 0xdc);
+    pub GROUP_LINE => group_line;
     /// A list's column headers (the main list's): every list and table has the same (they had
     /// four: none, #f3f3f3, white).
-    pub LIST_HEADER = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff);
-    /// Light: embossed #a0a0a0 statics (drawn flat here).
+    pub LIST_HEADER => header;
     /// Disabled text, the one grey of every control and label (there were five).
-    pub TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x8a, 0x8a, 0x8a);
-    /// A greyed text box's text (dark: #8a8a8a, readable on the dark dialog; #6d6d6d was not).
-    pub EDIT_TEXT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x8a, 0x8a, 0x8a);
+    pub TEXT_DISABLED => text_disabled;
+    /// A greyed text box's text.
+    pub EDIT_TEXT_DISABLED => text_disabled;
+    /// A selection's fill (rows, a chosen day, selected text): Windows' accent by default.
+    pub SELECTION => selection;
+    /// Text on the selection.
+    pub SELECTION_TEXT => selection_text;
 }
-
-/// A selection's fill (rows, a chosen day, selected text): Windows' accent, white text on it.
-pub const SELECTION: Color32 = rgb(0x00, 0x78, 0xd4);
 
 /// Tahoma −11 ("MS Shell Dlg 2", 8 pt): every dialog body text.
 pub fn tahoma() -> FontId {
-    FontId::new(11.0, FontFamily::Name("tahoma".into()))
+    FontId::new(
+        crate::theme::metrics().font_dialog,
+        FontFamily::Name("tahoma".into()),
+    )
 }
 
 /// Tahoma Bold −13: the Options pages' header titles.
 pub fn tahoma_bold() -> FontId {
-    FontId::new(13.0, FontFamily::Name("tahoma-bold".into()))
+    FontId::new(
+        crate::theme::metrics().font_dialog_bold,
+        FontFamily::Name("tahoma-bold".into()),
+    )
+}
+
+/// Tahoma Bold −16: a window's headline (the browser extension's, the helpers').
+pub fn tahoma_title() -> FontId {
+    FontId::new(
+        crate::theme::metrics().font_title,
+        FontFamily::Name("tahoma-bold".into()),
+    )
 }
 
 /// Tahoma (IDM's dialogs), Tahoma Bold and Arial Bold from Windows' fonts folder. A family
@@ -269,12 +280,15 @@ fn name_from_caption(resp: &Response) {
 
 /// Segoe UI −12: menu bar, toolbar labels.
 pub fn segoe() -> FontId {
-    FontId::proportional(12.0)
+    FontId::proportional(crate::theme::metrics().font_ui)
 }
 
 /// Arial Bold −13: the Categories close "x".
 pub fn arial_bold() -> FontId {
-    FontId::new(13.0, FontFamily::Name("arial-bold".into()))
+    FontId::new(
+        crate::theme::metrics().font_ui_bold,
+        FontFamily::Name("arial-bold".into()),
+    )
 }
 
 /// Like [`text`] in any font.
@@ -623,12 +637,8 @@ fn no_line_start(c: char) -> bool {
 /// `fraction`; while the total is unknown (`None`) a segment runs along it (`time`: seconds,
 /// for its place).
 pub fn progress_bar(p: &Painter, rc: Rect, fraction: Option<f32>, time: f64) {
-    let dark = crate::theme::dark();
-    let (track, accent) = if dark {
-        (rgb(0x9a, 0x9a, 0x9a), rgb(0x60, 0xcd, 0xff))
-    } else {
-        (rgb(0x86, 0x86, 0x86), rgb(0x00, 0x78, 0xd4))
-    };
+    let c = crate::theme::colors();
+    let (track, accent) = (c.progress_track, c.progress_bar);
     let r = rc.height() / 2.0;
     // The track is a 1 px line through the middle, as Windows 11 draws it.
     let mid = rc.center().y;
@@ -1221,9 +1231,10 @@ pub fn row_list(
         } else {
             // Hot, and pressed lighter still on a dark field (subtle_fill's pressed grey was the
             // dark field's own).
-            match (State::of(&r, true), crate::theme::dark()) {
-                (State::Pressed, true) => Some(rgb(0x4f, 0x4f, 0x4f)),
-                (state, dark) => subtle_fill(state, dark),
+            let c = crate::theme::colors();
+            match State::of(&r, true) {
+                State::Pressed => Some(c.row_pressed),
+                state => subtle_fill(state, c),
             }
         };
         if let Some(f) = fill {
@@ -1250,7 +1261,7 @@ pub fn row_list(
         let mut look = RowLook {
             selected,
             ink: if selected && focused {
-                Color32::WHITE
+                SELECTION_TEXT()
             } else {
                 TEXT()
             },
@@ -1458,7 +1469,7 @@ fn vline(p: &Painter, x: f32, y0: f32, y1: f32, c: Color32) {
 
 /// The rounding of a control's corners (buttons, text boxes, drop-downs), in both modes.
 pub fn control_radius() -> f32 {
-    3.0
+    crate::theme::metrics().control_radius
 }
 
 /// What a text box allows: typing, nothing (greyed), or reading and copying.
@@ -1477,34 +1488,28 @@ pub enum FieldLook {
 /// and dark mode drew IDM's bright 2 px border round every box, disabled ones included).
 pub fn field_frame(p: &Painter, rc: Rect, look: FieldLook) {
     let radius = control_radius();
-    let (inside, border, bottom) = match (crate::theme::dark(), look) {
-        (false, FieldLook::Editable) => {
-            (Color32::WHITE, rgb(0xe5, 0xe5, 0xe5), rgb(0x86, 0x86, 0x86))
-        }
-        (false, FieldLook::Disabled) => (
-            rgb(0xf9, 0xf9, 0xf9),
-            rgb(0xe9, 0xe9, 0xe9),
-            rgb(0xe9, 0xe9, 0xe9),
+    let c = crate::theme::colors();
+    // Disabled and read-only boxes are flat: their bottom line is their border.
+    let (inside, border, bottom) = match look {
+        FieldLook::Editable => (c.field, c.field_border, c.field_bottom),
+        FieldLook::Disabled => (
+            c.field_disabled,
+            c.field_disabled_border,
+            c.field_disabled_border,
         ),
-        (false, FieldLook::ReadOnly) => (
-            rgb(0xf3, 0xf3, 0xf3),
-            rgb(0xe2, 0xe2, 0xe2),
-            rgb(0xe2, 0xe2, 0xe2),
-        ),
-        (true, FieldLook::Editable) => (FIELD(), rgb(0x4b, 0x4b, 0x4b), rgb(0x9a, 0x9a, 0x9a)),
-        (true, FieldLook::Disabled) => (
-            rgb(0x33, 0x33, 0x33),
-            rgb(0x44, 0x44, 0x44),
-            rgb(0x44, 0x44, 0x44),
-        ),
-        (true, FieldLook::ReadOnly) => (
-            rgb(0x30, 0x30, 0x30),
-            rgb(0x4b, 0x4b, 0x4b),
-            rgb(0x4b, 0x4b, 0x4b),
+        FieldLook::ReadOnly => (
+            c.field_readonly,
+            c.field_readonly_border,
+            c.field_readonly_border,
         ),
     };
     p.rect_filled(rc, radius, inside);
-    p.rect_stroke(rc, radius, Stroke::new(1.0, border), StrokeKind::Inside);
+    p.rect_stroke(
+        rc,
+        radius,
+        Stroke::new(crate::theme::metrics().border, border),
+        StrokeKind::Inside,
+    );
     hline(
         p,
         rc.left() + radius,
@@ -1518,19 +1523,21 @@ pub fn field_frame(p: &Painter, rc: Rect, look: FieldLook) {
 /// track was light in dark mode too), the controls' rounded corners. `fraction` in 0..=1.
 pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
     let radius = control_radius().min(rc.height() / 4.0).floor();
-    let (track, edge) = if crate::theme::dark() {
-        (rgb(0x2b, 0x2b, 0x2b), rgb(0x4b, 0x4b, 0x4b))
-    } else {
-        (rgb(0xe6, 0xe6, 0xe6), rgb(0xbc, 0xbc, 0xbc))
-    };
-    p.rect_filled(rc, radius, track);
-    let inner = rc.shrink(1.0);
+    let c = crate::theme::colors();
+    let border = crate::theme::metrics().border;
+    p.rect_filled(rc, radius, c.meter_track);
+    let inner = rc.shrink(border);
     let w = (fraction.clamp(0.0, 1.0) * inner.width()).floor();
     if w > 0.0 {
         let done = Rect::from_min_size(inner.min, vec2(w, inner.height()));
-        p.rect_filled(done, (radius - 1.0).max(0.0), rgb(0x0f, 0x7b, 0x0f));
+        p.rect_filled(done, (radius - border).max(0.0), c.meter_fill);
     }
-    p.rect_stroke(rc, radius, Stroke::new(1.0, edge), StrokeKind::Inside);
+    p.rect_stroke(
+        rc,
+        radius,
+        Stroke::new(border, c.meter_edge),
+        StrokeKind::Inside,
+    );
 }
 
 /// A box whose value is wrong (a number out of range, an address that isn't one, a schedule
@@ -1540,7 +1547,7 @@ pub fn error_frame(p: &Painter, rc: Rect) {
     p.rect_stroke(
         rc,
         control_radius(),
-        Stroke::new(1.0, ERROR()),
+        Stroke::new(crate::theme::metrics().border, ERROR()),
         StrokeKind::Inside,
     );
 }
@@ -1593,17 +1600,18 @@ pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
 /// The 2 px accent along a focused box's bottom edge. Light: the bottom of its rounded
 /// frame, curving into the corners as Windows 11 draws it; dark: IDM's straight line.
 pub fn focus_bottom(p: &Painter, rc: Rect) {
-    if crate::theme::dark() {
+    let h = crate::theme::metrics().focus_line;
+    if crate::theme::colors().focus_line_straight {
         fill(
             p,
             rc.left() + 1.0,
-            rc.bottom() - 2.0,
+            rc.bottom() - h,
             rc.right() - 2.0,
             rc.bottom() - 1.0,
             accent(),
         );
     } else {
-        let strip = Rect::from_min_max(pos2(rc.left(), rc.bottom() - 2.0), rc.max);
+        let strip = Rect::from_min_max(pos2(rc.left(), rc.bottom() - h), rc.max);
         p.with_clip_rect(strip)
             .rect_filled(rc, control_radius(), accent());
     }
@@ -2063,40 +2071,30 @@ impl State {
 
 /// The fill of a part with no face of its own (a combo's arrow, a glyph button, a column
 /// header) in `state`: none at rest, a tint under the pointer, a deeper one pressed or open.
-/// `dark_surface`: the part sits on a dark background (the dark buttons' greys), else the light
-/// icon buttons' greys.
-pub fn subtle_fill(state: State, dark_surface: bool) -> Option<Color32> {
-    match (state, dark_surface) {
-        (State::Hot, false) => Some(rgb(0xf3, 0xf3, 0xf3)),
-        (State::Pressed | State::Open, false) => Some(rgb(0xe8, 0xe8, 0xe8)),
-        (State::Hot, true) => Some(rgb(0x45, 0x45, 0x45)),
-        (State::Pressed | State::Open, true) => Some(rgb(0x26, 0x26, 0x26)),
+/// Colours from `c`, a theme's variant (the active one: `crate::theme::colors()`).
+pub fn subtle_fill(state: State, c: &crate::palette::Palette) -> Option<Color32> {
+    match state {
+        State::Hot => Some(c.subtle_hot),
+        State::Pressed | State::Open => Some(c.subtle_pressed),
         _ => None,
     }
 }
 
 /// The blue highlight of a calendar's days and arrows (Win32's month calendar) in `state`:
-/// #e5f1fb under the pointer, #cce4f7 pressed; deep blues on a dark surface.
-pub fn highlight_fill(state: State, dark_surface: bool) -> Option<Color32> {
-    match (state, dark_surface) {
-        (State::Hot, false) => Some(rgb(0xe5, 0xf1, 0xfb)),
-        (State::Pressed | State::Open, false) => Some(rgb(0xcc, 0xe4, 0xf7)),
-        (State::Hot, true) => Some(rgb(0x2d, 0x4a, 0x60)),
-        (State::Pressed | State::Open, true) => Some(rgb(0x23, 0x3d, 0x52)),
+/// a light accent tint under the pointer, a deeper one pressed (from `c`).
+pub fn highlight_fill(state: State, c: &crate::palette::Palette) -> Option<Color32> {
+    match state {
+        State::Hot => Some(c.highlight_hot),
+        State::Pressed | State::Open => Some(c.highlight_pressed),
         _ => None,
     }
 }
 
-/// Tints `zone` (a part already drawn at rest) for `state` and draws its glyph again on top.
-pub fn tint_part(
-    p: &Painter,
-    zone: Rect,
-    state: State,
-    dark_surface: bool,
-    glyph: impl FnOnce(&Painter),
-) {
-    if let Some(c) = subtle_fill(state, dark_surface) {
-        p.rect_filled(zone, 2.0, c);
+/// Tints `zone` (a part already drawn at rest) with `tint` (none at rest: [`subtle_fill`]) and
+/// draws its glyph again on top.
+pub fn tint_part(p: &Painter, zone: Rect, tint: Option<Color32>, glyph: impl FnOnce(&Painter)) {
+    if let Some(c) = tint {
+        p.rect_filled(zone, crate::theme::metrics().part_radius, c);
         glyph(p);
     }
 }
@@ -2130,7 +2128,10 @@ fn combo_chevron(p: &Painter, rc: Rect) {
             pos2(cx + 4.0, cy + 4.5),
             pos2(cx + 8.0, cy + 0.5),
         ],
-        Stroke::new(1.2, rgb(0x6f, 0x6f, 0x6f)),
+        Stroke::new(
+            crate::theme::metrics().chevron_width,
+            crate::theme::colors().combo_chevron,
+        ),
     );
 }
 
@@ -2207,7 +2208,13 @@ pub fn combo_arrow(ui: &mut Ui, rc: Rect, id: &str, open: bool) -> Response {
     let resp = ui.interact(zone, widget_id(ui, ("combo-arrow", id)), pointer_only());
     let resp = opener_click(ui, resp);
     let state = State::of(&resp, true).open_if(open);
-    tint_part(ui.painter(), zone, state, false, |p| combo_chevron(p, rc));
+    let c = crate::theme::colors();
+    let tint = match state {
+        State::Hot => Some(c.combo_arrow_hot),
+        State::Pressed | State::Open => Some(c.combo_arrow_pressed),
+        _ => None,
+    };
+    tint_part(ui.painter(), zone, tint, |p| combo_chevron(p, rc));
     resp
 }
 
@@ -2466,32 +2473,32 @@ pub fn small_button(ui: &mut Ui, rc: Rect, glyph: &str) -> Response {
 crate::theme::themed! {
     /// The "light dialogs" (Options, Scheduler, File Properties…): IDM draws them light in both
     /// modes; here they follow the mode, dark the dark dialogs' colours.
-    pub LIGHT_BG = rgb(0x39, 0x39, 0x39), rgb(0xf0, 0xf0, 0xf0);
-    pub LIGHT_TEXT = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
-    pub LIGHT_DISABLED = rgb(0x8a, 0x8a, 0x8a), rgb(0x8a, 0x8a, 0x8a);
+    pub LIGHT_BG => window;
+    pub LIGHT_TEXT => text;
+    pub LIGHT_DISABLED => text_disabled;
     /// A text box's or a list's inside.
-    pub FIELD = rgb(0x2b, 0x2b, 0x2b), rgb(0xff, 0xff, 0xff);
+    pub FIELD => field;
     /// A list's or a box's outline.
-    pub FIELD_EDGE = rgb(0x5a, 0x5a, 0x5a), rgb(0x82, 0x87, 0x90);
+    pub FIELD_EDGE => list_frame;
     /// Grid lines between a list's rows, and header dividers.
-    pub GRID = rgb(0x40, 0x40, 0x40), rgb(0xf0, 0xf0, 0xf0);
-    pub HEADER_LINE = rgb(0x4e, 0x4e, 0x4e), rgb(0xe5, 0xe5, 0xe5);
+    pub GRID => grid;
+    pub HEADER_LINE => header_line;
     /// Etched separators: the shadow line and the highlight beside it.
-    pub ETCH_SHADOW = rgb(0x22, 0x22, 0x22), rgb(0xa0, 0xa0, 0xa0);
-    pub ETCH_LIGHT = rgb(0x50, 0x50, 0x50), rgb(0xff, 0xff, 0xff);
+    pub ETCH_SHADOW => etch_shadow;
+    pub ETCH_LIGHT => etch_light;
     /// A selected row in a focused list ([`row_list`]; the download list's colours), white
     /// text on it.
-    pub ROW_SELECTED = rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x78, 0xd4);
+    pub ROW_SELECTED => selection;
     /// Text that opens something ([`link`]).
-    pub LINK = rgb(0x99, 0xc8, 0xff), rgb(0x00, 0x66, 0xcc);
+    pub LINK => link;
     /// A selected row in a list without the focus.
-    pub SELECTED_INACTIVE = rgb(0x4a, 0x4a, 0x4a), rgb(0xd9, 0xd9, 0xd9);
+    pub SELECTED_INACTIVE => selection_inactive;
     /// Error text.
-    pub ERROR = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
+    pub ERROR => error;
     /// Secondary text (notes, sizes, versions).
-    pub MUTED = rgb(0xa0, 0xa0, 0xa0), rgb(0x6d, 0x6d, 0x6d);
+    pub MUTED => muted;
     /// Success text (a matching checksum).
-    pub SUCCESS = rgb(0x6c, 0xcb, 0x5f), rgb(0x0f, 0x7b, 0x0f);
+    pub SUCCESS => success;
 }
 
 /// Light edit: the same Win11 border, white fill, black text.
@@ -2873,7 +2880,6 @@ fn button_face(
     kind: ButtonKind,
     default_focus: bool,
 ) -> Response {
-    let dark = crate::theme::dark();
     let enabled = kind != ButtonKind::Disabled;
     let sense = if enabled {
         Sense::click()
@@ -2902,13 +2908,13 @@ fn button_face(
     }
     let state = State::of(&resp, enabled);
     let p = ui.painter();
-    let face = button_colors(kind, state, dark);
+    let face = button_colors(kind, state, crate::theme::colors());
     let rounding = control_radius();
     p.rect_filled(rc, rounding, face.fill);
     p.rect_stroke(
         rc,
         rounding,
-        Stroke::new(1.0, face.border),
+        Stroke::new(crate::theme::metrics().border, face.border),
         StrokeKind::Inside,
     );
     let inset = 3.0;
@@ -2976,79 +2982,51 @@ struct Face {
     text: Color32,
 }
 
-/// A button's colours for `kind` in `state`: dark, IDM's dark buttons; light, Windows 11's.
-fn button_colors(kind: ButtonKind, state: State, dark: bool) -> Face {
+/// A button's colours for `kind` in `state`, from `c` (a theme's variant). The states are
+/// decided here, once for every button: the pressed one flattens its bottom edge.
+fn button_colors(kind: ButtonKind, state: State, c: &crate::palette::Palette) -> Face {
     let pressed = state == State::Pressed;
     if kind == ButtonKind::Accent {
-        // The accent filled, a shade lighter under the pointer and darker pressed; light text
-        // on the light mode's blue, dark text on the dark mode's.
-        let (fill, text) = match (dark, state) {
-            (false, State::Pressed) => (rgb(0x00, 0x6c, 0xbe), rgb(0xe6, 0xf0, 0xfa)),
-            (false, State::Hot) => (rgb(0x1a, 0x86, 0xd9), Color32::WHITE),
-            (false, _) => (rgb(0x00, 0x78, 0xd4), Color32::WHITE),
-            (true, State::Pressed) => (rgb(0x52, 0xa6, 0xd0), rgb(0x1a, 0x1a, 0x1a)),
-            (true, State::Hot) => (rgb(0x5a, 0xb9, 0xe5), Color32::BLACK),
-            (true, _) => (rgb(0x60, 0xcd, 0xff), Color32::BLACK),
-        };
-        let bottom = if dark {
-            rgb(0x4f, 0xb5, 0xe4)
-        } else {
-            rgb(0x00, 0x5a, 0x9e)
+        // The accent filled, a shade lighter under the pointer and darker pressed.
+        let (fill, text) = match state {
+            State::Pressed => (c.button_accent_pressed, c.button_accent_text_pressed),
+            State::Hot => (c.button_accent_hot, c.button_accent_text),
+            _ => (c.button_accent, c.button_accent_text),
         };
         return Face {
             fill,
             border: fill,
-            bottom: if pressed { fill } else { bottom },
+            bottom: if pressed {
+                fill
+            } else {
+                c.button_accent_bottom
+            },
             text,
         };
     }
-    let face = if dark {
-        // Windows 11's dark buttons: a face a little lighter than the window, a quiet border (it
-        // was IDM's bright one, white round the default button), the default button outlined in
-        // the accent as in light mode.
-        let (border, bottom) = match kind {
-            ButtonKind::Normal => (rgb(0x55, 0x55, 0x55), rgb(0x4b, 0x4b, 0x4b)),
-            ButtonKind::Default | ButtonKind::Accent => (accent(), rgb(0x4f, 0xb5, 0xe4)),
-            ButtonKind::Disabled => (rgb(0x46, 0x46, 0x46), rgb(0x46, 0x46, 0x46)),
-        };
-        Face {
-            fill: match state {
-                State::Disabled => rgb(0x3d, 0x3d, 0x3d),
-                State::Pressed => rgb(0x3c, 0x3c, 0x3c),
-                State::Hot => rgb(0x4b, 0x4b, 0x4b),
-                _ => rgb(0x44, 0x44, 0x44),
-            },
-            border,
-            bottom,
-            text: match state {
-                State::Disabled => TEXT_DISABLED(),
-                State::Pressed => rgb(0xc8, 0xc8, 0xc8),
-                _ => TEXT(),
-            },
+    // Windows 11's buttons: a face a little lighter than the window in dark, a quiet border,
+    // the default button outlined in the accent.
+    let (border, bottom) = match kind {
+        ButtonKind::Normal => (c.button_border, c.button_bottom),
+        ButtonKind::Default | ButtonKind::Accent => {
+            (c.button_default_border, c.button_default_bottom)
         }
-    } else {
-        let (border, bottom) = match kind {
-            ButtonKind::Normal => (rgb(0xd0, 0xd0, 0xd0), rgb(0xba, 0xba, 0xba)),
-            ButtonKind::Default | ButtonKind::Accent => {
-                (rgb(0x00, 0x78, 0xd4), rgb(0x00, 0x6b, 0xbe))
-            }
-            ButtonKind::Disabled => (rgb(0xe9, 0xe9, 0xe9), rgb(0xe9, 0xe9, 0xe9)),
-        };
-        Face {
-            fill: match state {
-                State::Disabled => rgb(0xf9, 0xf9, 0xf9),
-                State::Pressed => rgb(0xf5, 0xf5, 0xf5),
-                State::Hot => rgb(0xf6, 0xf6, 0xf6),
-                _ => rgb(0xfd, 0xfd, 0xfd),
-            },
-            border,
-            bottom,
-            text: match state {
-                State::Disabled => TEXT_DISABLED(),
-                State::Pressed => rgb(0x5d, 0x5d, 0x5d),
-                _ => LIGHT_TEXT(),
-            },
-        }
+        ButtonKind::Disabled => (c.button_disabled_border, c.button_disabled_border),
+    };
+    let face = Face {
+        fill: match state {
+            State::Disabled => c.button_disabled,
+            State::Pressed => c.button_pressed,
+            State::Hot => c.button_hot,
+            _ => c.button,
+        },
+        border,
+        bottom,
+        text: match state {
+            State::Disabled => c.text_disabled,
+            State::Pressed => c.button_text_pressed,
+            _ => c.button_text,
+        },
     };
     if pressed {
         Face {
@@ -3163,11 +3141,7 @@ pub fn focus_ring(p: &Painter, rc: Rect) {
     if !keyboard_in_use(p.ctx()) {
         return;
     }
-    let ink = if crate::theme::dark() {
-        rgb(0xcc, 0xcc, 0xcc)
-    } else {
-        rgb(0x0d, 0x0d, 0x0d)
-    };
+    let ink = crate::theme::colors().focus_ring;
     let (l, t, r, b) = (rc.left(), rc.top(), rc.right() - 1.0, rc.bottom() - 1.0);
     let mut x = l;
     while x <= r {
@@ -3254,12 +3228,12 @@ pub fn checkbox_light_until(
 
 crate::theme::themed! {
     /// Tab page body.
-    pub LIGHT_PAGE = rgb(0x40, 0x40, 0x40), rgb(0xf9, 0xf9, 0xf9);
+    pub LIGHT_PAGE => tab_page;
     /// An unselected tab, and the page's shadow.
-    pub TAB_UNSELECTED = rgb(0x33, 0x33, 0x33), rgb(0xf3, 0xf3, 0xf3);
-    pub TAB_HOT = rgb(0x46, 0x46, 0x46), rgb(0xfd, 0xfd, 0xfd);
-    CHEVRON = rgb(0xc8, 0xc8, 0xc8), rgb(0x6f, 0x6f, 0x6f);
-    CHEVRON_DISABLED = rgb(0x6a, 0x6a, 0x6a), rgb(0xbe, 0xbe, 0xbe);
+    pub TAB_UNSELECTED => tab;
+    pub TAB_HOT => tab_hot;
+    CHEVRON => chevron;
+    CHEVRON_DISABLED => chevron_disabled;
 }
 
 /// A Windows 11 check box's 13 × 13 box in `rc`, ticked or not, in `state`: the one look of
@@ -3293,7 +3267,11 @@ pub fn row_check(
 
 pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
     if checked {
-        p.rect_filled(rc, 2.0, fluent_accent(state));
+        p.rect_filled(
+            rc,
+            crate::theme::metrics().check_radius,
+            fluent_accent(state),
+        );
         p.line(
             vec![
                 pos2(rc.left() + 3.0, rc.top() + 6.5),
@@ -3304,17 +3282,27 @@ pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
         );
     } else {
         let (fill_c, border) = fluent_box(state);
+        let m = crate::theme::metrics();
         if let Some(f) = fill_c {
-            p.rect_filled(rc, 2.0, f);
+            p.rect_filled(rc, m.check_radius, f);
         }
-        p.rect_stroke(rc, 2.0, Stroke::new(1.0, border), StrokeKind::Inside);
+        p.rect_stroke(
+            rc,
+            m.check_radius,
+            Stroke::new(m.border, border),
+            StrokeKind::Inside,
+        );
     }
 }
 
 /// A Windows 11 check box that is partly ticked (a folder with some of its files chosen): the
 /// accent box with a dash, as Windows draws it (a square sat on the unticked box before).
 pub fn check_box_mixed(p: &Painter, rc: Rect, state: State) {
-    p.rect_filled(rc, 2.0, fluent_accent(state));
+    p.rect_filled(
+        rc,
+        crate::theme::metrics().check_radius,
+        fluent_accent(state),
+    );
     let y = rc.center().y.floor() + 0.5;
     p.line_segment(
         [pos2(rc.left() + 3.0, y), pos2(rc.right() - 3.0, y)],
@@ -3352,44 +3340,32 @@ pub fn tree_expander(p: &Painter, at: Pos2, open: bool) {
 /// A checked Windows 11 check box's or radio's accent in `state`: lighter under the pointer,
 /// lighter still while pressed, grey when disabled.
 fn fluent_accent(state: State) -> Color32 {
-    match (state, crate::theme::dark()) {
-        (State::Disabled, false) => rgb(0xc3, 0xc3, 0xc3),
-        (State::Hot, false) => rgb(0x1a, 0x86, 0xd9),
-        (State::Pressed, false) => rgb(0x33, 0x92, 0xdc),
-        (_, false) => rgb(0x00, 0x78, 0xd4),
-        (State::Disabled, true) => rgb(0x5a, 0x5a, 0x5a),
-        (State::Hot, true) => rgb(0x5a, 0xbc, 0xe8),
-        (State::Pressed, true) => rgb(0x52, 0xa6, 0xcc),
-        (_, true) => rgb(0x60, 0xcd, 0xff),
+    let c = crate::theme::colors();
+    match state {
+        State::Disabled => c.check_on_disabled,
+        State::Hot => c.check_on_hot,
+        State::Pressed => c.check_on_pressed,
+        _ => c.check_on,
     }
 }
 
 /// The mark on a checked box or radio (white on the light accent's blue, dark on the dark's).
 fn fluent_mark() -> Color32 {
-    if crate::theme::dark() {
-        rgb(0x00, 0x00, 0x00)
-    } else {
-        Color32::WHITE
-    }
+    crate::theme::colors().check_mark
 }
 
 /// An unchecked Windows 11 check box's or radio's fill (none when disabled) and border in
 /// `state`: darker fill under the pointer, darker still and a fainter border while pressed.
 fn fluent_box(state: State) -> (Option<Color32>, Color32) {
-    fluent_box_in(state, crate::theme::dark())
+    fluent_box_in(state, crate::theme::colors())
 }
 
-fn fluent_box_in(state: State, dark: bool) -> (Option<Color32>, Color32) {
-    match (state, dark) {
-        (State::Disabled, false) => (None, rgb(0xc3, 0xc3, 0xc3)),
-        (State::Hot, false) => (Some(rgb(0xea, 0xea, 0xea)), rgb(0x62, 0x62, 0x62)),
-        (State::Pressed, false) => (Some(rgb(0xdd, 0xdd, 0xdd)), rgb(0x9a, 0x9a, 0x9a)),
-        (_, false) => (Some(rgb(0xf3, 0xf3, 0xf3)), rgb(0x62, 0x62, 0x62)),
-        (State::Disabled, true) => (None, rgb(0x5a, 0x5a, 0x5a)),
-        (State::Hot, true) => (Some(rgb(0x3a, 0x3a, 0x3a)), rgb(0xa0, 0xa0, 0xa0)),
-        // Pressed lighter still, as Windows 11's dark boxes (it went darker, the wrong way).
-        (State::Pressed, true) => (Some(rgb(0x47, 0x47, 0x47)), rgb(0x70, 0x70, 0x70)),
-        (_, true) => (Some(rgb(0x2b, 0x2b, 0x2b)), rgb(0x9b, 0x9b, 0x9b)),
+fn fluent_box_in(state: State, c: &crate::palette::Palette) -> (Option<Color32>, Color32) {
+    match state {
+        State::Disabled => (None, c.check_border_disabled),
+        State::Hot => (Some(c.check_hot), c.check_border_hot),
+        State::Pressed => (Some(c.check_pressed), c.check_border_pressed),
+        _ => (Some(c.check), c.check_border),
     }
 }
 
@@ -4089,13 +4065,13 @@ pub fn button_like(p: &Painter, rc: Rect, state: State) {
     } else {
         ButtonKind::Normal
     };
-    let face = button_colors(kind, state, crate::theme::dark());
+    let face = button_colors(kind, state, crate::theme::colors());
     let radius = control_radius().min((rc.height() / 3.0).floor());
     p.rect_filled(rc, radius, face.fill);
     p.rect_stroke(
         rc,
         radius,
-        Stroke::new(1.0, face.border),
+        Stroke::new(crate::theme::metrics().border, face.border),
         StrokeKind::Inside,
     );
     if rc.height() >= 14.0 {
@@ -4112,18 +4088,26 @@ pub fn button_like(p: &Painter, rc: Rect, state: State) {
 pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
     // Drawn as a button (Windows 11 draws its drop-downs so): the same faces and states, in
     // the current theme; open, the accent border and no bottom edge (its list is out).
-    let dark = crate::theme::dark();
     let open = state == State::Open;
     let kind = if state == State::Disabled {
         ButtonKind::Disabled
     } else {
         ButtonKind::Normal
     };
-    let face = button_colors(kind, if open { State::Hot } else { state }, dark);
+    let face = button_colors(
+        kind,
+        if open { State::Hot } else { state },
+        crate::theme::colors(),
+    );
     let border = if open { accent() } else { face.border };
     let rounding = control_radius();
     p.rect_filled(rc, rounding, face.fill);
-    p.rect_stroke(rc, rounding, Stroke::new(1.0, border), StrokeKind::Inside);
+    p.rect_stroke(
+        rc,
+        rounding,
+        Stroke::new(crate::theme::metrics().border, border),
+        StrokeKind::Inside,
+    );
     if !open {
         hline(
             p,
@@ -4137,11 +4121,7 @@ pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
 
 /// The accent (Windows' blue): borders of open and focused controls.
 pub fn accent() -> Color32 {
-    if crate::theme::dark() {
-        rgb(0x60, 0xcd, 0xff)
-    } else {
-        rgb(0x00, 0x78, 0xd4)
-    }
+    crate::theme::colors().accent
 }
 
 /// Light drop-down list (CBS_DROPDOWNLIST): the chosen item and a chevron; a click opens the
@@ -4310,8 +4290,8 @@ pub fn spin_arrows(ui: &mut Ui, rc: Rect, enabled: bool, id: &str) -> i32 {
         } else {
             State::Normal
         };
-        if let Some(tint) = subtle_fill(state, crate::theme::dark()) {
-            p.rect_filled(part.shrink(1.0), 2.0, tint);
+        if let Some(tint) = subtle_fill(state, crate::theme::colors()) {
+            p.rect_filled(part.shrink(1.0), crate::theme::metrics().part_radius, tint);
         }
         let c = part.center();
         let arrow = if enabled {
@@ -4408,14 +4388,15 @@ pub mod caption {
 
     crate::theme::themed! {
         /// A title bar we draw ourselves (Windows 11's caption, both themes).
-        pub CAPTION_BG = rgb(0x20, 0x20, 0x20), rgb(0xff, 0xff, 0xff);
-        pub CAPTION_INK = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
+        pub CAPTION_BG => caption;
+        pub CAPTION_INK => caption_text;
         /// A caption button's hover and pressed tints over the bar: WinUI's caption tokens, as
         /// Windows Terminal ships them (#0FFFFFFF / #09000000, #0AFFFFFF / #06000000).
-        pub CAPTION_HOVER = Color32::from_rgba_unmultiplied(0xff, 0xff, 0xff, 0x0f),
-            Color32::from_rgba_unmultiplied(0x00, 0x00, 0x00, 0x09);
-        pub CAPTION_PRESSED = Color32::from_rgba_unmultiplied(0xff, 0xff, 0xff, 0x0a),
-            Color32::from_rgba_unmultiplied(0x00, 0x00, 0x00, 0x06);
+        pub CAPTION_HOVER => caption_hot;
+        pub CAPTION_PRESSED => caption_pressed;
+        /// Close's hover red, and its glyph on it.
+        CLOSE_HOVER => caption_close;
+        CLOSE_INK => caption_close_text;
     }
     /// The title and glyphs while the window isn't the active one, and a greyed button's: the
     /// one disabled ink of every control.
@@ -4424,9 +4405,8 @@ pub mod caption {
     }
     /// Close's hover red with a white glyph; pressed, the red at 0.9 and the glyph at 0.7
     /// (WinUI's, both themes).
-    const CLOSE_HOVER: Color32 = rgb(0xc4, 0x2b, 0x1c);
     fn close_pressed() -> Color32 {
-        CLOSE_HOVER.gamma_multiply(0.9)
+        CLOSE_HOVER().gamma_multiply(0.9)
     }
 
     /// A drawn title bar's height and one caption button's width, in points (Windows 11's).
@@ -4526,7 +4506,7 @@ pub mod caption {
         let close = b == CaptionButton::Close;
         let fill = match (pressed, hover, close) {
             (true, _, true) => Some(close_pressed()),
-            (false, true, true) => Some(CLOSE_HOVER),
+            (false, true, true) => Some(CLOSE_HOVER()),
             (true, _, false) => Some(CAPTION_PRESSED()),
             (false, true, false) => Some(CAPTION_HOVER()),
             _ => None,
@@ -4535,9 +4515,9 @@ pub mod caption {
             p.rect_filled(rc, 0.0, f);
         }
         let ink = if close && pressed {
-            Color32::WHITE.gamma_multiply(0.7)
+            CLOSE_INK().gamma_multiply(0.7)
         } else if close && hover {
-            Color32::WHITE
+            CLOSE_INK()
         } else if !enabled || !active {
             caption_ink_inactive()
         } else {
@@ -4862,11 +4842,19 @@ mod tests {
     #[test]
     fn a_pressed_button_looks_pressed_in_both_themes() {
         // Issue #7: pressed was #f5f5f5 against hot #f6f6f6, the same to the eye.
-        for dark in [false, true] {
+        for theme in crate::palette::builtins() {
+            for c in [&theme.light, &theme.dark] {
+                button_states_differ(c);
+            }
+        }
+    }
+
+    fn button_states_differ(c: &crate::palette::Palette) {
+        {
             for kind in [ButtonKind::Normal, ButtonKind::Default] {
-                let rest = button_colors(kind, State::Normal, dark);
-                let hot = button_colors(kind, State::Hot, dark);
-                let pressed = button_colors(kind, State::Pressed, dark);
+                let rest = button_colors(kind, State::Normal, c);
+                let hot = button_colors(kind, State::Hot, c);
+                let pressed = button_colors(kind, State::Pressed, c);
                 assert_ne!(pressed.text, rest.text, "pressed dims the label");
                 assert_eq!(
                     pressed.bottom, pressed.border,
@@ -4878,8 +4866,8 @@ mod tests {
                 );
                 assert_ne!(hot.fill, rest.fill, "hot differs from rest");
             }
-            let disabled = button_colors(ButtonKind::Disabled, State::Disabled, dark);
-            let enabled = button_colors(ButtonKind::Normal, State::Normal, dark);
+            let disabled = button_colors(ButtonKind::Disabled, State::Disabled, c);
+            let enabled = button_colors(ButtonKind::Normal, State::Normal, c);
             let gap = |a: Color32, b: Color32| (a.r() as i32 - b.r() as i32).abs();
             assert!(
                 gap(disabled.text, enabled.text) >= 0x50,
@@ -4895,35 +4883,36 @@ mod tests {
         assert_eq!(State::Pressed.open_if(true), State::Pressed);
         assert_eq!(State::Disabled.open_if(true), State::Disabled);
         assert_eq!(State::Hot.open_if(false), State::Hot);
-        for dark in [false, true] {
-            assert_eq!(subtle_fill(State::Normal, dark), None);
-            assert_eq!(subtle_fill(State::Disabled, dark), None);
-            let grey = |s| subtle_fill(s, dark).unwrap().r();
+        let (light, dark) = (
+            &crate::palette::CLASSIC.light,
+            &crate::palette::CLASSIC.dark,
+        );
+        for c in [light, dark] {
+            assert_eq!(subtle_fill(State::Normal, c), None);
+            assert_eq!(subtle_fill(State::Disabled, c), None);
+            let grey = |s| subtle_fill(s, c).unwrap().r();
             // Pressed (and open) is deeper than hot, on either surface.
             assert!(grey(State::Pressed) < grey(State::Hot));
-            assert_eq!(
-                subtle_fill(State::Open, dark),
-                subtle_fill(State::Pressed, dark)
-            );
+            assert_eq!(subtle_fill(State::Open, c), subtle_fill(State::Pressed, c));
         }
         assert!(
-            highlight_fill(State::Pressed, false).unwrap().r()
-                < highlight_fill(State::Hot, false).unwrap().r()
+            highlight_fill(State::Pressed, light).unwrap().r()
+                < highlight_fill(State::Hot, light).unwrap().r()
         );
         // Windows 11 boxes: deeper under the pointer, deeper still pressed.
         // Light: darker under the pointer, darker still pressed. Dark: lighter under the
         // pointer, lighter still pressed (Windows 11). The three differ; disabled is empty.
-        let fill = |s, dark| fluent_box_in(s, dark).0.unwrap().r();
+        let fill = |s, c| fluent_box_in(s, c).0.unwrap().r();
         assert!(
-            fill(State::Pressed, false) < fill(State::Hot, false)
-                && fill(State::Hot, false) < fill(State::Normal, false)
+            fill(State::Pressed, light) < fill(State::Hot, light)
+                && fill(State::Hot, light) < fill(State::Normal, light)
         );
         assert!(
-            fill(State::Normal, true) < fill(State::Hot, true)
-                && fill(State::Hot, true) < fill(State::Pressed, true)
+            fill(State::Normal, dark) < fill(State::Hot, dark)
+                && fill(State::Hot, dark) < fill(State::Pressed, dark)
         );
-        for dark in [false, true] {
-            assert_eq!(fluent_box_in(State::Disabled, dark).0, None);
+        for c in [light, dark] {
+            assert_eq!(fluent_box_in(State::Disabled, c).0, None);
         }
     }
 

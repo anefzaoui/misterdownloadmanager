@@ -8,7 +8,7 @@
 use std::path::PathBuf;
 use std::time::Duration;
 
-use egui::{FontFamily, FontId, Pos2, Ui};
+use egui::{Pos2, Ui};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -134,7 +134,7 @@ impl Extension {
             .paint_at(ui, winui::rect(r(o, 18.0, 18.0, 48.0, 48.0)));
         winui::text_font(
             &p,
-            FontId::new(16.0, FontFamily::Name("tahoma-bold".into())),
+            winui::tahoma_title(),
             o.x + 80.0,
             o.y + 36.0,
             // i18n: the headline of the window that offers the browser extension

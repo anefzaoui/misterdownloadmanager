@@ -1,29 +1,122 @@
-//! IDM 6.42's dark look (notes/UI.md "Live reference"), as egui visuals.
+//! The look: light or dark (the mode), the active theme's colours and sizes (#45), the fonts,
+//! and egui's own visuals built from them.
 
-use egui::{Color32, CornerRadius, Stroke, Visuals};
+use egui::{CornerRadius, Stroke, Visuals};
 
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::cell::Cell;
+use std::sync::RwLock;
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+
+use crate::palette::{CLASSIC, Metrics, Palette, Theme};
 
 static DARK: AtomicBool = AtomicBool::new(true);
 
 /// Is the UI in dark mode? IDM: dark when "View → Dark Mode support" is on and Windows' app
-/// mode is dark (IDM 6.37); light otherwise. Painting code reads this every frame.
+/// mode is dark (IDM 6.37); light otherwise. It picks the active theme's dark or light variant
+/// ([`colors`]); whether that variant is a dark surface is [`dark_surface`].
 pub fn dark() -> bool {
     DARK.load(Ordering::Relaxed)
 }
 
-/// Match egui's glyph rendering to the mode: dark mode thickens light-on-dark text
-/// (`TwoCoverageMinusCoverageSq`), which makes black-on-white text look heavy, so light mode
-/// uses plain coverage. The glyph atlas is shared, so this follows the main window's mode.
+// ---- the active theme ------------------------------------------------------------------------
+//
+// Painters read colours and sizes hundreds of times a frame, from every window's thread: each
+// thread keeps a reference to the active theme and looks again only when the generation moved
+// (one atomic load per read, no lock, no allocation). A theme set from a file is leaked: it
+// lives as long as the program (a few KB per change), so a reference to it never dangles.
+
+static ACTIVE: RwLock<&'static Theme> = RwLock::new(&CLASSIC);
+static GENERATION: AtomicU64 = AtomicU64::new(0);
+
+thread_local! {
+    static SEEN: Cell<(u64, &'static Theme)> = const { Cell::new((0, &CLASSIC)) };
+}
+
+/// The active theme.
+pub fn current() -> &'static Theme {
+    let generation = GENERATION.load(Ordering::Acquire);
+    SEEN.with(|seen| {
+        let (at, theme) = seen.get();
+        if at == generation {
+            return theme;
+        }
+        let theme = *ACTIVE.read().unwrap_or_else(|e| e.into_inner());
+        seen.set((generation, theme));
+        theme
+    })
+}
+
+/// The active theme's colours in the current mode.
+pub fn colors() -> &'static Palette {
+    current().palette(dark())
+}
+
+/// The active theme's sizes.
+pub fn metrics() -> &'static Metrics {
+    &current().metrics
+}
+
+/// Is what is drawn now a dark surface (light text on dark)? The classic look's dark variant
+/// is; a theme says for each of its variants. Glyph rendering and the window captions follow it.
+pub fn dark_surface() -> bool {
+    colors().dark
+}
+
+/// Makes `theme` the active one.
+pub fn set(theme: Theme) {
+    let theme: &'static Theme = match crate::palette::builtins()
+        .into_iter()
+        .find(|b| **b == theme)
+    {
+        Some(builtin) => builtin,
+        None => Box::leak(Box::new(theme)),
+    };
+    *ACTIVE.write().unwrap_or_else(|e| e.into_inner()) = theme;
+    GENERATION.fetch_add(1, Ordering::AcqRel);
+}
+
+/// Makes the theme with this id the active one: a built-in, or a file in the themes folder
+/// (`themefile`). `MDM_THEME`, for tests and screenshots, names one instead. A theme that can't
+/// be read leaves the classic look, logged. Returns what was skipped or went wrong.
+pub fn select(id: &str) -> Vec<String> {
+    let id = std::env::var("MDM_THEME")
+        .ok()
+        .filter(|s| !s.is_empty())
+        .unwrap_or_else(|| id.to_owned());
+    if id.is_empty() || id == CLASSIC.id {
+        set(CLASSIC.clone());
+        return Vec::new();
+    }
+    match crate::themefile::load(&id) {
+        Ok(loaded) => {
+            for w in &loaded.warnings {
+                tracing::warn!("theme {id}: {w}");
+            }
+            set(loaded.theme);
+            loaded.warnings
+        }
+        Err(e) => {
+            tracing::warn!("theme {id}: {e}; the classic look instead");
+            set(CLASSIC.clone());
+            vec![e]
+        }
+    }
+}
+
+/// Match egui's glyph rendering to the surface: a dark one thickens light-on-dark text
+/// (`TwoCoverageMinusCoverageSq`), which makes black-on-white text look heavy, so a light one
+/// uses plain coverage. The glyph atlas is shared, so this follows the main window's.
 pub fn apply_mode(ctx: &egui::Context) {
-    let tf = if dark() {
+    let dark_surface = dark_surface();
+    let tf = if dark_surface {
         egui::epaint::FontColorTransferFunction::DARK_MODE_DEFAULT
     } else {
         egui::epaint::FontColorTransferFunction::LIGHT_MODE_DEFAULT
     };
     ctx.all_styles_mut(|s| s.visuals.text_options.color_transfer_function = tf);
     // eframe applies egui's theme preference to every window's caption; keep it in step so it
-    // doesn't reset the captions to the system theme.
+    // doesn't reset the captions to the system theme. egui's dark or light style is the mode's
+    // variant (`apply_theme` puts each variant into its egui theme).
     ctx.set_theme(if dark() {
         egui::ThemePreference::Dark
     } else {
@@ -32,7 +125,7 @@ pub fn apply_mode(ctx: &egui::Context) {
     // The window's own theme (caption, DWM): otherwise winit follows the system theme.
     ctx.send_viewport_cmd_to(
         egui::ViewportId::ROOT,
-        egui::ViewportCommand::SetTheme(system_theme(dark())),
+        egui::ViewportCommand::SetTheme(system_theme(dark_surface)),
     );
 }
 
@@ -70,22 +163,18 @@ fn wanted(dark_mode_support: bool, always_dark: bool, system_dark: bool) -> bool
     always_dark || (dark_mode_support && system_dark)
 }
 
-/// Colours that differ between IDM's dark and light modes: each becomes a function of the
-/// current mode, `dark()` (main-window.md, menus.md; light-main.md, light-dialogs.md).
+/// A module's names for the active theme's colours: `pub NAME => role;` becomes `NAME()`, the
+/// role's colour in the current mode ([`colors`]).
 macro_rules! themed {
-    ($($(#[$m:meta])* $vis:vis $name:ident = $dark:expr, $light:expr;)*) => {$(
+    ($($(#[$m:meta])* $vis:vis $name:ident => $role:ident;)*) => {$(
         $(#[$m])*
         #[allow(non_snake_case)]
-        $vis fn $name() -> Color32 {
-            if $crate::theme::dark() { $dark } else { $light }
+        $vis fn $name() -> egui::Color32 {
+            $crate::theme::colors().$role
         }
     )*};
 }
 pub(crate) use themed;
-
-pub const WINDOW: Color32 = Color32::from_rgb(0x2b, 0x2b, 0x2b);
-pub const LIST_ALT: Color32 = Color32::from_rgb(0x3e, 0x3e, 0x3e);
-pub const TEXT: Color32 = Color32::from_rgb(0xf0, 0xf0, 0xf0);
 
 /// The system's fonts for the scripts the UI font lacks (D-019; nothing bundled): a key, the
 /// files to try (in the fonts folder), the interface languages that need it. CJK fonts are large
@@ -348,14 +437,20 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
         }
     }
     ctx.set_fonts(defs);
+    text_styles(ctx);
+}
+
+/// egui's text sizes from the theme (tooltips, multi-line boxes).
+fn text_styles(ctx: &egui::Context) {
+    let m = metrics();
     ctx.all_styles_mut(|s| {
         use egui::{FontId, TextStyle};
         s.text_styles = [
-            (TextStyle::Small, FontId::proportional(11.0)),
-            (TextStyle::Body, FontId::proportional(12.0)),
-            (TextStyle::Button, FontId::proportional(12.0)),
-            (TextStyle::Monospace, FontId::monospace(12.0)),
-            (TextStyle::Heading, FontId::proportional(16.0)),
+            (TextStyle::Small, FontId::proportional(m.font_small)),
+            (TextStyle::Body, FontId::proportional(m.font_body)),
+            (TextStyle::Button, FontId::proportional(m.font_body)),
+            (TextStyle::Monospace, FontId::monospace(m.font_body)),
+            (TextStyle::Heading, FontId::proportional(m.font_heading)),
         ]
         .into();
     });
@@ -367,67 +462,59 @@ pub fn apply(ctx: &egui::Context) {
     // (egui gives it up after 0.8 s).
     ctx.options_mut(|o| o.input_options.max_click_duration = f64::INFINITY);
     egui_extras::install_image_loaders(ctx);
-    let mut v = Visuals::dark();
-    v.panel_fill = WINDOW;
-    v.window_fill = WINDOW;
-    v.extreme_bg_color = Color32::from_rgb(0x1a, 0x1a, 0x1a);
-    v.faint_bg_color = LIST_ALT;
-    v.override_text_color = Some(TEXT);
-    v.selection.bg_fill = crate::winui::SELECTION;
-    v.selection.stroke = Stroke::new(1.0, TEXT);
-    // Square-ish Windows controls rather than egui's rounded ones.
-    let r = CornerRadius::same(2);
-    for w in [
-        &mut v.widgets.noninteractive,
-        &mut v.widgets.inactive,
-        &mut v.widgets.hovered,
-        &mut v.widgets.active,
-        &mut v.widgets.open,
-    ] {
-        w.corner_radius = r;
-    }
-    v.widgets.inactive.bg_fill = Color32::from_rgb(0x3a, 0x3a, 0x3a);
-    v.widgets.inactive.weak_bg_fill = Color32::from_rgb(0x3a, 0x3a, 0x3a);
-    v.widgets.inactive.bg_stroke = Stroke::new(1.0, Color32::from_rgb(0x6a, 0x6a, 0x6a));
-    v.window_corner_radius = CornerRadius::same(0);
-    // Each egui theme its own visuals (the mode switches between them): set into the theme
-    // current at start only, the other side kept egui's stock look, and which one depended on
-    // the system's mode at launch (tooltips, a multi-line box's scroll bar).
-    ctx.set_visuals_of(egui::Theme::Dark, v);
-    let mut l = Visuals::light();
-    l.panel_fill = Color32::from_gray(0xf0);
-    l.window_fill = Color32::from_gray(0xf9);
-    l.override_text_color = Some(Color32::BLACK);
-    l.selection.bg_fill = crate::winui::SELECTION;
-    l.selection.stroke = Stroke::new(1.0, Color32::WHITE);
-    for w in [
-        &mut l.widgets.noninteractive,
-        &mut l.widgets.inactive,
-        &mut l.widgets.hovered,
-        &mut l.widgets.active,
-        &mut l.widgets.open,
-    ] {
-        w.corner_radius = r;
-    }
-    l.window_corner_radius = CornerRadius::same(0);
-    // Tooltips as Windows 11's: 4 px corners, a hairline border, roomy padding, wrapped at
-    // 320 px.
-    l.menu_corner_radius = CornerRadius::same(4);
-    l.window_stroke = Stroke::new(1.0, Color32::from_gray(0xe5));
-    ctx.set_visuals_of(egui::Theme::Light, l);
-    ctx.style_mut_of(egui::Theme::Dark, |s| {
-        s.visuals.menu_corner_radius = CornerRadius::same(4);
-        s.visuals.window_stroke = Stroke::new(1.0, Color32::from_gray(0x1a));
-    });
+    apply_theme(ctx);
+}
+
+/// egui's own visuals from the active theme: each variant into its egui theme (the mode
+/// switches between them), so tooltips and a multi-line box's scroll bar follow the theme too.
+pub fn apply_theme(ctx: &egui::Context) {
+    let theme = current();
+    let m = &theme.metrics;
+    let radius = |r: f32| CornerRadius::same(r.round().clamp(0.0, 255.0) as u8);
+    let visuals = |base: Visuals, c: &Palette| {
+        let mut v = base;
+        v.panel_fill = c.egui_panel;
+        v.window_fill = c.egui_window;
+        v.extreme_bg_color = c.egui_extreme;
+        v.faint_bg_color = c.egui_faint;
+        v.override_text_color = Some(c.egui_text);
+        v.selection.bg_fill = c.selection;
+        v.selection.stroke = Stroke::new(1.0, c.egui_selection_text);
+        // Square-ish Windows controls rather than egui's rounded ones.
+        for w in [
+            &mut v.widgets.noninteractive,
+            &mut v.widgets.inactive,
+            &mut v.widgets.hovered,
+            &mut v.widgets.active,
+            &mut v.widgets.open,
+        ] {
+            w.corner_radius = radius(m.widget_radius);
+        }
+        v.widgets.inactive.bg_fill = c.egui_widget;
+        v.widgets.inactive.weak_bg_fill = c.egui_widget;
+        // Transparent: egui's own (light widgets have none).
+        if c.egui_widget_border != egui::Color32::TRANSPARENT {
+            v.widgets.inactive.bg_stroke = Stroke::new(1.0, c.egui_widget_border);
+        }
+        v.window_corner_radius = CornerRadius::same(0);
+        // Tooltips as Windows 11's: rounded corners, a hairline border, roomy padding.
+        v.menu_corner_radius = radius(m.popup_radius);
+        v.window_stroke = Stroke::new(1.0, c.egui_window_border);
+        v
+    };
+    ctx.set_visuals_of(egui::Theme::Dark, visuals(Visuals::dark(), &theme.dark));
+    ctx.set_visuals_of(egui::Theme::Light, visuals(Visuals::light(), &theme.light));
+    let margin = |v: f32| v.round().clamp(0.0, 127.0) as i8;
     ctx.all_styles_mut(|s| {
-        s.spacing.tooltip_width = 320.0;
+        s.spacing.tooltip_width = m.tooltip_width;
         s.spacing.menu_margin = egui::Margin {
-            left: 9,
-            right: 9,
-            top: 6,
-            bottom: 7,
+            left: margin(m.tooltip_margin_x),
+            right: margin(m.tooltip_margin_x),
+            top: margin(m.tooltip_margin_top),
+            bottom: margin(m.tooltip_margin_bottom),
         };
     });
+    text_styles(ctx);
 }
 
 #[cfg(test)]

@@ -102,6 +102,9 @@ pub struct Settings {
     /// View → Always dark (#60): dark whatever the system says (a desktop that reports no
     /// preference, or a dark MDM on a light desktop).
     pub always_dark: bool,
+    /// The look (#45): a built-in theme's id ("classic", the default) or a theme file's name in
+    /// the data folder's `themes` folder (crate::themefile).
+    pub theme: String,
     /// View → Draw with (#89): OpenGL or Direct3D (Windows only), used from the next start.
     /// None: MDM's default (`renderer::DEFAULT`), which may change.
     pub renderer: Option<crate::renderer::Api>,
@@ -338,6 +341,7 @@ impl Default for Settings {
             view: None,
             dark_mode_support: true,
             always_dark: false,
+            theme: "classic".into(),
             renderer: None,
             limits_on: false,
             limits_mb: 200,

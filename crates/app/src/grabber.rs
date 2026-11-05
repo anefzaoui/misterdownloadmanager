@@ -9,7 +9,7 @@
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
-use egui::{Color32, Pos2, Rect, Ui, pos2, vec2};
+use egui::{Pos2, Rect, Ui, pos2, vec2};
 use url::Url;
 
 use crate::dialogs::{Outcome, window};
@@ -26,12 +26,8 @@ const CHECKS_PER_HOST: usize = 4;
 
 crate::theme::themed! {
     // The lists' header colour (winui::LIST_HEADER), as Add torrent's file list.
-    LIST_HEAD = rgb(0x19, 0x19, 0x19), rgb(0xff, 0xff, 0xff);
-    LIST_LINE = rgb(0x4a, 0x4a, 0x4a), rgb(0xe5, 0xe5, 0xe5);
-}
-
-const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
-    Color32::from_rgb(r, g, b)
+    LIST_HEAD => header;
+    LIST_LINE => table_line;
 }
 
 /// What looking a link up found.

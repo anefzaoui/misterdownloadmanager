@@ -4,7 +4,7 @@
 //! name; typing filters the list; the arrows, Page Up/Down, Home/End move; Enter or a double
 //! click chooses.
 
-use egui::{Color32, Rect, pos2, vec2};
+use egui::{Rect, pos2, vec2};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -260,12 +260,15 @@ impl Picker {
                     if on {
                         clip.rect_filled(winui::rect(row), 0.0, winui::ROW_SELECTED());
                     } else if let Some(c) =
-                        winui::subtle_fill(winui::State::of(&resp, true), crate::theme::dark())
+                        winui::subtle_fill(winui::State::of(&resp, true), crate::theme::colors())
                     {
                         clip.rect_filled(winui::rect(row), 0.0, c);
                     }
                     let (fg, muted) = if on {
-                        (Color32::WHITE, Color32::from_gray(0xe0))
+                        (
+                            winui::SELECTION_TEXT(),
+                            crate::theme::colors().selection_muted,
+                        )
                     } else {
                         (ink, winui::MUTED())
                     };

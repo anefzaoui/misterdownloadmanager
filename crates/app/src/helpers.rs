@@ -6,7 +6,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use egui::{FontFamily, FontId, Pos2, Ui};
+use egui::{Pos2, Ui};
 
 use crate::dialogs::{Outcome, window};
 use crate::icons::Icon;
@@ -169,7 +169,7 @@ impl Helpers {
         );
         egui::Image::new(egui::include_image!("../assets/icons/app/mdm-48.png"))
             .paint_at(ui, winui::rect(r(o, 18.0, 18.0, 48.0, 48.0)));
-        let title = FontId::new(16.0, FontFamily::Name("tahoma-bold".into()));
+        let title = winui::tahoma_title();
         winui::text_font(
             &p,
             title,

@@ -17,37 +17,39 @@ pub const MENU_H: f32 = 20.0;
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
-fn grey(v: u8) -> Color32 {
-    rgb(v, v, v)
-}
 use crate::theme::themed;
+// The active theme's colours (crate::palette, #45).
 themed! {
-    pub WINDOW_BG = rgb(0x39, 0x39, 0x39), grey(0xf0);
-    MENUBAR_BG = rgb(0x20, 0x20, 0x20), grey(0xff);
+    pub WINDOW_BG => window;
+    MENUBAR_BG => menubar;
+    /// The bar's last row (light: #f2f2f2).
+    MENUBAR_BOTTOM => menubar_bottom;
     /// The open menu's item. Light: #f9f9f9, the popup's own background (captured 2026-10-30).
-    MENUBAR_OPEN = rgb(0x50, 0x50, 0x50), grey(0xf9);
+    MENUBAR_OPEN => menubar_open;
     /// An item under the pointer, no menu open (captured 2026-10-30): dark #505050 from 1 px
     /// below the bar's top; light #f5f5f5, 1 px inside the bar's top and bottom.
-    MENUBAR_HOT = rgb(0x50, 0x50, 0x50), grey(0xf5);
-    MENUBAR_LINE = rgb(0xf0, 0xf0, 0xf0), grey(0xf0);
-    POPUP_BG = rgb(0x2b, 0x2b, 0x2b), grey(0xf9);
+    MENUBAR_HOT => menubar_hot;
+    MENUBAR_LINE => menubar_line;
+    POPUP_BG => menu;
     // The native menu window's frame (Windows draws menus in their own window), and every
     // in-window popup's (popup_surface).
-    POPUP_BORDER = rgb(0x3e, 0x3e, 0x3e), grey(0xe5);
-    POPUP_SEP = rgb(0x3e, 0x3e, 0x3e), grey(0xd7);
+    POPUP_BORDER => menu_border;
+    POPUP_SEP => menu_sep;
     /// Light: #f0f0f0, rounded, captured 2026-10-30.
-    POPUP_HOVER = rgb(0x35, 0x35, 0x35), grey(0xf0);
-    POPUP_ITEM = rgb(0x2c, 0x2c, 0x2c), grey(0xf9);
-    TEXT = rgb(0xff, 0xff, 0xff), grey(0x00);
+    POPUP_HOVER => menu_hot;
+    POPUP_ITEM => menu_item;
+    TEXT => menu_text;
     /// Bullets and submenu arrows (light: dark cores #1a1a1a / #282828).
-    GLYPH = rgb(0xff, 0xff, 0xff), grey(0x1a);
-    TEXT_DISABLED_MENU = rgb(0x6d, 0x6d, 0x6d), grey(0x9f);
-    TB_DISABLED = rgb(0xa0, 0xa0, 0xa0), grey(0xa0);
+    GLYPH => menu_glyph;
+    TEXT_DISABLED_MENU => menu_text_disabled;
+    TB_DISABLED => toolbar_text_disabled;
     /// A drop-down's arrow (dark: light on the dark band, where #282828 could not be seen).
-    TB_ARROW = rgb(0xd0, 0xd0, 0xd0), grey(0x28);
-    CAT_FRAME = rgb(0xdc, 0xdc, 0xdc), grey(0xdc);
-    TREE_BG = rgb(0x20, 0x20, 0x20), grey(0xff);
-    TREE_LINES = rgb(0x6d, 0x6d, 0x6d), grey(0x6d);
+    TB_ARROW => toolbar_arrow;
+    CAT_FRAME => tree_frame;
+    TREE_BG => tree;
+    TREE_LINES => tree_lines;
+    /// The tree's chevrons (dark look).
+    TREE_EXPANDER => tree_expander;
 }
 
 use crate::winui::{fill, px};
@@ -201,17 +203,15 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
         o.y + MENU_H - 2.0,
         MENUBAR_BG(),
     );
-    if !crate::theme::dark() {
-        // Light: the bar's last row is #f2f2f2.
-        fill(
-            &p,
-            o.x,
-            o.y + MENU_H - 2.0,
-            o.x + width - 1.0,
-            o.y + MENU_H - 2.0,
-            grey(0xf2),
-        );
-    }
+    // The bar's last row (light: #f2f2f2; dark: the bar's own).
+    fill(
+        &p,
+        o.x,
+        o.y + MENU_H - 2.0,
+        o.x + width - 1.0,
+        o.y + MENU_H - 2.0,
+        MENUBAR_BOTTOM(),
+    );
     fill(
         &p,
         o.x,
@@ -406,7 +406,7 @@ pub fn show_cues(ctx: &egui::Context) {
 
 /// Whether access letters are underlined: always in dark mode, after [`show_cues`] in light.
 pub fn cues(ctx: &egui::Context) -> bool {
-    crate::theme::dark()
+    crate::theme::colors().access_keys_always
         || ctx.data(|d| {
             d.get_temp::<bool>(egui::Id::unique("keyboard-cues"))
                 .unwrap_or(false)
@@ -716,10 +716,11 @@ pub fn open_sub_at(ctx: &egui::Context, id: &str, i: usize) {
 /// The surface of a popup drawn inside a window (the date picker's calendar, a column's filter
 /// box): the menus' colours and border, rounded as Windows 11's flyouts (they had their own).
 pub fn popup_surface(p: &egui::Painter, rc: egui::Rect) {
-    p.rect_filled(rc, 6.0, POPUP_BG());
+    let radius = crate::theme::metrics().flyout_radius;
+    p.rect_filled(rc, radius, POPUP_BG());
     p.rect_stroke(
         rc,
-        6.0,
+        radius,
         egui::Stroke::new(1.0, POPUP_BORDER()),
         egui::StrokeKind::Inside,
     );
@@ -956,7 +957,11 @@ fn popup_level<C: Clone>(
                 None => hovered,
             };
             if lit || open_sub == Some(i) {
-                painter.rect_filled(slot, 4.0, POPUP_HOVER());
+                painter.rect_filled(
+                    slot,
+                    crate::theme::metrics().menu_item_radius,
+                    POPUP_HOVER(),
+                );
             } else {
                 // Spec: an item's normal background is one level lighter than the padding.
                 fill(
@@ -1191,11 +1196,18 @@ pub fn toolbar(
 ) -> Option<ToolbarEvent> {
     let p = ui.painter().clone();
     let top = o.y + MENU_H;
-    fill(&p, o.x, top, o.x + width - 1.0, top, grey(0xa0));
-    fill(&p, o.x, top + 1.0, o.x + width - 1.0, top + 1.0, grey(0xff));
+    let c = crate::theme::colors();
+    fill(&p, o.x, top, o.x + width - 1.0, top, c.toolbar_line);
+    fill(
+        &p,
+        o.x,
+        top + 1.0,
+        o.x + width - 1.0,
+        top + 1.0,
+        c.toolbar_line_light,
+    );
     // Both modes (light-main.md; dark changes only colours): Tahoma labels, 66 px buttons, a
     // 68 px band.
-    let dark = crate::theme::dark();
     let (font, base_w, band_h) = (winui::tahoma(), 66.0f32, 68.0);
     let band = Rect::from_min_size(pos2(o.x, top + 2.0), vec2(width, band_h));
     p.rect_filled(band, 0.0, WINDOW_BG());
@@ -1247,21 +1259,13 @@ pub fn toolbar(
             // request 2026-10-29): a drop-down is a split button — the part under the pointer is
             // lit (pressed while the mouse is down), the other part faintly, a 1 px divider between.
             let h = 65.0;
-            let (hot_c, faint_c, down_c, edge_c) = if dark {
-                (
-                    rgb(0x33, 0x41, 0x4d),
-                    rgb(0x37, 0x3b, 0x3f),
-                    rgb(0x2a, 0x36, 0x40),
-                    rgb(0x4d, 0x5f, 0x6e),
-                )
-            } else {
-                (
-                    rgb(0xe5, 0xf3, 0xff),
-                    rgb(0xf3, 0xf9, 0xff),
-                    rgb(0xcc, 0xe8, 0xff),
-                    rgb(0xcc, 0xe8, 0xff),
-                )
-            };
+            let (hot_c, faint_c, down_c, edge_c, border_c) = (
+                c.toolbar_hot,
+                c.toolbar_hot_faint,
+                c.toolbar_pressed,
+                c.toolbar_hot_edge,
+                c.toolbar_hot_border,
+            );
             let on_arrow = dropdown && resp.hover_pos().is_some_and(past_button);
             let down = resp.is_pointer_button_down_on();
             let main = winui::rect(Rect::from_min_size(pos2(x, band.top()), vec2(bw, h)));
@@ -1277,14 +1281,13 @@ pub fn toolbar(
                     (false, _) => faint_c,
                 };
                 p.rect_filled(r, 0.0, c);
-                if !dark {
-                    p.rect_stroke(
-                        r,
-                        0.0,
-                        egui::Stroke::new(1.0, edge_c),
-                        egui::StrokeKind::Inside,
-                    );
-                }
+                // None in the dark look (a transparent border isn't drawn).
+                p.rect_stroke(
+                    r,
+                    0.0,
+                    egui::Stroke::new(1.0, border_c),
+                    egui::StrokeKind::Inside,
+                );
             };
             lit(main, !on_arrow);
             if dropdown {
@@ -1331,11 +1334,7 @@ pub fn toolbar(
             // toolbar separator — a shadow line and a highlight beside it — 24 px tall, centred
             // on the arrow; the hover draws the full divider instead.
             if !(*enabled && resp.hovered()) {
-                let (shadow, light) = if dark {
-                    (grey(0x26), grey(0x4d))
-                } else {
-                    (grey(0xc6), grey(0xff))
-                };
+                let (shadow, light) = (c.toolbar_split_shadow, c.toolbar_split_light);
                 let (y0, y1) = (ay - 10.0, ay + 13.0);
                 winui::fill_l(&p, x + bw - 1.0, y0, x + bw - 1.0, y1, shadow);
                 winui::fill_l(&p, x + bw, y0, x + bw, y1, light);
@@ -1496,8 +1495,8 @@ pub fn categories(
         .interact(close, egui::Id::unique("cat-close"), winui::pointer_only())
         // i18n: tooltip of the × that closes the Categories pane
         .on_hover_text(crate::i18n::t("Close"));
-    if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::dark()) {
-        p.rect_filled(close, 2.0, c);
+    if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::colors()) {
+        p.rect_filled(close, crate::theme::metrics().part_radius, c);
     }
     text_font(
         &p,
@@ -1636,7 +1635,6 @@ pub fn categories(
         let icon_x = o.x + if r.level == 0 { 30.0 } else { 49.0 };
         let text_x = o.x + if r.level == 0 { 51.0 } else { 70.0 };
         let ext = text_width_font(&p, winui::tahoma(), crate::i18n::t(&r.label));
-        let dark = crate::theme::dark();
         if r.selected {
             // The inactive selection grey behind the label, in both modes (#f0f0f0 on the white
             // tree could not be seen).
@@ -1650,7 +1648,7 @@ pub fn categories(
             );
         }
         if let Some(open) = r.expander {
-            if dark {
+            if crate::theme::colors().tree_chevrons {
                 winui::fill_l(&tp, o.x + 11.0, top, o.x + 26.0, top + 15.0, TREE_BG());
                 chevron(&tp, o.x, top, open, r.selected);
             } else {
@@ -1937,6 +1935,17 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
         [0x20, 0x20, 0x20, 0x21, 0x53, 0x21, 0x20, 0x20, 0x20],
     ];
     let _ = bright;
+    // Measured over the dark tree (#20) in white: coverage, so the theme's tree and ink show.
+    let (bg, ink) = (TREE_BG(), TREE_EXPANDER());
+    let grey = |v: u8| {
+        let a = (v as f32 - 32.0) / 223.0;
+        let mix = |b: u8, i: u8| (b as f32 + (i as f32 - b as f32) * a).round() as u8;
+        rgb(
+            mix(bg.r(), ink.r()),
+            mix(bg.g(), ink.g()),
+            mix(bg.b(), ink.b()),
+        )
+    };
     if open {
         for (dy, row) in EXPANDED.iter().enumerate() {
             for (dx, v) in row.iter().enumerate() {

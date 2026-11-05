@@ -86,42 +86,17 @@ fn draw_caption(
     bar.pressed
 }
 
-const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
-    Color32::from_rgb(r, g, b)
-}
-const DISABLED: Color32 = rgb(0x80, 0x80, 0x80);
-
-/// Segment bar interior rows (top → bottom): not downloaded, downloaded, start marker.
-const SEG_ROWS: [(u32, u32, u32); 13] = [
-    (0xfafafc, 0xbfc6f3, 0xf67566),
-    (0xf7f8fa, 0xa4aae7, 0xf46a5e),
-    (0xf5f6fa, 0x898edd, 0xf25e56),
-    (0xf2f4f9, 0x7176d3, 0xef514c),
-    (0xecf0f6, 0x686bcf, 0xea4240),
-    (0xdbe0ee, 0x1a3cb7, 0xbb0205),
-    (0xdce1f0, 0x0f43b8, 0xbe0205),
-    (0xdee3f1, 0x1155bf, 0xc60b09),
-    (0xdfe4f1, 0x1267c7, 0xd21913),
-    (0xe1e5f1, 0x117acd, 0xde281b),
-    (0xe2e7f3, 0x128ed6, 0xeb3724),
-    (0xe4e8f4, 0x1aafe3, 0xf1462c),
-    (0xe6e9f5, 0x2dd3f1, 0xf64f30),
-];
-
-fn hex(v: u32) -> Color32 {
-    rgb((v >> 16) as u8, (v >> 8) as u8, v as u8)
+/// A greyed label (the limits' captions while off).
+fn disabled() -> Color32 {
+    crate::theme::colors().progress_label_disabled
 }
 
-/// A segment / piece bar row's colour: IDM's; in dark mode its "not here yet" rows are the
-/// same gradient dimmed (they were a bright white strip in the dark window).
-fn seg(v: u32, missing: bool) -> Color32 {
-    let c = hex(v);
-    if missing && crate::theme::dark() {
-        let dim = |x: u8| (x as f32 * 0.22 + 22.0) as u8;
-        rgb(dim(c.r()), dim(c.g()), dim(c.b()))
-    } else {
-        c
-    }
+/// The segment / piece bar's 13 rows, top to bottom: (not here yet, here, a connection's
+/// start), from the theme (IDM's gradients in the classic look; its dark variant dims the
+/// "not here yet" rows, a bright white strip in the dark window).
+fn seg_rows() -> impl Iterator<Item = (Color32, Color32, Color32)> {
+    let s = &crate::theme::colors().segments;
+    (0..13).map(|i| (s.missing[i], s.done[i], s.start[i]))
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -389,7 +364,7 @@ impl Progress {
             ViewportId::from_hash_of(("progress", self.id)),
             key,
             &title_now,
-            crate::theme::dark(),
+            crate::theme::dark_surface(),
             !closing,
         );
         let action = match (action, self.pending_limit.take()) {
@@ -628,7 +603,7 @@ impl Progress {
         let label = if self.limiter {
             winui::TEXT()
         } else {
-            DISABLED
+            disabled()
         };
         winui::fit(
             ui,
@@ -727,7 +702,11 @@ impl Progress {
             true,
             Some(525.0),
         );
-        let label = if self.up_on { winui::TEXT() } else { DISABLED };
+        let label = if self.up_on {
+            winui::TEXT()
+        } else {
+            disabled()
+        };
         winui::fit(
             ui,
             p,
@@ -1015,8 +994,8 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
             winui::TEXT(),
         );
         // Light mode shows the status value in pure blue (light-dialogs.md).
-        let vc = if label == "Status" && !crate::theme::dark() {
-            rgb(0x00, 0x00, 0xff)
+        let vc = if label == "Status" {
+            crate::theme::colors().status_value
         } else {
             winui::TEXT()
         };
@@ -1309,7 +1288,7 @@ impl Progress {
 /// The segment bar as a piece map: a column is filled when the pieces under it are there.
 fn piece_bar(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
     let (x0, y0) = (o.x + 17.0, o.y + 249.0);
-    let border = rgb(0x65, 0x6b, 0x7b);
+    let border = crate::theme::colors().segment_border;
     fill(p, x0, y0, x0 + 512.0, y0, border);
     fill(p, x0, y0 + 14.0, x0 + 512.0, y0 + 14.0, border);
     fill(p, x0, y0, x0, y0 + 14.0, border);
@@ -1331,10 +1310,10 @@ fn piece_bar(p: &egui::Painter, o: Pos2, pieces: &[bool]) {
         while e + 1 < 511 && have(e + 1) == on {
             e += 1;
         }
-        for (row, cols) in SEG_ROWS.iter().enumerate() {
+        for (row, cols) in seg_rows().enumerate() {
             let v = if on { cols.1 } else { cols.0 };
             let y = y0 + 1.0 + row as f32;
-            fill(p, ix + c as f32, y, ix + e as f32, y, seg(v, !on));
+            fill(p, ix + c as f32, y, ix + e as f32, y, v);
         }
         c = e + 1;
     }
@@ -1370,19 +1349,8 @@ fn piece_legend(p: &egui::Painter, o: Pos2) {
 
 /// Pieces there, partly there (a square standing for several), missing.
 fn piece_colors() -> (Color32, Color32, Color32) {
-    if crate::theme::dark() {
-        (
-            rgb(0x2e, 0x9d, 0x52),
-            rgb(0x3a, 0x6e, 0x4b),
-            rgb(0x45, 0x45, 0x45),
-        )
-    } else {
-        (
-            rgb(0x2e, 0x9d, 0x52),
-            rgb(0x9c, 0xd2, 0xae),
-            rgb(0xd6, 0xd6, 0xd6),
-        )
-    }
+    let c = crate::theme::colors();
+    (c.piece, c.piece_partial, c.piece_missing)
 }
 
 /// The Pieces tab: one square per piece (or per group of pieces when there are many).
@@ -1441,16 +1409,11 @@ fn table(
     let mut clicked = None;
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
     winui::solid(p, outer, winui::FIELD_EDGE());
-    let dark = crate::theme::dark();
-    let (bg, head, line) = if dark {
-        (winui::FIELD(), winui::LIST_HEADER(), rgb(0x63, 0x63, 0x63))
-    } else {
-        (
-            rgb(0xff, 0xff, 0xff),
-            winui::LIST_HEADER(),
-            rgb(0xe5, 0xe5, 0xe5),
-        )
-    };
+    let (bg, head, line) = (
+        winui::FIELD(),
+        winui::LIST_HEADER(),
+        crate::theme::colors().header_sep,
+    );
     fill(p, o.x + 18.0, o.y + 274.0, o.x + 528.0, o.y + 399.0, bg);
     fill(p, o.x + 19.0, o.y + 275.0, o.x + 527.0, o.y + 298.0, head);
     for x in seps {
@@ -1533,7 +1496,7 @@ fn table(
 /// The custom-drawn segment bar (spec "Segment bar"): 13-row gradients, red start columns.
 fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>) {
     let (x0, y0) = (o.x + 17.0, o.y + 249.0);
-    let border = rgb(0x65, 0x6b, 0x7b);
+    let border = crate::theme::colors().segment_border;
     fill(p, x0, y0, x0 + 512.0, y0, border);
     fill(p, x0, y0 + 14.0, x0 + 512.0, y0 + 14.0, border);
     fill(p, x0, y0, x0, y0 + 14.0, border);
@@ -1544,27 +1507,20 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, snap: Option<&Snapshot>)
         (x0, y0 + 14.0),
         (x0 + 512.0, y0 + 14.0),
     ] {
-        px(p, x, y, rgb(0xa2, 0xa5, 0xaf));
+        px(p, x, y, crate::theme::colors().segment_corner);
     }
     // Paint a run of columns [a, b] with one of the three row profiles.
     let run = |a: f32, b: f32, which: usize| {
         if b < a {
             return;
         }
-        for (row, cols) in SEG_ROWS.iter().enumerate() {
+        for (row, cols) in seg_rows().enumerate() {
             let c = match which {
                 0 => cols.0,
                 1 => cols.1,
                 _ => cols.2,
             };
-            fill(
-                p,
-                a,
-                y0 + 1.0 + row as f32,
-                b,
-                y0 + 1.0 + row as f32,
-                seg(c, which == 0),
-            );
+            fill(p, a, y0 + 1.0 + row as f32, b, y0 + 1.0 + row as f32, c);
         }
     };
     let ix = o.x + 18.0;
@@ -1619,11 +1575,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
             o.y + 275.0,
             o.x + x,
             o.y + 298.0,
-            if crate::theme::dark() {
-                rgb(0x63, 0x63, 0x63)
-            } else {
-                rgb(0xe5, 0xe5, 0xe5)
-            },
+            crate::theme::colors().header_sep,
         );
     }
     // Column titles end in "..." before their column's line, whole on hover; a long "N." starts
