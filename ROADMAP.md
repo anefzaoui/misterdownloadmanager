@@ -71,6 +71,8 @@ Everything below ships together, in one release.
   ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), and dragging the file out
   of Download complete works in every language
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
+- ✅ The built-in categories can be renamed, given other file types and deleted, and restored
+  ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93))
 - ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
   a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
   list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
