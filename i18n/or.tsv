@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ଚୟନ କରାଯାଇଛି|{n} ଚୟନ କରାଯାଇଛି
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} ଭିଡିଓ|{title}: {count} ଭିଡିଓ
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {total} ଭିଡିଓ ମଧ୍ୟରୁ {listed} ତାଲିକାଭୁକ୍ତ|{title}: {total} ଭିଡିଓ ମଧ୍ୟରୁ {listed} ତାଲିକାଭୁକ୍ତ
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -3061,15 +3070,6 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ସେକେଣ୍ଡ
-#. text in playlistdlg.rs
-#. in Download video, a playlist's title then how many videos it has ({count})
-#. {count} = a number (keep the braces as they are)
-#, machine
-	{title}: {count} video	{title}: {count} ଭିଡିଓ
-#. text in playlistdlg.rs
-#. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
-#, machine
-	{title}: {listed} of {total} video listed	{title}: {total} ଭିଡିଓରୁ {listed} ତାଲିକାଭୁକ୍ତ ହୋଇଛି
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine

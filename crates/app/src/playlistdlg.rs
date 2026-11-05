@@ -278,9 +278,9 @@ impl PlaylistView {
         } else if let Some(t) = self.total.filter(|_| self.short()) {
             // Stopped short (Stop listing, a failure, a channel's pages): never shown as whole.
             // The form follows {total}; the numbers are written as the interface writes them.
+            // i18n: in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
             let count = crate::i18n::tn(
                 t,
-                // i18n: in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
                 "{title}: {listed} of {total} video listed",
                 "{title}: {listed} of {total} videos listed",
             );
@@ -293,9 +293,9 @@ impl PlaylistView {
                 ],
             )
         } else {
+            // i18n: in Download video: a playlist title then how many videos it has ({count})
             let count = crate::i18n::tn(
                 n as u64,
-                // i18n: in Download video, a playlist's title then how many videos it has ({count})
                 "{title}: {count} video",
                 "{title}: {count} videos",
             );
