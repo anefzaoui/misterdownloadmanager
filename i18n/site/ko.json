@@ -5718,10 +5718,6 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
    "text": "MDM에는 애드웨어, 스파이웨어, 번들 제공 또는 추적 기능이 없습니다. 전체 소스 코드가 공개되어 있으므로 누구나 MDM이 무엇을 하는지 확인할 수 있으며, 모든 릴리스는…"
   },
-  "a02445ca780f3ef8": {
-   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트가 있습니다. <x1/>은 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료)를 반환합니다. Windows 전용 호출은 <x3/>에, Linux 및 macOS 해당 호출은 <x4/>에 국한됩니다(세션, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기부터 시작). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다: Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)."
-  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "영어보다 긴 번역은 맞지 않는 경우 <g1>...</g1>로 끝납니다. 전체를 읽으려면 해당 부분을 가리키세요."
@@ -7685,6 +7681,10 @@
   "d82903fa7d227c82": {
    "source": "Benchmark scenario",
    "text": "벤치마크 시나리오"
+  },
+  "d830def677dfb3f0": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
+   "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료)를 반환합니다. Windows 전용 호출은 <x3/>에, Linux 및 macOS 해당 호출은 <x4/>에 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다: Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>). 파일 이름 앞의 아이콘도 마찬가지입니다(<x6/>): Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x7/>, shared-mime-info 및 아이콘 테마 사양). 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango의 아이콘(번들)은 시스템 아이콘이 준비될 때까지, 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",

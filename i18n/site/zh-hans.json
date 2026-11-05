@@ -5718,10 +5718,6 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
    "text": "MDM 不含广告软件、间谍软件、捆绑优惠或跟踪。它的全部源代码都是公开的，任何人都可以检查它的功能，并且每个版本都是由 GitHub 的服务器从该代码构建的，构建过程可以被检查。"
   },
-  "a02445ca780f3ef8": {
-   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "一个绘制到固定像素坐标的 egui 窗口，加上每个对话框一个即时视口。<x1/> 保存状态（下载、队列、设置、列表选择）并将菜单、工具栏、按键和 IPC 命令转换为操作。每个对话框都是自己的模块，并返回一个 <x2/>（打开、关闭、带值完成）。仅限 Windows 的调用限制在 <x3/> 中，其 Linux 和 macOS 对应项限制在 <x4/> 中（从会话、浏览器主机、声音、在文件夹中显示、崩溃处理程序开始）；所有其他文件都是安全的、可移植的 Rust。字体来自系统：Windows 的 Fonts 文件夹、macOS 的系统字体、Linux 上的 fontconfig（<x5/>）。"
-  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "如果翻译比英文长，不适合显示的部分会以<g1>...</g1>结尾；指向它即可阅读完整内容。"
@@ -7685,6 +7681,10 @@
   "d82903fa7d227c82": {
    "source": "Benchmark scenario",
    "text": "基准测试场景"
+  },
+  "d830def677dfb3f0": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
+   "text": "一个 egui 窗口绘制到固定的像素坐标，每个对话框一个即时视口。<x1/> 保存状态（下载、队列、设置、列表选择），并将菜单、工具栏、按键和 IPC 命令转换为操作。每个对话框都是自己的模块，并返回一个 <x2/>（打开、关闭、完成并带有一个值）。仅限 Windows 的调用仅限于 <x3/>，其 Linux 和 macOS 对应项仅限于 <x4/>（从会话开始、浏览器主机、声音、在文件夹中显示、崩溃处理程序）；所有其他文件都是安全、可移植的 Rust。字体来自系统：Windows 的 Fonts 文件夹、macOS 的系统字体、Linux 上的 fontconfig (<x5/>)。文件名前的图标也是如此 (<x6/>)：Windows shell 的系统图像列表、macOS Finder 的 (NSWorkspace)、Linux 桌面的图标主题 (<x7/>，shared-mime-info 和图标主题规范)。每种类型按像素大小在后台线程上查找一次。Tango 的图标（捆绑）在系统图标准备好之前以及系统没有图标的地方作为替代。"
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",

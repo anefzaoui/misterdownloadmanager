@@ -5718,10 +5718,6 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
    "text": "MDM ไม่มีแอดแวร์ สปายแวร์ ข้อเสนอแบบรวม หรือการติดตามใดๆ ซอร์สโค้ดทั้งหมดเป็นสาธารณะ ทุกคนสามารถตรวจสอบได้ว่าโปรแกรมทำอะไร และทุกเวอร์ชันที่เผยแพร่ก็สร้างขึ้น..."
   },
-  "a02445ca780f3ef8": {
-   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "หน้าต่าง egui หนึ่งบานที่วาดไปยังพิกัดพิกเซลคงที่ บวกกับวิวพอร์ตทันทีหนึ่งบานต่อกล่องโต้ตอบ <x1/> เก็บสถานะ (การดาวน์โหลด, คิว, การตั้งค่า, การเลือกรายการ) และเปลี่ยนคำสั่งเมนู, แถบเครื่องมือ, คีย์ และ IPC ให้เป็นการกระทำ กล่องโต้ตอบแต่ละอันเป็นโมดูลของตัวเองและส่งคืน <x2/> (เปิด, ปิด, ทำเสร็จพร้อมค่า) การเรียกใช้เฉพาะ Windows ถูกจำกัดไว้ที่ <x3/> และคู่ของ Linux และ macOS ที่ <x4/> (เริ่มต้นด้วยเซสชัน, โฮสต์ของเบราว์เซอร์, เสียง, แสดงในโฟลเดอร์, ตัวจัดการข้อขัดข้อง); ไฟล์อื่น ๆ ทั้งหมดปลอดภัย, Rust แบบพกพา ฟอนต์มาจากระบบ: โฟลเดอร์ Fonts ของ Windows, ฟอนต์ระบบของ macOS, fontconfig บน Linux (<x5/>)"
-  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "คำแปลที่ยาวกว่าภาษาอังกฤษจะลงท้ายด้วย <g1>...</g1> หากไม่พอดี; ชี้ไปที่คำแปลนั้นเพื่ออ่านทั้งหมด"
@@ -7685,6 +7681,10 @@
   "d82903fa7d227c82": {
    "source": "Benchmark scenario",
    "text": "สถานการณ์การทดสอบ"
+  },
+  "d830def677dfb3f0": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
+   "text": "หน้าต่าง egui หนึ่งหน้าต่างถูกวาดไปยังพิกเซลพิกัดคงที่ บวกกับวิวพอร์ตทันทีหนึ่งรายการต่อกล่องโต้ตอบ <x1/> เก็บสถานะ (การดาวน์โหลด, คิว, การตั้งค่า, การเลือกรายการ) และเปลี่ยนคำสั่งเมนู, แถบเครื่องมือ, คีย์ และ IPC ให้เป็นการดำเนินการ กล่องโต้ตอบแต่ละกล่องเป็นโมดูลของตัวเองและส่งคืน <x2/> (เปิด, ปิด, เสร็จสิ้นพร้อมค่า) การเรียกใช้เฉพาะ Windows จะถูกจำกัดไว้ที่ <x3/> และคู่ของ Linux และ macOS จะถูกจำกัดไว้ที่ <x4/> (เริ่มต้นด้วยเซสชัน, โฮสต์ของเบราว์เซอร์, เสียง, แสดงในโฟลเดอร์, ตัวจัดการข้อขัดข้อง); ไฟล์อื่นๆ ทุกไฟล์ปลอดภัย, เป็น Rust แบบพกพา ฟอนต์มาจากระบบ: โฟลเดอร์ Fonts ของ Windows, ฟอนต์ระบบของ macOS, fontconfig บน Linux (<x5/>) เช่นเดียวกับไอคอนก่อนชื่อไฟล์ (<x6/>): รายการรูปภาพระบบของ Windows shell, macOS Finder's (NSWorkspace), ธีมไอคอนของเดสก์ท็อป Linux (<x7/>, shared-mime-info และ Icon Theme Specification) แต่ละประเภทจะถูกค้นหาหนึ่งครั้งต่อขนาดพิกเซล บนเธรดพื้นหลัง ไอคอนของ Tango (ที่มาพร้อมเครื่อง) จะถูกใช้แทนจนกว่าไอคอนของระบบจะพร้อม และทุกที่ที่ระบบไม่มี"
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
