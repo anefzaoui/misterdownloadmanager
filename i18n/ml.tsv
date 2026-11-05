@@ -317,7 +317,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	പുനരാരംഭിക്കാൻ കഴിയില്ല: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	ഇനിപ്പറയുന്ന ബ്രൗസറുകളിൽ നിന്ന് ഡൗൺലോഡുകൾ പിടിച്ചെടുക്കുക:
 #. text in extension.rs
@@ -404,11 +404,12 @@
 #. text in the Options window
 #, machine
 	Clock:	ക്ലോക്ക്:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 #, machine
 	Close	അടയ്ക്കുക
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -692,6 +693,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	ഡൗൺലോഡുകൾ
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#, machine
+	Downloads in progress	പുരോഗമിക്കുന്ന ഡൗൺലോഡുകൾ
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -845,7 +850,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	ഫയലുകൾ പോകുന്നത്: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ക്യൂവിലെ ഫയലുകൾ
 #. button in the Find window
@@ -988,6 +993,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ടാബ് മറയ്ക്കുക
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+#, machine
+	Hide to the notification area	അറിയിപ്പ് ഏരിയയിലേക്ക് മറയ്ക്കുക
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager ഡൗൺലോഡ് ചെയ്യുന്നതിനു പകരം ബ്രൗസറിനെക്കൊണ്ട് ഡൗൺലോഡ് ചെയ്യാൻ, ഒരു ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ Alt അമർത്തിപ്പിടിക്കുക.
@@ -1198,6 +1207,10 @@
 #. group box title in the Options window
 #, machine
 	Max. connections number	പരമാവധി കണക്ഷനുകളുടെ എണ്ണം
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+#, machine
+	Maximize	വലുതാക്കുക
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 #, machine
@@ -1213,6 +1226,14 @@
 #. the month (the fifth of the year)
 #, machine
 	May	മെയ്
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+#, machine
+	Minimize	ചെറുതാക്കുക
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+#, machine
+	Minimize to the notification area	അറിയിപ്പ് ഏരിയയിലേക്ക് ചെറുതാക്കുക
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine

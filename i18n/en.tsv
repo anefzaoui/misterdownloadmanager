@@ -297,11 +297,12 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 	Close	Close
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Close a menu or dialog	Close a menu or dialog
@@ -504,6 +505,9 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Downloads
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+	Downloads in progress	Downloads in progress
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 	Downloads stopped and will resume automatically at {time}.	Downloads stopped and will resume automatically at {time}.
@@ -717,6 +721,9 @@
 	Hide &categories	Hide &categories
 #. button in a download's progress window
 	Hide tab	Hide tab
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+	Hide to the notification area	Hide to the notification area
 #. text in the Options window
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -867,6 +874,9 @@
 	Match whole string only	Match whole string only
 #. group box title in the Options window
 	Max. connections number	Max. connections number
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+	Maximize	Maximize
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 	Maximum download speed for one file {kb} KBytes/sec	Maximum download speed for one file {kb} KBytes/sec
@@ -878,6 +888,12 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 	May	May
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+	Minimize	Minimize
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+	Minimize to the notification area	Minimize to the notification area
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 	Missing	Missing

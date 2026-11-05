@@ -73,6 +73,10 @@ pub struct Settings {
     /// to the clipboard. On by default: without the browser extension, copying a link is the
     /// quickest way in.
     pub clipboard_autostart: bool,
+    /// General: Minimize hides the main window, and a download's progress window, to the
+    /// notification area, as closing the main window does (#63). On by default (the
+    /// maintainer's choice), for existing lists too. Only where a tray shows MDM's icon.
+    pub minimize_to_tray: bool,
     pub mv2_extensions: bool,
     pub advanced_integration: bool,
     /// General: "Capture downloads from the following browsers" (name, on).
@@ -254,6 +258,7 @@ impl Default for Settings {
             helpers_asked: false,
             extension_never_ask: false,
             clipboard_autostart: true,
+            minimize_to_tray: true,
             mv2_extensions: true,
             advanced_integration: true,
             browsers: BROWSERS.iter().map(|b| (b.to_string(), true)).collect(),
