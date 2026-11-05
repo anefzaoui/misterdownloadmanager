@@ -1101,6 +1101,46 @@ pub struct RowLook {
     pub name: String,
 }
 
+/// Rows of a virtual list a screen reader reaches (#111): every row of a list up to
+/// `A11Y_ROWS`, else that many around the view (`first`, `page` rows), so a list of thousands
+/// costs no more than a short one. Further rows come within reach as the list scrolls (the keys
+/// scroll it, as a list view's own).
+pub fn reachable_rows(n: usize, first: usize, page: usize) -> std::ops::Range<usize> {
+    if n <= A11Y_ROWS {
+        return 0..n;
+    }
+    let before = A11Y_ROWS.saturating_sub(page) / 2;
+    let start = first.saturating_sub(before).min(n - A11Y_ROWS);
+    start..start + A11Y_ROWS
+}
+
+/// How many rows of a list a screen reader reaches at most ([`reachable_rows`]).
+pub const A11Y_ROWS: usize = 300;
+
+/// The row of `rows` (ids `id.with(i)`) a screen reader asked to scroll into view, or to select
+/// (AccessKit's click), this frame.
+fn row_asked_for(ui: &Ui, id: egui::Id, rows: std::ops::Range<usize>) -> Option<usize> {
+    use egui::accesskit::Action;
+    let targets: Vec<egui::accesskit::NodeId> = ui.input(|i| {
+        i.events
+            .iter()
+            .filter_map(|e| match e {
+                egui::Event::AccessKitActionRequest(r)
+                    if matches!(r.action, Action::ScrollIntoView | Action::Click) =>
+                {
+                    Some(r.target_node)
+                }
+                _ => None,
+            })
+            .collect()
+    });
+    if targets.is_empty() {
+        return None;
+    }
+    rows.into_iter()
+        .find(|i| targets.contains(&id.with(*i).accesskit_id()))
+}
+
 /// The one list of whole rows in a box (a dialog's list, a tree drawn as rows): its frame,
 /// rows scrolled whole by the wheel (travel kept until it makes a row) and by a scroll bar
 /// when they don't all fit, the row under the pointer tinted, the selected row in the
@@ -1198,6 +1238,19 @@ pub fn row_list(
     {
         st.show_row(s, page);
     }
+    // Rows out of view are there for screen readers too (#111): those `reachable_rows` gives
+    // (every row of a list up to a few hundred, else that many around the view) while a
+    // screen reader is on. A row brought into view by one (Scroll into view, or Select, which
+    // AccessKit sends as a click) shows from this frame on.
+    let a11y = ui.ctx().accesskit_node_builder(resp.id, |_| ()).is_some();
+    let reach = if a11y {
+        reachable_rows(n, st.first, page)
+    } else {
+        st.first..n.min(st.first + page)
+    };
+    if a11y && let Some(i) = row_asked_for(ui, id, reach.clone()) {
+        st.show_row(i, page);
+    }
     st.first = st.first.min(max_first);
     ev.focused = focused;
     let clip = p.with_clip_rect(rect(area));
@@ -1209,12 +1262,18 @@ pub fn row_list(
             .max_rect(rect(inner))
             .accessibility_parent(resp.id),
     );
-    for i in st.first..n.min(st.first + page) {
-        let top = inner.top() + 1.0 + row_h * (i - st.first) as f32;
+    // Rows out of view lie above or below it, clipped: nothing of them shows or takes a click.
+    rows_ui.set_clip_rect(rect(area).intersect(ui.clip_rect()));
+    let shown = st.first..n.min(st.first + page);
+    for i in reach {
+        let in_view = shown.contains(&i);
+        let top = inner.top() + 1.0 + row_h * (i as f32 - st.first as f32);
         let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
         let r = rows_ui.interact(rect(row), id.with(i), pointer_only());
         let selected = st.selected == Some(i);
-        let fill = if selected && focused {
+        let fill = if !in_view {
+            None
+        } else if selected && focused {
             Some(ROW_SELECTED())
         } else if selected {
             Some(SELECTED_INACTIVE())
@@ -1234,6 +1293,8 @@ pub fn row_list(
             if st.selected != Some(i) {
                 st.selected = Some(i);
                 ev.picked = Some(i);
+                // Selected out of view (a screen reader's Select): brought into view.
+                st.pending |= !in_view;
                 // This frame drew the old selection; draw (and expose) the new one now, not on
                 // the next mouse move: a screen reader's click moves no mouse.
                 ui.ctx().request_repaint();
@@ -1276,8 +1337,9 @@ pub fn row_list(
             node.set_selected(selected);
             node.set_position_in_set(i + 1);
             node.set_size_of_set(n);
+            node.add_action(egui::accesskit::Action::ScrollIntoView);
         });
-        if selected && focused {
+        if selected && focused && in_view {
             focus_ring(&clip, rect(row));
         }
     }
