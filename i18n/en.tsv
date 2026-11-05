@@ -14,6 +14,10 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Extracted {n} file to {folder}|Extracted {n} files to {folder}
+#. count in rssdlg.rs
+#. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
+#. {n} = a number (keep the braces as they are)
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -1207,10 +1211,6 @@
 	Match case	Match case
 #. checkbox in the Find window
 	Match whole string only	Match whole string only
-#. text in rssdlg.rs
-#. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
-#. {n} = a number (keep the braces as they are)
-	Matches {n} article now (it adds new ones only):	Matches {n} article now (it adds new ones only):
 #. group box title in the Options window
 	Max. connections number	Max. connections number
 #. text in standard windows

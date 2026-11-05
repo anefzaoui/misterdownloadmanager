@@ -191,7 +191,7 @@ impl RssWindow {
                 crate::fileicons::paint_at(
                     ui,
                     clip,
-                    crate::fileicons::Kind::File("feed.xml"),
+                    crate::fileicons::Kind::File("feed.rss"),
                     pos2(row.left() + 4.0, row.top() + 2.0),
                     16.0,
                 );
@@ -282,16 +282,18 @@ impl RssWindow {
                     pos2(row.left() + 4.0, row.top() + 2.0),
                     16.0,
                 );
+                // English coordinates on both sides (text_right's rect is the screen's, mirrored
+                // in a right-to-left interface).
                 let size = a.size.map(crate::model::size).unwrap_or_default();
-                let (sr, _) =
-                    winui::text_right(clip, row.right() - 6.0, row.top() + 14.0, &size, look.ink);
+                let w = winui::text_width(clip, &size);
+                winui::text_right(clip, row.right() - 6.0, row.top() + 14.0, &size, look.ink);
                 winui::text_fit(
                     clip,
                     row.left() + 26.0,
                     row.top() + 14.0,
                     &a.title,
                     look.ink,
-                    sr.left() - 10.0,
+                    row.right() - 16.0 - w,
                 );
             },
         );
@@ -372,15 +374,10 @@ impl RssWindow {
             ("rss", 1),
         );
         // How often feeds are fetched.
-        let fit = winui::text(
-            &p,
-            o.x + 22.0,
-            o.y + 482.0,
-            // i18n: RSS feeds window, at the bottom: "Check feeds every [30] minutes"
-            crate::i18n::t("Check feeds every"),
-            winui::TEXT(),
-        );
-        let x = fit.right() + 6.0 - o.x;
+        // i18n: RSS feeds window, at the bottom: "Check feeds every [30] minutes"
+        let every = crate::i18n::t("Check feeds every");
+        text(&p, o.x + 22.0, o.y + 482.0, every, winui::TEXT());
+        let x = 22.0 + winui::text_width(&p, every).ceil() + 6.0;
         winui::edit_right(ui, r(o, x, 467.0, 44.0, 22.0), &mut self.minutes, true);
         self.minutes.retain(|c| c.is_ascii_digit());
         self.minutes.truncate(4);
@@ -697,17 +694,19 @@ impl RssWindow {
         } else {
             Vec::new()
         };
+        let n = preview.len() as u64;
+        // i18n: RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
+        let matches = crate::i18n::tn(
+            n,
+            "Matches {n} article now (it adds new ones only):",
+            "Matches {n} articles now (it adds new ones only):",
+        );
         winui::fit(
             ui,
             &p,
             o.x + 240.0,
             o.y + 376.0,
-            &crate::i18n::tn(
-                preview.len() as u64,
-                // i18n: RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
-                "Matches {n} article now (it adds new ones only):",
-                "Matches {n} articles now (it adds new ones only):",
-            ),
+            &matches,
             winui::TEXT(),
             o.x + 740.0,
             ("rss", 2),
@@ -730,7 +729,8 @@ impl RssWindow {
                     pos2(row.left() + 4.0, row.top()),
                     16.0,
                 );
-                let (fr, _) = winui::text_right(
+                let w = winui::text_width(clip, feed);
+                winui::text_right(
                     clip,
                     row.right() - 6.0,
                     row.top() + 12.0,
@@ -743,7 +743,7 @@ impl RssWindow {
                     row.top() + 12.0,
                     &a.title,
                     look.ink,
-                    fr.left() - 10.0,
+                    row.right() - 16.0 - w,
                 );
             },
         );
