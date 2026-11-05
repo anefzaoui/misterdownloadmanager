@@ -264,10 +264,7 @@ impl Extracts {
         }
         if job.delete {
             let present: Vec<PathBuf> = job.files.iter().filter(|f| f.exists()).cloned().collect();
-            #[cfg(windows)]
-            let gone = crate::win32::to_recycle_bin(&present);
-            #[cfg(unix)]
-            let gone = crate::unix::to_trash(&present);
+            let gone = to_trash(&present);
             let text = match (gone, cfg!(windows)) {
                 // i18n: in a download's log: the downloaded archive, after it was extracted
                 (true, true) => crate::i18n::t("The archive was moved to the Recycle Bin"),
@@ -297,6 +294,26 @@ impl Extracts {
             }
         }
     }
+}
+
+/// Tests only: archives "moved to the Recycle Bin" go into this folder instead, so a test never
+/// fills the real (per-user, shared) Recycle Bin or Trash. Never set for users.
+const TEST_TRASH: &str = "MDM_TEST_TRASH_DIR";
+
+/// Move `files` to the Recycle Bin (the Trash), or into `MDM_TEST_TRASH_DIR` when a test set it.
+fn to_trash(files: &[PathBuf]) -> bool {
+    if let Some(dir) = std::env::var_os(TEST_TRASH).filter(|d| !d.is_empty()) {
+        let dir = PathBuf::from(dir);
+        return std::fs::create_dir_all(&dir).is_ok()
+            && files.iter().all(|f| {
+                let name = f.file_name().unwrap_or_default();
+                std::fs::rename(f, dir.join(name)).is_ok()
+            });
+    }
+    #[cfg(windows)]
+    return crate::win32::to_recycle_bin(files);
+    #[cfg(unix)]
+    return crate::unix::to_trash(files);
 }
 
 /// Why `name` wasn't extracted, for its download's log.
