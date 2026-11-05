@@ -464,6 +464,19 @@ pub fn thread_usage(_tid: u32) -> Option<crate::crash::Usage> {
     None
 }
 
+/// While the window is hidden (#72): glibc hands the heap's free pages back to the system
+/// (`malloc_trim`); it keeps them otherwise. Other systems: nothing to do here, since macOS and
+/// non-glibc allocators return free pages by themselves, and neither has a working set to trim
+/// as Windows does.
+#[allow(unsafe_code)]
+pub fn trim_heap() {
+    #[cfg(all(target_os = "linux", target_env = "gnu"))]
+    // SAFETY: a plain call; it only releases memory the allocator already holds as free.
+    unsafe {
+        libc::malloc_trim(0);
+    }
+}
+
 /// Is process `pid` still running?
 #[allow(unsafe_code)]
 pub fn process_alive(pid: u32) -> bool {

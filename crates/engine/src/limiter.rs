@@ -12,6 +12,9 @@ use std::time::{Duration, Instant};
 pub struct Limiter {
     rate: AtomicU64,
     bucket: Mutex<Bucket>,
+    /// Every byte that went through it (less what was given back), limited or not: what the
+    /// downloads under it took, for the global cap's split with torrents.
+    taken: AtomicU64,
 }
 
 #[derive(Debug)]
@@ -33,7 +36,13 @@ impl Limiter {
                 tokens: 0.0,
                 last: Instant::now(),
             }),
+            taken: AtomicU64::new(0),
         }
+    }
+
+    /// The bytes that went through it so far (less those given back).
+    pub fn taken(&self) -> u64 {
+        self.taken.load(Ordering::Relaxed)
     }
 
     pub fn set(&self, rate: Option<u64>) {
@@ -46,6 +55,7 @@ impl Limiter {
 
     /// Account for `n` received bytes; returns how long the caller should wait first.
     fn take(&self, n: u64) -> Duration {
+        self.taken.fetch_add(n, Ordering::Relaxed);
         let rate = self.rate.load(Ordering::Relaxed);
         if rate == 0 {
             return Duration::ZERO;
@@ -66,6 +76,15 @@ impl Limiter {
 
     /// Give back budget for `n` bytes that were paid for but not kept.
     pub fn refund(&self, n: u64) {
+        let mut t = self.taken.load(Ordering::Relaxed);
+        while let Err(now) = self.taken.compare_exchange_weak(
+            t,
+            t.saturating_sub(n),
+            Ordering::Relaxed,
+            Ordering::Relaxed,
+        ) {
+            t = now;
+        }
         if self.rate.load(Ordering::Relaxed) > 0 {
             self.bucket.lock().unwrap().tokens += n as f64;
         }
@@ -105,5 +124,15 @@ mod tests {
         assert_eq!(l.get(), Some(1024));
         l.set(None);
         assert_eq!(l.get(), None);
+    }
+
+    #[tokio::test]
+    async fn counts_what_went_through() {
+        let l = Limiter::new(None);
+        l.acquire(1000).await;
+        l.set(Some(1 << 30));
+        l.acquire(500).await;
+        l.refund(200);
+        assert_eq!(l.taken(), 1300, "limited or not, less what was given back");
     }
 }

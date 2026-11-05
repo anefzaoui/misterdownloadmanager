@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "پاسخ‌هایی درباره Mister Download Manager: آیا رایگان است، آیا ایمن است، مقایسه آن با IDM، مرورگرها، ویدئوها، تورنت‌ها، سرعت، Mac و Linux و موارد دیگر."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>محدود کردن بارگذاری برای همه تورنت‌ها به</g1> — به طور پیش‌فرض خاموش است. این گزینه میزان ارسال تمام تورنت‌های شما را به سایر همتایان، هم هنگام دانلود و هم هنگام اشتراک‌گذاری، محدود می‌کند. محدودیت بارگذاری خود یک تورنت، در پنجره پیشرفت آن، علاوه بر این اعمال می‌شود."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "صف اصلی دانلود را شروع می‌کند؛ <x1/>."
@@ -466,6 +470,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "یک نسخه قابل حمل. لیست بارگیری و تنظیمات در یک پوشه <x1/> کنار برنامه باقی می‌مانند و چیزی در رجیستری نوشته نمی‌شود. یکپارچه‌سازی مرورگر به نصب‌کننده نیاز دارد. به <g2>حالت قابل حمل</g2> مراجعه کنید."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "در همین پنجره، <g1>محدود کردن همه دانلودها با هم به</g1> را علامت بزنید و سرعت را تنظیم کنید. این کار MDM را به طور کلی محدود می‌کند، صرف نظر از اینکه چند فایل در حال دانلود هستند، از جمله تورنت‌ها. وقتی تورنت‌ها و سایر دانلودها همزمان اجرا می‌شوند، هر طرف حداقل نیمی از سرعت را دریافت می‌کند و اگر طرف دیگر کمتر نیاز داشته باشد، بیشتر دریافت می‌کند: یک تورنت که به آرامی پیش می‌رود، بقیه را به دانلودهای دیگر واگذار می‌کند و برعکس. این محدودیت هر زمان که علامت زده شود اعمال می‌شود، چه محدودکننده هر فایل روشن باشد یا خاموش."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "آزمایشی"
@@ -561,6 +569,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "در Windows به <g1>تنظیمات → برنامه‌ها</g1> بروید، Mister Download Manager را پیدا کرده و حذف نصب را انتخاب کنید. حذف‌کننده می‌پرسد که آیا لیست بارگیری و تنظیمات شما نیز حذف شود. فایل‌هایی که بارگیری کرده‌اید هرگز دست نخورده باقی می‌مانند. برای نسخه قابل حمل، پوشه آن را حذف کنید."
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "مدیر وظیفه (Task Manager) چندین رقم را نشان می‌دهد که هر کدام معنی متفاوتی دارند:"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -1093,6 +1105,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>اطلاعات فایل بارگیری</g1> نام فایل، اندازه آن و محل ذخیره آن را نشان می‌دهد. پوشه بستگی به نوع فایل دارد: یک ZIP به <x2/>، یک ویدیو به <x3/> و غیره می‌رود. اگر دوست دارید، پوشه یا دسته را تغییر دهید."
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "برای یک تورنت، محدودیت فقط برای همان تورنت است؛ بقیه محدودیت‌های خود را حفظ می‌کنند. سرعت یک تورنت نمی‌تواند کمتر از 16 کیلوبایت/ثانیه باشد: اگر محدودیت کمتری تعیین شود، 16 کیلوبایت/ثانیه اعمال می‌شود."
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -1994,10 +2010,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> یا بالاتر روی Apple Silicon یا Intel (آزمایشی)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "در همان پنجره، <g1>محدود کردن همه دانلودها با هم به</g1> را علامت بزنید و سرعت را تنظیم کنید. این کار MDM را به طور کلی محدود می‌کند، مهم نیست چند فایل در حال بارگیری هستند. این محدودیت هر زمان که علامت زده شود اعمال می‌شود، چه محدودکننده برای هر فایل روشن باشد یا خاموش."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "روی فضای خالی لیست راست کلیک کنید تا <g1>افزودن دانلود جدید</g1>، <g2>انتخاب همه</g2>، <g3>مرتب‌سازی فایل‌ها</g3>، <g4>پاک کردن همه فیلترها</g4> و <g5>حذف همه تکمیل‌شده‌ها</g5> را ببینید."
@@ -2145,6 +2157,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "برای <g1>برش</g1>، <g2>کپی</g2>، <g3>چسباندن</g3>، <g4>حذف</g4> و <g5>انتخاب همه</g5> روی هر کادر متنی راست کلیک کنید."
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>حافظه</g1> (در برگه Processes) مقداری است که MDM فقط برای خود نگه می‌دارد، یعنی <g2>مجموعه کاری خصوصی</g2> آن. وقتی پنجره باز است و چیزی دانلود نمی‌شود، این مقدار حدود 50 مگابایت است."
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2566,6 +2582,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>دانلودها</g1>: نصب‌کننده Windows، یک فایل فشرده قابل حمل و یک فایل فشرده ساده، افزونه مرورگر به تنهایی (یک فایل فشرده برای مرورگرهای Chromium، یک <x2/> برای Firefox، همیشه نسخه برنامه)، و <g3>macOS و Linux برای امتحان</g3>: یک <x4/> جهانی و یک AppImage، <x5/>، <x6/> و <x7/>، با علامت <x8/> زیرا توسط ما آزمایش نشده‌اند. در آنجا، MDM خود را به Chrome، Edge، Brave، Vivaldi و Firefox متصل می‌کند، نماد سینی خود را دارد، از ظاهر روشن یا تاریک سیستم پیروی می‌کند و از فونت‌های سیستم و ffmpeg استفاده می‌کند. به ما بگویید که چگونه برای شما کار می‌کنند."
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS از طریق HTTPS</g1> (پیش‌فرض) یا <g2>DNS از طریق TLS</g2>: رمزگذاری شده، بنابراین هیچ‌کس در مسیر نمی‌تواند نام‌هایی را که جستجو می‌کنید ببیند یا تغییر دهد."
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>شروع دانلود در</g1> — یک زمان، سپس یا:"
@@ -2734,6 +2754,10 @@
    "source": "The programs, to unpack anywhere",
    "text": "برنامه‌ها، برای باز کردن در هر جایی"
   },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — کدام DNS نام سرورها را به آدرس برای دانلودهای MDM، دانلودهای خودش (کمک‌کننده‌ها، به‌روزرسانی‌ها) و FTP تبدیل می‌کند. <g2>DNS سیستم</g2> پیش‌فرض است (در Windows 11 ممکن است از قبل رمزگذاری شده باشد، در تنظیمات شبکه خود Windows). یا <g3>Cloudflare</g3>، <g4>Google</g4>، <g5>Quad9</g5>، <g6>AdGuard</g6> یا <g7>NextDNS</g7> را انتخاب کنید، یا <g8>DNS دیگر...</g8> را برای وارد کردن DNS خودتان؛ <g9>تنظیمات...</g9> نحوه درخواست آن را انتخاب می‌کند:"
+  },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
    "text": "برای باز کردن پنجره پیشرفت آن، روی تورنت در فهرست دوبار کلیک کنید. علاوه بر وضعیت معمول، پنجره یک تورنت پنج تب دارد:"
@@ -2745,6 +2769,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "باز کردن دانلود انتخاب‌شده (دوبار کلیک، راست‌کلیک → <g1>با دوبار کلیک</g1> را دنبال می‌کند)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "تب <g1>محدودکننده سرعت</g1> در پنجره یک تورنت، علاوه بر محدودیت دانلود آن، دارای گزینه <g2>محدود کردن بارگذاری</g2> به سرعتی دلخواه شماست. این محدودیت با تورنت حفظ می‌شود: هر زمان که تورنت اجرا یا اشتراک‌گذاری شود، دوباره اعمال می‌شود. یک تورنت نمی‌تواند به هر حال زیر 16 کیلوبایت/ثانیه نگه داشته شود."
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -2773,6 +2801,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "رایگان و متن‌باز. نصبش کنید، روی یک لینک کلیک کنید و تمام اتصالات را در حال کار ببینید."
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "نام‌های موجود در فایل hosts شما، و نام‌های محلی (کلمات تک، <x1/>، <x2/>، <x3/>، <x4/>، <x5/>)، با DNS سیستم باقی می‌مانند. صفحات ویدئو (yt-dlp) و ردیاب‌های تورنت همچنان از DNS سیستم استفاده می‌کنند. با یک پروکسی، پروکسی نام سایت‌هایی را که برای شما به آن‌ها دسترسی پیدا می‌کند، جستجو می‌کند."
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -2841,6 +2873,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>زبان‌ها</g2></g1> — 86 زبان رابط کاربری، طرح‌بندی‌های راست به چپ، و نحوه کمک به ترجمه."
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "وقتی MDM در ناحیه اعلان بسته می‌شود، حافظه خود را به Windows برمی‌گرداند: <g1>حافظه</g1> در عرض چند ثانیه به زیر 10 مگابایت کاهش می‌یابد و در حالت انتظار پایین می‌ماند. بارگیری‌ها، صف‌ها و زمان‌بندی مثل قبل ادامه می‌یابند. فهرست هر زبان (<g2>نما ← زبان</g2>) در حین باز بودن، فونت‌ها را برای هر اسکریپت بارگیری می‌کند؛ MDM پس از بسته شدن آن‌ها را آزاد می‌کند."
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -3634,6 +3670,10 @@
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>عدم شکستن محافظت از کپی.</g1> MDM DRM را حذف یا دور نمی‌زند و برای این کار ساخته نشده است. محتوای محافظت‌شده، محافظت‌شده باقی می‌ماند."
   },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>آزمایش</g1> آن را برای github.com می‌پرسد و نشان می‌دهد چقدر طول کشید."
+  },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
    "text": "کلیک راست: دانلود با Mister Download Manager"
@@ -3733,6 +3773,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "سایر سیستم‌ها و فایل‌ها"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>Plain DNS</g1>: رمزگذاری نشده. MDM آن را از طریق TCP درخواست می‌کند، هرگز UDP، بنابراین هرگز به استثنای فایروال نیاز ندارد."
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4282,6 +4326,10 @@
    "source": "Troubleshooting",
    "text": "عیب‌یابی"
   },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "برای DNS خودتان: آدرس‌های IP سرورها، نامی که گواهی آن‌ها نشان می‌دهد (TLS)، یا آدرس <x1/> (HTTPS، با آدرس‌های IP آن اگر آن‌ها را می‌دانید). NextDNS شناسه پیکربندی شما را می‌گیرد."
+  },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "افزودن یک دانلود (<g1>افزودن URL</g1>)"
@@ -4430,6 +4478,10 @@
    "source": "While it downloads.",
    "text": "در حین بارگیری."
   },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>اندازه تعهد</g1> حافظه‌ای است که MDM رزرو کرده است، چه در حال استفاده باشد و چه نباشد."
+  },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 یا جدیدتر لازم است."
@@ -4549,10 +4601,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "اتصالات و سرعت — راهنمای Mister Download Manager"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>عمومی</g1> — هش اطلاعات، قطعات، همتایان، میزان ارسال شده، نسبت اشتراک و پوشه."
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -5277,10 +5325,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — از یک پوشه یا فلش USB اجرا می‌شود"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "بارگیری یک فایل با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> فایل تمام‌شده را بررسی می‌کند: هگز MD5، SHA-1، SHA-256، SHA-512 یا CRC32، با نام اختیاری (<x5/>)."
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -7026,6 +7070,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "هر نسخه در صفحه <g1>انتشارها</g1> موجود است. برای Windows سه فایل وجود دارد:"
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>اگر قابل دسترسی نیست، از DNS سیستم استفاده کنید</g1>: به طور پیش‌فرض خاموش است، بنابراین DNS که پاسخ نمی‌دهد، دانلود را با پیامی که نام آن را ذکر می‌کند متوقف می‌کند، به جای اینکه بی‌صدا جستجوهای شما را به DNS سیستم نشان دهد. نامی که DNS می‌گوید وجود ندارد هرگز به عقب برنمی‌گردد (این کار یک DNS فیلترکننده را بی‌اثر می‌کند)."
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "ادامه بارگیری ناتمام — راهنمای Mister Download Manager"
@@ -7185,6 +7233,10 @@
   "cbc1f1134f6a8b39": {
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "اگر طرح‌بندی <g1>Internet Download Manager (IDM)</g1> را بدون پرداخت هزینه آن می‌خواهید، جایگزین رایگان <g2>Mister Download Manager (MDM)</g2> است: یک مدیر دانلود رایگان و متن‌باز برای Windows 10 و 11، با نسخه‌های آزمایشی برای macOS و Linux. این برنامه شبیه IDM به نظر می‌رسد و کار می‌کند، لیست دانلودهای IDM شما را وارد می‌کند، یک فایل 1 گیگابایتی را 5.4 برابر سریع‌تر از IDM 6.42 در <g3>معیار منتشر شده ما</g3> دانلود کرده است و همچنین تورنت‌ها، لینک‌های مگنت و ویدیوها را دانلود می‌کند."
+  },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "این تنها بخشی از MDM است که منتظر اتصالات از خارج می‌ماند. بارگیری‌ها، انتخاب DNS در MDM (گزینه‌ها ← اتصال ← DNS)، به‌روزرسانی‌ها و کمک‌کننده‌های آن فقط به بیرون متصل می‌شوند، بنابراین هرگز به استثنای فایروال نیاز ندارند؛ افزونه مرورگر و API اتوماسیون فقط در همین رایانه (127.0.0.1) به MDM دسترسی پیدا می‌کنند."
   },
   "cc126dc832a278c1": {
    "source": "Yes",
@@ -7590,6 +7642,10 @@
    "source": "Benchmark scenario",
    "text": "سناریوی بنچمارک"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>مجموعه کاری</g1> (برگه Details، ستون را اضافه کنید) حافظه مشترک با برنامه‌های دیگر را نیز شامل می‌شود. MDM پنجره‌های خود را با کارت گرافیک ترسیم می‌کند، بنابراین حافظه درایور گرافیک نیز در اینجا حساب می‌شود، در مجموع حدود 85 مگابایت."
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. عدم ضمانت"
@@ -7762,6 +7818,10 @@
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "آیا می‌تواند بارگیری‌های قطع‌شده را ادامه دهد؟ — Mister Download Manager"
   },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM حافظه زیادی مصرف می‌کند"
+  },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",
    "text": "جایگزین‌های رایگان IDM، مقایسه شده"
@@ -7841,6 +7901,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "ادامه یک دانلود قطع شده"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "فایلی را با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت، بارگیری می‌کند. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> فایل تمام‌شده را بررسی می‌کند: هگز MD5، SHA-1، SHA-256، SHA-512 یا CRC32، با نام اختیاری (<x5/>). <x6/> DNS را انتخاب می‌کند: <x7/> (پیش‌فرض)؛ یک سرویس و نحوه درخواست آن، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ آدرس سرورهای DNS، <x13/>؛ یا یک آدرس DNS-over-HTTPS. هرگز به DNS سیستم بازنمی‌گردد."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8434,6 +8498,10 @@
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "روی <g1>افزودن URL</g1> در نوار ابزار کلیک کنید، <g2>وظایف ← افزودن دانلود جدید</g2> را انتخاب کنید، یا <g3>Ctrl+N</g3> را فشار دهید."
   },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>عمومی</g1> — هش اطلاعات، قطعات، همتایان، میزان ارسال شده، نسبت اشتراک، مدت زمان اشتراک‌گذاری و پوشه. میزان ارسال شده و زمان اشتراک‌گذاری در تمام اجراهای تورنت جمع می‌شوند: پس از توقف یا راه‌اندازی مجدد MDM، از 0 شروع نمی‌شوند."
+  },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",
    "text": "<g1>تعداد دانلودها</g1> در درخت دسته‌ها، <g2>یک لیست خالی که دلیل را می‌گوید</g2> (با پاک کردن فیلترها یا افزودن دانلود جدید)، <g3>یک منوی راست‌کلیک روی فضای خالی لیست</g3>، دوبار کلیک روی حاشیه ستون برای تنظیم آن، و <g4>بازنشانی ستون‌ها</g4>."
@@ -8845,6 +8913,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "در اینجا، هر تورنت یک فایل محسوب می‌شود: هر تورنت محدودیت سرعت مخصوص به خود را دارد. دانلودی که محدودیت سرعت مخصوص به خود را دارد (به <g1>برای یک دانلود</g1> مراجعه کنید)، همان محدودیت را حفظ می‌کند."
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

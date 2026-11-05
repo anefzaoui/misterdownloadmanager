@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "คำตอบเกี่ยวกับ Mister Download Manager: ฟรีหรือไม่ ปลอดภัยหรือไม่ เปรียบเทียบกับ IDM อย่างไร, เบราว์เซอร์, วิดีโอ, ทอร์เรนต์, ความเร็ว, Mac และ Linux และอื่นๆ"
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>จำกัดการอัปโหลดสำหรับทอร์เรนต์ทั้งหมดเป็น</g1> — ปิดใช้งานโดยค่าเริ่มต้น จำกัดสิ่งที่ทอร์เรนต์ทั้งหมดของคุณส่งไปยังเพียร์อื่น ๆ ในขณะที่ดาวน์โหลดและในขณะที่แชร์ ขีดจำกัดการอัปโหลดของทอร์เรนต์เองในหน้าต่างความคืบหน้าจะถูกนำมาใช้เพิ่มเติมจากขีดจำกัดนี้"
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "เริ่มคิวการดาวน์โหลดหลัก; <x1/>"
@@ -466,6 +470,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "สำเนาแบบพกพา รายการดาวน์โหลดและการตั้งค่าจะอยู่ในโฟลเดอร์ <x1/> ถัดจากโปรแกรม และไม่มีการเขียนข้อมูลลงในรีจิสทรี การรวมเข้ากับเบราว์เซอร์ต้องใช้ตัวติดตั้ง ดูที่ <g2>โหมดพกพา</g2>"
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "ในหน้าต่างเดียวกัน ให้เลือก <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และตั้งค่าความเร็ว ซึ่งจะจำกัดความเร็วของ MDM โดยรวม ไม่ว่าจะดาวน์โหลดไฟล์กี่ไฟล์ก็ตาม รวมถึงไฟล์ BitTorrent ด้วย เมื่อไฟล์ BitTorrent และการดาวน์โหลดอื่นๆ ทำงานพร้อมกัน แต่ละฝ่ายจะได้รับความเร็วอย่างน้อยครึ่งหนึ่ง และจะได้รับมากขึ้นเมื่ออีกฝ่ายต้องการน้อยลง: ไฟล์ BitTorrent ที่ดาวน์โหลดช้าจะเหลือความเร็วส่วนที่เหลือให้กับการดาวน์โหลดอื่นๆ และในทางกลับกัน การตั้งค่านี้จะมีผลเมื่อเลือกไว้ ไม่ว่าตัวจำกัดความเร็วต่อไฟล์จะเปิดหรือปิดอยู่ก็ตาม"
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "ทดลอง"
@@ -561,6 +569,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "เปิด Windows <g1>การตั้งค่า → แอป</g1> ค้นหา Mister Download Manager และเลือก ถอนการติดตั้ง โปรแกรมถอนการติดตั้งจะถามว่าจะลบรายการดาวน์โหลดและการตั้งค่าของคุณด้วยหรือไม่ ไฟล์ที่คุณดาวน์โหลดจะไม่ถูกแตะต้อง สำหรับสำเนาแบบพกพา ให้ลบโฟลเดอร์ของมัน"
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "ตัวจัดการงานแสดงตัวเลขหลายค่า ซึ่งมีความหมายต่างกัน:"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -1093,6 +1105,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>ข้อมูลไฟล์ดาวน์โหลด</g1> จะแสดงชื่อไฟล์ ขนาด และตำแหน่งที่จะบันทึก โฟลเดอร์จะขึ้นอยู่กับประเภทของไฟล์: ไฟล์ ZIP ไปที่ <x2/> วิดีโอไปที่ <x3/> เป็นต้น คุณสามารถเปลี่ยนโฟลเดอร์หรือหมวดหมู่ได้ตามต้องการ"
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "สำหรับทอร์เรนต์ ขีดจำกัดจะเป็นของทอร์เรนต์นั้นเท่านั้น ส่วนไฟล์อื่นๆ จะใช้ขีดจำกัดของตัวเอง ทอร์เรนต์ไม่สามารถถูกจำกัดให้ต่ำกว่า 16 กิโลไบต์/วินาทีได้: หากตั้งค่าต่ำกว่านี้ จะได้รับ 16 แทน"
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -1994,10 +2010,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> หรือใหม่กว่าบน Apple Silicon หรือ Intel (ทดลอง)"
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "ในหน้าต่างเดียวกัน ให้ทำเครื่องหมายที่ <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และตั้งค่าความเร็ว ซึ่งจะจำกัด MDM โดยรวม ไม่ว่าจะมีไฟล์กำลังดาวน์โหลดอยู่กี่ไฟล์ก็ตาม การตั้งค่านี้จะใช้เมื่อมีการทำเครื่องหมายไว้ ไม่ว่าตัวจำกัดต่อไฟล์จะเปิดหรือปิดอยู่ก็ตาม"
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "คลิกขวาที่พื้นที่ว่างของรายการเพื่อ <g1>เพิ่มการดาวน์โหลดใหม่</g1>, <g2>เลือกทั้งหมด</g2>, <g3>จัดเรียงไฟล์</g3>, <g4>ล้างตัวกรองทั้งหมด</g4> และ <g5>ลบที่เสร็จสมบูรณ์ทั้งหมด</g5>"
@@ -2145,6 +2157,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "คลิกขวาที่กล่องข้อความใดก็ได้เพื่อ <g1>ตัด</g1>, <g2>คัดลอก</g2>, <g3>วาง</g3>, <g4>ลบ</g4> และ <g5>เลือกทั้งหมด</g5>"
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>หน่วยความจำ</g1> (บนแท็บกระบวนการ) คือสิ่งที่ MDM เก็บไว้สำหรับตัวเองเท่านั้น ซึ่งเป็น <g2>ชุดการทำงานส่วนตัว</g2> หากเปิดหน้าต่างไว้และไม่มีการดาวน์โหลดใดๆ จะอยู่ที่ประมาณ 50 MB"
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2566,6 +2582,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>การดาวน์โหลด</g1>: ตัวติดตั้ง Windows, ไฟล์ zip แบบพกพาและไฟล์ zip ธรรมดา, ส่วนขยายเบราว์เซอร์แยกต่างหาก (ไฟล์ zip สำหรับเบราว์เซอร์ Chromium, <x2/> สำหรับ Firefox, เป็นเวอร์ชันของแอปเสมอ) และ <g3>macOS และ Linux ให้ลอง</g3>: <x4/> สากลและ AppImage, <x5/>, <x6/> และ <x7/>, ทำเครื่องหมาย <x8/> เนื่องจากเรายังไม่ได้ทดสอบ ที่นั่น MDM จะเชื่อมต่อตัวเองกับ Chrome, Edge, Brave, Vivaldi และ Firefox, มีไอคอนถาด, ทำตามรูปลักษณ์สว่างหรือมืดของระบบ และใช้แบบอักษรและ ffmpeg ของระบบ บอกเราว่ามันทำงานอย่างไรสำหรับคุณ"
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS ผ่าน HTTPS</g1> (ค่าเริ่มต้น) หรือ <g2>DNS ผ่าน TLS</g2>: เข้ารหัส เพื่อไม่ให้ใครก็ตามที่อยู่ระหว่างทางเห็นหรือเปลี่ยนแปลงชื่อที่คุณค้นหา"
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>เริ่มดาวน์โหลดเมื่อ</g1> — เวลา จากนั้นเลือกอย่างใดอย่างหนึ่ง:"
@@ -2734,6 +2754,10 @@
    "source": "The programs, to unpack anywhere",
    "text": "โปรแกรมสำหรับแตกไฟล์ที่ไหนก็ได้"
   },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — DNS ใดที่แปลงชื่อเซิร์ฟเวอร์เป็นที่อยู่สำหรับการดาวน์โหลดของ MDM, การดาวน์โหลดของ MDM เอง (ตัวช่วย, การอัปเดต) และ FTP <g2>DNS ของระบบ</g2> เป็นค่าเริ่มต้น (บน Windows 11 อาจมีการเข้ารหัสอยู่แล้วในการตั้งค่าเครือข่ายของ Windows เอง) หรือเลือก <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> หรือ <g7>NextDNS</g7> หรือ <g8>DNS อื่น...</g8> เพื่อพิมพ์ของคุณเอง; <g9>การตั้งค่า...</g9> เลือกวิธีการสอบถาม:"
+  },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
    "text": "ดับเบิลคลิกที่ทอร์เรนต์ในรายการเพื่อเปิดหน้าต่างความคืบหน้า นอกจากสถานะปกติแล้ว หน้าต่างของทอร์เรนต์ยังมีห้าแท็บ:"
@@ -2745,6 +2769,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "เปิดรายการดาวน์โหลดที่เลือก (การดับเบิลคลิกจะตามหลังการคลิกขวา → <g1>เมื่อดับเบิลคลิก</g1>)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "แท็บ <g1>ตัวจำกัดความเร็ว</g1> ของหน้าต่างทอร์เรนต์ นอกจากขีดจำกัดการดาวน์โหลดแล้ว ยังมี <g2>จำกัดการอัปโหลด</g2> ตามความเร็วที่คุณเลือก ขีดจำกัดนั้นจะถูกเก็บไว้กับทอร์เรนต์: จะถูกนำมาใช้อีกครั้งเมื่อใดก็ตามที่ทอร์เรนต์ทำงานหรือแชร์ ทอร์เรนต์ไม่สามารถถูกจำกัดต่ำกว่า 16 กิโลไบต์/วินาทีได้ไม่ว่าจะด้วยวิธีใด"
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -2773,6 +2801,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "ฟรีและโอเพนซอร์ส ติดตั้งได้เลย คลิกที่ลิงก์ แล้วดูการเชื่อมต่อทั้งหมดทำงาน"
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "ชื่อในไฟล์ hosts ของคุณ และชื่อภายในเครื่อง (คำเดียว, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>) ยังคงใช้ DNS ของระบบ หน้าวิดีโอ (yt-dlp) และตัวติดตาม torrent ยังคงใช้ DNS ของระบบ เมื่อใช้พร็อกซี พร็อกซีจะค้นหาชื่อของไซต์ที่เข้าถึงให้คุณ"
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -2841,6 +2873,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>ภาษา</g2></g1> — 86 ภาษาของอินเทอร์เฟซ, รูปแบบจากขวาไปซ้าย, และวิธีช่วยแปล"
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "เมื่อปิดไปยังพื้นที่แจ้งเตือน MDM จะคืนหน่วยความจำให้กับ Windows: <g1>หน่วยความจำ</g1> จะลดลงเหลือน้อยกว่า 10 MB ภายในไม่กี่วินาทีและยังคงต่ำอยู่ขณะที่รอ การดาวน์โหลด คิว และตัวกำหนดเวลาจะดำเนินต่อไปเหมือนเดิม รายการของทุกภาษา (<g2>มุมมอง → ภาษา</g2>) จะโหลดฟอนต์สำหรับทุกสคริปต์ในขณะที่เปิดอยู่ MDM จะปล่อยฟอนต์เหล่านั้นเมื่อปิด"
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -3634,6 +3670,10 @@
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>ไม่มีการละเมิดการป้องกันการคัดลอก</g1> MDM ไม่ได้ลบหรือหลีกเลี่ยง DRM และไม่ได้มีวัตถุประสงค์เพื่อการนั้น เนื้อหาที่ได้รับการป้องกันจะยังคงได้รับการป้องกัน"
   },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>ทดสอบ</g1> จะสอบถาม github.com และแสดงระยะเวลาที่ใช้"
+  },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
    "text": "คลิกขวา: ดาวน์โหลดด้วย Mister Download Manager"
@@ -3733,6 +3773,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "ระบบและไฟล์อื่นๆ"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>Plain DNS</g1>: ไม่เข้ารหัส MDM สอบถามผ่าน TCP ไม่ใช่ UDP ดังนั้นจึงไม่จำเป็นต้องมีข้อยกเว้นไฟร์วอลล์"
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4282,6 +4326,10 @@
    "source": "Troubleshooting",
    "text": "การแก้ปัญหา"
   },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "สำหรับ DNS ของคุณเอง: ที่อยู่ IP ของเซิร์ฟเวอร์, ชื่อที่ใบรับรองแสดง (TLS) หรือที่อยู่ <x1/> (HTTPS พร้อมที่อยู่ IP หากคุณทราบ) NextDNS ใช้ ID การกำหนดค่าของคุณ"
+  },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "เพิ่มการดาวน์โหลด (<g1>เพิ่ม URL</g1>)"
@@ -4430,6 +4478,10 @@
    "source": "While it downloads.",
    "text": "ขณะที่กำลังดาวน์โหลด"
   },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>ขนาดที่จัดสรร</g1> คือหน่วยความจำที่ MDM ได้จองไว้ ไม่ว่าจะใช้งานอยู่หรือไม่ก็ตาม"
+  },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "ต้องใช้ Firefox เวอร์ชัน 140 หรือใหม่กว่า"
@@ -4549,10 +4601,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "การเชื่อมต่อและความเร็ว — วิธีใช้ Mister Download Manager"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>General</g1> — แฮชข้อมูล ชิ้นส่วน เพียร์ ปริมาณที่ส่ง อัตราส่วนการแชร์ และโฟลเดอร์"
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -5277,10 +5325,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — รันจากโฟลเดอร์หรือ USB"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "ดาวน์โหลดไฟล์ด้วยการเชื่อมต่อสูงสุด 8 การเชื่อมต่อ (<x1/>, 1 ถึง 128) พร้อมแสดงความคืบหน้า <x2/> หยุดชั่วคราว; <x3/> ดำเนินการต่อ <x4/> ตรวจสอบไฟล์ที่เสร็จสมบูรณ์: hex MD5, SHA-1, SHA-256, SHA-512 หรือ CRC32 โดยเลือกตั้งชื่อได้ (<x5/>)"
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -7026,6 +7070,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "ทุกเวอร์ชันอยู่ในหน้า <g1>Releases</g1> สำหรับ Windows มีไฟล์สามประเภท:"
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>หากไม่สามารถเข้าถึงได้ ให้ใช้ DNS ของระบบ</g1>: ปิดใช้งานโดยค่าเริ่มต้น ดังนั้น DNS ที่ไม่ตอบสนองจะหยุดการดาวน์โหลดพร้อมข้อความระบุชื่อแทนที่จะแสดงการค้นหาของคุณไปยัง DNS ของระบบอย่างเงียบๆ ชื่อที่ DNS บอกว่าไม่มีอยู่จะไม่กลับไปใช้ (นั่นจะยกเลิก DNS ที่มีการกรอง)"
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "ดำเนินการดาวน์โหลดที่หยุดชะงักต่อ — วิธีใช้ Mister Download Manager"
@@ -7185,6 +7233,10 @@
   "cbc1f1134f6a8b39": {
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "หากคุณต้องการเลย์เอาต์ของ <g1>Internet Download Manager (IDM)</g1> โดยไม่ต้องเสียค่าใช้จ่าย ทางเลือกฟรีคือ <g2>Mister Download Manager (MDM)</g2>: โปรแกรมจัดการการดาวน์โหลดฟรีและโอเพนซอร์สสำหรับ Windows 10 และ 11 พร้อมเวอร์ชัน macOS และ Linux ให้ทดลองใช้ มีรูปลักษณ์และการทำงานเหมือน IDM สามารถนำเข้ารายการดาวน์โหลดจาก IDM ของคุณได้ ดาวน์โหลดไฟล์ขนาด 1 GiB ได้เร็วกว่า IDM 6.42 ถึง 5.4 เท่าในการ<g3>ทดสอบที่เราเผยแพร่</g3> และยังดาวน์โหลดทอร์เรนต์ ลิงก์แม่เหล็ก และวิดีโอได้ด้วย"
+  },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "นี่เป็นส่วนเดียวของ MDM ที่รอการเชื่อมต่อจากภายนอก การดาวน์โหลด การเลือก DNS ของ MDM (ตัวเลือก → การเชื่อมต่อ → DNS) การอัปเดต และตัวช่วยของ MDM จะเชื่อมต่อออกไปเท่านั้น จึงไม่จำเป็นต้องมีข้อยกเว้นไฟร์วอลล์ ส่วนขยายเบราว์เซอร์และ API ระบบอัตโนมัติจะเข้าถึง MDM บนคอมพิวเตอร์เครื่องนี้เท่านั้น (127.0.0.1)"
   },
   "cc126dc832a278c1": {
    "source": "Yes",
@@ -7590,6 +7642,10 @@
    "source": "Benchmark scenario",
    "text": "สถานการณ์การทดสอบ"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>ชุดการทำงาน</g1> (แท็บรายละเอียด เพิ่มคอลัมน์) จะเพิ่มหน่วยความจำที่ใช้ร่วมกับโปรแกรมอื่น MDM วาดหน้าต่างด้วยการ์ดกราฟิก ดังนั้นหน่วยความจำของไดรเวอร์กราฟิกจึงนับรวมที่นี่ด้วย ประมาณ 85 MB ทั้งหมด"
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. ไม่มีการรับประกัน"
@@ -7762,6 +7818,10 @@
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "สามารถดาวน์โหลดต่อจากที่ค้างไว้ได้หรือไม่ — Mister Download Manager"
   },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM ใช้หน่วยความจำมาก"
+  },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",
    "text": "ทางเลือกฟรีแทน IDM, เปรียบเทียบ"
@@ -7841,6 +7901,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "ดำเนินการดาวน์โหลดที่หยุดชะงักต่อ"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "ดาวน์โหลดไฟล์ด้วยการเชื่อมต่อสูงสุด 8 การเชื่อมต่อ (<x1/>, 1 ถึง 128) พร้อมแสดงความคืบหน้า <x2/> หยุดชั่วคราว; <x3/> ดำเนินการต่อ <x4/> ตรวจสอบไฟล์ที่เสร็จสมบูรณ์: hex MD5, SHA-1, SHA-256, SHA-512 หรือ CRC32 โดยเลือกตั้งชื่อได้ (<x5/>) <x6/> เลือก DNS: <x7/> (ค่าเริ่มต้น); บริการและวิธีการสอบถาม, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; ที่อยู่เซิร์ฟเวอร์ DNS, <x13/>; หรือที่อยู่ DNS-over-HTTPS จะไม่กลับไปใช้ DNS ของระบบ"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8434,6 +8498,10 @@
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "คลิก <g1>เพิ่ม URL</g1> บนแถบเครื่องมือ เลือก <g2>งาน → เพิ่มการดาวน์โหลดใหม่</g2> หรือกด <g3>Ctrl+N</g3>"
   },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>ทั่วไป</g1> — ข้อมูลแฮช, ชิ้นส่วน, เพียร์, จำนวนที่ส่งไป, อัตราส่วนการแชร์, ระยะเวลาที่แชร์ และโฟลเดอร์ จำนวนที่ส่งไปและเวลาที่แชร์จะถูกรวมกันตลอดการทำงานของทอร์เรนต์: จะไม่เริ่มต้นใหม่ที่ 0 หลังจากหยุดชั่วคราวหรือรีสตาร์ท MDM"
+  },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",
    "text": "<g1>จำนวนการดาวน์โหลด</g1> ในผังหมวดหมู่, <g2>รายการว่างเปล่าที่บอกเหตุผล</g2> (พร้อมปุ่มล้างตัวกรองหรือเพิ่มการดาวน์โหลดใหม่), <g3>เมนูคลิกขวาบนพื้นที่ว่างของรายการ</g3>, ดับเบิลคลิกที่ขอบคอลัมน์เพื่อปรับขนาด, และ <g4>รีเซ็ตคอลัมน์</g4>"
@@ -8845,6 +8913,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "ทอร์เรนต์นับเป็นหนึ่งไฟล์ที่นี่: แต่ละทอร์เรนต์จะได้รับขีดจำกัดของตัวเอง การดาวน์โหลดที่มีขีดจำกัดของตัวเอง (ดูที่ <g1>สำหรับการดาวน์โหลดหนึ่งไฟล์</g1>) จะใช้ขีดจำกัดนั้น"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

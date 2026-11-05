@@ -52,6 +52,12 @@ enum Cmd {
         /// optionally named ("sha256:…").
         #[arg(long, value_parser = parse_checksum)]
         checksum: Option<mdm_engine::verify::Hash>,
+        /// The DNS that looks the names up: "system" (the default); a service and how to ask it,
+        /// "cloudflare-https", "quad9-tls", "google-plain", "adguard-https", "nextdns-tls"; DNS
+        /// servers' addresses, "9.9.9.9,149.112.112.112"; or a DNS-over-HTTPS address,
+        /// "https://dns.example/dns-query". No falling back to the system's DNS.
+        #[arg(long, default_value = "system", value_parser = parse_dns)]
+        dns: mdm_engine::DnsChoice,
     },
     /// The running app's downloads, as JSON (automation API; turn it on with `api on`).
     Status,
@@ -283,6 +289,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             connections,
             headers,
             checksum,
+            dns,
         } => {
             let dest = if output.is_dir() {
                 Destination::Dir(output)
@@ -296,6 +303,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             };
             let opts = Options {
                 checksum,
+                dns,
                 ..opts(connections)
             };
             watch(Download::start(req, opts), json).await
@@ -651,6 +659,48 @@ fn opts(connections: u32) -> Options {
         max_connections: connections,
         ..Options::default()
     }
+}
+
+/// `--dns`: see [`Cmd::Get`].
+fn parse_dns(s: &str) -> Result<mdm_engine::DnsChoice, String> {
+    use mdm_engine::DnsChoice;
+    use mdm_engine::dns::{Dns, Mode, Preset, parse_servers};
+    let s = s.trim();
+    if s.is_empty() || s.eq_ignore_ascii_case("system") {
+        return Ok(DnsChoice::default());
+    }
+    if s.starts_with("https://") {
+        return Ok(DnsChoice {
+            dns: Dns::Https {
+                url: s.to_owned(),
+                bootstrap: Vec::new(),
+            },
+            fallback: false,
+            label: s.to_owned(),
+        });
+    }
+    if let Some((id, how)) = s.rsplit_once('-')
+        && let Some(p) = Preset::by_id(&id.to_ascii_lowercase())
+    {
+        let mode = match how.to_ascii_lowercase().as_str() {
+            "plain" => Mode::Plain,
+            "tls" => Mode::Tls,
+            "https" => Mode::Https,
+            _ => return Err(format!("`{how}`: plain, tls or https")),
+        };
+        if !p.offers(mode) {
+            return Err(format!("{} isn't offered as {how}", p.name));
+        }
+        return Ok(p.choice(mode, "", false, format!("{} ({how})", p.name)));
+    }
+    let servers = parse_servers(s, 53).map_err(|bad| {
+        format!("`{bad}`: not a DNS server's address, a service or an https:// address")
+    })?;
+    Ok(DnsChoice {
+        dns: Dns::Plain(servers),
+        fallback: false,
+        label: s.to_owned(),
+    })
 }
 
 fn parse_checksum(s: &str) -> Result<mdm_engine::verify::Hash, String> {

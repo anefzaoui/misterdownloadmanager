@@ -193,11 +193,13 @@ impl ImportDialog {
                     &mut self.rows,
                     |ui, clip, i, row, look| {
                         let (d, on) = &mut found[i];
+                        look.name = d.url.to_string();
                         winui::row_check(
                             ui,
                             clip,
                             pos2(row.left() + 5.0, row.top() + 2.0),
                             on,
+                            &look.name,
                             ("import", &d.url),
                         );
                         // One in the download list already says so at the row's end.
