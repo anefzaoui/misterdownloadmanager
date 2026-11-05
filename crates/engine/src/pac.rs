@@ -7,7 +7,7 @@
 
 use std::cell::Cell;
 use std::collections::HashMap;
-use std::net::{IpAddr, ToSocketAddrs, UdpSocket};
+use std::net::{IpAddr, ToSocketAddrs};
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
@@ -136,10 +136,7 @@ fn resolve(host: &str) -> String {
 /// `__mdmMyIp()`: this computer's address on its network (the one a connection out would use;
 /// nothing is sent), else 127.0.0.1.
 fn my_ip() -> String {
-    UdpSocket::bind("0.0.0.0:0")
-        .and_then(|s| s.connect("192.0.2.1:9").map(|_| s))
-        .and_then(|s| s.local_addr())
-        .map(|a| a.ip())
+    crate::net::source_address(IpAddr::from([192, 0, 2, 1]))
         .unwrap_or(IpAddr::from([127, 0, 0, 1]))
         .to_string()
 }

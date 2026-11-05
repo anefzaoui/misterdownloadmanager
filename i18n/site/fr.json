@@ -622,6 +622,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Sommes de contrôle SHA-256</g1><g2>pour chaque fichier</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "Sous macOS, un VPN qui se reconnecte peut obtenir une nouvelle interface (<x1/> au lieu de <x2/>) : choisissez-la à nouveau."
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "L’extension doit être autorisée à lire le site. Lorsque vous la limitez à certains sites (ou <g1>Au clic</g1>), elle ne peut pas transmettre votre connexion, elle laisse donc les téléchargements de ces sites au navigateur."
@@ -977,6 +981,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 s</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Sous Windows, le moteur de torrent ne peut pas encore se lier à une carte. Ainsi, les torrents ne démarrent pas tant qu’une carte est choisie (« les torrents ne peuvent pas encore passer par une carte réseau choisie sous Windows »), plutôt que de la contourner. Les noms des traqueurs sont toujours résolus par le DNS du système."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1974,6 +1982,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Gestionnaire de téléchargement gratuit et open source pour Windows, avec des versions macOS et Linux expérimentales. L'interface IDM que vous connaissez, 5 fois plus rapide selon nos tests : toutes les connexions en même temps, reprise sécurisée après un crash, torrents, vidéos depuis les pages web, intégration au navigateur, 86 langues."
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "Les connexions à cet ordinateur lui-même (<x1/>) ne sont pas liées. Un proxy sur cet ordinateur gère les téléchargements, et c’est à lui de décider où les envoyer."
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "Les vidéos protégées par DRM (la plupart des services de streaming payants) ne peuvent pas être téléchargées, et MDM n'essaie pas."
@@ -2093,6 +2105,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "Supprimer les téléchargements sélectionnés (demande confirmation)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Les paramètres Proxy / Socks de MDM sont pour les téléchargements web et FTP. Les torrents peuvent aussi utiliser un proxy SOCKS5 : configurez un <x1/> proxy dans <g2>Options → Proxy / Socks</g2> et activez <g3>Utiliser le proxy</g3> dans les Paramètres du torrent. Le proxy ne couvre que les connexions aux pairs et aux traqueurs web, donc avec lui MDM désactive le DHT, la découverte de pairs locaux, les connexions entrantes et les traqueurs UDP ; il n'ouvre aucune socket UDP vers le réseau. Si le proxy n'est plus dans Proxy / Socks alors que ce commutateur est activé, les torrents ne démarrent pas plutôt que de le contourner."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2386,6 +2402,10 @@
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "Avez-vous cliqué sur <g1>Appliquer</g1> après avoir réglé l’heure ?"
   },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "Le DNS du système interroge les noms à sa manière, et Windows peut interroger via chaque carte. Pour que les noms restent également à l’intérieur de la carte, choisissez un DNS sous <g1>Connexion</g1> → <g2>DNS</g2> : MDM l’interroge alors via la carte."
+  },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "Plus d’informations dans <g1>Connexions et vitesse</g1>."
@@ -2589,10 +2609,6 @@
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>Démarrer le téléchargement à</g1> — une heure, puis soit :"
-  },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>Propriétés</g1> — changer son dossier (et, pour vos propres catégories, son nom et ses types de fichiers)."
   },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
@@ -3650,6 +3666,10 @@
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>Les appels spécifiques à Windows se trouvent dans <x2/></g1>, leurs équivalents Linux et macOS dans <x3/> ; le reste de l'espace de travail est du Rust sûr et portable (<x4/>). Sous Windows, <x5/> vérifie qu'il se compile toujours pour Linux et macOS."
   },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>Propriétés</g1> — modifiez son nom, ses types de fichiers et son dossier. Général et Torrents ne changent que leur dossier. Une catégorie renommée conserve son dossier ; une catégorie intégrée conserve son nom dans votre langue jusqu'à ce que vous la renommiez."
+  },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "Maj+F10"
@@ -3665,6 +3685,10 @@
   "672ffa07db0bd6d7": {
    "source": "Reinstall MDM to restore its files.",
    "text": "Réinstallez MDM pour restaurer ses fichiers."
+  },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "Pour acheminer <g1>tout</g1> via un autre réseau, utilisez un VPN pour tout l’ordinateur."
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -4030,10 +4054,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM peut être piloté sans sa fenêtre de trois manières :"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Les paramètres Proxy / Socks de MDM sont pour les téléchargements web et FTP. Les torrents peuvent également utiliser un SOCKS5 : définissez un proxy <x1/> dans <g2>Options → Proxy / Socks</g2> et activez <g3>Utiliser le proxy</g3> dans les Paramètres du torrent. Le proxy ne couvre que les connexions aux pairs et aux traqueurs web, donc avec lui MDM désactive le DHT, la découverte de pairs locaux, les connexions entrantes et les traqueurs UDP. Si le proxy disparaît de Proxy / Socks alors que cette option est activée, les torrents ne démarrent pas plutôt que de le contourner."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Fenêtre de progression d'une vidéo"
@@ -4217,6 +4237,10 @@
   "75adee39bc161169": {
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>Affichage → Prise en charge du mode sombre</g1> et <g2>Affichage → Langue</g2>."
+  },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "Une carte réseau"
   },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
@@ -4490,6 +4514,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 ou une version ultérieure est nécessaire."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "L’option <g1>Options → Proxy / Socks → Carte réseau</g1> lie les connexions de MDM à une seule carte, généralement celle d’un VPN (<g2>Options</g2>). Sous Linux et macOS, le moteur de torrent lie toutes les sockets à cette carte : les pairs, les traqueurs, le DHT et son port d’écoute. L’UPnP et la découverte de pairs locaux sont alors désactivés, car ils communiquent avec le réseau local plutôt qu’à travers la carte. Si la carte disparaît, le moteur s’arrête, et il redémarre via la carte quand elle est de retour."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Tâches → Paramètres du torrent → Ouvrir les liens magnet et les fichiers .torrent avec Mister Download Manager</g1> écrit bien dans le registre, mais uniquement pour votre compte Windows. Laissez cette option désactivée pour que la copie portable reste sans registre."
@@ -4745,10 +4773,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "À l’heure de début, la file d’attente démarre d’elle-même. Le matin, les fichiers terminés se trouvent sous <g1>Terminé</g1> dans les catégories."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Pour acheminer <g1>tout</g1> via un autre réseau, utilisez un VPN pour l’ensemble de l’ordinateur. MDM ne peut pas lier les torrents à une seule carte réseau sous Windows."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5262,6 +5286,10 @@
    "source": "Keep some speed for everything else →",
    "text": "Garder de la vitesse pour tout le reste →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "Télécharge un fichier avec jusqu'à 8 connexions (<x1/>, de 1 à 128), en affichant la progression. <x2/> le met en pause ; <x3/> le reprend. <x4/> vérifie le fichier terminé : MD5 hex, SHA-1, SHA-256, SHA-512 ou CRC32, avec un nom facultatif (<x5/>). <x6/> choisit le DNS : <x7/> (par défaut) ; un service et comment le demander, <x8/>, <x9/>, <x10/>, <x11/>, <x12/> ; les adresses des serveurs DNS, <x13/> ; ou une adresse DNS-over-HTTPS. Il ne revient jamais au DNS du système. <x14/> envoie chaque connexion via une seule carte réseau, par son nom (<x15/>, <x16/>) ou l'une de ses adresses ; si elle n'est pas connectée, rien n'est envoyé et le téléchargement échoue."
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager (« MDM », « le logiciel ») et le site web misterdownloadmanager.com (« le site ») sont créés par Ahmed Nefzaoui et des contributeurs (« nous »). En utilisant le logiciel ou le site, vous acceptez ces conditions. Si vous ne les acceptez pas, veuillez ne pas les utiliser."
@@ -5281,6 +5309,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> sélectionne tout."
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Pas encore liés à la carte, ils ne démarrent donc pas tant qu’une carte est choisie :"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5329,10 +5361,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — s'exécute depuis un dossier ou une clé USB"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>Supprimer</g1> — retirer une de vos propres catégories. Ses téléchargements deviennent Généraux ; leurs fichiers restent où ils sont."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -5930,6 +5958,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "Comment ça marche : Windows lie l’adresse propre de la carte. Windows n’envoie alors ces paquets que par cette carte (son modèle d’hôte fort). Linux lie le périphérique lui-même (Linux 5.7 ou plus récent), et macOS lie l’interface. Une adresse d’un type que la carte ne possède pas (IPv6 sur un VPN IPv4 uniquement) est refusée, et non envoyée ailleurs."
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1>, ou <g2>Alt</g2> seul"
@@ -6173,6 +6205,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Catégorie</g1> — choisie en fonction du type de fichier (Compressé, Documents, Musique, Programmes, Vidéo ou Général). Chaque catégorie a son propre dossier. Le <g2>+</g2> à côté crée une nouvelle catégorie."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Carte réseau</g1> — <g2>N’importe laquelle (le système choisit)</g2> est le réglage par défaut. Choisissez une carte, généralement celle de votre VPN, et toutes les connexions ouvertes par MDM passeront par elle, ou pas du tout. Cela inclut les téléchargements, le FTP, le DNS que vous avez choisi, les propres téléchargements de MDM et la vérification des mises à jour. Cela fonctionne comme un coupe-circuit : lorsque la carte se déconnecte, ou que le VPN est désactivé, rien ne passe par votre connexion normale. Les téléchargements en cours s’arrêtent avec « … n’est pas connecté » et reprennent lorsque la carte est de nouveau disponible. La ligne sous la liste indique l’adresse de la carte, ou qu’elle n’est pas connectée."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6910,6 +6946,10 @@
    "source": "From the clipboard",
    "text": "Depuis le Presse-papiers"
   },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "torrents sous Windows ;"
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -7317,6 +7357,10 @@
   "cf04b2764bc982a7": {
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
+  },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>Supprimer</g1> — supprimez une catégorie, la vôtre ou une catégorie intégrée (pas Général ou Torrents). MDM vous demande ce qu'il advient de ses téléchargements : <g2>Déplacer ses téléchargements vers Général</g2>, ou <g3>Supprimer ses téléchargements de la liste</g3> (un téléchargement en cours est déplacé vers Général à la place). Leurs fichiers restent à leur emplacement dans tous les cas. À partir de ce moment, les fichiers de ses types vont dans une autre catégorie qui les contient, ou dans Général."
   },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
@@ -7894,6 +7938,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>Un MDM plus ancien ?</g1> Mettez à jour MDM : une extension plus récente peut avoir un ID qu’une ancienne aide ne connaît pas."
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(TLS implicite ; <x1/> avec TLS est correct)."
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "Une file d’attente en cours d’exécution démarre ses téléchargements dans l’ordre de la liste, quelques-uns à la fois (quatre par défaut). Si l’un échoue, il est déplacé à la fin de la file d’attente et est réessayé 30 secondes plus tard. La file d’attente s’arrête quand il ne reste plus rien à télécharger."
@@ -7901,10 +7949,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Reprendre un téléchargement interrompu"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Télécharge un fichier avec jusqu'à 8 connexions (<x1/>, de 1 à 128), en affichant la progression. <x2/> le met en pause ; <x3/> continue. <x4/> vérifie le fichier terminé : MD5 hex, SHA-1, SHA-256, SHA-512 ou CRC32, avec un nom facultatif (<x5/>). <x6/> choisit le DNS : <x7/> (par défaut) ; un service et comment le demander, <x8/>, <x9/>, <x10/>, <x11/>, <x12/> ; les adresses des serveurs DNS, <x13/> ; ou une adresse DNS-over-HTTPS. Il ne revient jamais au DNS du système."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8109,6 +8153,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> est le texte anglais ; laissez-le tel quel. Ne modifiez que <g2>translation</g2>."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "Pour restaurer les catégories intégrées telles qu'elles étaient, avec leurs noms, types de fichiers et dossiers, utilisez <g1>Options → Enregistrer dans → Rétablir les catégories intégrées</g1>. Vos propres catégories, Général et Torrents restent telles quelles."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -8469,6 +8517,10 @@
   "f20112b73092bc18": {
    "source": "Installer",
    "text": "Programme d'installation"
+  },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "pages vidéo (yt-dlp ne peut pas être lié à une carte) ;"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",

@@ -13,20 +13,82 @@
 //! DNS can't know them. When the chosen DNS can't be reached, the lookup fails unless the user
 //! allowed falling back to the system's DNS; a name it says doesn't exist never falls back (that
 //! would undo a filtering DNS).
+//!
+//! With a network adapter chosen (#35, `crate::net`), the chosen DNS is asked through that
+//! adapter too, the address race connects through it, and addresses of an IP family it can't
+//! reach are dropped. The system's DNS asks in its own way (Windows may ask over every adapter):
+//! choosing a DNS here is what keeps the names inside the adapter as well.
 
 use std::collections::HashMap;
+use std::future::Future;
+use std::io;
 use std::net::{IpAddr, SocketAddr};
+use std::pin::Pin;
 use std::sync::{Arc, Mutex, OnceLock};
 use std::time::{Duration, Instant};
 
-use hickory_resolver::TokioResolver;
 use hickory_resolver::config::{
     ConnectionConfig, LookupIpStrategy, NameServerConfig, ResolveHosts, ResolverConfig,
     ServerOrderingStrategy,
 };
-use hickory_resolver::net::runtime::TokioRuntimeProvider;
+use hickory_resolver::net::runtime::iocompat::AsyncIoTokioAsStd;
+use hickory_resolver::net::runtime::{
+    RuntimeProvider, TokioHandle, TokioRuntimeProvider, TokioTime,
+};
 use reqwest::dns::{Addrs, Name, Resolve, Resolving};
 use tokio::task::JoinSet;
+
+use crate::net::Route;
+
+/// hickory's resolver, its connections opened through the chosen adapter.
+type DnsResolver = hickory_resolver::Resolver<Through>;
+
+/// hickory's tokio runtime with its TCP connections (plain DNS over TCP, TLS, HTTPS) opened by
+/// `net::tcp_connect`, so they go through the chosen adapter. It never opens UDP sockets (see
+/// `build`).
+#[derive(Clone, Default)]
+struct Through {
+    tokio: TokioRuntimeProvider,
+    route: Route,
+}
+
+impl RuntimeProvider for Through {
+    type Handle = TokioHandle;
+    type Timer = TokioTime;
+    type Udp = tokio::net::UdpSocket;
+    type Tcp = AsyncIoTokioAsStd<tokio::net::TcpStream>;
+
+    fn create_handle(&self) -> Self::Handle {
+        self.tokio.create_handle()
+    }
+
+    fn connect_tcp(
+        &self,
+        server_addr: SocketAddr,
+        _bind_addr: Option<SocketAddr>,
+        timeout: Option<Duration>,
+    ) -> Pin<Box<dyn Send + Future<Output = Result<Self::Tcp, io::Error>>>> {
+        let route = self.route.clone();
+        Box::pin(async move {
+            let wait = timeout.unwrap_or(crate::net::CONNECT);
+            let stream = tokio::time::timeout(wait, crate::net::tcp_connect(&route, server_addr))
+                .await
+                .map_err(|_| io::Error::new(io::ErrorKind::TimedOut, "TCP connect timed out"))??;
+            stream.set_nodelay(true)?;
+            Ok(AsyncIoTokioAsStd(stream))
+        })
+    }
+
+    fn bind_udp(
+        &self,
+        _local_addr: SocketAddr,
+        _server_addr: SocketAddr,
+    ) -> Pin<Box<dyn Send + Future<Output = Result<Self::Udp, io::Error>>>> {
+        // Never asked for: every server is configured for TCP, TLS or HTTPS. Refused all the same:
+        // a UDP socket would be a listening socket to Windows' firewall.
+        Box::pin(async { Err(io::Error::other("MDM asks DNS over TCP only")) })
+    }
+}
 
 /// Which DNS answers MDM's own lookups (Options → Connection → DNS).
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
@@ -81,6 +143,9 @@ pub enum DnsError {
     /// The choice itself is wrong (an address that isn't one).
     #[error("{dns}: {why}")]
     Setup { dns: String, why: String },
+    /// The chosen network adapter is down, or can't reach any address found (#35).
+    #[error(transparent)]
+    Adapter(#[from] crate::net::NetError),
 }
 
 /// How a preset is asked.
@@ -244,7 +309,11 @@ fn ipv4_first<T: Copy>(servers: &[T], ip: impl Fn(&T) -> IpAddr) -> Vec<T> {
 }
 
 /// The chosen DNS as a hickory resolver (its own cache; dropped with its owner).
-async fn build(choice: &DnsChoice, extra_roots: &[Vec<u8>]) -> Result<TokioResolver, DnsError> {
+async fn build(
+    choice: &DnsChoice,
+    extra_roots: &[Vec<u8>],
+    route: &Route,
+) -> Result<DnsResolver, DnsError> {
     let setup = |why: String| DnsError::Setup {
         dns: choice.label.clone(),
         why,
@@ -253,7 +322,15 @@ async fn build(choice: &DnsChoice, extra_roots: &[Vec<u8>]) -> Result<TokioResol
         c.port = port;
         c
     };
-    let keep = |servers: &[SocketAddr]| ipv4_first(servers, SocketAddr::ip);
+    // Only the servers the chosen adapter can reach (its IP family).
+    let keep = |servers: &[SocketAddr]| {
+        let reachable: Vec<SocketAddr> = servers
+            .iter()
+            .copied()
+            .filter(|s| route.check(s.ip()).is_ok())
+            .collect();
+        ipv4_first(&reachable, SocketAddr::ip)
+    };
     let servers: Vec<NameServerConfig> = match &choice.dns {
         Dns::System => return Err(setup("the system's DNS isn't asked through hickory".into())),
         // Over TCP only: a UDP socket waiting for answers counts as listening to Windows'
@@ -311,7 +388,7 @@ async fn build(choice: &DnsChoice, extra_roots: &[Vec<u8>]) -> Result<TokioResol
                     .collect()
             };
             let path: Arc<str> = Arc::from(if u.path().is_empty() { "/" } else { u.path() });
-            ipv4_first(&ips, |ip| *ip)
+            ipv4_first(&route.keep(ips), |ip| *ip)
                 .into_iter()
                 .map(|ip| {
                     NameServerConfig::new(
@@ -327,12 +404,27 @@ async fn build(choice: &DnsChoice, extra_roots: &[Vec<u8>]) -> Result<TokioResol
         }
     };
     if servers.is_empty() {
+        if let Route::Down { label } = route {
+            return Err(crate::net::NetError::Down {
+                label: label.clone(),
+            }
+            .into());
+        }
+        if !route.is_any() {
+            return Err(setup(format!(
+                "none of its servers can be reached through {}: it has no address of their kind (IPv4 or IPv6)",
+                route.label().unwrap_or_default()
+            )));
+        }
         return Err(setup("no server given".into()));
     }
     let tls = crate::ftp::client_config(extra_roots).map_err(|e| setup(e.to_string()))?;
-    let mut builder = TokioResolver::builder_with_config(
+    let mut builder = DnsResolver::builder_with_config(
         ResolverConfig::from_name_servers(servers),
-        TokioRuntimeProvider::default(),
+        Through {
+            tokio: TokioRuntimeProvider::default(),
+            route: route.clone(),
+        },
     )
     .with_tls_config(tls);
     let opts = builder.options_mut();
@@ -348,7 +440,7 @@ async fn build(choice: &DnsChoice, extra_roots: &[Vec<u8>]) -> Result<TokioResol
 
 /// `host`'s addresses from `resolver`, falling back to the system's as `choice` allows.
 async fn ask(
-    resolver: &TokioResolver,
+    resolver: &DnsResolver,
     choice: &DnsChoice,
     host: &str,
     port: u16,
@@ -395,40 +487,62 @@ async fn system(host: &str, port: u16) -> Result<Vec<IpAddr>, String> {
 }
 
 /// The resolver for a reqwest client outside the engine (release lists, the update check), so it
-/// follows `choice` as downloads do: `.dns_resolver(mdm_engine::dns::client_resolver(&net.dns))`.
-pub fn client_resolver(choice: &DnsChoice) -> Arc<dyn Resolve> {
-    Arc::new(Resolver::new(&[], 443, choice, &[]))
+/// follows `choice` and `route` as downloads do (see `net::client_builder`).
+pub fn client_resolver(choice: &DnsChoice, route: &Route) -> Arc<dyn Resolve> {
+    Arc::new(Resolver::new(&[], 443, choice, &[], route))
 }
 
-/// `host`'s addresses as `choice` finds them (FTP, and anything outside a download client).
+/// `host`'s addresses as `choice` finds them, those `route` can reach (FTP, and anything outside
+/// a download client).
 pub async fn lookup(
     choice: &DnsChoice,
     host: &str,
     port: u16,
     extra_roots: &[Vec<u8>],
+    route: &Route,
 ) -> Result<Vec<IpAddr>, DnsError> {
     if let Ok(ip) = host.trim_matches(['[', ']']).parse::<IpAddr>() {
+        route.check(ip)?;
         return Ok(vec![ip]);
     }
-    if choice.is_system() || local_name(host) {
-        return system(host, port)
+    if let Route::Down { label } = route {
+        return Err(crate::net::NetError::Down {
+            label: label.clone(),
+        }
+        .into());
+    }
+    let found = if choice.is_system() || local_name(host) {
+        system(host, port)
             .await
             .map_err(|why| DnsError::Unreachable {
                 dns: "the system's DNS".into(),
                 host: host.to_owned(),
                 why,
-            });
+            })?
+    } else {
+        let resolver = build(choice, extra_roots, route).await?;
+        ask(&resolver, choice, host, port).await?
+    };
+    reachable(found, route)
+}
+
+/// `ips` without those `route` can't reach; an error when none is left.
+fn reachable(ips: Vec<IpAddr>, route: &Route) -> Result<Vec<IpAddr>, DnsError> {
+    let first = ips.first().copied();
+    let kept = route.keep(ips);
+    match first {
+        Some(ip) if kept.is_empty() => Err(route.check(ip).unwrap_err().into()),
+        _ => Ok(kept),
     }
-    let resolver = build(choice, extra_roots).await?;
-    ask(&resolver, choice, host, port).await
 }
 
 /// Options → DNS → Test: how long `choice` takes to answer for `host`, and what, never
-/// falling back to the system's.
+/// falling back to the system's; asked through `route`, as downloads ask.
 pub async fn test(
     choice: &DnsChoice,
     host: &str,
     extra_roots: &[Vec<u8>],
+    route: &Route,
 ) -> Result<(Duration, Vec<IpAddr>), DnsError> {
     let strict = DnsChoice {
         fallback: false,
@@ -444,7 +558,7 @@ pub async fn test(
                 why,
             })?
     } else {
-        let resolver = build(&strict, extra_roots).await?;
+        let resolver = build(&strict, extra_roots, route).await?;
         ask(&resolver, &strict, host, 443).await?
     };
     Ok((started.elapsed(), ips))
@@ -470,7 +584,10 @@ pub(crate) struct Resolver {
 struct Chosen {
     choice: DnsChoice,
     extra_roots: Vec<Vec<u8>>,
-    resolver: tokio::sync::OnceCell<Result<TokioResolver, DnsError>>,
+    /// The network adapter connections go through (#35): the DNS is asked through it, the race
+    /// connects through it, and only addresses it can reach are handed on.
+    route: Route,
+    resolver: tokio::sync::OnceCell<Result<DnsResolver, DnsError>>,
 }
 
 impl Resolver {
@@ -479,6 +596,7 @@ impl Resolver {
         port: u16,
         dns: &DnsChoice,
         extra_roots: &[Vec<u8>],
+        route: &Route,
     ) -> Self {
         Resolver {
             hosts: hosts
@@ -489,6 +607,7 @@ impl Resolver {
             dns: Arc::new(Chosen {
                 choice: dns.clone(),
                 extra_roots: extra_roots.to_vec(),
+                route: route.clone(),
                 resolver: tokio::sync::OnceCell::new(),
             }),
         }
@@ -502,6 +621,12 @@ impl Resolve for Resolver {
         let port = self.port;
         let dns = self.dns.clone();
         Box::pin(async move {
+            if let Route::Down { label } = &dns.route {
+                return Err(Box::new(DnsError::from(crate::net::NetError::Down {
+                    label: label.clone(),
+                }))
+                    as Box<dyn std::error::Error + Send + Sync>);
+            }
             let ips: Vec<IpAddr> = match fixed {
                 Some(ips) => ips,
                 None if dns.choice.is_system() || local_name(&host) => {
@@ -513,7 +638,7 @@ impl Resolve for Resolver {
                 None => {
                     let resolver = dns
                         .resolver
-                        .get_or_init(|| build(&dns.choice, &dns.extra_roots))
+                        .get_or_init(|| build(&dns.choice, &dns.extra_roots, &dns.route))
                         .await
                         .as_ref()
                         .map_err(|e| {
@@ -522,7 +647,9 @@ impl Resolve for Resolver {
                     ask(resolver, &dns.choice, &host, port).await?
                 }
             };
-            let ips = reachable_first(&host, ips, port).await;
+            // An address of the family the adapter lacks would be connected unbound (#35).
+            let ips = reachable(ips, &dns.route)?;
+            let ips = reachable_first(&host, ips, port, &dns.route).await;
             // Port 0: reqwest then uses the URL's port (a non-zero port here would win).
             let addrs: Addrs = Box::new(ips.into_iter().map(|ip| SocketAddr::new(ip, 0)));
             Ok(addrs)
@@ -536,7 +663,12 @@ fn winners() -> &'static Mutex<HashMap<String, (IpAddr, Instant)>> {
 }
 
 /// `ips` with an address that accepts connections first (unchanged when none answers in time).
-async fn reachable_first(host: &str, mut ips: Vec<IpAddr>, port: u16) -> Vec<IpAddr> {
+async fn reachable_first(
+    host: &str,
+    mut ips: Vec<IpAddr>,
+    port: u16,
+    route: &Route,
+) -> Vec<IpAddr> {
     if ips.len() < 2 {
         return ips;
     }
@@ -548,7 +680,7 @@ async fn reachable_first(host: &str, mut ips: Vec<IpAddr>, port: u16) -> Vec<IpA
         .map(|(ip, _)| *ip);
     let first = match remembered.and_then(|ip| ips.iter().position(|x| *x == ip)) {
         Some(i) => Some(i),
-        None => race(&ips, port).await,
+        None => race(&ips, port, route).await,
     };
     if let Some(i) = first {
         winners()
@@ -562,8 +694,10 @@ async fn reachable_first(host: &str, mut ips: Vec<IpAddr>, port: u16) -> Vec<IpA
 }
 
 /// Index of the first address that accepts a TCP connection. Each attempt gets a `STAGGER`
-/// head start; a failed attempt starts the next one at once. The probe sockets are closed.
-async fn race(ips: &[IpAddr], port: u16) -> Option<usize> {
+/// head start; a failed attempt starts the next one at once. The probe sockets are closed. They
+/// connect through `route`, as the download will (an unbound probe would leave by the normal
+/// route).
+async fn race(ips: &[IpAddr], port: u16, route: &Route) -> Option<usize> {
     let deadline = tokio::time::Instant::now() + RACE_BUDGET;
     let mut attempts = JoinSet::new();
     let mut next = 0;
@@ -571,8 +705,9 @@ async fn race(ips: &[IpAddr], port: u16) -> Option<usize> {
         if next < ips.len() {
             let addr = SocketAddr::new(ips[next], port);
             let i = next;
+            let route = route.clone();
             attempts
-                .spawn(async move { tokio::net::TcpStream::connect(addr).await.ok().map(|_| i) });
+                .spawn(async move { crate::net::tcp_connect(&route, addr).await.ok().map(|_| i) });
             next += 1;
         } else if attempts.is_empty() {
             return None;
@@ -608,7 +743,7 @@ mod tests {
         let dead: IpAddr = "192.0.2.1".parse().unwrap();
         let live: IpAddr = "127.0.0.1".parse().unwrap();
         let started = Instant::now();
-        let ips = reachable_first("race.test", vec![dead, live], port).await;
+        let ips = reachable_first("race.test", vec![dead, live], port, &Route::Any).await;
         assert_eq!(ips, vec![live, dead]);
         assert!(
             started.elapsed() < Duration::from_secs(1),
@@ -689,7 +824,7 @@ mod tests {
             label: "Dead DNS".into(),
         };
         let started = Instant::now();
-        match lookup(&choice, "github.com", 443, &[]).await {
+        match lookup(&choice, "github.com", 443, &[], &Route::Any).await {
             Err(DnsError::Unreachable { dns, host, .. }) => {
                 assert_eq!((dns.as_str(), host.as_str()), ("Dead DNS", "github.com"))
             }
@@ -701,7 +836,11 @@ mod tests {
             started.elapsed()
         );
         // Local names don't go to it at all.
-        assert!(lookup(&choice, "localhost", 80, &[]).await.is_ok());
+        assert!(
+            lookup(&choice, "localhost", 80, &[], &Route::Any)
+                .await
+                .is_ok()
+        );
     }
 
     /// Every preset in every mode it offers, against the real services, plus fallback and an
@@ -717,7 +856,7 @@ mod tests {
                 }
                 let label = format!("{} {mode:?}", p.name);
                 let choice = p.choice(mode, "", false, label.clone());
-                match test(&choice, "github.com", &[]).await {
+                match test(&choice, "github.com", &[], &Route::Any).await {
                     Ok((took, ips)) => eprintln!("{label}: {took:?} {ips:?}"),
                     Err(e) => {
                         eprintln!("{label}: {e}");
@@ -734,7 +873,7 @@ mod tests {
             fallback: false,
             label: "1.1.1.1 DoH".into(),
         };
-        match test(&literal, "github.com", &[]).await {
+        match test(&literal, "github.com", &[], &Route::Any).await {
             Ok((took, ips)) => eprintln!("1.1.1.1 DoH: {took:?} {ips:?}"),
             Err(e) => failed.push(format!("1.1.1.1 DoH: {e}")),
         }
@@ -743,7 +882,14 @@ mod tests {
             .unwrap()
             .choice(Mode::Https, "", false, "Quad9".into());
         assert!(matches!(
-            lookup(&q9, "no-such-name.invalid-test-mdm.example", 443, &[]).await,
+            lookup(
+                &q9,
+                "no-such-name.invalid-test-mdm.example",
+                443,
+                &[],
+                &Route::Any
+            )
+            .await,
             Err(DnsError::NoSuchName { .. })
         ));
         // Fallback: a dead DNS with fallback on is answered by the system's.
@@ -752,7 +898,11 @@ mod tests {
             fallback: true,
             label: "Dead DNS".into(),
         };
-        assert!(lookup(&dead, "github.com", 443, &[]).await.is_ok());
+        assert!(
+            lookup(&dead, "github.com", 443, &[], &Route::Any)
+                .await
+                .is_ok()
+        );
         assert!(failed.is_empty(), "failed: {failed:?}");
     }
 
@@ -760,7 +910,10 @@ mod tests {
     async fn one_address_is_not_raced() {
         let ip: IpAddr = "192.0.2.1".parse().unwrap();
         let started = Instant::now();
-        assert_eq!(reachable_first("single.test", vec![ip], 9).await, vec![ip]);
+        assert_eq!(
+            reachable_first("single.test", vec![ip], 9, &Route::Any).await,
+            vec![ip]
+        );
         assert!(started.elapsed() < Duration::from_millis(50));
     }
 }

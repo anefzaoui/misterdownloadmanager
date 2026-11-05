@@ -25,6 +25,42 @@ pub enum ProcError {
     Timeout(String),
     #[error("{tool} failed: {message}")]
     Failed { tool: String, message: String },
+    /// The chosen network adapter is down, or yt-dlp can't be held to it here (#35).
+    #[error(transparent)]
+    Adapter(#[from] mdm_engine::NetError),
+}
+
+/// Options → Proxy / Socks → Network adapter (#35) for yt-dlp and the media-server checks; the
+/// app shares it as it changes ([`set_route`]).
+static ROUTE: std::sync::RwLock<mdm_engine::Route> = std::sync::RwLock::new(mdm_engine::Route::Any);
+
+/// The network adapter yt-dlp and the media-server checks go through (the app's setting).
+pub fn set_route(route: mdm_engine::Route) {
+    if *ROUTE.read().unwrap() != route {
+        *ROUTE.write().unwrap() = route;
+    }
+}
+
+pub fn route() -> mdm_engine::Route {
+    ROUTE.read().unwrap().clone()
+}
+
+/// yt-dlp and the chosen adapter (#35): nothing to add when there's none; refused while one is
+/// chosen, on every system, rather than sent around it. yt-dlp can't bind a device, and its
+/// `--source-address` was seen not to hold on Windows (yt-dlp 2026.10.26, given the address of
+/// an adapter without a route, still connected from the Ethernet adapter's), so its connections
+/// would leave by the normal route. The way to cover it is a proxy on this computer whose own
+/// connections MDM binds (a follow-up).
+fn route_args() -> Result<Vec<String>, ProcError> {
+    match route() {
+        mdm_engine::Route::Any => Ok(Vec::new()),
+        mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
+        mdm_engine::Route::Bound(b) => Err(mdm_engine::NetError::NotSupported {
+            label: b.label.clone(),
+            what: "Video pages (yt-dlp)".into(),
+        }
+        .into()),
+    }
 }
 
 /// Text that may go into an argument list: no line breaks or NUL (they would let a page title
@@ -145,12 +181,14 @@ pub fn ytdlp(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
+    let route = route_args()?;
     let mut cmd = ytdlp_command(exe);
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(UTF8);
+    cmd.args(route);
     cmd.arg("--");
     cmd.arg(safe(url)?);
     Ok(cmd)
@@ -164,12 +202,14 @@ pub fn ytdlp_info(
     ours: &[String],
     info: &Path,
 ) -> Result<Command, ProcError> {
+    let route = route_args()?;
     let mut cmd = ytdlp_command(exe);
     for a in user.iter().chain(ours) {
         cmd.arg(safe(a)?);
     }
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
     cmd.args(UTF8);
+    cmd.args(route);
     cmd.arg("--load-info-json");
     cmd.arg(info);
     Ok(cmd)

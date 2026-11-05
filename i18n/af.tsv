@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	’n Verslag is gestoor. Deur dit aan die ontwikkelaars op GitHub te stuur, help dit hulle om dit reg te stel; jy kan eers alles wat dit bevat hieronder lees. Niks word vanself gestuur nie: Stuur maak die verslagvorm in jou blaaier oop, ingevul, sodat jy dit kan nagaan en indien.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	’n bediener op hierdie rekenaar het die aflaai elders heen gestuur, wat nie deur {adapter} sou gaan nie
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Oor Mister Download Manager
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	Beantwoord in {ms} ms: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	Enige (die stelsel kies)
 #. text in the Scheduler window
 #, machine
 	April	April
@@ -280,6 +288,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Albei is oopbron. MDM kry dit van hul amptelike vrystellings met sy eie aflaaier en kontroleer elke lêer se handtekening voordat dit loop. Ongeveer 100 MB, een keer.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Herstel {names} na hul oorspronklike toestand: hul name, lêertipes en vouers? Jou eie kategorieë, Algemeen en Torrents bly soos dit is. Aflaaie wat reeds na Algemeen geskuif is, bly daar.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -519,20 +530,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Verstek maks. verb. nommer
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Vee uit
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Vee kategorie uit
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Vee tou uit
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Vee die kategorie "{category}" uit? Die aflaaie daarvan word Algemeen; die lêers bly waar hulle is.
+	Delete the category "{category}"? Its files stay where they are.	Vee die kategorie "{category}" uit? Die lêers daarvan bly waar dit is.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -723,6 +735,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Duplikaat aflaaiskakel
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Elke verbinding neem die stelsel se roete.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -775,6 +791,10 @@
 #. text in the Options window
 #, machine
 	Event	Gebeurtenis
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Elke verbinding gaan daardeur, vanaf {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1304,6 +1324,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Skuif af
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Skuif sy aflaaie na Algemeen
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Beweeg of hernoem die geselekteerde aflaai
@@ -1351,6 +1375,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Name in jou gasheerlêer en plaaslike name (enkelwoorde, .local, .lan) bly by die stelsel se DNS. Videobladsye en torrent-spoorsnyers gebruik tans die stelsel se DNS.
+#. text in the Options window
+#, machine
+	Network adapter:	Netwerkadapter:
 #. text in errors.rs
 #, machine
 	network error	netwerkfout
@@ -1746,6 +1773,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Verwyder uit die tou
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Verwyder sy aflaaie van die lys (lopendes skuif na Algemeen)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1754,6 +1785,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Herbegin MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Herstel die ingeboude kategorieë
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -2101,6 +2135,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Gestop
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Gestop: die netwerkadapter het verander; begin weer
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Gestop: {adapter} is nie gekoppel nie; dit gaan aan wanneer dit terug is
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Stop wanneer die aflaai voltooi is
@@ -2294,6 +2336,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Die lys kon nie gestoor word nie: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	die netwerkadapter {adapter} is nie gekoppel nie
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	die pad is te lank vir Windows: {path}
@@ -2484,6 +2530,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	Torrente
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	torrents kan nog nie deur ’n gekose netwerkadapter op Windows gaan nie
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2682,6 +2732,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video-opsoeke gebruik yt-dlp (ongeveer 23 MB, nagegaan teen sy handtekening).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Videobladsye en torrente kan dit nog nie gebruik nie.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Videobladsye kan dit nog nie gebruik nie.
+#. text in the Options window
 #, machine
 	Virus checking settings	Viruskontrole-instellings
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2787,6 +2845,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: vind die video
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (nie gekoppel nie)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} is nie gekoppel nie: niks word afgelaai totdat dit terug is nie.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2853,6 +2919,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} uur {m} min
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} kan nie deur {adapter} bereik word nie: dit het geen adres van daardie soort (IPv4 of IPv6) nie
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2908,6 +2978,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} sek
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} kan nog nie deur ’n gekose netwerkadapter ({adapter}) gaan nie
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

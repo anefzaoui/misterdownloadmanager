@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ሪፖርት ተቀምጧል። ወደ ጊትሀብ (GitHub) ገንቢዎች መላክ ችግሩን እንዲያስተካክሉ ይረዳቸዋል፤ በመጀመሪያ የያዘውን ሁሉ ከታች ማንበብ ይችላሉ። ምንም ነገር በራሱ አይላክም፦ ላክ (Send) ሪፖርቱን በብራውዘርዎ ውስጥ ይከፍታል፣ ተሞልቶ፣ እርስዎ እንዲያረጋግጡት እና እንዲያስገቡት።
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	በዚህ ኮምፒውተር ላይ ያለ አገልጋይ ማውረዱን ወደ ሌላ ቦታ ልኳል፣ ይህም በ{adapter} በኩል አያልፍም ነበር
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	ስለ Mister Download Manager
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	በ{ms} ሚሴ ውስጥ ምላሽ ተሰጥቷል፦ {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	ማንኛውም (ስርዓቱ ይመርጣል)
 #. text in the Scheduler window
 #, machine
 	April	ሚያዝያ
@@ -280,6 +288,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ሁለቱም ክፍት ምንጭ ናቸው። MDM ከኦፊሴላዊ ልቀቶቻቸው በራሱ ማውረጃ ያገኛቸዋል እና ከማስኬዱ በፊት የእያንዳንዱን ፋይል ፊርማ ይፈትሻል። አንድ ጊዜ ወደ 100 ሜባ ነው።
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} እንደነበሩ ይመልሱ: ስማቸው፣ የፋይል አይነቶቻቸው እና ማህደሮቻቸው? የእርስዎ ምድቦች፣ አጠቃላይ እና ቶረንቶች እንደነበሩ ይቆያሉ። ወደ አጠቃላይ የተዘዋወሩ ውርዶች እዚያው ይቆያሉ።
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -519,20 +530,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ነባሪ ከፍተኛ የግንኙነት ቁጥር
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	ሰርዝ
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	ምድብ ሰርዝ
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	ወረፋ ሰርዝ
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" ምድብ ይሰረዝ? የወረዱት ፋይሎች ወደ አጠቃላይ ይቀየራሉ፤ ፋይሎቻቸው ባሉበት ይቆያሉ።
+	Delete the category "{category}"? Its files stay where they are.	"{category}" ምድብ ይሰረዝ? ፋይሎቹ ባሉበት ይቆያሉ።
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -723,6 +735,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	የተባዛ የማውረጃ አገናኝ
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	እያንዳንዱ ግንኙነት የስርዓቱን መንገድ ይወስዳል።
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -775,6 +791,10 @@
 #. text in the Options window
 #, machine
 	Event	ክስተት
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	እያንዳንዱ ግንኙነት በእሱ በኩል ከ{ip} ይሄዳል።
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1304,6 +1324,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	ወደ ታች ያንቀሳቅሱ
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	የእሱን ውርዶች ወደ አጠቃላይ ያንቀሳቅሱ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	የተመረጠውን ማውረድ ያንቀሳቅሱ ወይም ዳግም ይሰይሙ
@@ -1351,6 +1375,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	በእርስዎ የአስተናጋጆች ፋይል ውስጥ ያሉ ስሞች እና የአካባቢ ስሞች (ነጠላ ቃላት፣ .local፣ .lan) ከስርዓቱ DNS ጋር ይቆያሉ። የቪዲዮ ገጾች እና የቶሬንት መከታተያዎች ለአሁኑ የስርዓቱን DNS ይጠቀማሉ።
+#. text in the Options window
+#, machine
+	Network adapter:	የአውታረ መረብ አስማሚ:
 #. text in errors.rs
 #, machine
 	network error	የአውታረ መረብ ስህተት
@@ -1746,6 +1773,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	ከወረፋው አስወግድ
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	የእሱን ውርዶች ከዝርዝሩ ያስወግዱ (የሚሰሩት ወደ አጠቃላይ ይንቀሳቀሳሉ)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1754,6 +1785,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDMን እንደገና አስጀምር
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	አብሮ የተሰሩ ምድቦችን ይመልሱ
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -2101,6 +2135,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	ቆሟል
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	ቆሟል: የአውታረ መረብ አስማሚው ተቀይሯል፤ እንደገና እየጀመረ ነው
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	ቆሟል: {adapter} አልተገናኘም፤ ሲመለስ ይቀጥላል
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ማውረዱ ሲጠናቀቅ ይቆማል
@@ -2294,6 +2336,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ዝርዝሩ ሊቀመጥ አልቻለም: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	የአውታረ መረብ አስማሚ {adapter} አልተገናኘም
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	መንገዱ ለWindows በጣም ረጅም ነው: {path}
@@ -2484,6 +2530,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	ቶረንቶች
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	ቶረንቶች በ Windows ላይ በተመረጠው የአውታረ መረብ አስማሚ ማለፍ አይችሉም።
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2682,6 +2732,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	የቪዲዮ ፍለጋዎች yt-dlpን ይጠቀማሉ (ወደ 23 ሜባ፣ ከፊርማው ጋር ተረጋግጧል)።
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	የቪዲዮ ገጾች እና ቶረንቶች ገና ሊጠቀሙበት አይችሉም።
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	የቪዲዮ ገጾች ገና ሊጠቀሙበት አይችሉም።
+#. text in the Options window
 #, machine
 	Virus checking settings	የቫይረስ መፈተሻ ቅንብሮች
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2787,6 +2845,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp፦ ቪዲዮውን ያገኛል
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (አልተገናኘም)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} አልተገናኘም: እስኪመለስ ድረስ ምንም አይወርድም።
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2853,6 +2919,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} ሰዓት(ቶች) {m} ደቂቃ
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} በ{adapter} በኩል ሊደረስበት አይችልም: የዚያ አይነት አድራሻ (IPv4 ወይም IPv6) የለውም
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2908,6 +2978,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ሰከንድ
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} በተመረጠ የአውታረ መረብ አስማሚ ({adapter}) በኩል ገና ማለፍ አይችልም
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

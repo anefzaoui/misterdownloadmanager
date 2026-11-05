@@ -47,6 +47,50 @@ pub fn custom(id: u32) -> Option<CustomCategory> {
     CUSTOM.read().unwrap().iter().find(|c| c.id == id).cloned()
 }
 
+/// A built-in category the user changed (#93): another name, other file types, or deleted.
+/// What it doesn't say stays as shipped (its folder lives in `Settings::category_dirs`, under
+/// the built-in's `key`, as before).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BuiltinEdit {
+    pub category: Category,
+    /// The user's name for it, kept as typed (None: the shipped name, translated).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// Its file types, as Options lists them (`MP3 FLAC`; None: the shipped ones).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub types: Option<String>,
+    /// Deleted: not in the Categories pane, Options or Download File Info, and no file goes to it.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub deleted: bool,
+}
+
+/// The built-in categories' edits as the settings hold them; set at start and whenever they
+/// change (`set_builtin`), like `CUSTOM`.
+static BUILTIN: std::sync::RwLock<Vec<BuiltinEdit>> = std::sync::RwLock::new(Vec::new());
+
+pub fn set_builtin(list: &[BuiltinEdit]) {
+    *BUILTIN.write().unwrap() = list.to_vec();
+}
+
+fn builtin(cat: Category) -> Option<BuiltinEdit> {
+    BUILTIN
+        .read()
+        .unwrap()
+        .iter()
+        .find(|e| e.category == cat)
+        .cloned()
+}
+
+/// `types` (`MP3 *.flac, R0*`) as a list of lower-case patterns.
+fn parse_types(types: &str) -> Vec<String> {
+    types
+        .split(|c: char| c.is_whitespace() || c == ',' || c == ';')
+        .map(|t| t.trim_start_matches("*.").trim_start_matches('.'))
+        .filter(|t| !t.is_empty())
+        .map(str::to_ascii_lowercase)
+        .collect()
+}
+
 /// Does `ext` (lower case) match a file-type pattern (`mp4`, `r0*`)?
 fn type_matches(pattern: &str, ext: &str) -> bool {
     let pattern = pattern.to_ascii_lowercase();
@@ -67,13 +111,73 @@ impl Category {
         Category::Torrents,
     ];
 
-    /// The named categories: the built-in ones, then the user's (as in the Categories tree).
+    /// The named categories: the built-in ones not deleted, then the user's (as in the
+    /// Categories tree).
     pub fn named() -> Vec<Category> {
         let custom = CUSTOM.read().unwrap();
         Category::BUILT_IN
             .into_iter()
+            .filter(|c| !c.deleted())
             .chain(custom.iter().map(|c| Category::Custom(c.id)))
             .collect()
+    }
+
+    /// A built-in category the user deleted (#93).
+    pub fn deleted(self) -> bool {
+        !self.is_custom() && builtin(self).is_some_and(|e| e.deleted)
+    }
+
+    /// Can its name and file types be changed, and can it be deleted? The user's categories and
+    /// the built-in ones by file type; not General (where everything else goes) nor Torrents
+    /// (by source, not by file type).
+    pub fn editable(self) -> bool {
+        !matches!(self, Category::General | Category::Torrents)
+    }
+
+    /// The name settings and folders know it by, whatever the user renamed it to: a built-in
+    /// one's English name (`Downloads\Music`, Options' stored folder), the user's for theirs.
+    pub fn key(self) -> std::borrow::Cow<'static, str> {
+        match self {
+            Category::Custom(_) => self.label(),
+            c => std::borrow::Cow::Borrowed(c.shipped_name()),
+        }
+    }
+
+    /// A built-in category's name as shipped (English; shown translated).
+    fn shipped_name(self) -> &'static str {
+        match self {
+            // i18n: category name: files of no particular kind
+            Category::General => crate::i18n::mark("General"),
+            // i18n: category name: compressed archives (zip, rar, 7z)
+            Category::Compressed => crate::i18n::mark("Compressed"),
+            // i18n: category name: documents (pdf, doc…)
+            Category::Documents => crate::i18n::mark("Documents"),
+            // i18n: category name: audio files
+            Category::Music => crate::i18n::mark("Music"),
+            // i18n: category name: programs and installers (exe, msi)
+            Category::Programs => crate::i18n::mark("Programs"),
+            // i18n: category name: video files
+            Category::Video => crate::i18n::mark("Video"),
+            // i18n: category name: torrent downloads (BitTorrent)
+            Category::Torrents => crate::i18n::mark("Torrents"),
+            Category::Custom(_) => "",
+        }
+    }
+
+    /// The name as shown, in the interface language (the user's names as typed).
+    pub fn shown(self) -> String {
+        match self {
+            Category::Custom(_) => self.label().into_owned(),
+            c => match builtin(c).and_then(|e| e.name) {
+                Some(name) => name,
+                None => c.shipped_shown(),
+            },
+        }
+    }
+
+    /// A built-in category's shipped name in the interface language.
+    pub fn shipped_shown(self) -> String {
+        crate::i18n::t(self.shipped_name()).to_owned()
     }
 
     /// Every category: General first.
@@ -83,26 +187,16 @@ impl Category {
             .collect()
     }
 
-    /// The name: English for built-in ones (shown translated, `t`), the user's for theirs.
+    /// The name: English for built-in ones as shipped (shown translated, `t`), the user's for
+    /// theirs and for a built-in one they renamed. Settings and folders use [`Self::key`].
     pub fn label(self) -> std::borrow::Cow<'static, str> {
         use std::borrow::Cow::{Borrowed, Owned};
         match self {
-            // English: also the key Options → Save to stores; shown translated (`t`).
-            // i18n: category name: files of no particular kind
-            Category::General => Borrowed(crate::i18n::mark("General")),
-            // i18n: category name: compressed archives (zip, rar, 7z)
-            Category::Compressed => Borrowed(crate::i18n::mark("Compressed")),
-            // i18n: category name: documents (pdf, doc…)
-            Category::Documents => Borrowed(crate::i18n::mark("Documents")),
-            // i18n: category name: audio files
-            Category::Music => Borrowed(crate::i18n::mark("Music")),
-            // i18n: category name: programs and installers (exe, msi)
-            Category::Programs => Borrowed(crate::i18n::mark("Programs")),
-            // i18n: category name: video files
-            Category::Video => Borrowed(crate::i18n::mark("Video")),
-            // i18n: category name: torrent downloads (BitTorrent)
-            Category::Torrents => Borrowed(crate::i18n::mark("Torrents")),
             Category::Custom(id) => Owned(custom(id).map_or_else(|| "?".to_owned(), |c| c.name)),
+            c => match builtin(c).and_then(|e| e.name) {
+                Some(name) => Owned(name),
+                None => Borrowed(c.shipped_name()),
+            },
         }
     }
 
@@ -112,6 +206,14 @@ impl Category {
     }
 
     fn extensions(self) -> Vec<String> {
+        if let Some(types) = builtin(self).and_then(|e| e.types) {
+            return parse_types(&types);
+        }
+        self.shipped_extensions()
+    }
+
+    /// A built-in category's file types as shipped (the user's: theirs).
+    fn shipped_extensions(self) -> Vec<String> {
         let fixed: &[&str] = match self {
             Category::General | Category::Torrents => &[],
             Category::Compressed => &[
@@ -128,16 +230,16 @@ impl Category {
             ],
             Category::Custom(id) => {
                 return custom(id)
-                    .map(|c| {
-                        c.types
-                            .split_whitespace()
-                            .map(str::to_ascii_lowercase)
-                            .collect()
-                    })
+                    .map(|c| parse_types(&c.types))
                     .unwrap_or_default();
             }
         };
         fixed.iter().map(|e| (*e).to_owned()).collect()
+    }
+
+    /// A built-in category's file types as shipped, as Options writes them (`ZIP RAR R0*`).
+    pub fn shipped_types_text(self) -> String {
+        upper_list(&self.shipped_extensions())
     }
 
     /// Options → Save to: "Automatically put in this category the following file types".
@@ -149,12 +251,7 @@ impl Category {
             Category::Torrents => {
                 crate::i18n::t("Torrent downloads (magnet links and .torrent files)").into()
             }
-            c => c
-                .extensions()
-                .iter()
-                .map(|e| e.to_ascii_uppercase())
-                .collect::<Vec<_>>()
-                .join(" "),
+            c => upper_list(&c.extensions()),
         }
     }
 
@@ -171,9 +268,10 @@ impl Category {
             .iter()
             .map(|c| Category::Custom(c.id))
             .collect();
+        // A deleted built-in takes no file: its types go to another category, or to General.
         custom
             .into_iter()
-            .chain(Category::BUILT_IN)
+            .chain(Category::BUILT_IN.into_iter().filter(|c| !c.deleted()))
             .find(|c| c.extensions().iter().any(|p| type_matches(p, &ext)))
             .unwrap_or(Category::General)
     }
@@ -200,9 +298,18 @@ impl Category {
                 Some(c) => downloads.join(mdm_engine::naming::sanitize(&c.name)),
                 None => downloads.to_owned(),
             },
-            c => downloads.join(c.label().as_ref()),
+            // The shipped name, whatever it is called now: renaming doesn't move a folder.
+            c => downloads.join(c.key().as_ref()),
         }
     }
+}
+
+/// `["zip", "r0*"]` as Options writes it: `ZIP R0*`.
+fn upper_list(exts: &[String]) -> String {
+    exts.iter()
+        .map(|e| e.to_ascii_uppercase())
+        .collect::<Vec<_>>()
+        .join(" ")
 }
 
 /// The category's folder: the one chosen in Options → Save to (or remembered from Download
@@ -211,9 +318,9 @@ pub fn category_folder(cat: Category, downloads: &Path, dirs: &[(String, String)
     if cat.is_custom() {
         return cat.folder(downloads);
     }
-    let label = cat.label();
+    let key = cat.key();
     dirs.iter()
-        .find(|(c, _)| *c == *label)
+        .find(|(c, _)| *c == *key)
         .map(|(_, d)| PathBuf::from(d))
         .unwrap_or_else(|| cat.folder(downloads))
 }
