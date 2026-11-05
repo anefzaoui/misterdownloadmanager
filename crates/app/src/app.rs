@@ -805,7 +805,7 @@ impl App {
             theme_checked: None,
             caption_set: false,
             list,
-            icons: ShellIcons::default(),
+            icons: ShellIcons,
             open_menu: None,
             alt_down: false,
             alt_alone: false,
@@ -5802,7 +5802,7 @@ impl App {
         }
         let mut keep = Vec::new();
         for mut c in std::mem::take(&mut self.complete) {
-            match c.show(ctx, &mut self.icons) {
+            match c.show(ctx) {
                 Outcome::Open => keep.push(c),
                 Outcome::Done(()) | Outcome::Closed => {
                     if c.dont_show {

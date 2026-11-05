@@ -13,8 +13,7 @@ use windows_sys::Win32::Graphics::Gdi::{
 use windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_NORMAL;
 use windows_sys::Win32::System::Threading::GetCurrentProcessId;
 use windows_sys::Win32::UI::Shell::{
-    DefSubclassProc, SHFILEINFOW, SHGFI_ICON, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW,
-    SetWindowSubclass,
+    DefSubclassProc, SHFILEINFOW, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW, SetWindowSubclass,
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
@@ -641,9 +640,13 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
     let hwnd = own_capture()
         .or_else(|| find_own_window(title))
         .ok_or("window not found")?;
-    let ext = file.extension().and_then(|e| e.to_str()).unwrap_or("");
-    let preview = shell_icon_large(ext)
-        .and_then(|(side, rgba)| {
+    let name = file.file_name().and_then(|n| n.to_str()).unwrap_or("");
+    let what = crate::fileicons::What::of(crate::fileicons::Kind::File(name));
+    let preview = file_icon(&what, 32)
+        .and_then(|icon| {
+            let crate::fileicons::Native::Rgba { side, rgba, .. } = icon else {
+                return None;
+            };
             let img = image::RgbaImage::from_raw(side, side, rgba)?;
             let mut png = Vec::new();
             img.write_to(&mut std::io::Cursor::new(&mut png), image::ImageFormat::Png)
@@ -1222,12 +1225,6 @@ pub fn work_area(x: i32, y: i32) -> Option<[i32; 4]> {
     }
 }
 
-/// The shell's large icon for files with extension `ext`, as (side, RGBA): the picture under the
-/// pointer while a file is dragged out.
-pub fn shell_icon_large(ext: &str) -> Option<(u32, Vec<u8>)> {
-    icon_for(&format!("file.{ext}"), FILE_ATTRIBUTE_NORMAL, 0)
-}
-
 /// The shell's icon for a file type or a folder (fileicons.rs), as Explorer shows it, from the
 /// system image list that fits `px` pixels: small, large, extra large (16, 32, 48 at 100 %, more
 /// with the system's scale), then jumbo (256) for anything bigger. The file need not exist. Run
@@ -1235,11 +1232,10 @@ pub fn shell_icon_large(ext: &str) -> Option<(u32, Vec<u8>)> {
 pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
     use crate::fileicons::What;
     use windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_DIRECTORY;
-    use windows_sys::Win32::UI::Shell::{
-        SHGFI_SYSICONINDEX, SHIL_EXTRALARGE, SHIL_JUMBO, SHIL_LARGE, SHIL_SMALL,
-    };
+    use windows_sys::Win32::UI::Shell::SHGFI_SYSICONINDEX;
     com_on_this_thread();
     let (name, attrs) = match what {
+        What::FolderOpen => return list_icon(open_folder_index()?, px),
         What::Folder => ("folder".to_string(), FILE_ATTRIBUTE_DIRECTORY),
         What::File(Some(ext)) => (format!("file.{ext}"), FILE_ATTRIBUTE_NORMAL),
         What::File(None) => ("file".to_string(), FILE_ATTRIBUTE_NORMAL),
@@ -1261,6 +1257,12 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
         }
         info.iIcon
     };
+    list_icon(index, px)
+}
+
+/// The system image lists' icon `index` at the list that fits `px` pixels (see `file_icon`).
+fn list_icon(index: i32, px: u32) -> Option<crate::fileicons::Native> {
+    use windows_sys::Win32::UI::Shell::{SHIL_EXTRALARGE, SHIL_JUMBO, SHIL_LARGE, SHIL_SMALL};
     let mut got: Option<(u32, Vec<u8>)> = None;
     for list in [SHIL_SMALL, SHIL_LARGE, SHIL_EXTRALARGE, SHIL_JUMBO] {
         if got.as_ref().is_some_and(|(side, _)| *side >= px) {
@@ -1375,27 +1377,6 @@ pub fn type_name(file_name: &str) -> Option<String> {
     }
 }
 
-/// The shell icon for `path` as (side, RGBA); `extra` adds SHGFI flags.
-fn icon_for(path: &str, attrs: u32, extra: u32) -> Option<(u32, Vec<u8>)> {
-    let name: Vec<u16> = path.encode_utf16().chain([0]).collect();
-    // SAFETY: `info` is a zeroed SHFILEINFOW of the stated size; the name is NUL-terminated; the
-    // icon returned is ours, and hicon_rgba destroys it.
-    unsafe {
-        let mut info: SHFILEINFOW = zeroed();
-        let ok = SHGetFileInfoW(
-            name.as_ptr(),
-            attrs,
-            &mut info,
-            size_of::<SHFILEINFOW>() as u32,
-            SHGFI_ICON | SHGFI_USEFILEATTRIBUTES | extra,
-        );
-        if ok == 0 || info.hIcon.is_null() {
-            return None;
-        }
-        hicon_rgba(info.hIcon)
-    }
-}
-
 /// `icon`'s pixels as (side, straight RGBA), at the size its bitmap has; the icon is destroyed.
 /// An icon without alpha (an old one) takes its transparency from its mask.
 unsafe fn hicon_rgba(
@@ -1481,20 +1462,17 @@ unsafe fn dib_rgba(
     }
 }
 
-/// Windows' own large "open folder" icon (32 × 32 at 100 %), as (side, RGBA) (Download complete).
-pub fn folder_open_icon_large() -> Option<(u32, Vec<u8>)> {
+/// Windows' own "open folder" (Download complete's, as IDM shows), as its system image list index.
+fn open_folder_index() -> Option<i32> {
     use windows_sys::Win32::UI::Shell::{
-        SHGSI_ICON, SHGSI_LARGEICON, SHGetStockIconInfo, SHSTOCKICONINFO, SIID_FOLDEROPEN,
+        SHGSI_SYSICONINDEX, SHGetStockIconInfo, SHSTOCKICONINFO, SIID_FOLDEROPEN,
     };
+    // SAFETY: `info` is zeroed with its size set; SYSICONINDEX returns no icon to free.
     unsafe {
         let mut info: SHSTOCKICONINFO = zeroed();
         info.cbSize = size_of::<SHSTOCKICONINFO>() as u32;
-        if SHGetStockIconInfo(SIID_FOLDEROPEN, SHGSI_ICON | SHGSI_LARGEICON, &mut info) != 0
-            || info.hIcon.is_null()
-        {
-            return None;
-        }
-        hicon_rgba(info.hIcon)
+        (SHGetStockIconInfo(SIID_FOLDEROPEN, SHGSI_SYSICONINDEX, &mut info) == 0)
+            .then_some(info.iSysImageIndex)
     }
 }
 

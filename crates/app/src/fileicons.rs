@@ -20,6 +20,9 @@ pub enum Kind<'a> {
     File(&'a str),
     /// A folder (a torrent's folder, a tree's branch).
     Folder,
+    /// An open folder (Download complete's: the file is in it). Windows has its own; elsewhere
+    /// the theme's "folder-open", else its folder.
+    FolderOpen,
 }
 
 /// What the system is asked for: a folder, or a file by its extension (lowercase; None: a file
@@ -27,13 +30,15 @@ pub enum Kind<'a> {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum What {
     Folder,
+    FolderOpen,
     File(Option<String>),
 }
 
 impl What {
-    fn of(kind: Kind) -> Self {
+    pub fn of(kind: Kind) -> Self {
         match kind {
             Kind::Folder => What::Folder,
+            Kind::FolderOpen => What::FolderOpen,
             Kind::File(name) => What::File(extension(name)),
         }
     }
@@ -54,7 +59,7 @@ pub enum Native {
 }
 
 /// The system's icon for `what` at about `px` pixels (None: it has none).
-fn system(what: &What, px: u32) -> Option<Native> {
+pub(crate) fn system(what: &What, px: u32) -> Option<Native> {
     // MDM_SYSTEM_ICONS=0: Tango's only, as a desktop without icons shows them (checks, shots).
     if std::env::var_os("MDM_SYSTEM_ICONS").is_some_and(|v| v == "0") {
         return None;
@@ -268,6 +273,7 @@ static TANGO: &[Tango] = tango!(
     "application-x-executable",
     "audio-x-generic",
     "folder",
+    "folder-open",
     "font-x-generic",
     "image-x-generic",
     "media-optical",
@@ -292,6 +298,7 @@ static TANGO: &[Tango] = tango!(
 fn tango_name(what: &What) -> &'static str {
     let ext = match what {
         What::Folder => return "folder",
+        What::FolderOpen => return "folder-open",
         What::File(None) => return "text-x-generic",
         What::File(Some(e)) => e.as_str(),
     };
@@ -487,6 +494,7 @@ mod tests {
             What::File(Some("xyz".into())),
             What::File(None),
             What::Folder,
+            What::FolderOpen,
         ] {
             for px in [16, 24, 32, 48, 64] {
                 match system(&what, px) {
@@ -511,7 +519,7 @@ mod tests {
             }
         }
         if cfg!(any(windows, target_os = "macos")) {
-            assert_eq!(found, 30, "every type at every size");
+            assert_eq!(found, 35, "every type at every size");
         }
     }
 }

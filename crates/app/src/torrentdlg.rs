@@ -403,8 +403,14 @@ impl TorrentDialog {
                     ("size", &crate::dialogs::dialog_size(m.total())),
                 ],
             );
-            let (rect, cut) =
-                winui::text_fit(&p, o.x + 11.0, line, &summary, winui::TEXT(), o.x + 589.0);
+            let kind = if shown > 1 {
+                crate::fileicons::Kind::Folder
+            } else {
+                crate::fileicons::Kind::File(&m.name)
+            };
+            crate::fileicons::paint_at(ui, &p, kind, egui::pos2(o.x + 11.0, line - 12.0), 16.0);
+            let x = o.x + 11.0 + crate::fileicons::INDENT;
+            let (rect, cut) = winui::text_fit(&p, x, line, &summary, winui::TEXT(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-name", &summary);
             }

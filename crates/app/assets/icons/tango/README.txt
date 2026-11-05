@@ -1,5 +1,5 @@
-Tango Icon Theme 0.8.90 (the Tango Desktop Project), 22 of its icons: mimetypes/*, places/folder
-and devices/media-optical, each as its 16x16 and 32x32 PNG and its scalable SVG, unchanged.
+Tango Icon Theme 0.8.90 (the Tango Desktop Project), 23 of its icons: mimetypes/*, places/folder,
+status/folder-open and devices/media-optical, each as its 16x16 and 32x32 PNG and its scalable SVG, unchanged.
 
 Source:  http://tango.freedesktop.org/releases/tango-icon-theme-0.8.90.tar.gz
 Licence: public domain. The release's COPYING reads, in full:
