@@ -155,7 +155,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   again when it resumes, and torrents and other downloads share the global cap evenly: each
   side gets at least half of it, and the rest when the other side needs less. A limit under
   16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
-  torrent started again while its files were still being checked no longer stays paused.
+  torrent started again while its files were still being checked no longer stays paused, and
+  of two torrents started at the same moment, the second no longer fails with "the torrent is
+  no longer there".
+- **Stopping a download under a low speed limit took seconds**: each connection first waited
+  for its turn under the limit. Stop now ends those waits at once.
 - **Download complete's Open with... stayed in English** in every other language
   ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80)). The tool that collects
   MDM's texts for translation now also finds labels given through a window's own helpers, and

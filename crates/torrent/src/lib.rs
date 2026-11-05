@@ -328,6 +328,10 @@ pub struct Torrents {
     api: Api,
     /// Through a proxy: UDP trackers are dropped (`trackers::allowed`).
     proxied: bool,
+    /// One add at a time: librqbit gives a new torrent the saved ids' highest plus one, so two
+    /// adds at once both took id 0, and the second was answered "already managed" with the
+    /// first one's handle: it was never added (two torrents started together, #39).
+    adding: tokio::sync::Mutex<()>,
 }
 
 /// The lowest limit a torrent can have, bytes/s: librqbit's limiter holds one second's budget
@@ -408,6 +412,7 @@ impl Torrents {
             session,
             api,
             proxied,
+            adding: tokio::sync::Mutex::new(()),
         })
     }
 
@@ -475,6 +480,10 @@ impl Torrents {
     ) -> Result<String, TorrentError> {
         // Checked here too, whatever the caller (the app, the command line, a saved torrent).
         check_bytes(torrent)?;
+        let wanted = librqbit::torrent_from_bytes(torrent)
+            .map_err(|_| TorrentError::NotATorrent)?
+            .info_hash
+            .as_string();
         let torrent =
             trackers::filter_torrent(torrent, self.proxied).unwrap_or_else(|| torrent.to_vec());
         let opts = AddTorrentOptions {
@@ -486,15 +495,23 @@ impl Torrents {
             initial_peers: (!peers.is_empty()).then_some(peers),
             ..Default::default()
         };
-        let res = self
-            .session
-            .add_torrent(AddTorrent::from_bytes(torrent), Some(opts))
-            .await
-            .map_err(engine)?;
+        let res = {
+            let _one = self.adding.lock().await;
+            self.session
+                .add_torrent(AddTorrent::from_bytes(torrent), Some(opts))
+                .await
+                .map_err(engine)?
+        };
         let handle = res
             .into_handle()
             .ok_or_else(|| engine("the torrent was listed instead of started"))?;
-        Ok(handle.info_hash().as_string())
+        let got = handle.info_hash().as_string();
+        if got != wanted {
+            return Err(engine(format!(
+                "the session answered with another torrent ({got}) for {wanted}"
+            )));
+        }
+        Ok(got)
     }
 
     /// Whether the session still has it (resume data from an earlier run).
@@ -1007,6 +1024,31 @@ mod tests {
         );
         seeder.stop().await;
         leecher.stop().await;
+    }
+
+    /// #39: two torrents added at the same moment are both in the session. (librqbit gave both
+    /// the id 0 and answered the second with the first's handle: it was never added.)
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn two_torrents_added_at_once_are_both_there() {
+        let tmp = tempfile::tempdir().unwrap();
+        let t = Torrents::start(offline(&tmp.path().join("state")))
+            .await
+            .unwrap();
+        let (a, b) = (torrent_naming("a.bin"), torrent_naming("b.bin"));
+        let (oa, ob) = (tmp.path().join("out-a"), tmp.path().join("out-b"));
+        let (ha, hb) = tokio::join!(
+            t.add(&a, &oa, None, Vec::new(), true),
+            t.add(&b, &ob, None, Vec::new(), true),
+        );
+        let (ha, hb) = (ha.unwrap(), hb.unwrap());
+        assert_ne!(ha, hb);
+        assert!(t.has(&ha) && t.has(&hb), "both in the session");
+        let mut all = t.hashes();
+        all.sort();
+        let mut want = vec![ha, hb];
+        want.sort();
+        assert_eq!(all, want);
+        t.stop().await;
     }
 
     /// #39: a torrent's own limit holds it back, the session's stays as it was, and the bytes

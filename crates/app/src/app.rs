@@ -1792,8 +1792,10 @@ impl App {
             (share(cap, files) / step * step).max(1024)
         });
         let (had, when) = self.torrent_cap;
+        // Down at once (the other side has started: give way now), up only 3 s after the last
+        // change.
         let moved = match (had, want) {
-            (Some(a), Some(b)) => a != b && when.elapsed() >= Duration::from_secs(3),
+            (Some(a), Some(b)) => b < a || (b > a && when.elapsed() >= Duration::from_secs(3)),
             (a, b) => a != b,
         };
         if moved {
@@ -1819,7 +1821,15 @@ impl App {
         }
         let new = taken.saturating_sub(before) as f64;
         let k = 1.0 - (-dt / 2.0).exp();
-        let speed = speed + (new / dt - speed) * k;
+        let mut speed = speed + (new / dt - speed) * k;
+        // None running: 0 at once, so the torrents take the whole cap back in one step.
+        if !self
+            .items
+            .iter()
+            .any(|i| matches!(i.live.as_ref().map(|l| &l.dl), Some(model::Job::File(_))))
+        {
+            speed = 0.0;
+        }
         self.file_speed = (speed, now, taken);
         speed
     }
