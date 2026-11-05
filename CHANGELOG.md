@@ -320,6 +320,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A server without ranges no longer sends the file twice**
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
+  connections' answers came late (a busy computer), the download could finish and then start over
+  on one connection, fetching the whole file again. MDM now stops once every byte is in, and tells
+  a server that ignores ranges from a CDN node with its own ETag on the first answer.
 - **Screen readers see a window's contents the first time they read it**
   ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131)): a window read for the
   first time (Link grabber, Options, About...) showed only its title bar until it was drawn

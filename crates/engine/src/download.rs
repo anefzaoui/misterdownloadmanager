@@ -1,4 +1,4 @@
-﻿//! One download: probe, parallel connections driven by the planner, positional writes, progress.
+//! One download: probe, parallel connections driven by the planner, positional writes, progress.
 //!
 //! The first connection is also the probe: a plain `GET` (no Range, as IDM does — D-007) that
 //! keeps streaming from byte 0 while further connections split the file (notes/ENGINE.md §1).
@@ -2534,7 +2534,14 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
             Ok(()) => {}
         }
         let complete = ctx.shared.with_planner(|p| p.is_complete());
-        if set.is_empty() && !complete {
+        // Every byte is in: the connections still asking (a retry under way, an answer late on
+        // a busy machine) have nothing left to fetch. Stopped now, a late answer can't start
+        // the download over (#136: a server without ranges sent the whole file twice).
+        if complete {
+            set.shutdown().await;
+            break;
+        }
+        if set.is_empty() {
             if let Some(e) = last_err.take() {
                 return Err(e); // the last connection exhausted its retries
             }
@@ -2802,7 +2809,13 @@ fn per_node_etag(ctx: &Ctx, sent: Option<&HeaderValue>, resp: &Response) -> bool
     // Sent with an ETag (dates never start with a quote) — possibly one another connection has
     // just dropped, so don't compare it with the current one.
     let sent_etag = sent.is_some_and(|s| s.as_bytes().starts_with(b"\""));
+    // Another node's ETag: a different one. The same ETag in a full answer is a server that
+    // doesn't do ranges (#136), not a CDN node of its own.
+    let theirs = header_str(resp.headers(), header::ETAG);
+    let other_etag =
+        theirs.is_some() && theirs.map(str::as_bytes) != sent.map(HeaderValue::as_bytes);
     let same = sent_etag
+        && other_etag
         && resp.content_length() == Some(ctx.size)
         && v.last_modified.is_some()
         && header_str(resp.headers(), header::LAST_MODIFIED) == v.last_modified.as_deref();

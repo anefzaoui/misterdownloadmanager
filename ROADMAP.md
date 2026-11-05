@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ A server without ranges sends the file once, not twice, on a busy computer (part of
+  [#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
