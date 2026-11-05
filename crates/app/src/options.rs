@@ -1624,11 +1624,11 @@ impl OptionsDialog {
                 self.account_rows.selected = Some(i + 1);
             }
         }
-        // Experimental until the service is confirmed with a real account (#44).
+        // Experimental until each service is confirmed with a real account (#44).
         let p = ui.painter().clone();
         let note = crate::i18n::t(
-            // i18n: Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
-            "Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.",
+            // i18n: Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
+            "Experimental: built from the services' public API documentation, not yet confirmed with real accounts.",
         );
         winui::paragraph(
             &p,
@@ -1654,7 +1654,7 @@ impl OptionsDialog {
             o.y + 388.0,
             // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
             crate::i18n::t(
-                "A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
+                "A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
             ),
             LIGHT_TEXT(),
             o.x + 404.0,
@@ -2820,8 +2820,8 @@ struct AccountEdit {
     signin: crate::debrid::SignIn,
 }
 
-/// Accounts → Add...: sign in by code in the browser (the service's device flow), or paste the
-/// API token; the account is checked before it is kept.
+/// Accounts → Add...: sign in by code in the browser (Real-Debrid's device flow, AllDebrid's PIN),
+/// or paste the API token (Premiumize: its API key only); the account is checked before it is kept.
 fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings::DebridAccount> {
     use crate::debrid::SignInState as S;
     let p = ui.painter().clone();
@@ -2836,15 +2836,24 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         crate::i18n::t("Service:"),
         LIGHT_TEXT(),
     );
-    let services = [e.service.name()];
-    winui::combo_light(
+    let all = mdm_debrid::ServiceKind::ALL;
+    let names: Vec<&str> = all.iter().map(|k| k.name()).collect();
+    let at = all.iter().position(|k| *k == e.service).unwrap_or(0);
+    if let Some(i) = winui::combo_light(
         ui,
         r(o, 90.0, 12.0, 200.0, 21.0),
-        &services,
-        0,
+        &names,
+        at,
         !busy,
         "opt-account-service",
-    );
+    ) && all[i] != e.service
+    {
+        // Another service: what was signed in to (or typed) belongs to the one before.
+        e.service = all[i];
+        e.token.clear();
+        *e.signin.state.lock().unwrap() = S::Idle;
+    }
+    let by_code = e.service.signs_in_by_code();
     let kind = |on: bool| {
         if on {
             ButtonKind::Normal
@@ -2857,7 +2866,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         ui,
         r(o, 14.0, 44.0, 220.0, 23.0),
         "Sign in in the browser",
-        kind(!busy),
+        kind(!busy && by_code),
         false,
     )
     .clicked()
@@ -2923,14 +2932,14 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         );
         ctx.request_repaint_after(std::time::Duration::from_secs(1));
     }
-    // i18n: Options → Add an account: label before the field for the service's API token (the other way to sign in)
-    text(
-        &p,
-        o.x + 14.0,
-        o.y + 178.0,
-        crate::i18n::t("Or paste your API token:"),
-        LIGHT_TEXT(),
-    );
+    let label = if by_code {
+        // i18n: Options → Add an account: label before the field for the service's API token (the other way to sign in)
+        crate::i18n::t("Or paste your API token:")
+    } else {
+        // i18n: Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+        crate::i18n::t("Paste your API key (from the service's Account page):")
+    };
+    text(&p, o.x + 14.0, o.y + 178.0, label, LIGHT_TEXT());
     winui::password_light(ui, r(o, 14.0, 186.0, 280.0, 21.0), &mut e.token, !busy);
     // i18n: button: sign in with the token typed in
     if winui::button_light(

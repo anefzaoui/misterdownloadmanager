@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid pakalpojums (Real-Debrid) lejupielādē failu mitinātāja saiti ar jūsu pašu apmaksātu kontu un dod MDM tiešu saiti. Izmantojiet tikai savu kontu: konta vai tā saišu koplietošana pārkāpj pakalpojumu noteikumus un var izraisīt tā apturēšanu. Lejupielādes, ko pārlūkprogramma jau ir sākusi, paliek nemainīgas.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid pakalpojums lejupielādē failu mitināšanas saiti ar jūsu pašu apmaksāto kontu un nodrošina MDM ar tiešu saiti. Izmantojiet tikai savu kontu: konta vai tā saišu koplietošana pārkāpj pakalpojumu noteikumus un var izraisīt tā apturēšanu. Lejupielādes, ko pārlūkprogramma jau ir sākusi, paliek nemainīgas.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Iestatīta paredzamā kontrolsumma ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimentāli: veidots no Real-Debrid publiskās API dokumentācijas, vēl nav apstiprināts ar reālu kontu.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimentāli: veidots no pakalpojumu publiskās API dokumentācijas, vēl nav apstiprināts ar reāliem kontiem.
 #. message or event log entry in the main window
 #, machine
 	Export	Eksportēt
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Opcijas pēc pabeigšanas
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Vai ielīmējiet savu API pilnvaru:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Ielīmējiet kontrolsummu, ko norāda lejupielādes lapa
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Ielīmējiet savu API atslēgu (no pakalpojuma konta lapas):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

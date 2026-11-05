@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid-þjónusta (Real-Debrid) sækir skráartengil hýsingaraðila með þínu eigin greidda reikningi og gefur MDM beinan tengil. Notaðu aðeins þinn eigin reikning: að deila reikningi eða tenglum hans brýtur í bága við skilmála þjónustunnar og getur leitt til stöðvunar. Niðurhal sem vafrinn hefur þegar hafið helst óbreytt.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Afþjónusta sækir tengil hýsingarþjónustu með þínum eigin greidda reikningi og gefur MDM beinan tengil. Notaðu aðeins þinn eigin reikning: að deila reikningi eða tenglum hans brýtur í bága við skilmála þjónustunnar og getur leitt til þess að honum verði lokað. Niðurhal sem vafrinn hefur þegar hafið helst óbreytt.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Væntanleg prófsumma stillt ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Tilraunakennt: byggt á opinberum API-skjölum Real-Debrid, ekki enn staðfest með raunverulegum reikningi.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Tilraunakennt: byggt á opinberum API-skjölum þjónustunnar, ekki enn staðfest með raunverulegum reikningum.
 #. message or event log entry in the main window
 #, machine
 	Export	Flytja út
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Valkostir við lok
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Eða líma API-auðkennið þitt:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Líma gátupphæðina sem niðurhalssíðan gefur upp
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Límdu inn API-lykilinn þinn (af reikningssíðu þjónustunnar):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

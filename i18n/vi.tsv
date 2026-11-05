@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid (Real-Debrid) tải xuống liên kết của máy chủ tệp bằng tài khoản trả phí của bạn và cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: chia sẻ tài khoản hoặc liên kết của tài khoản đó sẽ vi phạm các điều khoản dịch vụ và có thể bị tạm ngưng. Các bản tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid tải xuống liên kết của máy chủ tệp bằng tài khoản trả phí của riêng bạn và cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: việc chia sẻ tài khoản hoặc liên kết của tài khoản sẽ vi phạm các điều khoản dịch vụ và có thể khiến tài khoản bị tạm ngưng. Các bản tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Đã đặt tổng kiểm tra dự kiến ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Thử nghiệm: được xây dựng từ tài liệu API công khai của Real-Debrid, chưa được xác nhận bằng tài khoản thực.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Thử nghiệm: được xây dựng từ tài liệu API công khai của các dịch vụ, chưa được xác nhận bằng tài khoản thực.
 #. message or event log entry in the main window
 #, machine
 	Export	Xuất
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Tùy chọn khi hoàn tất
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Hoặc dán mã thông báo API của bạn:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Dán tổng kiểm mà trang tải xuống cung cấp
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Dán khóa API của bạn (từ trang Tài khoản của dịch vụ):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

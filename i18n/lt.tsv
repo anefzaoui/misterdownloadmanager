@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	„Debrid“ paslauga („Real-Debrid“) atsisiunčia failų prieglobos nuorodą su jūsų mokama paskyra ir suteikia MDM tiesioginę nuorodą. Naudokite tik savo paskyrą: paskyros ar jos nuorodų bendrinimas pažeidžia paslaugų sąlygas ir gali būti sustabdytas. Naršyklės jau pradėti atsisiuntimai lieka tokie, kokie yra.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	„Debrid“ paslauga atsisiunčia failų prieglobos nuorodą su jūsų mokama paskyra ir suteikia MDM tiesioginę nuorodą. Naudokite tik savo paskyrą: paskyros ar jos nuorodų bendrinimas pažeidžia paslaugų sąlygas ir gali būti sustabdytas. Atsisiuntimai, kuriuos naršyklė jau pradėjo, lieka tokie, kokie yra.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Nustatyta numatoma kontrolinė suma ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimentinis: sukurta pagal „Real-Debrid“ viešosios API dokumentaciją, dar nepatvirtinta su tikra paskyra.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimentinis: sukurta pagal viešąją paslaugų API dokumentaciją, dar nepatvirtinta su tikromis paskyromis.
 #. message or event log entry in the main window
 #, machine
 	Export	Eksportuoti
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Parinktys baigus
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Arba įklijuokite savo API prieigos raktą:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Įklijuokite atsisiuntimo puslapyje nurodytą kontrolinę sumą
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Įklijuokite API raktą (iš paslaugos paskyros puslapio):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	デブリットサービス (Real-Debrid) は、ご自身の有料アカウントでファイルホストのリンクをダウンロードし、MDM に直接リンクを提供します。ご自身のアカウントのみを使用してください。アカウントまたはそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。ブラウザーが既に開始したダウンロードはそのまま残ります。
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	デブリットサービスは、お客様ご自身の有料アカウントを使用してファイルホストのリンクをダウンロードし、MDMに直接リンクを提供します。ご自身のアカウントのみを使用してください。アカウントまたはそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。ブラウザーが既に開始したダウンロードは、そのまま維持されます。
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	予期されるチェックサムが設定されました ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	実験的: Real-Debrid の公開 API ドキュメントに基づいて構築されており、実際のアカウントではまだ確認されていません。
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	試験運用版: 各サービスの公開 API ドキュメントに基づいて構築されており、実際の有料アカウントではまだ確認されていません。
 #. message or event log entry in the main window
 #, machine
 	Export	エクスポート
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	完了時のオプション
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	または、API トークンを貼り付けます:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ダウンロード ページに表示されているチェックサムを貼り付ける
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	API キーを貼り付けます (サービスの [アカウント] ページから):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

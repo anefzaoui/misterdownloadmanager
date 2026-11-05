@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	একটি ডিব্রিড পরিষেবা (Real-Debrid) আপনার নিজস্ব অর্থপ্রদত্ত অ্যাকাউন্ট দিয়ে একটি ফাইল হোস্টের লিঙ্ক ডাউনলোড করে এবং MDM কে একটি সরাসরি লিঙ্ক দেয়। শুধুমাত্র আপনার নিজস্ব অ্যাকাউন্ট ব্যবহার করুন: একটি অ্যাকাউন্ট বা এর লিঙ্কগুলি শেয়ার করলে পরিষেবার শর্তাবলী লঙ্ঘন হয় এবং এটি স্থগিত হতে পারে। ব্রাউজার দ্বারা ইতিমধ্যে শুরু হওয়া ডাউনলোডগুলি যেমন আছে তেমনই থাকবে।
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	একটি ডিব্রিড পরিষেবা আপনার নিজস্ব অর্থপ্রদত্ত অ্যাকাউন্ট ব্যবহার করে একটি ফাইল হোস্টের লিঙ্ক ডাউনলোড করে এবং MDM-কে একটি সরাসরি লিঙ্ক দেয়। শুধুমাত্র আপনার নিজস্ব অ্যাকাউন্ট ব্যবহার করুন: একটি অ্যাকাউন্ট বা এর লিঙ্কগুলি শেয়ার করলে পরিষেবার শর্তাবলী লঙ্ঘন হয় এবং এটি স্থগিত হতে পারে। ব্রাউজার দ্বারা ইতিমধ্যে শুরু করা ডাউনলোডগুলি যেমন আছে তেমনই থাকবে।
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	প্রত্যাশিত চেকমার্ক সেট করা হয়েছে ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	পরীক্ষামূলক: Real-Debrid-এর পাবলিক API ডকুমেন্টেশন থেকে তৈরি করা হয়েছে, এখনও একটি বাস্তব অ্যাকাউন্ট দিয়ে নিশ্চিত করা হয়নি।
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	পরীক্ষামূলক: পরিষেবাগুলির পাবলিক API ডকুমেন্টেশন থেকে তৈরি করা হয়েছে, এখনও আসল অ্যাকাউন্ট দিয়ে নিশ্চিত করা হয়নি।
 #. message or event log entry in the main window
 #, machine
 	Export	রপ্তানি
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	সম্পূর্ণ হলে বিকল্প
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	অথবা আপনার API টোকেন পেস্ট করুন:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ডাউনলোডের পৃষ্ঠা থেকে প্রাপ্ত চেকমার্ক পেস্ট করুন
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	আপনার API কী পেস্ট করুন (পরিষেবার অ্যাকাউন্ট পৃষ্ঠা থেকে):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

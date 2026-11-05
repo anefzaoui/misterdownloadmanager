@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	’n Debrid-diens (Real-Debrid) laai ’n lêergasheer se skakel af met jou eie betaalde rekening en gee MDM ’n direkte skakel. Gebruik slegs jou eie rekening: die deel van ’n rekening of sy skakels oortree die diens se bepalings en kan dit laat opskort. Aflaaie wat die blaaier reeds begin het, bly soos dit is.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	’n Debrid-diens laai ’n lêerhost se skakel af met jou eie betaalde rekening en gee MDM ’n direkte skakel. Gebruik slegs jou eie rekening: die deel van ’n rekening of sy skakels oortree die diensbepalings en kan dit opskort. Aflaaie wat die blaaier reeds begin het, bly soos dit is.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Verwagte kontrolesom gestel ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimenteel: gebou uit Real-Debrid se openbare API-dokumentasie, nog nie met ’n regte rekening bevestig nie.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimenteel: gebou vanaf die dienste se publieke API-dokumentasie, nog nie met regte rekeninge bevestig nie.
 #. message or event log entry in the main window
 #, machine
 	Export	Uitvoer
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Opsies by voltooiing
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Of plak jou API-teken:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Plak die kontrolesom wat die aflaaiblad gee
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Plak jou API-sleutel (vanaf die diens se Rekening-bladsy):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

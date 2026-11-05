@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Дебрид қызметі (Real-Debrid) файл хостының сілтемесін сіздің ақылы есептік жазбаңызбен жүктеп алып, MDM-ге тікелей сілтеме береді. Тек өзіңіздің есептік жазбаңызды пайдаланыңыз: есептік жазбаны немесе оның сілтемелерін бөлісу қызметтердің шарттарын бұзады және оның тоқтатылуына әкелуі мүмкін. Браузер бастаған жүктеулер өзгеріссіз қалады.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Дебрид қызметі файл хостының сілтемесін сіздің төленген есептік жазбаңызбен жүктеп алып, MDM-ге тікелей сілтеме береді. Тек өзіңіздің есептік жазбаңызды пайдаланыңыз: есептік жазбаны немесе оның сілтемелерін бөлісу қызметтердің шарттарын бұзады және оның тоқтатылуына әкелуі мүмкін. Браузер бастаған жүктеулер өзгеріссіз қалады.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Күтілетін бақылау сомасы орнатылды ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Эксперименттік: Real-Debrid-тің жалпыға қолжетімді API құжаттамасынан құрастырылған, әлі нақты есептік жазбамен расталмаған.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Эксперименттік: қызметтердің жалпыға қолжетімді API құжаттамасынан құрастырылған, әлі нақты тіркелгілермен расталмаған.
 #. message or event log entry in the main window
 #, machine
 	Export	Экспорттау
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Аяқтау кезіндегі параметрлер
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Немесе API токеныңды қой:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Жүктеу бетіндегі бақылау сомасын қойыңыз
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	API кілтіңізді қойыңыз (қызметтің Тіркелгі бетінен):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

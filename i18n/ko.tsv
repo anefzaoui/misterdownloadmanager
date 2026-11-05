@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	디브리드 서비스(Real-Debrid)는 유료 계정으로 파일 호스트 링크를 다운로드하고 MDM에 직접 링크를 제공합니다. 본인 계정만 사용하세요. 계정 또는 링크를 공유하면 서비스 약관을 위반하게 되며 계정이 정지될 수 있습니다. 브라우저에서 이미 시작된 다운로드는 그대로 유지됩니다.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	디브리드 서비스는 사용자의 유료 계정으로 파일 호스트 링크를 다운로드하고 MDM에 직접 링크를 제공합니다. 사용자 본인의 계정만 사용하세요. 계정 또는 링크를 공유하면 서비스 약관을 위반하게 되며 계정이 정지될 수 있습니다. 브라우저에서 이미 시작된 다운로드는 그대로 유지됩니다.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	예상 체크섬 설정됨({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	실험적 기능: Real-Debrid의 공개 API 설명서를 기반으로 구축되었으며, 실제 계정으로 아직 확인되지 않았습니다.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	실험적 기능: 서비스의 공개 API 설명서를 기반으로 빌드되었으며, 실제 계정으로는 아직 확인되지 않았습니다.
 #. message or event log entry in the main window
 #, machine
 	Export	내보내기
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	완료 시 옵션
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	또는 API 토큰 붙여넣기:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	다운로드 페이지에 있는 체크섬 붙여넣기
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	API 키를 붙여넣으세요(서비스의 계정 페이지에서):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

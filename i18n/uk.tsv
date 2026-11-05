@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Служба дебридування (Real-Debrid) завантажує посилання файлового хоста за допомогою вашого власного платного облікового запису та надає MDM пряме посилання. Використовуйте лише власний обліковий запис: спільне використання облікового запису або його посилань порушує умови надання послуг і може призвести до його призупинення. Завантаження, які вже розпочав браузер, залишаються без змін.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Служба дебридування завантажує посилання файлового хостингу за допомогою вашого власного платного облікового запису та надає MDM пряме посилання. Використовуйте лише свій обліковий запис: спільне використання облікового запису або його посилань порушує умови надання послуг і може призвести до його призупинення. Завантаження, які вже розпочав браузер, залишаються без змін.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Встановлено очікувану контрольну суму ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Експериментально: створено на основі публічної документації API Real-Debrid, ще не підтверджено реальним обліковим записом.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Експериментально: створено на основі публічної документації API служб, ще не підтверджено реальними обліковими записами.
 #. message or event log entry in the main window
 #, machine
 	Export	Експорт
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Параметри після завершення
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Або вставте свій токен API:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Вставте контрольну суму, надану сторінкою завантаження
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Вставте ключ API (зі сторінки облікового запису служби):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

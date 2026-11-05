@@ -8,9 +8,11 @@
 //! (`mdm_engine::Options::unlocker`). Secrets (tokens) live in the app's settings, sealed there;
 //! here they are only in memory, and never written to a log.
 //!
-//! Phase 1 is Real-Debrid (`realdebrid`). AllDebrid and Premiumize come next on the same
-//! interface (`ServiceKind`).
+//! The services: Real-Debrid (`realdebrid`), AllDebrid (`alldebrid`) and Premiumize
+//! (`premiumize`), each from its own public API documentation, on one interface (`ServiceKind`).
 
+pub mod alldebrid;
+pub mod premiumize;
 pub mod realdebrid;
 
 use std::collections::HashMap;
@@ -28,20 +30,78 @@ use url::Url;
 pub enum ServiceKind {
     #[default]
     RealDebrid,
+    AllDebrid,
+    Premiumize,
 }
 
 impl ServiceKind {
+    /// Every service, in the order Options lists them.
+    pub const ALL: [ServiceKind; 3] = [
+        ServiceKind::RealDebrid,
+        ServiceKind::AllDebrid,
+        ServiceKind::Premiumize,
+    ];
+
     /// The service's name, as it writes it (not translated).
     pub fn name(self) -> &'static str {
         match self {
             ServiceKind::RealDebrid => "Real-Debrid",
+            ServiceKind::AllDebrid => "AllDebrid",
+            ServiceKind::Premiumize => "Premiumize",
         }
     }
 
-    /// The service's page where a user finds their API token.
+    /// The service's page where a user finds their API token (key).
     pub fn token_page(self) -> &'static str {
         match self {
             ServiceKind::RealDebrid => "https://real-debrid.com/apitoken",
+            ServiceKind::AllDebrid => "https://alldebrid.com/apikeys",
+            ServiceKind::Premiumize => "https://www.premiumize.me/account",
+        }
+    }
+
+    /// Whether it signs in by code in the browser (Real-Debrid's device flow, AllDebrid's PIN).
+    /// Premiumize's needs a client registered by MDM's maintainer: its API key is pasted.
+    pub fn signs_in_by_code(self) -> bool {
+        !matches!(self, ServiceKind::Premiumize)
+    }
+
+    /// The requests a minute MDM allows itself (each service's published limit, halved or more:
+    /// Real-Debrid 250 a minute, AllDebrid 600; Premiumize publishes none).
+    fn per_minute(self) -> usize {
+        match self {
+            ServiceKind::RealDebrid => 120,
+            ServiceKind::AllDebrid => 300,
+            ServiceKind::Premiumize => 60,
+        }
+    }
+}
+
+/// Where the services answer (tests: the lab server's fakes, [`Services::at`]).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Services {
+    pub rd: realdebrid::Endpoints,
+    pub ad: Url,
+    pub pm: Url,
+}
+
+impl Default for Services {
+    fn default() -> Self {
+        Services {
+            rd: realdebrid::Endpoints::default(),
+            ad: Url::parse(alldebrid::BASE).expect("constant"),
+            pm: Url::parse(premiumize::BASE).expect("constant"),
+        }
+    }
+}
+
+impl Services {
+    /// The lab server's fakes at `base` (`http://127.0.0.1:PORT/`).
+    pub fn at(base: &Url) -> Self {
+        Services {
+            rd: realdebrid::Endpoints::at(base),
+            ad: base.join("ad/").expect("relative"),
+            pm: base.join("pm/api/").expect("relative"),
         }
     }
 }
@@ -111,17 +171,13 @@ impl Fault {
 }
 
 /// Requests to the services: through the user's proxy, DNS and network adapter (`net`, the
-/// engine's own client), at most `PER_MINUTE` a minute, and none for a while after the service
-/// said "too many requests".
+/// engine's own client), each service at most its `per_minute` budget, and none for a while
+/// after it said "too many requests" (refused requests count, and abuse gets a block).
 pub struct Http {
     client: reqwest::Client,
-    pub(crate) rd: realdebrid::Endpoints,
-    budget: Mutex<Budget>,
+    pub(crate) services: Services,
+    budgets: Mutex<HashMap<ServiceKind, Budget>>,
 }
-
-/// Real-Debrid allows 250 requests a minute (refused ones count, and abuse gets a block): MDM
-/// keeps well under it.
-const PER_MINUTE: usize = 120;
 
 #[derive(Default)]
 struct Budget {
@@ -130,24 +186,25 @@ struct Budget {
 }
 
 impl Http {
-    /// `net`: the downloads' options (proxy, DNS, adapter); `rd`: where Real-Debrid answers.
-    pub fn new(net: &mdm_engine::Options, rd: realdebrid::Endpoints) -> Result<Self, String> {
-        let client = mdm_engine::http_client(net, &rd.rest).map_err(|e| e.to_string())?;
+    /// `net`: the downloads' options (proxy, DNS, adapter); `services`: where they answer.
+    pub fn new(net: &mdm_engine::Options, services: Services) -> Result<Self, String> {
+        let client = mdm_engine::http_client(net, &services.rd.rest).map_err(|e| e.to_string())?;
         Ok(Http {
             client,
-            rd,
-            budget: Mutex::default(),
+            services,
+            budgets: Mutex::default(),
         })
     }
 
-    /// Wait for the budget to allow one more request.
-    async fn slot(&self) -> Result<(), Fault> {
+    /// Wait for `kind`'s budget to allow one more request.
+    async fn slot(&self, kind: ServiceKind) -> Result<(), Fault> {
         loop {
             let wait = {
-                let mut b = self.budget.lock().unwrap();
+                let mut all = self.budgets.lock().unwrap();
+                let b = all.entry(kind).or_default();
                 let now = Instant::now();
                 if let Some(until) = b.paused_until.filter(|u| *u > now) {
-                    // Asked to slow down: no request until then (refused ones count too).
+                    // Asked to slow down: no request until then.
                     return Err(Fault::Service(ServiceFault::TooManyRequests(Some(
                         until - now,
                     ))));
@@ -159,13 +216,25 @@ impl Http {
                 {
                     b.sent.pop_front();
                 }
-                if b.sent.len() < PER_MINUTE {
+                if b.sent.len() < kind.per_minute() {
                     b.sent.push_back(now);
                     return Ok(());
                 }
                 Duration::from_secs(60) - (now - b.sent[0])
             };
             tokio::time::sleep(wait).await;
+        }
+    }
+
+    /// `kind` said "too many requests": nothing more to it for that long (a minute if unsaid).
+    pub(crate) fn pause(&self, kind: ServiceKind, f: &Fault) {
+        if let Fault::Service(ServiceFault::TooManyRequests(d)) = f {
+            self.budgets
+                .lock()
+                .unwrap()
+                .entry(kind)
+                .or_default()
+                .paused_until = Some(Instant::now() + d.unwrap_or(Duration::from_secs(60)));
         }
     }
 
@@ -189,13 +258,13 @@ impl Http {
             .body(body)
     }
 
-    /// Send `req` and read its JSON answer; an error answer through `fault`.
-    async fn json<T: serde::de::DeserializeOwned>(
+    /// Send `req` to `kind` within its budget: the HTTP status, the body and `Retry-After`.
+    async fn send(
         &self,
+        kind: ServiceKind,
         req: reqwest::RequestBuilder,
-        fault: fn(u16, &[u8], Option<u64>) -> Fault,
-    ) -> Result<T, Fault> {
-        self.slot().await?;
+    ) -> Result<(u16, bytes::Bytes, Option<u64>), Fault> {
+        self.slot(kind).await?;
         let resp = req
             .send()
             .await
@@ -210,16 +279,31 @@ impl Http {
             .bytes()
             .await
             .map_err(|_| Fault::Service(ServiceFault::ServiceDown))?;
+        if status == 429 {
+            self.pause(
+                kind,
+                &Fault::Service(ServiceFault::TooManyRequests(
+                    retry_after.map(Duration::from_secs),
+                )),
+            );
+        }
+        Ok((status, body, retry_after))
+    }
+
+    /// Real-Debrid: send `req` and read its JSON answer; an error answer through `fault`.
+    async fn json<T: serde::de::DeserializeOwned>(
+        &self,
+        req: reqwest::RequestBuilder,
+        fault: fn(u16, &[u8], Option<u64>) -> Fault,
+    ) -> Result<T, Fault> {
+        let (status, body, retry_after) = self.send(ServiceKind::RealDebrid, req).await?;
         if (200..300).contains(&status) {
             return serde_json::from_slice(&body).map_err(|_| {
                 Fault::Service(ServiceFault::Other("an answer MDM can't read".into()))
             });
         }
         let f = fault(status, &body, retry_after);
-        if let Fault::Service(ServiceFault::TooManyRequests(d)) = &f {
-            self.budget.lock().unwrap().paused_until =
-                Some(Instant::now() + d.unwrap_or(Duration::from_secs(60)));
-        }
+        self.pause(ServiceKind::RealDebrid, &f);
         Err(f)
     }
 }
@@ -278,8 +362,84 @@ impl Session {
         }
     }
 
-    async fn unlock(&self, link: &Url) -> Result<Option<Unlocked>, Fault> {
+    async fn unlock(
+        &self,
+        link: &Url,
+        note: &(dyn Fn(String) + Send + Sync),
+        cancel: &CancellationToken,
+    ) -> Result<Option<Unlocked>, Fault> {
+        let not_a_file = || {
+            Fault::Service(ServiceFault::Other(
+                "the service gave no file for this link".into(),
+            ))
+        };
         match self.account.service {
+            ServiceKind::AllDebrid => {
+                let key = self.token(false).await?;
+                let u = match alldebrid::unlock(&self.http, &key, link).await {
+                    Ok(u) => u,
+                    Err(Fault::Unsupported) => return Ok(None),
+                    Err(e) => return Err(e),
+                };
+                // Some links take time to generate: ask every 5 s or more, up to 10 minutes,
+                // saying so in the event log, and stop as soon as the download is stopped.
+                let mut direct = u.link.clone();
+                if let Some(id) = u.delayed {
+                    let until = Instant::now() + Duration::from_secs(600);
+                    loop {
+                        let d = alldebrid::delayed(&self.http, &key, id).await?;
+                        match d.status {
+                            2 => {
+                                direct = d.link.unwrap_or_default();
+                                break;
+                            }
+                            3 => return Err(Fault::Service(ServiceFault::FileUnavailable)),
+                            _ => {}
+                        }
+                        if Instant::now() >= until {
+                            return Err(Fault::Service(ServiceFault::ServiceDown));
+                        }
+                        note(format!(
+                            "AllDebrid is preparing the link (about {} s)",
+                            d.time_left.max(0)
+                        ));
+                        let wait = Duration::from_secs((d.time_left.max(0) as u64 / 4).max(5));
+                        tokio::select! {
+                            _ = tokio::time::sleep(wait) => {}
+                            _ = cancel.cancelled() => {
+                                return Err(Fault::Service(ServiceFault::Other("cancelled".into())));
+                            }
+                        }
+                    }
+                }
+                let url = Url::parse(&direct).map_err(|_| not_a_file())?;
+                Ok(Some(Unlocked {
+                    url,
+                    file_name: u.filename.filter(|n| !n.trim().is_empty()),
+                    size: (u.filesize > 0).then_some(u.filesize as u64),
+                    max_connections: None,
+                }))
+            }
+            ServiceKind::Premiumize => {
+                let key = self.token(false).await?;
+                let d = match premiumize::direct(&self.http, &key, link).await {
+                    Ok(d) => d,
+                    Err(Fault::Unsupported) => return Ok(None),
+                    Err(e) => return Err(e),
+                };
+                // One file per host link; several are a folder (a later phase: the grabber).
+                let [entry] = d.content.as_slice() else {
+                    return Err(not_a_file());
+                };
+                let url = Url::parse(&entry.link).map_err(|_| not_a_file())?;
+                let name = entry.path.rsplit('/').next().unwrap_or("").to_owned();
+                Ok(Some(Unlocked {
+                    url,
+                    file_name: Some(name).filter(|n| !n.trim().is_empty()),
+                    size: (entry.size > 0).then_some(entry.size as u64),
+                    max_connections: None,
+                }))
+            }
             ServiceKind::RealDebrid => {
                 let u = match self
                     .with_token(
@@ -369,12 +529,17 @@ impl Debrid {
         *sessions = kept;
     }
 
-    /// Read each account's service's supported domains (no sign-in needed).
+    /// Read each account's service's supported domains.
     pub async fn refresh_hosts(&self) -> Result<(), Fault> {
         let sessions = self.sessions.read().unwrap().clone();
         for s in sessions {
             let list = match s.account.service {
                 ServiceKind::RealDebrid => realdebrid::domains(&s.http).await?,
+                ServiceKind::AllDebrid => alldebrid::domains(&s.http).await?,
+                // Premiumize lists its services to signed-in accounts.
+                ServiceKind::Premiumize => {
+                    premiumize::domains(&s.http, &s.token(false).await?).await?
+                }
             };
             self.domains.write().unwrap().insert(s.account.id, list);
         }
@@ -444,7 +609,36 @@ async fn account_info(s: &Session) -> Result<AccountInfo, Fault> {
                 user: u.username,
             })
         }
+        ServiceKind::AllDebrid => {
+            let u = alldebrid::user(&s.http, &s.token(false).await?).await?;
+            let left = u.premium_until - now_unix();
+            Ok(AccountInfo {
+                premium: u.is_premium,
+                premium_left: (u.is_premium && left > 0).then(|| Duration::from_secs(left as u64)),
+                user: u.username,
+            })
+        }
+        ServiceKind::Premiumize => {
+            let a = premiumize::account(&s.http, &s.token(false).await?).await?;
+            let left = a.premium_until.map(|t| t - now_unix()).filter(|l| *l > 0);
+            Ok(AccountInfo {
+                premium: left.is_some(),
+                premium_left: left.map(|l| Duration::from_secs(l as u64)),
+                // Premiumize gives no user name: its customer ID stands for it.
+                user: match a.customer_id {
+                    serde_json::Value::String(c) => c,
+                    serde_json::Value::Number(n) => n.to_string(),
+                    _ => String::new(),
+                },
+            })
+        }
     }
+}
+
+fn now_unix() -> i64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |d| d.as_secs() as i64)
 }
 
 /// Check a credential before keeping it: the account it signs in to.
@@ -461,8 +655,8 @@ pub async fn check(
         },
         http: Arc::new(Http {
             client: http.client.clone(),
-            rd: http.rd.clone(),
-            budget: Mutex::default(),
+            services: http.services.clone(),
+            budgets: Mutex::default(),
         }),
         access: tokio::sync::Mutex::new(None),
     };
@@ -493,42 +687,91 @@ impl mdm_engine::Unlocker for AccountUnlocker {
     fn unlock<'a>(
         &'a self,
         url: &'a Url,
-        _note: &'a (dyn Fn(String) + Send + Sync),
+        note: &'a (dyn Fn(String) + Send + Sync),
         cancel: &'a CancellationToken,
     ) -> BoxFuture<'a, Result<Option<Unlocked>, ServiceFault>> {
         Box::pin(async move {
             tokio::select! {
-                r = self.session.unlock(url) => r.map_err(Fault::service),
+                r = self.session.unlock(url, note, cancel) => r.map_err(Fault::service),
                 _ = cancel.cancelled() => Err(ServiceFault::Other("cancelled".into())),
             }
         })
     }
 }
 
-/// Sign-in by code (Real-Debrid's device flow): the code to show, then a poll until the user
-/// allowed MDM at the service's page.
+/// Sign-in by code: Real-Debrid's device flow, AllDebrid's PIN. The code to show and the page to
+/// type it at, then a poll until the user allowed MDM there.
 pub mod signin {
     use super::*;
 
-    /// Step 1: the code and the page to type it at.
-    pub async fn start(http: &Http) -> Result<realdebrid::DeviceCode, Fault> {
-        realdebrid::device_code(http).await
+    /// A code waiting for the user.
+    #[derive(Clone, Debug, PartialEq, Eq)]
+    pub struct Code {
+        /// What the user types.
+        pub shown: String,
+        /// Where (the page's address; AllDebrid's has the PIN in it already).
+        pub page: String,
+        /// Ask every this many seconds, until this many have gone by.
+        pub interval: u64,
+        pub expires_in: u64,
+        inner: Inner,
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq)]
+    enum Inner {
+        Rd(realdebrid::DeviceCode),
+        Ad(alldebrid::Pin),
+    }
+
+    /// Step 1: a code from `service` (one that signs in by code).
+    pub async fn start(http: &Http, service: ServiceKind) -> Result<Code, Fault> {
+        match service {
+            ServiceKind::RealDebrid => {
+                let c = realdebrid::device_code(http).await?;
+                Ok(Code {
+                    shown: c.user_code.clone(),
+                    page: c.verification_url.clone(),
+                    interval: c.interval.max(1),
+                    expires_in: c.expires_in,
+                    inner: Inner::Rd(c),
+                })
+            }
+            ServiceKind::AllDebrid => {
+                let p = alldebrid::pin(http).await?;
+                Ok(Code {
+                    shown: p.pin.clone(),
+                    page: p.user_url.clone(),
+                    // The docs: ask every 5 seconds or more.
+                    interval: 5,
+                    expires_in: p.expires_in,
+                    inner: Inner::Ad(p),
+                })
+            }
+            ServiceKind::Premiumize => Err(Fault::Service(ServiceFault::Other(
+                "Premiumize signs in with its API key".into(),
+            ))),
+        }
     }
 
     /// Step 2, every `interval` seconds until `expires_in`: the credential once allowed.
-    pub async fn poll(
-        http: &Http,
-        code: &realdebrid::DeviceCode,
-    ) -> Result<Option<Credential>, Fault> {
-        let Some(c) = realdebrid::device_credentials(http, &code.device_code).await? else {
-            return Ok(None);
-        };
-        let t = realdebrid::token(http, &c.client_id, &c.client_secret, &code.device_code).await?;
-        Ok(Some(Credential::Oauth {
-            client_id: c.client_id,
-            client_secret: c.client_secret,
-            refresh_token: t.refresh_token,
-        }))
+    pub async fn poll(http: &Http, code: &Code) -> Result<Option<Credential>, Fault> {
+        match &code.inner {
+            Inner::Rd(c) => {
+                let Some(cr) = realdebrid::device_credentials(http, &c.device_code).await? else {
+                    return Ok(None);
+                };
+                let t = realdebrid::token(http, &cr.client_id, &cr.client_secret, &c.device_code)
+                    .await?;
+                Ok(Some(Credential::Oauth {
+                    client_id: cr.client_id,
+                    client_secret: cr.client_secret,
+                    refresh_token: t.refresh_token,
+                }))
+            }
+            Inner::Ad(p) => Ok(alldebrid::pin_check(http, p)
+                .await?
+                .map(|token| Credential::Token { token })),
+        }
     }
 }
 

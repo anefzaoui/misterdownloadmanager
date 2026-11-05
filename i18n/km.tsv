@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	សេវាកម្ម​ដឺប្រ៊ីដ (Real-Debrid) ទាញយក​តំណ​របស់​ម៉ាស៊ីន​ឯកសារ​ដោយ​ប្រើ​គណនី​បង់ប្រាក់​ផ្ទាល់ខ្លួន​របស់​អ្នក ហើយ​ផ្ដល់​តំណ​ផ្ទាល់​ទៅ MDM។ ប្រើ​តែ​គណនី​ផ្ទាល់ខ្លួន​របស់​អ្នក​ប៉ុណ្ណោះ៖ ការ​ចែករំលែក​គណនី ឬ​តំណ​របស់​វា​បំពាន​លក្ខខណ្ឌ​សេវាកម្ម ហើយ​អាច​បណ្ដាល​ឱ្យ​គណនី​ត្រូវ​បាន​ផ្អាក។ ការ​ទាញយក​ដែល​កម្មវិធី​រុករក​បាន​ចាប់ផ្ដើម​រួចហើយ​នៅ​តែ​ដដែល។
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	សេវាកម្ម​ដឺប្រ៊ីដ​ទាញយក​តំណ​របស់​ម៉ាស៊ីន​ឯកសារ​ដោយ​ប្រើ​គណនី​បង់ប្រាក់​ផ្ទាល់ខ្លួន​របស់​អ្នក ហើយ​ផ្ដល់​តំណ​ផ្ទាល់​ទៅ MDM។ ប្រើ​តែ​គណនី​ផ្ទាល់ខ្លួន​របស់​អ្នក​ប៉ុណ្ណោះ៖ ការ​ចែករំលែក​គណនី ឬ​តំណ​របស់​វា​បំពាន​លក្ខខណ្ឌ​របស់​សេវាកម្ម ហើយ​អាច​បណ្ដាល​ឲ្យ​គណនី​ត្រូវ​បាន​ផ្អាក។ ការ​ទាញយក​ដែល​កម្មវិធី​រុករក​បាន​ចាប់ផ្ដើម​រួច​ហើយ​នៅ​តែ​ដដែល។
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	ផលបូកពិនិត្យដែលបានរំពឹងទុកត្រូវបានកំណត់ ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ពិសោធន៍៖ បង្កើត​ពី​ឯកសារ​ API សាធារណៈ​របស់ Real-Debrid មិន​ទាន់​បាន​បញ្ជាក់​ជាមួយ​គណនី​ពិត​នៅ​ឡើយ​ទេ។
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	ពិសោធន៍៖ បង្កើតឡើងពីឯកសារ API សាធារណៈរបស់សេវាកម្ម មិនទាន់បានបញ្ជាក់ជាមួយគណនីពិតនៅឡើយទេ។
 #. message or event log entry in the main window
 #, machine
 	Export	នាំចេញ
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	ជម្រើសនៅពេលបញ្ចប់
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	ឬ​បិទភ្ជាប់​ថូខឹន API របស់​អ្នក៖
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	បិទភ្ជាប់លេខកូដផ្ទៀងផ្ទាត់ដែលទំព័រទាញយកផ្ដល់ឱ្យ
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	បិទភ្ជាប់សោ API របស់អ្នក (ពីទំព័រគណនីរបស់សេវាកម្ម)៖
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

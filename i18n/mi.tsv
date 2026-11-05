@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Ka tikiake tētahi ratonga debrid (Real-Debrid) i te hononga o tētahi kaihautū kōnae mā tō pūkete utu, ā, ka hoatu he hononga tōtika ki a MDM. Whakamahia tō pūkete ake anake: ka takahi te tiri pūkete, ōna hononga rānei i ngā tikanga o ngā ratonga, ā, ka whakatarewatia. Ka noho tonu ngā tikiake kua tīmata kē e te pūtirotiro.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Ka tikiake tētahi ratonga debrid i te hononga a te kaihautū kōnae mā tō ake pūkete utu, ā, ka hoatu he hononga tōtika ki a MDM. Whakamahia tō ake pūkete anake: ko te tiri i tētahi pūkete, i ōna hononga rānei ka takahi i ngā tikanga o ngā ratonga, ā, ka taea te whakatarewa. Ko ngā tikiake kua tīmata kē i te pūtirotiro ka noho tonu.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Kua tautuhia te tatau-whakamana e tūmanakohia ana ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Whakamātau: i hangaia mai i ngā tuhinga API tūmatanui a Real-Debrid, kāore anō kia whakapūmautia ki tētahi pūkete tūturu.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	He whakamātautau: i hangaia mai i ngā tuhinga API tūmatanui a ngā ratonga, kāore anō kia whakapūmautia ki ngā pūkete tūturu.
 #. message or event log entry in the main window
 #, machine
 	Export	Kaweake
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Ngā kōwhiringa i te otinga
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Rānei whakapiri i tō tohu API:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Whakapirihia te takitaki e homai ana e te whārangi tikiake
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Whakapirihia tō kī API (mai i te whārangi Pūkete o te ratonga):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

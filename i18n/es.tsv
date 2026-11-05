@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un servicio de debrid (Real-Debrid) descarga un enlace de un host de archivos con su propia cuenta de pago y le da a MDM un enlace directo. Use solo su propia cuenta: compartir una cuenta o sus enlaces infringe los términos del servicio y puede provocar su suspensión. Las descargas que el navegador ya inició permanecen como están.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un servicio de debrid descarga un enlace de un host de archivos con su propia cuenta de pago y le proporciona a MDM un enlace directo. Use solo su propia cuenta: compartir una cuenta o sus enlaces infringe los términos del servicio y puede provocar su suspensión. Las descargas que el navegador ya inició permanecen como están.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Suma de comprobación esperada establecida ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Experimental: creado a partir de la documentación de la API pública de Real-Debrid, aún no confirmado con una cuenta real.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimental: creado a partir de la documentación de la API pública de los servicios, aún no confirmado con cuentas reales.
 #. message or event log entry in the main window
 #, machine
 	Export	Exportar
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Opciones al finalizar
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	O pegue su token de API:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Pegue la suma de comprobación que proporciona la página de descarga
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Pegue su clave de API (de la página de la cuenta del servicio):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

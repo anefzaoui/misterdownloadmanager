@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	এটা ডেব্ৰিড সেৱাই (Real-Debrid) আপোনাৰ নিজৰ পেড একাউণ্টৰ সৈতে এটা ফাইল হোষ্টৰ লিংক ডাউনল'ড কৰে আৰু MDM ক এটা পোনপটীয়া লিংক দিয়ে। কেৱল আপোনাৰ নিজৰ একাউণ্ট ব্যৱহাৰ কৰক: এটা একাউণ্ট বা ইয়াৰ লিংক শ্বেয়াৰ কৰিলে সেৱাৰ চৰ্তাৱলী উলংঘা হয় আৰু ইয়াক স্থগিত কৰিব পাৰি। ব্ৰাউজাৰে ইতিমধ্যে আৰম্ভ কৰা ডাউনল'ডবোৰ যেনেকৈ আছে তেনেকৈয়ে থাকিব।
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	এটা ডিব্ৰিড সেৱাই আপোনাৰ নিজৰ পেইড একাউণ্টৰ সৈতে এটা ফাইল হোষ্টৰ লিংক ডাউনল'ড কৰে আৰু MDM-ক এটা পোনপটীয়া লিংক দিয়ে। কেৱল আপোনাৰ নিজৰ একাউণ্ট ব্যৱহাৰ কৰক: এটা একাউণ্ট বা ইয়াৰ লিংক শ্বেয়াৰ কৰিলে সেৱাসমূহৰ চৰ্তাৱলী উলংঘা হয় আৰু ইয়াক স্থগিত কৰিব পাৰে। ব্ৰাউজাৰে ইতিমধ্যে আৰম্ভ কৰা ডাউনল'ডসমূহ যেনেকৈ আছে তেনেকৈয়ে থাকিব।
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	প্ৰত্যাশিত চেকছাম ছেট কৰা হৈছে ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	পৰীক্ষামূলক: Real-Debrid ৰ ৰাজহুৱা API ডকুমেণ্টেচনৰ পৰা নিৰ্মাণ কৰা হৈছে, এতিয়ালৈকে এটা প্ৰকৃত একাউণ্টৰ সৈতে নিশ্চিত কৰা হোৱা নাই।
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	পৰীক্ষামূলক: সেৱাসমূহৰ ৰাজহুৱা API ডকুমেণ্টেচনৰ পৰা নিৰ্মাণ কৰা হৈছে, এতিয়ালৈকে প্ৰকৃত একাউণ্টৰ সৈতে নিশ্চিত কৰা হোৱা নাই।
 #. message or event log entry in the main window
 #, machine
 	Export	ৰপ্তানি কৰক
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	সম্পূৰ্ণ হোৱাৰ পিছত বিকল্পসমূহ
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	অথবা আপোনাৰ API টোকেন পেষ্ট কৰক:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ডাউনলোডৰ পৃষ্ঠাই দিয়া চেকছাম পেষ্ট কৰক
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	আপোনাৰ API কী পেষ্ট কৰক (সেৱাৰ একাউণ্ট পৃষ্ঠাৰ পৰা):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

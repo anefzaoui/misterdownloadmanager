@@ -906,10 +906,6 @@
    "source": "Download Mister Download Manager",
    "text": "Mister Download Managerをダウンロード"
   },
-  "16e51d663458d0c2": {
-   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
-   "text": "MDM は、サービスを通じてダウンロードするリンクと、アカウントのトークンのみをサービスに送信します。それ以外は送信しません。"
-  },
   "1745fe3e724c0846": {
    "source": "<g1><g2>Link grabber and archives</g2></g1> — many links at once, in packages; zip, 7z and rar archives extracted when they are downloaded.",
    "text": "<g1><g2>リンク グラバーとアーカイブ</g2></g1> — 複数のリンクを一度に、パッケージでダウンロード。zip、7z、rar アーカイブはダウンロード時に展開されます。"
@@ -1529,10 +1525,6 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "MDMが接続されているにもかかわらず、ダウンロードがブラウザーに残る"
-  },
-  "254858789074bb69": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
-   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。..."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -2230,6 +2222,10 @@
    "source": ".AppImage",
    "text": ".AppImage"
   },
+  "37c057891d2cf283": {
+   "source": "Your debrid service accounts (Real-Debrid, AllDebrid, Premiumize; experimental): <g1>Add...</g1> signs in by code in the browser or with your API token or key; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "デブリットサービスアカウント（Real-Debrid、AllDebrid、Premiumize、実験的）: <g1>追加...</g1>は、ブラウザでコードを使って、またはAPIトークンやキーを使ってサインインします。サービスがサポートするホストからのリンクは、それを通じてダウンロードされます。リストの順序は、アカウントが要求される順序です。<g2>デブリットサービスアカウント</g2>を参照してください。"
+  },
   "37c74a0e1edd492c": {
    "source": "<g1>Unfinished</g1> — downloads that aren't complete yet, by category.",
    "text": "<g1>未完了</g1> — まだ完了していないダウンロードをカテゴリ別に表示します。"
@@ -2453,6 +2449,10 @@
   "3d4a4f2d1b19754e": {
    "source": "Can I move my downloads over from IDM?",
    "text": "IDMからダウンロードを移行できますか？"
+  },
+  "3d5479ff36667ffd": {
+   "source": "MDM sends the service only the links you download through it, and your account's token or key. Nothing else.",
+   "text": "MDMは、サービスを通じてダウンロードするリンクと、アカウントのトークンまたはキーのみをサービスに送信します。それ以外は何も送信しません。"
   },
   "3d67b0a7f32fc0e5": {
    "source": "The free, open-source IDM alternative. Every connection at once, crash-safe resume, torrents and video in one list.",
@@ -2746,10 +2746,6 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "{date}の暫定結果です。完全な再実行が進行中であり、完了次第これらの数値は置き換えられます。"
   },
-  "44c0ee7163ab2934": {
-   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
-   "text": "<g1>実験的:</g1> Real-Debridの公開APIドキュメントに基づいて構築されており、実際の口座での確認はまだです。お使いの口座で何か問題が発生した場合は、<g2>問題を報告してください</g2>（トークンを貼り付けないでください）。"
-  },
   "44e6a85b74a3eb0a": {
    "source": "Prism",
    "text": "Prism"
@@ -2977,6 +2973,10 @@
   "4bc9bd6c4901c383": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM には、アドウェア、スパイウェア、バンドルされたオファー、トラッキングは含まれていません。ソースコード全体が公開されているため、誰でもその動作を確認でき、すべてのリリースは GitHub のサーバーによってそのコードからビルドされ、ビルドを検査することができます。ビデオ用に取得できるヘルパープログラムは、実行前に検証されます。yt-dlp は開発者の署名キーに対して、ffmpeg は公開されているチェックサムに対して検証されます。MDM は<g1>このサイト</g1>またはプロジェクトの GitHub リリースからのみダウンロードしてください。"
+  },
+  "4bd284ee80f6799e": {
+   "source": "<g1>Experimental:</g1> built from each service's public API documentation, not yet confirmed with a real paid account. AllDebrid's answers were also checked against its real API with the public demo key from its documentation, which answers with sample data, not a real file. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token or key in it).",
+   "text": "<g1>実験的:</g1> 各サービスの公開APIドキュメントに基づいて構築されており、実際の有料アカウントではまだ確認されていません。AllDebridの応答は、ドキュメントに記載されている公開デモキーを使用して実際のAPIとも照合されましたが、実際のファイルではなくサンプルデータで応答します。アカウントで何らかの問題が発生した場合は、<g2>問題を報告してください</g2>（トークンやキーを貼り付けないでください）。"
   },
   "4bd53cf9b125f43b": {
    "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
@@ -4154,6 +4154,10 @@
    "source": "<g1>Download Later</g1> puts the download in a queue instead of starting it. By default MDM asks which one: pick the queue under <g2>Add to queue</g2>, and tick <g3>Start the queue now</g3> if you want it to run straight away. <g4>Cancel</g4> leaves the download in the list, in no queue.",
    "text": "<g1>後でダウンロード</g1>は、ダウンロードを開始せずにキューに入れます。既定では、MDMはどのキューに入れるか尋ねます。<g2>キューに追加</g2>の下にあるキューを選択し、すぐに実行したい場合は<g3>今すぐキューを開始</g3>にチェックを入れます。<g4>キャンセル</g4>すると、ダウンロードはリストに残りますが、どのキューにも入りません。"
   },
+  "6aca763652509bde": {
+   "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Real-Debrid、AllDebrid、Premiumizeなどのデブリットサービスは、ファイルホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHAなしで、直接リンクを返します。MDMにアカウントを設定すると、サービスがサポートするホストからのリンクはサービスを通じてロック解除され、MDMによって他のファイルと同様にダウンロードされます。すべての接続、一時停止、再開が可能です。"
+  },
   "6add747d087cfb25": {
    "source": "Adds an http, https, ftp or ftps address and starts it, or only queues it. It can say which folder and file name to use. A magnet link opens <g1>Add torrent</g1> in MDM, for you to choose the files.",
    "text": "http、https、ftp、またはftpsアドレスを追加して開始するか、キューに入れるだけです。使用するフォルダーとファイル名を指定できます。マグネットリンクはMDMで<g1>トレントを追加</g1>を開き、ファイルを選択できます。"
@@ -4834,10 +4838,6 @@
    "source": "Apple Silicon",
    "text": "Apple Silicon"
   },
-  "7c840c91cbf164f3": {
-   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
-   "text": "Real-Debrid は現在動作しています。AllDebrid と Premiumize は今後対応予定です。"
-  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -5170,6 +5170,10 @@
    "source": "It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.",
    "text": "自身の設定（一時停止しているかどうか、MDMのファイルタイプと除外サイト、接続ステータス、過去200サイトそれぞれでビデオボタンをドラッグした場所。プライベートウィンドウからのものはなし）は、お客様のコンピュータのブラウザの拡張機能ストレージに保存されます。"
   },
+  "83d81da9ed13c6e6": {
+   "source": "MDM asks each service well under its request limit: Real-Debrid at most 120 times a minute (it allows 250), AllDebrid 300 (it allows 600), Premiumize 60 (it publishes no limit). When a service says it's asked too often, MDM waits.",
+   "text": "MDMは、各サービスにリクエスト制限をはるかに下回る回数で要求します。Real-Debridは1分間に最大120回（250回まで許可）、AllDebridは300回（600回まで許可）、Premiumizeは60回（制限は公開されていません）。サービスが要求が多すぎると応答した場合、MDMは待機します。"
+  },
   "83f9afcb67f234d6": {
    "source": "A clean, simple app for HTTP, FTP, BitTorrent and magnet links, built on aria2",
    "text": "HTTP、FTP、BitTorrent、マグネットリンクに対応した、aria2ベースのクリーンでシンプルなアプリ"
@@ -5177,10 +5181,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "開始時刻になるとキューは自動的に開始されます。朝には、完了したファイルはカテゴリの<g1>完了</g1>の下にあります。"
-  },
-  "8477274e64c2a9d3": {
-   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
-   "text": "デブリットサービスアカウント（Real-Debrid）：<g1>追加...</g1>をクリックすると、ブラウザでコードまたはAPIトークンを使ってサインインできます。サービスがサポートするホストからのリンクは、そのサービス経由でダウンロードされます。リストの順序は、アカウントが要求される順序です。<g2>デブリット サービス アカウント</g2>を参照してください。"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5646,6 +5646,10 @@
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>ファイルをダウンロード</g2></g1> — リンクをコピーし、追加し、ファイルを開きます。"
   },
+  "91ebb9f0dfb7f3d7": {
+   "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
+   "text": "Real-Debrid、AllDebrid、Premiumizeなどのデブリットサービスは、ファイルホストから自身のサーバーにファイルをダウンロードする有料アカウントです。それは…"
+  },
   "920f5f8c86e123ee": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
    "text": "Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi、およびHeliumなどのそれらをベースにしたブラウザは、MDMブラウザ拡張機能を通じて動作します。ZenやLibreWolfも含むFirefoxのサポートは、現在開発中でテスト中です。この拡張機能は、ダウンロードをクッキーとリファラーと共にMDMに渡し、サインインが必要なファイルもダウンロードできるようにします。また、右クリックメニューにMister Download Manager でダウンロードを追加し、動画の上に動画をダウンロードボタンを表示します。ブラウザ統合をご覧ください。"
@@ -5837,6 +5841,10 @@
   "9682bbc6499d98d3": {
    "source": "<g1>All files and install steps</g1><g2>Every release on GitHub</g2>",
    "text": "<g1>すべてのファイルとインストール手順</g1><g2>GitHubのすべてのリリース</g2>"
+  },
+  "96b088ea6d0f9419": {
+   "source": "AllDebrid sometimes needs a while to prepare a link. MDM waits for it, up to 10 minutes, and the list says so.",
+   "text": "AllDebridはリンクの準備に時間がかかる場合があります。MDMは最大10分間待ち、リストにその旨が表示されます。"
   },
   "96cec022ce66b5c4": {
    "source": "Unzip the file to a folder you can write to (not straight into <x1/>).",
@@ -7426,10 +7434,6 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "ヘルプ → 更新プログラムの確認の<g1>今すぐ更新</g1>：MDMは新しいバージョンをダウンロードし、チェックし、配置して再起動します（Windowsのセットアップ、ポータブル、プレーンなzip、Mac、LinuxのAppImage、.tar.gz; .debまたは.rpmはシステムのインストーラーで開きます）。MDMのリリースキーで署名されたチェックサムリストに記載されているファイルのみをインストールします。このチェックサムリストはすべてのリリースに含まれるようになりました（<x2/>）。この方法での最初の更新は0.2.1から次のバージョンになります。"
   },
-  "c174d7018b6d1a5b": {
-   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
-   "text": "Real-Debrid のようなデブリット サービスは、ファイル ホストから自身のサーバーにファイルをダウンロードする有料アカウントです。ホストの待機時間、速度制限、CAPTCHA なしで、直接リンクを返します。MDM でアカウントを設定すると、サービスがサポートするホストからのリンクはサービスを通じてロック解除され、MDM によって他のファイルと同様にダウンロードされます。すべての接続、一時停止、再開が可能です。"
-  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "動画上のダウンロード ボタン"
@@ -8366,6 +8370,10 @@
    "source": "Request sent",
    "text": "リクエストを送信しました"
   },
+  "db0d1e3050cb7b43": {
+   "source": "MDM supports three services: <g1>Real-Debrid</g1>, <g2>AllDebrid</g2> and <g3>Premiumize</g3>.",
+   "text": "MDMは、<g1>Real-Debrid</g1>、<g2>AllDebrid</g2>、<g3>Premiumize</g3>の3つのサービスをサポートしています。"
+  },
   "db2c1528b5634e7b": {
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "リスト内の数字と日付（<g1>最終試行日時</g1>、<g2>追加日時</g2>）は、Windowsで設定された地域（<g3>設定 → 時刻と言語 → 言語と地域 → 地域の形式</g3>）に従うため、数字、区切り文字、日付の順序は慣れている表示になります。英語では、MDMはIDMと同じように記述します（<x4/>）。"
@@ -8425,10 +8433,6 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "HTTP、BitTorrent、マグネット、ed2kに対応し、REST APIも備え、ほぼどこでも動作"
-  },
-  "dd915e88440c78b0": {
-   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
-   "text": "サービスを選択し、次のいずれかを実行します: - <g1>ブラウザーでサインイン</g1>: MDM がコードを表示し、サービスのページを開きます。そこにコードを入力し、MDM を許可します。ダイアログが自動的に認識します。 - または、<g2>API トークン</g2>を貼り付けます（<g3>トークンを検索</g3>をクリックすると、トークンが表示されるサービスのページが開きます）。その後、<g4>トークンを使用</g4>をクリックします。"
   },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
@@ -8737,6 +8741,10 @@
   "e59887ade52d6298": {
    "source": "<g1><g2>Find a download in a long list</g2></g1> — Find, Find Next and column filters.",
    "text": "<g1><g2>長いリストからダウンロードを検索</g2></g1> — 検索、次を検索、および列フィルター。"
+  },
+  "e5adca4541fc0443": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1> (Real-Debrid and AllDebrid): MDM shows a code and opens the service's page. Type the code there (AllDebrid's page already has it) and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>. Premiumize signs in this way only: paste the API key from its Account page.",
+   "text": "サービスを選択し、次のいずれかを実行します。- <g1>ブラウザーでサインイン</g1>（Real-DebridとAllDebrid）：MDMがコードを表示し、サービスのページを開きます。そこにコードを入力し（AllDebridのページにはすでにコードがあります）、MDMを許可します。ダイアログは自動的に認識します。- または、<g2>APIトークン</g2>を貼り付け（<g3>トークンを探す</g3>をクリックすると、トークンが表示されるサービスのページが開きます）、<g4>トークンを使用</g4>をクリックします。Premiumizeはこの方法でのみサインインします。アカウントページからAPIキーを貼り付けてください。"
   },
   "e5c18c89ba8f7efe": {
    "source": "<g1>Move it</g1>: drag it anywhere along the video's edge; it snaps to the nearest edge and stays there on that site.",

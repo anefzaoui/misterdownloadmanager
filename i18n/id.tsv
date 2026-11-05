@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Layanan debrid (Real-Debrid) mengunduh tautan host file dengan akun berbayar Anda sendiri dan memberi MDM tautan langsung. Gunakan hanya akun Anda sendiri: berbagi akun atau tautannya melanggar ketentuan layanan dan dapat menyebabkan akun ditangguhkan. Unduhan yang sudah dimulai browser tetap seperti semula.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Layanan debrid mengunduh tautan host file dengan akun berbayar Anda sendiri dan memberi MDM tautan langsung. Gunakan hanya akun Anda sendiri: berbagi akun atau tautannya melanggar ketentuan layanan dan dapat menyebabkan penangguhan. Unduhan yang sudah dimulai oleh browser tetap seperti semula.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Checksum yang diharapkan diatur ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimental: dibuat dari dokumentasi API publik Real-Debrid, belum dikonfirmasi dengan akun nyata.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimental: dibuat dari dokumentasi API publik layanan, belum dikonfirmasi dengan akun nyata.
 #. message or event log entry in the main window
 #, machine
 	Export	Ekspor
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Opsi saat selesai
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Atau tempel token API Anda:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Tempel checksum yang diberikan halaman unduhan
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Tempel kunci API Anda (dari halaman Akun layanan):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

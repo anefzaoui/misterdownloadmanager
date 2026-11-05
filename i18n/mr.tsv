@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	एक डीब्रिड सेवा (Real-Debrid) तुमच्या स्वतःच्या सशुल्क खात्यासह फाइल होस्टची लिंक डाउनलोड करते आणि MDM ला थेट लिंक देते. फक्त तुमचे स्वतःचे खाते वापरा: खाते किंवा त्याच्या लिंक्स शेअर केल्याने सेवांच्या अटींचा भंग होतो आणि ते निलंबित केले जाऊ शकते. ब्राउझरने आधीच सुरू केलेले डाउनलोड जसे आहेत तसेच राहतील.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	डीब्रिड सेवा तुमच्या स्वतःच्या सशुल्क खात्यासह फाइल होस्टची लिंक डाउनलोड करते आणि MDM ला थेट लिंक देते. फक्त तुमचे स्वतःचे खाते वापरा: खाते किंवा त्याच्या लिंक्स शेअर केल्याने सेवांच्या अटींचा भंग होतो आणि ते निलंबित केले जाऊ शकते. ब्राउझरने आधीच सुरू केलेले डाउनलोड जसे आहेत तसेच राहतील.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	अपेक्षित चेकसम सेट ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	प्रायोगिक: Real-Debrid च्या सार्वजनिक API डॉक्युमेंटेशनमधून तयार केले आहे, अद्याप वास्तविक खात्यासह पुष्टी केलेली नाही.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	प्रायोगिक: सेवांच्या सार्वजनिक API दस्तऐवजातून तयार केले आहे, अद्याप वास्तविक खात्यांसह याची पुष्टी झालेली नाही.
 #. message or event log entry in the main window
 #, machine
 	Export	निर्यात करा
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	पूर्ण झाल्यावर पर्याय
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	किंवा तुमचे API टोकन पेस्ट करा:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	डाउनलोडच्या पृष्ठावर दिलेला चेकसम पेस्ट करा
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	तुमची API की (सेवेच्या खाते पृष्ठावरून) पेस्ट करा:
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

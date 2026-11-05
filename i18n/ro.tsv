@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un serviciu debrid (Real-Debrid) descarcă o legătură de la un serviciu de găzduire fișiere cu propriul cont plătit și oferă MDM o legătură directă. Utilizați numai propriul cont: partajarea unui cont sau a legăturilor acestuia încalcă termenii serviciilor și poate duce la suspendarea acestuia. Descărcările deja începute de browser rămân așa cum sunt.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un serviciu de debridare descarcă un link de la un serviciu de găzduire de fișiere cu propriul cont plătit și oferă MDM un link direct. Utilizați numai propriul cont: partajarea unui cont sau a linkurilor acestuia încalcă termenii serviciilor și poate duce la suspendarea acestuia. Descărcările deja începute de browser rămân așa cum sunt.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Suma de control așteptată setată ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Experimental: construit din documentația API publică a Real-Debrid, încă neconfirmat cu un cont real.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimental: construit din documentația API publică a serviciilor, încă neconfirmat cu conturi reale.
 #. message or event log entry in the main window
 #, machine
 	Export	Export
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Opțiuni la finalizare
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Sau lipiți tokenul API:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Lipiți suma de control dată de pagina descărcării
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Lipiți cheia API (din pagina Cont a serviciului):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

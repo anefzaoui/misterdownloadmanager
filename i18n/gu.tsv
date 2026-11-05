@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ડીબ્રીડ સેવા (રિયલ-ડીબ્રીડ) તમારા પોતાના પેઇડ એકાઉન્ટ સાથે ફાઇલ હોસ્ટની લિંક ડાઉનલોડ કરે છે અને MDM ને સીધી લિંક આપે છે. ફક્ત તમારા પોતાના એકાઉન્ટનો ઉપયોગ કરો: એકાઉન્ટ અથવા તેની લિંક્સ શેર કરવાથી સેવાની શરતોનો ભંગ થાય છે અને તેને સસ્પેન્ડ કરી શકાય છે. બ્રાઉઝર દ્વારા પહેલેથી શરૂ થયેલા ડાઉનલોડ્સ જેમ છે તેમ જ રહેશે.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ડીબ્રીડ સેવા તમારા પોતાના પેઇડ એકાઉન્ટ સાથે ફાઇલ હોસ્ટની લિંક ડાઉનલોડ કરે છે અને MDM ને સીધી લિંક આપે છે. ફક્ત તમારા પોતાના એકાઉન્ટનો ઉપયોગ કરો: એકાઉન્ટ અથવા તેની લિંક્સ શેર કરવાથી સેવાઓની શરતોનો ભંગ થાય છે અને તે સસ્પેન્ડ થઈ શકે છે. બ્રાઉઝરે પહેલેથી શરૂ કરેલા ડાઉનલોડ્સ જેમ છે તેમ જ રહેશે.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	અપેક્ષિત ચેકસમ સેટ ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	પ્રાયોગિક: રિયલ-ડીબ્રીડના સાર્વજનિક API દસ્તાવેજીકરણમાંથી બનાવેલ, હજુ સુધી વાસ્તવિક એકાઉન્ટ સાથે પુષ્ટિ થયેલ નથી.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	પ્રાયોગિક: સેવાઓના સાર્વજનિક API દસ્તાવેજીકરણમાંથી બનાવેલ, હજુ સુધી વાસ્તવિક એકાઉન્ટ્સ સાથે પુષ્ટિ થયેલ નથી.
 #. message or event log entry in the main window
 #, machine
 	Export	નિકાસ કરો
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	પૂર્ણતા પર વિકલ્પો
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	અથવા તમારો API ટોકન પેસ્ટ કરો:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ડાઉનલોડના પૃષ્ઠ દ્વારા આપવામાં આવેલ ચેકસમ પેસ્ટ કરો
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	તમારી API કી પેસ્ટ કરો (સેવાના એકાઉન્ટ પૃષ્ઠમાંથી):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

@@ -6,8 +6,7 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use mdm_debrid::realdebrid::Endpoints;
-use mdm_debrid::{Account, Credential, Debrid, Fault, Http, ServiceKind, check, signin};
+use mdm_debrid::{Account, Credential, Debrid, Fault, Http, ServiceKind, Services, check, signin};
 use mdm_engine::{Destination, Download, Error, Options, Refusal, Request, ServiceFault};
 use mdm_labserver::{Config, LabServer, content, debrid::seed};
 use url::Url;
@@ -15,7 +14,7 @@ use url::Url;
 async fn lab() -> (LabServer, Arc<Http>) {
     let lab = LabServer::start(Config::default()).await.unwrap();
     let base = Url::parse(&lab.url("/")).unwrap();
-    let http = Arc::new(Http::new(&Options::default(), Endpoints::at(&base)).unwrap());
+    let http = Arc::new(Http::new(&Options::default(), Services::at(&base)).unwrap());
     (lab, http)
 }
 
@@ -151,12 +150,9 @@ async fn the_services_refusals_say_why() {
 #[tokio::test]
 async fn sign_in_by_code_then_download() {
     let (_lab, http) = lab().await;
-    let code = signin::start(&http).await.unwrap();
-    assert_eq!(code.user_code, "LABCODE1");
-    assert!(
-        code.verification_url
-            .starts_with("https://real-debrid.com/")
-    );
+    let code = signin::start(&http, ServiceKind::RealDebrid).await.unwrap();
+    assert_eq!(code.shown, "LABCODE1");
+    assert!(code.page.starts_with("https://real-debrid.com/"));
     // Not allowed for the first polls, then the user-bound credential.
     let mut credential = None;
     for _ in 0..10 {

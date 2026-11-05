@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Storitev za razbremenitev (Real-Debrid) prenese povezavo gostitelja datotek z vašim plačanim računom in MDM-ju posreduje neposredno povezavo. Uporabljajte samo svoj račun: deljenje računa ali njegovih povezav krši pogoje storitev in lahko povzroči njegovo začasno ukinitev. Prenosi, ki jih je brskalnik že začel, ostanejo nespremenjeni.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Storitev debrid prenese povezavo gostitelja datotek z vašim plačljivim računom in MDM-ju posreduje neposredno povezavo. Uporabljajte samo svoj račun: skupna raba računa ali njegovih povezav krši pogoje storitev in lahko povzroči njegovo začasno ukinitev. Prenosi, ki jih je brskalnik že začel, ostanejo nespremenjeni.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Nastavljena pričakovana kontrolna vsota ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimentalno: zgrajeno iz javne dokumentacije API-ja Real-Debrid, še ni potrjeno z resničnim računom.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimentalno: zgrajeno iz javne dokumentacije API-ja storitev, še ni potrjeno z resničnimi računi.
 #. message or event log entry in the main window
 #, machine
 	Export	Izvozi
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Možnosti po dokončanju
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Ali prilepite svoj žeton API:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Prilepite kontrolno vsoto, ki jo ponuja stran za prenos
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Prilepite svoj ključ API (s strani računa storitve):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine

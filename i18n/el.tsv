@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Μια υπηρεσία debrid (Real-Debrid) κατεβάζει έναν σύνδεσμο φιλοξενίας αρχείων με τον δικό σας πληρωμένο λογαριασμό και δίνει στο MDM έναν άμεσο σύνδεσμο. Χρησιμοποιήστε μόνο τον δικό σας λογαριασμό: η κοινή χρήση λογαριασμού ή των συνδέσμων του παραβιάζει τους όρους των υπηρεσιών και μπορεί να οδηγήσει σε αναστολή του. Οι λήψεις που έχουν ήδη ξεκινήσει από το πρόγραμμα περιήγησης παραμένουν ως έχουν.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Μια υπηρεσία debrid κατεβάζει έναν σύνδεσμο φιλοξενίας αρχείων με τον δικό σας πληρωμένο λογαριασμό και δίνει στο MDM έναν απευθείας σύνδεσμο. Χρησιμοποιήστε μόνο τον δικό σας λογαριασμό: η κοινή χρήση ενός λογαριασμού ή των συνδέσμων του παραβιάζει τους όρους των υπηρεσιών και μπορεί να οδηγήσει σε αναστολή του. Οι λήψεις που έχουν ήδη ξεκινήσει από το πρόγραμμα περιήγησης παραμένουν ως έχουν.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -1100,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Ορίστηκε αναμενόμενο άθροισμα ελέγχου ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Πειραματικό: δημιουργήθηκε από τη δημόσια τεκμηρίωση API του Real-Debrid, δεν έχει ακόμη επιβεβαιωθεί με πραγματικό λογαριασμό.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Πειραματικό: δημιουργήθηκε από τη δημόσια τεκμηρίωση API των υπηρεσιών, δεν έχει επιβεβαιωθεί ακόμη με πραγματικούς λογαριασμούς.
 #. message or event log entry in the main window
 #, machine
 	Export	Εξαγωγή
@@ -2141,6 +2141,7 @@
 #, machine
 	Options on completion	Επιλογές κατά την ολοκλήρωση
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Ή επικολλήστε το διακριτικό API σας:
 #. text in the Link grabber window
@@ -2168,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Επικολλήστε το άθροισμα ελέγχου που δίνει η σελίδα λήψης
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Επικολλήστε το κλειδί API (από τη σελίδα Λογαριασμού της υπηρεσίας):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
