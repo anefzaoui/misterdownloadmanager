@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
+  either one falls back to the other when it can't start
+  ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
 - ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
   asked is gone, and Add torrent shows the wait (peers found, from where, what may be in the
   way) ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92))
@@ -151,6 +154,8 @@ Everything below ships together, in one release.
 
 ### Look and performance
 
+- 📋 Direct3D as the default on Windows, once the comparison with OpenGL is in
+  ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
 - 📋 Themes: colours, accent, pywal and Base16, with the layout kept
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - 📋 Benchmarks against other download managers

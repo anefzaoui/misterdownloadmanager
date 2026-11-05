@@ -57,6 +57,9 @@ headers, and sessions are pooled per download and reused between segments.
 ## App
 
 One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog.
+The windows are drawn with OpenGL (eframe's glow); on Windows, View → Draw with chooses Direct3D
+12 (eframe's wgpu, its Direct3D 12 backend only) instead, from the next start. `renderer.rs`
+falls back to the other one when the chosen one can't start, so the windows always open.
 `app.rs` holds the state (downloads, queues, settings, the list's selection) and turns menu,
 toolbar, key and IPC commands into actions. Each dialog is its own module and returns an
 `Outcome` (open, closed, done with a value). Windows-only calls are confined to `win32.rs` and

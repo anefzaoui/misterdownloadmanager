@@ -101,6 +101,9 @@ enum Cmd {
     ToggleDarkMode,
     /// View → Always dark (#60).
     ToggleAlwaysDark,
+    /// View → Draw with → OpenGL / Direct3D (#89), from the next start.
+    #[cfg(windows)]
+    DrawWith(crate::renderer::Api),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -1719,10 +1722,20 @@ impl App {
                     p.show_tab(tab);
                 }
             }
-            // A menu of the menu bar open (menu:0 is Tasks), for screenshots.
+            // A menu of the menu bar open (menu:0 is Tasks), for screenshots; menu:3:draw opens
+            // View with its Draw with submenu (#89).
             "menu" => {
                 self.popup = None;
-                self.open_menu = Some(tab.parse().unwrap_or(0));
+                let (index, sub) = tab.split_once(':').unwrap_or((tab, ""));
+                let index = index.parse().unwrap_or(0);
+                self.open_menu = Some(index);
+                let at = self
+                    .menu_entries(index)
+                    .iter()
+                    .position(|e| matches!(e, MenuEntry::Sub("Draw with", ..)));
+                if let (Some(at), "draw") = (at, sub) {
+                    chrome::open_sub_at(ctx, &format!("menu-{index}"), at);
+                }
             }
             // A finished archive's right-click menu (Extract, #37), for screenshots.
             "context" => {
@@ -3923,6 +3936,16 @@ impl App {
                 self.theme_checked = None;
                 self.dirty = true;
             }
+            #[cfg(windows)]
+            Cmd::DrawWith(api) => {
+                // Chosen again after it failed here: its next start is tried.
+                if api == crate::renderer::Api::Direct3D {
+                    crate::renderer::forget_failure();
+                }
+                tracing::info!("draw with {api:?} from the next start");
+                self.settings.renderer = Some(api);
+                self.dirty = true;
+            }
             Cmd::Open => {
                 if let Some(id) = target {
                     self.open_item(id);
@@ -4461,43 +4484,56 @@ impl App {
                 Sep,
                 I("&Options", Cmd::Options, true, false),
             ],
-            3 => vec![
-                I(
-                    if self.show_categories {
-                        crate::i18n::mark("Hide &categories")
-                    } else {
-                        crate::i18n::mark("Show &categories")
-                    },
-                    Cmd::ToggleCategories,
-                    true,
-                    false,
-                ),
-                self.arrange_menu(),
-                // i18n: noun: the toolbar (submenu of View with its settings)
-                Sub("Toolbar", false, vec![]),
-                Sub("&Tray icon", false, vec![]),
-                off("C&ustomize URL List..."),
-                I(
-                    "Dark Mode support",
-                    Cmd::ToggleDarkMode,
-                    true,
-                    self.settings.dark_mode_support,
-                ),
-                // MDM's (#60): dark whatever the system says (a desktop that reports nothing).
-                I(
-                    // i18n: View menu: a check item; dark mode on, whatever the system's setting
-                    "Always dark",
-                    Cmd::ToggleAlwaysDark,
-                    true,
-                    self.settings.always_dark,
-                ),
-                // i18n: noun: the list's font (submenu)
-                Sub("Font", false, vec![]),
-                Sep,
-                // IDM's place for it; a window rather than IDM's submenu, which 86 languages
-                // would make taller than the screen (langpick.rs).
-                I("&Language...", Cmd::ChooseLanguage, true, false),
-            ],
+            3 => {
+                #[allow(unused_mut)]
+                let mut view = vec![
+                    I(
+                        if self.show_categories {
+                            crate::i18n::mark("Hide &categories")
+                        } else {
+                            crate::i18n::mark("Show &categories")
+                        },
+                        Cmd::ToggleCategories,
+                        true,
+                        false,
+                    ),
+                    self.arrange_menu(),
+                    // i18n: noun: the toolbar (submenu of View with its settings)
+                    Sub("Toolbar", false, vec![]),
+                    Sub("&Tray icon", false, vec![]),
+                    off("C&ustomize URL List..."),
+                    I(
+                        "Dark Mode support",
+                        Cmd::ToggleDarkMode,
+                        true,
+                        self.settings.dark_mode_support,
+                    ),
+                    // MDM's (#60): dark whatever the system says (a desktop that reports nothing).
+                    I(
+                        // i18n: View menu: a check item; dark mode on, whatever the system's setting
+                        "Always dark",
+                        Cmd::ToggleAlwaysDark,
+                        true,
+                        self.settings.always_dark,
+                    ),
+                    // i18n: noun: the list's font (submenu)
+                    Sub("Font", false, vec![]),
+                    Sep,
+                    // IDM's place for it; a window rather than IDM's submenu, which 86 languages
+                    // would make taller than the screen (langpick.rs).
+                    I("&Language...", Cmd::ChooseLanguage, true, false),
+                ];
+                // MDM's (#89), after Always dark. Windows only: Linux and macOS draw with OpenGL
+                // only (renderer.rs).
+                #[cfg(windows)]
+                if let Some(at) = view
+                    .iter()
+                    .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
+                {
+                    view.insert(at + 1, self.draw_with_menu());
+                }
+                view
+            }
             // IDM's Help menu, ours (D-020): pages of the user guide (docs/); "Video downloads" stands
             // where IDM has "Grabber Help"; "Report a problem" where "Contact IDM Support";
             // Keyboard shortcuts added; no Tip of the Day.
@@ -4532,6 +4568,35 @@ impl App {
                 I("Tell a &friend", Cmd::TellFriend, true, false),
             ],
         }
+    }
+
+    /// View → Draw with (#89): OpenGL or Direct3D, used from the next start; a greyed line says
+    /// when what draws now isn't the choice.
+    #[cfg(windows)]
+    fn draw_with_menu(&self) -> MenuEntry<Cmd> {
+        use crate::renderer::{self, Api};
+        use MenuEntry::{Item as I, Radio, Sep, Sub};
+        let off = |label| I(label, Cmd::None, false, false);
+        let chosen = self.settings.renderer.unwrap_or(renderer::DEFAULT);
+        let (gl, d3d) = (chosen == Api::OpenGl, chosen == Api::Direct3D);
+        let mut items = vec![
+            // i18n: View → Draw with: a graphics system's name, usually kept as is
+            Radio("OpenGL", Cmd::DrawWith(Api::OpenGl), true, gl),
+            // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+            Radio("Direct3D", Cmd::DrawWith(Api::Direct3D), true, d3d),
+        ];
+        if renderer::active().is_some_and(|a| a != chosen) {
+            items.push(Sep);
+            items.push(if chosen == Api::Direct3D && renderer::direct3d_failed() {
+                // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+                off("Direct3D didn't start here: OpenGL draws")
+            } else {
+                // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+                off("Applies the next time MDM starts")
+            });
+        }
+        // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+        Sub("Draw with", true, items)
     }
 
     /// Start Queue / Stop Queue drop-downs (and the Downloads menu's submenus).
@@ -6978,6 +7043,7 @@ impl eframe::App for App {
             .show(ui, |ui| self.paint(ui));
         self.dialogs(&ctx);
         crate::crash::frame_end();
+        crate::renderer::frame_done();
     }
 }
 

@@ -38,6 +38,9 @@ pub struct Session {
     pub exe: String,
     /// Seconds since the Unix epoch.
     pub started: i64,
+    /// What draws the windows ("Direct3D 12 on …", "OpenGL"), once known (#89).
+    #[serde(default)]
+    pub renderer: String,
 }
 
 /// A panic: its message, where, on which thread, and Rust's own backtrace of it.

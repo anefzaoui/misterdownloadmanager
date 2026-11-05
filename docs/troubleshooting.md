@@ -65,6 +65,14 @@ Task Manager shows several figures, and they mean different things:
 
 Closed to the notification area, MDM gives its memory back to Windows: **Memory** drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (**View → Language**) loads fonts for every script while it's open; MDM lets them go when it closes.
 
+## The window freezes or draws wrongly
+
+MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose **View → Draw with → Direct3D** to draw with Direct3D 12 instead, from the next start; **View → Draw with → OpenGL** goes back.
+
+- If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and **View → Draw with** says so. Choosing **Direct3D** again tries it again at the next start.
+- On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).
+- A freeze or crash report says which one was drawing.
+
 ## The setup or MDM won't start
 
 - If Windows says **Windows protected your PC**, click **More info**, check that the file is `MisterDownloadManager-<version>-setup.exe` from the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page, then click **Run anyway**.
