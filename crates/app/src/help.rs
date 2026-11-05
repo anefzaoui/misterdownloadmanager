@@ -116,18 +116,19 @@ pub fn check(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Slot {
 }
 
 async fn latest() -> Result<Found, String> {
-    let client = reqwest::Client::builder()
+    // MDM_UPDATE_FEED: another address for the latest release (tests of Update now, as
+    // MDM_DATA_DIR is for a separate list).
+    let feed = std::env::var("MDM_UPDATE_FEED").unwrap_or_else(|_| LATEST.to_owned());
+    let net = crate::settings::own_net();
+    // The chosen DNS and network adapter, as downloads have them (#36, #35).
+    let client = mdm_engine::net::client_builder(&net.dns, &net.route, &feed)
+        .map_err(|e| e.to_string())?
         .user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
-        .dns_resolver(mdm_engine::dns::client_resolver(
-            &crate::settings::own_net().dns,
-        ))
         .timeout(Duration::from_secs(20))
         .build()
         .map_err(|e| e.to_string())?;
     let resp = client
-        // MDM_UPDATE_FEED: another address for the latest release (tests of Update now, as
-        // MDM_DATA_DIR is for a separate list).
-        .get(std::env::var("MDM_UPDATE_FEED").unwrap_or_else(|_| LATEST.to_owned()))
+        .get(feed)
         .header("Accept", "application/vnd.github+json")
         .send()
         .await

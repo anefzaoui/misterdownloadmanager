@@ -17,6 +17,8 @@ Everything below ships together, in one release.
   through 7-Zip, tar) extracted when they are downloaded
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)); collecting copied links
   comes later
+- ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
+  another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
   and the main window's Minimize, with the tray's "Downloads in progress"
   ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
@@ -109,7 +111,7 @@ Everything below ships together, in one release.
 
 ### Network
 
-- 📋 Bind downloads to a network adapter (VPN), with a kill switch
+- 📋 Video pages, and torrents on Windows, through a chosen network adapter
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - 📋 Downloads follow a browser's VPN or proxy extension
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
