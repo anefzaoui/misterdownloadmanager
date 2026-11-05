@@ -737,9 +737,12 @@ const CASES = {
     await t.session.inExtension(set);
     try {
       proxyLog.length = 0;
-      const file = `e2e-proxy-${t.name}.zip`;
+      // An .xz: Internet Download Manager, when installed and running, catches the usual types
+      // (.zip…) from every host but 127.0.0.1 and would take this download first. MDM's list has
+      // .xz for this run (see `auto_types` below): the test stays about MDM.
+      const file = `e2e-proxy-${t.name}.xz`;
       await clickLink(t, `http://${PROXY_HOST}:${PORT}/gen/1M/${file}`);
-      await arrived(file, 1 << 20);
+      await arrived(file, 1 << 20, "");
       await keptNothing(t.dl);
       const via = proxyLog.filter((e) => e.target.includes(file));
       // The browser's own request, then MDM's: both through the proxy.
@@ -1004,6 +1007,8 @@ async function run() {
         extension_never_ask: true,
         show_start_dialog: false,
         automation_api: true,
+        // The default types plus XZ, for the proxy case (a type other download managers leave alone).
+        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV XZ Z ZIP",
         category_dirs: dirs,
       },
     }),
