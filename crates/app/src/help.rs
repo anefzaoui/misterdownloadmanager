@@ -873,11 +873,7 @@ impl TellFriend {
                 .clicked();
                 // The user asked for it: the message goes to the clipboard (a busy clipboard
                 // says so; it showed nothing).
-                let to_clipboard = |text: &str| {
-                    arboard::Clipboard::new()
-                        .and_then(|mut c| c.set_text(text.to_owned()))
-                        .is_ok()
-                };
+                let to_clipboard = crate::set_clipboard;
                 if copy {
                     self.said = Some(if to_clipboard(&message) {
                         (crate::i18n::mark("Copied to the clipboard."), false)

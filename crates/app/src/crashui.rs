@@ -549,7 +549,7 @@ impl ReportWindow {
         let full = self.full_text(&made);
         if send {
             if let Some(f) = &found {
-                ui.ctx().copy_text(full.clone());
+                crate::copy_text(ui.ctx(), full.clone());
                 let _ = open::that_detached(&f.html_url);
                 // i18n: crash report window: after opening the existing issue
                 self.told = Some(
@@ -582,7 +582,7 @@ impl ReportWindow {
             tracing::info!("crash report sent to the browser ({})", made.signature);
         }
         if copy {
-            ui.ctx().copy_text(full);
+            crate::copy_text(ui.ctx(), full);
             // i18n: crash report window: after Copy report
             self.told = Some(crate::i18n::t("The report is on your clipboard.").to_owned());
         }

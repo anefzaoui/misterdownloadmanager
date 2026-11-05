@@ -335,9 +335,7 @@ impl AddUrl {
     /// Opens like IDM's: pre-filled with the clipboard's text when it is an http(s) URL (or a
     /// magnet link: OK then opens Add torrent).
     pub fn from_clipboard(history: &[String]) -> Self {
-        let clip = arboard::Clipboard::new()
-            .and_then(|mut c| c.get_text())
-            .unwrap_or_default();
+        let clip = crate::clipboard_text().unwrap_or_default();
         let clip = clip.trim();
         let address = match Url::parse(clip) {
             Ok(u) if mdm_engine::supported(&u) || u.scheme() == "magnet" => clip.to_owned(),

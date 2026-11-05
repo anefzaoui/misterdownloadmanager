@@ -2425,10 +2425,7 @@ impl App {
             return;
         }
         self.clip_checked = Some(Instant::now());
-        let text = arboard::Clipboard::new()
-            .ok()
-            .and_then(|mut c| c.get_text().ok())
-            .map(|t| t.trim().to_owned());
+        let text = crate::clipboard_text().map(|t| t.trim().to_owned());
         // The first look only notes what is there: turning it on doesn't grab an old link.
         let Some(before) = self.clip_seen.replace(text.clone()) else {
             return;
@@ -3736,7 +3733,7 @@ impl App {
                 {
                     let link =
                         crate::torrents::magnet_of(&spec.hash).unwrap_or_else(|| url.to_string());
-                    ctx.copy_text(link);
+                    crate::copy_text(ctx, link);
                 }
             }
             Cmd::OpenTorrentFile => {

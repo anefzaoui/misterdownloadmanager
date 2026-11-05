@@ -81,6 +81,47 @@ pub fn offscreen() -> bool {
     *ON.get_or_init(|| std::env::var_os("MDM_OFFSCREEN").is_some_and(|v| v == "1"))
 }
 
+/// The clipboard's text, if any. Never read in an off-screen run ([`offscreen`]): its windows
+/// open from scripts, and the clipboard belongs to the person at the computer (Add URL's
+/// address came from it, and was fetched).
+pub fn clipboard_text() -> Option<String> {
+    read_clipboard(offscreen(), || {
+        arboard::Clipboard::new().ok()?.get_text().ok()
+    })
+}
+
+fn read_clipboard(off: bool, read: impl FnOnce() -> Option<String>) -> Option<String> {
+    if off { None } else { read() }
+}
+
+/// Put `text` on the clipboard (egui hands it to the system after the frame). An off-screen
+/// run leaves the clipboard alone and logs what it would have copied, for a check to read.
+pub fn copy_text(ctx: &egui::Context, text: String) {
+    if let Some(text) = write_clipboard(offscreen(), text) {
+        ctx.copy_text(text);
+    }
+}
+
+/// [`copy_text`] at once, outside a frame; whether the clipboard took it (off-screen: logged,
+/// and true).
+pub fn set_clipboard(text: &str) -> bool {
+    match write_clipboard(offscreen(), text.to_owned()) {
+        Some(text) => arboard::Clipboard::new()
+            .and_then(|mut c| c.set_text(text))
+            .is_ok(),
+        None => true,
+    }
+}
+
+fn write_clipboard(off: bool, text: String) -> Option<String> {
+    if off {
+        tracing::info!("clipboard (off-screen, not copied): {text}");
+        None
+    } else {
+        Some(text)
+    }
+}
+
 /// A window's builder as [`offscreen`] wants it; unchanged otherwise. Dialogs open centred on
 /// the main window, so they are off the screens with it.
 pub fn quiet(builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
@@ -247,4 +288,32 @@ fn app() -> eframe::Result {
     );
     crash::clean_exit();
     result
+}
+
+#[cfg(test)]
+mod tests {
+    /// An off-screen run neither reads the clipboard (Add URL, Batch, the clipboard monitor…)
+    /// nor writes it (Copy magnet link, Copy…): it logs what it would have copied.
+    #[test]
+    fn offscreen_runs_leave_the_clipboard_alone() {
+        let mut asked = false;
+        let got = super::read_clipboard(true, || {
+            asked = true;
+            Some("https://meet.example/abc".into())
+        });
+        assert_eq!(got, None);
+        assert!(!asked, "the clipboard isn't even opened");
+        assert_eq!(
+            super::read_clipboard(false, || Some("x".into())),
+            Some("x".into())
+        );
+        assert_eq!(
+            super::write_clipboard(true, "magnet:?xt=urn:btih:ab".into()),
+            None
+        );
+        assert_eq!(
+            super::write_clipboard(false, "magnet:?xt=urn:btih:ab".into()),
+            Some("magnet:?xt=urn:btih:ab".into())
+        );
+    }
 }

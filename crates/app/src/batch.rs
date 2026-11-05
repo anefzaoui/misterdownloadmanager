@@ -33,9 +33,7 @@ impl Batch {
     /// Pre-filled from the clipboard when it holds an http(s) or ftp(s) address, as IDM's.
     pub fn new(from_clipboard: bool) -> Self {
         let address = if from_clipboard {
-            arboard::Clipboard::new()
-                .ok()
-                .and_then(|mut c| c.get_text().ok())
+            crate::clipboard_text()
                 .map(|t| t.trim().to_owned())
                 .filter(|t| url::Url::parse(t).is_ok_and(|u| mdm_engine::supported(&u)))
                 .unwrap_or_default()

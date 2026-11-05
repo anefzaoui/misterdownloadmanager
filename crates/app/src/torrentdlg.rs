@@ -118,9 +118,7 @@ impl TorrentDialog {
         ctx: &egui::Context,
     ) -> Self {
         let source = source.unwrap_or_else(|| {
-            arboard::Clipboard::new()
-                .ok()
-                .and_then(|mut c| c.get_text().ok())
+            crate::clipboard_text()
                 .filter(|t| Source::magnet(t).is_some())
                 .map(|t| t.trim().to_owned())
                 .unwrap_or_default()

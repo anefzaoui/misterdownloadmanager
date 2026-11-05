@@ -2742,7 +2742,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
         )
         .clicked()
         {
-            ctx.copy_text(code.clone());
+            crate::copy_text(&ctx, code.clone());
         }
         // i18n: button: open the service's page where the code is typed
         if winui::button_light(

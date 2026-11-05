@@ -126,9 +126,7 @@ fn tools() -> Tools {
 
 impl VideoDialog {
     pub fn new(folder: PathBuf) -> Self {
-        let page = arboard::Clipboard::new()
-            .ok()
-            .and_then(|mut c| c.get_text().ok())
+        let page = crate::clipboard_text()
             .map(|t| t.trim().to_owned())
             .filter(|t| url::Url::parse(t).is_ok_and(|u| matches!(u.scheme(), "http" | "https")))
             .unwrap_or_default();

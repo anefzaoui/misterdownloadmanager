@@ -1804,7 +1804,7 @@ pub fn copy_menu(resp: &Response, text: &str) {
     let ctx = resp.ctx.clone();
     let key = resp.id.with("copy-menu");
     if resp.has_focus() && ctx.input(|i| i.events.iter().any(|e| matches!(e, egui::Event::Copy))) {
-        ctx.copy_text(text.to_owned());
+        crate::copy_text(&ctx, text.to_owned());
     }
     if resp.secondary_clicked()
         && let Some(p) = resp.interact_pointer_pos()
@@ -1824,7 +1824,7 @@ pub fn copy_menu(resp: &Response, text: &str) {
     }) {
         PopupResult::Open | PopupResult::Neighbor(_) => {}
         PopupResult::Chosen(()) => {
-            ctx.copy_text(text.to_owned());
+            crate::copy_text(&ctx, text.to_owned());
             ctx.data_mut(|d| d.remove::<Pos2>(key));
         }
         PopupResult::Dismissed => ctx.data_mut(|d| d.remove::<Pos2>(key)),
@@ -1932,10 +1932,7 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
         })
         .unwrap_or((n, n));
     let has = a < b;
-    let clip = arboard::Clipboard::new()
-        .and_then(|mut c| c.get_text())
-        .ok()
-        .filter(|t| !t.is_empty());
+    let clip = crate::clipboard_text().filter(|t| !t.is_empty());
     // egui's own undo history (Ctrl+Z uses it too).
     let mut undoer = state.undoer();
     let now = (state.cursor.char_range().unwrap_or_default(), value.clone());
@@ -1972,13 +1969,13 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
         }
         // Each change an undo step of its own (Undo after the menu's Paste did nothing).
         EditCmd::Cut => {
-            ctx.copy_text(value[ba..bb].to_owned());
+            crate::copy_text(&ctx, value[ba..bb].to_owned());
             undoer.add_undo(&now);
             value.replace_range(ba..bb, "");
             (a, a)
         }
         EditCmd::Copy => {
-            ctx.copy_text(value[ba..bb].to_owned());
+            crate::copy_text(&ctx, value[ba..bb].to_owned());
             (a, b)
         }
         EditCmd::Paste => {
