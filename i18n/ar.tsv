@@ -117,6 +117,10 @@
 #. text in categories.rs
 #, machine
 	Add category	إضافة فئة
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	إضافة العديد من التنزيلات
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -147,6 +151,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	إضافة تورنت
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	إضافة {n} تنزيل إلى القائمة؟ يحصل كل فيديو على صف خاص به.
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -256,6 +265,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	صوت فقط {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	صوت فقط، أصلي
 #. text in the Scheduler window
 #, machine
 	August	أغسطس
@@ -269,6 +282,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	تنزيل دفعي
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	أفضل جودة
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -922,6 +939,10 @@
 #, machine
 	from a page (yt-dlp)	من صفحة (yt-dlp)
 #. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	من قائمة تشغيل (yt-dlp)
+#. message or event log entry in the main window
 #, machine
 	from a torrent file	من ملف تورنت
 #. text in the Batch download window
@@ -1154,10 +1175,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	روابط من المتصفح
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	إدراج البقية
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	توقف الإدراج بعد {n} من مقاطع الفيديو: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	جاري إدراج مقاطع الفيديو: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	جاري إدراج مقاطع الفيديو: {n} من {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	قوائم العناوين
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	تحميل المزيد
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1523,6 +1567,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	يمكن فقط لفيديوهات MP4 وMKV أن تحتوي على ترجمات
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	تم إدراج أول {n} مقطع فيديو فقط.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	فقط أثناء استخدامي للكمبيوتر
@@ -1669,6 +1718,7 @@
 	Put them into the video	وضعها في الفيديو
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	الجودة
 #. text in the Scheduler window
@@ -1820,7 +1870,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	تحديد مجلد
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	تحديد الكل
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1829,7 +1880,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	تحديد كل التنزيلات حتى هذا التنزيل
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	إلغاء تحديد الكل
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2077,6 +2129,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	إيقاف التنزيل عند
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	إيقاف الإدراج
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	إيقاف قائمة انتظار التنزيل الرئيسية
@@ -2408,6 +2464,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	هذه هي النسخة المثبتة، وليست نسخة محمولة
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	هذه القائمة لا تحتوي على مقاطع فيديو
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2569,6 +2629,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	غير معروف
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	حتى {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2673,9 +2737,17 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	تستخدم عمليات البحث عن الفيديو yt-dlp (حوالي 23 ميجابايت، تم التحقق منها مقابل توقيعها).
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	مقاطع الفيديو
 #. text in the Options window
 #, machine
 	Virus checking settings	إعدادات فحص الفيروسات
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	انتظر القائمة، أو أوقف الإدراج
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2881,6 +2953,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (تلقائي)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	تم اختيار {n} من {total}
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -2900,6 +2977,15 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ثانية
+#. text in playlistdlg.rs
+#. in Download video, a playlist's title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+	{title}: {count} video	{title}: {count} مقطع فيديو
+#. text in playlistdlg.rs
+#. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
+#, machine
+	{title}: {listed} of {total} video listed	{title}: تم إدراج {listed} من {total} مقطع فيديو
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

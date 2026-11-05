@@ -8,6 +8,7 @@ pub mod chosen;
 pub mod ffmpeg;
 mod openpgp;
 pub mod pages;
+pub mod playlist;
 pub mod proc;
 pub mod resolve;
 pub mod servers;

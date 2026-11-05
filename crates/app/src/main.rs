@@ -22,6 +22,7 @@ mod list;
 mod model;
 mod options;
 mod pacfetch;
+mod playlistdlg;
 mod progress;
 mod properties;
 mod queue;

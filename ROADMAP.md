@@ -16,6 +16,8 @@ Everything below ships together, in one release.
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
   and the main window's Minimize, with the tray's "Downloads in progress"
   ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
+- ✅ Whole playlists and channels, also as MP3, one quality for all
+  ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69))
 - ✅ Choose the DNS: Cloudflare, Google, Quad9, AdGuard, NextDNS or your own, over HTTPS, TLS or
   plain, with a Test button and no silent fallback
   ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
@@ -94,8 +96,6 @@ Everything below ships together, in one release.
 
 - 📋 More audio choices: FLAC, Opus, the original track
   ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70))
-- 📋 Whole playlists and channels, also as MP3
-  ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69))
 - 📋 gallery-dl support ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 
 ### Downloads and windows
