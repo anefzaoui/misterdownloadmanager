@@ -297,8 +297,8 @@ impl Helpers {
                         crate::i18n::t("Checking {name} ({n} of {total})..."),
                         &[
                             ("name", name),
-                            ("n", &k.to_string()),
-                            ("total", &total.to_string()),
+                            ("n", &crate::i18n::integer(k as u64)),
+                            ("total", &crate::i18n::integer(total as u64)),
                         ],
                     ),
                     ink,
@@ -311,8 +311,8 @@ impl Helpers {
                         crate::i18n::t("Downloading {name} ({n} of {total})... {percent}"),
                         &[
                             ("name", name),
-                            ("n", &k.to_string()),
-                            ("total", &total.to_string()),
+                            ("n", &crate::i18n::integer(k as u64)),
+                            ("total", &crate::i18n::integer(total as u64)),
                             ("percent", &format!("{}%", (f * 100.0).floor())),
                         ],
                     ),

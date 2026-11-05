@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Numbers are grouped and pointed the interface language's way (German `10.200`, `1,50 MB`)
+  ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128))
 - ✅ Torrents: Recheck, Reannounce, Add trackers and Copy magnet link; files chosen while a
   torrent runs; a `.torrent` file's web address opens Add torrent ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Link grabber: links in packages, looked up for name and size; archives (zip and tar

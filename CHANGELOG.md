@@ -287,6 +287,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Numbers are written the interface language's way** ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128)):
+  counts, sizes, speeds, percentages and the list's columns group and point their digits as the
+  chosen language does (German `10.200` and `1,50 MB`, French `10 200`, Hindi `1,00,000`),
+  whatever the Windows region; a region in the same language keeps its own way (Swiss German
+  `10’200`). English is unchanged.
 - **A finished torrent's progress window lost its tabs while it was still shared**: Files, Peers,
   Trackers, Pieces and General (with the share ratio) said "Shown while the torrent is
   downloading." They now stay for as long as the torrent is shared.
