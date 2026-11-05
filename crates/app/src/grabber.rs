@@ -18,6 +18,8 @@ use crate::transfer::Imported;
 use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, fill_l as fill, r, text};
 
 const ROW: f32 = 18.0;
+/// The top of the window's last row of buttons (Add to queue, Start, Cancel).
+const BUTTONS_Y: f32 = 446.0;
 /// Links looked up at once, and at once from one host.
 const CHECKS: usize = 8;
 const CHECKS_PER_HOST: usize = 4;
@@ -466,7 +468,7 @@ impl Grabber {
             ctx,
             "grabber",
             "Link grabber",
-            [640.0, 446.0],
+            [640.0, BUTTONS_Y + 30.0],
             true,
             LIGHT_BG(),
             |ui, o| self.body(ui, o),
@@ -528,32 +530,28 @@ impl Grabber {
                 ("total", &crate::i18n::integer(shown.len() as u64)),
             ],
         );
-        text(&p, o.x + 180.0, o.y + 310.0, &count, LIGHT_TEXT());
-        if winui::button_light(
+        // After the check box's caption, however long it is in this language.
+        let after = 11.0 + 18.0 + winui::text_width(&p, crate::i18n::t("Hide web pages")) + 24.0;
+        text(&p, o.x + after, o.y + 310.0, &count, LIGHT_TEXT());
+        let picks = winui::buttons_light_right(
             ui,
-            r(o, 458.0, 296.0, 82.0, 21.0),
-            // i18n: Link grabber button (IDM's): tick every link
-            "Check all",
-            ButtonKind::Normal,
-            false,
-        )
-        .clicked()
-        {
+            o,
+            629.0,
+            296.0,
+            &[
+                // i18n: Link grabber button (IDM's): tick every link
+                ("Check all", ButtonKind::Normal),
+                // i18n: Link grabber button (IDM's): untick every link
+                ("Uncheck all", ButtonKind::Normal),
+            ],
+        );
+        if picks[0].clicked() {
             let hide = self.hide_pages;
             for l in &mut self.links {
                 l.on = !(hide && web_page(&l.name));
             }
         }
-        if winui::button_light(
-            ui,
-            r(o, 547.0, 296.0, 82.0, 21.0),
-            // i18n: Link grabber button (IDM's): untick every link
-            "Uncheck all",
-            ButtonKind::Normal,
-            false,
-        )
-        .clicked()
-        {
+        if picks[1].clicked() {
             self.links.iter_mut().for_each(|l| l.on = false);
         }
 
@@ -565,32 +563,20 @@ impl Grabber {
             (true, true) => ButtonKind::Default,
             (true, false) => ButtonKind::Normal,
         };
-        let later = winui::button_light(
+        let row = winui::buttons_light_right(
             ui,
-            r(o, 374.0, 416.0, 95.0, 21.0),
-            // i18n: Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
-            "Add to queue",
-            kind(false),
-            false,
-        )
-        .clicked();
-        let start = winui::button_light(
-            ui,
-            r(o, 476.0, 416.0, 73.0, 21.0),
-            // i18n: Link grabber button: download the ticked links now
-            "Start",
-            kind(true),
-            false,
-        )
-        .clicked();
-        let cancel = winui::button_light(
-            ui,
-            r(o, 556.0, 416.0, 73.0, 21.0),
-            "Cancel",
-            ButtonKind::Normal,
-            false,
-        )
-        .clicked();
+            o,
+            629.0,
+            BUTTONS_Y,
+            &[
+                // i18n: Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
+                ("Add to queue", kind(false)),
+                // i18n: Link grabber button: download the ticked links now
+                ("Start", kind(true)),
+                ("Cancel", ButtonKind::Normal),
+            ],
+        );
+        let (later, start, cancel) = (row[0].clicked(), row[1].clicked(), row[2].clicked());
         if cancel || winui::escape_pressed(ui) {
             Outcome::Closed
         } else if any && (start || winui::enter_pressed(ui)) {
@@ -887,7 +873,7 @@ impl Grabber {
         let cw = winui::text_width(&p, caption);
         winui::group_box(
             &p,
-            r(o, 11.0, 330.0, 618.0, 76.0),
+            r(o, 11.0, 330.0, 618.0, 106.0),
             Some((o.x + 18.0, o.x + 22.0 + cw)),
         );
         text(&p, o.x + 20.0, o.y + 334.0, caption, LIGHT_TEXT());
@@ -914,36 +900,76 @@ impl Grabber {
         } else {
             winui::LIGHT_DISABLED()
         };
+        // Labels before their boxes: a column as wide as this language's longest (up to 160 px).
         // i18n: Link grabber: the package's name (a label before its box)
-        text(&p, o.x + 21.0, o.y + 360.0, crate::i18n::t("Name:"), ink);
-        let named = winui::edit_light(ui, r(o, 96.0, 345.0, 196.0, 23.0), name, enabled, false);
+        let name_label = crate::i18n::t("Name:");
         // i18n: Link grabber: the folder the package's files go to (a label before its box)
-        text(
-            &p,
-            o.x + 304.0,
-            o.y + 360.0,
-            crate::i18n::t("Save to:"),
-            ink,
+        let folder_label = crate::i18n::t("Save to:");
+        // i18n: Link grabber: the package's archives' password (a label before its box)
+        let pw_label = crate::i18n::t("Password:");
+        let wide = |s: &str| winui::text_width(&p, s);
+        let bx = (21.0 + wide(name_label).max(wide(folder_label)) + 8.0).clamp(80.0, 160.0);
+        let label = |ui: &Ui, x: f32, y: f32, s: &str, right: f32| {
+            winui::fit(
+                ui,
+                &p,
+                o.x + x,
+                o.y + y,
+                s,
+                ink,
+                o.x + right,
+                ("grabber-label", y as i32, x as i32),
+            );
+        };
+        // Row 1: the name, then the password.
+        label(ui, 21.0, 360.0, name_label, bx - 4.0);
+        let pw_x = 340.0;
+        let pbx = (pw_x + wide(pw_label) + 8.0).min(470.0);
+        let named = winui::edit_light(
+            ui,
+            r(o, bx, 345.0, pw_x - 12.0 - bx, 23.0),
+            name,
+            enabled,
+            false,
         );
-        let typed = winui::edit_light(ui, r(o, 366.0, 345.0, 176.0, 23.0), folder, enabled, false);
+        label(ui, pw_x, 360.0, pw_label, pbx - 4.0);
+        let pw = winui::password_light(ui, r(o, pbx, 345.0, 621.0 - pbx, 23.0), password, enabled);
+        // i18n: what a screen reader calls Link grabber's password box
+        let pw_name = crate::i18n::t("Archive password");
+        ui.ctx().accesskit_node_builder(pw.id, |n| {
+            n.set_label(pw_name);
+            // UI Automation's id: tools tell the one password box apart by it (its name is
+            // not read out to them).
+            n.set_author_id("grabber-password");
+        });
+        // Row 2: the folder, and Browse.
+        label(ui, 21.0, 391.0, folder_label, bx - 4.0);
+        // i18n: verb: choose a folder
+        let bw = winui::button_width(&p, "Browse", 73.0);
+        let typed = winui::edit_light(
+            ui,
+            r(o, bx, 376.0, 621.0 - bw - 8.0 - bx, 23.0),
+            folder,
+            enabled,
+            false,
+        );
         if enabled && folder.is_empty() && !typed.has_focus() {
             // i18n: Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
             let each = crate::i18n::t("Each file's category folder");
             winui::fit(
                 ui,
                 &p,
-                o.x + 371.0,
-                o.y + 360.0,
+                o.x + bx + 5.0,
+                o.y + 391.0,
                 each,
                 winui::MUTED(),
-                o.x + 538.0,
+                o.x + 621.0 - bw - 12.0,
                 "grabber-each",
             );
         }
         let browse = winui::button_light(
             ui,
-            r(o, 548.0, 346.0, 73.0, 21.0),
-            // i18n: verb: choose a folder
+            r(o, 621.0 - bw, 377.0, bw, 21.0),
             "Browse",
             if enabled {
                 ButtonKind::Normal
@@ -964,39 +990,18 @@ impl Grabber {
             *folder = dir.display().to_string();
             chose = true;
         }
-        // i18n: Link grabber: the package's archives' password (a label before its box)
-        text(
-            &p,
-            o.x + 21.0,
-            o.y + 391.0,
-            crate::i18n::t("Password:"),
-            ink,
-        );
-        let pw = winui::password_light(ui, r(o, 96.0, 376.0, 196.0, 23.0), password, enabled);
-        // i18n: what a screen reader calls Link grabber's password box
-        let pw_name = crate::i18n::t("Archive password");
-        ui.ctx().accesskit_node_builder(pw.id, |n| {
-            n.set_label(pw_name);
-            // UI Automation's id: tools tell the one password box apart by it (its name is
-            // not read out to them).
-            n.set_author_id("grabber-password");
-        });
         self.editing = named.has_focus() || typed.has_focus() || pw.has_focus();
+        // Row 3: what becomes of its archives.
         let was = *extract;
         // i18n: Link grabber check box: extract the package's archives once they are downloaded
-        winui::checkbox_light_until(
-            ui,
-            o + vec2(304.0, 381.0),
-            extract,
-            "Extract when done",
-            enabled,
-            Some(o.x + 448.0),
-        );
+        let extract_label = "Extract when done";
+        winui::checkbox_light(ui, o + vec2(21.0, 411.0), extract, extract_label, enabled);
         let extract_now = *extract;
+        let next = 21.0 + 18.0 + wide(crate::i18n::t(extract_label)) + 24.0;
         // i18n: Link grabber check box: after extracting, the archives go to the Recycle Bin
         winui::checkbox_light(
             ui,
-            o + vec2(452.0, 381.0),
+            o + vec2(next, 411.0),
             delete,
             "Delete archives after extracting",
             enabled && extract_now,

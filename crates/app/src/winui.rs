@@ -2791,6 +2791,38 @@ pub fn button_light(
     button_face(ui, rc, crate::i18n::t(label), kind, focus_rect)
 }
 
+/// How wide a light button must be for its (translated) `label`: at least `min` (Windows'
+/// 73 px), else the label and its margins, so a longer translation is never cut.
+pub fn button_width(p: &Painter, label: &str, min: f32) -> f32 {
+    (text_width(p, crate::i18n::t(label)) + 24.0)
+        .ceil()
+        .max(min)
+}
+
+/// Light buttons side by side, the row ending at English x `right` (window-relative to `o`),
+/// each as wide as [`button_width`] says, 8 px apart, in the order given. Their responses, in
+/// that order.
+pub fn buttons_light_right(
+    ui: &mut Ui,
+    o: Pos2,
+    right: f32,
+    top: f32,
+    buttons: &[(&str, ButtonKind)],
+) -> Vec<Response> {
+    let p = ui.painter().clone();
+    let widths: Vec<f32> = buttons
+        .iter()
+        .map(|(l, _)| button_width(&p, l, 73.0))
+        .collect();
+    let mut x = right - widths.iter().sum::<f32>() - 8.0 * (buttons.len().saturating_sub(1)) as f32;
+    let mut out = Vec::new();
+    for ((label, kind), w) in buttons.iter().zip(widths) {
+        out.push(button_light(ui, r(o, x, top, w, 21.0), label, *kind, false));
+        x += w + 8.0;
+    }
+    out
+}
+
 /// A push button in the current theme (dark: IDM's dark buttons; light: Windows 11's), its
 /// (translated) `label` with "&" before the access letter: the letter is underlined and
 /// Alt+letter presses it. Hot and pressed as Windows 11 draws them: a pressed button's label
