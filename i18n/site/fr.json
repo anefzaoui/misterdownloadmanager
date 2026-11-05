@@ -66,6 +66,10 @@
    "source": "<g1>Start Download</g1> (or <g2>Enter</g2>) — download now. The progress window opens.",
    "text": "<g1>Démarrer le téléchargement</g1> (ou <g2>Entrée</g2>) — télécharge maintenant. La fenêtre de progression s’ouvre."
   },
+  "021dced76e91e8e1": {
+   "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
+   "text": "<g1>D'où il vient :</g1> MDM télécharge gallery-dl depuis ses versions sur Codeberg. Il ne l'accepte que si la liste de sommes de contrôle de la version est signée par la clé de l'auteur de gallery-dl, épinglée dans MDM, et que le programme correspond à cette liste. Il conserve la version précédente et ne revient jamais à une version plus ancienne. Sous Windows et Linux (x86-64), MDM l'installe ; sous macOS, installez-le avec Homebrew (<x2/>) ou pip et choisissez-le dans <g3>Assistants...</g3>."
+  },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
    "text": "<g1>Téléchargez Mister Download Manager</g1> et installez-le ; laissez <g2>Configurer l’intégration au navigateur</g2> coché."
@@ -77,6 +81,10 @@
   "0255cefc03d71cf4": {
    "source": "<g1><g2>Keep some speed for everything else</g2></g1> — cap MDM so browsing and calls stay smooth.",
    "text": "<g1><g2>Garder de la vitesse pour le reste</g2></g1> — limiter MDM pour que la navigation et les appels restent fluides."
+  },
+  "02627b049e4a7241": {
+   "source": "Image galleries",
+   "text": "Galeries d'images"
   },
   "026a1b767daa1fa2": {
    "source": "<g1>File name or part of the name</g1> — on by default.",
@@ -178,6 +186,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Gratuit et open source. L'interface que vous connaissez déjà, un moteur plus rapide en dessous, les torrents et la vidéo intégrés."
   },
+  "04917582aad4754c": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (environ 80 Mo) rassemble une vidéo et son son quand un site les sépare (ce que la plupart des sites font pour les qualités supérieures), et il convertit le son en MP3. Cliquez sur <g2>Installer ffmpeg</g2> quand MDM vous le propose. MDM le vérifie avec les sommes de contrôle publiées par sa version."
+  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -185,6 +197,10 @@
   "04ec5358d75ceff7": {
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "Pointez une vidéo sur une page web et un petit bouton <g1>Télécharger la vidéo</g1> apparaît sur son bord. Cliquez dessus et la fenêtre <g2>Télécharger une vidéo depuis une page</g2> de MDM s’ouvre et recherche les qualités qu’elle peut télécharger. Elle prend la vidéo sur laquelle vous avez cliqué : son propre fichier quand elle en lit un, ou le flux que le lecteur a chargé (HLS ou DASH), sinon la page. Les lecteurs intégrés fonctionnent aussi, et votre connexion au site, la page qui intègre le lecteur et l’User-Agent de votre navigateur l’accompagnent, de sorte que les vidéos pour les membres, ou qui ne sont lues que sur le site qui les intègre, peuvent être téléchargées. Les lecteurs audio obtiennent aussi le bouton."
+  },
+  "050edc04316dd70a": {
+   "source": "On the command line",
+   "text": "En ligne de commande"
   },
   "053263e0b7c48cfa": {
    "source": "What reaches your computer",
@@ -333,6 +349,10 @@
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "Non, sauf si vous le souhaitez. Pendant le téléchargement d'un torrent, il échange des morceaux avec d'autres personnes, comme le fait tout client torrent. Une fois terminé, il s'arrête, comme n'importe quel…"
+  },
+  "084f72ae121f3c2a": {
+   "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
+   "text": "<g1>Supprimer</g1> retire la galerie de la liste. Son dossier et ses images restent, même si vous cochez la case pour supprimer les fichiers : supprimez le dossier vous-même si vous voulez qu'il disparaisse."
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -1158,6 +1178,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "Choisissez ce que le programme d'installation doit faire : - <g1>Configurer l'intégration au navigateur (Chrome, Edge, Brave, Firefox)</g1> - <g2>Ouvrir les fichiers .torrent et les liens magnet avec Mister Download Manager</g2> - <g3>Démarrer Mister Download Manager au démarrage de Windows</g3> - <g4>Créer un raccourci sur le bureau</g4> (désactivé sauf si vous le cochez)"
   },
+  "1e06a14724b6ac4b": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
+   "text": "MDM télécharge les images d'une galerie (une catégorie Wikimedia Commons, un album Flickr, une galerie DeviantArt, un album Imgur et bien d'autres) avec gallery-dl…"
+  },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
    "text": "<x1/> <g2>Open source · GPL-3.0</g2>"
@@ -1766,6 +1790,10 @@
    "source": "The server",
    "text": "Le serveur"
   },
+  "2d7508c5d79aed56": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
+   "text": "Choisissez-en une. Sans ffmpeg, seules les qualités qui incluent leur son sont listées, et aucun MP3 (ffmpeg le crée)."
+  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "Envoyer les téléchargements du navigateur à MDM →"
@@ -2125,6 +2153,10 @@
   "38d4b8570c497ca6": {
    "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
    "text": "Les paramètres Proxy / Socks de MDM sont pour les téléchargements web et FTP. Les torrents peuvent aussi utiliser un proxy SOCKS5 : configurez un <x1/> proxy dans <g2>Options → Proxy / Socks</g2> et activez <g3>Utiliser le proxy</g3> dans les Paramètres du torrent. Le proxy ne couvre que les connexions aux pairs et aux traqueurs web, donc avec lui MDM désactive le DHT, la découverte de pairs locaux, les connexions entrantes et les traqueurs UDP ; il n'ouvre aucune socket UDP vers le réseau. Si le proxy n'est plus dans Proxy / Socks alors que ce commutateur est activé, les torrents ne démarrent pas plutôt que de le contourner."
+  },
+  "39202940bfd37e73": {
+   "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
+   "text": "<g1>Votre propre copie :</g1> <g2>Assistants...</g2> (dans la fenêtre de la galerie ou la fenêtre vidéo) liste yt-dlp, ffmpeg et gallery-dl, et <g3>Utiliser un autre programme...</g3> prend votre propre copie de chacun au lieu de celle de MDM."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2498,6 +2530,10 @@
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
    "text": "50 Mio, le serveur autorise 2 connexions, 2 Mo/s chacune"
   },
+  "42bd9026482d491d": {
+   "source": "gallery-dl itself",
+   "text": "gallery-dl lui-même"
+  },
   "432cbb1ffee89925": {
    "source": "<g1>Your downloads are yours to answer for.</g1> Respect copyright and the terms of the sites you download from. With torrents, remember that a torrent client also shares what it downloads.",
    "text": "<g1>Vos téléchargements sont sous votre responsabilité.</g1> Respectez les droits d'auteur et les conditions des sites d'où vous téléchargez. Avec les torrents, n'oubliez pas qu'un client torrent partage aussi ce qu'il télécharge."
@@ -2545,6 +2581,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447b0cdb28e67b18": {
+   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
+   "text": "<g1>Arrêter</g1> met fin à gallery-dl et à tout ce qu'il a démarré. Les images enregistrées jusqu'à présent restent."
   },
   "447cc2a2f0918427": {
    "source": "Tab",
@@ -2749,6 +2789,10 @@
   "4b6527605342a06c": {
    "source": "Confirm deletion of downloads",
    "text": "Confirmer la suppression des téléchargements"
+  },
+  "4b6da766cbb50be6": {
+   "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
+   "text": "MDM ouvre <g1>Télécharger une galerie</g1> au lieu de télécharger la page comme un fichier. La première fois, cliquez sur <g2>Installer gallery-dl</g2>."
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3142,6 +3186,10 @@
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "Vous pouvez ajouter vos propres files d’attente dans le planificateur, ou avec <g1>Créer une nouvelle file d’attente</g1> dans le menu contextuel d’un téléchargement."
   },
+  "5704b78ea54419dd": {
+   "source": "Click <g1>Add URL</g1> and paste the gallery's address, for example <x2/>.",
+   "text": "Cliquez sur <g1>Ajouter une URL</g1> et collez l'adresse de la galerie, par exemple <x2/>."
+  },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "Passez à MDM en cinq minutes"
@@ -3310,6 +3358,10 @@
    "source": "What they do",
    "text": "Action"
   },
+  "5cf4f742d0a41f0e": {
+   "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
+   "text": "télécharge une galerie dans un dossier nommé d'après elle. Voir <g1>Ligne de commande et automatisation</g1>."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Choisissez <g1>Aide → Signaler un problème</g1>. Cela ouvre le formulaire de rapport de bogue sur GitHub avec votre version de MDM, votre système et sa version, la façon dont MDM a été installé et sa langue d'interface déjà remplis. Décrivez ce qui s'est passé, ce que vous attendiez et les étapes qui le provoquent. Pour un téléchargement, incluez l'adresse si vous pouvez la partager, et la raison indiquée sous <g2>État</g2>."
@@ -3369,6 +3421,10 @@
   "5e921749406a7933": {
    "source": "Reporting a problem",
    "text": "Signaler un problème"
+  },
+  "5ea1452a0cb5fbf8": {
+   "source": "Stop, delete",
+   "text": "Arrêter, supprimer"
   },
   "5ea184bc04ad2f73": {
    "source": "See <g1>If a video won't download</g1>.",
@@ -3522,9 +3578,17 @@
    "source": "Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.",
    "text": "Vous avez trouvé un bug ? Aide → Signaler un problème dans l'application ouvre un rapport pré-rempli avec votre version, votre système et votre langue. Lisez-le, puis publiez-le."
   },
+  "61c0ff783f077afd": {
+   "source": "Get the new pictures later",
+   "text": "Obtenir les nouvelles images plus tard"
+  },
   "61e77c7c55f48e1e": {
    "source": "4. Decide what happens at the end (optional)",
    "text": "4. Décider ce qui se passe à la fin (facultatif)"
+  },
+  "6216638d7aa4db3f": {
+   "source": "Check <g1>Save to</g1> (the General category's folder by default). The pictures go into a folder of their own there, named after the gallery.",
+   "text": "Vérifiez <g1>Enregistrer dans</g1> (le dossier de la catégorie Général par défaut). Les images y sont placées dans un dossier qui leur est propre, nommé d'après la galerie."
   },
   "62296921bc8016ff": {
    "source": "<g1>Always turn on Speed Limiter on Mister Download Manager startup</g1> turns it on each time MDM starts.",
@@ -3646,6 +3710,10 @@
    "source": "<g1>Download limits</g1> — download no more than a set amount every few hours. The same setting is in the Scheduler; see <g2>Queues and the Scheduler</g2>.",
    "text": "<g1>Limites de téléchargement</g1> — ne pas télécharger plus qu’une quantité définie toutes les quelques heures. Le même réglage se trouve dans le Planificateur ; voir <g2>Files d’attente et le Planificateur</g2>."
   },
+  "647d714bfaad02a5": {
+   "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
+   "text": "<g1>Carte réseau :</g1> comme yt-dlp, gallery-dl ne peut pas être lié à une seule carte réseau. Tant qu'une est choisie (<g2>Options → Proxy / Socks → Carte réseau</g2>), les galeries ne démarrent pas."
+  },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>Le projet sur GitHub</g1><g2>Code, problèmes et chaque version</g2>"
@@ -3734,6 +3802,10 @@
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
    "text": "L'hôte de messagerie native du navigateur : prend les téléchargements capturés de l'extension et les transmet à l'application"
   },
+  "687eb3437405d3f6": {
+   "source": "A picture's own address (one ending in <x1/> or <x2/>) downloads as a file, as before.",
+   "text": "L'adresse propre d'une image (une qui se termine par <x1/> ou <x2/>) est téléchargée comme un fichier, comme avant."
+  },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
    "text": "<g1><g2>Ligne de commande et automatisation</g2></g1> : les commutateurs d'IDM (<x3/>), <x4/> (fichiers, vidéos, torrents) et une API d'automatisation locale, protégée par jeton, qui liste, met en pause, démarre, supprime et efface les téléchargements."
@@ -3741,6 +3813,10 @@
   "688b2703f9059b6f": {
    "source": "Is Mister Download Manager really free?",
    "text": "Mister Download Manager est-il vraiment gratuit ?"
+  },
+  "689d48a0fd15b011": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
+   "text": "Relancez une galerie terminée (<g1>Reprendre</g1>) pour ne récupérer que les images qui ne sont pas encore dans son dossier. gallery-dl ignore celles qui sont déjà là."
   },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
@@ -4101,6 +4177,10 @@
   "71fe7ca9a5b99066": {
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>Nouveau</g1> — créez votre propre catégorie. <g2>Modifier...</g2> modifie celle sélectionnée : son dossier, et pour vos propres catégories son nom et ses types de fichiers."
+  },
+  "720b69230bc62f14": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
+   "text": "Télécharge les images d'une galerie (une catégorie Wikimedia Commons, un album Flickr, ...) dans un dossier nommé d'après elle à l'intérieur de <x1/> ; <x2/> en prend au maximum ce nombre, les premières que le site liste. Redémarré, il ne récupère que les nouvelles."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4770,6 +4850,10 @@
    "source": "Was MDM installed with the setup, with <g1>Set up browser integration</g1> ticked? A portable copy can't take browser downloads. Run the setup again to add it.",
    "text": "MDM a-t-il été installé avec le programme d’installation, avec <g1>Configurer l’intégration du navigateur</g1> coché ? Une copie portable ne peut pas prendre les téléchargements du navigateur. Exécutez à nouveau le programme d’installation pour l’ajouter."
   },
+  "8362706ee6422965": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "MDM télécharge les images d'une galerie (une catégorie Wikimedia Commons, un album Flickr, une galerie DeviantArt, un album Imgur et bien d'autres) avec <g1>gallery-dl</g1>, un programme gratuit qui lit plusieurs centaines de sites. Comme yt-dlp pour les vidéos, c'est un assistant facultatif : MDM l'installe la première fois que vous en avez besoin, ou utilise votre propre copie."
+  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "Mettre des téléchargements en file d’attente"
@@ -5106,6 +5190,10 @@
    "source": "3. Using it responsibly",
    "text": "3. Utilisation responsable"
   },
+  "8d6911b8ed8eb4d4": {
+   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
+   "text": "<g1>Comment il demande :</g1> gallery-dl interroge les sites comme MDM, une image par seconde au maximum. Les serveurs de Wikimedia refusent les outils qui demandent plus vite ou sans nom. Il n'utilise aucun de vos fichiers de configuration."
+  },
   "8d82bd27db3d3e27": {
    "source": "In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with <x1/>.",
    "text": "Dans une session Wayland (GNOME, KDE Plasma et autres), les fenêtres de MDM s'exécutent via XWayland quand il est présent : Wayland ne permet pas à un programme de placer ses propres fenêtres, donc les menus et listes déroulantes de MDM s'ouvriraient au milieu de l'écran. Pour l'exécuter sur Wayland lui-même, démarrez-le avec <x1/>."
@@ -5157,6 +5245,10 @@
   "8eb2929f09075835": {
    "source": "Download your first file →",
    "text": "Télécharger votre premier fichier →"
+  },
+  "8ebacedce5c28ec5": {
+   "source": "Add URL sends these to the gallery window: - Wikimedia Commons categories; - Flickr photographers and albums; - DeviantArt and ArtStation galleries; - Imgur albums; - Pixiv artists and works; - Pinterest boards and pins; - Danbooru and Gelbooru searches; - Tumblr blogs; - Bluesky profiles.",
+   "text": "Ajouter une URL envoie ces adresses à la fenêtre de la galerie : – Catégories Wikimedia Commons ; – Photographes et albums Flickr ; – Galeries DeviantArt et ArtStation ; – Albums Imgur ; – Artistes et œuvres Pixiv ; – Tableaux et épingles Pinterest ; – Recherches Danbooru et Gelbooru ; – Blogs Tumblr ; – Profils Bluesky."
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
@@ -5490,6 +5582,10 @@
    "source": "What other people can see",
    "text": "Ce que les autres peuvent voir"
   },
+  "9806786dcda7c9ff": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
+   "text": "Attendez la liste. Elle affiche chaque résolution avec sa taille, la meilleure en premier, puis <g1>Audio seulement</g1> au format du site (M4A ou WebM, tel que le site le fournit), puis <g2>Audio seulement MP3</g2> à son meilleur débit binaire variable (VBR) et à 320, 256, 192 et 128 kbps."
+  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "Enregistrez-le sous ce nom."
@@ -5789,6 +5885,10 @@
   "a0d1f871bdc969b4": {
    "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
    "text": "Chrome, Edge, Brave, Opera et Vivaldi via l’extension ; Firefox est en test. Sans l’extension, copiez un lien et MDM ouvre la fenêtre de téléchargement. <g1>En savoir plus</g1>"
+  },
+  "a0f44b2041902a09": {
+   "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
+   "text": "gallery-dl vérifie l'adresse sur votre ordinateur, sans se connecter. Quand la ligne indique <g1>gallery-dl peut télécharger les fichiers de cette galerie</g1>, vous êtes prêt."
   },
   "a111ff2e536e8112": {
    "source": "Linux <g1>x86-64</g1>",
@@ -6278,6 +6378,10 @@
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM télécharge ce que vous lui indiquez, comme un navigateur web, mais plus vite et avec plus de contrôle. Il est conçu pour les téléchargements quotidiens : logiciels et mises à jour, documents, vos propres fichiers depuis un stockage cloud, vidéos et musiques que vous êtes autorisé à enregistrer, images Linux et autres torrents partagés par leurs créateurs, et tout ce que vous avez le droit de télécharger."
   },
+  "adfb560dd47a90fc": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Télécharge une vidéo ; <x1/> prend un sélecteur de qualité de <x2/> (<x3/> = le meilleur fichier unique ; <x4/>, <x5/>, <x6/> ou <x7/> = le son en MP3 à ce débit, <x8/> à son meilleur débit variable ; le MP3 nécessite ffmpeg). <x9/> enregistre les sous-titres à côté : codes de langue de <x10/> (<x11/>), ou <x12/> pour tous ceux fournis par l'uploadeur ; <x13/> prend les sous-titres automatiques du site à la place ; <x14/> les insère dans la vidéo (nécessite ffmpeg, MP4 ou MKV)."
+  },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
    "text": "la désactive à nouveau. Sans l'API, l'assistant peut toujours ajouter des téléchargements, de la même manière que la <g1>ligne de commande</g1> de MDM."
@@ -6493,6 +6597,10 @@
   "b2e253fd75c1763a": {
    "source": "<g1>Move a column:</g1> drag its title sideways.",
    "text": "<g1>Déplacer une colonne :</g1> faites glisser son titre latéralement."
+  },
+  "b2fc02b26cb8300d": {
+   "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
+   "text": "Installe ou met à jour gallery-dl, pour les galeries d'images : sa liste de sommes de contrôle est vérifiée par rapport à la clé de signature de son auteur, le programme par rapport à cette liste (Windows et Linux x86-64 ; ailleurs, installez-le vous-même)."
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -7042,6 +7150,10 @@
    "source": "A connection that is far slower than the others is dropped and opened again.",
    "text": "Une connexion beaucoup plus lente que les autres est abandonnée et rouverte."
   },
+  "c3da286564016a74": {
+   "source": "Which addresses open the gallery window",
+   "text": "Quelles adresses ouvrent la fenêtre de la galerie"
+  },
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "La fenêtre <g1>Ajouter un torrent</g1> s'ouvre. Collez un lien magnet dans <g2>Torrent</g2>, ou cliquez sur <g3>...</g3> pour choisir un fichier <x4/>, puis cliquez sur <g5>Rechercher</g5>."
@@ -7350,9 +7462,17 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "Dans <g1>Informations sur le fichier à télécharger</g1>, cliquez sur <g2>Télécharger plus tard</g2>."
   },
+  "cce4b744dcc264df": {
+   "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
+   "text": "Facultatif : tapez un nombre dans <g1>Fichiers au maximum</g1> pour ne télécharger que les premiers que le site liste. Sur la plupart des sites, ce sont les plus récents. Laissez vide pour tous les télécharger."
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Vous voulez des sous-titres ? Choisissez une langue dans <g1>Sous-titres</g1>. Ils sont enregistrés à côté de la vidéo, ou intégrés à celle-ci si vous cochez <g2>Les intégrer à la vidéo</g2> (voir <g3>Sous-titres</g3>)."
+  },
+  "cd259ac663c10ccb": {
+   "source": "Download a gallery",
+   "text": "Télécharger une galerie"
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -7757,6 +7877,10 @@
   "d878d923ca93995a": {
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
    "text": "Ouvrez <x1/> (les codes sont dans <g2><x3/></g2>)."
+  },
+  "d880c385e71b0520": {
+   "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
+   "text": "La galerie obtient une ligne dans la liste. Sa taille augmente à mesure que les images arrivent, et son journal indique combien ont été enregistrées. Chaque image est marquée comme téléchargée d'internet, comme tout téléchargement."
   },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",
@@ -8342,6 +8466,10 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Pour conserver définitivement les téléchargements d’un site dans le navigateur, utilisez <g1>Ne jamais prendre les téléchargements de</g1> du bouton de la barre d’outils, ou ajoutez le site à <g2>Ne pas démarrer automatiquement le téléchargement depuis les sites suivants</g2>. Pour conserver un type de fichier dans le navigateur, retirez-le de la liste des types de fichiers."
   },
+  "ea5082456c0a9e2c": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
+   "text": "Un choix audio seulement (<g1>Audio seulement</g1>, MP3) n’a pas de sous-titres."
+  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Ouvrez Paramètres Windows → Applications, trouvez Mister Download Manager et choisissez Désinstaller. Le programme de désinstallation vous demande si vous souhaitez également supprimer votre liste de téléchargements et vos paramètres. Les fichiers que vous avez téléchargés ne sont jamais touchés. Pour la version portable, supprimez son dossier."
@@ -8442,6 +8570,10 @@
    "source": "x86_64.dmg",
    "text": "x86_64.dmg"
   },
+  "edc9abcb08e77b81": {
+   "source": "<g1><g2>Image galleries</g2></g1> — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.",
+   "text": "<g1><g2>Galeries d'images</g2></g1> — téléchargez les images d'une galerie (Wikimedia Commons, Flickr, DeviantArt et bien d'autres) avec gallery-dl."
+  },
   "edf69d8463a4ea4c": {
    "source": "<g1></g1>Free",
    "text": "<g1></g1>Gratuit"
@@ -8533,6 +8665,10 @@
   "f0122065c2796282": {
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
    "text": "Oui. MDM est livré avec un serveur MCP, misterdownloadmanager-mcp : ajoutez-le à Claude Desktop, Claude Code, Cursor, VS Code ou un autre assistant qui prend en charge MCP, et vous pourrez lui demander, avec vos propres mots, de lister, ajouter, mettre en pause, reprendre ou supprimer des téléchargements. Cela ne fonctionne qu'avec le MDM de votre ordinateur et nécessite l'activation de l'API d'automatisation. Voir Assistants IA."
+  },
+  "f01bb992070dab45": {
+   "source": "Image galleries — Mister Download Manager help",
+   "text": "Galeries d'images — Aide de Mister Download Manager"
   },
   "f0367ba56d9b43fa": {
    "source": "Mister Download Manager — free download manager and IDM alternative",
@@ -9037,6 +9173,10 @@
   "ff20db8e8bec6162": {
    "source": "On the first start MDM asks for the language; see <g1>Languages</g1>.",
    "text": "Au premier démarrage, MDM demande la langue ; voir <g1>Langues</g1>."
+  },
+  "ff26f3ab22a86c09": {
+   "source": "installs or updates gallery-dl, verified in the same way.",
+   "text": "installe ou met à jour gallery-dl, vérifié de la même manière."
   },
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",

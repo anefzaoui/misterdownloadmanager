@@ -22,6 +22,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Image galleries** ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58)): a
+  gallery's address in Add URL (a Wikimedia Commons category, a Flickr album, a DeviantArt or
+  Imgur gallery and more) opens **Download a gallery**, which downloads its pictures with
+  gallery-dl into a folder of their own, all of them or the first N. Started again, a gallery
+  fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its
+  releases only when signed by its author's key, or your own copy (Helpers). On the command line:
+  `install-gallery-dl` and `gallery-get`.
 - **Torrents: seeding limits** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)):
   under "Keep sharing torrents after they finish", Torrent settings can stop sharing a finished
   torrent at a share ratio, or after it has been shared for some minutes; both off by default. A

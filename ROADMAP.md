@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
+  verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 - ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
   tabs while it is shared ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ A paused or finished download no longer leaves its progress file to be written again a moment
@@ -103,10 +105,6 @@ Everything below ships together, in one release.
 - 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
 
 ## Planned
-
-### Video and audio
-
-- 📋 gallery-dl support ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 
 ### Downloads and windows
 

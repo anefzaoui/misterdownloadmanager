@@ -66,6 +66,10 @@
    "source": "<g1>Start Download</g1> (or <g2>Enter</g2>) — download now. The progress window opens.",
    "text": "<g1>ダウンロード開始</g1>（または<g2>Enter</g2>） — 今すぐダウンロード。進行状況ウィンドウが開きます。"
   },
+  "021dced76e91e8e1": {
+   "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
+   "text": "<g1>入手元:</g1> MDM は、Codeberg のリリースから gallery-dl をダウンロードします。リリースチェックサムリストが gallery-dl の作者のキー (MDM にピン留めされている) によって署名され、プログラムがそのリストと一致する場合にのみ受け入れます。以前のバージョンを保持し、古いバージョンに戻ることはありません。Windows および Linux (x86-64) では MDM がインストールします。macOS では、Homebrew (<x2/>) または pip でインストールし、<g3>ヘルパー...</g3> で選択します。"
+  },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
    "text": "<g1>Mister Download Managerをダウンロード</g1>してインストールします。<g2>ブラウザ統合を設定</g2>にチェックを入れたままにします。"
@@ -77,6 +81,10 @@
   "0255cefc03d71cf4": {
    "source": "<g1><g2>Keep some speed for everything else</g2></g1> — cap MDM so browsing and calls stay smooth.",
    "text": "<g1><g2>他のすべてのために速度を維持</g2></g1> — ブラウジングや通話がスムーズに保たれるようにMDMの速度を制限します。"
+  },
+  "02627b049e4a7241": {
+   "source": "Image galleries",
+   "text": "画像ギャラリー"
   },
   "026a1b767daa1fa2": {
    "source": "<g1>File name or part of the name</g1> — on by default.",
@@ -178,6 +186,10 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
   },
+  "04917582aad4754c": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1>（約80 MB）は、多くのサイトが高品質のために動画と音声を別々に保存している場合、それらを結合し、音声をMP3に変換します。MDMが提供する際に<g2>ffmpeg をインストール</g2>をクリックしてください。MDMは、公開されているチェックサムと照合して確認します。"
+  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome、Firefox、Edge<g1><g2>3</g2></g1>"
@@ -185,6 +197,10 @@
   "04ec5358d75ceff7": {
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "ウェブページのビデオにポインターを合わせると、小さな<g1>動画をダウンロード</g1>ボタンが端に表示されます。これをクリックすると、MDMの<g2>ページからビデオをダウンロード</g2>ウィンドウが開き、ダウンロード可能な品質を検索します。クリックしたビデオを取得します。再生するファイル自体、またはプレーヤーがロードしたストリーム（HLSまたはDASH）、そうでなければページです。埋め込みプレーヤーも機能し、サイトのサインイン、プレーヤーを埋め込むページ、およびブラウザーのUser-Agentも一緒に送信されるため、メンバー向けのビデオや、埋め込みサイトでのみ再生されるビデオもダウンロードできます。サウンドプレーヤーにもボタンが表示されます。"
+  },
+  "050edc04316dd70a": {
+   "source": "On the command line",
+   "text": "コマンドラインで"
   },
   "053263e0b7c48cfa": {
    "source": "What reaches your computer",
@@ -333,6 +349,10 @@
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "いいえ、ご希望でない限り続きません。トレントのダウンロード中は、他のトレントクライアントと同様に、他のユーザーとピースを交換します。完了すると、他のダウンロードと同様に停止します。"
+  },
+  "084f72ae121f3c2a": {
+   "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
+   "text": "<g1>削除</g1> はリストからギャラリーを削除します。ファイルを削除するチェックボックスをオンにしても、そのフォルダーと画像は残ります。削除したい場合は、自分でフォルダーを削除してください。"
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -1158,6 +1178,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "セットアップで実行する項目を選択します： - <g1>ブラウザ統合を設定する（Chrome、Edge、Brave、Firefox）</g1> - <g2>.torrentファイルとマグネットリンクをMister Download Managerで開く</g2> - <g3>Windows起動時にMister Download Managerを起動する</g3> - <g4>デスクトップショートカットを作成する</g4>（チェックしない限りオフ）"
   },
+  "1e06a14724b6ac4b": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
+   "text": "MDM は、数百ものサイトを読み込む無料プログラム gallery-dl を使用して、ギャラリー (Wikimedia Commons のカテゴリ、Flickr のアルバム、DeviantArt のギャラリー、Imgur のアルバムなど) の画像をダウンロードします。"
+  },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
    "text": "<x1/> <g2>オープンソース · GPL-3.0</g2>"
@@ -1766,6 +1790,10 @@
    "source": "The server",
    "text": "サーバー"
   },
+  "2d7508c5d79aed56": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
+   "text": "いずれかを選択してください。ffmpegがない場合、音声が付属している品質のみがリストに表示され、MP3は表示されません（MP3はffmpegが作成します）。"
+  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "ブラウザのダウンロードをMDMに送信する →"
@@ -2125,6 +2153,10 @@
   "38d4b8570c497ca6": {
    "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
    "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5プロキシを使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにしてください。このプロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア探索、受信接続、UDPトラッカーをオフにします。ネットワークに対してUDPソケットを一切開きません。このスイッチがオンの状態でプロキシ / SOCKSからプロキシがなくなると、トレントはプロキシを迂回せずに開始されません。"
+  },
+  "39202940bfd37e73": {
+   "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
+   "text": "<g1>自身のコピー:</g1> <g2>ヘルパー...</g2> (ギャラリーウィンドウまたはビデオウィンドウ内) には yt-dlp、ffmpeg、gallery-dl がリストされており、<g3>別のプログラムを使用...</g3> を選択すると、MDM の代わりにそれぞれの自身のコピーを使用できます。"
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2498,6 +2530,10 @@
    "source": "50 MiB, server allows 2 connections, 2 MB/s each",
    "text": "50 MiB、サーバーは2接続を許可、それぞれ2 MB/秒"
   },
+  "42bd9026482d491d": {
+   "source": "gallery-dl itself",
+   "text": "gallery-dl 自体"
+  },
   "432cbb1ffee89925": {
    "source": "<g1>Your downloads are yours to answer for.</g1> Respect copyright and the terms of the sites you download from. With torrents, remember that a torrent client also shares what it downloads.",
    "text": "<g1>ダウンロードの責任はユーザーにあります。</g1> 著作権とダウンロード元のサイトの規約を尊重してください。トレントの場合、トレントクライアントはダウンロードしたものを共有することも忘れないでください。"
@@ -2545,6 +2581,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447b0cdb28e67b18": {
+   "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
+   "text": "<g1>停止</g1> は gallery-dl とそれが開始したすべてを終了します。これまでに保存された画像は残ります。"
   },
   "447cc2a2f0918427": {
    "source": "Tab",
@@ -2749,6 +2789,10 @@
   "4b6527605342a06c": {
    "source": "Confirm deletion of downloads",
    "text": "ダウンロードの削除を確認"
+  },
+  "4b6da766cbb50be6": {
+   "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
+   "text": "MDM は、ページをファイルとしてダウンロードする代わりに、<g1>ギャラリーをダウンロード</g1> を開きます。初回は <g2>gallery-dl をインストール</g2> をクリックします。"
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3142,6 +3186,10 @@
    "source": "You can add your own queues in the Scheduler, or with <g1>Create new queue</g1> in a download's right-click menu.",
    "text": "スケジューラで独自のキューを追加するか、ダウンロードの右クリックメニューにある<g1>新しいキューを作成</g1>で追加できます。"
   },
+  "5704b78ea54419dd": {
+   "source": "Click <g1>Add URL</g1> and paste the gallery's address, for example <x2/>.",
+   "text": "<g1>URL を追加</g1> をクリックし、ギャラリーのアドレスを貼り付けます。例: <x2/>。"
+  },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "5分で切り替え"
@@ -3310,6 +3358,10 @@
    "source": "What they do",
    "text": "機能"
   },
+  "5cf4f742d0a41f0e": {
+   "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
+   "text": "ギャラリー名にちなんだフォルダーにギャラリーをダウンロードします。<g1>コマンドラインと自動化</g1> を参照してください。"
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>ヘルプ → 問題の報告</g1>を選択してください。これにより、MDMのバージョン、システムとそのバージョン、MDMのインストール方法、インターフェース言語がすでに記入されたGitHubのバグレポートフォームが開きます。何が起こったのか、何を期待したのか、そしてそれが起こる手順を説明してください。ダウンロードの場合、共有できる場合はアドレスと、<g2>状態</g2>の下に表示される理由を含めてください。"
@@ -3369,6 +3421,10 @@
   "5e921749406a7933": {
    "source": "Reporting a problem",
    "text": "問題の報告"
+  },
+  "5ea1452a0cb5fbf8": {
+   "source": "Stop, delete",
+   "text": "停止、削除"
   },
   "5ea184bc04ad2f73": {
    "source": "See <g1>If a video won't download</g1>.",
@@ -3522,9 +3578,17 @@
    "source": "Found a bug? Help → Report a problem in the app opens an issue with your version, system and language filled in. Read it, then post it.",
    "text": "バグを見つけましたか？アプリのヘルプ → 問題の報告を開くと、バージョン、システム、言語が入力された状態で問題が作成されます。内容を確認してから投稿してください。"
   },
+  "61c0ff783f077afd": {
+   "source": "Get the new pictures later",
+   "text": "新しい画像を後で取得する"
+  },
   "61e77c7c55f48e1e": {
    "source": "4. Decide what happens at the end (optional)",
    "text": "4. 終了時の動作を決める（オプション）"
+  },
+  "6216638d7aa4db3f": {
+   "source": "Check <g1>Save to</g1> (the General category's folder by default). The pictures go into a folder of their own there, named after the gallery.",
+   "text": "<g1>保存先</g1> (デフォルトでは一般カテゴリのフォルダー) を確認します。画像は、ギャラリー名にちなんだ独自のフォルダーに保存されます。"
   },
   "62296921bc8016ff": {
    "source": "<g1>Always turn on Speed Limiter on Mister Download Manager startup</g1> turns it on each time MDM starts.",
@@ -3646,6 +3710,10 @@
    "source": "<g1>Download limits</g1> — download no more than a set amount every few hours. The same setting is in the Scheduler; see <g2>Queues and the Scheduler</g2>.",
    "text": "<g1>ダウンロード制限</g1> — 数時間ごとに設定された量を超えてダウンロードしないようにします。同じ設定はスケジューラにもあります。<g2>キューとスケジューラ</g2>を参照してください。"
   },
+  "647d714bfaad02a5": {
+   "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
+   "text": "<g1>ネットワーク アダプター:</g1> yt-dlp と同様に、gallery-dl は 1 つのネットワーク アダプターに固定することはできません。1 つが選択されている間 (<g2>オプション → プロキシ / SOCKS → ネットワーク アダプター</g2>)、ギャラリーは開始されません。"
+  },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>GitHubのプロジェクト</g1><g2>コード、問題、すべてのリリース</g2>"
@@ -3734,6 +3802,10 @@
    "source": "The browser's native messaging host: takes captured downloads from the extension and hands them to the app",
    "text": "ブラウザのネイティブメッセージングホスト: 拡張機能からキャプチャされたダウンロードを受け取り、アプリに渡す"
   },
+  "687eb3437405d3f6": {
+   "source": "A picture's own address (one ending in <x1/> or <x2/>) downloads as a file, as before.",
+   "text": "画像の独自のアドレス (<x1/> または <x2/> で終わるもの) は、以前と同様にファイルとしてダウンロードされます。"
+  },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
    "text": "<g1><g2>コマンドラインと自動化</g2></g1>: IDMのスイッチ（<x3/>）、<x4/>（ファイル、ビデオ、トレント）、およびダウンロードをリスト表示、一時停止、開始、削除、消去するローカルのトークン保護された自動化API。"
@@ -3741,6 +3813,10 @@
   "688b2703f9059b6f": {
    "source": "Is Mister Download Manager really free?",
    "text": "Mister Download Manager は本当に無料ですか？"
+  },
+  "689d48a0fd15b011": {
+   "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
+   "text": "完了したギャラリーを再度開始 (<g1>再開</g1>) すると、まだフォルダーにない画像のみが取得されます。gallery-dl は、すでに存在する画像をスキップします。"
   },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
@@ -4101,6 +4177,10 @@
   "71fe7ca9a5b99066": {
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>新規</g1> — 独自のカテゴリを作成します。<g2>編集...</g2>で選択したカテゴリを変更します。そのフォルダー、および独自のカテゴリの場合はその名前とファイルタイプを変更します。"
+  },
+  "720b69230bc62f14": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
+   "text": "ギャラリーの画像（Wikimedia Commonsのカテゴリ、Flickrのアルバムなど）を<x1/>内のその名前のフォルダーにダウンロードします。<x2/>は最大でその数だけ、サイトがリストする最初のものを取得します。再度開始すると、新しいものだけをフェッチします。"
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4770,6 +4850,10 @@
    "source": "Was MDM installed with the setup, with <g1>Set up browser integration</g1> ticked? A portable copy can't take browser downloads. Run the setup again to add it.",
    "text": "MDMはセットアップでインストールされ、<g1>ブラウザー統合を設定する</g1>にチェックが入っていましたか？ポータブル版ではブラウザーのダウンロードを取り込むことはできません。再度セットアップを実行して追加してください。"
   },
+  "8362706ee6422965": {
+   "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
+   "text": "MDM は、数百ものサイトを読み込む無料プログラム <g1>gallery-dl</g1> を使用して、ギャラリー (Wikimedia Commons のカテゴリ、Flickr のアルバム、DeviantArt のギャラリー、Imgur のアルバムなど) の画像をダウンロードします。動画用の yt-dlp と同様に、これはオプションのヘルパーです。MDM は、初めて必要になったときにインストールするか、ユーザー自身のコピーを使用します。"
+  },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
    "text": "ダウンロードをキューに入れる"
@@ -5106,6 +5190,10 @@
    "source": "3. Using it responsibly",
    "text": "3. 責任ある使用"
   },
+  "8d6911b8ed8eb4d4": {
+   "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
+   "text": "<g1>要求方法:</g1> gallery-dl は MDM としてサイトに要求し、最大で 1 秒に 1 枚の画像を要求します。Wikimedia のサーバーは、より速く、または名前なしで要求するツールを拒否します。ユーザーの設定ファイルは使用しません。"
+  },
   "8d82bd27db3d3e27": {
    "source": "In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with <x1/>.",
    "text": "Waylandセッション（GNOME、KDE Plasmaなど）では、MDMのウィンドウはXWaylandがある場合にXWayland経由で実行されます。Waylandはプログラムが独自のウィンドウを配置することを許可しないため、MDMのメニューやドロップダウンリストは画面の中央に開いてしまいます。それでもWayland自体で実行するには、<x1/>で起動してください。"
@@ -5157,6 +5245,10 @@
   "8eb2929f09075835": {
    "source": "Download your first file →",
    "text": "最初のファイルをダウンロード →"
+  },
+  "8ebacedce5c28ec5": {
+   "source": "Add URL sends these to the gallery window: - Wikimedia Commons categories; - Flickr photographers and albums; - DeviantArt and ArtStation galleries; - Imgur albums; - Pixiv artists and works; - Pinterest boards and pins; - Danbooru and Gelbooru searches; - Tumblr blogs; - Bluesky profiles.",
+   "text": "URL を追加 は、以下のものをギャラリーウィンドウに送信します: - Wikimedia Commons のカテゴリ; - Flickr の写真家とアルバム; - DeviantArt と ArtStation のギャラリー; - Imgur のアルバム; - Pixiv のアーティストと作品; - Pinterest のボードとピン; - Danbooru と Gelbooru の検索; - Tumblr のブログ; - Bluesky のプロフィール。"
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
@@ -5490,6 +5582,10 @@
    "source": "What other people can see",
    "text": "他の人が見ることができるもの"
   },
+  "9806786dcda7c9ff": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
+   "text": "リストが表示されるまでお待ちください。各解像度がサイズとともに表示され、最適なものが最初に表示されます。次に、サイト独自の形式（サイトが提供するM4AまたはWebM）の<g1>音声のみ</g1>、そして最適な可変ビットレート（VBR）および320、256、192、128 kbpsの<g2>音声のみ MP3</g2>が表示されます。"
+  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "この名前で保存します。"
@@ -5789,6 +5885,10 @@
   "a0d1f871bdc969b4": {
    "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
    "text": "拡張機能を通じてChrome、Edge、Brave、Opera、Vivaldiで動作します。Firefoxはテスト中です。拡張機能なしでは、リンクをコピーするとMDMがダウンロードウィンドウを開きます。<g1>詳細</g1>"
+  },
+  "a0f44b2041902a09": {
+   "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
+   "text": "gallery-dl は、オンラインに接続せずに、コンピューター上でアドレスをチェックします。「<g1>gallery-dl はこのギャラリーのファイルをダウンロードできます</g1>」と表示されたら、準備完了です。"
   },
   "a111ff2e536e8112": {
    "source": "Linux <g1>x86-64</g1>",
@@ -6278,6 +6378,10 @@
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM は、ウェブブラウザと同じように、指定されたものをダウンロードします。ただし、より高速で、より詳細な制御が可能です。ソフトウェアやアップデート、ドキュメント、クラウドストレージからの自分のファイル、保存が許可されている動画や音楽、作成者が共有する Linux イメージやその他のトレントなど、ダウンロードする権利があるものすべてを日常的にダウンロードするために作られています。"
   },
+  "adfb560dd47a90fc": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "動画をダウンロードします。<x1/>は<x2/>から品質セレクターを受け取ります（<x3/> = 最良の単一ファイル、<x4/>、<x5/>、<x6/>、または<x7/> = そのビットレートのMP3形式の音声、<x8/> = 最良の可変ビットレートの音声。MP3にはffmpegが必要です）。<x9/>は字幕をその横に保存します。<x10/>からの言語コード（<x11/>）、またはアップローダーが提供したすべての字幕には<x12/>を使用します。<x13/>は代わりにサイトの自動キャプションを使用します。<x14/>はそれらを動画に埋め込みます（ffmpeg、MP4またはMKVが必要です）。"
+  },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
    "text": "再びオフにします。APIがない場合でも、アシスタントはMDMの<g1>コマンドライン</g1>と同じようにダウンロードを追加できます。"
@@ -6493,6 +6597,10 @@
   "b2e253fd75c1763a": {
    "source": "<g1>Move a column:</g1> drag its title sideways.",
    "text": "<g1>列の移動:</g1> タイトルを横にドラッグします。"
+  },
+  "b2fc02b26cb8300d": {
+   "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
+   "text": "画像ギャラリー用のgallery-dlをインストールまたは更新します。そのチェックサムリストは作者の署名キーと照合され、プログラムはそのリストと照合されます（WindowsおよびLinux x86-64の場合。それ以外の場合はご自身でインストールしてください）。"
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -7042,6 +7150,10 @@
    "source": "A connection that is far slower than the others is dropped and opened again.",
    "text": "他の接続よりもはるかに遅い接続は切断され、再度開かれます。"
   },
+  "c3da286564016a74": {
+   "source": "Which addresses open the gallery window",
+   "text": "ギャラリーウィンドウを開くアドレス"
+  },
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "<g1>Torrent を追加</g1>が開きます。「<g2>トレント</g2>」にマグネットリンクを貼り付けるか、「<g3>...</g3>」をクリックして <x4/> ファイルを選択し、「<g5>検索</g5>」をクリックします。"
@@ -7350,9 +7462,17 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>ダウンロード ファイル情報</g1>で、<g2>後でダウンロード</g2>をクリックします。"
   },
+  "cce4b744dcc264df": {
+   "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
+   "text": "オプションで、<g1>最大ファイル数</g1> に数値を入力すると、サイトにリストされている最初の数枚だけをダウンロードできます。ほとんどのサイトでは、これらが最新のものです。すべてをダウンロードする場合は空のままにします。"
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "字幕が必要ですか？<g1>字幕</g1>で言語を選択してください。字幕は動画の横に保存されます。ただし、<g2>ビデオに埋め込む</g2>にチェックを入れると、動画内に保存されます（<g3>字幕</g3>を参照）。"
+  },
+  "cd259ac663c10ccb": {
+   "source": "Download a gallery",
+   "text": "ギャラリーをダウンロード"
   },
   "cd27c42dda0046ef": {
    "source": "You alone are responsible for the files you download and for how you use the software.",
@@ -7757,6 +7877,10 @@
   "d878d923ca93995a": {
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
    "text": "<x1/>を開きます（コードは<g2><x3/></g2>にあります）。"
+  },
+  "d880c385e71b0520": {
+   "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
+   "text": "ギャラリーはリストに 1 行表示されます。画像の到着とともにサイズが大きくなり、ログには保存された画像の数が表示されます。各画像は、他のダウンロードと同様に、インターネットからダウンロードされたものとしてマークされます。"
   },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",
@@ -8342,6 +8466,10 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "サイトのダウンロードを永続的にブラウザーに残すには、ツールバーボタンの<g1>決してダウンロードを取得しない</g1>を使用するか、サイトを<g2>以下のサイトからの自動ダウンロードを開始しない</g2>に追加します。ファイルの種類をブラウザーに残すには、ファイルの種類リストから削除します。"
   },
+  "ea5082456c0a9e2c": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
+   "text": "音声のみの選択（<g1>音声のみ</g1>、MP3）には字幕はありません。"
+  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windowsの「設定」→「アプリ」を開き、「Mister Download Manager」を見つけて「アンインストール」を選択してください。アンインストーラーは、ダウンロードリストと設定も削除するかどうかを尋ねます。ダウンロードしたファイルは一切変更されません。ポータブル版の場合は、そのフォルダーを削除してください。"
@@ -8442,6 +8570,10 @@
    "source": "x86_64.dmg",
    "text": "x86_64.dmg"
   },
+  "edc9abcb08e77b81": {
+   "source": "<g1><g2>Image galleries</g2></g1> — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.",
+   "text": "<g1><g2>画像ギャラリー</g2></g1> — gallery-dl を使ってギャラリーの画像（Wikimedia Commons、Flickr、DeviantArt など多数）をダウンロードします。"
+  },
   "edf69d8463a4ea4c": {
    "source": "<g1></g1>Free",
    "text": "<g1></g1>無料"
@@ -8533,6 +8665,10 @@
   "f0122065c2796282": {
    "source": "Yes. MDM comes with an MCP server, misterdownloadmanager-mcp: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See AI assistants.",
    "text": "はい。MDMにはMCPサーバー、misterdownloadmanager-mcpが付属しています。Claude Desktop、Claude Code、Cursor、VS Code、またはMCPをサポートする他のアシスタントに追加すると、自分の言葉でダウンロードのリスト表示、追加、一時停止、再開、削除を依頼できます。これはお使いのコンピューター上のMDMでのみ機能し、自動化APIをオンにする必要があります。AIアシスタントをご覧ください。"
+  },
+  "f01bb992070dab45": {
+   "source": "Image galleries — Mister Download Manager help",
+   "text": "画像ギャラリー — Mister Download Manager ヘルプ"
   },
   "f0367ba56d9b43fa": {
    "source": "Mister Download Manager — free download manager and IDM alternative",
@@ -9037,6 +9173,10 @@
   "ff20db8e8bec6162": {
    "source": "On the first start MDM asks for the language; see <g1>Languages</g1>.",
    "text": "初回起動時に MDM は言語を尋ねます。<g1>言語</g1> を参照してください。"
+  },
+  "ff26f3ab22a86c09": {
+   "source": "installs or updates gallery-dl, verified in the same way.",
+   "text": "gallery-dl をインストールまたは更新します。検証方法は同じです。"
   },
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",

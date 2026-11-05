@@ -337,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	가져오기
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	취소
@@ -404,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	업데이트 확인 중...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dl로 주소 확인 중...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -649,6 +654,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}"을(를) 처음부터 다시 다운로드하시겠습니까? 새 다운로드가 완료되면 완료된 파일이 바뀝니다.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	갤러리 다운로드
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	다운로드 완료
@@ -673,7 +682,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb}MB 이하 다운로드\n{hours}시간마다
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	지금 다운로드
 #. window title in the Options window
@@ -718,6 +727,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg(약 80MB) 다운로드 및 확인 중...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl 다운로드 및 확인 중...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -787,6 +800,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	메일
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	비어 있으면 모두 다운로드합니다. 대부분의 사이트에서는 최신 파일이 먼저 표시됩니다.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -896,6 +913,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	이미 있는 파일
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	최대 파일 수
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -970,6 +991,10 @@
 #, machine
 	Friday	금요일
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	갤러리에서 (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	마그넷 링크에서
 #. message or event log entry in the main window
@@ -998,6 +1023,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	FTP
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	갤러리는 gallery-dl을 사용합니다(약 23MB, 서명 확인).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	갤러리는 gallery-dl을 사용합니다. 시스템 패키지(Homebrew, pip)로 설치한 다음 도우미에서 선택하세요.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl은 이 갤러리의 파일을 다운로드할 수 있습니다.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl이 이 주소를 읽을 수 없습니다. 대신 파일로 추가하세요(URL 추가).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl이 설치되지 않았습니다(갤러리 주소로 URL 추가 시 설치됨).
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1035,7 +1078,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	도움말
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	도우미
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1119,6 +1166,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg 설치
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl 설치
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1185,7 +1236,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	마지막 시도  {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1676,7 +1727,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	완료 시 옵션
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	페이지 주소
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1897,7 +1948,7 @@
 #. text in a dialog box
 #, machine
 	Save As	다른 이름으로 저장
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	저장 위치
@@ -2176,6 +2227,11 @@
 #. event log entry, past tense: the download started (just now)
 #, machine
 	Started	시작됨
+#. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version}으로 시작됨
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -2824,10 +2880,6 @@
 #. category name: video files
 #, machine
 	Video	비디오
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	비디오 도우미
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	비디오 조회는 yt-dlp를 사용합니다(약 23MB, 서명 확인).
@@ -3095,7 +3147,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what}은(는) 아직 선택한 네트워크 어댑터({adapter})를 통해 전송할 수 없습니다.
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine

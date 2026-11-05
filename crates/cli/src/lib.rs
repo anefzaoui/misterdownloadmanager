@@ -72,6 +72,20 @@ enum Cmd {
     /// Install (or update) ffmpeg, for the video qualities that merge video and audio: BtbN's
     /// LGPL build, checked against its release's SHA-256 list (Windows; elsewhere the system's).
     InstallFfmpeg,
+    /// Install (or update) gallery-dl for image galleries: its checksum list is verified against
+    /// its author's signing key, the program against that list (Windows and Linux x86-64).
+    InstallGalleryDl,
+    /// Download an image gallery's files with gallery-dl (needs `install-gallery-dl`).
+    GalleryGet {
+        /// The gallery's address (a Wikimedia Commons category, a Flickr album, ...).
+        url: String,
+        /// Folder to save into: a folder named after the gallery is made there.
+        #[arg(short, long, default_value = ".")]
+        output: PathBuf,
+        /// At most this many files (the first the site lists).
+        #[arg(long)]
+        limit: Option<u64>,
+    },
     /// What video a page holds, and the choices to download (needs `install-ytdlp`).
     VideoInfo {
         /// The page's address (YouTube, Vimeo, ...).
@@ -381,6 +395,69 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                 );
             }
             Ok(())
+        }
+        Cmd::InstallGalleryDl => {
+            let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+            let i = mdm_tools::gallery::install_latest(&dir, &mdm_tools::net(Proxy::System), None)
+                .await?;
+            if json {
+                emit(json!({ "tool": "gallery-dl", "version": i.version, "path": i.exe }));
+            } else {
+                println!(
+                    "gallery-dl {} verified and installed: {}",
+                    i.version,
+                    i.exe.display()
+                );
+            }
+            Ok(())
+        }
+        Cmd::GalleryGet { url, output, limit } => {
+            use mdm_tools::video::State;
+            let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+            let tool = mdm_tools::gallery::installed(&dir).ok_or_else(|| {
+                anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl")
+            })?;
+            if !mdm_tools::gallery::handles(&tool.exe, &url)? {
+                anyhow::bail!("gallery-dl can't read this address");
+            }
+            let name = mdm_tools::gallery::name_of(&url::Url::parse(&url)?);
+            let folder = output.join(name);
+            let ask = mdm_tools::gallery::Ask { limit, rate: None };
+            let job = mdm_tools::gallery::GalleryJob::start(
+                &tool.exe,
+                &url,
+                &folder,
+                &ask,
+                &Default::default(),
+            )?;
+            let p = loop {
+                let p = job.progress();
+                if p.state != State::Running {
+                    break p;
+                }
+                if !json {
+                    eprint!("\r{} bytes so far", p.downloaded);
+                }
+                tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+            };
+            if !json {
+                eprintln!();
+            }
+            for (_, e) in &p.events {
+                eprintln!("{e}");
+            }
+            match p.state {
+                State::Done(f) => {
+                    if json {
+                        emit(json!({ "folder": f, "bytes": p.downloaded }));
+                    } else {
+                        println!("saved into {}", f.display());
+                    }
+                    Ok(())
+                }
+                State::Failed(e) => anyhow::bail!(e),
+                _ => anyhow::bail!("stopped"),
+            }
         }
         Cmd::VideoInfo { url } => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;

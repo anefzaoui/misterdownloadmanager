@@ -337,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	bằng cách nhập
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Hủy
@@ -404,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Đang kiểm tra bản cập nhật...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Đang kiểm tra địa chỉ bằng gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -649,6 +654,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Tải xuống lại "{name}" từ đầu? Một tệp đã hoàn tất sẽ bị thay thế khi bản tải xuống mới hoàn tất.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Tải xuống thư viện ảnh
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Tải xuống hoàn tất
@@ -673,7 +682,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Không tải xuống quá {mb} MB\nmỗi {hours} giờ
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Tải xuống ngay
 #. window title in the Options window
@@ -718,6 +727,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Đang tải xuống và xác minh ffmpeg (khoảng 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Đang tải xuống và xác minh gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -787,6 +800,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Email
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Để trống: tất cả. Trên hầu hết các trang web, những mục mới nhất sẽ xuất hiện trước.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -896,6 +913,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Các tệp đã có
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Tối đa số tệp
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -970,6 +991,10 @@
 #, machine
 	Friday	Thứ Sáu
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	từ thư viện ảnh (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	từ liên kết magnet
 #. message or event log entry in the main window
@@ -998,6 +1023,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Thư viện ảnh sử dụng gallery-dl (khoảng 23 MB, đã kiểm tra chữ ký).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Thư viện ảnh sử dụng gallery-dl: cài đặt bằng các gói của hệ thống (Homebrew, pip), sau đó chọn trong Trợ giúp.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl có thể tải xuống các tệp của thư viện ảnh này.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl không thể đọc địa chỉ này. Thay vào đó, hãy thêm dưới dạng tệp (Thêm URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl chưa được cài đặt (Thêm URL với địa chỉ thư viện ảnh sẽ cài đặt)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1035,7 +1078,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Trợ giúp
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Trợ giúp
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1119,6 +1166,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Cài đặt ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Cài đặt gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1185,7 +1236,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Lần thử cuối cùng {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1676,7 +1727,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Tùy chọn khi hoàn tất
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Địa chỉ trang
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1897,7 +1948,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Lưu Thành
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Lưu vào
@@ -2176,6 +2227,11 @@
 #. event log entry, past tense: the download started (just now)
 #, machine
 	Started	Đã bắt đầu
+#. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Đã bắt đầu bằng gallery-dl {version}
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -2824,10 +2880,6 @@
 #. category name: video files
 #, machine
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Trợ giúp video
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Tra cứu video sử dụng yt-dlp (khoảng 23 MB, đã kiểm tra chữ ký).
@@ -3095,7 +3147,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} chưa thể đi qua bộ điều hợp mạng đã chọn ({adapter})
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine

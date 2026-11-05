@@ -337,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	আমদানি দ্বারা
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	বাতিল করুন
@@ -404,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	আপডেটের জন্য পরীক্ষা করা হচ্ছে...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dl দিয়ে ঠিকানা পরীক্ষা করা হচ্ছে...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -649,6 +654,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	শুরু থেকে আবার "{name}" ডাউনলোড করবেন? নতুন ডাউনলোড সম্পূর্ণ হলে একটি সম্পূর্ণ ফাইল প্রতিস্থাপিত হবে।
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	একটি গ্যালারি ডাউনলোড করুন
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ডাউনলোড সম্পূর্ণ
@@ -673,7 +682,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} মেগাবাইটের বেশি ডাউনলোড করবেন না\nপ্রতি {hours} ঘন্টায়
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	এখনই ডাউনলোড করুন
 #. window title in the Options window
@@ -718,6 +727,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg যাচাই করা হচ্ছে (প্রায় 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl ডাউনলোড ও যাচাই করা হচ্ছে...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -787,6 +800,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ইমেল
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	খালি: সবগুলি। বেশিরভাগ সাইটে নতুনগুলি প্রথমে আসে।
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -896,6 +913,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ফাইলগুলি ইতিমধ্যেই সেখানে আছে
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	সর্বোচ্চ ফাইল সংখ্যা
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -970,6 +991,10 @@
 #, machine
 	Friday	শুক্রবার
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	একটি গ্যালারি থেকে (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	একটি ম্যাগনেট লিঙ্ক থেকে
 #. message or event log entry in the main window
@@ -998,6 +1023,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	গ্যালারিগুলি gallery-dl ব্যবহার করে (প্রায় 23 MB, এর স্বাক্ষর দিয়ে যাচাই করা হয়েছে)।
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	গ্যালারিগুলি gallery-dl ব্যবহার করে: আপনার সিস্টেমের প্যাকেজ (Homebrew, pip) দিয়ে এটি ইনস্টল করুন, তারপর হেল্পারগুলিতে এটি নির্বাচন করুন।
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl এই গ্যালারির ফাইলগুলি ডাউনলোড করতে পারে।
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl এই ঠিকানাটি পড়তে পারে না। এর পরিবর্তে এটিকে একটি ফাইল হিসাবে যোগ করুন (URL যোগ করুন)।
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ইনস্টল করা নেই (একটি গ্যালারির ঠিকানা সহ URL যোগ করুন এটি ইনস্টল করে)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1035,7 +1078,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	সাহায্য
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	হেল্পার
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1119,6 +1166,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ইনস্টল করুন
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl ইনস্টল করুন
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1185,7 +1236,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	শেষ চেষ্টা {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1676,7 +1727,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	সম্পূর্ণ হলে বিকল্প
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	পৃষ্ঠার ঠিকানা
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1897,7 +1948,7 @@
 #. text in a dialog box
 #, machine
 	Save As	হিসাবে সংরক্ষণ করুন
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	এতে সংরক্ষণ করুন
@@ -2176,6 +2227,11 @@
 #. event log entry, past tense: the download started (just now)
 #, machine
 	Started	শুরু হয়েছে
+#. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} দিয়ে শুরু হয়েছে
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -2824,10 +2880,6 @@
 #. category name: video files
 #, machine
 	Video	ভিডিও
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	ভিডিও সহায়ক
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ভিডিও লুকআপ yt-dlp ব্যবহার করে (প্রায় 23 MB, এর স্বাক্ষরের বিরুদ্ধে চেক করা হয়েছে)।
@@ -3095,7 +3147,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} এখনও একটি নির্বাচিত নেটওয়ার্ক অ্যাডাপ্টার ({adapter}) এর মাধ্যমে যেতে পারে না
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
