@@ -16,6 +16,7 @@ Everything below ships together, in one release.
 - ✅ A paused or finished download no longer leaves its progress file to be written again a moment
   later ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)), and a download
   finishing during a save no longer fails ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116))
+- ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
@@ -70,6 +71,8 @@ Everything below ships together, in one release.
   ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), and dragging the file out
   of Download complete works in every language
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
+- ✅ The built-in categories can be renamed, given other file types and deleted, and restored
+  ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93))
 - ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
   a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
   list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),

@@ -190,6 +190,9 @@ pub struct Settings {
     pub update_checked: i64,
     /// The user's categories (D-021), after IDM's and Torrents.
     pub custom_categories: Vec<crate::model::CustomCategory>,
+    /// The built-in categories the user renamed, gave other file types or deleted (#93); the
+    /// others are as shipped. Their folders stay in `category_dirs`.
+    pub builtin_categories: Vec<crate::model::BuiltinEdit>,
     /// Tasks → Show drop target: shown, and where (screen, logical points).
     pub drop_target: bool,
     pub drop_target_pos: Option<(i32, i32)>,
@@ -325,6 +328,7 @@ impl Default for Settings {
             update_check: true,
             update_checked: 0,
             custom_categories: Vec::new(),
+            builtin_categories: Vec::new(),
             drop_target: false,
             drop_target_pos: None,
             video_subs: Default::default(),
@@ -529,11 +533,19 @@ impl Settings {
             }
             return;
         }
-        let label = cat.label();
-        self.category_dirs.retain(|(c, _)| *c != *label);
+        // Under the built-in's shipped name: a rename keeps its folder.
+        let key = cat.key();
+        self.category_dirs.retain(|(c, _)| *c != *key);
         if let Some(d) = dir {
-            self.category_dirs.push((label.into_owned(), d));
+            self.category_dirs.push((key.into_owned(), d));
         }
+    }
+
+    /// Both category registries (the user's and the built-in ones' edits) from these settings,
+    /// for code that only has a `Category`.
+    pub fn publish_categories(&self) {
+        crate::model::set_custom(&self.custom_categories);
+        crate::model::set_builtin(&self.builtin_categories);
     }
 
     /// The per-download limit new downloads start with, bytes/s.

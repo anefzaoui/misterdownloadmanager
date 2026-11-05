@@ -814,7 +814,7 @@ impl FileInfo {
                     winui::TEXT(),
                 );
                 let cat_rect = r(o, 96.0, 36.0, 174.0, 21.0);
-                let shown = crate::i18n::t(&self.category.label()).to_owned();
+                let shown = self.category.shown();
                 let cat = winui::combo(ui, cat_rect, &shown, "category");
                 if cat.clicked() || winui::combo_keys(ui, &cat) {
                     self.category_open = !self.category_open;
@@ -904,7 +904,7 @@ impl FileInfo {
 
                 let caption = crate::i18n::fmt(
                     crate::i18n::t("Remember this path for \"{category}\" category"),
-                    &[("category", crate::i18n::t(&self.category.label()))],
+                    &[("category", &self.category.shown())],
                 );
                 let gap_end = o.x + 122.0 + winui::text_width(&p, &caption) + 5.0;
                 winui::group_box(
@@ -1045,10 +1045,7 @@ impl FileInfo {
                 // Escape, never cut off by this short window).
                 if self.category_open {
                     let all = Category::all();
-                    let labels: Vec<String> = all
-                        .iter()
-                        .map(|c| crate::i18n::t(&c.label()).to_owned())
-                        .collect();
+                    let labels: Vec<String> = all.iter().map(|c| c.shown()).collect();
                     if let Some(i) = winui::drop_list(
                         ui,
                         "file-info-category",
@@ -2212,6 +2209,102 @@ impl Confirm {
                     Outcome::Closed
                 } else if yes || winui::enter_pressed(ui) {
                     Outcome::Done(())
+                } else {
+                    Outcome::Open
+                }
+            },
+        )
+    }
+}
+
+/// Delete category (#93): what happens to its downloads is asked each time. Moving them to
+/// General is the default; or they leave the list (a running one can't, so it moves). Files on
+/// disk stay either way.
+pub struct DeleteCategory {
+    pub category: crate::model::Category,
+    /// Remove its downloads from the list (else: move them to General).
+    remove: bool,
+}
+
+impl DeleteCategory {
+    pub fn new(category: crate::model::Category) -> Self {
+        DeleteCategory {
+            category,
+            remove: false,
+        }
+    }
+
+    /// Opened with the second choice made (`/show category-remove:<name>`, the checks').
+    pub fn removing(mut self) -> Self {
+        self.remove = true;
+        self
+    }
+
+    /// Done(remove): Delete was pressed; `remove` is the second choice.
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<bool> {
+        let key = "delete-category";
+        let extra = grow_extra(ctx, key);
+        let text = crate::i18n::fmt(
+            crate::i18n::t("Delete the category \"{category}\"? Its files stay where they are."),
+            &[("category", &crate::i18n::isolate(&self.category.shown()))],
+        );
+        question(
+            ctx,
+            key,
+            "Delete category",
+            [420.0, 150.0 + extra],
+            false,
+            winui::LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                let lines = winui::paragraph(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 22.0,
+                    &text,
+                    winui::LIGHT_TEXT(),
+                    o.x + 409.0,
+                    13.0,
+                );
+                grow_to(ui.ctx(), key, lines, 2);
+                let o = o + vec2(0.0, extra);
+                // i18n: choice in Delete category: what happens to the category's downloads
+                let to_general = crate::i18n::mark("Move its downloads to General");
+                let off_list = crate::i18n::mark(
+                    // i18n: choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+                    "Remove its downloads from the list (running ones move to General)",
+                );
+                if winui::radio_light(ui, o + vec2(14.0, 52.0), !self.remove, to_general, true)
+                    .clicked()
+                {
+                    self.remove = false;
+                }
+                if winui::radio_light(ui, o + vec2(14.0, 75.0), self.remove, off_list, true)
+                    .clicked()
+                {
+                    self.remove = true;
+                }
+                // i18n: button: deletes the category
+                let delete = winui::button_light(
+                    ui,
+                    r(o, 254.0, 118.0, 73.0, 21.0),
+                    "Delete",
+                    ButtonKind::Default,
+                    false,
+                )
+                .clicked();
+                let cancel = winui::button_light(
+                    ui,
+                    r(o, 335.0, 118.0, 73.0, 21.0),
+                    "Cancel",
+                    ButtonKind::Normal,
+                    false,
+                )
+                .clicked();
+                if cancel || winui::escape_pressed(ui) {
+                    Outcome::Closed
+                } else if delete || winui::enter_pressed(ui) {
+                    Outcome::Done(self.remove)
                 } else {
                     Outcome::Open
                 }

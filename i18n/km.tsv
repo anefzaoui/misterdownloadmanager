@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ទាំងពីរជាប្រភពបើកចំហ។ MDM ទទួលបានពួកវាពីការចេញផ្សាយផ្លូវការរបស់ពួកគេជាមួយនឹងកម្មវិធីទាញយកផ្ទាល់ខ្លួនរបស់វា ហើយពិនិត្យមើលហត្ថលេខារបស់ឯកសារនីមួយៗ មុនពេលវាដំណើរការ។ ប្រហែល 100 MB តែម្ដង។
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	ស្ដារ {names} ដូចដែលបានផ្ដល់ជូន៖ ឈ្មោះ ប្រភេទឯកសារ និងថតឯកសាររបស់ពួកវា? ប្រភេទផ្ទាល់ខ្លួនរបស់អ្នក ឯកសារទូទៅ និង Torrents នៅដដែល។ ការទាញយកដែលបានផ្លាស់ទីទៅឯកសារទូទៅរួចហើយ នៅតែនៅទីនោះ។
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ចំនួនតំណភ្ជាប់អតិបរមា​លំនាំដើម
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	លុប
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	លុបប្រភេទ
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	លុបជួរ
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	លុបប្រភេទ "{category}" មែនទេ? ការទាញយករបស់វានឹងក្លាយជាទូទៅ; ឯកសាររបស់វានៅដដែល។
+	Delete the category "{category}"? Its files stay where they are.	លុបប្រភេទ “{category}” មែនទេ? ឯកសាររបស់វានៅដដែល។
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	ផ្លាស់ទីចុះក្រោម
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	ផ្លាស់ទីការទាញយករបស់វាទៅទូទៅ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	ផ្លាស់ទី ឬប្ដូរឈ្មោះការទាញយកដែលបានជ្រើសរើស
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	លុបចេញពីជួរ
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	លុបការទាញយករបស់វាចេញពីបញ្ជី (ការទាញយកដែលកំពុងដំណើរការនឹងផ្លាស់ទីទៅទូទៅ)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	ចាប់ផ្ដើម MDM ឡើងវិញ
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	ស្ដារប្រភេទដែលបានបង្កើតឡើង
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

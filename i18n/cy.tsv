@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Mae'r ddau yn ffynhonnell agored. Mae MDM yn eu cael o'u datganiadau swyddogol gyda'i lawrlwythwr ei hun ac yn gwirio llofnod pob ffeil cyn ei redeg. Tua 100 MB, unwaith.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Ailosod {names} fel y cawsant eu cludo: eu henwau, eu mathau ffeil a’u ffolderi? Bydd eich categorïau eich hun, Cyffredinol a Thorentau yn aros fel y maent. Bydd lawrlwythiadau sydd eisoes wedi’u symud i Gyffredinol yn aros yno.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Nifer cysylltiadau uchaf rhagosodedig
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Dileu
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Dileu categori
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Dileu ciw
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Dileu'r categori "{category}"? Bydd ei lawrlwythiadau'n dod yn Gyffredinol; bydd eu ffeiliau'n aros lle maent.
+	Delete the category "{category}"? Its files stay where they are.	Dileu’r categori “{category}”? Bydd ei ffeiliau’n aros lle maent.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Symud i lawr
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Symud ei lawrlwythiadau i Gyffredinol
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Symud neu ailenwi'r lawrlwythiad a ddewiswyd
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Tynnu o'r ciw
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Tynnu ei lawrlwythiadau o'r rhestr (mae rhai sy'n rhedeg yn symud i Gyffredinol)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Ailgychwyn MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Adfer y categorïau adeiledig
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

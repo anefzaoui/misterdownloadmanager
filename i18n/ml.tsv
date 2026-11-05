@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	രണ്ടും ഓപ്പൺ സോഴ്‌സാണ്. MDM അവയെ അതിന്റെ സ്വന്തം ഡൗൺലോഡർ ഉപയോഗിച്ച് ഔദ്യോഗിക റിലീസുകളിൽ നിന്ന് നേടുകയും പ്രവർത്തിപ്പിക്കുന്നതിന് മുമ്പ് ഓരോ ഫയലിന്റെയും ഒപ്പ് പരിശോധിക്കുകയും ചെയ്യുന്നു. ഏകദേശം 100 MB, ഒരു തവണ.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} അവ ഷിപ്പ് ചെയ്തതുപോലെ തിരികെ കൊണ്ടുവരണോ: അവയുടെ പേരുകൾ, ഫയൽ തരങ്ങൾ, ഫോൾഡറുകൾ എന്നിവ? നിങ്ങളുടെ സ്വന്തം വിഭാഗങ്ങളായ ജനറൽ, ടോറന്റുകൾ എന്നിവ നിലവിലുള്ളതുപോലെ തുടരും. ജനറലിലേക്ക് മാറ്റിയ ഡൗൺലോഡുകൾ അവിടെത്തന്നെ തുടരും.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	സ്ഥിരസ്ഥിതി പരമാവധി കണക്ഷൻ നമ്പർ
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	ഇല്ലാതാക്കുക
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	വിഭാഗം ഇല്ലാതാക്കുക
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	ക്യൂ ഇല്ലാതാക്കുക
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" എന്ന വിഭാഗം ഇല്ലാതാക്കണോ? അതിലെ ഡൗൺലോഡുകൾ പൊതുവായവയായി മാറും; അവയുടെ ഫയലുകൾ അവയുടെ സ്ഥാനത്ത് തന്നെ തുടരും.
+	Delete the category "{category}"? Its files stay where they are.	"{category}" എന്ന വിഭാഗം ഇല്ലാതാക്കണോ? അതിലെ ഫയലുകൾ നിലവിലുള്ള സ്ഥലത്ത് തന്നെ തുടരും.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	താഴേക്ക് നീക്കുക
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	അതിലെ ഡൗൺലോഡുകൾ പൊതുവായതിലേക്ക് നീക്കുക
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	തിരഞ്ഞെടുത്ത ഡൗൺലോഡ് നീക്കുക അല്ലെങ്കിൽ പേരുമാറ്റുക
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	ക്യൂവിൽ നിന്ന് നീക്കം ചെയ്യുക
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	അതിലെ ഡൗൺലോഡുകൾ ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യുക (പ്രവർത്തിക്കുന്നവ പൊതുവായതിലേക്ക് നീങ്ങും)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM പുനരാരംഭിക്കുക
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	ബിൽറ്റ്-ഇൻ വിഭാഗങ്ങൾ പുനഃസ്ഥാപിക്കുക
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

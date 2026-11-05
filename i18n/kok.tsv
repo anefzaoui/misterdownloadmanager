@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	दोनूय मुक्त स्रोत आसात. MDM तांकां तांच्या अधिकृत प्रकाशनांतल्यान स्वताच्या डाउनलोडरान घेता आनी चलोवचे पयलीं दर एका फायलीची सही तपासता. सुमार 100 MB, एक फावट.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	जशे धाडले तशे {names} परत हाडात: तांची नांवां, फायल प्रकार आनी फोल्डर? तुमच्यो स्वताच्या वर्गवारी, सामान्य आनी टॉरेंट जशे आसात तशेच उरतले. सामान्यात पयलींच हालयल्ले डाउनलोड थंयच उरतले.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	पूर्वनिर्धारीत चडांत चड जोडणी संख्या
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	काडून उडोव
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	वर्ग काडून उडोवचो
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	रांग काडून उडोवची
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" वर्ग काडून उडोवचो? ताचे डाउनलोड सामान्य जातात; ताच्यो फायली थंयच रावतात.
+	Delete the category "{category}"? Its files stay where they are.	"{category}" वर्गवारी काडून उडोवची? तिच्यो फायली जंय आसात थंयच उरतले.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	सकयल व्हर
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	ताचे डाउनलोड सादारणेंत व्हरचे
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	वेंचून काडिल्लें डाउनलोड व्हर वा ताचें नांव बदल
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	रांगेंतल्यान काडून उडोव
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	ताचे डाउनलोड वळेरींतल्यान काडून उडोवचे (चलपी डाउनलोड सादारणेंत वतात)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM परतून सुरू कर
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	बिल्ट-इन वर्गवारी परतून हाडात
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

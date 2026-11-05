@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Parehong open source. Kinukuha ng MDM ang mga ito mula sa kanilang opisyal na release gamit ang sarili nitong downloader at sinusuri ang signature ng bawat file bago ito patakbuhin. Humigit-kumulang 100 MB, isang beses.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Ibalik ang {names} sa orihinal na pagkakagawa: ang kanilang mga pangalan, uri ng file at folder? Mananatili ang sarili mong mga kategorya, Pangkalahatan at Torrents. Mananatili ang mga download na nailipat na sa Pangkalahatan.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Default na max. bilang ng koneksyon
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Tanggalin
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Tanggalin ang kategorya
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Tanggalin ang queue
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Tanggalin ang kategoryang "{category}"? Ang mga download nito ay magiging Pangkalahatan; mananatili ang mga file nito kung nasaan ang mga ito.
+	Delete the category "{category}"? Its files stay where they are.	Burahin ang kategoryang "{category}"? Mananatili ang mga file nito kung nasaan ang mga ito.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Ilipat pababa
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Ilipat ang mga download nito sa Pangkalahatan
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Ilipat o palitan ang pangalan ng napiling download
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Alisin sa queue
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Alisin ang mga download nito mula sa listahan (ang mga tumatakbo ay ililipat sa Pangkalahatan)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	I-restart ang MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Ibalik ang mga built-in na kategorya
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

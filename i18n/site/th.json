@@ -628,7 +628,7 @@
   },
   "10e37230420403da": {
    "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
-   "text": "บน macOS VPN ที่เชื่อมต่อใหม่ อาจได้รับอินเทอร์เฟซใหม่ (<x1/> แทนที่จะเป็น <x2/>): ให้เลือกอีกครั้ง"
+   "text": "บน macOS VPN ที่เชื่อมต่อใหม่ อาจได้รับอินเทอร์เฟซใหม่ (<x1/> แทน <x2/>): ให้เลือกอีกครั้ง"
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -984,7 +984,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "บน Windows เอ็นจิ้น BitTorrent ยังไม่สามารถผูกกับอะแดปเตอร์ได้ ดังนั้น BitTorrent จะไม่เริ่มทำงานในขณะที่เลือกอะแดปเตอร์อยู่ (\"BitTorrent ยังไม่สามารถผ่านอะแดปเตอร์เครือข่ายที่เลือกบน Windows ได้\") แทนที่จะข้ามไป ชื่อตัวติดตามยังคงถูกค้นหาโดย DNS ของระบบ"
+   "text": "บน Windows เอ็นจิ้นทอร์เรนต์ยังไม่สามารถผูกกับอะแดปเตอร์ได้ ดังนั้น ทอร์เรนต์จะไม่เริ่มทำงานในขณะที่เลือกอะแดปเตอร์ไว้ (\"ทอร์เรนต์ยังไม่สามารถผ่านอะแดปเตอร์เครือข่ายที่เลือกบน Windows ได้\") แทนที่จะเลี่ยงผ่านมัน ชื่อตัวติดตามยังคงถูกค้นหาโดย DNS ของระบบ"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1988,7 +1988,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "การเชื่อมต่อไปยังคอมพิวเตอร์เครื่องนี้เอง (<x1/>) จะไม่ถูกผูก พร็อกซีบนคอมพิวเตอร์เครื่องนี้จะจัดการการดาวน์โหลด และการส่งไปที่ใดขึ้นอยู่กับพร็อกซีนั้น"
+   "text": "การเชื่อมต่อไปยังคอมพิวเตอร์เครื่องนี้เอง (<x1/>) จะไม่ถูกผูก พร็อกซีบนคอมพิวเตอร์เครื่องนี้จะจัดการการดาวน์โหลด และจะส่งไปที่ใดขึ้นอยู่กับพร็อกซีนั้น"
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2109,6 +2109,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "ลบรายการดาวน์โหลดที่เลือก (ถามก่อน)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "การตั้งค่าพร็อกซี / SOCKS ของ MDM ใช้สำหรับการดาวน์โหลดผ่านเว็บและ FTP ทอร์เรนต์ก็สามารถใช้ SOCKS5 ได้เช่นกัน: ตั้งค่าพร็อกซี <x1/> ใน <g2>ตัวเลือก → พร็อกซี / SOCKS</g2> และเปิด <g3>ใช้พร็อกซี</g3> ในการตั้งค่าทอร์เรนต์ พร็อกซีจะครอบคลุมเฉพาะการเชื่อมต่อกับเพียร์และเว็บแทร็กเกอร์เท่านั้น ดังนั้นเมื่อใช้พร็อกซี MDM จะปิด DHT, การค้นหาเพียร์ในเครื่อง, การเชื่อมต่อขาเข้า และ UDP แทร็กเกอร์; จะไม่เปิดซ็อกเก็ต UDP ไปยังเครือข่ายเลย หากพร็อกซีหายไปจากการตั้งค่าพร็อกซี / SOCKS ในขณะที่สวิตช์นั้นเปิดอยู่ ทอร์เรนต์จะไม่เริ่มทำงานแทนที่จะข้ามไป"
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2404,7 +2408,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "DNS ของระบบจะสอบถามชื่อด้วยวิธีของตัวเอง และ Windows อาจสอบถามผ่านอะแดปเตอร์ทุกตัว หากต้องการเก็บชื่อไว้ในอะแดปเตอร์ด้วย ให้เลือก DNS ใต้ <g1>การเชื่อมต่อ</g1> → <g2>DNS</g2>: จากนั้น MDM จะสอบถามผ่านอะแดปเตอร์นั้น"
+   "text": "DNS ของระบบจะสอบถามชื่อด้วยวิธีของตัวเอง และ Windows อาจสอบถามผ่านอะแดปเตอร์ทุกตัว หากต้องการเก็บชื่อไว้ในอะแดปเตอร์ด้วย ให้เลือก DNS ใต้ <g1>การเชื่อมต่อ</g1> → <g2>DNS</g2>: MDM จะสอบถามผ่านอะแดปเตอร์นั้น"
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -2605,10 +2609,6 @@
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>เริ่มดาวน์โหลดเมื่อ</g1> — เวลา จากนั้นเลือกอย่างใดอย่างหนึ่ง:"
-  },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>คุณสมบัติ</g1> — เปลี่ยนโฟลเดอร์ (และสำหรับหมวดหมู่ของคุณเอง เปลี่ยนชื่อและประเภทไฟล์)"
   },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
@@ -3662,6 +3662,10 @@
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>การเรียกใช้เฉพาะ Windows อยู่ใน <x2/></g1> ส่วนคู่ของ Linux และ macOS อยู่ใน <x3/>; ส่วนที่เหลือของ workspace เป็น Rust ที่ปลอดภัยและพกพาได้ (<x4/>) บน Windows, <x5/> ตรวจสอบว่ายังคงสร้างสำหรับ Linux และ macOS ได้"
   },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>คุณสมบัติ</g1> — เปลี่ยนชื่อ ประเภทไฟล์ และโฟลเดอร์ของหมวดหมู่ สำหรับหมวดหมู่ทั่วไปและทอร์เรนต์จะเปลี่ยนได้แค่โฟลเดอร์เท่านั้น หมวดหมู่ที่เปลี่ยนชื่อแล้วจะยังคงใช้โฟลเดอร์เดิม ส่วนหมวดหมู่ในตัวจะยังคงใช้ชื่อในภาษาของคุณจนกว่าคุณจะเปลี่ยนชื่อ"
+  },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "Shift+F10"
@@ -3680,7 +3684,7 @@
   },
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
-   "text": "หากต้องการกำหนดเส้นทาง<g1>ทุกอย่าง</g1>ผ่านเครือข่ายอื่น ให้ใช้ VPN สำหรับคอมพิวเตอร์ทั้งเครื่อง"
+   "text": "หากต้องการกำหนดเส้นทาง<g1>ทั้งหมด</g1>ผ่านเครือข่ายอื่น ให้ใช้ VPN สำหรับคอมพิวเตอร์ทั้งเครื่อง"
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -4045,10 +4049,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM สามารถทำงานได้โดยไม่ต้องเปิดหน้าต่างด้วยสามวิธีดังนี้:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "การตั้งค่าพร็อกซี / SOCKS ของ MDM ใช้สำหรับการดาวน์โหลดเว็บและ FTP ทอร์เรนต์สามารถใช้ SOCKS5 ได้เช่นกัน: ตั้งค่าพร็อกซี <x1/> ใน <g2>ตัวเลือก → พร็อกซี / SOCKS</g2> และเปิด <g3>ใช้พร็อกซี</g3> ในการตั้งค่าทอร์เรนต์ พร็อกซีจะครอบคลุมการเชื่อมต่อไปยังเพียร์และตัวติดตามเว็บเท่านั้น ดังนั้น MDM จะปิด DHT, การค้นหาเพียร์ในเครื่อง, การเชื่อมต่อขาเข้า และตัวติดตาม UDP หากพร็อกซีหายไปจากพร็อกซี / SOCKS ในขณะที่สวิตช์นั้นเปิดอยู่ ทอร์เรนต์จะไม่เริ่มทำงานแทนที่จะข้ามไป"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4512,7 +4512,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>ตัวเลือก → พร็อกซี / SOCKS → อะแดปเตอร์เครือข่าย</g1> จะเก็บการเชื่อมต่อของ MDM ไปยังอะแดปเตอร์เดียว ซึ่งมักจะเป็นของ VPN (<g2>ตัวเลือก</g2>) บน Linux และ macOS เอ็นจิ้น BitTorrent จะผูกทุกซ็อกเก็ตเข้ากับอะแดปเตอร์นั้น: เพียร์, ตัวติดตาม, DHT และพอร์ตการฟังของมัน จากนั้น UPnP และการค้นหาเพียร์ในเครื่องจะถูกปิด เนื่องจากพวกมันสื่อสารกับเครือข่ายท้องถิ่นแทนที่จะผ่านอะแดปเตอร์ หากอะแดปเตอร์หายไป เอ็นจิ้นจะหยุดทำงาน และจะเริ่มทำงานอีกครั้งผ่านอะแดปเตอร์เมื่อกลับมา"
+   "text": "<g1>ตัวเลือก → พร็อกซี / SOCKS → อะแดปเตอร์เครือข่าย</g1> จะเชื่อมต่อ MDM กับอะแดปเตอร์หนึ่งตัว ซึ่งมักจะเป็นของ VPN (<g2>ตัวเลือก</g2>) บน Linux และ macOS เอ็นจิ้นทอร์เรนต์จะผูกทุกซ็อกเก็ตเข้ากับอะแดปเตอร์นั้น: เพียร์, ตัวติดตาม, DHT และพอร์ตการฟังของมัน UPnP และการค้นหาเพียร์ในเครื่องจะถูกปิดใช้งาน เนื่องจากจะสื่อสารกับเครือข่ายในเครื่องแทนที่จะผ่านอะแดปเตอร์ หากอะแดปเตอร์หายไป เอ็นจิ้นจะหยุดทำงาน และจะเริ่มทำงานอีกครั้งผ่านอะแดปเตอร์เมื่อกลับมา"
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5284,7 +5284,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "ดาวน์โหลดไฟล์ด้วยการเชื่อมต่อสูงสุด 8 การเชื่อมต่อ (<x1/>, 1 ถึง 128) พร้อมแสดงความคืบหน้า <x2/> หยุดชั่วคราว; <x3/> ดำเนินการต่อ <x4/> ตรวจสอบไฟล์ที่เสร็จสมบูรณ์: hex MD5, SHA-1, SHA-256, SHA-512 หรือ CRC32 โดยเลือกตั้งชื่อได้ (<x5/>) <x6/> เลือก DNS: <x7/> (ค่าเริ่มต้น); บริการและวิธีการสอบถาม, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; ที่อยู่เซิร์ฟเวอร์ DNS, <x13/>; หรือที่อยู่ DNS-over-HTTPS จะไม่กลับไปใช้ DNS ของระบบ <x14/> ส่งการเชื่อมต่อทุกครั้งผ่านอะแดปเตอร์เครือข่ายเดียว โดยใช้ชื่อ (<x15/>, <x16/>) หรือที่อยู่ใดที่หนึ่งของอะแดปเตอร์นั้น หากไม่ได้เชื่อมต่อ จะไม่มีการส่งข้อมูลและดาวน์โหลดจะล้มเหลว"
+   "text": "ดาวน์โหลดไฟล์ด้วยการเชื่อมต่อสูงสุด 8 การเชื่อมต่อ (<x1/>, 1 ถึง 128) พร้อมแสดงความคืบหน้า <x2/> หยุดชั่วคราว; <x3/> ดำเนินการต่อ <x4/> ตรวจสอบไฟล์ที่เสร็จสมบูรณ์: hex MD5, SHA-1, SHA-256, SHA-512 หรือ CRC32 โดยเลือกตั้งชื่อได้ (<x5/>) <x6/> เลือก DNS: <x7/> (ค่าเริ่มต้น); บริการและวิธีการสอบถาม, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; ที่อยู่ของเซิร์ฟเวอร์ DNS, <x13/>; หรือที่อยู่ DNS-over-HTTPS จะไม่กลับไปใช้ DNS ของระบบ <x14/> ส่งการเชื่อมต่อทุกครั้งผ่านอะแดปเตอร์เครือข่ายเดียว โดยใช้ชื่อ (<x15/>, <x16/>) หรือหนึ่งในที่อยู่ของมัน; หากไม่ได้เชื่อมต่อ จะไม่มีการส่งข้อมูลและดาวน์โหลดจะล้มเหลว"
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5308,7 +5308,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "ยังไม่ได้ผูกกับอะแดปเตอร์ ดังนั้นจึงไม่เริ่มทำงานในขณะที่เลือกอะแดปเตอร์อยู่:"
+   "text": "ยังไม่ได้ผูกกับอะแดปเตอร์ ดังนั้นจึงไม่เริ่มทำงานในขณะที่เลือกอะแดปเตอร์ไว้:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5357,10 +5357,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — รันจากโฟลเดอร์หรือ USB"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>ลบ</g1> — ลบหมวดหมู่ของคุณเอง การดาวน์โหลดจะกลายเป็นทั่วไป; ไฟล์จะยังคงอยู่ในตำแหน่งเดิม"
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -5964,7 +5960,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "วิธีการทำงาน: Windows จะผูกกับที่อยู่ของอะแดปเตอร์เอง จากนั้น Windows จะส่งแพ็กเก็ตเหล่านั้นผ่านอะแดปเตอร์นั้นเท่านั้น (โมเดลโฮสต์ที่แข็งแกร่ง) Linux จะผูกกับอุปกรณ์เอง (Linux 5.7 หรือใหม่กว่า) และ macOS จะผูกกับอินเทอร์เฟซ ที่อยู่ประเภทที่อะแดปเตอร์ไม่มี (IPv6 บน VPN ที่รองรับเฉพาะ IPv4) จะถูกปฏิเสธ ไม่ถูกส่งผ่านไป"
+   "text": "วิธีการทำงาน: Windows จะผูกกับที่อยู่ของอะแดปเตอร์เอง จากนั้น Windows จะส่งแพ็กเก็ตเหล่านั้นผ่านอะแดปเตอร์นั้นเท่านั้น (โมเดลโฮสต์ที่แข็งแกร่ง) Linux จะผูกกับอุปกรณ์โดยตรง (Linux 5.7 หรือใหม่กว่า) และ macOS จะผูกกับอินเทอร์เฟซ ที่อยู่ประเภทที่อะแดปเตอร์ไม่มี (IPv6 บน VPN ที่รองรับเฉพาะ IPv4) จะถูกปฏิเสธ ไม่ถูกส่งผ่านไป"
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6212,7 +6208,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>อะแดปเตอร์เครือข่าย</g1> — <g2>ใดก็ได้ (ระบบเลือกเอง)</g2> เป็นค่าเริ่มต้น เลือกอะแดปเตอร์ โดยปกติคือ VPN ของคุณ การเชื่อมต่อทุกครั้งที่ MDM เปิดจะส่งผ่านอะแดปเตอร์นั้น หรือไม่ส่งเลย ซึ่งครอบคลุมการดาวน์โหลด, FTP, DNS ที่คุณเลือก, การดาวน์โหลดของ MDM เอง และการตรวจสอบการอัปเดต ทำหน้าที่เป็น kill switch: เมื่ออะแดปเตอร์ตัดการเชื่อมต่อ หรือ VPN ปิดอยู่ จะไม่มีอะไรส่งออกผ่านการเชื่อมต่อปกติของคุณ การดาวน์โหลดที่กำลังดำเนินอยู่จะหยุดลงพร้อมข้อความ \"… ไม่ได้เชื่อมต่อ\" และจะเริ่มใหม่เมื่ออะแดปเตอร์กลับมาใช้งานได้ บรรทัดใต้รายการจะแสดงที่อยู่ของอะแดปเตอร์ หรือสถานะว่าไม่ได้เชื่อมต่อ"
+   "text": "<g1>อะแดปเตอร์เครือข่าย</g1> — <g2>ใดก็ได้ (ระบบเลือกเอง)</g2> คือค่าเริ่มต้น เลือกอะแดปเตอร์ โดยปกติคือของ VPN ของคุณ และการเชื่อมต่อทุกครั้งที่ MDM เปิดจะส่งผ่านอะแดปเตอร์นั้น หรือไม่ส่งเลย ซึ่งครอบคลุมการดาวน์โหลด, FTP, DNS ที่คุณเลือก, การดาวน์โหลดของ MDM เอง และการตรวจสอบการอัปเดต มันทำงานเหมือนสวิตช์ตัดการทำงาน: เมื่ออะแดปเตอร์ตัดการเชื่อมต่อ หรือ VPN ถูกปิด จะไม่มีอะไรส่งออกผ่านการเชื่อมต่อปกติของคุณ การดาวน์โหลดที่กำลังดำเนินอยู่จะหยุดด้วยข้อความ \"… ไม่ได้เชื่อมต่อ\" และจะเริ่มใหม่เมื่ออะแดปเตอร์กลับมาใช้งานได้ บรรทัดใต้รายการจะแสดงที่อยู่ของอะแดปเตอร์ หรือสถานะว่าไม่ได้เชื่อมต่อ"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -7366,6 +7362,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>ลบ</g1> — ลบหมวดหมู่ ไม่ว่าจะเป็นหมวดหมู่ที่คุณสร้างเองหรือหมวดหมู่ในตัว (ยกเว้นทั่วไปและทอร์เรนต์) MDM จะถามว่าต้องการทำอย่างไรกับรายการดาวน์โหลดในหมวดหมู่นั้น: <g2>ย้ายรายการดาวน์โหลดไปที่ทั่วไป</g2> หรือ <g3>เอาการดาวน์โหลดออกจากรายการ</g3> (รายการดาวน์โหลดที่กำลังทำงานอยู่จะถูกย้ายไปที่ทั่วไปแทน) ไฟล์ของรายการดาวน์โหลดจะยังคงอยู่ในตำแหน่งเดิมไม่ว่าจะเลือกตัวเลือกใด หลังจากนั้น ไฟล์ประเภทเดียวกันจะถูกย้ายไปยังหมวดหมู่อื่นที่มีประเภทไฟล์นั้น หรือไปที่ทั่วไป"
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "มี yt-dlp หรือ ffmpeg สำหรับโปรแกรมอื่นอยู่แล้วใช่ไหม? ใช้โปรแกรมเหล่านั้นแทนที่จะเป็นสำเนาที่สอง: ใน <g1>ดาวน์โหลดวิดีโอจากหน้า</g1> คลิก <g2>ตัวช่วย...</g2> จากนั้น <g3>ใช้โปรแกรมอื่น...</g3> ข้าง yt-dlp หรือ ffmpeg แล้วเลือกโปรแกรม MDM จะรันโปรแกรมนั้นหนึ่งครั้งเพื่อตรวจสอบว่าเป็นโปรแกรมนั้นจริงหรือไม่ และจะใช้โปรแกรมนั้นตั้งแต่นั้นเป็นต้นไป รวมถึงบรรทัดคำสั่งด้วย MDM จะไม่ทำการอัปเดตโปรแกรมที่คุณเลือก: คุณต้องอัปเดตเอง (yt-dlp: <x4/> หรือตัวจัดการแพ็กเกจของคุณ) <g5>ใช้สำเนาของ MDM เอง</g5> จะกลับไปใช้โปรแกรมที่ MDM ดาวน์โหลดและตรวจสอบ"
@@ -7940,7 +7940,7 @@
   },
   "e0e426203d8a6245": {
    "source": "(implicit TLS; <x1/> with TLS is fine).",
-   "text": "(TLS โดยนัย; <x1/> ที่มี TLS ใช้ได้)"
+   "text": "(TLS โดยนัย; <x1/> ที่มี TLS ใช้ได้)."
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
@@ -8153,6 +8153,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> คือข้อความภาษาอังกฤษ; ปล่อยไว้ตามเดิม เปลี่ยนเฉพาะ <g2>translation</g2>"
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "หากต้องการคืนค่าหมวดหมู่ในตัวให้กลับไปเป็นค่าเริ่มต้น ทั้งชื่อ ประเภทไฟล์ และโฟลเดอร์ ให้ใช้ <g1>ตัวเลือก → บันทึกไปที่ → คืนค่าหมวดหมู่ในตัว</g1> หมวดหมู่ที่คุณสร้างเอง ทั่วไป และทอร์เรนต์จะยังคงอยู่เหมือนเดิม"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

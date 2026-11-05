@@ -169,6 +169,8 @@ pub struct OptionsDialog {
     sub: Option<Sub>,
     /// Save to → New / Edit...: the category editor (D-021).
     cat_edit: Option<crate::categories::CategoryDialog>,
+    /// Save to → Restore the built-in categories: its question (#93).
+    restore_ask: Option<crate::dialogs::Confirm>,
     /// Connection caps the engine learned, shown as "(auto)" rows under Exceptions.
     learned: Vec<(String, u32)>,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
@@ -214,6 +216,7 @@ impl OptionsDialog {
             sound_rows: Default::default(),
             sub: None,
             cat_edit: None,
+            restore_ask: None,
             learned,
             adapters: None,
         }
@@ -221,7 +224,7 @@ impl OptionsDialog {
 
     /// `Done(settings)` on OK.
     pub fn show(&mut self, ctx: &egui::Context, downloads: &std::path::Path) -> Outcome<Settings> {
-        let modal = self.sub.is_some() || self.cat_edit.is_some();
+        let modal = self.sub.is_some() || self.cat_edit.is_some() || self.restore_ask.is_some();
         let outcome = window(
             ctx,
             "options",
@@ -294,6 +297,21 @@ impl OptionsDialog {
                         self.category = i;
                     }
                     self.cat_dir = display_dir(&self.s.category_dir(cat, downloads));
+                }
+            }
+        }
+        if let Some(d) = &mut self.restore_ask {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.restore_ask = None,
+                Outcome::Done(()) => {
+                    self.restore_ask = None;
+                    // In this draft: Cancel undoes it, as it undoes the dialog's other edits.
+                    crate::categories::restore(&mut self.s);
+                    let cats = Category::all();
+                    self.category = self.category.min(cats.len() - 1);
+                    self.cat_dir =
+                        display_dir(&self.s.category_dir(cats[self.category], downloads));
                 }
             }
         }
@@ -685,7 +703,7 @@ impl OptionsDialog {
             self.cat_edit = Some(crate::categories::CategoryDialog::edit(cat, &folder));
         }
         let cat = cats[self.category];
-        let label = cat.label();
+        let label = cat.shown();
         let with_category = |template: &str| crate::i18n::fmt(template, &[("category", &label)]);
         let line = with_category(crate::i18n::t(
             "Automatically put in \"{category}\" category the following file types:",
@@ -768,6 +786,28 @@ impl OptionsDialog {
             o.x + 426.0,
             13.0,
         );
+        // #93: the built-in categories by file type as shipped again (beside OK, on this page).
+        if winui::button_light(
+            ui,
+            r(o, 21.0, 477.0, 232.0, 21.0),
+            "Restore the built-in categories",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked()
+        {
+            self.commit_cat_dir(downloads);
+            let text = crate::i18n::fmt(
+                crate::i18n::t(
+                    "Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.",
+                ),
+                &[("names", &crate::categories::restored_names())],
+            );
+            self.restore_ask = Some(crate::dialogs::Confirm::new(
+                crate::i18n::mark("Restore the built-in categories"),
+                text,
+            ));
+        }
     }
 
     /// The typed folder for the selected category becomes its own (or the default again).

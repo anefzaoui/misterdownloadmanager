@@ -1,18 +1,20 @@
-//! Add or edit a category (D-021): the user's own (name, file types, folder) or a built-in
-//! one's folder. Opened from Options → Save to (New, Edit...) and the Categories right-click
-//! menu (Add category, Properties); Delete removes a user's category.
+//! Add or edit a category (D-021): the user's own or a built-in one by file type (#93: name,
+//! file types, folder), General's and Torrents' folder only. Opened from Options → Save to
+//! (New, Edit...) and the Categories right-click menu (Add category, Properties); Delete
+//! removes a category (General and Torrents stay), and Options → Save to restores the
+//! built-in ones as shipped.
 
 use std::path::Path;
 
 use crate::dialogs::{Outcome, window};
-use crate::model::{Category, CustomCategory};
+use crate::model::{BuiltinEdit, Category, CustomCategory};
 use crate::settings::Settings;
 use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_DISABLED, LIGHT_TEXT, r};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Target {
     New,
-    /// A category of the user's, or a built-in one (only its folder changes).
+    /// A category of the user's or a built-in one (General and Torrents: only their folder).
     Edit(Category),
 }
 
@@ -49,8 +51,9 @@ impl CategoryDialog {
     pub fn edit(cat: Category, folder: &Path) -> Self {
         CategoryDialog {
             target: Target::Edit(cat),
-            // A built-in category's name as the interface writes it (its own stays as typed).
-            name: crate::i18n::t(&cat.label()).to_owned(),
+            // A built-in category's name as the interface writes it (a name the user gave stays
+            // as typed).
+            name: cat.shown(),
             types: match cat {
                 Category::Custom(id) => crate::model::custom(id)
                     .map(|c| c.types)
@@ -64,13 +67,14 @@ impl CategoryDialog {
 
     /// `names`: every category's name now (a new name must be another).
     pub fn show(&mut self, ctx: &egui::Context, names: &[String]) -> Outcome<CategoryEdit> {
-        let built_in = matches!(self.target, Target::Edit(c) if !c.is_custom());
+        // General and Torrents: only the folder changes.
+        let built_in = matches!(self.target, Target::Edit(c) if !c.editable());
         let title = match self.target {
             Target::New => crate::i18n::mark("Add category"),
             Target::Edit(_) => crate::i18n::mark("Category properties"),
         };
         let own = match self.target {
-            Target::Edit(c) => crate::i18n::t(&c.label()).to_owned(),
+            Target::Edit(c) => c.shown(),
             Target::New => String::new(),
         };
         let out = window(
@@ -243,25 +247,72 @@ mod types_tests {
     }
 }
 
-/// Every category's name now (for the dialog's "already exists" check).
+/// Every category's name now, as shown (for the dialog's "already exists" check).
 pub fn names() -> Vec<String> {
-    Category::all()
+    Category::all().iter().map(|c| c.shown()).collect()
+}
+
+/// The edit `settings` hold for built-in `cat` (made when there is none).
+fn builtin_entry(settings: &mut Settings, cat: Category) -> &mut BuiltinEdit {
+    let at = match settings
+        .builtin_categories
         .iter()
-        .map(|c| c.label().into_owned())
-        .collect()
+        .position(|e| e.category == cat)
+    {
+        Some(i) => i,
+        None => {
+            settings.builtin_categories.push(BuiltinEdit {
+                category: cat,
+                name: None,
+                types: None,
+                deleted: false,
+            });
+            settings.builtin_categories.len() - 1
+        }
+    };
+    &mut settings.builtin_categories[at]
+}
+
+/// Edits that say nothing any more (the shipped name and types, not deleted) go.
+fn tidy_builtin(settings: &mut Settings) {
+    settings
+        .builtin_categories
+        .retain(|e| e.name.is_some() || e.types.is_some() || e.deleted);
+}
+
+/// The five built-in categories by file type, as Restore lists them.
+fn by_type() -> impl Iterator<Item = Category> {
+    Category::BUILT_IN.into_iter().filter(|c| c.editable())
 }
 
 /// Apply an edit to `settings` (the app's, or Options' draft) and to the registry; returns the
 /// category. A folder equal to the default one is stored as "none" (it follows Downloads).
 pub fn apply(settings: &mut Settings, e: CategoryEdit, downloads: &Path) -> Category {
     let cat = match e.target {
-        Target::Edit(c) if !c.is_custom() => c,
+        Target::Edit(c) if !c.editable() => c,
         Target::Edit(Category::Custom(id)) => {
             if let Some(c) = settings.custom_categories.iter_mut().find(|c| c.id == id) {
                 c.name = e.name.clone();
                 c.types = e.types.clone();
             }
             Category::Custom(id)
+        }
+        // A built-in one by file type (#93): what equals the shipped one stays unsaid, so the
+        // name keeps following the interface language.
+        Target::Edit(c) => {
+            let name = e.name.trim();
+            let shipped_name = name == c.shipped_shown() || name == c.key().as_ref();
+            let same = |a: &str, b: &str| a.eq_ignore_ascii_case(b);
+            let shipped_types = same(
+                &normalize_types(&e.types),
+                &normalize_types(&c.shipped_types_text()),
+            );
+            let entry = builtin_entry(settings, c);
+            entry.name = (!shipped_name && !name.is_empty()).then(|| name.to_owned());
+            entry.types = (!shipped_types).then(|| normalize_types(&e.types));
+            tidy_builtin(settings);
+            settings.publish_categories();
+            c
         }
         _ => {
             let id = settings
@@ -289,23 +340,179 @@ pub fn apply(settings: &mut Settings, e: CategoryEdit, downloads: &Path) -> Cate
     cat
 }
 
-/// Remove a user's category; its downloads become General (`items`), files stay put.
-pub fn delete(settings: &mut Settings, id: u32, items: &mut [crate::model::Item]) {
-    settings.custom_categories.retain(|c| c.id != id);
-    crate::model::set_custom(&settings.custom_categories);
+/// Delete a category: a user's goes, a built-in one by file type is marked deleted (#93); the
+/// downloads still in it become General (`items`), files stay put. General and Torrents stay.
+pub fn delete(settings: &mut Settings, cat: Category, items: &mut [crate::model::Item]) {
+    match cat {
+        Category::Custom(id) => settings.custom_categories.retain(|c| c.id != id),
+        c if c.editable() => builtin_entry(settings, c).deleted = true,
+        _ => return,
+    }
+    settings.publish_categories();
     for i in items {
-        if i.category == Category::Custom(id) {
+        if i.category == cat {
             i.category = Category::General;
         }
     }
+}
+
+/// Options → Save to → Restore the built-in categories: the five by file type come back as
+/// shipped (name, file types, folder); General, Torrents and the user's own stay as they are.
+pub fn restore(settings: &mut Settings) {
+    let keys: Vec<String> = by_type().map(|c| c.key().into_owned()).collect();
+    settings
+        .builtin_categories
+        .retain(|e| !keys.iter().any(|k| *k == *e.category.key()));
+    settings.category_dirs.retain(|(c, _)| !keys.contains(c));
+    settings.publish_categories();
+}
+
+/// "Compressed, Documents, Music, Programs, Video" in the interface language, for Restore's
+/// question.
+pub fn restored_names() -> String {
+    by_type()
+        .map(|c| c.shipped_shown())
+        .collect::<Vec<_>>()
+        .join(", ")
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    /// The category registry is the process's: its tests take turns.
+    static REGISTRY: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+    fn registry() -> std::sync::MutexGuard<'static, ()> {
+        REGISTRY.lock().unwrap_or_else(|e| e.into_inner())
+    }
+
+    fn edit(cat: Category, name: &str, types: &str, folder: &str) -> CategoryEdit {
+        CategoryEdit {
+            target: Target::Edit(cat),
+            name: name.into(),
+            types: types.into(),
+            folder: folder.into(),
+        }
+    }
+
+    #[test]
+    fn a_built_in_one_takes_a_name_types_and_folder() {
+        let _turn = registry();
+        let mut s = Settings::default();
+        s.publish_categories();
+        let downloads = Path::new(r"C:\Users\u\Downloads");
+        apply(
+            &mut s,
+            edit(Category::Music, "Songs", "MP3 FLAC", r"E:\Songs"),
+            downloads,
+        );
+        assert_eq!(Category::Music.label(), "Songs");
+        assert_eq!(Category::Music.shown(), "Songs", "kept as typed");
+        assert_eq!(
+            Category::Music.key(),
+            "Music",
+            "settings still know it as Music"
+        );
+        assert_eq!(Category::of("a.flac"), Category::Music);
+        assert_eq!(
+            Category::of("a.wav"),
+            Category::General,
+            "WAV was taken off"
+        );
+        assert_eq!(
+            s.category_dir(Category::Music, downloads),
+            Path::new(r"E:\Songs")
+        );
+        assert_eq!(
+            Category::Music.default_folder(downloads),
+            downloads.join("Music"),
+            "renaming moves no folder"
+        );
+        // Typing the shipped name and types back is as shipped: nothing kept.
+        let shipped = Category::Music.shipped_types_text();
+        apply(
+            &mut s,
+            edit(Category::Music, "Music", &shipped, ""),
+            downloads,
+        );
+        assert!(
+            s.builtin_categories.is_empty(),
+            "{:?}",
+            s.builtin_categories
+        );
+        assert_eq!(Category::of("a.wav"), Category::Music);
+        s = Settings::default();
+        s.publish_categories();
+    }
+
+    #[test]
+    fn a_deleted_built_in_one_takes_no_files_and_restore_brings_it_back() {
+        let _turn = registry();
+        let mut s = Settings::default();
+        s.publish_categories();
+        let downloads = Path::new(r"C:\d");
+        apply(
+            &mut s,
+            edit(Category::Video, "Films", "MKV", r"E:\Films"),
+            downloads,
+        );
+        let mut items: Vec<crate::model::Item> = Vec::new();
+        delete(&mut s, Category::Video, &mut items);
+        assert!(Category::Video.deleted());
+        assert!(!Category::all().contains(&Category::Video));
+        assert_eq!(Category::of("film.mkv"), Category::General);
+        assert_eq!(
+            Category::of("film.mp4"),
+            Category::General,
+            "its shipped types go too"
+        );
+        // General and Torrents can't be deleted.
+        delete(&mut s, Category::General, &mut items);
+        delete(&mut s, Category::Torrents, &mut items);
+        assert!(!Category::General.deleted() && !Category::Torrents.deleted());
+        assert!(!Category::General.editable() && !Category::Torrents.editable());
+        // A user's own and General's folder survive Restore.
+        let books = apply(
+            &mut s,
+            CategoryEdit {
+                target: Target::New,
+                name: "Books".into(),
+                types: "EPUB".into(),
+                folder: String::new(),
+            },
+            downloads,
+        );
+        s.set_category_dir(Category::General, Some(r"F:\All".into()));
+        restore(&mut s);
+        assert!(!Category::Video.deleted());
+        assert_eq!(Category::Video.label(), "Video");
+        assert_eq!(Category::of("film.mp4"), Category::Video);
+        assert_eq!(
+            s.category_dir(Category::Video, downloads),
+            downloads.join("Video")
+        );
+        assert_eq!(
+            s.category_dir(Category::General, downloads),
+            Path::new(r"F:\All")
+        );
+        assert!(Category::all().contains(&books));
+        s = Settings::default();
+        s.publish_categories();
+    }
+
+    #[test]
+    fn old_settings_without_edits_still_load() {
+        let s: Settings = serde_json::from_str(r#"{"category_dirs":[["Music","E:\\M"]]}"#).unwrap();
+        assert!(s.builtin_categories.is_empty());
+        let e: BuiltinEdit =
+            serde_json::from_str(r#"{"category":"Music","deleted":true}"#).unwrap();
+        assert!(e.deleted && e.name.is_none() && e.types.is_none());
+    }
+
     #[test]
     fn a_new_category_takes_its_files_and_folder() {
+        let _turn = registry();
         let mut s = Settings::default();
         let downloads = Path::new(r"C:\Users\u\Downloads");
         let e = CategoryEdit {
@@ -335,16 +542,14 @@ mod tests {
             "MOBI was taken off"
         );
         let mut items: Vec<crate::model::Item> = Vec::new();
-        let Category::Custom(id) = cat else {
-            unreachable!()
-        };
-        delete(&mut s, id, &mut items);
+        delete(&mut s, cat, &mut items);
         assert_eq!(Category::of("novel.epub"), Category::General);
         crate::model::set_custom(&[]);
     }
 
     #[test]
     fn torrents_have_a_folder_but_no_file_types() {
+        let _turn = registry();
         let downloads = Path::new(r"C:\d");
         assert_eq!(
             Category::Torrents.folder(downloads),
