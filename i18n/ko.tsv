@@ -3842,6 +3842,10 @@ extension	Connected to Mister Download Manager	Mister Download Manager에 연결
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version}에 연결됨
 #. text in the browser extension
+#. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
+#, machine
+extension	Download	다운로드
+#. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
 extension	Download all links with Mister Download Manager	Mister Download Manager으로 모든 링크 다운로드
@@ -3887,6 +3891,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Alt 키
 #, machine
 extension	How to fix it	해결 방법
 #. text in the browser extension
+#. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
+#, machine
+extension	Live	라이브
+#. text in the browser extension
+#. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
+#, machine
+extension	Media on this page	이 페이지의 미디어
+#. text in the browser extension
 #. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager	Mister Download Manager
@@ -3921,6 +3933,10 @@ extension	Never on {site}	{site}에서는 다시 표시 안 함
 #, machine
 extension	Never take downloads from {site}	{site}에서 다운로드하지 않음
 #. text in the browser extension
+#. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
+#, machine
+extension	No video or sound found on this page yet. Play it, then open this again.	이 페이지에서 비디오 또는 사운드를 찾을 수 없습니다. 재생한 다음 다시 여세요.
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager 열기
@@ -3933,6 +3949,10 @@ extension	Options...	옵션...
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	일시 중지됨: 다운로드는 브라우저에 남아 있습니다.
+#. text in the browser extension
+#. shown instead of the Download button beside a copy-protected (DRM) stream in the toolbar button's popup: it can't be downloaded; short
+#, machine
+extension	Protected	보호됨
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine

@@ -15,6 +15,9 @@ Everything below ships together, in one release.
 
 - ✅ Numbers are grouped and pointed the interface language's way (German `10.200`, `1,50 MB`)
   ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128))
+- ✅ The extension's button lists the media the tab has loaded (HLS and DASH streams, video and
+  sound files), to download a stream the page won't give up; copy-protected ones are shown as
+  protected, never downloaded ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))
 - ✅ Torrents: RSS feeds with download rules (words, episodes, each episode once, a folder per rule)
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Torrents: Recheck, Reannounce, Add trackers and Copy magnet link; files chosen while a
@@ -139,8 +142,6 @@ Everything below ships together, in one release.
 
 ### Browser extension
 
-- 📋 List the media a tab has loaded, to download stubborn streams
-  ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))
 - 📋 Chrome Web Store and Firefox Add-ons listings (in review)
 
 ### Look and performance

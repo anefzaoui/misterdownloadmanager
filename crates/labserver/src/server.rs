@@ -242,6 +242,7 @@ impl LabServer {
             .route("/hls/master.m3u8", get(streams::hls_master))
             .route("/hls/{track}/{file}", get(streams::hls_file))
             .route("/dash/manifest.mpd", get(streams::dash_manifest))
+            .route("/dash/protected.mpd", get(streams::dash_protected))
             .route("/dash/{rep}/{file}", get(streams::dash_file))
             .route_layer(axum::middleware::from_fn_with_state(
                 shared.clone(),
@@ -364,9 +365,10 @@ GET /page?<any of>
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)
     several=N      N more videos #video1..N, each with its own <source> /gen/1M/clipK.mp4?seed=K
     audio=PATH|1   <audio id=audio controls> (1: /gen/512K/sound.mp3?inline=1)
-    hls=1, dash=1  <video id=player> and /assets/stream.js, which fetches /hls/master.m3u8 (or
-                   /dash/manifest.mpd), the first variant's and the audio's playlists and every
-                   segment, then sets <body data-stream=done> (or error)
+    hls=1, dash=1, drm=1   a <video> and /assets/stream.js for each (#player, then #player2,
+                   #player3), which fetches /hls/master.m3u8, /dash/manifest.mpd or
+                   /dash/protected.mpd, the first variant's and the audio's playlists and every
+                   segment, then sets <body data-stream=done> once all are (or error)
     csp=strict     Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self';
                    media-src 'self'; script-src 'self' (+ frame-src 'self' with iframe,
                    + connect-src 'self' and media-src blob: with hls or dash)
@@ -384,6 +386,8 @@ GET /hls/master.m3u8   two variants (720p: 1280x720, 1280000 b/s; 360p: 640x360,
     of 48128, 24064, 6016 bytes (application/vnd.apple.mpegurl, video/mp2t)
 GET /dash/manifest.mpd  (application/dash+xml) the same tracks as Representations with a
     SegmentTemplate: /dash/{720p,360p,audio}/init.mp4 and seg1..3.m4s (video/mp4, audio/mp4)
+GET /dash/protected.mpd  the same, each AdaptationSet marked encrypted (CENC, Widevine's
+    ContentProtection), as a DRM-protected stream's manifest is
 
 GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
     drive.google.com, drive.usercontent.google.com, docs.google.com, accounts.google.com and

@@ -3842,6 +3842,10 @@ extension	Connected to Mister Download Manager	已连接到 Mister Download Mana
 #, machine
 extension	Connected to Mister Download Manager {version}	已连接到 Mister Download Manager {version}
 #. text in the browser extension
+#. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
+#, machine
+extension	Download	下载
+#. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
 extension	Download all links with Mister Download Manager	使用 Mister Download Manager 下载所有链接
@@ -3887,6 +3891,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	按住 
 #, machine
 extension	How to fix it	如何修复
 #. text in the browser extension
+#. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
+#, machine
+extension	Live	直播
+#. text in the browser extension
+#. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
+#, machine
+extension	Media on this page	此页面上的媒体
+#. text in the browser extension
 #. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager	Mister Download Manager
@@ -3921,6 +3933,10 @@ extension	Never on {site}	从不在 {site} 显示
 #, machine
 extension	Never take downloads from {site}	永不从 {site} 获取下载
 #. text in the browser extension
+#. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
+#, machine
+extension	No video or sound found on this page yet. Play it, then open this again.	此页面上尚未找到视频或音频。请播放后再次打开。
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	打开 Mister Download Manager
@@ -3933,6 +3949,10 @@ extension	Options...	选项...
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	已暂停: 下载保留在浏览器中
+#. text in the browser extension
+#. shown instead of the Download button beside a copy-protected (DRM) stream in the toolbar button's popup: it can't be downloaded; short
+#, machine
+extension	Protected	受保护
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine

@@ -74,6 +74,32 @@ The extension's button shows whether the browser reaches MDM. A red **!** means 
 - **Take downloads from this browser**: untick it to pause, and every download stays with the browser until you tick it again.
 - **Never take downloads from** the current site: adds it to MDM's excluded sites.
 - **Open Mister Download Manager** and **Options...**.
+- **Media on this page**: what the page has loaded that MDM can download (see below).
+
+## Media on this page
+
+Some pages play a video without a link to it, and some players hide it from the download button
+too. The toolbar button lists what the page has loaded, so you can still save it:
+
+- **Streams**: HLS (`.m3u8`) and DASH (`.mpd`), the way most sites play long videos. Each stream
+  is listed once, however many qualities its player switched between, with its qualities (`1080p ·
+  720p`) and its length when the extension can read them.
+- **Video and sound files** the page played (MP4, WebM, MP3 and the like), with their size and,
+  for a video, its picture size.
+
+Start the video first: the list fills as the page loads things, and it's emptied when the tab goes
+to another page. Click **Download** beside one: a stream opens MDM's **Download video from a page**
+window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other
+download. Your cookies for its server, the page as the referrer and your browser's User-Agent go
+with it, as they do for a link you click.
+
+Pieces of a stream (its segments) are never listed. A copy-protected stream (DRM: Widevine,
+PlayReady, FairPlay, as most paid streaming services use) is listed as **Protected**, with no
+**Download** button: no tool may break that protection, and MDM doesn't try.
+
+This needs nothing more from you: the extension already sees what the browser downloads in order
+to hand downloads over. What it notes stays in the browser's memory and is forgotten when the
+browser closes.
 
 ## Right-click: Download with Mister Download Manager
 
@@ -87,7 +113,7 @@ If MDM can't be reached when you choose one of these, the help page opens at the
 
 ![The Download video button over a YouTube video in Chrome](images/video-button-youtube.png)
 
-Point at a video on a web page and a small **Download video** button appears at its edge. Click it and MDM's **Download video from a page** window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.
+Point at a video on a web page and a small **Download video** button appears at its edge. Click it and MDM's **Download video from a page** window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's [Media on this page](#media-on-this-page) lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.
 
 It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; **Tab** then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.
 

@@ -3162,6 +3162,10 @@
    "source": "Download Mister Download Manager 0.2.4, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "Mister Download Manager 0.2.4 ডাউনলোড করুন, বিনামূল্যে, ওপেন-সোর্স ডাউনলোড ম্যানেজার: Windows ইনস্টলার এবং পোর্টেবল জিপ, macOS .dmg এবং Linux AppImage, .deb এবং .rpm, এছাড়াও ব্রাউজার এক্সটেনশন। কোনো বিজ্ঞাপন নেই, কোনো বান্ডেল করা সফটওয়্যার নেই।"
   },
+  "513950a1b23ca382": {
+   "source": "This needs nothing more from you: the extension already sees what the browser downloads in order to hand downloads over. What it notes stays in the browser's memory and is forgotten when the browser closes.",
+   "text": "এর জন্য আপনার কাছ থেকে আর কিছু প্রয়োজন নেই: এক্সটেনশনটি ইতিমধ্যেই দেখে ব্রাউজার কী ডাউনলোড করে যাতে ডাউনলোডগুলি হস্তান্তর করা যায়। এটি যা নোট করে তা ব্রাউজারের মেমরিতে থাকে এবং ব্রাউজার বন্ধ হলে ভুলে যায়।"
+  },
   "514cb54301cc574e": {
    "source": "Several links, or a <x1/> or <x2/> list, dropped on the download list.",
    "text": "ডাউনলোড তালিকায় একাধিক লিঙ্ক, অথবা একটি <x1/> বা <x2/> তালিকা ড্রপ করা হয়েছে।"
@@ -3737,6 +3741,10 @@
   "60b93e8420c52c24": {
    "source": "After a crash or a restart",
    "text": "ক্র্যাশ বা রিস্টার্টের পর"
+  },
+  "60bfea57686a0f37": {
+   "source": "<g1>Video and sound files</g1> the page played (MP4, WebM, MP3 and the like), with their size and, for a video, its picture size.",
+   "text": "পৃষ্ঠাটি যে <g1>ভিডিও এবং সাউন্ড ফাইল</g1> চালিয়েছে (MP4, WebM, MP3 এবং এই জাতীয়), তাদের আকার এবং, একটি ভিডিওর জন্য, এর ছবির আকার।"
   },
   "60d28e32899eb074": {
    "source": "<g1>GNU GPL 3.0</g1><g2>free software, for good</g2>",
@@ -4421,6 +4429,10 @@
   "71e90b70c32a4238": {
    "source": "<g1>Download list</g1> (right). One row per download. See <g2>The download list</g2>.",
    "text": "<g1>ডাউনলোড তালিকা</g1> (ডান দিকে)। প্রতি ডাউনলোডের জন্য একটি সারি। <g2>ডাউনলোড তালিকা</g2> দেখুন।"
+  },
+  "71ee3c989cceb48b": {
+   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them.",
+   "text": "<g1>স্ট্রিম</g1>: HLS (<x2/>) এবং DASH (<x3/>), বেশিরভাগ সাইট দীর্ঘ ভিডিও চালানোর জন্য এটি ব্যবহার করে। প্রতিটি স্ট্রিম একবার তালিকাভুক্ত করা হয়, প্লেয়ার যতগুলি মানের মধ্যে স্যুইচ করুক না কেন, এর গুণাবলী (<x4/>) এবং এর দৈর্ঘ্য সহ, যখন এক্সটেনশন সেগুলি পড়তে পারে।"
   },
   "71f8e678aea06824": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.2.4 on GitHub Releases, with SHA256SUMS.txt</g2>",
@@ -5278,6 +5290,10 @@
    "source": "When resuming isn't possible",
    "text": "যখন পুনরায় শুরু করা সম্ভব নয়"
   },
+  "87c0ec1d01442f09": {
+   "source": "Pieces of a stream (its segments) are never listed. A copy-protected stream (DRM: Widevine, PlayReady, FairPlay, as most paid streaming services use) is listed as <g1>Protected</g1>, with no <g2>Download</g2> button: no tool may break that protection, and MDM doesn't try.",
+   "text": "একটি স্ট্রিমের খণ্ড (এর সেগমেন্ট) কখনও তালিকাভুক্ত করা হয় না। একটি কপি-সুরক্ষিত স্ট্রিম (DRM: Widevine, PlayReady, FairPlay, যেমন বেশিরভাগ পেইড স্ট্রিমিং পরিষেবা ব্যবহার করে) <g1>সুরক্ষিত</g1> হিসাবে তালিকাভুক্ত করা হয়, কোনো <g2>ডাউনলোড করুন</g2> বাটন ছাড়া: কোনো টুল সেই সুরক্ষা ভাঙতে পারে না, এবং MDM চেষ্টা করে না।"
+  },
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "কী ভিন্ন"
@@ -5438,6 +5454,10 @@
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>ম্যানুয়াল প্রক্সি/SOCKS কনফিগারেশন</g1> — প্রক্সির ঠিকানা, <g2>পোর্ট</g2>, এবং একটি <g3>ব্যবহারকারীর নাম</g3> ও <g4>পাসওয়ার্ড</g4> টাইপ করুন যদি সেগুলির প্রয়োজন হয়, তারপর এটি যে প্রোটোকলগুলির জন্য সেগুলিতে টিক দিন (<g5>http</g5>, <g6>https</g6>)। একটি SOCKS প্রক্সির জন্য, ঠিকানাটি <x7/> হিসাবে লিখুন।"
   },
+  "8bf5db6373827a5f": {
+   "source": "Media on this page",
+   "text": "এই পৃষ্ঠার মিডিয়া"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "সম্পূর্ণ শর্তাবলী <g1>ব্যবহারের শর্তাবলী</g1>-তে আছে।"
@@ -5477,6 +5497,10 @@
   "8d2e4423f6df4df8": {
    "source": "3. Using it responsibly",
    "text": "3. দায়িত্বশীলভাবে ব্যবহার করা"
+  },
+  "8d5482092a09013b": {
+   "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
+   "text": "কিছু পৃষ্ঠা কোনো লিঙ্ক ছাড়াই ভিডিও চালায়, এবং কিছু প্লেয়ার ডাউনলোড বাটন থেকেও ভিডিও লুকিয়ে রাখে। টুলবার বাটনটি পৃষ্ঠাটি যা লোড করেছে তার তালিকা দেখায়, যাতে আপনি এখনও এটি সংরক্ষণ করতে পারেন:"
   },
   "8d6911b8ed8eb4d4": {
    "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
@@ -5873,6 +5897,10 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "অন্যান্য লোকেরা কী দেখতে পারে"
+  },
+  "9808fa9b8d4c51e1": {
+   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g3>Media on this page</g3> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "একটি ওয়েব পৃষ্ঠার একটি ভিডিওতে পয়েন্ট করুন এবং এর প্রান্তে একটি ছোট <g1>ভিডিও ডাউনলোড করুন</g1> বাটন প্রদর্শিত হবে। এটিতে ক্লিক করুন এবং MDM-এর <g2>একটি পৃষ্ঠা থেকে ভিডিও ডাউনলোড করুন</g2> উইন্ডো খুলবে এবং এটি ডাউনলোড করতে পারে এমন গুণাবলী খুঁজবে। এটি আপনার ক্লিক করা ভিডিওটি নেয়: যখন এটি একটি ফাইল চালায় তখন তার নিজস্ব ফাইল, অথবা প্লেয়ার লোড করা স্ট্রিম (HLS বা DASH), অন্যথায় পৃষ্ঠাটি। যখন বাটনটি বলতে পারে না আপনি কোনটি বোঝাতে চাইছেন, তখন টুলবার বাটনের <g3>এই পৃষ্ঠার মিডিয়া</g3> সেগুলির সবগুলি তালিকাভুক্ত করে। এম্বেড করা প্লেয়ারগুলিও কাজ করে, এবং সাইটের জন্য আপনার সাইন-ইন, প্লেয়ার এম্বেড করা পৃষ্ঠা এবং আপনার ব্রাউজারের ইউজার-এজেন্ট এর সাথে যায়, তাই সদস্যদের জন্য ভিডিও, অথবা যেগুলি শুধুমাত্র এম্বেড করা সাইটে চলে, সেগুলি ডাউনলোড করা যেতে পারে। সাউন্ড প্লেয়ারগুলিও বাটনটি পায়।"
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -8234,6 +8262,10 @@
    "source": "5. No warranty",
    "text": "5. কোনো ওয়ারেন্টি নেই"
   },
+  "d8456502c3302d77": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Click <g1>Download</g1> beside one: a stream opens MDM's <g2>Download video from a page</g2> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "প্রথমে ভিডিওটি শুরু করুন: পৃষ্ঠাটি জিনিস লোড করার সাথে সাথে তালিকাটি পূরণ হয়, এবং ট্যাব অন্য পৃষ্ঠায় গেলে এটি খালি হয়ে যায়। একটির পাশে <g1>ডাউনলোড করুন</g1> ক্লিক করুন: একটি স্ট্রিম MDM-এর <g2>একটি পৃষ্ঠা থেকে ভিডিও ডাউনলোড করুন</g2> উইন্ডো খোলে, যা এর গুণাবলী পড়ে (yt-dlp কাজটি করে); একটি ফাইল অন্য যেকোনো ডাউনলোডের মতো MDM-এর তালিকায় যায়। এর সার্ভারের জন্য আপনার কুকিজ, রেফারার হিসাবে পৃষ্ঠা এবং আপনার ব্রাউজারের ইউজার-এজেন্ট এর সাথে যায়, যেমনটি আপনি ক্লিক করা লিঙ্কের জন্য হয়।"
+  },
   "d878d923ca93995a": {
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
    "text": "<x1/> খুলুন (কোডগুলি <g2><x3/></g2>-এ আছে)।"
@@ -8814,6 +8846,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "এটি কি রাতারাতি বা সময়সূচী অনুযায়ী ডাউনলোড করতে পারে?"
   },
+  "e84dc3be8e4da26f": {
+   "source": "<g1>Media on this page</g1>: what the page has loaded that MDM can download (see below).",
+   "text": "<g1>এই পৃষ্ঠার মিডিয়া</g1>: পৃষ্ঠাটি যা লোড করেছে এবং MDM ডাউনলোড করতে পারে (নিচে দেখুন)।"
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "<g1>ফাইল তথ্য ডাউনলোড করুন</g1>-এ, <g2>পরে ডাউনলোড করুন</g2> ক্লিক করুন এবং সারিটি বেছে নিন।"
@@ -9154,6 +9190,10 @@
    "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
    "text": "একটি ভিডিও ডাউনলোড করুন; <x1/> <x2/> থেকে একটি কোয়ালিটি সিলেক্টর নেয় (<x3/> = সেরা একক ফাইল; <x4/> = সাইটে যেমন আছে তেমন শুধু সাউন্ড, রূপান্তরিত নয়; <x5/>, <x6/>, <x7/> অথবা <x8/> = সেই বিটরেটে MP3 হিসেবে সাউন্ড, <x9/> তার সেরা পরিবর্তনশীল বিটরেটে; <x10/> = Opus হিসেবে; <x11/> = FLAC হিসেবে, লসলেস কিন্তু সাইটের সাউন্ডের চেয়ে ভালো নয়; রূপান্তরের জন্য ffmpeg প্রয়োজন)। <x12/> এর পাশে সাবটাইটেল সংরক্ষণ করে: <x13/> (<x14/>) থেকে ভাষার কোড, অথবা আপলোডার যতগুলো দিয়েছে তার সবগুলোর জন্য <x15/>; <x16/> এর পরিবর্তে সাইটের স্বয়ংক্রিয় ক্যাপশন নেয়; <x17/> সেগুলোকে ভিডিওতে রাখে (ffmpeg, MP4 অথবা MKV প্রয়োজন)।"
   },
+  "f25612dbbaabbb5b": {
+   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
+   "text": "DRM দিয়ে সুরক্ষিত ভিডিও (বেশিরভাগ পেইড স্ট্রিমিং সার্ভিস) ডাউনলোড করা যায় না, এবং MDM এটি চেষ্টা করে না। ব্রাউজার এক্সটেনশনের <g1>এই পৃষ্ঠার মিডিয়া</g1> এমন একটি স্ট্রিমকে <g2>সুরক্ষিত</g2> হিসেবে দেখায় এবং এটি পাঠায় না।"
+  },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
    "text": "<g1>ঠিকানা</g1> তে, যেখানে সংখ্যা বা অক্ষর পরিবর্তিত হয় সেখানে একটি তারকাচিহ্ন সহ ঠিকানাটি লিখুন: <x2/>।"
@@ -9261,6 +9301,10 @@
   "f523b03f18ef6ae9": {
    "source": "Both apps on the same PC, downloading from the same test server, in alternating runs. The server's own log says when each request arrived and when the last byte left, so nothing relies on either app's word.",
    "text": "একই পিসিতে উভয় অ্যাপ, একই টেস্ট সার্ভার থেকে পর্যায়ক্রমে ডাউনলোড করছে। সার্ভারের নিজস্ব লগ বলে দেয় কখন প্রতিটি অনুরোধ এসেছে এবং কখন শেষ বাইট চলে গেছে, তাই কোনো অ্যাপের কথার উপর নির্ভর করতে হয় না।"
+  },
+  "f566a29ba545e840": {
+   "source": "A page whose video the window can't find: play the video in your browser, then use the extension's <g1>Media on this page</g1> to send the stream the page loaded.",
+   "text": "যে পৃষ্ঠার ভিডিও উইন্ডো খুঁজে পায় না: আপনার ব্রাউজারে ভিডিওটি চালান, তারপর এক্সটেনশনের <g1>এই পৃষ্ঠার মিডিয়া</g1> ব্যবহার করে পৃষ্ঠাটি লোড করা স্ট্রিমটি পাঠান।"
   },
   "f575c52354f70221": {
    "source": "Free forever, no ads, no trial",

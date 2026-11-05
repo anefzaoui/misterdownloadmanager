@@ -509,11 +509,21 @@ async fn page_variants() {
     assert!(!page.contains("<video"));
 
     let (h, page) = text(&s, "/page?hls=1&csp=strict").await;
-    assert!(page.contains("<script src=/assets/stream.js data-manifest=\"/hls/master.m3u8\">"));
+    assert!(page.contains(
+        "<script src=/assets/stream.js data-manifest=\"/hls/master.m3u8\" data-player=player>"
+    ));
     let csp = h["content-security-policy"].to_str().unwrap();
     assert!(csp.contains("connect-src 'self'") && csp.contains("media-src 'self' blob:"));
     let (_, page) = text(&s, "/page?dash=1").await;
     assert!(page.contains("data-manifest=\"/dash/manifest.mpd\""));
+    // Several streams: a player each, in order (#38's media list).
+    let (_, page) = text(&s, "/page?hls=1&dash=1&drm=1&video=1").await;
+    assert!(page.contains("<video id=player ") && page.contains("data-player=player>"));
+    assert!(
+        page.contains("<video id=player3 ")
+            && page.contains("data-manifest=\"/dash/protected.mpd\" data-player=player3")
+    );
+    assert!(page.contains("<video id=video src=\"/gen/1M/clip.mp4?inline=1\""));
 
     let (h, js) = text(&s, "/assets/stream.js").await;
     assert!(
@@ -587,6 +597,15 @@ async fn hls_and_dash() {
     assert!(mpd.contains("mediaPresentationDuration=\"PT12S\""));
     assert!(mpd.contains("<Representation id=\"720p\""));
     assert!(mpd.contains("<Representation id=\"audio\""));
+    assert!(!mpd.contains("ContentProtection"));
+    let (h, mpd) = text(&s, "/dash/protected.mpd").await;
+    assert_eq!(h["content-type"], "application/dash+xml");
+    assert_eq!(
+        mpd.matches("urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed")
+            .count(),
+        2
+    );
+    assert!(mpd.contains("<Representation id=\"720p\""));
     let r = reqwest::get(s.url("/dash/720p/init.mp4")).await.unwrap();
     assert_eq!(r.headers()["content-type"], "video/mp4");
     assert_eq!(&r.bytes().await.unwrap()[4..8], b"ftyp");
@@ -624,6 +643,8 @@ async fn help_lists_the_routes() {
         "hls=1",
         "/hls/master.m3u8",
         "/dash/manifest.mpd",
+        "/dash/protected.mpd",
+        "drm=1",
         "req_body_sha256",
         "referer",
     ] {

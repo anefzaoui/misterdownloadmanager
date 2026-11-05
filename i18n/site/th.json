@@ -3162,6 +3162,10 @@
    "source": "Download Mister Download Manager 0.2.4, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "ดาวน์โหลด Mister Download Manager 0.2.4, ตัวจัดการการดาวน์โหลดฟรีและโอเพนซอร์ส: ตัวติดตั้ง Windows และไฟล์ zip แบบพกพา, macOS .dmg และ Linux AppImage, .deb และ .rpm รวมถึงส่วนขยายเบราว์เซอร์ ไม่มีโฆษณา ไม่มีซอฟต์แวร์แถม"
   },
+  "513950a1b23ca382": {
+   "source": "This needs nothing more from you: the extension already sees what the browser downloads in order to hand downloads over. What it notes stays in the browser's memory and is forgotten when the browser closes.",
+   "text": "สิ่งนี้ไม่ต้องการอะไรเพิ่มเติมจากคุณ: ส่วนขยายจะเห็นสิ่งที่เบราว์เซอร์ดาวน์โหลดอยู่แล้วเพื่อส่งต่อการดาวน์โหลด สิ่งที่บันทึกไว้จะอยู่ในหน่วยความจำของเบราว์เซอร์และจะถูกลืมเมื่อเบราว์เซอร์ปิดลง"
+  },
   "514cb54301cc574e": {
    "source": "Several links, or a <x1/> or <x2/> list, dropped on the download list.",
    "text": "หลายลิงก์ หรือรายการ <x1/> หรือ <x2/> ที่ลากมาวางบนรายการดาวน์โหลด"
@@ -3737,6 +3741,10 @@
   "60b93e8420c52c24": {
    "source": "After a crash or a restart",
    "text": "หลังจากโปรแกรมขัดข้องหรือรีสตาร์ท"
+  },
+  "60bfea57686a0f37": {
+   "source": "<g1>Video and sound files</g1> the page played (MP4, WebM, MP3 and the like), with their size and, for a video, its picture size.",
+   "text": "<g1>ไฟล์วิดีโอและเสียง</g1> ที่หน้าเว็บเล่น (MP4, WebM, MP3 และอื่นๆ) พร้อมขนาด และสำหรับวิดีโอ จะแสดงขนาดภาพด้วย"
   },
   "60d28e32899eb074": {
    "source": "<g1>GNU GPL 3.0</g1><g2>free software, for good</g2>",
@@ -4421,6 +4429,10 @@
   "71e90b70c32a4238": {
    "source": "<g1>Download list</g1> (right). One row per download. See <g2>The download list</g2>.",
    "text": "<g1>รายการดาวน์โหลด</g1> (ขวา) หนึ่งแถวต่อหนึ่งการดาวน์โหลด ดู <g2>รายการดาวน์โหลด</g2>"
+  },
+  "71ee3c989cceb48b": {
+   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them.",
+   "text": "<g1>สตรีม</g1>: HLS (<x2/>) และ DASH (<x3/>) ซึ่งเป็นวิธีที่เว็บไซต์ส่วนใหญ่ใช้เล่นวิดีโอขนาดยาว แต่ละสตรีมจะแสดงเพียงครั้งเดียว ไม่ว่าโปรแกรมเล่นจะสลับคุณภาพไปกี่ครั้งก็ตาม พร้อมด้วยคุณภาพ (<x4/>) และความยาว หากส่วนขยายสามารถอ่านได้"
   },
   "71f8e678aea06824": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.2.4 on GitHub Releases, with SHA256SUMS.txt</g2>",
@@ -5278,6 +5290,10 @@
    "source": "When resuming isn't possible",
    "text": "เมื่อไม่สามารถดำเนินการต่อได้"
   },
+  "87c0ec1d01442f09": {
+   "source": "Pieces of a stream (its segments) are never listed. A copy-protected stream (DRM: Widevine, PlayReady, FairPlay, as most paid streaming services use) is listed as <g1>Protected</g1>, with no <g2>Download</g2> button: no tool may break that protection, and MDM doesn't try.",
+   "text": "ชิ้นส่วนของสตรีม (ส่วนต่างๆ) จะไม่แสดงรายการ สตรีมที่มีการป้องกันการคัดลอก (DRM: Widevine, PlayReady, FairPlay ซึ่งบริการสตรีมมิ่งแบบเสียเงินส่วนใหญ่ใช้) จะแสดงเป็น <g1>ป้องกัน</g1> โดยไม่มีปุ่ม <g2>ดาวน์โหลด</g2>: ไม่มีเครื่องมือใดสามารถทำลายการป้องกันนั้นได้ และ MDM ก็ไม่พยายาม"
+  },
   "87fdb00b527c2d1d": {
    "source": "What is different",
    "text": "สิ่งที่แตกต่าง"
@@ -5438,6 +5454,10 @@
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>การกำหนดค่าพร็อกซี/SOCKS ด้วยตนเอง</g1> — พิมพ์ที่อยู่พร็อกซี, <g2>พอร์ต</g2> และ <g3>ชื่อผู้ใช้</g3> กับ <g4>รหัสผ่าน</g4> หากจำเป็น จากนั้นเลือกโปรโตคอลที่เกี่ยวข้อง (<g5>http</g5>, <g6>https</g6>) สำหรับพร็อกซี SOCKS ให้เขียนที่อยู่เป็น <x7/>"
   },
+  "8bf5db6373827a5f": {
+   "source": "Media on this page",
+   "text": "สื่อในหน้านี้"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "ข้อกำหนดฉบับเต็มอยู่ใน <g1>ข้อกำหนดการใช้งาน</g1>"
@@ -5477,6 +5497,10 @@
   "8d2e4423f6df4df8": {
    "source": "3. Using it responsibly",
    "text": "3. การใช้งานอย่างรับผิดชอบ"
+  },
+  "8d5482092a09013b": {
+   "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
+   "text": "บางหน้าเล่นวิดีโอโดยไม่มีลิงก์ และบางโปรแกรมเล่นก็ซ่อนวิดีโอจากปุ่มดาวน์โหลดด้วย ปุ่มบนแถบเครื่องมือจะแสดงรายการสิ่งที่หน้าเว็บโหลดมา เพื่อให้คุณยังคงบันทึกได้:"
   },
   "8d6911b8ed8eb4d4": {
    "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
@@ -5873,6 +5897,10 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "สิ่งที่คนอื่นเห็นได้"
+  },
+  "9808fa9b8d4c51e1": {
+   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g3>Media on this page</g3> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "ชี้ไปที่วิดีโอบนหน้าเว็บแล้วปุ่ม <g1>ดาวน์โหลดวิดีโอ</g1> เล็กๆ จะปรากฏขึ้นที่ขอบ คลิกปุ่มนั้นแล้วหน้าต่าง <g2>ดาวน์โหลดวิดีโอจากหน้า</g2> ของ MDM จะเปิดขึ้นและค้นหาคุณภาพที่สามารถดาวน์โหลดได้ โดยจะใช้วิดีโอที่คุณคลิก: ไฟล์ของตัวเองเมื่อเล่น หรือสตรีมที่โปรแกรมเล่นโหลด (HLS หรือ DASH) หรือหน้าเว็บ หากปุ่มไม่สามารถระบุได้ว่าคุณหมายถึงอันไหน ปุ่ม <g3>สื่อในหน้านี้</g3> บนแถบเครื่องมือจะแสดงรายการทั้งหมด โปรแกรมเล่นแบบฝังก็ใช้งานได้เช่นกัน และการลงชื่อเข้าใช้ของคุณสำหรับเว็บไซต์ หน้าเว็บที่ฝังโปรแกรมเล่น และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย ดังนั้นวิดีโอสำหรับสมาชิก หรือที่เล่นได้เฉพาะบนเว็บไซต์ที่ฝังเท่านั้น ก็สามารถดาวน์โหลดได้ โปรแกรมเล่นเสียงก็มีปุ่มนี้ด้วย"
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -8234,6 +8262,10 @@
    "source": "5. No warranty",
    "text": "5. ไม่มีการรับประกัน"
   },
+  "d8456502c3302d77": {
+   "source": "Start the video first: the list fills as the page loads things, and it's emptied when the tab goes to another page. Click <g1>Download</g1> beside one: a stream opens MDM's <g2>Download video from a page</g2> window, which reads its qualities (yt-dlp does the work); a file goes to MDM's list like any other download. Your cookies for its server, the page as the referrer and your browser's User-Agent go with it, as they do for a link you click.",
+   "text": "เริ่มเล่นวิดีโอก่อน: รายการจะปรากฏขึ้นเมื่อหน้าเว็บโหลดสิ่งต่างๆ และจะว่างเปล่าเมื่อแท็บเปลี่ยนไปหน้าอื่น คลิก <g1>ดาวน์โหลด</g1> ข้างรายการใดรายการหนึ่ง: สตรีมจะเปิดหน้าต่าง <g2>ดาวน์โหลดวิดีโอจากหน้า</g2> ของ MDM ซึ่งจะอ่านคุณภาพของสตรีม (yt-dlp เป็นผู้ดำเนินการ); ไฟล์จะไปที่รายการของ MDM เหมือนการดาวน์โหลดอื่นๆ คุกกี้ของคุณสำหรับเซิร์ฟเวอร์นั้น หน้าเว็บในฐานะผู้แนะนำ และ User-Agent ของเบราว์เซอร์ของคุณจะถูกส่งไปด้วย เช่นเดียวกับการคลิกลิงก์"
+  },
   "d878d923ca93995a": {
    "source": "Open <x1/> (the codes are in <g2><x3/></g2>).",
    "text": "เปิด <x1/> (รหัสอยู่ใน <g2><x3/></g2>)"
@@ -8814,6 +8846,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "สามารถดาวน์โหลดข้ามคืนหรือตามกำหนดเวลาได้หรือไม่?"
   },
+  "e84dc3be8e4da26f": {
+   "source": "<g1>Media on this page</g1>: what the page has loaded that MDM can download (see below).",
+   "text": "<g1>สื่อในหน้านี้</g1>: สิ่งที่หน้าเว็บโหลดมาแล้วและ MDM สามารถดาวน์โหลดได้ (ดูด้านล่าง)"
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "ใน <g1>ข้อมูลไฟล์ดาวน์โหลด</g1> ให้คลิก <g2>ดาวน์โหลดภายหลัง</g2> แล้วเลือกคิว"
@@ -9154,6 +9190,10 @@
    "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
    "text": "ดาวน์โหลดวิดีโอ <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดี่ยวที่ดีที่สุด; <x4/> = เสียงอย่างเดียวตามที่เว็บไซต์มี ไม่มีการแปลง; <x5/>, <x6/>, <x7/> หรือ <x8/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x9/> ที่บิตเรตแปรผันที่ดีที่สุด; <x10/> = เป็น Opus; <x11/> = เป็น FLAC, ไม่สูญเสียคุณภาพแต่ไม่ดีไปกว่าเสียงของเว็บไซต์; การแปลงต้องใช้ ffmpeg) <x12/> บันทึกคำบรรยายข้างๆ: รหัสภาษาจาก <x13/> (<x14/>) หรือ <x15/> สำหรับทุกภาษาที่ผู้อัปโหลดให้มา; <x16/> ใช้คำบรรยายอัตโนมัติของเว็บไซต์แทน; <x17/> ใส่คำบรรยายลงในวิดีโอ (ต้องใช้ ffmpeg, MP4 หรือ MKV)"
   },
+  "f25612dbbaabbb5b": {
+   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
+   "text": "วิดีโอที่ป้องกันด้วย DRM (บริการสตรีมมิ่งแบบเสียเงินส่วนใหญ่) ไม่สามารถดาวน์โหลดได้ และ MDM ก็ไม่ได้พยายาม ส่วนขยายเบราว์เซอร์ <g1>สื่อในหน้านี้</g1> จะแสดงสตรีมดังกล่าวว่า <g2>ป้องกัน</g2> และไม่ส่งสตรีมนั้น"
+  },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
    "text": "ใน <g1>ที่อยู่</g1> ให้เขียนที่อยู่โดยมีเครื่องหมายดอกจันหนึ่งตัวตรงที่ตัวเลขหรือตัวอักษรเปลี่ยนไป: <x2/>"
@@ -9261,6 +9301,10 @@
   "f523b03f18ef6ae9": {
    "source": "Both apps on the same PC, downloading from the same test server, in alternating runs. The server's own log says when each request arrived and when the last byte left, so nothing relies on either app's word.",
    "text": "แอปทั้งสองทำงานบนคอมพิวเตอร์เครื่องเดียวกัน ดาวน์โหลดจากเซิร์ฟเวอร์ทดสอบเดียวกัน โดยสลับกันทำงาน บันทึกของเซิร์ฟเวอร์จะระบุว่าคำขอแต่ละรายการมาถึงเมื่อใด และไบต์สุดท้ายส่งออกไปเมื่อใด ดังนั้นจึงไม่มีการอ้างอิงจากแอปใดแอปหนึ่ง"
+  },
+  "f566a29ba545e840": {
+   "source": "A page whose video the window can't find: play the video in your browser, then use the extension's <g1>Media on this page</g1> to send the stream the page loaded.",
+   "text": "หน้าเว็บที่หน้าต่างไม่พบวิดีโอ: ให้เล่นวิดีโอในเบราว์เซอร์ของคุณ จากนั้นใช้ <g1>สื่อในหน้านี้</g1> ของส่วนขยายเพื่อส่งสตรีมที่หน้าเว็บโหลด"
   },
   "f575c52354f70221": {
    "source": "Free forever, no ads, no trial",
