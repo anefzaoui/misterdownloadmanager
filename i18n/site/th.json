@@ -306,6 +306,10 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13th Gen Intel(R) Core(TM) i5-13400F, RAM 63.8 GB, Windows-11-10.0.26200-SP0. labserver (ที่เก็บนี้), 127.0.0.1:8097, เนื้อหาที่สร้างขึ้น ทั้งสองค่าเริ่มต้น: 8 การเชื่อมต่อ"
   },
+  "0797f3ad6e9f2823": {
+   "source": "lines, then <x1/>.",
+   "text": "บรรทัด, จากนั้น <x1/>"
+  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "ฉันสามารถติดตั้ง IDM ไว้ด้วยได้หรือไม่?"
@@ -465,6 +469,10 @@
   "0b60549b3aaf5aea": {
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "สำเนาแบบพกพา รายการดาวน์โหลดและการตั้งค่าจะอยู่ในโฟลเดอร์ <x1/> ถัดจากโปรแกรม และไม่มีการเขียนข้อมูลลงในรีจิสทรี การรวมเข้ากับเบราว์เซอร์ต้องใช้ตัวติดตั้ง ดูที่ <g2>โหมดพกพา</g2>"
+  },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "ในหน้าต่างเดียวกัน ให้เลือก <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และตั้งค่าความเร็ว ซึ่งจะจำกัดความเร็วของ MDM โดยรวม ไม่ว่าจะดาวน์โหลดไฟล์กี่ไฟล์ก็ตาม รวมถึงไฟล์ BitTorrent ด้วย เมื่อไฟล์ BitTorrent และการดาวน์โหลดอื่นๆ ทำงานพร้อมกัน แต่ละฝ่ายจะได้รับความเร็วอย่างน้อยครึ่งหนึ่ง และจะได้รับมากขึ้นเมื่ออีกฝ่ายต้องการน้อยลง: ไฟล์ BitTorrent ที่ดาวน์โหลดช้าจะเหลือความเร็วส่วนที่เหลือให้กับการดาวน์โหลดอื่นๆ และในทางกลับกัน การตั้งค่านี้จะมีผลเมื่อเลือกไว้ ไม่ว่าตัวจำกัดความเร็วต่อไฟล์จะเปิดหรือปิดอยู่ก็ตาม"
   },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
@@ -1093,6 +1101,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>ข้อมูลไฟล์ดาวน์โหลด</g1> จะแสดงชื่อไฟล์ ขนาด และตำแหน่งที่จะบันทึก โฟลเดอร์จะขึ้นอยู่กับประเภทของไฟล์: ไฟล์ ZIP ไปที่ <x2/> วิดีโอไปที่ <x3/> เป็นต้น คุณสามารถเปลี่ยนโฟลเดอร์หรือหมวดหมู่ได้ตามต้องการ"
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "สำหรับทอร์เรนต์ ขีดจำกัดจะเป็นของทอร์เรนต์นั้นเท่านั้น ส่วนไฟล์อื่นๆ จะใช้ขีดจำกัดของตัวเอง ทอร์เรนต์ไม่สามารถถูกจำกัดให้ต่ำกว่า 16 กิโลไบต์/วินาทีได้: หากตั้งค่าต่ำกว่านี้ จะได้รับ 16 แทน"
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -4298,6 +4310,10 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "ทุกการเผยแพร่จะแสดงผลรวม SHA-256 ของแต่ละไฟล์ใน <g1>SHA256SUMS.txt</g1> บน Windows ให้เปรียบเทียบกับ <x2/>; บน macOS และ Linux ให้เปรียบเทียบกับ <x3/> ไฟล์ทั้งหมดสร้างจากซอร์สโค้ดสาธารณะโดย GitHub Actions; บันทึกการสร้างอยู่ใน <g4>GitHub</g4>"
   },
+  "7abc575fd3c5fa12": {
+   "source": "; a choice's <x1/> is what <x2/> takes.",
+   "text": "; <x1/> ของตัวเลือกคือสิ่งที่ <x2/> ใช้"
+  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "ทำเครื่องหมายที่ <g1>จำกัดการดาวน์โหลดทั้งหมดรวมกันที่</g1> และพิมพ์ความเร็วเป็น กิโลไบต์/วินาที จุดเริ่มต้นที่ดีคือประมาณสองในสามของความเร็วการเชื่อมต่อของคุณ (1 เมกะไบต์/วินาที ประมาณ 1000 กิโลไบต์/วินาที)"
@@ -7194,6 +7210,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "ใน <g1>ข้อมูลไฟล์ดาวน์โหลด</g1> คลิก <g2>ดาวน์โหลดภายหลัง</g2>"
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "ดาวน์โหลดวิดีโอ; <x1/> ใช้ตัวเลือกคุณภาพจาก <x2/> (<x3/> = ไฟล์เดี่ยวที่ดีที่สุด; <x4/>, <x5/>, <x6/> หรือ <x7/> = เสียงเป็น MP3 ที่บิตเรตนั้น, <x8/> ที่บิตเรตแปรผันที่ดีที่สุด; MP3 ต้องใช้ ffmpeg)"
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "ต้องการคำบรรยายใช่ไหม? เลือกภาษาใน <g1>คำบรรยาย</g1> ไฟล์จะถูกบันทึกไว้ข้างวิดีโอ หรือฝังอยู่ในวิดีโอหากคุณเลือก <g2>ใส่ลงในวิดีโอ</g2> (ดู <g3>คำบรรยาย</g3>)"
@@ -8821,6 +8841,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "ทอร์เรนต์นับเป็นหนึ่งไฟล์ที่นี่: แต่ละทอร์เรนต์จะได้รับขีดจำกัดของตัวเอง การดาวน์โหลดที่มีขีดจำกัดของตัวเอง (ดูที่ <g1>สำหรับการดาวน์โหลดหนึ่งไฟล์</g1>) จะใช้ขีดจำกัดนั้น"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

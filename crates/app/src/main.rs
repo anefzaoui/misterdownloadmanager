@@ -11,6 +11,7 @@ mod dialogs;
 mod droptarget;
 mod errors;
 mod extension;
+mod fileicons;
 mod find;
 mod help;
 mod helpers;

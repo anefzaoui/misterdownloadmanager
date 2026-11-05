@@ -997,6 +997,34 @@ async fn speed_limit_caps_the_whole_download() {
     assert!((1.5..6.0).contains(&secs), "2 MB at 1 MB/s took {secs:.2}s");
 }
 
+/// #39: under a low limit each connection waits seconds for its turn; Stop ends those waits
+/// at once instead of waiting them out (it took about 4 s at 400 KB/s in the app).
+#[tokio::test]
+async fn stop_is_prompt_under_a_low_limit() {
+    let s = server("").await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/8M/slow.bin?seed=41").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let opts = Options {
+        speed_limit: Some(32 << 10),
+        ..fast_opts()
+    };
+    let dl = Download::start(req, opts);
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(15);
+    while dl.snapshot().downloaded < 64 << 10 {
+        assert!(std::time::Instant::now() < deadline, "never started");
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    let t = std::time::Instant::now();
+    dl.cancel();
+    let _ = dl.wait().await;
+    let secs = t.elapsed().as_secs_f64();
+    assert!(secs < 1.0, "stopping took {secs:.2}s");
+}
+
 #[tokio::test]
 async fn the_finished_file_can_take_the_servers_date() {
     // Options → Downloads → "Set file creation date as provided by the server": the lab server

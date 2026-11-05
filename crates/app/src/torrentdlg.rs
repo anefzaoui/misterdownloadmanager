@@ -630,6 +630,8 @@ impl TorrentDialog {
             return;
         }
         let rows = visible_rows(&self.tree, &self.open);
+        // What a screen reader calls the tree (its rows carry each file's name).
+        self.rows.name = crate::i18n::t("Files");
         // The shared row list over the body (its frame on the list's): a click selects, the
         // box, Space or a double-click on a file ticks, a double-click or the arrow opens a
         // folder, Right / Left open and close the selected one.
@@ -664,15 +666,29 @@ impl TorrentDialog {
                 let state = tri_state(node, chosen);
                 let glyph = pos2(x + 16.0, top + 2.0);
                 let mut on = state == Tri::All;
-                if winui::row_check(ui, clip, glyph, &mut on, ("torrent-node", n)) {
+                let size = crate::dialogs::dialog_size(node.size);
+                look.name = format!("{}, {size}", node.name);
+                if winui::row_check(ui, clip, glyph, &mut on, &node.name, ("torrent-node", n)) {
                     toggle = Some(n);
                 }
                 if state == Tri::Some {
                     mixed_mark(clip, glyph);
                 }
-                let size = crate::dialogs::dialog_size(node.size);
                 let size_w = winui::text_width(clip, &size);
-                let left = glyph.x + 19.0;
+                // The file's type icon (a folder's for a folder), then its name.
+                let kind = if is_dir {
+                    crate::fileicons::Kind::Folder
+                } else {
+                    crate::fileicons::Kind::File(&node.name)
+                };
+                crate::fileicons::paint_at(
+                    ui,
+                    clip,
+                    kind,
+                    pos2(glyph.x + 19.0, top + (ROW - 16.0) / 2.0),
+                    16.0,
+                );
+                let left = glyph.x + 19.0 + crate::fileicons::INDENT;
                 // A name keeps its own direction (cut inside its isolate), whole on hover.
                 let name = crate::i18n::isolate(&node.name);
                 let max = row.right() - 8.0 - size_w - 12.0;
